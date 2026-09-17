@@ -2251,6 +2251,9 @@ msgstr "Ek yüklenemedi: {0}"
 msgid "Attachment was not uploaded — send the bytes first"
 msgstr "Ek yüklenmedi — önce verileri gönderin"
 
+msgid "Attachments"
+msgstr "Ekler"
+
 msgid "Attachments are not wired yet"
 msgstr "Ekler henüz bağlanmadı"
 
@@ -2428,6 +2431,10 @@ msgstr "Sizden inceleme bekliyor"
 
 msgid "Awaiting review from you or your team"
 msgstr "Sizden veya takımınızdan inceleme bekliyor"
+
+msgctxt "file size unit, bytes"
+msgid "B"
+msgstr "B"
 
 msgid "Back"
 msgstr "Geri"
@@ -6499,6 +6506,9 @@ msgstr "Başarısız"
 msgid "FAQ"
 msgstr "SSS"
 
+msgid "Fast"
+msgstr "Fast"
+
 msgid "Fast uses more of your allowance."
 msgstr "Fast, kotanızdan daha fazla tüketir."
 
@@ -6936,6 +6946,10 @@ msgstr "Eşikler"
 
 msgid "Gates open"
 msgstr "Açık eşikler"
+
+msgctxt "file size unit, gigabytes"
+msgid "GB"
+msgstr "GB"
 
 msgid "General"
 msgstr "Genel"
@@ -7970,6 +7984,10 @@ msgstr "Yalnızca ben"
 msgid "just now"
 msgstr "az önce"
 
+msgctxt "file size unit, kilobytes"
+msgid "KB"
+msgstr "KB"
+
 msgid "Kbd"
 msgstr "Kbd"
 
@@ -8317,8 +8335,17 @@ msgstr "Pull request bağla"
 msgid "Link task"
 msgstr "Görev bağla"
 
+msgid "Link workspaces"
+msgstr "Çalışma alanlarını bağla"
+
+msgid "Linked"
+msgstr "Bağlandı"
+
 msgid "Linked {slug} to workspace"
 msgstr "{slug} çalışma alanına bağlandı"
+
+msgid "Linked workspaces"
+msgstr "Bağlı çalışma alanları"
 
 msgid "Links"
 msgstr "Bağlantılar"
@@ -8478,6 +8505,9 @@ msgstr "Terminal betikleri yükleniyor..."
 
 msgid "Loading usage history…"
 msgstr "Kullanım geçmişi yükleniyor…"
+
+msgid "Loading workspaces…"
+msgstr "Çalışma alanları yükleniyor…"
 
 msgid "Loading..."
 msgstr "Yükleniyor..."
@@ -8703,6 +8733,10 @@ msgstr "En yüksek akıl yürütme çabası"
 
 msgid "Maximum size is 256 KB."
 msgstr "En büyük boyut 256 KB."
+
+msgctxt "file size unit, megabytes"
+msgid "MB"
+msgstr "MB"
 
 msgid "MCP"
 msgstr "MCP"
@@ -9934,6 +9968,9 @@ msgstr "Bağlı değil"
 msgid "Not connected · cloud workspaces push as your organization's GitHub App"
 msgstr "Bağlı değil · bulut çalışma alanları organizasyonunun GitHub App'i olarak push yapar"
 
+msgid "Not connected to a host yet — try attaching again."
+msgstr "Henüz bir ana bilgisayara bağlı değil — yeniden eklemeyi deneyin."
+
 msgid "Not connected: {unavailableReason}. Add a Google service account to the Search Console property and set GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 msgstr "Bağlı değil: {unavailableReason}. Search Console mülküne bir Google hizmet hesabı ekleyin ve GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT değerini ayarlayın."
 
@@ -9951,6 +9988,9 @@ msgstr "Verilmedi"
 
 msgid "Not included"
 msgstr "Dahil değil"
+
+msgid "Not linked"
+msgstr "Bağlı değil"
 
 msgid "Not loaded"
 msgstr "Yüklenmedi"
@@ -12463,6 +12503,9 @@ msgstr "Birkaç saniye sonra yeniden deneyin; sorun sürerse Superset'i yeniden 
 msgid "Retry in a few seconds."
 msgstr "Birkaç saniye sonra yeniden deneyin."
 
+msgid "Retry upload"
+msgstr "Yüklemeyi yeniden dene"
+
 msgid "Retrying…"
 msgstr "Yeniden deneniyor…"
 
@@ -13013,6 +13056,9 @@ msgstr "Tetikleyici ara..."
 
 msgid "Search workspaces"
 msgstr "Çalışma alanlarında ara"
+
+msgid "Search workspaces on this host and link them to this chat."
+msgstr "Bu ana bilgisayardaki çalışma alanlarını arayın ve bu sohbete bağlayın."
 
 msgid "Search workspaces..."
 msgstr "Çalışma alanı ara..."
@@ -15996,6 +16042,13 @@ msgstr "Sınırsız"
 msgid "Unlimited users"
 msgstr "Sınırsız kullanıcı"
 
+msgid "Unlink"
+msgstr "Bağlantıyı kaldır"
+
+#. placeholder {0}: workspace.name
+msgid "Unlink {0}"
+msgstr "{0} bağlantısını kaldır"
+
 msgid "Unmute notifications"
 msgstr "Bildirimlerin sesini aç"
 
@@ -16156,6 +16209,9 @@ msgstr "{0} planına yükselt"
 
 msgid "Upgrade to Pro"
 msgstr "Pro'ya yükselt"
+
+msgid "Upload failed."
+msgstr "Yükleme başarısız."
 
 msgid "Upload files"
 msgstr "Dosya yükle"

@@ -2251,6 +2251,9 @@ msgstr "Falha no envio do anexo: {0}"
 msgid "Attachment was not uploaded — send the bytes first"
 msgstr "O anexo não foi enviado — envie os dados primeiro"
 
+msgid "Attachments"
+msgstr "Anexos"
+
 msgid "Attachments are not wired yet"
 msgstr "Os anexos ainda não estão habilitados"
 
@@ -2428,6 +2431,10 @@ msgstr "Aguardando sua revisão"
 
 msgid "Awaiting review from you or your team"
 msgstr "Aguardando revisão sua ou da sua equipe"
+
+msgctxt "file size unit, bytes"
+msgid "B"
+msgstr "B"
 
 msgid "Back"
 msgstr "Voltar"
@@ -6499,6 +6506,9 @@ msgstr "Falha"
 msgid "FAQ"
 msgstr "FAQ"
 
+msgid "Fast"
+msgstr "Fast"
+
 msgid "Fast uses more of your allowance."
 msgstr "Fast consome mais da sua cota."
 
@@ -6936,6 +6946,10 @@ msgstr "Portões"
 
 msgid "Gates open"
 msgstr "Portões abertos"
+
+msgctxt "file size unit, gigabytes"
+msgid "GB"
+msgstr "GB"
 
 msgid "General"
 msgstr "Geral"
@@ -7970,6 +7984,10 @@ msgstr "Só minhas"
 msgid "just now"
 msgstr "agora mesmo"
 
+msgctxt "file size unit, kilobytes"
+msgid "KB"
+msgstr "KB"
+
 msgid "Kbd"
 msgstr "Kbd"
 
@@ -8317,8 +8335,17 @@ msgstr "Vincular pull request"
 msgid "Link task"
 msgstr "Vincular tarefa"
 
+msgid "Link workspaces"
+msgstr "Vincular áreas de trabalho"
+
+msgid "Linked"
+msgstr "Vinculada"
+
 msgid "Linked {slug} to workspace"
 msgstr "{slug} vinculada à área de trabalho"
+
+msgid "Linked workspaces"
+msgstr "Áreas de trabalho vinculadas"
 
 msgid "Links"
 msgstr "Links"
@@ -8478,6 +8505,9 @@ msgstr "Carregando os scripts de terminal..."
 
 msgid "Loading usage history…"
 msgstr "Carregando o histórico de uso…"
+
+msgid "Loading workspaces…"
+msgstr "Carregando áreas de trabalho…"
 
 msgid "Loading..."
 msgstr "Carregando..."
@@ -8703,6 +8733,10 @@ msgstr "Esforço de raciocínio máximo"
 
 msgid "Maximum size is 256 KB."
 msgstr "O tamanho máximo é 256 KB."
+
+msgctxt "file size unit, megabytes"
+msgid "MB"
+msgstr "MB"
 
 msgid "MCP"
 msgstr "MCP"
@@ -9934,6 +9968,9 @@ msgstr "Não conectado"
 msgid "Not connected · cloud workspaces push as your organization's GitHub App"
 msgstr "Não conectado · as áreas de trabalho na nuvem fazem push como a GitHub App da sua organização"
 
+msgid "Not connected to a host yet — try attaching again."
+msgstr "Ainda não há conexão com um host — tente anexar novamente."
+
 msgid "Not connected: {unavailableReason}. Add a Google service account to the Search Console property and set GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 msgstr "Não conectado: {unavailableReason}. Adicione uma conta de serviço do Google à propriedade do Search Console e defina GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 
@@ -9951,6 +9988,9 @@ msgstr "Não concedida"
 
 msgid "Not included"
 msgstr "Não incluído"
+
+msgid "Not linked"
+msgstr "Não vinculada"
 
 msgid "Not loaded"
 msgstr "Não carregado"
@@ -12463,6 +12503,9 @@ msgstr "Tente de novo em alguns segundos; se persistir, reinicie o Superset."
 msgid "Retry in a few seconds."
 msgstr "Tente de novo em alguns segundos."
 
+msgid "Retry upload"
+msgstr "Tentar envio novamente"
+
 msgid "Retrying…"
 msgstr "Tentando de novo…"
 
@@ -13013,6 +13056,9 @@ msgstr "Buscar gatilhos..."
 
 msgid "Search workspaces"
 msgstr "Buscar áreas de trabalho"
+
+msgid "Search workspaces on this host and link them to this chat."
+msgstr "Busque áreas de trabalho neste host e vincule-as a este chat."
 
 msgid "Search workspaces..."
 msgstr "Buscar áreas de trabalho..."
@@ -15996,6 +16042,13 @@ msgstr "Ilimitado"
 msgid "Unlimited users"
 msgstr "Usuários ilimitados"
 
+msgid "Unlink"
+msgstr "Desvincular"
+
+#. placeholder {0}: workspace.name
+msgid "Unlink {0}"
+msgstr "Desvincular {0}"
+
 msgid "Unmute notifications"
 msgstr "Reativar notificações"
 
@@ -16156,6 +16209,9 @@ msgstr "Fazer upgrade para {0}"
 
 msgid "Upgrade to Pro"
 msgstr "Fazer upgrade para o Pro"
+
+msgid "Upload failed."
+msgstr "Falha no envio."
 
 msgid "Upload files"
 msgstr "Enviar arquivos"

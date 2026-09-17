@@ -11,6 +11,8 @@ import { createCodexChatTransport } from "renderer/lib/codex-chat-transport";
 export type ChatWiring = {
 	transport: ChatTransport;
 	streamBaseUrl: string;
+	/** The host that owns this session — also where attachments upload. */
+	hostUrl: string;
 	createSocket: (url: string) => StreamSocket;
 };
 
@@ -26,7 +28,12 @@ export function useChatWiring(): ChatWiring {
 			if (token) wsUrl.searchParams.set("token", token);
 			return new WebSocket(wsUrl.toString());
 		};
-		return { transport, streamBaseUrl: `${hostUrl}/chat-v3`, createSocket };
+		return {
+			transport,
+			streamBaseUrl: `${hostUrl}/chat-v3`,
+			hostUrl,
+			createSocket,
+		};
 	}, [hostUrl, getWsToken]);
 }
 

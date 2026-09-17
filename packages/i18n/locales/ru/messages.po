@@ -2251,6 +2251,9 @@ msgstr "Не удалось загрузить вложение: {0}"
 msgid "Attachment was not uploaded — send the bytes first"
 msgstr "Вложение не было загружено — сначала отправьте данные"
 
+msgid "Attachments"
+msgstr "Вложения"
+
 msgid "Attachments are not wired yet"
 msgstr "Вложения ещё не подключены"
 
@@ -2428,6 +2431,10 @@ msgstr "Ожидает вашего ревью"
 
 msgid "Awaiting review from you or your team"
 msgstr "Ожидает ревью от вас или вашей команды"
+
+msgctxt "file size unit, bytes"
+msgid "B"
+msgstr "Б"
 
 msgid "Back"
 msgstr "Назад"
@@ -6499,6 +6506,9 @@ msgstr "Ошибка"
 msgid "FAQ"
 msgstr "FAQ"
 
+msgid "Fast"
+msgstr "Fast"
+
 msgid "Fast uses more of your allowance."
 msgstr "Fast расходует больше вашей квоты."
 
@@ -6936,6 +6946,10 @@ msgstr "Шлюзы"
 
 msgid "Gates open"
 msgstr "Шлюзов открыто"
+
+msgctxt "file size unit, gigabytes"
+msgid "GB"
+msgstr "ГБ"
 
 msgid "General"
 msgstr "Общие"
@@ -7970,6 +7984,10 @@ msgstr "Только мои"
 msgid "just now"
 msgstr "только что"
 
+msgctxt "file size unit, kilobytes"
+msgid "KB"
+msgstr "КБ"
+
 msgid "Kbd"
 msgstr "Kbd"
 
@@ -8317,8 +8335,17 @@ msgstr "Привязать пул-реквест"
 msgid "Link task"
 msgstr "Привязать задачу"
 
+msgid "Link workspaces"
+msgstr "Связать рабочие пространства"
+
+msgid "Linked"
+msgstr "Связано"
+
 msgid "Linked {slug} to workspace"
 msgstr "{slug} привязана к рабочей области"
+
+msgid "Linked workspaces"
+msgstr "Связанные рабочие пространства"
 
 msgid "Links"
 msgstr "Ссылки"
@@ -8478,6 +8505,9 @@ msgstr "Загрузка скриптов терминала..."
 
 msgid "Loading usage history…"
 msgstr "Загрузка истории использования…"
+
+msgid "Loading workspaces…"
+msgstr "Загрузка рабочих пространств…"
 
 msgid "Loading..."
 msgstr "Загрузка..."
@@ -8703,6 +8733,10 @@ msgstr "Максимальные рассуждения"
 
 msgid "Maximum size is 256 KB."
 msgstr "Максимальный размер — 256 КБ."
+
+msgctxt "file size unit, megabytes"
+msgid "MB"
+msgstr "МБ"
 
 msgid "MCP"
 msgstr "MCP"
@@ -9934,6 +9968,9 @@ msgstr "Не подключено"
 msgid "Not connected · cloud workspaces push as your organization's GitHub App"
 msgstr "Не подключено · облачные рабочие области пушат как GitHub App вашей организации"
 
+msgid "Not connected to a host yet — try attaching again."
+msgstr "Подключение к хосту ещё не установлено — попробуйте прикрепить файл снова."
+
 msgid "Not connected: {unavailableReason}. Add a Google service account to the Search Console property and set GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 msgstr "Не подключено: {unavailableReason}. Добавьте сервисный аккаунт Google к ресурсу Search Console и задайте GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 
@@ -9951,6 +9988,9 @@ msgstr "Не выдано"
 
 msgid "Not included"
 msgstr "Не входит"
+
+msgid "Not linked"
+msgstr "Не связано"
 
 msgid "Not loaded"
 msgstr "Не загружено"
@@ -12463,6 +12503,9 @@ msgstr "Повторите через несколько секунд; если 
 msgid "Retry in a few seconds."
 msgstr "Повторите через несколько секунд."
 
+msgid "Retry upload"
+msgstr "Повторить загрузку"
+
 msgid "Retrying…"
 msgstr "Повтор…"
 
@@ -13013,6 +13056,9 @@ msgstr "Поиск триггеров..."
 
 msgid "Search workspaces"
 msgstr "Поиск рабочих областей"
+
+msgid "Search workspaces on this host and link them to this chat."
+msgstr "Найдите рабочие пространства на этом хосте и свяжите их с этим чатом."
 
 msgid "Search workspaces..."
 msgstr "Поиск рабочих областей..."
@@ -15996,6 +16042,13 @@ msgstr "Без ограничений"
 msgid "Unlimited users"
 msgstr "Неограниченное число пользователей"
 
+msgid "Unlink"
+msgstr "Отвязать"
+
+#. placeholder {0}: workspace.name
+msgid "Unlink {0}"
+msgstr "Отвязать {0}"
+
 msgid "Unmute notifications"
 msgstr "Включить уведомления"
 
@@ -16156,6 +16209,9 @@ msgstr "Перейти на {0}"
 
 msgid "Upgrade to Pro"
 msgstr "Перейти на Pro"
+
+msgid "Upload failed."
+msgstr "Не удалось загрузить."
 
 msgid "Upload files"
 msgstr "Загрузить файлы"

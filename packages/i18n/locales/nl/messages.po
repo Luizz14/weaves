@@ -2251,6 +2251,9 @@ msgstr "Uploaden van bijlage mislukt: {0}"
 msgid "Attachment was not uploaded — send the bytes first"
 msgstr "Bijlage is niet geüpload — verstuur eerst de gegevens"
 
+msgid "Attachments"
+msgstr "Bijlagen"
+
 msgid "Attachments are not wired yet"
 msgstr "Bijlagen zijn nog niet aangesloten"
 
@@ -2428,6 +2431,10 @@ msgstr "Wacht op review van jou"
 
 msgid "Awaiting review from you or your team"
 msgstr "Wacht op review van jou of je team"
+
+msgctxt "file size unit, bytes"
+msgid "B"
+msgstr "B"
 
 msgid "Back"
 msgstr "Terug"
@@ -6499,6 +6506,9 @@ msgstr "Mislukt"
 msgid "FAQ"
 msgstr "FAQ"
 
+msgid "Fast"
+msgstr "Fast"
+
 msgid "Fast uses more of your allowance."
 msgstr "Fast verbruikt meer van je quotum."
 
@@ -6936,6 +6946,10 @@ msgstr "Drempels"
 
 msgid "Gates open"
 msgstr "Open drempels"
+
+msgctxt "file size unit, gigabytes"
+msgid "GB"
+msgstr "GB"
 
 msgid "General"
 msgstr "Algemeen"
@@ -7970,6 +7984,10 @@ msgstr "Alleen ik"
 msgid "just now"
 msgstr "zojuist"
 
+msgctxt "file size unit, kilobytes"
+msgid "KB"
+msgstr "KB"
+
 msgid "Kbd"
 msgstr "Kbd"
 
@@ -8317,8 +8335,17 @@ msgstr "Pull request koppelen"
 msgid "Link task"
 msgstr "Taak koppelen"
 
+msgid "Link workspaces"
+msgstr "Workspaces koppelen"
+
+msgid "Linked"
+msgstr "Gekoppeld"
+
 msgid "Linked {slug} to workspace"
 msgstr "{slug} gekoppeld aan werkruimte"
+
+msgid "Linked workspaces"
+msgstr "Gekoppelde workspaces"
 
 msgid "Links"
 msgstr "Links"
@@ -8478,6 +8505,9 @@ msgstr "Terminalscripts laden..."
 
 msgid "Loading usage history…"
 msgstr "Gebruiksgeschiedenis laden…"
+
+msgid "Loading workspaces…"
+msgstr "Workspaces laden…"
 
 msgid "Loading..."
 msgstr "Laden..."
@@ -8703,6 +8733,10 @@ msgstr "Maximale redeneerinspanning"
 
 msgid "Maximum size is 256 KB."
 msgstr "Maximale grootte is 256 KB."
+
+msgctxt "file size unit, megabytes"
+msgid "MB"
+msgstr "MB"
 
 msgid "MCP"
 msgstr "MCP"
@@ -9934,6 +9968,9 @@ msgstr "Niet verbonden"
 msgid "Not connected · cloud workspaces push as your organization's GitHub App"
 msgstr "Niet gekoppeld · cloudwerkruimtes pushen als de GitHub App van je organisatie"
 
+msgid "Not connected to a host yet — try attaching again."
+msgstr "Nog niet verbonden met een host — probeer opnieuw bij te voegen."
+
 msgid "Not connected: {unavailableReason}. Add a Google service account to the Search Console property and set GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 msgstr "Niet verbonden: {unavailableReason}. Voeg een Google-serviceaccount toe aan de Search Console-property en stel GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT in."
 
@@ -9951,6 +9988,9 @@ msgstr "Niet verleend"
 
 msgid "Not included"
 msgstr "Niet inbegrepen"
+
+msgid "Not linked"
+msgstr "Niet gekoppeld"
 
 msgid "Not loaded"
 msgstr "Niet geladen"
@@ -12463,6 +12503,9 @@ msgstr "Probeer het over een paar seconden opnieuw; blijft het misgaan, herstart
 msgid "Retry in a few seconds."
 msgstr "Probeer het over een paar seconden opnieuw."
 
+msgid "Retry upload"
+msgstr "Upload opnieuw proberen"
+
 msgid "Retrying…"
 msgstr "Opnieuw proberen…"
 
@@ -13013,6 +13056,9 @@ msgstr "Triggers zoeken..."
 
 msgid "Search workspaces"
 msgstr "Werkruimtes zoeken"
+
+msgid "Search workspaces on this host and link them to this chat."
+msgstr "Zoek workspaces op deze host en koppel ze aan deze chat."
 
 msgid "Search workspaces..."
 msgstr "Werkruimtes zoeken..."
@@ -15996,6 +16042,13 @@ msgstr "Onbeperkt"
 msgid "Unlimited users"
 msgstr "Onbeperkt aantal gebruikers"
 
+msgid "Unlink"
+msgstr "Ontkoppelen"
+
+#. placeholder {0}: workspace.name
+msgid "Unlink {0}"
+msgstr "{0} ontkoppelen"
+
 msgid "Unmute notifications"
 msgstr "Dempen van meldingen opheffen"
 
@@ -16156,6 +16209,9 @@ msgstr "Upgraden naar {0}"
 
 msgid "Upgrade to Pro"
 msgstr "Upgraden naar Pro"
+
+msgid "Upload failed."
+msgstr "Upload mislukt."
 
 msgid "Upload files"
 msgstr "Bestanden uploaden"

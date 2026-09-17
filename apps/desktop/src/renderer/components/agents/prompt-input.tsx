@@ -42,6 +42,7 @@ export interface PromptAction {
 	label: ReactNode;
 	description?: ReactNode;
 	icon?: ReactNode;
+	shortcut?: ReactNode;
 	disabled?: boolean;
 }
 
@@ -62,6 +63,8 @@ export interface PromptInputProps
 	onSubmit?: (value: string, model?: string) => void | Promise<void>;
 	loading?: boolean;
 	submitDisabled?: boolean;
+	/** For composers where attachments alone are a valid message. */
+	allowEmptySubmit?: boolean;
 	onStop?: () => void;
 	minRows?: number;
 	maxRows?: number;
@@ -82,6 +85,7 @@ export function PromptInput({
 	onSubmit,
 	loading = false,
 	submitDisabled = false,
+	allowEmptySubmit = false,
 	onStop,
 	minRows = 2,
 	maxRows = 8,
@@ -107,7 +111,10 @@ export function PromptInput({
 		(option) => option.value === currentModelValue,
 	);
 	const canSubmit =
-		Boolean(currentValue.trim()) && !disabled && !loading && !submitDisabled;
+		(allowEmptySubmit || Boolean(currentValue.trim())) &&
+		!disabled &&
+		!loading &&
+		!submitDisabled;
 
 	const resizeTextarea = useCallback(() => {
 		const textarea = textareaRef.current;
@@ -240,14 +247,14 @@ export function PromptInput({
 										onAction?.(action.value);
 										setActionsOpen(false);
 									}}
-									className="flex w-full items-start gap-2.5 rounded-lg px-2.5 py-2 text-left outline-none transition-colors hover:bg-muted focus-visible:bg-muted disabled:pointer-events-none disabled:opacity-50"
+									className="flex w-full items-start gap-2.5 rounded-lg px-2.5 py-2 text-left outline-none transition-[background-color,color,scale] hover:bg-muted focus-visible:bg-muted active:scale-[0.96] disabled:pointer-events-none disabled:opacity-50 motion-reduce:active:scale-100"
 								>
 									{action.icon ? (
 										<span className="mt-0.5 grid size-5 shrink-0 place-items-center text-muted-foreground [&_svg]:size-4">
 											{action.icon}
 										</span>
 									) : null}
-									<span className="min-w-0">
+									<span className="min-w-0 flex-1">
 										<span className="block text-sm text-foreground">
 											{action.label}
 										</span>
@@ -257,6 +264,11 @@ export function PromptInput({
 											</span>
 										) : null}
 									</span>
+									{action.shortcut ? (
+										<span className="mt-0.5 shrink-0 text-xs tabular-nums text-muted-foreground/70">
+											{action.shortcut}
+										</span>
+									) : null}
 								</button>
 							))}
 						</MorphPopoverContent>

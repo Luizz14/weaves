@@ -65,6 +65,14 @@ export const setModelInputSchema = z.object({
 });
 export type SetModelInput = z.infer<typeof setModelInputSchema>;
 
+export const setLinkedWorkspacesInputSchema = z.object({
+	...commandBaseFields,
+	workspaceIds: z.array(z.string().min(1)).max(10),
+});
+export type SetLinkedWorkspacesInput = z.infer<
+	typeof setLinkedWorkspacesInputSchema
+>;
+
 export const setConfigOptionInputSchema = z.object({
 	...commandBaseFields,
 	optionId: z.string().min(1),

@@ -2251,6 +2251,9 @@ msgstr "Nahrání přílohy selhalo: {0}"
 msgid "Attachment was not uploaded — send the bytes first"
 msgstr "Příloha nebyla nahrána — nejdřív odešlete data"
 
+msgid "Attachments"
+msgstr "Přílohy"
+
 msgid "Attachments are not wired yet"
 msgstr "Přílohy zatím nejsou propojené"
 
@@ -2428,6 +2431,10 @@ msgstr "Čeká na vaši revizi"
 
 msgid "Awaiting review from you or your team"
 msgstr "Čeká na revizi od vás nebo vašeho týmu"
+
+msgctxt "file size unit, bytes"
+msgid "B"
+msgstr "B"
 
 msgid "Back"
 msgstr "Zpět"
@@ -6499,6 +6506,9 @@ msgstr "Selhání"
 msgid "FAQ"
 msgstr "FAQ"
 
+msgid "Fast"
+msgstr "Fast"
+
 msgid "Fast uses more of your allowance."
 msgstr "Fast spotřebovává více z vašeho limitu."
 
@@ -6936,6 +6946,10 @@ msgstr "Brány"
 
 msgid "Gates open"
 msgstr "Otevřené brány"
+
+msgctxt "file size unit, gigabytes"
+msgid "GB"
+msgstr "GB"
 
 msgid "General"
 msgstr "Obecné"
@@ -7970,6 +7984,10 @@ msgstr "Jen já"
 msgid "just now"
 msgstr "právě teď"
 
+msgctxt "file size unit, kilobytes"
+msgid "KB"
+msgstr "KB"
+
 msgid "Kbd"
 msgstr "Kbd"
 
@@ -8317,8 +8335,17 @@ msgstr "Propojit pull request"
 msgid "Link task"
 msgstr "Propojit úkol"
 
+msgid "Link workspaces"
+msgstr "Propojit pracovní prostory"
+
+msgid "Linked"
+msgstr "Propojeno"
+
 msgid "Linked {slug} to workspace"
 msgstr "{slug} propojeno s pracovním prostorem"
+
+msgid "Linked workspaces"
+msgstr "Propojené pracovní prostory"
 
 msgid "Links"
 msgstr "Odkazy"
@@ -8478,6 +8505,9 @@ msgstr "Načítám terminálové skripty..."
 
 msgid "Loading usage history…"
 msgstr "Načítám historii využití…"
+
+msgid "Loading workspaces…"
+msgstr "Načítání pracovních prostorů…"
 
 msgid "Loading..."
 msgstr "Načítám..."
@@ -8703,6 +8733,10 @@ msgstr "Maximální míra uvažování"
 
 msgid "Maximum size is 256 KB."
 msgstr "Maximální velikost je 256 KB."
+
+msgctxt "file size unit, megabytes"
+msgid "MB"
+msgstr "MB"
 
 msgid "MCP"
 msgstr "MCP"
@@ -9934,6 +9968,9 @@ msgstr "Nepřipojeno"
 msgid "Not connected · cloud workspaces push as your organization's GitHub App"
 msgstr "Nepřipojeno · cloudové pracovní prostory pushují jako GitHub App vaší organizace"
 
+msgid "Not connected to a host yet — try attaching again."
+msgstr "Dosud není připojen žádný hostitel — zkuste přílohu přidat znovu."
+
 msgid "Not connected: {unavailableReason}. Add a Google service account to the Search Console property and set GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 msgstr "Nepřipojeno: {unavailableReason}. Přidejte účet služby Google k službě v Search Console a nastavte GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 
@@ -9951,6 +9988,9 @@ msgstr "Nepovoleno"
 
 msgid "Not included"
 msgstr "Není zahrnuto"
+
+msgid "Not linked"
+msgstr "Nepropojeno"
 
 msgid "Not loaded"
 msgstr "Nenačteno"
@@ -12463,6 +12503,9 @@ msgstr "Zkuste to znovu za pár sekund; pokud potíže přetrvávají, restartuj
 msgid "Retry in a few seconds."
 msgstr "Zkuste to znovu za pár sekund."
 
+msgid "Retry upload"
+msgstr "Opakovat nahrání"
+
 msgid "Retrying…"
 msgstr "Zkouším znovu…"
 
@@ -13013,6 +13056,9 @@ msgstr "Hledat spouštěče..."
 
 msgid "Search workspaces"
 msgstr "Hledat pracovní prostory"
+
+msgid "Search workspaces on this host and link them to this chat."
+msgstr "Vyhledejte pracovní prostory na tomto hostiteli a propojte je s tímto chatem."
 
 msgid "Search workspaces..."
 msgstr "Hledat pracovní prostory..."
@@ -15996,6 +16042,13 @@ msgstr "Neomezeně"
 msgid "Unlimited users"
 msgstr "Neomezeně uživatelů"
 
+msgid "Unlink"
+msgstr "Odpojit"
+
+#. placeholder {0}: workspace.name
+msgid "Unlink {0}"
+msgstr "Odpojit {0}"
+
 msgid "Unmute notifications"
 msgstr "Zrušit ztlumení oznámení"
 
@@ -16156,6 +16209,9 @@ msgstr "Přejít na {0}"
 
 msgid "Upgrade to Pro"
 msgstr "Přejít na Pro"
+
+msgid "Upload failed."
+msgstr "Nahrání se nezdařilo."
 
 msgid "Upload files"
 msgstr "Nahrát soubory"

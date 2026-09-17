@@ -2251,6 +2251,9 @@ msgstr "附件上传失败：{0}"
 msgid "Attachment was not uploaded — send the bytes first"
 msgstr "附件尚未上传 — 请先发送数据"
 
+msgid "Attachments"
+msgstr "附件"
+
 msgid "Attachments are not wired yet"
 msgstr "附件功能尚未接入"
 
@@ -2428,6 +2431,10 @@ msgstr "等待你的审查"
 
 msgid "Awaiting review from you or your team"
 msgstr "等待你或你团队的审查"
+
+msgctxt "file size unit, bytes"
+msgid "B"
+msgstr "B"
 
 msgid "Back"
 msgstr "返回"
@@ -6499,6 +6506,9 @@ msgstr "失败"
 msgid "FAQ"
 msgstr "常见问题"
 
+msgid "Fast"
+msgstr "Fast"
+
 msgid "Fast uses more of your allowance."
 msgstr "Fast 会消耗更多使用额度。"
 
@@ -6936,6 +6946,10 @@ msgstr "关卡"
 
 msgid "Gates open"
 msgstr "已开启关卡"
+
+msgctxt "file size unit, gigabytes"
+msgid "GB"
+msgstr "GB"
 
 msgid "General"
 msgstr "通用"
@@ -7970,6 +7984,10 @@ msgstr "仅我的"
 msgid "just now"
 msgstr "刚刚"
 
+msgctxt "file size unit, kilobytes"
+msgid "KB"
+msgstr "KB"
+
 msgid "Kbd"
 msgstr "Kbd"
 
@@ -8317,8 +8335,17 @@ msgstr "关联拉取请求"
 msgid "Link task"
 msgstr "关联任务"
 
+msgid "Link workspaces"
+msgstr "关联工作区"
+
+msgid "Linked"
+msgstr "已关联"
+
 msgid "Linked {slug} to workspace"
 msgstr "已将{slug}关联到工作区"
+
+msgid "Linked workspaces"
+msgstr "已关联的工作区"
 
 msgid "Links"
 msgstr "链接"
@@ -8478,6 +8505,9 @@ msgstr "正在加载终端脚本..."
 
 msgid "Loading usage history…"
 msgstr "正在加载用量历史…"
+
+msgid "Loading workspaces…"
+msgstr "正在加载工作区…"
 
 msgid "Loading..."
 msgstr "加载中..."
@@ -8703,6 +8733,10 @@ msgstr "最大的推理投入"
 
 msgid "Maximum size is 256 KB."
 msgstr "最大为256 KB。"
+
+msgctxt "file size unit, megabytes"
+msgid "MB"
+msgstr "MB"
 
 msgid "MCP"
 msgstr "MCP"
@@ -9934,6 +9968,9 @@ msgstr "未连接"
 msgid "Not connected · cloud workspaces push as your organization's GitHub App"
 msgstr "未连接 · 云端工作区以组织的 GitHub App 身份推送"
 
+msgid "Not connected to a host yet — try attaching again."
+msgstr "尚未连接到主机，请重新尝试添加附件。"
+
 msgid "Not connected: {unavailableReason}. Add a Google service account to the Search Console property and set GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 msgstr "未连接：{unavailableReason}。请将 Google 服务账号添加到 Search Console 资源，并设置 GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT。"
 
@@ -9951,6 +9988,9 @@ msgstr "未授予"
 
 msgid "Not included"
 msgstr "不包含"
+
+msgid "Not linked"
+msgstr "未关联"
 
 msgid "Not loaded"
 msgstr "未加载"
@@ -12463,6 +12503,9 @@ msgstr "请在几秒后重试；若问题持续，请重启Superset。"
 msgid "Retry in a few seconds."
 msgstr "请在几秒后重试。"
 
+msgid "Retry upload"
+msgstr "重试上传"
+
 msgid "Retrying…"
 msgstr "正在重试…"
 
@@ -13013,6 +13056,9 @@ msgstr "搜索触发器..."
 
 msgid "Search workspaces"
 msgstr "搜索工作区"
+
+msgid "Search workspaces on this host and link them to this chat."
+msgstr "搜索此主机上的工作区并将其关联到此聊天。"
 
 msgid "Search workspaces..."
 msgstr "搜索工作区..."
@@ -15996,6 +16042,13 @@ msgstr "无限"
 msgid "Unlimited users"
 msgstr "用户数不限"
 
+msgid "Unlink"
+msgstr "取消关联"
+
+#. placeholder {0}: workspace.name
+msgid "Unlink {0}"
+msgstr "取消关联 {0}"
+
 msgid "Unmute notifications"
 msgstr "取消静音通知"
 
@@ -16156,6 +16209,9 @@ msgstr "升级到{0}"
 
 msgid "Upgrade to Pro"
 msgstr "升级到 Pro"
+
+msgid "Upload failed."
+msgstr "上传失败。"
 
 msgid "Upload files"
 msgstr "上传文件"

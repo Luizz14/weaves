@@ -2,6 +2,7 @@ import { z } from "zod";
 import { codexExecutionSchema, codexGoalSchema } from "./codex";
 import { cursorSchema } from "./cursor";
 import { itemSchema } from "./items";
+import { linkedWorkspaceSchema } from "./workspaces";
 
 export const sessionStatusSchema = z.enum([
 	"starting",
@@ -32,6 +33,7 @@ export const sessionStateSchema = z.looseObject({
 	serviceTier: z.string().optional(),
 	availableModes: z.array(selectOptionSchema).optional(),
 	availableModels: z.array(selectOptionSchema).optional(),
+	linkedWorkspaces: z.array(linkedWorkspaceSchema).optional(),
 });
 export type SessionState = z.infer<typeof sessionStateSchema>;
 

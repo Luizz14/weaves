@@ -163,6 +163,21 @@ function notices(events: AdapterEvent[]): Notice[] {
 }
 
 describe("codex adapter resilience", () => {
+	test("ignores deprecation notices", async () => {
+		const harness = startAdapter();
+		await harness.settle();
+		const initialNoticeCount = notices(harness.events).length;
+
+		harness.receive({
+			method: "deprecationNotice",
+			params: { message: "deprecated", threadId: THREAD_ID },
+		});
+		await harness.settle();
+
+		expect(notices(harness.events)).toHaveLength(initialNoticeCount);
+		await harness.adapter.dispose();
+	});
+
 	test("an unreadable notification becomes a notice, not a thrown frame", async () => {
 		const harness = startAdapter();
 		await harness.settle();

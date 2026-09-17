@@ -4,6 +4,7 @@ import type {
 	CodexGoalAction,
 	DurableEvent,
 	Envelope,
+	LinkedWorkspace,
 	SessionState,
 	Turn,
 	UserContent,
@@ -15,6 +16,7 @@ import type {
 	AdapterEvent,
 	HarnessAdapter,
 	HarnessStartOptions,
+	ResolvedAttachment,
 } from "../../harness";
 import type { ChatJournal } from "../../journal";
 
@@ -39,6 +41,7 @@ type PendingPrompt = {
 	item: UserMessage;
 	content: UserContent[];
 	execution?: CodexExecution;
+	resolvedAttachments?: ResolvedAttachment[];
 };
 
 function withoutQueued(item: UserMessage): UserMessage {
@@ -80,7 +83,12 @@ export class LiveSession {
 	}
 
 	start(startOptions: HarnessStartOptions): void {
-		this.emitSession({ status: "starting" });
+		this.emitSession({
+			status: "starting",
+			...(startOptions.linkedWorkspaces
+				? { linkedWorkspaces: startOptions.linkedWorkspaces }
+				: {}),
+		});
 		this.pump = this.run(this.options.adapter.start(startOptions)).catch(
 			(error: unknown) => {
 				try {
@@ -96,6 +104,7 @@ export class LiveSession {
 		content: UserContent[],
 		clientId: string,
 		execution?: CodexExecution,
+		resolvedAttachments?: ResolvedAttachment[],
 	): PromptResult {
 		const captured = execution ?? this.sessionState.execution;
 		if (this.options.harness === "codex" && !this.sessionState.title) {
@@ -118,10 +127,15 @@ export class LiveSession {
 		this.appendDurable({ type: "item", item, turnId: this.mintId() });
 
 		if (queued) {
-			this.queue.push({ item, content, execution: captured });
+			this.queue.push({
+				item,
+				content,
+				execution: captured,
+				resolvedAttachments,
+			});
 			return { itemId, queued: true };
 		}
-		this.deliver({ item, content, execution: captured });
+		this.deliver({ item, content, execution: captured, resolvedAttachments });
 		return { itemId, queued: false };
 	}
 
@@ -144,6 +158,16 @@ export class LiveSession {
 		if (this.stopped) throw new Error("Chat session stopped");
 		const applied = configured;
 		this.emitSession({ execution: applied });
+		return applied;
+	}
+	async setLinkedWorkspaces(
+		workspaces: LinkedWorkspace[],
+	): Promise<LinkedWorkspace[]> {
+		if (!this.options.adapter.setLinkedWorkspaces)
+			throw new Error("Linked workspaces are not supported by this session");
+		const applied = await this.options.adapter.setLinkedWorkspaces(workspaces);
+		if (this.stopped) throw new Error("Chat session stopped");
+		this.emitSession({ linkedWorkspaces: applied });
 		return applied;
 	}
 	async updateGoal(change: CodexGoalAction): Promise<void> {
@@ -238,7 +262,11 @@ export class LiveSession {
 	private deliver(prompt: PendingPrompt): void {
 		this.awaitingTurn = prompt;
 		try {
-			this.options.adapter.prompt(prompt.content, prompt.execution);
+			this.options.adapter.prompt(
+				prompt.content,
+				prompt.execution,
+				prompt.resolvedAttachments,
+			);
 		} catch (error) {
 			this.awaitingTurn = null;
 			throw error;

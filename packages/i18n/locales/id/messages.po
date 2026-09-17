@@ -2251,6 +2251,9 @@ msgstr "Unggahan lampiran gagal: {0}"
 msgid "Attachment was not uploaded — send the bytes first"
 msgstr "Lampiran belum diunggah — kirim datanya terlebih dahulu"
 
+msgid "Attachments"
+msgstr "Lampiran"
+
 msgid "Attachments are not wired yet"
 msgstr "Lampiran belum terhubung"
 
@@ -2428,6 +2431,10 @@ msgstr "Menunggu review dari Anda"
 
 msgid "Awaiting review from you or your team"
 msgstr "Menunggu review dari Anda atau tim Anda"
+
+msgctxt "file size unit, bytes"
+msgid "B"
+msgstr "B"
 
 msgid "Back"
 msgstr "Kembali"
@@ -6499,6 +6506,9 @@ msgstr "Gagal"
 msgid "FAQ"
 msgstr "FAQ"
 
+msgid "Fast"
+msgstr "Fast"
+
 msgid "Fast uses more of your allowance."
 msgstr "Fast menggunakan lebih banyak kuota Anda."
 
@@ -6936,6 +6946,10 @@ msgstr "Gerbang"
 
 msgid "Gates open"
 msgstr "Gerbang terbuka"
+
+msgctxt "file size unit, gigabytes"
+msgid "GB"
+msgstr "GB"
 
 msgid "General"
 msgstr "Umum"
@@ -7970,6 +7984,10 @@ msgstr "Saya saja"
 msgid "just now"
 msgstr "baru saja"
 
+msgctxt "file size unit, kilobytes"
+msgid "KB"
+msgstr "KB"
+
 msgid "Kbd"
 msgstr "Kbd"
 
@@ -8317,8 +8335,17 @@ msgstr "Tautkan pull request"
 msgid "Link task"
 msgstr "Tautkan tugas"
 
+msgid "Link workspaces"
+msgstr "Tautkan workspace"
+
+msgid "Linked"
+msgstr "Ditautkan"
+
 msgid "Linked {slug} to workspace"
 msgstr "{slug} ditautkan ke workspace"
+
+msgid "Linked workspaces"
+msgstr "Workspace tertaut"
 
 msgid "Links"
 msgstr "Tautan"
@@ -8478,6 +8505,9 @@ msgstr "Memuat skrip terminal..."
 
 msgid "Loading usage history…"
 msgstr "Memuat riwayat penggunaan…"
+
+msgid "Loading workspaces…"
+msgstr "Memuat workspace…"
 
 msgid "Loading..."
 msgstr "Memuat..."
@@ -8703,6 +8733,10 @@ msgstr "Upaya penalaran maksimum"
 
 msgid "Maximum size is 256 KB."
 msgstr "Ukuran maksimum 256 KB."
+
+msgctxt "file size unit, megabytes"
+msgid "MB"
+msgstr "MB"
 
 msgid "MCP"
 msgstr "MCP"
@@ -9934,6 +9968,9 @@ msgstr "Tidak Terhubung"
 msgid "Not connected · cloud workspaces push as your organization's GitHub App"
 msgstr "Belum terhubung · workspace cloud melakukan push sebagai GitHub App organisasi Anda"
 
+msgid "Not connected to a host yet — try attaching again."
+msgstr "Belum terhubung ke host — coba lampirkan lagi."
+
 msgid "Not connected: {unavailableReason}. Add a Google service account to the Search Console property and set GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 msgstr "Tidak terhubung: {unavailableReason}. Tambahkan akun layanan Google ke properti Search Console dan atur GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 
@@ -9951,6 +9988,9 @@ msgstr "Belum diberikan"
 
 msgid "Not included"
 msgstr "Tidak termasuk"
+
+msgid "Not linked"
+msgstr "Belum ditautkan"
 
 msgid "Not loaded"
 msgstr "Belum dimuat"
@@ -12463,6 +12503,9 @@ msgstr "Coba lagi dalam beberapa detik; kalau terus terjadi, mulai ulang Superse
 msgid "Retry in a few seconds."
 msgstr "Coba lagi dalam beberapa detik."
 
+msgid "Retry upload"
+msgstr "Coba unggah lagi"
+
 msgid "Retrying…"
 msgstr "Mencoba lagi…"
 
@@ -13013,6 +13056,9 @@ msgstr "Cari pemicu..."
 
 msgid "Search workspaces"
 msgstr "Cari workspace"
+
+msgid "Search workspaces on this host and link them to this chat."
+msgstr "Cari workspace di host ini dan tautkan ke chat ini."
 
 msgid "Search workspaces..."
 msgstr "Cari workspace..."
@@ -15996,6 +16042,13 @@ msgstr "Tanpa batas"
 msgid "Unlimited users"
 msgstr "Pengguna tanpa batas"
 
+msgid "Unlink"
+msgstr "Lepaskan tautan"
+
+#. placeholder {0}: workspace.name
+msgid "Unlink {0}"
+msgstr "Lepaskan tautan {0}"
+
 msgid "Unmute notifications"
 msgstr "Nyalakan notifikasi"
 
@@ -16156,6 +16209,9 @@ msgstr "Upgrade ke {0}"
 
 msgid "Upgrade to Pro"
 msgstr "Upgrade ke Pro"
+
+msgid "Upload failed."
+msgstr "Unggahan gagal."
 
 msgid "Upload files"
 msgstr "Unggah file"

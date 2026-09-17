@@ -16,6 +16,7 @@ export function createCodexChatTransport(hostUrl: string): ChatTransport {
 		configureCodex: (input) => client.configureCodex.mutate(input),
 		updateCodexGoal: (input) => client.updateCodexGoal.mutate(input),
 		respondToUserInput: (input) => client.respondToUserInput.mutate(input),
+		setLinkedWorkspaces: (input) => client.setLinkedWorkspaces.mutate(input),
 		createSession: (input) => client.createSession.mutate(input),
 		prompt: (input) => client.prompt.mutate(input),
 		cancelTurn: (input) => client.cancelTurn.mutate(input),

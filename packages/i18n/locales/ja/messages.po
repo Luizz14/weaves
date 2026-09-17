@@ -2251,6 +2251,9 @@ msgstr "添付ファイルのアップロードに失敗しました: {0}"
 msgid "Attachment was not uploaded — send the bytes first"
 msgstr "添付ファイルがアップロードされていません — 先にデータを送信してください"
 
+msgid "Attachments"
+msgstr "添付ファイル"
+
 msgid "Attachments are not wired yet"
 msgstr "添付ファイルはまだ対応していません"
 
@@ -2428,6 +2431,10 @@ msgstr "自分のレビュー待ち"
 
 msgid "Awaiting review from you or your team"
 msgstr "自分またはチームのレビュー待ち"
+
+msgctxt "file size unit, bytes"
+msgid "B"
+msgstr "B"
 
 msgid "Back"
 msgstr "戻る"
@@ -6499,6 +6506,9 @@ msgstr "失敗"
 msgid "FAQ"
 msgstr "FAQ"
 
+msgid "Fast"
+msgstr "Fast"
+
 msgid "Fast uses more of your allowance."
 msgstr "Fast は使用枠をより多く消費します。"
 
@@ -6936,6 +6946,10 @@ msgstr "ゲート"
 
 msgid "Gates open"
 msgstr "通過したゲート"
+
+msgctxt "file size unit, gigabytes"
+msgid "GB"
+msgstr "GB"
 
 msgid "General"
 msgstr "全般"
@@ -7970,6 +7984,10 @@ msgstr "自分のみ"
 msgid "just now"
 msgstr "たった今"
 
+msgctxt "file size unit, kilobytes"
+msgid "KB"
+msgstr "KB"
+
 msgid "Kbd"
 msgstr "Kbd"
 
@@ -8317,8 +8335,17 @@ msgstr "プルリクエストをリンク"
 msgid "Link task"
 msgstr "タスクをリンク"
 
+msgid "Link workspaces"
+msgstr "ワークスペースをリンク"
+
+msgid "Linked"
+msgstr "リンク済み"
+
 msgid "Linked {slug} to workspace"
 msgstr "{slug}をワークスペースにリンクしました"
+
+msgid "Linked workspaces"
+msgstr "リンク済みワークスペース"
 
 msgid "Links"
 msgstr "リンク"
@@ -8478,6 +8505,9 @@ msgstr "ターミナルスクリプトを読み込み中..."
 
 msgid "Loading usage history…"
 msgstr "使用履歴を読み込み中…"
+
+msgid "Loading workspaces…"
+msgstr "ワークスペースを読み込み中…"
 
 msgid "Loading..."
 msgstr "読み込み中..."
@@ -8703,6 +8733,10 @@ msgstr "最大限の推論"
 
 msgid "Maximum size is 256 KB."
 msgstr "最大サイズは256 KBです。"
+
+msgctxt "file size unit, megabytes"
+msgid "MB"
+msgstr "MB"
 
 msgid "MCP"
 msgstr "MCP"
@@ -9934,6 +9968,9 @@ msgstr "未接続"
 msgid "Not connected · cloud workspaces push as your organization's GitHub App"
 msgstr "未接続 · クラウドワークスペースは組織の GitHub App としてプッシュします"
 
+msgid "Not connected to a host yet — try attaching again."
+msgstr "まだホストに接続されていません。もう一度添付してください。"
+
 msgid "Not connected: {unavailableReason}. Add a Google service account to the Search Console property and set GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 msgstr "未接続: {unavailableReason}。Search Console のプロパティに Google サービスアカウントを追加し、GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT を設定してください。"
 
@@ -9951,6 +9988,9 @@ msgstr "未許可"
 
 msgid "Not included"
 msgstr "含まれない"
+
+msgid "Not linked"
+msgstr "未リンク"
 
 msgid "Not loaded"
 msgstr "未読み込み"
@@ -12463,6 +12503,9 @@ msgstr "数秒後に再試行してください。解消しない場合はSupers
 msgid "Retry in a few seconds."
 msgstr "数秒後に再試行してください。"
 
+msgid "Retry upload"
+msgstr "アップロードを再試行"
+
 msgid "Retrying…"
 msgstr "再試行中…"
 
@@ -13013,6 +13056,9 @@ msgstr "トリガーを検索..."
 
 msgid "Search workspaces"
 msgstr "ワークスペースを検索"
+
+msgid "Search workspaces on this host and link them to this chat."
+msgstr "このホスト上のワークスペースを検索して、このチャットにリンクします。"
 
 msgid "Search workspaces..."
 msgstr "ワークスペースを検索..."
@@ -15996,6 +16042,13 @@ msgstr "無制限"
 msgid "Unlimited users"
 msgstr "ユーザー数無制限"
 
+msgid "Unlink"
+msgstr "リンク解除"
+
+#. placeholder {0}: workspace.name
+msgid "Unlink {0}"
+msgstr "{0} のリンクを解除"
+
 msgid "Unmute notifications"
 msgstr "通知のミュートを解除"
 
@@ -16156,6 +16209,9 @@ msgstr "{0}にアップグレード"
 
 msgid "Upgrade to Pro"
 msgstr "Pro にアップグレード"
+
+msgid "Upload failed."
+msgstr "アップロードに失敗しました。"
 
 msgid "Upload files"
 msgstr "ファイルをアップロード"

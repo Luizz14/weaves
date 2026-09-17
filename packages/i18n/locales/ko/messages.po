@@ -2251,6 +2251,9 @@ msgstr "첨부 파일 업로드 실패: {0}"
 msgid "Attachment was not uploaded — send the bytes first"
 msgstr "첨부 파일이 업로드되지 않았습니다 — 먼저 데이터를 전송하세요"
 
+msgid "Attachments"
+msgstr "첨부 파일"
+
 msgid "Attachments are not wired yet"
 msgstr "첨부 파일은 아직 연결되지 않았습니다"
 
@@ -2428,6 +2431,10 @@ msgstr "내 리뷰 대기 중"
 
 msgid "Awaiting review from you or your team"
 msgstr "나 또는 팀의 리뷰 대기 중"
+
+msgctxt "file size unit, bytes"
+msgid "B"
+msgstr "B"
 
 msgid "Back"
 msgstr "뒤로"
@@ -6499,6 +6506,9 @@ msgstr "실패"
 msgid "FAQ"
 msgstr "FAQ"
 
+msgid "Fast"
+msgstr "Fast"
+
 msgid "Fast uses more of your allowance."
 msgstr "Fast는 사용 할당량을 더 많이 소비합니다."
 
@@ -6936,6 +6946,10 @@ msgstr "관문"
 
 msgid "Gates open"
 msgstr "열린 관문"
+
+msgctxt "file size unit, gigabytes"
+msgid "GB"
+msgstr "GB"
 
 msgid "General"
 msgstr "일반"
@@ -7970,6 +7984,10 @@ msgstr "나만"
 msgid "just now"
 msgstr "방금"
 
+msgctxt "file size unit, kilobytes"
+msgid "KB"
+msgstr "KB"
+
 msgid "Kbd"
 msgstr "Kbd"
 
@@ -8317,8 +8335,17 @@ msgstr "풀 리퀘스트 연결"
 msgid "Link task"
 msgstr "작업 연결"
 
+msgid "Link workspaces"
+msgstr "워크스페이스 연결"
+
+msgid "Linked"
+msgstr "연결됨"
+
 msgid "Linked {slug} to workspace"
 msgstr "{slug}을(를) 워크스페이스에 연결했습니다"
+
+msgid "Linked workspaces"
+msgstr "연결된 워크스페이스"
 
 msgid "Links"
 msgstr "링크"
@@ -8478,6 +8505,9 @@ msgstr "터미널 스크립트를 불러오는 중..."
 
 msgid "Loading usage history…"
 msgstr "사용량 기록을 불러오는 중…"
+
+msgid "Loading workspaces…"
+msgstr "워크스페이스 불러오는 중…"
 
 msgid "Loading..."
 msgstr "불러오는 중..."
@@ -8703,6 +8733,10 @@ msgstr "최대 추론"
 
 msgid "Maximum size is 256 KB."
 msgstr "최대 크기는 256 KB입니다."
+
+msgctxt "file size unit, megabytes"
+msgid "MB"
+msgstr "MB"
 
 msgid "MCP"
 msgstr "MCP"
@@ -9934,6 +9968,9 @@ msgstr "연결 안 됨"
 msgid "Not connected · cloud workspaces push as your organization's GitHub App"
 msgstr "연결되지 않음 · 클라우드 워크스페이스가 조직의 GitHub App으로 푸시합니다"
 
+msgid "Not connected to a host yet — try attaching again."
+msgstr "아직 호스트에 연결되지 않았습니다. 다시 첨부해 보세요."
+
 msgid "Not connected: {unavailableReason}. Add a Google service account to the Search Console property and set GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 msgstr "연결되지 않음: {unavailableReason}. Search Console 속성에 Google 서비스 계정을 추가하고 GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT를 설정하세요."
 
@@ -9951,6 +9988,9 @@ msgstr "허용 안 됨"
 
 msgid "Not included"
 msgstr "미포함"
+
+msgid "Not linked"
+msgstr "연결되지 않음"
 
 msgid "Not loaded"
 msgstr "로드 안 됨"
@@ -12463,6 +12503,9 @@ msgstr "몇 초 후 다시 시도하고, 계속되면 Superset을 재시작하�
 msgid "Retry in a few seconds."
 msgstr "몇 초 후 다시 시도하세요."
 
+msgid "Retry upload"
+msgstr "업로드 다시 시도"
+
 msgid "Retrying…"
 msgstr "다시 시도하는 중…"
 
@@ -13013,6 +13056,9 @@ msgstr "트리거 검색..."
 
 msgid "Search workspaces"
 msgstr "워크스페이스 검색"
+
+msgid "Search workspaces on this host and link them to this chat."
+msgstr "이 호스트의 워크스페이스를 검색하여 이 채팅에 연결합니다."
 
 msgid "Search workspaces..."
 msgstr "워크스페이스 검색..."
@@ -15996,6 +16042,13 @@ msgstr "무제한"
 msgid "Unlimited users"
 msgstr "사용자 무제한"
 
+msgid "Unlink"
+msgstr "연결 해제"
+
+#. placeholder {0}: workspace.name
+msgid "Unlink {0}"
+msgstr "{0} 연결 해제"
+
 msgid "Unmute notifications"
 msgstr "알림 음소거 해제"
 
@@ -16156,6 +16209,9 @@ msgstr "{0}(으)로 업그레이드"
 
 msgid "Upgrade to Pro"
 msgstr "Pro로 업그레이드"
+
+msgid "Upload failed."
+msgstr "업로드에 실패했습니다."
 
 msgid "Upload files"
 msgstr "파일 업로드"

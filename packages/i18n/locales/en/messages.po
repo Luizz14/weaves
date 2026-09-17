@@ -2251,6 +2251,9 @@ msgstr "Attachment upload failed: {0}"
 msgid "Attachment was not uploaded — send the bytes first"
 msgstr "Attachment was not uploaded — send the bytes first"
 
+msgid "Attachments"
+msgstr "Attachments"
+
 msgid "Attachments are not wired yet"
 msgstr "Attachments are not wired yet"
 
@@ -2428,6 +2431,10 @@ msgstr "Awaiting review from you"
 
 msgid "Awaiting review from you or your team"
 msgstr "Awaiting review from you or your team"
+
+msgctxt "file size unit, bytes"
+msgid "B"
+msgstr "B"
 
 msgid "Back"
 msgstr "Back"
@@ -6499,6 +6506,9 @@ msgstr "Failure"
 msgid "FAQ"
 msgstr "FAQ"
 
+msgid "Fast"
+msgstr "Fast"
+
 msgid "Fast uses more of your allowance."
 msgstr "Fast uses more of your allowance."
 
@@ -6936,6 +6946,10 @@ msgstr "Gates"
 
 msgid "Gates open"
 msgstr "Gates open"
+
+msgctxt "file size unit, gigabytes"
+msgid "GB"
+msgstr "GB"
 
 msgid "General"
 msgstr "General"
@@ -7970,6 +7984,10 @@ msgstr "Just me"
 msgid "just now"
 msgstr "just now"
 
+msgctxt "file size unit, kilobytes"
+msgid "KB"
+msgstr "KB"
+
 msgid "Kbd"
 msgstr "Kbd"
 
@@ -8317,8 +8335,17 @@ msgstr "Link pull request"
 msgid "Link task"
 msgstr "Link task"
 
+msgid "Link workspaces"
+msgstr "Link workspaces"
+
+msgid "Linked"
+msgstr "Linked"
+
 msgid "Linked {slug} to workspace"
 msgstr "Linked {slug} to workspace"
+
+msgid "Linked workspaces"
+msgstr "Linked workspaces"
 
 msgid "Links"
 msgstr "Links"
@@ -8478,6 +8505,9 @@ msgstr "Loading terminal scripts..."
 
 msgid "Loading usage history…"
 msgstr "Loading usage history…"
+
+msgid "Loading workspaces…"
+msgstr "Loading workspaces…"
 
 msgid "Loading..."
 msgstr "Loading..."
@@ -8703,6 +8733,10 @@ msgstr "Maximum reasoning effort"
 
 msgid "Maximum size is 256 KB."
 msgstr "Maximum size is 256 KB."
+
+msgctxt "file size unit, megabytes"
+msgid "MB"
+msgstr "MB"
 
 msgid "MCP"
 msgstr "MCP"
@@ -9934,6 +9968,9 @@ msgstr "Not Connected"
 msgid "Not connected · cloud workspaces push as your organization's GitHub App"
 msgstr "Not connected · cloud workspaces push as your organization's GitHub App"
 
+msgid "Not connected to a host yet — try attaching again."
+msgstr "Not connected to a host yet — try attaching again."
+
 msgid "Not connected: {unavailableReason}. Add a Google service account to the Search Console property and set GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 msgstr "Not connected: {unavailableReason}. Add a Google service account to the Search Console property and set GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 
@@ -9951,6 +9988,9 @@ msgstr "Not granted"
 
 msgid "Not included"
 msgstr "Not included"
+
+msgid "Not linked"
+msgstr "Not linked"
 
 msgid "Not loaded"
 msgstr "Not loaded"
@@ -12463,6 +12503,9 @@ msgstr "Retry in a few seconds; if it persists, restart Superset."
 msgid "Retry in a few seconds."
 msgstr "Retry in a few seconds."
 
+msgid "Retry upload"
+msgstr "Retry upload"
+
 msgid "Retrying…"
 msgstr "Retrying…"
 
@@ -13013,6 +13056,9 @@ msgstr "Search triggers..."
 
 msgid "Search workspaces"
 msgstr "Search workspaces"
+
+msgid "Search workspaces on this host and link them to this chat."
+msgstr "Search workspaces on this host and link them to this chat."
 
 msgid "Search workspaces..."
 msgstr "Search workspaces..."
@@ -15996,6 +16042,13 @@ msgstr "Unlimited"
 msgid "Unlimited users"
 msgstr "Unlimited users"
 
+msgid "Unlink"
+msgstr "Unlink"
+
+#. placeholder {0}: workspace.name
+msgid "Unlink {0}"
+msgstr "Unlink {0}"
+
 msgid "Unmute notifications"
 msgstr "Unmute notifications"
 
@@ -16156,6 +16209,9 @@ msgstr "Upgrade to {0}"
 
 msgid "Upgrade to Pro"
 msgstr "Upgrade to Pro"
+
+msgid "Upload failed."
+msgstr "Upload failed."
 
 msgid "Upload files"
 msgstr "Upload files"

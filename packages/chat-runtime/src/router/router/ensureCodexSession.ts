@@ -90,6 +90,7 @@ export function createEnsureCodexSession(
 			title: state?.title ?? row.title ?? undefined,
 			execution: state?.execution,
 			goal: state?.goal,
+			linkedWorkspaces: state?.linkedWorkspaces,
 			...(row.harnessSessionId
 				? { resume: { harnessSessionId: row.harnessSessionId } }
 				: {}),

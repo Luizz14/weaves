@@ -2,6 +2,7 @@ import type {
 	CodexExecution,
 	CodexGoal,
 	Envelope,
+	LinkedWorkspace,
 } from "@superset/chat/protocol";
 import type { HarnessAdapter } from "../../harness";
 import type { ChatJournal } from "../../journal";
@@ -17,6 +18,7 @@ export type HarnessFactoryOptions = {
 	title?: string;
 	execution?: CodexExecution;
 	goal?: CodexGoal | null;
+	linkedWorkspaces?: LinkedWorkspace[];
 	resume?: { harnessSessionId: string };
 };
 
@@ -67,6 +69,7 @@ export class LiveSessionRegistry {
 				modelId: options.modelId,
 				execution: options.execution,
 				goal: options.goal,
+				linkedWorkspaces: options.linkedWorkspaces,
 				resume: options.resume,
 			});
 		} catch (error) {

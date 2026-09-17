@@ -6,6 +6,7 @@ import {
 	isKnownItem,
 	planDocument,
 } from "@superset/chat/protocol";
+import { File as FileIcon, Image as ImageIcon } from "lucide-react";
 import { AgentActivity } from "renderer/components/agents/agent-activity";
 import { Message, MessageContent } from "renderer/components/agents/message";
 import { TodoList } from "renderer/components/agents/todo-list";
@@ -34,18 +35,41 @@ export function CodexItem({
 	switch (item.kind) {
 		case "user_input_request":
 			return <CodexQuestion item={item} onAnswer={onAnswer} />;
-		case "user_message":
+		case "user_message": {
+			const text = item.content
+				.filter((part) => part.type === "text")
+				.map((part) => part.text)
+				.join("\n");
+			const files = item.content.filter((part) => part.type === "attachment");
 			return (
 				<Message from="user" animateIn={false}>
 					<MessageContent className="rounded-2xl bg-muted/60 px-4 py-2">
-						<div className="whitespace-pre-wrap break-words">
-							{item.content
-								.map((part) => (part.type === "text" ? part.text : part.name))
-								.join("\n")}
-						</div>
+						{files.length > 0 && (
+							<ul className="mb-1.5 flex flex-wrap gap-1.5">
+								{files.map((file) => (
+									<li
+										className="flex min-w-0 max-w-56 items-center gap-1.5 rounded-lg bg-background/70 px-2 py-1"
+										key={file.attachmentId}
+									>
+										{file.mimeType.startsWith("image/") ? (
+											<ImageIcon className="size-3.5 shrink-0 text-muted-foreground" />
+										) : (
+											<FileIcon className="size-3.5 shrink-0 text-muted-foreground" />
+										)}
+										<span className="min-w-0 truncate text-xs">
+											{file.name}
+										</span>
+									</li>
+								))}
+							</ul>
+						)}
+						{text && (
+							<div className="whitespace-pre-wrap break-words">{text}</div>
+						)}
 					</MessageContent>
 				</Message>
 			);
+		}
 		case "agent_message":
 			return (
 				<Message from="assistant" animateIn={false}>

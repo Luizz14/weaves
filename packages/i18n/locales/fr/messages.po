@@ -2251,6 +2251,9 @@ msgstr "Échec de l'envoi de la pièce jointe : {0}"
 msgid "Attachment was not uploaded — send the bytes first"
 msgstr "La pièce jointe n'a pas été téléversée — envoyez d'abord les données"
 
+msgid "Attachments"
+msgstr "Pièces jointes"
+
 msgid "Attachments are not wired yet"
 msgstr "Les pièces jointes ne sont pas encore prises en charge"
 
@@ -2428,6 +2431,10 @@ msgstr "En attente de votre revue"
 
 msgid "Awaiting review from you or your team"
 msgstr "En attente de votre revue ou de celle de votre équipe"
+
+msgctxt "file size unit, bytes"
+msgid "B"
+msgstr "o"
 
 msgid "Back"
 msgstr "Retour"
@@ -6499,6 +6506,9 @@ msgstr "Échec"
 msgid "FAQ"
 msgstr "FAQ"
 
+msgid "Fast"
+msgstr "Fast"
+
 msgid "Fast uses more of your allowance."
 msgstr "Fast consomme davantage de votre quota."
 
@@ -6936,6 +6946,10 @@ msgstr "Portes"
 
 msgid "Gates open"
 msgstr "Portes ouvertes"
+
+msgctxt "file size unit, gigabytes"
+msgid "GB"
+msgstr "Go"
 
 msgid "General"
 msgstr "Général"
@@ -7970,6 +7984,10 @@ msgstr "Moi uniquement"
 msgid "just now"
 msgstr "à l'instant"
 
+msgctxt "file size unit, kilobytes"
+msgid "KB"
+msgstr "Ko"
+
 msgid "Kbd"
 msgstr "Kbd"
 
@@ -8317,8 +8335,17 @@ msgstr "Lier une pull request"
 msgid "Link task"
 msgstr "Lier une tâche"
 
+msgid "Link workspaces"
+msgstr "Lier des espaces de travail"
+
+msgid "Linked"
+msgstr "Lié"
+
 msgid "Linked {slug} to workspace"
 msgstr "{slug} lié à l'espace de travail"
+
+msgid "Linked workspaces"
+msgstr "Espaces de travail liés"
 
 msgid "Links"
 msgstr "Liens"
@@ -8478,6 +8505,9 @@ msgstr "Chargement des scripts de terminal..."
 
 msgid "Loading usage history…"
 msgstr "Chargement de l'historique d'utilisation…"
+
+msgid "Loading workspaces…"
+msgstr "Chargement des espaces de travail…"
 
 msgid "Loading..."
 msgstr "Chargement..."
@@ -8703,6 +8733,10 @@ msgstr "Effort de raisonnement maximal"
 
 msgid "Maximum size is 256 KB."
 msgstr "La taille maximale est de 256 Ko."
+
+msgctxt "file size unit, megabytes"
+msgid "MB"
+msgstr "Mo"
 
 msgid "MCP"
 msgstr "MCP"
@@ -9934,6 +9968,9 @@ msgstr "Non connecté"
 msgid "Not connected · cloud workspaces push as your organization's GitHub App"
 msgstr "Non connecté · les espaces de travail cloud poussent en tant que GitHub App de votre organisation"
 
+msgid "Not connected to a host yet — try attaching again."
+msgstr "Pas encore connecté à un hôte — essayez de joindre le fichier à nouveau."
+
 msgid "Not connected: {unavailableReason}. Add a Google service account to the Search Console property and set GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 msgstr "Non connecté : {unavailableReason}. Ajoutez un compte de service Google à la propriété Search Console et définissez GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 
@@ -9951,6 +9988,9 @@ msgstr "Non accordée"
 
 msgid "Not included"
 msgstr "Non inclus"
+
+msgid "Not linked"
+msgstr "Non lié"
 
 msgid "Not loaded"
 msgstr "Non chargée"
@@ -12463,6 +12503,9 @@ msgstr "Réessayez dans quelques secondes ; si le problème persiste, redémarre
 msgid "Retry in a few seconds."
 msgstr "Réessayez dans quelques secondes."
 
+msgid "Retry upload"
+msgstr "Réessayer l’envoi"
+
 msgid "Retrying…"
 msgstr "Nouvelle tentative…"
 
@@ -13013,6 +13056,9 @@ msgstr "Rechercher des déclencheurs..."
 
 msgid "Search workspaces"
 msgstr "Rechercher des espaces de travail"
+
+msgid "Search workspaces on this host and link them to this chat."
+msgstr "Recherchez des espaces de travail sur cet hôte et liez-les à cette conversation."
 
 msgid "Search workspaces..."
 msgstr "Rechercher des espaces de travail..."
@@ -15996,6 +16042,13 @@ msgstr "Illimité"
 msgid "Unlimited users"
 msgstr "Utilisateurs illimités"
 
+msgid "Unlink"
+msgstr "Dissocier"
+
+#. placeholder {0}: workspace.name
+msgid "Unlink {0}"
+msgstr "Dissocier {0}"
+
 msgid "Unmute notifications"
 msgstr "Réactiver les notifications"
 
@@ -16156,6 +16209,9 @@ msgstr "Passer à {0}"
 
 msgid "Upgrade to Pro"
 msgstr "Passer à Pro"
+
+msgid "Upload failed."
+msgstr "Échec de l’envoi."
 
 msgid "Upload files"
 msgstr "Envoyer des fichiers"

@@ -3,6 +3,7 @@ import type {
 	ApprovalRequest,
 	Decision,
 	Item,
+	LinkedWorkspace,
 	SessionState,
 	ToolCall,
 	Turn,
@@ -25,6 +26,7 @@ import type {
 	AdapterEvent,
 	HarnessAdapter,
 	HarnessStartOptions,
+	ResolvedAttachment,
 } from "../../types";
 import { readCodexModels, validateCodexExecution } from "../catalog";
 import { mapThreadItem } from "../mapThreadItem";
@@ -80,13 +82,13 @@ const NOTICE_METHODS: Record<string, "info" | "error" | "config_change"> = {
 	warning: "info",
 	configWarning: "info",
 	guardianWarning: "info",
-	deprecationNotice: "info",
 	"model/rerouted": "config_change",
 	"model/verification": "info",
 };
 
 const IGNORED_METHODS = new Set([
 	"thread/started",
+	"deprecationNotice",
 	"turn/diff/updated",
 	"rawResponseItem/completed",
 	"hook/started",
@@ -160,6 +162,8 @@ export class CodexAdapter implements HarnessAdapter {
 		string,
 		{ requestId: CodexRequestId; turnId: string; item: UserInputRequest }
 	>();
+	private linkedWorkspaces: LinkedWorkspace[] = [];
+	private mentionedLinkedWorkspaces: string | null = null;
 	private client: CodexRpcClient | null = null;
 	private threadId: string | null = null;
 	private cwd = process.cwd();
@@ -178,12 +182,17 @@ export class CodexAdapter implements HarnessAdapter {
 		this.modeId = startOptions.modeId ?? DEFAULT_CODEX_MODE;
 		this.modelId = startOptions.modelId;
 		this.execution = startOptions.execution;
+		this.linkedWorkspaces = startOptions.linkedWorkspaces ?? [];
 		this.ready = this.bootstrap(startOptions);
 		return this.queue.iterable();
 	}
 
-	prompt(content: UserContent[], execution?: CodexExecution): void {
-		const input = this.toCodexInput(content);
+	prompt(
+		content: UserContent[],
+		execution?: CodexExecution,
+		resolvedAttachments?: ResolvedAttachment[],
+	): void {
+		const input = this.toCodexInput(content, resolvedAttachments);
 		if (!this.threadId || !this.client) {
 			this.queuedInput.push({ input, execution: execution ?? this.execution });
 			return;
@@ -241,6 +250,13 @@ export class CodexAdapter implements HarnessAdapter {
 		}
 		this.modeId = modeId;
 		this.emitSession({ modeId });
+	}
+
+	async setLinkedWorkspaces(
+		workspaces: LinkedWorkspace[],
+	): Promise<LinkedWorkspace[]> {
+		this.linkedWorkspaces = workspaces;
+		return workspaces;
 	}
 
 	private async requireReady(): Promise<CodexRpcClient> {
@@ -553,9 +569,13 @@ export class CodexAdapter implements HarnessAdapter {
 			}
 			const response = await client.request("turn/start", {
 				threadId: this.threadId,
-				input,
+				input: [...this.linkedWorkspaceMentions(), ...input],
 				approvalPolicy: codexTurnPolicy(this.modeId).approvalPolicy,
-				sandboxPolicy: codexSandboxPolicy(this.modeId, this.cwd),
+				sandboxPolicy: codexSandboxPolicy(
+					this.modeId,
+					this.cwd,
+					this.linkedWorkspaces.map((workspace) => workspace.path),
+				),
 				...(execution
 					? {
 							model: execution.modelId,
@@ -998,9 +1018,36 @@ export class CodexAdapter implements HarnessAdapter {
 		if (this.cancelRequested) this.interrupt(turn.id);
 	}
 
-	private toCodexInput(content: UserContent[]): unknown[] {
+	// Codex only learns about a linked workspace from a mention, and a mention
+	// repeated every turn is noise, so they ride the first turn after a change.
+	private linkedWorkspaceMentions(): unknown[] {
+		const signature = JSON.stringify(
+			this.linkedWorkspaces.map((workspace) => [
+				workspace.name,
+				workspace.path,
+			]),
+		);
+		if (signature === this.mentionedLinkedWorkspaces) return [];
+		this.mentionedLinkedWorkspaces = signature;
+		return this.linkedWorkspaces.map((workspace) => ({
+			type: "mention",
+			name: workspace.name,
+			path: workspace.path,
+		}));
+	}
+
+	private toCodexInput(
+		content: UserContent[],
+		resolvedAttachments: ResolvedAttachment[] = [],
+	): unknown[] {
+		const resolved = new Map(
+			resolvedAttachments.map((attachment) => [
+				attachment.attachmentId,
+				attachment,
+			]),
+		);
 		const input: unknown[] = [];
-		let skippedAttachment = false;
+		const unresolved: string[] = [];
 		for (const entry of content) {
 			if (entry.type === "text") {
 				input.push({
@@ -1013,12 +1060,21 @@ export class CodexAdapter implements HarnessAdapter {
 				});
 				continue;
 			}
-			skippedAttachment = true;
+			const attachment = resolved.get(entry.attachmentId);
+			if (!attachment) {
+				unresolved.push(entry.name);
+				continue;
+			}
+			input.push(
+				attachment.mimeType.startsWith("image/")
+					? { type: "localImage", path: attachment.path }
+					: { type: "mention", name: entry.name, path: attachment.path },
+			);
 		}
-		if (skippedAttachment) {
+		if (unresolved.length > 0) {
 			this.emitNotice(
 				"info",
-				"Attachments are not supported by the codex harness and were omitted",
+				`These attachments could not be read and were omitted: ${unresolved.join(", ")}`,
 			);
 		}
 		return input;

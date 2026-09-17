@@ -2251,6 +2251,9 @@ msgstr "Tải tệp đính kèm lên thất bại: {0}"
 msgid "Attachment was not uploaded — send the bytes first"
 msgstr "Tệp đính kèm chưa được tải lên — hãy gửi dữ liệu trước"
 
+msgid "Attachments"
+msgstr "Tệp đính kèm"
+
 msgid "Attachments are not wired yet"
 msgstr "Tệp đính kèm chưa được hỗ trợ"
 
@@ -2428,6 +2431,10 @@ msgstr "Đang chờ bạn review"
 
 msgid "Awaiting review from you or your team"
 msgstr "Đang chờ bạn hoặc nhóm bạn review"
+
+msgctxt "file size unit, bytes"
+msgid "B"
+msgstr "B"
 
 msgid "Back"
 msgstr "Quay lại"
@@ -6499,6 +6506,9 @@ msgstr "Thất bại"
 msgid "FAQ"
 msgstr "FAQ"
 
+msgid "Fast"
+msgstr "Fast"
+
 msgid "Fast uses more of your allowance."
 msgstr "Fast tiêu thụ nhiều hạn mức hơn."
 
@@ -6936,6 +6946,10 @@ msgstr "Cổng"
 
 msgid "Gates open"
 msgstr "Cổng còn mở"
+
+msgctxt "file size unit, gigabytes"
+msgid "GB"
+msgstr "GB"
 
 msgid "General"
 msgstr "Chung"
@@ -7970,6 +7984,10 @@ msgstr "Chỉ mình tôi"
 msgid "just now"
 msgstr "vừa xong"
 
+msgctxt "file size unit, kilobytes"
+msgid "KB"
+msgstr "KB"
+
 msgid "Kbd"
 msgstr "Kbd"
 
@@ -8317,8 +8335,17 @@ msgstr "Liên kết pull request"
 msgid "Link task"
 msgstr "Liên kết tác vụ"
 
+msgid "Link workspaces"
+msgstr "Liên kết không gian làm việc"
+
+msgid "Linked"
+msgstr "Đã liên kết"
+
 msgid "Linked {slug} to workspace"
 msgstr "Đã liên kết {slug} với workspace"
+
+msgid "Linked workspaces"
+msgstr "Không gian làm việc đã liên kết"
 
 msgid "Links"
 msgstr "Liên kết"
@@ -8478,6 +8505,9 @@ msgstr "Đang tải script terminal..."
 
 msgid "Loading usage history…"
 msgstr "Đang tải lịch sử sử dụng…"
+
+msgid "Loading workspaces…"
+msgstr "Đang tải không gian làm việc…"
 
 msgid "Loading..."
 msgstr "Đang tải..."
@@ -8703,6 +8733,10 @@ msgstr "Mức suy luận tối đa"
 
 msgid "Maximum size is 256 KB."
 msgstr "Kích thước tối đa là 256 KB."
+
+msgctxt "file size unit, megabytes"
+msgid "MB"
+msgstr "MB"
 
 msgid "MCP"
 msgstr "MCP"
@@ -9934,6 +9968,9 @@ msgstr "Chưa kết nối"
 msgid "Not connected · cloud workspaces push as your organization's GitHub App"
 msgstr "Chưa kết nối · workspace cloud push dưới danh nghĩa GitHub App của tổ chức bạn"
 
+msgid "Not connected to a host yet — try attaching again."
+msgstr "Chưa kết nối với máy chủ — hãy thử đính kèm lại."
+
 msgid "Not connected: {unavailableReason}. Add a Google service account to the Search Console property and set GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 msgstr "Chưa kết nối: {unavailableReason}. Thêm tài khoản dịch vụ Google vào thuộc tính Search Console và đặt GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 
@@ -9951,6 +9988,9 @@ msgstr "Chưa cấp"
 
 msgid "Not included"
 msgstr "Không có"
+
+msgid "Not linked"
+msgstr "Chưa liên kết"
 
 msgid "Not loaded"
 msgstr "Chưa tải"
@@ -12463,6 +12503,9 @@ msgstr "Thử lại sau vài giây; nếu vẫn lỗi, khởi động lại Supe
 msgid "Retry in a few seconds."
 msgstr "Thử lại sau vài giây."
 
+msgid "Retry upload"
+msgstr "Thử tải lên lại"
+
 msgid "Retrying…"
 msgstr "Đang thử lại…"
 
@@ -13013,6 +13056,9 @@ msgstr "Tìm trình kích hoạt..."
 
 msgid "Search workspaces"
 msgstr "Tìm workspace"
+
+msgid "Search workspaces on this host and link them to this chat."
+msgstr "Tìm không gian làm việc trên máy chủ này và liên kết với cuộc trò chuyện."
 
 msgid "Search workspaces..."
 msgstr "Tìm workspace..."
@@ -15996,6 +16042,13 @@ msgstr "Không giới hạn"
 msgid "Unlimited users"
 msgstr "Không giới hạn người dùng"
 
+msgid "Unlink"
+msgstr "Hủy liên kết"
+
+#. placeholder {0}: workspace.name
+msgid "Unlink {0}"
+msgstr "Hủy liên kết {0}"
+
 msgid "Unmute notifications"
 msgstr "Bật lại thông báo"
 
@@ -16156,6 +16209,9 @@ msgstr "Nâng cấp lên {0}"
 
 msgid "Upgrade to Pro"
 msgstr "Nâng cấp lên Pro"
+
+msgid "Upload failed."
+msgstr "Tải lên thất bại."
 
 msgid "Upload files"
 msgstr "Tải tệp lên"

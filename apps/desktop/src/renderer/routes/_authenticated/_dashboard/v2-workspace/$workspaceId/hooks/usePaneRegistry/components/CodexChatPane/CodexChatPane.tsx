@@ -8,9 +8,12 @@ import { useCodexChatSettings } from "renderer/hooks/useCodexChatSettings";
 import { useCodexModels } from "renderer/hooks/useCodexModels";
 import { useSessionClient } from "../../hooks/useSessionClient";
 import { ChatError } from "./components/ChatError/ChatError";
+import type { PromptAttachment } from "./components/CodexComposer/CodexComposer";
 import { CodexComposer } from "./components/CodexComposer/CodexComposer";
 import { CodexSession } from "./components/CodexSession/CodexSession";
 import type { CodexChatMetadata, InitialCodexPrompt } from "./types";
+
+const DEFAULT_MODE = "auto";
 
 export function CodexChatPane({
 	workspaceId,
@@ -28,7 +31,6 @@ export function CodexChatPane({
 	const { client, wiring } = useSessionClient(sessionId);
 	const settings = useCodexChatSettings();
 	const catalog = useCodexModels(wiring.transport, wiring.streamBaseUrl);
-	const [mode, setMode] = useState("auto");
 	const [execution, setExecution] = useState<CodexExecution | null>(null);
 	const [creating, setCreating] = useState(false);
 	const inFlight = useRef(false);
@@ -62,6 +64,7 @@ export function CodexChatPane({
 	async function createSession(
 		text: string,
 		asGoal: boolean,
+		attachments: PromptAttachment[],
 	): Promise<boolean> {
 		if (inFlight.current || !execution) return false;
 		inFlight.current = true;
@@ -77,7 +80,7 @@ export function CodexChatPane({
 				commandId: commandId.current,
 				workspaceId,
 				harness: "codex",
-				modeId: mode,
+				modeId: DEFAULT_MODE,
 				modelId: selected.modelId,
 				execution: selected,
 			});
@@ -92,7 +95,7 @@ export function CodexChatPane({
 				await wiring.transport.setMode({
 					commandId: crypto.randomUUID(),
 					sessionId: created.sessionId,
-					modeId: mode,
+					modeId: DEFAULT_MODE,
 				});
 			}
 			commandId.current = null;
@@ -103,6 +106,7 @@ export function CodexChatPane({
 				asGoal,
 				execution: selected,
 				commandId: crypto.randomUUID(),
+				...(attachments.length > 0 ? { attachments } : {}),
 			});
 			onSessionIdChange(created.sessionId);
 			return true;
@@ -134,6 +138,8 @@ export function CodexChatPane({
 				<CodexSession
 					key={sessionId}
 					client={client}
+					workspaceId={workspaceId}
+					hostUrl={wiring.hostUrl ?? null}
 					firstPrompt={pending?.sessionId === sessionId ? pending : null}
 					onFirstPromptSent={clearFirstPrompt}
 					onMetadata={onMetadata}
@@ -164,11 +170,10 @@ export function CodexChatPane({
 					{execution && (
 						<CodexComposer
 							disabled={creating || settings.isPending || !catalog.data}
-							mode={mode}
+							hostUrl={wiring.hostUrl ?? null}
 							execution={execution}
 							presets={settings.settings.presets}
 							models={catalog.data ?? []}
-							onModeChange={setMode}
 							onExecutionChange={setExecution}
 							onGoalChange={async () => false}
 							onSend={unavailable ? () => false : createSession}

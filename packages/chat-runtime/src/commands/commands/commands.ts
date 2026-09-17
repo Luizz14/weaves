@@ -6,7 +6,7 @@ import type {
 	Cursor,
 	GetItemsInput,
 	GetSessionInput,
-	PromptInput,
+	LinkedWorkspace,
 	RespondToApprovalInput,
 	RespondToUserInput,
 	SessionState,
@@ -19,11 +19,14 @@ import {
 	createSessionInputSchema,
 	getItemsInputSchema,
 	getSessionInputSchema,
+	linkedWorkspaceSchema,
 	listSessionsInputSchema,
 	promptInputSchema,
 	respondToApprovalInputSchema,
 	respondToUserInputSchema,
+	setLinkedWorkspacesInputSchema,
 	setModeInputSchema,
+	steerInputSchema,
 	updateCodexGoalInputSchema,
 } from "@superset/chat/protocol";
 import { z } from "zod";
@@ -48,6 +51,31 @@ export type ListSessionsCommandInput = z.input<
 	typeof listSessionsCommandSchema
 >;
 
+export const resolvedAttachmentSchema = z.object({
+	attachmentId: z.string().min(1),
+	path: z.string().min(1),
+	mimeType: z.string().min(1),
+});
+
+// Host paths stay out of the journalled `user_message` content: clients read
+// those items, and an attachment's location on the host is not theirs to see.
+export const promptCommandInputSchema = promptInputSchema.extend({
+	resolvedAttachments: z.array(resolvedAttachmentSchema).optional(),
+});
+export type PromptCommandInput = z.infer<typeof promptCommandInputSchema>;
+
+export const steerCommandInputSchema = steerInputSchema.extend({
+	resolvedAttachments: z.array(resolvedAttachmentSchema).optional(),
+});
+export type SteerCommandInput = z.infer<typeof steerCommandInputSchema>;
+
+export const setLinkedWorkspacesCommandSchema = setLinkedWorkspacesInputSchema
+	.omit({ workspaceIds: true })
+	.extend({ workspaces: z.array(linkedWorkspaceSchema).max(10) });
+export type SetLinkedWorkspacesCommandInput = z.infer<
+	typeof setLinkedWorkspacesCommandSchema
+>;
+
 export type CreateSessionResult = {
 	sessionId: string;
 	epoch: string;
@@ -64,8 +92,11 @@ export type ChatCommands = {
 	configureCodex(input: ConfigureCodexInput): Promise<CodexExecution>;
 	updateCodexGoal(input: UpdateCodexGoalInput): Promise<void>;
 	respondToUserInput(input: RespondToUserInput): void;
+	setLinkedWorkspaces(
+		input: SetLinkedWorkspacesCommandInput,
+	): Promise<LinkedWorkspace[]>;
 	createSession(input: CreateSessionCommandInput): CreateSessionResult;
-	prompt(input: PromptInput): PromptResult;
+	prompt(input: PromptCommandInput): PromptResult;
 	cancelTurn(input: CancelTurnInput): void;
 	respondToApproval(input: RespondToApprovalInput): void;
 	setMode(input: SetModeInput): void | Promise<void>;
@@ -119,6 +150,14 @@ export function createCommands(options: CommandsOptions): ChatCommands {
 					.respondToUserInput(parsed.requestId, parsed.answers),
 			);
 		},
+		setLinkedWorkspaces(input) {
+			const parsed = setLinkedWorkspacesCommandSchema.parse(input);
+			return options.dedupe.run(`linkedWorkspaces:${parsed.commandId}`, () =>
+				options.live
+					.require(parsed.sessionId)
+					.setLinkedWorkspaces(parsed.workspaces),
+			);
+		},
 		createSession(input) {
 			const parsed = createSessionCommandSchema.parse(input);
 			return options.dedupe.run(`createSession:${parsed.commandId}`, () => {
@@ -150,11 +189,16 @@ export function createCommands(options: CommandsOptions): ChatCommands {
 		},
 
 		prompt(input) {
-			const parsed: PromptInput = promptInputSchema.parse(input);
+			const parsed = promptCommandInputSchema.parse(input);
 			return options.dedupe.run(`prompt:${parsed.commandId}`, () =>
 				options.live
 					.require(parsed.sessionId)
-					.prompt(parsed.content, parsed.clientId, parsed.execution),
+					.prompt(
+						parsed.content,
+						parsed.clientId,
+						parsed.execution,
+						parsed.resolvedAttachments,
+					),
 			);
 		},
 

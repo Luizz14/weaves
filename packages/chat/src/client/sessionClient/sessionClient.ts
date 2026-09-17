@@ -10,6 +10,7 @@ import type {
 import type { Cursor } from "../../protocol/cursor";
 import type { DeltaChannel, Envelope } from "../../protocol/envelope";
 import type { Decision, UserContent } from "../../protocol/items";
+import type { LinkedWorkspace } from "../../protocol/workspaces";
 import type {
 	SessionStream,
 	StreamSocketFactory,
@@ -22,7 +23,8 @@ type CodexProcedure =
 	| "listCodexModels"
 	| "configureCodex"
 	| "updateCodexGoal"
-	| "respondToUserInput";
+	| "respondToUserInput"
+	| "setLinkedWorkspaces";
 type FullTransport = {
 	[Procedure in keyof ChatRouterInputs & keyof ChatRouterOutputs]: (
 		input: ChatRouterInputs[Procedure],
@@ -66,6 +68,7 @@ export type SessionClientOptions = {
 export type SessionClient = {
 	sessionId: string;
 	configureCodex?(execution: CodexExecution): Promise<CodexExecution>;
+	setLinkedWorkspaces?(workspaceIds: string[]): Promise<LinkedWorkspace[]>;
 	updateGoal?(change: CodexGoalAction, commandId?: string): Promise<void>;
 	respondToUserInput?(
 		requestId: string,
@@ -98,6 +101,15 @@ export function createSessionClient(
 				commandId: mintId(),
 				sessionId,
 				execution,
+			});
+		},
+		setLinkedWorkspaces: async (workspaceIds) => {
+			if (!options.transport.setLinkedWorkspaces)
+				throw new Error("Update the host to link workspaces");
+			return await options.transport.setLinkedWorkspaces({
+				commandId: mintId(),
+				sessionId,
+				workspaceIds,
 			});
 		},
 		updateGoal: async (change, commandId) => {

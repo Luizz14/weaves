@@ -4,6 +4,7 @@ import type {
 	CodexExecution,
 	CodexGoalAction,
 	CodexModel,
+	UserContent,
 } from "@superset/chat/protocol";
 import { useChatSession, useTimeline } from "@superset/chat/react";
 import { errorMessage } from "@superset/i18n/errors";
@@ -17,13 +18,28 @@ import {
 } from "renderer/components/agents/message";
 import { MessageScroller } from "renderer/components/agents/message-scroller";
 import { isExecutionAvailable } from "renderer/components/CodexModelSelector/modelPresentation";
+import { useLinkableWorkspaces } from "../../hooks/useLinkableWorkspaces";
 import type { CodexChatMetadata, InitialCodexPrompt } from "../../types";
 import { ChatError } from "../ChatError/ChatError";
+import type { PromptAttachment } from "../CodexComposer/CodexComposer";
 import { CodexComposer } from "../CodexComposer/CodexComposer";
 import { CodexTurn } from "../CodexTurn/CodexTurn";
 
+function promptContent(
+	text: string,
+	attachments: PromptAttachment[],
+): UserContent[] {
+	const content: UserContent[] = [];
+	if (text.trim()) content.push({ type: "text", text });
+	for (const attachment of attachments)
+		content.push({ type: "attachment", ...attachment });
+	return content;
+}
+
 export function CodexSession({
 	client,
+	workspaceId,
+	hostUrl,
 	firstPrompt,
 	onFirstPromptSent,
 	onMetadata,
@@ -31,6 +47,8 @@ export function CodexSession({
 	models,
 	isActive = true,
 }: {
+	workspaceId: string;
+	hostUrl: string | null;
 	client: SessionClient;
 	firstPrompt: InitialCodexPrompt | null;
 	onFirstPromptSent: () => void;
@@ -43,6 +61,7 @@ export function CodexSession({
 	const root = useRef<HTMLDivElement>(null);
 	const chat = useChatSession({ client });
 	const groups = useTimeline(chat.snapshot);
+	const linkable = useLinkableWorkspaces(workspaceId);
 	const sent = useRef(false);
 	const [actionError, setActionError] = useState<string | null>(null);
 	const [busy, setBusy] = useState(false);
@@ -116,7 +135,7 @@ export function CodexSession({
 				.finally(() => setBusy(false));
 		} else {
 			chat.sendPrompt(
-				[{ type: "text", text: firstPrompt.text }],
+				promptContent(firstPrompt.text, firstPrompt.attachments ?? []),
 				firstPrompt.execution,
 			);
 			onFirstPromptSent();
@@ -126,6 +145,13 @@ export function CodexSession({
 		return act(async () => {
 			if (!client.updateGoal) throw new Error("Goals unavailable");
 			await client.updateGoal(change);
+		});
+	}
+	async function setLinkedWorkspaces(workspaceIds: string[]) {
+		return act(async () => {
+			if (!client.setLinkedWorkspaces)
+				throw new Error("Linking workspaces is unavailable");
+			await client.setLinkedWorkspaces(workspaceIds);
 		});
 	}
 	async function implementPlan(plan: string) {
@@ -242,8 +268,14 @@ export function CodexSession({
 					!models.length
 				}
 				running={Boolean(turn)}
-				mode={state?.modeId ?? "auto"}
+				hostUrl={hostUrl}
 				execution={execution}
+				linkedWorkspaces={state?.linkedWorkspaces ?? []}
+				linkableWorkspaces={linkable.workspaces}
+				linkableLoading={linkable.isLoading}
+				{...(client.setLinkedWorkspaces
+					? { onLinkedWorkspacesChange: setLinkedWorkspaces }
+					: {})}
 				presets={presets}
 				models={models}
 				goal={
@@ -251,7 +283,6 @@ export function CodexSession({
 						? { ...state.goal, status: "paused" }
 						: state?.goal
 				}
-				onModeChange={(mode) => void act(() => chat.setMode(mode))}
 				onExecutionChange={(next) =>
 					void act(async () => {
 						if (!client.configureCodex)
@@ -261,7 +292,7 @@ export function CodexSession({
 					})
 				}
 				onGoalChange={updateGoal}
-				onSend={async (text, asGoal) => {
+				onSend={async (text, asGoal, attachments) => {
 					if (!isExecutionAvailable(execution, models)) {
 						setActionError(t({ message: "Unavailable on this host" }));
 						return false;
@@ -276,7 +307,7 @@ export function CodexSession({
 							await client.updateGoal({ action: "set", objective: text });
 						});
 					chat.sendPrompt(
-						[{ type: "text", text }],
+						promptContent(text, attachments),
 						selection || state?.execution ? execution : undefined,
 					);
 					return true;

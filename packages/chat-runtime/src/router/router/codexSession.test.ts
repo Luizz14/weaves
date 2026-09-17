@@ -66,6 +66,11 @@ function stack(dataDir: string, starts: HarnessFactoryOptions[]) {
 				resolved.push(workspaceId);
 				return dataDir;
 			},
+			resolveWorkspace: (workspaceId) => ({
+				path: dataDir,
+				name: workspaceId,
+			}),
+			resolveAttachment: () => null,
 		}),
 	)({});
 	return { runtime, caller, resolved };
@@ -180,6 +185,45 @@ describe("Codex chat sessions", () => {
 					),
 				).size,
 			).toBe(1);
+		} finally {
+			await second.runtime.dispose();
+			rmSync(dir, { recursive: true, force: true });
+		}
+	});
+	test("a resumed session keeps its linked workspaces", async () => {
+		const dir = mkdtempSync(join(tmpdir(), "codex-linked-"));
+		const starts: HarnessFactoryOptions[] = [];
+		const first = stack(dir, starts);
+		const created = await first.caller.createSession({
+			commandId: randomUUID(),
+			workspaceId: "workspace",
+			harness: "codex",
+		});
+		await waitFor(
+			() =>
+				first.runtime.sessions.get(created.sessionId)?.harnessSessionId ===
+				"codex-thread",
+		);
+		const linked = await first.caller.setLinkedWorkspaces({
+			commandId: randomUUID(),
+			sessionId: created.sessionId,
+			workspaceIds: ["docs"],
+		});
+		expect(linked).toEqual([{ workspaceId: "docs", path: dir, name: "docs" }]);
+		await first.runtime.dispose();
+
+		const second = stack(dir, starts);
+		try {
+			await second.caller.prompt({
+				commandId: randomUUID(),
+				sessionId: created.sessionId,
+				clientId: "second",
+				content: [{ type: "text", text: "continue" }],
+			});
+			expect(starts[1]?.linkedWorkspaces).toEqual(linked);
+			expect(
+				second.runtime.live.get(created.sessionId)?.state.linkedWorkspaces,
+			).toEqual(linked);
 		} finally {
 			await second.runtime.dispose();
 			rmSync(dir, { recursive: true, force: true });

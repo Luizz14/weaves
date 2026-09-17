@@ -5,6 +5,7 @@ import type {
 	Decision,
 	Delta,
 	Item,
+	LinkedWorkspace,
 	SessionState,
 	Turn,
 	UserContent,
@@ -23,13 +24,27 @@ export type HarnessStartOptions = {
 	modelId?: string;
 	execution?: CodexExecution;
 	goal?: CodexGoal | null;
+	linkedWorkspaces?: LinkedWorkspace[];
 	resume?: { harnessSessionId: string };
+};
+
+export type ResolvedAttachment = {
+	attachmentId: string;
+	path: string;
+	mimeType: string;
 };
 
 export interface HarnessAdapter {
 	start(options: HarnessStartOptions): AsyncIterable<AdapterEvent>;
-	prompt(content: UserContent[], execution?: CodexExecution): void;
+	prompt(
+		content: UserContent[],
+		execution?: CodexExecution,
+		resolvedAttachments?: ResolvedAttachment[],
+	): void;
 	configureCodex?(execution: CodexExecution): Promise<CodexExecution>;
+	setLinkedWorkspaces?(
+		workspaces: LinkedWorkspace[],
+	): Promise<LinkedWorkspace[]>;
 	updateGoal?(change: CodexGoalAction): Promise<void>;
 	respondToUserInput?(requestId: string, answers: UserInputAnswers): void;
 	cancelTurn(): void;
