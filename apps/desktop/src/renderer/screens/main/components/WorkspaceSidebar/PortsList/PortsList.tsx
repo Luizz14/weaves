@@ -1,7 +1,6 @@
 import { COMPANY } from "@superset/shared/constants";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { LuChevronRight, LuCircleHelp, LuRadioTower } from "react-icons/lu";
-import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { usePortsStore } from "renderer/stores";
 import { STROKE_WIDTH } from "../constants";
 import { WorkspacePortGroup } from "./components/WorkspacePortGroup";
@@ -55,9 +54,7 @@ export function PortsList() {
 						<p className="text-xs">Learn about port labels</p>
 					</TooltipContent>
 				</Tooltip>
-				<span className="text-[10px] font-normal">
-					<AnimatedNumber value={totalPortCount} />
-				</span>
+				<span className="text-[10px] font-normal">{totalPortCount}</span>
 			</div>
 			{!isCollapsed && (
 				<div className="space-y-2 max-h-72 overflow-y-auto pb-1 hide-scrollbar">

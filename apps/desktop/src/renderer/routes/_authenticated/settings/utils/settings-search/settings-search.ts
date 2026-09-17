@@ -5,7 +5,6 @@ import {
 import type { SettingsSection } from "renderer/stores/settings-state";
 
 export const SETTING_ITEM_ID = {
-	CODEX_CHAT: "codex-chat",
 	ACCOUNT_PROFILE: "account-profile",
 	ACCOUNT_SIGNOUT: "account-signout",
 	ACCOUNT_DELETE: "account-delete",
@@ -152,7 +151,6 @@ const INTEGRATION_ITEM_VARIANTS = Object.fromEntries(
 ) as Record<IntegrationSettingItemId, SettingVariant>;
 
 export const SETTING_ITEM_VARIANT: Record<SettingItemId, SettingVariant> = {
-	[SETTING_ITEM_ID.CODEX_CHAT]: "v2",
 	...INTEGRATION_ITEM_VARIANTS,
 
 	[SETTING_ITEM_ID.ACCOUNT_PROFILE]: "shared",
@@ -342,13 +340,6 @@ const INTEGRATION_SEARCH_ITEMS: SettingsItem[] = INTEGRATIONS.map(
 );
 
 export const SETTINGS_ITEMS: SettingsItem[] = [
-	{
-		id: SETTING_ITEM_ID.CODEX_CHAT,
-		section: "codexChat",
-		title: "Codex Chat",
-		description: "Default model and reasoning effort, model shortcuts",
-		keywords: ["codex", "chat", "model", "effort", "presets"],
-	},
 	{
 		id: SETTING_ITEM_ID.ACCOUNT_PROFILE,
 		section: "account",

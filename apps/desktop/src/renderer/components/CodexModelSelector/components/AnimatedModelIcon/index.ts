@@ -1,1 +1,0 @@
-export { AnimatedModelIcon } from "./AnimatedModelIcon";

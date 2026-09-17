@@ -19,8 +19,7 @@ import {
 } from "@superset/chat-runtime";
 import type { Hono, MiddlewareHandler } from "hono";
 import type { HostDb } from "../db";
-import { resolveAttachmentPath } from "../trpc/router/attachments/storage";
-import { createResolveCwd, createResolveWorkspace } from "./resolveCwd";
+import { createResolveCwd } from "./resolveCwd";
 
 export const CHAT_V3_TRPC_PATH = "/chat-v3/trpc";
 export const CHAT_V3_STREAM_PATH = "/chat-v3/sessions/:sessionId/stream";
@@ -91,13 +90,6 @@ export function registerChatV3Routes(options: {
 	streamPath?: string;
 }): void {
 	const resolveCwd = createResolveCwd(options.db);
-	const resolveWorkspace = createResolveWorkspace(options.db);
-	const resolveAttachment = (attachmentId: string) => {
-		const resolved = resolveAttachmentPath(attachmentId);
-		return resolved
-			? { path: resolved.path, mimeType: resolved.metadata.mediaType }
-			: null;
-	};
 
 	const endpoint = options.trpcPath ?? CHAT_V3_TRPC_PATH;
 	// Built on first request, not at registration: touching `runtime()` here
@@ -106,11 +98,7 @@ export function registerChatV3Routes(options: {
 	options.app.use(`${endpoint}/*`, (c, next) => {
 		handler ??= trpcServer({
 			endpoint,
-			router: createChatRouter(options.mount.runtime(), {
-				resolveCwd,
-				resolveWorkspace,
-				resolveAttachment,
-			}),
+			router: createChatRouter(options.mount.runtime(), { resolveCwd }),
 		});
 		return handler(c, next);
 	});

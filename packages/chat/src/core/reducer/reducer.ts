@@ -65,9 +65,7 @@ function streamKey(channel: DeltaChannel, itemId: string): string {
 function snapshotTextFor(channel: DeltaChannel, item: Item): string {
 	if (
 		channel === "text" &&
-		(item.kind === "agent_message" ||
-			item.kind === "reasoning" ||
-			item.kind === "plan")
+		(item.kind === "agent_message" || item.kind === "reasoning")
 	) {
 		const text = (item as { text?: unknown }).text;
 		if (typeof text === "string") return text;

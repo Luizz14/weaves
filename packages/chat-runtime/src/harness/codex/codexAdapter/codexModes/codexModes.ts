@@ -22,17 +22,13 @@ export function codexTurnPolicy(modeId: string | undefined): CodexTurnPolicy {
 	}
 }
 
-export function codexSandboxPolicy(
-	modeId: string | undefined,
-	cwd: string,
-	extraWritableRoots: string[] = [],
-) {
+export function codexSandboxPolicy(modeId: string | undefined, cwd: string) {
 	if (modeId === "full-access") return { type: "dangerFullAccess" as const };
 	if (modeId === "read-only")
 		return { type: "readOnly" as const, networkAccess: false };
 	return {
 		type: "workspaceWrite" as const,
-		writableRoots: [cwd, ...extraWritableRoots],
+		writableRoots: [cwd],
 		networkAccess: false,
 		excludeTmpdirEnvVar: false,
 		excludeSlashTmp: false,

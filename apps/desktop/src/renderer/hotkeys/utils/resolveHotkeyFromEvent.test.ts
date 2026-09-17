@@ -445,32 +445,3 @@ describe("isTerminalReservedEvent", () => {
 		}
 	});
 });
-
-describe("Codex and terminal creation shortcuts", () => {
-	const original = useHotkeyOverridesStore.getState().overrides;
-	afterEach(() => useHotkeyOverridesStore.setState({ overrides: original }));
-	it("has distinct defaults for chat and terminal", () => {
-		useHotkeyOverridesStore.setState({ overrides: {} });
-		const chat = HOTKEYS.NEW_CODEX_CHAT.key;
-		const terminal = HOTKEYS.NEW_GROUP.key;
-		if (!chat || !terminal) throw new Error("Missing defaults");
-		expect(
-			resolveHotkeyFromEvent(buildEventFromChord(parseBinding(chat).chord)),
-		).toBe("NEW_CODEX_CHAT");
-		expect(
-			resolveHotkeyFromEvent(buildEventFromChord(parseBinding(terminal).chord)),
-		).toBe("NEW_GROUP");
-		expect(HOTKEYS.FOCUS_CHAT_INPUT.key).toBeNull();
-	});
-	it("preserves an explicit terminal binding over the new chat default", () => {
-		const binding = HOTKEYS.NEW_CODEX_CHAT.key;
-		if (!binding) throw new Error("Missing chat default");
-		useHotkeyOverridesStore.setState({ overrides: { NEW_GROUP: binding } });
-		expect(
-			resolveHotkeyFromEvent(buildEventFromChord(parseBinding(binding).chord)),
-		).toBe("NEW_GROUP");
-		expect(useHotkeyOverridesStore.getState().overrides.NEW_GROUP).toEqual(
-			binding,
-		);
-	});
-});

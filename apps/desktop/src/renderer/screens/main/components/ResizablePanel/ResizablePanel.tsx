@@ -1,7 +1,5 @@
 import { cn } from "@superset/ui/utils";
-import { motion, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useRef } from "react";
-import { SPRING_LAYOUT } from "renderer/lib/ease";
 
 interface ResizablePanelProps {
 	/** The content to render inside the panel */
@@ -55,7 +53,6 @@ export function ResizablePanel({
 	onDoubleClickHandle,
 	disabled = false,
 }: ResizablePanelProps) {
-	const reduce = useReducedMotion() ?? false;
 	const startXRef = useRef(0);
 	const startWidthRef = useRef(0);
 	const pendingWidthRef = useRef<number | null>(null);
@@ -134,20 +131,14 @@ export function ResizablePanel({
 	}, [isResizing, handleMouseMove, handleMouseUp]);
 
 	return (
-		<motion.div
+		<div
 			className={cn(
 				"relative h-full overflow-hidden border-border",
 				disabled ? "flex-1" : "shrink-0",
 				!disabled && (handleSide === "right" ? "border-r" : "border-l"),
 				className,
 			)}
-			// The initial value has to render with the first frame, otherwise the
-			// panel paints at its natural width before motion applies one.
-			initial={disabled ? false : { width }}
-			animate={disabled ? {} : { width }}
-			// A drag must track the pointer exactly; only programmatic width
-			// changes (collapse, expand, reset) are worth easing.
-			transition={isResizing || reduce ? { duration: 0 } : SPRING_LAYOUT}
+			style={disabled ? undefined : { width }}
 		>
 			{children}
 			{!disabled && (
@@ -172,6 +163,6 @@ export function ResizablePanel({
 					)}
 				/>
 			)}
-		</motion.div>
+		</div>
 	);
 }

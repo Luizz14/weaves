@@ -5,7 +5,6 @@ import { cn } from "@superset/ui/utils";
 import { memo } from "react";
 import { CgLaptop } from "react-icons/cg";
 import { LuGitBranch, LuMonitor } from "react-icons/lu";
-import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { V2WorkspaceContextMenu } from "renderer/routes/_authenticated/_dashboard/v2-workspaces/components/V2WorkspaceContextMenu";
 import { WorkspaceChecksDot } from "renderer/routes/_authenticated/_dashboard/v2-workspaces/components/WorkspaceChecksDot";
 import { WorkspaceStateGlyph } from "renderer/routes/_authenticated/_dashboard/v2-workspaces/components/WorkspaceStateGlyph";
@@ -169,16 +168,10 @@ function BoardCardBody({
 						})}
 					>
 						<span className="text-emerald-600/80 dark:text-emerald-400/70">
-							+
-							<AnimatedNumber
-								value={formatCount(workspace.diffStats.additions)}
-							/>
+							+{formatCount(workspace.diffStats.additions)}
 						</span>
 						<span className="text-red-600/80 dark:text-red-400/70">
-							−
-							<AnimatedNumber
-								value={formatCount(workspace.diffStats.deletions)}
-							/>
+							−{formatCount(workspace.diffStats.deletions)}
 						</span>
 					</span>
 				) : null}

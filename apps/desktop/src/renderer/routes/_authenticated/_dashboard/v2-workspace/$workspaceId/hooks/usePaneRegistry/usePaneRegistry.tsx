@@ -725,48 +725,17 @@ export function usePaneRegistry({
 					}
 				: {}),
 			"codex-chat": {
-				getIcon: (ctx) => {
-					const status = (ctx.pane.data as CodexChatPaneData).status;
-					return (
-						<MessageSquare
-							aria-label={
-								status === "running"
-									? t({ message: "Working" })
-									: status === "awaiting_input"
-										? t({ message: "Needs input" })
-										: undefined
-							}
-							className={`size-3.5 ${status === "running" ? "text-blue-500" : status === "awaiting_input" ? "text-amber-500" : ""}`}
-						/>
-					);
-				},
-				getTitle: (pane) =>
-					(pane.data as CodexChatPaneData).title ??
-					t({ message: "Codex Chat" }),
+				getIcon: () => <MessageSquare className="size-3.5" />,
+				getTitle: () => t({ message: "Codex Chat" }),
 				renderPane: (ctx: RendererContext<PaneViewerData>) => {
 					const data = ctx.pane.data as CodexChatPaneData;
 					return (
 						<CodexChatPane
 							workspaceId={workspaceId}
 							sessionId={data.sessionId}
-							isActive={ctx.isActive}
-							onSessionIdChange={(sessionId) => {
-								const current = ctx.store.getState().getPane(ctx.pane.id);
-								if (current)
-									ctx.actions.updateData({ ...current.pane.data, sessionId });
-							}}
-							onMetadata={({ title, status }) => {
-								const current = ctx.store.getState().getPane(ctx.pane.id);
-								if (!current) return;
-								const latest = current.pane.data as CodexChatPaneData;
-								const nextTitle = title ?? latest.title;
-								if (latest.title !== nextTitle || latest.status !== status)
-									ctx.actions.updateData({
-										...latest,
-										title: nextTitle,
-										status,
-									});
-							}}
+							onSessionIdChange={(sessionId) =>
+								ctx.actions.updateData({ ...data, sessionId })
+							}
 						/>
 					);
 				},

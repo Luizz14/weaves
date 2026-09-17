@@ -28,6 +28,7 @@ import {
 	SelectItem,
 	SelectTrigger,
 } from "renderer/components/motion/select";
+import { SPRING_SWAP } from "renderer/lib/ease";
 import { cn } from "renderer/lib/utils";
 
 export interface PromptModel {
@@ -42,7 +43,6 @@ export interface PromptAction {
 	label: ReactNode;
 	description?: ReactNode;
 	icon?: ReactNode;
-	shortcut?: ReactNode;
 	disabled?: boolean;
 }
 
@@ -62,9 +62,6 @@ export interface PromptInputProps
 	onAction?: (action: string) => void;
 	onSubmit?: (value: string, model?: string) => void | Promise<void>;
 	loading?: boolean;
-	submitDisabled?: boolean;
-	/** For composers where attachments alone are a valid message. */
-	allowEmptySubmit?: boolean;
 	onStop?: () => void;
 	minRows?: number;
 	maxRows?: number;
@@ -84,8 +81,6 @@ export function PromptInput({
 	onAction,
 	onSubmit,
 	loading = false,
-	submitDisabled = false,
-	allowEmptySubmit = false,
 	onStop,
 	minRows = 2,
 	maxRows = 8,
@@ -110,11 +105,7 @@ export function PromptInput({
 	const currentModel = models.find(
 		(option) => option.value === currentModelValue,
 	);
-	const canSubmit =
-		(allowEmptySubmit || Boolean(currentValue.trim())) &&
-		!disabled &&
-		!loading &&
-		!submitDisabled;
+	const canSubmit = Boolean(currentValue.trim()) && !disabled && !loading;
 
 	const resizeTextarea = useCallback(() => {
 		const textarea = textareaRef.current;
@@ -155,7 +146,7 @@ export function PromptInput({
 	const submit = (event?: FormEvent) => {
 		event?.preventDefault();
 		const prompt = currentValue.trim();
-		if (!prompt || disabled || loading || submitDisabled) return;
+		if (!prompt || disabled || loading) return;
 
 		onSubmit?.(prompt, currentModelValue);
 		if (value === undefined) setInternalValue("");
@@ -180,7 +171,7 @@ export function PromptInput({
 		<form
 			onSubmit={submit}
 			className={cn(
-				"outline-[2px] outline-border/40 -outline-offset-3 relative w-full rounded-2xl bg-background p-2 transition-colors",
+				"relative w-full rounded-2xl border border-border/80 bg-background p-2 transition-colors focus-within:border-foreground/25",
 				disabled && "opacity-60",
 				className,
 			)}
@@ -207,74 +198,63 @@ export function PromptInput({
 
 			<div className="mt-1 flex min-h-8 items-center gap-1">
 				{actions.length ? (
-					<div className="order-last ml-auto flex h-10 shrink-0 items-center gap-1">
-						<MorphPopover open={actionsOpen} onOpenChange={setActionsOpen}>
-							<MorphPopoverTrigger>
-								<Button
-									type="button"
-									variant="ghost"
-									size="icon"
-									disabled={disabled || loading}
-									aria-label={i18n._(msg({ message: "Add" }))}
-									className="size-10 rounded-full"
-								>
-									<motion.span
-										aria-hidden="true"
-										animate={{ rotate: actionsOpen ? 45 : 0 }}
-										transition={
-											reduce
-												? { duration: 0 }
-												: { type: "spring", duration: 0.3, bounce: 0 }
-										}
-									>
-										<Plus className="size-4" />
-									</motion.span>
-								</Button>
-							</MorphPopoverTrigger>
-
-							<MorphPopoverContent
-								side="top"
-								align="start"
-								sideOffset={8}
-								radius={12}
-								className="w-56 p-1.5"
+					<MorphPopover open={actionsOpen} onOpenChange={setActionsOpen}>
+						<MorphPopoverTrigger>
+							<Button
+								type="button"
+								variant="ghost"
+								size="icon"
+								disabled={disabled || loading}
+								aria-label={i18n._(msg({ message: "Add" }))}
+								className="size-8 rounded-full"
 							>
-								{actions.map((action) => (
-									<button
-										key={action.value}
-										type="button"
-										disabled={action.disabled}
-										onClick={() => {
-											onAction?.(action.value);
-											setActionsOpen(false);
-										}}
-										className="flex w-full items-start gap-2.5 rounded-lg px-2.5 py-2 text-left outline-none transition-[background-color,color,scale] hover:bg-muted focus-visible:bg-muted active:scale-[0.96] disabled:pointer-events-none disabled:opacity-50 motion-reduce:active:scale-100"
-									>
-										{action.icon ? (
-											<span className="mt-0.5 grid size-5 shrink-0 place-items-center text-muted-foreground [&_svg]:size-4">
-												{action.icon}
-											</span>
-										) : null}
-										<span className="min-w-0 flex-1">
-											<span className="block text-sm text-foreground">
-												{action.label}
-											</span>
-											{action.description ? (
-												<span className="mt-0.5 block text-xs leading-4 text-muted-foreground">
-													{action.description}
-												</span>
-											) : null}
+								<motion.span
+									aria-hidden="true"
+									animate={{ rotate: actionsOpen ? 45 : 0 }}
+									transition={reduce ? { duration: 0 } : SPRING_SWAP}
+								>
+									<Plus className="size-4" />
+								</motion.span>
+							</Button>
+						</MorphPopoverTrigger>
+
+						<MorphPopoverContent
+							side="top"
+							align="start"
+							sideOffset={8}
+							radius={12}
+							className="w-56 p-1.5"
+						>
+							{actions.map((action) => (
+								<button
+									key={action.value}
+									type="button"
+									disabled={action.disabled}
+									onClick={() => {
+										onAction?.(action.value);
+										setActionsOpen(false);
+									}}
+									className="flex w-full items-start gap-2.5 rounded-lg px-2.5 py-2 text-left outline-none transition-colors hover:bg-muted focus-visible:bg-muted disabled:pointer-events-none disabled:opacity-50"
+								>
+									{action.icon ? (
+										<span className="mt-0.5 grid size-5 shrink-0 place-items-center text-muted-foreground [&_svg]:size-4">
+											{action.icon}
 										</span>
-										{action.shortcut ? (
-											<span className="mt-0.5 shrink-0 text-xs tabular-nums text-muted-foreground/70">
-												{action.shortcut}
+									) : null}
+									<span className="min-w-0">
+										<span className="block text-sm text-foreground">
+											{action.label}
+										</span>
+										{action.description ? (
+											<span className="mt-0.5 block text-xs leading-4 text-muted-foreground">
+												{action.description}
 											</span>
 										) : null}
-									</button>
-								))}
-							</MorphPopoverContent>
-						</MorphPopover>
-					</div>
+									</span>
+								</button>
+							))}
+						</MorphPopoverContent>
+					</MorphPopover>
 				) : null}
 				{leadingAction}
 				{models.length ? (
@@ -330,28 +310,17 @@ export function PromptInput({
 							: i18n._(msg({ message: "Send" }))
 					}
 					onClick={loading ? onStop : undefined}
-					className="order-last size-10 rounded-full"
-					pressScale={0.96}
+					className="ml-auto size-8 rounded-full"
 				>
 					<AnimatePresence initial={false} mode="popLayout">
 						<motion.span
 							key={loading ? "stop" : "send"}
 							initial={
-								reduce
-									? { opacity: 1 }
-									: { opacity: 0, scale: 0.25, filter: "blur(4px)" }
+								reduce ? { opacity: 1 } : { opacity: 0, y: 3, scale: 0.8 }
 							}
-							animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-							exit={
-								reduce
-									? { opacity: 0 }
-									: { opacity: 0, scale: 0.25, filter: "blur(4px)" }
-							}
-							transition={
-								reduce
-									? { duration: 0 }
-									: { type: "spring", duration: 0.3, bounce: 0 }
-							}
+							animate={{ opacity: 1, y: 0, scale: 1 }}
+							exit={reduce ? { opacity: 0 } : { opacity: 0, y: -3, scale: 0.8 }}
+							transition={reduce ? { duration: 0 } : SPRING_SWAP}
 							className="grid place-items-center"
 						>
 							{loading ? (

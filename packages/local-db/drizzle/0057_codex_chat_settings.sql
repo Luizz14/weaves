@@ -1,1 +1,0 @@
-ALTER TABLE `settings` ADD `codex_chat` text;

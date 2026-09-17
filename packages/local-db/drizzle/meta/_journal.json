@@ -400,13 +400,6 @@
       "when": 1788567930469,
       "tag": "0056_add_show_usage_in_sidebar_setting",
       "breakpoints": true
-    },
-    {
-      "idx": 57,
-      "version": "6",
-      "when": 1789614438726,
-      "tag": "0057_codex_chat_settings",
-      "breakpoints": true
     }
   ]
 }

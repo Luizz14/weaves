@@ -188,7 +188,17 @@ export function mapThreadItem(
 			};
 
 		case "plan":
-			return { ...base, kind: "plan", entries: [], text: known.text };
+			return {
+				...base,
+				kind: "plan",
+				entries: [
+					{
+						text: known.text,
+						status:
+							context.completedAtMs === undefined ? "in_progress" : "completed",
+					},
+				],
+			};
 
 		case "commandExecution": {
 			const actions = known.commandActions ?? [];

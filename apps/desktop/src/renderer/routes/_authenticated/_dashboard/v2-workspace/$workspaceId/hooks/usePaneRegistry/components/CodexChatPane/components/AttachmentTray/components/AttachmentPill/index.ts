@@ -1,1 +1,0 @@
-export { AttachmentPill } from "./AttachmentPill";

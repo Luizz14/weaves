@@ -1,5 +1,3 @@
-import { AnimatedNumber } from "renderer/components/AnimatedNumber";
-
 interface DiffStatTextProps {
 	additions: number | null;
 	deletions: number | null;
@@ -15,17 +13,9 @@ export function DiffStatText({ additions, deletions }: DiffStatTextProps) {
 	if (additions <= 0 && deletions <= 0) return null;
 	return (
 		<>
-			{additions > 0 && (
-				<span className="text-green-400">
-					+<AnimatedNumber value={additions} />
-				</span>
-			)}
+			{additions > 0 && <span className="text-green-400">+{additions}</span>}
 			{additions > 0 && deletions > 0 && " "}
-			{deletions > 0 && (
-				<span className="text-red-400">
-					−<AnimatedNumber value={deletions} />
-				</span>
-			)}
+			{deletions > 0 && <span className="text-red-400">−{deletions}</span>}
 		</>
 	);
 }

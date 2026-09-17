@@ -7,7 +7,6 @@ import { cn } from "@superset/ui/utils";
 import { useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { LuSearch, LuX } from "react-icons/lu";
-import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import { navigateToWorkspace } from "renderer/routes/_authenticated/_dashboard/utils/workspace-navigation";
 import type { FilterMode, ProjectGroup, WorkspaceItem } from "./types";
@@ -210,9 +209,7 @@ export function WorkspacesListView() {
 								)}
 							>
 								{option.label}
-								<span className="ml-1 text-foreground/40">
-									<AnimatedNumber value={count} />
-								</span>
+								<span className="ml-1 text-foreground/40">{count}</span>
 							</button>
 						);
 					})}

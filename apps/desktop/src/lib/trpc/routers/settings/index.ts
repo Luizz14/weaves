@@ -39,10 +39,6 @@ import {
 	resolveAgentConfigs,
 	upsertCustomAgentDefinition,
 } from "@superset/shared/agent-settings";
-import {
-	codexChatSettingsSchema,
-	DEFAULT_CODEX_CHAT_SETTINGS,
-} from "@superset/shared/codex-chat-settings";
 import { NOTIFICATION_VOLUME_LIMITS } from "@superset/shared/settings-constraints";
 import { TRPCError } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
@@ -285,24 +281,6 @@ export function getPresetsForTrigger(
 
 export const createSettingsRouter = () => {
 	return router({
-		getCodexChat: publicProcedure.query(() =>
-			codexChatSettingsSchema
-				.catch(DEFAULT_CODEX_CHAT_SETTINGS)
-				.parse(getSettings().codexChat ?? DEFAULT_CODEX_CHAT_SETTINGS),
-		),
-		setCodexChat: publicProcedure
-			.input(codexChatSettingsSchema)
-			.mutation(({ input }) => {
-				localDb
-					.insert(settings)
-					.values({ id: getSettings().id, codexChat: input })
-					.onConflictDoUpdate({
-						target: settings.id,
-						set: { codexChat: input },
-					})
-					.run();
-				return input;
-			}),
 		getTerminalPresets: publicProcedure.query(() => {
 			const row = getSettings();
 			if (!row.terminalPresetsInitialized) {

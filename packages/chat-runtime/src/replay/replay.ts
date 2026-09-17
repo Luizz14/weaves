@@ -2,10 +2,9 @@ import type {
 	Cursor,
 	DurableEnvelope,
 	RESET_REASONS,
-	SessionState,
 } from "@superset/chat/protocol";
 import { envelopeSchema, isDurableEnvelope } from "@superset/chat/protocol";
-import { and, asc, desc, eq, gt, lt, max, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gt, lt, max } from "drizzle-orm";
 import type { ChatDb, JournalRow } from "../db";
 import { chatJournal } from "../db";
 import { readSessionRow } from "../projection";
@@ -141,28 +140,4 @@ export function readPage(
 	if (!envelopes) return { ok: false, reset: "journal_missing" };
 
 	return { ok: true, envelopes, nextBefore };
-}
-
-export function readLatestSessionState(
-	db: ChatDb,
-	sessionId: string,
-): SessionState | null {
-	const session = readSessionRow(db, sessionId);
-	if (!session) return null;
-	const row = db
-		.select()
-		.from(chatJournal)
-		.where(
-			and(
-				eq(chatJournal.sessionId, sessionId),
-				eq(chatJournal.epoch, session.epoch),
-				sql`json_extract(${chatJournal.eventJson}, '$.type') = 'session'`,
-			),
-		)
-		.orderBy(desc(chatJournal.seq))
-		.limit(1)
-		.get();
-	if (!row) return null;
-	const event = parseJournalRow(row).event;
-	return event.type === "session" ? event.session : null;
 }

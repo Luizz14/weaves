@@ -1,113 +1,58 @@
-import { Trans } from "@lingui/react/macro";
-import type { CodexExecution } from "@superset/chat/protocol";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { errorMessage } from "@superset/i18n/errors";
-import { Bot } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { isExecutionAvailable } from "renderer/components/CodexModelSelector/modelPresentation";
-import { useCodexChatSettings } from "renderer/hooks/useCodexChatSettings";
-import { useCodexModels } from "renderer/hooks/useCodexModels";
+import { Button } from "@superset/ui/button";
+import { Bot, PanelLeft, Plus } from "lucide-react";
+import { useCallback, useRef, useState } from "react";
+import { ChatApp } from "renderer/components/agents/chat-app";
+import { AnimatedSidebarTrigger } from "renderer/components/motion/animated-sidebar";
 import { useSessionClient } from "../../hooks/useSessionClient";
 import { ChatError } from "./components/ChatError/ChatError";
-import type { PromptAttachment } from "./components/CodexComposer/CodexComposer";
 import { CodexComposer } from "./components/CodexComposer/CodexComposer";
+import { CodexHistory } from "./components/CodexHistory/CodexHistory";
 import { CodexSession } from "./components/CodexSession/CodexSession";
-import type { CodexChatMetadata, InitialCodexPrompt } from "./types";
-
-const DEFAULT_MODE = "auto";
 
 export function CodexChatPane({
 	workspaceId,
 	sessionId,
 	onSessionIdChange,
-	onMetadata,
-	isActive = true,
 }: {
 	workspaceId: string;
 	sessionId: string | null;
 	onSessionIdChange: (id: string | null) => void;
-	onMetadata?: (value: CodexChatMetadata) => void;
-	isActive?: boolean;
 }) {
+	const { t } = useLingui();
 	const { client, wiring } = useSessionClient(sessionId);
-	const settings = useCodexChatSettings();
-	const catalog = useCodexModels(wiring.transport, wiring.streamBaseUrl);
-	const [execution, setExecution] = useState<CodexExecution | null>(null);
+	const [mode, setMode] = useState("auto");
 	const [creating, setCreating] = useState(false);
 	const inFlight = useRef(false);
 	const commandId = useRef<string | null>(null);
-	const creationAttempts = useRef(0);
 	const [error, setError] = useState<string | null>(null);
-	const [pending, setPending] = useState<InitialCodexPrompt | null>(null);
-	const root = useRef<HTMLDivElement>(null);
+	const [pending, setPending] = useState<{
+		sessionId: string;
+		text: string;
+	} | null>(null);
 	const clearFirstPrompt = useCallback(() => setPending(null), []);
-	useEffect(() => {
-		if (settings.isPending || settings.error) return;
-		const preset = settings.settings.presets.find(
-			(entry) => entry.id === settings.settings.defaultPresetId,
-		);
-		if (preset)
-			setExecution(
-				(current) =>
-					current ?? {
-						modelId: preset.modelId,
-						reasoningEffort: preset.reasoningEffort,
-						fast: false,
-						collaborationMode: "default",
-					},
-			);
-	}, [settings.settings, settings.isPending, settings.error]);
-	const canFocus = Boolean(execution);
-	useEffect(() => {
-		if (isActive && canFocus)
-			root.current?.querySelector("textarea")?.focus({ preventScroll: true });
-	}, [isActive, canFocus]);
-	async function createSession(
-		text: string,
-		asGoal: boolean,
-		attachments: PromptAttachment[],
-	): Promise<boolean> {
-		if (inFlight.current || !execution) return false;
+	function selectSession(id: string | null) {
+		setError(null);
+		setPending(null);
+		commandId.current = null;
+		onSessionIdChange(id);
+	}
+	async function createSession(text: string) {
+		if (inFlight.current) return false;
 		inFlight.current = true;
 		setCreating(true);
 		setError(null);
 		commandId.current ??= crypto.randomUUID();
-		creationAttempts.current += 1;
 		try {
-			const selected = asGoal
-				? { ...execution, collaborationMode: "default" as const }
-				: execution;
 			const created = await wiring.transport.createSession({
 				commandId: commandId.current,
 				workspaceId,
 				harness: "codex",
-				modeId: DEFAULT_MODE,
-				modelId: selected.modelId,
-				execution: selected,
+				modeId: mode,
 			});
-			if (creationAttempts.current > 1) {
-				if (!wiring.transport.configureCodex)
-					throw new Error("Update the host to configure Codex");
-				await wiring.transport.configureCodex({
-					commandId: crypto.randomUUID(),
-					sessionId: created.sessionId,
-					execution: selected,
-				});
-				await wiring.transport.setMode({
-					commandId: crypto.randomUUID(),
-					sessionId: created.sessionId,
-					modeId: DEFAULT_MODE,
-				});
-			}
 			commandId.current = null;
-			creationAttempts.current = 0;
-			setPending({
-				sessionId: created.sessionId,
-				text,
-				asGoal,
-				execution: selected,
-				commandId: crypto.randomUUID(),
-				...(attachments.length > 0 ? { attachments } : {}),
-			});
+			setPending({ sessionId: created.sessionId, text });
 			onSessionIdChange(created.sessionId);
 			return true;
 		} catch (cause) {
@@ -118,69 +63,77 @@ export function CodexChatPane({
 			setCreating(false);
 		}
 	}
-	const unavailable =
-		execution && catalog.data && !isExecutionAvailable(execution, catalog.data);
 	return (
-		<div
-			ref={root}
-			className="flex h-full min-h-0 w-full flex-col bg-background antialiased"
+		<ChatApp
+			defaultOpen={false}
+			keyboardShortcutEnabled={false}
+			sidebarWidth="14rem"
+			className="@container/codex relative h-full min-h-0 rounded-none border-0 bg-background"
 		>
-			{(settings.error || catalog.error) && (
-				<ChatError
-					message={errorMessage(settings.error ?? catalog.error)}
-					onRetry={() => {
-						void catalog.refetch();
-						void settings.refetch();
-					}}
-				/>
-			)}
-			{client && sessionId ? (
-				<CodexSession
-					key={sessionId}
-					client={client}
-					workspaceId={workspaceId}
-					hostUrl={wiring.hostUrl ?? null}
-					firstPrompt={pending?.sessionId === sessionId ? pending : null}
-					onFirstPromptSent={clearFirstPrompt}
-					onMetadata={onMetadata}
-					isActive={isActive}
-					presets={settings.settings.presets}
-					models={catalog.data ?? []}
-				/>
-			) : (
-				<>
-					<div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
-						<Bot className="size-8 text-muted-foreground" />
-						<h2 className="text-lg font-medium text-balance">
-							<Trans>What would you like to build?</Trans>
-						</h2>
-						<p className="max-w-sm text-sm text-muted-foreground text-pretty">
-							<Trans>
-								Ask Codex to explore, change, or review this workspace.
-							</Trans>
-						</p>
-					</div>
-					{error && <ChatError message={error} />}
-
-					{unavailable && (
-						<p role="alert" className="px-4 text-sm text-destructive">
-							<Trans>Unavailable on this host</Trans>
-						</p>
-					)}
-					{execution && (
+			<CodexHistory
+				hostKey={wiring.streamBaseUrl}
+				transport={wiring.transport}
+				workspaceId={workspaceId}
+				sessionId={sessionId}
+				onSelect={(id) => {
+					if (!creating) selectSession(id);
+				}}
+				onNew={() => {
+					if (!creating) selectSession(null);
+				}}
+			/>
+			<main className="flex min-h-0 min-w-0 flex-1 flex-col">
+				<header className="flex h-12 shrink-0 items-center gap-2 border-b px-3">
+					<AnimatedSidebarTrigger aria-label={t({ message: "History" })}>
+						<PanelLeft className="size-4" />
+					</AnimatedSidebarTrigger>
+					<Bot className="size-4 text-muted-foreground" />
+					<span className="text-sm font-medium">
+						<Trans>Codex Chat</Trans>
+					</span>
+					<Button
+						className="ml-auto"
+						variant="ghost"
+						size="icon"
+						disabled={creating}
+						onClick={() => selectSession(null)}
+						aria-label={t({ message: "New chat" })}
+					>
+						<Plus className="size-4" />
+					</Button>
+				</header>
+				{client && sessionId ? (
+					<CodexSession
+						key={sessionId}
+						client={client}
+						firstPrompt={pending?.sessionId === sessionId ? pending.text : null}
+						onFirstPromptSent={clearFirstPrompt}
+					/>
+				) : (
+					<>
+						<div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
+							<div className="flex size-12 items-center justify-center rounded-2xl border bg-muted/30">
+								<Bot className="size-6 text-muted-foreground" />
+							</div>
+							<h2 className="text-lg font-medium">
+								<Trans>What would you like to build?</Trans>
+							</h2>
+							<p className="max-w-sm text-sm text-muted-foreground">
+								<Trans>
+									Ask Codex to explore, change, or review this workspace.
+								</Trans>
+							</p>
+						</div>
+						{error && <ChatError message={error} />}
 						<CodexComposer
-							disabled={creating || settings.isPending || !catalog.data}
-							hostUrl={wiring.hostUrl ?? null}
-							execution={execution}
-							presets={settings.settings.presets}
-							models={catalog.data ?? []}
-							onExecutionChange={setExecution}
-							onGoalChange={async () => false}
-							onSend={unavailable ? () => false : createSession}
+							disabled={creating}
+							mode={mode}
+							onModeChange={setMode}
+							onSend={createSession}
 						/>
-					)}
-				</>
-			)}
-		</div>
+					</>
+				)}
+			</main>
+		</ChatApp>
 	);
 }

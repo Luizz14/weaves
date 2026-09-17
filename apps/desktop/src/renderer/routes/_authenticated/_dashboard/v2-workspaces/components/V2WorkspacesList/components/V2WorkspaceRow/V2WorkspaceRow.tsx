@@ -7,7 +7,6 @@ import { useNavigate } from "@tanstack/react-router";
 import { memo } from "react";
 import { CgLaptop } from "react-icons/cg";
 import { LuLaptop, LuMonitor } from "react-icons/lu";
-import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { WorkspaceNameMarquee } from "renderer/components/WorkspaceNameMarquee";
 import { useFocusVisible } from "renderer/hooks/useFocusVisible";
 import { navigateToV2Workspace } from "renderer/routes/_authenticated/_dashboard/utils/workspace-navigation";
@@ -215,16 +214,10 @@ export const V2WorkspaceRow = memo(function V2WorkspaceRow({
 							})}
 						>
 							<span className="text-emerald-600/80 dark:text-emerald-400/70">
-								+
-								<AnimatedNumber
-									value={formatCount(workspace.diffStats.additions)}
-								/>
+								+{formatCount(workspace.diffStats.additions)}
 							</span>
 							<span className="text-red-600/80 dark:text-red-400/70">
-								−
-								<AnimatedNumber
-									value={formatCount(workspace.diffStats.deletions)}
-								/>
+								−{formatCount(workspace.diffStats.deletions)}
 							</span>
 						</span>
 					) : null}

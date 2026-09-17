@@ -23,7 +23,6 @@ export interface ApprovalCardQuestion {
 	autoAdvance?: boolean;
 	allowCustom?: boolean;
 	customPlaceholder?: string;
-	customInputType?: "text" | "password";
 }
 
 export interface ApprovalCardAnswer {

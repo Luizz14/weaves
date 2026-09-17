@@ -26,7 +26,6 @@ export function useWorkspaceHotkeys({
 	matchedPresets,
 	executePreset,
 	addTerminalTab,
-	addCodexChatTab,
 	openChangesPane,
 	paneRegistry,
 	launcher,
@@ -37,7 +36,6 @@ export function useWorkspaceHotkeys({
 	matchedPresets: V2TerminalPresetRow[];
 	executePreset: (preset: V2TerminalPresetRow) => void | Promise<void>;
 	addTerminalTab: () => Promise<void>;
-	addCodexChatTab: () => void;
 	openChangesPane: () => void;
 	paneRegistry: PaneRegistry<PaneViewerData>;
 	launcher: TerminalLauncher;
@@ -64,8 +62,6 @@ export function useWorkspaceHotkeys({
 	);
 
 	// --- Tab creation ---
-
-	useHotkey("NEW_CODEX_CHAT", addCodexChatTab);
 
 	useHotkey("NEW_GROUP", async () => {
 		await addTerminalTab();

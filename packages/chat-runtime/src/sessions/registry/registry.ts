@@ -1,9 +1,4 @@
-import type {
-	CodexExecution,
-	CodexGoal,
-	Envelope,
-	LinkedWorkspace,
-} from "@superset/chat/protocol";
+import type { Envelope } from "@superset/chat/protocol";
 import type { HarnessAdapter } from "../../harness";
 import type { ChatJournal } from "../../journal";
 import { LiveSession } from "../liveSession";
@@ -15,10 +10,6 @@ export type HarnessFactoryOptions = {
 	cwd: string;
 	modeId?: string;
 	modelId?: string;
-	title?: string;
-	execution?: CodexExecution;
-	goal?: CodexGoal | null;
-	linkedWorkspaces?: LinkedWorkspace[];
 	resume?: { harnessSessionId: string };
 };
 
@@ -54,7 +45,6 @@ export class LiveSessionRegistry {
 			sessionId: options.sessionId,
 			scopeId: options.scopeId,
 			harness: options.harness,
-			title: options.title,
 			journal: this.options.journal,
 			publish: this.options.publish,
 			adapter: factory(options),
@@ -67,9 +57,6 @@ export class LiveSessionRegistry {
 				cwd: options.cwd,
 				modeId: options.modeId,
 				modelId: options.modelId,
-				execution: options.execution,
-				goal: options.goal,
-				linkedWorkspaces: options.linkedWorkspaces,
 				resume: options.resume,
 			});
 		} catch (error) {

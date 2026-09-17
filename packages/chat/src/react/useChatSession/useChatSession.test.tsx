@@ -66,11 +66,6 @@ async function startStack(): Promise<Stack> {
 	const runtime = createTestRuntime({ harnesses });
 	const router = createChatRouter(runtime, {
 		resolveCwd: () => "/tmp/workspace",
-		resolveWorkspace: (workspaceId) => ({
-			path: "/tmp/workspace",
-			name: workspaceId,
-		}),
-		resolveAttachment: () => null,
 	});
 	const transport: ChatTransport = createChatCallerFactory(router)({});
 	const server = createMemoryStreamServer(runtime);

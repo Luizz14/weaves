@@ -45,7 +45,7 @@ Codex's `initialize` response advertises no capabilities, so the only handshake 
 
 The Codex thread ID is persisted with session events in the existing `harness_session_id` column. A prompt or mode change resumes a dormant Codex session against the host-resolved workspace directory. Concurrent resumes share one startup; interrupted turns and pending approvals are settled before the new turn. Legacy sessions without a recorded thread ID remain readable but cannot be resumed once their host stops.
 
-`SessionState.modeId` maps to codex's sandbox/approval pairing — `read-only`, `auto`, `full-access` — applied to each `turn/start`, using `sandboxPolicy`. This is separate from Codex collaboration modes (`default` / `plan`).
+`SessionState.modeId` maps to codex's sandbox/approval pairing — `read-only`, `auto`, `full-access` — applied to each `turn/start`, because the app-server has no per-thread collaboration-mode setter.
 
 Fixtures in `harness/codex/fixtures/*.jsonl` are real recorded frames, replayed through `fixturePlayer/` as a transport so the adapter tests exercise the actual wire. Re-record them with a codex binary on PATH:
 
@@ -59,12 +59,3 @@ The recorder copies only `auth.json` into a throwaway `CODEX_HOME`, so recording
 Host-service registers the `/chat-v3/*` routes unconditionally: they carry the same auth as every other host route, and the runtime is built on first request, so a host nobody chats with never creates `chat.db`. The desktop keeps the original pane behind the `chat-v3` PostHog flag. The separate `codex-chat` pane is always available and shares these authenticated routes and Codex sessions. `listSessions` can filter by harness before applying its limit.
 
 When host-service mounts this package it must pass `migrationsFolder`: the generated `src/db/drizzle/` directory is a runtime file dependency that the bundler will not inline.
-
-
-## Codex composer controls
-
-The desktop discovers available models with `listCodexModels` and stores its default model/effort shortcuts in the desktop SQLite settings row. Each chat journals its acknowledged `execution` settings independently. Prompts capture those settings in the outbox and the runtime queue, so later selections do not change queued work. `getSession` returns the latest full session state independently of transcript pagination.
-
-`configureCodex` validates model, effort and Fast support against `model/list`. Manual turns send `model`, `effort`, `serviceTier` and the native `collaborationMode` together. Planning questions use `item/tool/requestUserInput` and `respondToUserInput`; answers, including secret inputs, are not copied into the Superset journal.
-
-`updateCodexGoal` delegates goal execution to the app-server. Activation first records the goal as paused, starts exactly one turn with the native default collaboration mode, then activates native goal continuation. This resets a previous planning context without racing the app-server’s automatic kickoff; the renderer never sends a second prompt. Closing a pane only disconnects its subscription. After a host restart, the adapter reads the persisted native goal and pauses an active goal before resuming its thread. Resuming work is then explicit. Entering planning pauses the goal and interrupts its current turn.

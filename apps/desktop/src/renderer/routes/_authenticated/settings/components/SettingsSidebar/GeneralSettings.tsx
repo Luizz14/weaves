@@ -53,7 +53,6 @@ type SettingsRoute =
 	| "/settings/browser"
 	| "/settings/git"
 	| "/settings/agents"
-	| "/settings/codex-chat"
 	| "/settings/terminal"
 	| "/settings/links"
 	| "/settings/agent-accounts"
@@ -159,12 +158,6 @@ const SECTION_GROUPS: SectionGroup[] = [
 					message: "Git & Worktrees",
 				}),
 				icon: <LuGitBranch className="h-4 w-4" />,
-			},
-			{
-				id: "/settings/codex-chat",
-				section: "codexChat",
-				label: msg({ message: "Codex Chat" }),
-				icon: <HiOutlineSparkles className="h-4 w-4" />,
 			},
 			{
 				id: "/settings/agents",

@@ -1,8 +1,6 @@
 import { Trans } from "@lingui/react/macro";
 import type { Plan } from "@superset/chat/protocol";
-import { planDocument } from "@superset/chat/protocol";
 import { CheckCircle2, Circle, CircleDotDashed } from "lucide-react";
-import { MarkdownView } from "../../../MarkdownView";
 
 const ICON_BY_STATUS = {
 	pending: Circle,
@@ -11,13 +9,11 @@ const ICON_BY_STATUS = {
 } as const;
 
 export function PlanRow({ item }: { item: Plan }) {
-	const document = planDocument(item);
 	return (
 		<div className="flex flex-col gap-1 rounded-lg border border-border bg-muted/30 p-2">
 			<span className="text-xs font-medium text-muted-foreground">
-				{document ? <Trans>Implementation plan</Trans> : <Trans>Plan</Trans>}
+				<Trans>Plan</Trans>
 			</span>
-			{document ? <MarkdownView text={document} /> : null}
 			{item.entries.map((entry, index) => {
 				const Icon = ICON_BY_STATUS[entry.status];
 				return (

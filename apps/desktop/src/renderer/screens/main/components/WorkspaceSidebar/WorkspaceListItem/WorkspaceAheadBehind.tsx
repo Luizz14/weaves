@@ -1,5 +1,3 @@
-import { AnimatedNumber } from "renderer/components/AnimatedNumber";
-
 interface WorkspaceAheadBehindProps {
 	ahead: number;
 	behind: number;
@@ -15,16 +13,8 @@ export function WorkspaceAheadBehind({
 
 	return (
 		<div className="flex items-center gap-1.5 text-[10px] font-mono tabular-nums shrink-0">
-			{behind > 0 && (
-				<span className="text-amber-500">
-					↓<AnimatedNumber value={behind} />
-				</span>
-			)}
-			{ahead > 0 && (
-				<span className="text-emerald-500">
-					↑<AnimatedNumber value={ahead} />
-				</span>
-			)}
+			{behind > 0 && <span className="text-amber-500">↓{behind}</span>}
+			{ahead > 0 && <span className="text-emerald-500">↑{ahead}</span>}
 		</div>
 	);
 }

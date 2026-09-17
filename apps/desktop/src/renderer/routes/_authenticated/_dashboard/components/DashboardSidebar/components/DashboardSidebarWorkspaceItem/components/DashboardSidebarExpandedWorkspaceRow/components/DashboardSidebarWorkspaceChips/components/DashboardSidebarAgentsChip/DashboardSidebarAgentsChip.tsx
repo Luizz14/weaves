@@ -7,7 +7,6 @@ import {
 	HoverCardTrigger,
 } from "@superset/ui/hover-card";
 import { cn } from "@superset/ui/utils";
-import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { STATUS_PRIORITY } from "shared/tabs-types";
 import { useDashboardSidebarChipHoverSuppression } from "../../hooks/useDashboardSidebarChipHoverSuppression";
 import type { DashboardSidebarRunningAgent } from "../../hooks/useDashboardSidebarWorkspaceRunningAgents";
@@ -104,12 +103,10 @@ export function DashboardSidebarAgentsChip({
 						)}
 					>
 						<DashboardSidebarAgentAvatar agent={primaryAgent} />
-						<span className="shrink-0">
-							<AnimatedNumber value={agents.length} />
-						</span>
+						<span className="shrink-0">{agents.length}</span>
 						{subagentCount > 0 && (
 							<span className="shrink-0 font-normal text-muted-foreground">
-								+<AnimatedNumber value={subagentCount} />
+								+{subagentCount}
 							</span>
 						)}
 					</button>
@@ -125,9 +122,7 @@ export function DashboardSidebarAgentsChip({
 					<span>
 						<Trans>Agents</Trans>
 					</span>
-					<span className="tabular-nums">
-						<AnimatedNumber value={agents.length} />
-					</span>
+					<span className="tabular-nums">{agents.length}</span>
 				</div>
 				<div className="max-h-60 overflow-y-auto">
 					{agents.map((agent) => (

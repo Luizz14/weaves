@@ -13,10 +13,6 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#. js-lingui-explicit-id
-msgid "greeting"
-msgstr ""
-
 msgid " and "
 msgstr " y "
 
@@ -1479,9 +1475,6 @@ msgstr "Añadir el issue #{0} al espacio de trabajo"
 msgid "Add member"
 msgstr "Añadir miembro"
 
-msgid "Add model shortcut"
-msgstr "Añadir atajo de modelo"
-
 msgid "Add one from the menu in the sidebar to get started."
 msgstr "Añade uno desde el menú de la barra lateral para empezar."
 
@@ -2251,9 +2244,6 @@ msgstr "No se pudo subir el adjunto: {0}"
 msgid "Attachment was not uploaded — send the bytes first"
 msgstr "El archivo adjunto no se subió — envía primero los datos"
 
-msgid "Attachments"
-msgstr "Archivos adjuntos"
-
 msgid "Attachments are not wired yet"
 msgstr "Los adjuntos aún no están conectados"
 
@@ -2432,10 +2422,6 @@ msgstr "Pendientes de tu revisión"
 msgid "Awaiting review from you or your team"
 msgstr "Pendientes de tu revisión o la de tu equipo"
 
-msgctxt "file size unit, bytes"
-msgid "B"
-msgstr "B"
-
 msgid "Back"
 msgstr "Atrás"
 
@@ -2586,9 +2572,6 @@ msgstr "Bloque"
 
 msgid "blocked"
 msgstr "bloqueada"
-
-msgid "Blocked"
-msgstr "Bloqueado"
 
 msgid "Blocked by Branch Rules"
 msgstr "Bloqueada por reglas de rama"
@@ -2746,9 +2729,6 @@ msgstr "Datos de navegación borrados"
 
 msgid "Browsing history"
 msgstr "Historial de navegación"
-
-msgid "Budget limit reached"
-msgstr "Límite de presupuesto alcanzado"
 
 msgid "Bug"
 msgstr "Insecto"
@@ -3170,9 +3150,6 @@ msgstr "Elige cómo se abre la vista de cambios desde la barra superior"
 
 msgid "Choose how to open file paths when Cmd+clicking in the terminal"
 msgstr "Elige cómo abrir las rutas de archivo al hacer Cmd+clic en la terminal"
-
-msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
-msgstr "Elige los valores predeterminados de los nuevos chats y personaliza los atajos de modelos. Los chats existentes conservan sus selecciones."
 
 msgid "Choose what to clear from the in-app browser."
 msgstr "Elige qué borrar del navegador integrado."
@@ -3775,9 +3752,6 @@ msgstr "Conectar un dispositivo"
 
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "Conecta una cuenta de Google. Sus calendarios y su buzón son de solo lectura, y los disparadores se ejecutan en nombre de quien la conectó."
-
-msgid "Connect a host to load Codex models."
-msgstr "Conecta un host para cargar los modelos de Codex."
 
 msgid "Connect a microphone to use dictation"
 msgstr "Conectar un micrófono para usar el dictado"
@@ -5144,9 +5118,6 @@ msgstr "descendente"
 msgid "Describe the change…"
 msgstr "Describe el cambio…"
 
-msgid "Describe the goal and how to verify it…"
-msgstr "Describe el objetivo y cómo verificarlo…"
-
 msgid "Describe the task for the agent…"
 msgstr "Describe la tarea para el agente…"
 
@@ -5754,9 +5725,6 @@ msgstr "Habilitar el acceso por relay…"
 msgid "Enable skill"
 msgstr "Activar skill"
 
-msgid "End goal"
-msgstr "Finalizar objetivo"
-
 msgid "Engineering deep-dives and launches."
 msgstr "Análisis técnicos a fondo y lanzamientos."
 
@@ -6011,10 +5979,6 @@ msgstr "Editor externo"
 
 msgid "extra ${used} of ${limit}"
 msgstr "extra: ${used} de ${limit}"
-
-msgctxt "reasoning effort"
-msgid "Extra high"
-msgstr "Muy alto"
 
 msgid "Extra small"
 msgstr "Muy pequeño"
@@ -6506,12 +6470,6 @@ msgstr "Fallo"
 msgid "FAQ"
 msgstr "Preguntas frecuentes"
 
-msgid "Fast"
-msgstr "Fast"
-
-msgid "Fast uses more of your allowance."
-msgstr "Fast consume más de tu cuota."
-
 msgid "Fatal"
 msgstr "Fatal"
 
@@ -6947,10 +6905,6 @@ msgstr "Metas"
 msgid "Gates open"
 msgstr "Metas abiertas"
 
-msgctxt "file size unit, gigabytes"
-msgid "GB"
-msgstr "GB"
-
 msgid "General"
 msgstr "General"
 
@@ -7116,9 +7070,6 @@ msgstr "Ir a la configuración de la integración de Slack"
 msgid "Go to Superset"
 msgstr "Ir a Superset"
 
-msgid "Goal"
-msgstr "Objetivo"
-
 msgid "Google did not grant lasting access. Remove Superset from your Google account's third-party access and try again."
 msgstr "Google no concedió un acceso duradero. Quita Superset del acceso de terceros de tu cuenta de Google y vuelve a intentarlo."
 
@@ -7281,10 +7232,6 @@ msgstr "Ocultar las regiones sin cambios"
 
 msgid "High"
 msgstr "Alta"
-
-msgctxt "reasoning effort"
-msgid "High"
-msgstr "Alto"
 
 msgid "High usage"
 msgstr "Uso alto"
@@ -7508,12 +7455,6 @@ msgstr "Vista previa de la imagen de {0}. Haz zoom con más y menos, desplázate
 
 msgid "Images"
 msgstr "Imágenes"
-
-msgid "Implement plan"
-msgstr "Ejecutar el plan"
-
-msgid "Implementation plan"
-msgstr "Plan de implementación"
 
 msgid "Import"
 msgstr "Importar"
@@ -7984,10 +7925,6 @@ msgstr "Solo yo"
 msgid "just now"
 msgstr "ahora mismo"
 
-msgctxt "file size unit, kilobytes"
-msgid "KB"
-msgstr "KB"
-
 msgid "Kbd"
 msgstr "Kbd"
 
@@ -8253,10 +8190,6 @@ msgstr "claro"
 msgid "Light"
 msgstr "Claro"
 
-msgctxt "reasoning effort"
-msgid "Light"
-msgstr "Ligero"
-
 msgid "Light theme"
 msgstr "Tema claro"
 
@@ -8335,17 +8268,8 @@ msgstr "Enlazar pull request"
 msgid "Link task"
 msgstr "Enlazar tarea"
 
-msgid "Link workspaces"
-msgstr "Vincular espacios de trabajo"
-
-msgid "Linked"
-msgstr "Vinculado"
-
 msgid "Linked {slug} to workspace"
 msgstr "{slug} enlazado al espacio de trabajo"
-
-msgid "Linked workspaces"
-msgstr "Espacios de trabajo vinculados"
 
 msgid "Links"
 msgstr "Enlaces"
@@ -8506,9 +8430,6 @@ msgstr "Cargando los scripts de terminal..."
 msgid "Loading usage history…"
 msgstr "Cargando el historial de uso…"
 
-msgid "Loading workspaces…"
-msgstr "Cargando espacios de trabajo…"
-
 msgid "Loading..."
 msgstr "Cargando..."
 
@@ -8580,10 +8501,6 @@ msgstr "Se ve bien"
 
 msgid "Low"
 msgstr "Baja"
-
-msgctxt "reasoning effort"
-msgid "Low"
-msgstr "Bajo"
 
 msgid "Lower memory with many terminals open, smoother git in big repos, and less background CPU."
 msgstr "Menos memoria con muchas terminales abiertas, git más fluido en repos grandes y menos CPU en segundo plano."
@@ -8721,10 +8638,6 @@ msgstr "Ajusta los atajos a las etiquetas de tu teclado (p. ej. ⌘Z siempre se 
 msgid "Max"
 msgstr "Máx."
 
-msgctxt "reasoning effort"
-msgid "Max"
-msgstr "Máx"
-
 msgid "Maximum"
 msgstr "Máxima"
 
@@ -8733,10 +8646,6 @@ msgstr "Esfuerzo de razonamiento máximo"
 
 msgid "Maximum size is 256 KB."
 msgstr "El tamaño máximo es 256 KB."
-
-msgctxt "file size unit, megabytes"
-msgid "MB"
-msgstr "MB"
 
 msgid "MCP"
 msgstr "MCP"
@@ -8768,10 +8677,6 @@ msgstr "Tiempo mediano desde el anterior"
 
 msgid "Medium"
 msgstr "Media"
-
-msgctxt "reasoning effort"
-msgid "Medium"
-msgstr "Medio"
 
 msgid "Meet the team behind Superset, building parallel coding agents for developers."
 msgstr "Conoce al equipo detrás de Superset, que crea agentes de codificación en paralelo para desarrolladores."
@@ -8890,10 +8795,6 @@ msgstr "Mediados de 2027"
 msgid "Mine"
 msgstr "Mías"
 
-msgctxt "reasoning effort"
-msgid "Minimal"
-msgstr "Mínimo"
-
 msgid "Minimal reasoning effort"
 msgstr "Esfuerzo de razonamiento mínimo"
 
@@ -8946,9 +8847,6 @@ msgstr "modelo"
 msgid "Model"
 msgstr "Modelo"
 
-msgid "Model and reasoning effort"
-msgstr "Modelo y esfuerzo de razonamiento"
-
 msgid "Model context usage"
 msgstr "Uso del contexto del modelo"
 
@@ -8957,9 +8855,6 @@ msgstr "Selector de modelo limitado al agente seleccionado"
 
 msgid "Model Selector"
 msgstr "Selector de modelo"
-
-msgid "Model shortcuts"
-msgstr "Atajos de modelos"
 
 msgid "Model volume"
 msgstr "Volumen por modelo"
@@ -9054,17 +8949,11 @@ msgstr "Casi toda la historia del software"
 msgid "Move {count} to Group"
 msgstr "Mover {count} a un grupo"
 
-msgid "Move down"
-msgstr "Mover abajo"
-
 msgid "Move to group"
 msgstr "Mover a un grupo"
 
 msgid "Move to Tab"
 msgstr "Mover a una pestaña"
-
-msgid "Move up"
-msgstr "Mover arriba"
 
 msgid "MRR"
 msgstr "MRR"
@@ -9224,9 +9113,6 @@ msgstr "Chat nuevo"
 
 msgid "New cloud workspace"
 msgstr "Nuevo espacio de trabajo en la nube"
-
-msgid "New Codex Chat"
-msgstr "Nuevo chat de Codex"
 
 msgid "New environment"
 msgstr "Nuevo entorno"
@@ -9512,9 +9398,6 @@ msgstr "Sin salida de consola"
 
 msgid "No contributors found."
 msgstr "No se encontraron colaboradores."
-
-msgid "No conversations yet"
-msgstr "Aún no hay conversaciones"
 
 msgid "No credit card required."
 msgstr "No hace falta tarjeta de crédito."
@@ -9928,10 +9811,6 @@ msgstr "Clics sin marca"
 msgid "None"
 msgstr "Ninguno"
 
-msgctxt "reasoning effort"
-msgid "None"
-msgstr "Ninguno"
-
 msgid "none (session)"
 msgstr "ninguno (sesión)"
 
@@ -9968,9 +9847,6 @@ msgstr "Sin conectar"
 msgid "Not connected · cloud workspaces push as your organization's GitHub App"
 msgstr "No conectado · los espacios de trabajo en la nube hacen push como la GitHub App de tu organización"
 
-msgid "Not connected to a host yet — try attaching again."
-msgstr "Aún no hay conexión con un host; intenta adjuntar el archivo de nuevo."
-
 msgid "Not connected: {unavailableReason}. Add a Google service account to the Search Console property and set GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 msgstr "No conectado: {unavailableReason}. Añade una cuenta de servicio de Google a la propiedad de Search Console y define GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 
@@ -9988,9 +9864,6 @@ msgstr "No concedido"
 
 msgid "Not included"
 msgstr "No incluido"
-
-msgid "Not linked"
-msgstr "No vinculado"
 
 msgid "Not loaded"
 msgstr "Sin cargar"
@@ -11162,9 +11035,6 @@ msgstr "Plan"
 msgid "Plan restored"
 msgstr "Plan restaurado"
 
-msgid "Planning"
-msgstr "Planificación"
-
 msgid "Planning the tooltip refactor"
 msgstr "Planificando la refactorización de los tooltips"
 
@@ -11806,6 +11676,9 @@ msgstr "Leyendo el uso…"
 msgid "Reading your local usage…"
 msgstr "Leyendo el uso local…"
 
+msgid "Ready"
+msgstr "Listo"
+
 msgid "Ready for review"
 msgstr "Lista para revisión"
 
@@ -11831,9 +11704,6 @@ msgstr "Reaplicar todos los commits"
 msgid "Reasoning"
 msgstr "Razonamiento"
 
-msgid "Reasoning effort"
-msgstr "Esfuerzo de razonamiento"
-
 msgid "Reassign"
 msgstr "Reasignar"
 
@@ -11845,9 +11715,6 @@ msgstr "Rebase y fusión"
 
 msgid "Recent Activity"
 msgstr "Actividad reciente"
-
-msgid "Recent chats"
-msgstr "Chats recientes"
 
 msgid "Recent invoices"
 msgstr "Facturas recientes"
@@ -12503,9 +12370,6 @@ msgstr "Reinténtalo en unos segundos; si persiste, reinicia Superset."
 msgid "Retry in a few seconds."
 msgstr "Reinténtalo en unos segundos."
 
-msgid "Retry upload"
-msgstr "Reintentar carga"
-
 msgid "Retrying…"
 msgstr "Reintentando…"
 
@@ -13057,9 +12921,6 @@ msgstr "Buscar disparadores..."
 msgid "Search workspaces"
 msgstr "Buscar espacios de trabajo"
 
-msgid "Search workspaces on this host and link them to this chat."
-msgstr "Busca espacios de trabajo en este host y vincúlalos a este chat."
-
 msgid "Search workspaces..."
 msgstr "Buscar espacios de trabajo..."
 
@@ -13134,9 +12995,6 @@ msgstr "Descubre en qué puesto de la clasificación pública quedan tus último
 
 msgid "Select"
 msgstr "Selector"
-
-msgid "Select a default preset"
-msgstr "Selecciona un ajuste predeterminado"
 
 msgid "Select a project"
 msgstr "Selecciona un proyecto"
@@ -13933,9 +13791,6 @@ msgstr "Algunos archivos superan el tamaño máximo y no se añadieron."
 
 msgid "Some models were priced with a fallback rate"
 msgstr "Algunos modelos se tarifaron con una tarifa de respaldo"
-
-msgid "Some presets are unavailable on this host."
-msgstr "Algunos ajustes no están disponibles en este host."
 
 #. placeholder {0}: error.message
 msgid "Some repositories could not be loaded: {0}"
@@ -15102,9 +14957,6 @@ msgstr "El nombre de la organización o equipo"
 msgid "The network connection changed"
 msgstr "Cambió la conexión de red"
 
-msgid "The next message becomes the goal. Codex will continue until it finishes or needs your input."
-msgstr "El siguiente mensaje se convierte en el objetivo. Codex continuará hasta terminar o necesitar tu respuesta."
-
 msgid "The overnight shift"
 msgstr "El turno de noche"
 
@@ -15888,10 +15740,6 @@ msgstr "Tipografía y comportamiento del cursor usados en los paneles de termina
 msgid "Typography used in V2 editors and diff views."
 msgstr "Tipografía usada en los editores y las vistas de diff de V2."
 
-msgctxt "reasoning effort"
-msgid "Ultra"
-msgstr "Ultra"
-
 msgid "Unable to check for updates. Please check your internet connection."
 msgstr "No se pudo buscar actualizaciones. Comprueba tu conexión a internet."
 
@@ -15930,9 +15778,6 @@ msgstr "Las ejecuciones desatendidas de 8 horas o más salen bien en la mayoría
 
 msgid "Unavailable"
 msgstr "No disponible"
-
-msgid "Unavailable on this host"
-msgstr "No disponible en este host"
 
 msgid "Unavailable: {unavailableReason}"
 msgstr "No disponible: {unavailableReason}"
@@ -16041,13 +15886,6 @@ msgstr "Ilimitado"
 
 msgid "Unlimited users"
 msgstr "Usuarios ilimitados"
-
-msgid "Unlink"
-msgstr "Desvincular"
-
-#. placeholder {0}: workspace.name
-msgid "Unlink {0}"
-msgstr "Desvincular {0}"
 
 msgid "Unmute notifications"
 msgstr "Reactivar notificaciones"
@@ -16210,9 +16048,6 @@ msgstr "Mejorar a {0}"
 msgid "Upgrade to Pro"
 msgstr "Actualizar a Pro"
 
-msgid "Upload failed."
-msgstr "Error al cargar."
-
 msgid "Upload files"
 msgstr "Subir archivos"
 
@@ -16245,9 +16080,6 @@ msgstr "Uso"
 
 msgid "Usage is out of date"
 msgstr "Los datos de uso están desactualizados"
-
-msgid "Usage limit reached"
-msgstr "Límite de uso alcanzado"
 
 msgid "Usage sections"
 msgstr "Secciones de uso"
@@ -16819,9 +16651,6 @@ msgstr "Trabajar desde los tickets"
 
 msgid "Work with your agents across your favorite tools"
 msgstr "Trabaja con tus agentes en tus herramientas favoritas"
-
-msgid "Worked for {duration}"
-msgstr "Trabajó durante {duration}"
 
 msgid "Worked for 39s"
 msgstr "Trabajó durante 39 s"

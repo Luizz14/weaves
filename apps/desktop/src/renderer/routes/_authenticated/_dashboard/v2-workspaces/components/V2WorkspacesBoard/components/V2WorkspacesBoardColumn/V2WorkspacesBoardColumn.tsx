@@ -1,5 +1,4 @@
 import { i18n } from "@superset/i18n";
-import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { BoardColumnIcon } from "renderer/routes/_authenticated/_dashboard/v2-workspaces/components/BoardColumnIcon";
 import type { AccessibleV2Workspace } from "renderer/routes/_authenticated/_dashboard/v2-workspaces/hooks/useAccessibleV2Workspaces";
 import {
@@ -27,7 +26,7 @@ export function V2WorkspacesBoardColumn({
 					{i18n._(BOARD_COLUMN_LABELS[column])}
 				</span>
 				<span className="text-xs tabular-nums text-muted-foreground">
-					<AnimatedNumber value={workspaces.length} />
+					{workspaces.length}
 				</span>
 			</div>
 

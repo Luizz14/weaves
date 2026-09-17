@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@superset/ui/tabs";
 import { cn } from "@superset/ui/utils";
 import { useParams } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import {
 	getGitHubPRCommentsQueryPolicy,
@@ -744,7 +743,7 @@ export function ChangesView({
 						>
 							<span>Diffs</span>
 							<span className="text-[11px] text-muted-foreground/60 tabular-nums">
-								<AnimatedNumber value={againstMainCount} />
+								{againstMainCount}
 							</span>
 						</TabsTrigger>
 						<TabsTrigger
@@ -756,7 +755,7 @@ export function ChangesView({
 						>
 							<span>Review</span>
 							<span className="text-[11px] text-muted-foreground/60 tabular-nums">
-								<AnimatedNumber value={reviewCommentCount} />
+								{reviewCommentCount}
 							</span>
 							{activePullRequest ? (
 								<ReviewTabChecksIcon

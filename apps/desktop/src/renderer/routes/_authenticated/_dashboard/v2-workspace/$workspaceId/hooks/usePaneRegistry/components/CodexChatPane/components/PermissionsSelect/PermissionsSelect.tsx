@@ -21,7 +21,7 @@ export function PermissionsSelect({
 		<Select value={value} disabled={disabled} onValueChange={onChange}>
 			<SelectTrigger
 				aria-label={t({ message: "Permissions" })}
-				className="min-h-10 w-auto gap-2 border-none bg-transparent text-xs"
+				className="h-8 w-auto gap-2 border-none bg-transparent text-xs"
 			>
 				<SelectValue />
 			</SelectTrigger>

@@ -1,22 +1,15 @@
-import type { LinkedWorkspace, UserContent } from "@superset/chat/protocol";
 import {
 	cancelTurnInputSchema,
-	configureCodexInputSchema,
 	createSessionInputSchema,
 	getItemsInputSchema,
 	getSessionInputSchema,
 	listSessionsInputSchema,
 	promptInputSchema,
 	respondToApprovalInputSchema,
-	respondToUserInputSchema,
-	setLinkedWorkspacesInputSchema,
 	setModeInputSchema,
-	updateCodexGoalInputSchema,
 } from "@superset/chat/protocol";
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { initTRPC, TRPCError } from "@trpc/server";
-import type { ResolvedAttachment } from "../../harness";
-import { listCodexModels } from "../../harness/codex/catalog";
 import type { ChatRuntime } from "../../index";
 
 import { createEnsureCodexSession } from "./ensureCodexSession";
@@ -25,23 +18,8 @@ const t = initTRPC.create();
 
 export const createChatCallerFactory = t.createCallerFactory;
 
-export type ResolvedWorkspace = {
-	path: string;
-	name: string;
-	branch?: string;
-};
-
 export type ChatRouterOptions = {
 	resolveCwd(workspaceId: string): string | Promise<string>;
-	resolveWorkspace(
-		workspaceId: string,
-	): ResolvedWorkspace | Promise<ResolvedWorkspace>;
-	resolveAttachment(
-		attachmentId: string,
-	):
-		| { path: string; mimeType: string }
-		| null
-		| Promise<{ path: string; mimeType: string } | null>;
 };
 
 const UNKNOWN_HARNESS = /^unknown harness /;
@@ -84,60 +62,7 @@ export function createChatRouter(
 		}
 	}
 
-	async function resolveAttachments(
-		content: UserContent[],
-	): Promise<ResolvedAttachment[] | undefined> {
-		const attachments = content.filter((entry) => entry.type === "attachment");
-		if (attachments.length === 0) return undefined;
-		return await Promise.all(
-			attachments.map(async (entry) => {
-				const resolved = await options.resolveAttachment(entry.attachmentId);
-				if (!resolved)
-					throw new TRPCError({
-						code: "NOT_FOUND",
-						message: `Attachment not found: ${entry.attachmentId}`,
-					});
-				return { attachmentId: entry.attachmentId, ...resolved };
-			}),
-		);
-	}
-
-	async function resolveWorkspaces(
-		workspaceIds: string[],
-	): Promise<LinkedWorkspace[]> {
-		return await Promise.all(
-			workspaceIds.map(async (workspaceId) => {
-				try {
-					const resolved = await options.resolveWorkspace(workspaceId);
-					return { workspaceId, ...resolved };
-				} catch (error) {
-					throw new TRPCError({
-						code: "NOT_FOUND",
-						message: `Workspace not found: ${workspaceId}`,
-						cause: error,
-					});
-				}
-			}),
-		);
-	}
-
 	return t.router({
-		listCodexModels: t.procedure.query(() => listCodexModels()),
-		configureCodex: t.procedure
-			.input(configureCodexInputSchema)
-			.mutation(async ({ input }) => {
-				await ensureCodexSession(input.sessionId);
-				return runtime.commands.configureCodex(input);
-			}),
-		updateCodexGoal: t.procedure
-			.input(updateCodexGoalInputSchema)
-			.mutation(async ({ input }) => {
-				await ensureCodexSession(input.sessionId);
-				return runtime.commands.updateCodexGoal(input);
-			}),
-		respondToUserInput: t.procedure
-			.input(respondToUserInputSchema)
-			.mutation(({ input }) => runtime.commands.respondToUserInput(input)),
 		createSession: t.procedure
 			.input(createSessionInputSchema)
 			.mutation(async ({ input }) => {
@@ -152,24 +77,9 @@ export function createChatRouter(
 				);
 			}),
 
-		setLinkedWorkspaces: t.procedure
-			.input(setLinkedWorkspacesInputSchema)
-			.mutation(async ({ input }) => {
-				await ensureCodexSession(input.sessionId);
-				const workspaces = await resolveWorkspaces(input.workspaceIds);
-				return runtime.commands.setLinkedWorkspaces({
-					commandId: input.commandId,
-					sessionId: input.sessionId,
-					workspaces,
-				});
-			}),
-
 		prompt: t.procedure.input(promptInputSchema).mutation(async ({ input }) => {
 			await ensureCodexSession(input.sessionId);
-			const resolvedAttachments = await resolveAttachments(input.content);
-			return guarded(() =>
-				runtime.commands.prompt({ ...input, resolvedAttachments }),
-			);
+			return guarded(() => runtime.commands.prompt(input));
 		}),
 
 		cancelTurn: t.procedure

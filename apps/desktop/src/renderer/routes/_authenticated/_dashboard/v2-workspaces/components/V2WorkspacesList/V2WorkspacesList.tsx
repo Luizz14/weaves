@@ -17,7 +17,6 @@ import {
 	LuLayers,
 	LuSearchX,
 } from "react-icons/lu";
-import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { BoardColumnIcon } from "renderer/routes/_authenticated/_dashboard/v2-workspaces/components/BoardColumnIcon";
 import type { AccessibleV2Workspace } from "renderer/routes/_authenticated/_dashboard/v2-workspaces/hooks/useAccessibleV2Workspaces";
 import {
@@ -251,7 +250,7 @@ function StatusSectionGroup({
 					{i18n._(BOARD_COLUMN_LABELS[section.column])}
 				</h3>
 				<span className="shrink-0 text-[11px] tabular-nums text-muted-foreground/70">
-					<AnimatedNumber value={section.workspaces.length} />
+					{section.workspaces.length}
 				</span>
 			</button>
 			<div id={rowsId}>

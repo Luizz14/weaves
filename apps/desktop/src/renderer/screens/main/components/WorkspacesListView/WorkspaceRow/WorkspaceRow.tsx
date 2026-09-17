@@ -14,7 +14,6 @@ import {
 	LuFolderGit2,
 	LuRotateCw,
 } from "react-icons/lu";
-import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import { useHoverGitHubStatus } from "renderer/lib/githubQueryPolicy";
 import { useWorkspaceDeleteHandler } from "renderer/react-query/workspaces/useWorkspaceDeleteHandler";
@@ -149,12 +148,8 @@ export function WorkspaceRow({
 			{/* Diff stats */}
 			{showDiffStats && (
 				<div className="flex items-center gap-1 text-[10px] font-mono shrink-0">
-					<span className="text-emerald-500">
-						+<AnimatedNumber value={pr.additions} />
-					</span>
-					<span className="text-destructive">
-						−<AnimatedNumber value={pr.deletions} />
-					</span>
+					<span className="text-emerald-500">+{pr.additions}</span>
+					<span className="text-destructive">-{pr.deletions}</span>
 				</div>
 			)}
 

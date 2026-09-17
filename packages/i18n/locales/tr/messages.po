@@ -13,10 +13,6 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#. js-lingui-explicit-id
-msgid "greeting"
-msgstr ""
-
 msgid " and "
 msgstr " ve "
 
@@ -1479,9 +1475,6 @@ msgstr "#{0} issue'sunu çalışma alanına ekle"
 msgid "Add member"
 msgstr "Üye ekle"
 
-msgid "Add model shortcut"
-msgstr "Model kısayolu ekle"
-
 msgid "Add one from the menu in the sidebar to get started."
 msgstr "Başlamak için kenar çubuğundaki menüden bir tane ekleyin."
 
@@ -2251,9 +2244,6 @@ msgstr "Ek yüklenemedi: {0}"
 msgid "Attachment was not uploaded — send the bytes first"
 msgstr "Ek yüklenmedi — önce verileri gönderin"
 
-msgid "Attachments"
-msgstr "Ekler"
-
 msgid "Attachments are not wired yet"
 msgstr "Ekler henüz bağlanmadı"
 
@@ -2432,10 +2422,6 @@ msgstr "Sizden inceleme bekliyor"
 msgid "Awaiting review from you or your team"
 msgstr "Sizden veya takımınızdan inceleme bekliyor"
 
-msgctxt "file size unit, bytes"
-msgid "B"
-msgstr "B"
-
 msgid "Back"
 msgstr "Geri"
 
@@ -2586,9 +2572,6 @@ msgstr "Blok"
 
 msgid "blocked"
 msgstr "engellendi"
-
-msgid "Blocked"
-msgstr "Engellendi"
 
 msgid "Blocked by Branch Rules"
 msgstr "Dal kurallarınca engellendi"
@@ -2746,9 +2729,6 @@ msgstr "Tarama verileri temizlendi"
 
 msgid "Browsing history"
 msgstr "Tarama geçmişi"
-
-msgid "Budget limit reached"
-msgstr "Bütçe sınırına ulaşıldı"
 
 msgid "Bug"
 msgstr "Böcek"
@@ -3170,9 +3150,6 @@ msgstr "Değişiklikler görünümünün üst çubuktan nasıl açılacağını 
 
 msgid "Choose how to open file paths when Cmd+clicking in the terminal"
 msgstr "Terminalde Cmd+tıkladığınızda dosya yollarının nasıl açılacağını seçin"
-
-msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
-msgstr "Yeni sohbetlerin varsayılanını seçin ve model kısayollarını özelleştirin. Mevcut sohbetler seçimlerini korur."
 
 msgid "Choose what to clear from the in-app browser."
 msgstr "Uygulama içi tarayıcıdan neyin temizleneceğini seçin."
@@ -3775,9 +3752,6 @@ msgstr "Cihaz bağla"
 
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "Bir Google hesabı bağlayın. Takvimleri ve posta kutusu salt okunurdur ve tetikleyiciler hesabı bağlayan kişi adına çalışır."
-
-msgid "Connect a host to load Codex models."
-msgstr "Codex modellerini yüklemek için bir ana makineye bağlanın."
 
 msgid "Connect a microphone to use dictation"
 msgstr "Sesle yazmak için bir mikrofon bağlayın"
@@ -5144,9 +5118,6 @@ msgstr "azalan"
 msgid "Describe the change…"
 msgstr "Değişikliği anlatın…"
 
-msgid "Describe the goal and how to verify it…"
-msgstr "Hedefi ve nasıl doğrulanacağını açıklayın…"
-
 msgid "Describe the task for the agent…"
 msgstr "Ajan için görevi anlatın…"
 
@@ -5754,9 +5725,6 @@ msgstr "Röle erişimini etkinleştir…"
 msgid "Enable skill"
 msgstr "Beceriyi etkinleştir"
 
-msgid "End goal"
-msgstr "Hedefi sonlandır"
-
 msgid "Engineering deep-dives and launches."
 msgstr "Mühendislik derinlemesine yazıları ve lansmanlar."
 
@@ -6011,10 +5979,6 @@ msgstr "Harici düzenleyici"
 
 msgid "extra ${used} of ${limit}"
 msgstr "ek ${used}/${limit}"
-
-msgctxt "reasoning effort"
-msgid "Extra high"
-msgstr "Çok yüksek"
 
 msgid "Extra small"
 msgstr "Çok küçük"
@@ -6506,12 +6470,6 @@ msgstr "Başarısız"
 msgid "FAQ"
 msgstr "SSS"
 
-msgid "Fast"
-msgstr "Fast"
-
-msgid "Fast uses more of your allowance."
-msgstr "Fast, kotanızdan daha fazla tüketir."
-
 msgid "Fatal"
 msgstr "Kritik"
 
@@ -6947,10 +6905,6 @@ msgstr "Eşikler"
 msgid "Gates open"
 msgstr "Açık eşikler"
 
-msgctxt "file size unit, gigabytes"
-msgid "GB"
-msgstr "GB"
-
 msgid "General"
 msgstr "Genel"
 
@@ -7116,9 +7070,6 @@ msgstr "Slack entegrasyon ayarlarına git"
 msgid "Go to Superset"
 msgstr "Superset'e git"
 
-msgid "Goal"
-msgstr "Hedef"
-
 msgid "Google did not grant lasting access. Remove Superset from your Google account's third-party access and try again."
 msgstr "Google kalıcı erişim vermedi. Superset'i Google hesabınızın üçüncü taraf erişiminden kaldırıp yeniden deneyin."
 
@@ -7279,10 +7230,6 @@ msgstr "Oturumları gizle"
 msgid "Hide unchanged regions"
 msgstr "Değişmeyen bölgeleri gizle"
 
-msgid "High"
-msgstr "Yüksek"
-
-msgctxt "reasoning effort"
 msgid "High"
 msgstr "Yüksek"
 
@@ -7508,12 +7455,6 @@ msgstr "{0} görsel önizlemesi. Artı ve eksi ile yakınlaştırın, ok tuşlar
 
 msgid "Images"
 msgstr "Görseller"
-
-msgid "Implement plan"
-msgstr "Planı uygula"
-
-msgid "Implementation plan"
-msgstr "Uygulama planı"
 
 msgid "Import"
 msgstr "İçe aktar"
@@ -7984,10 +7925,6 @@ msgstr "Yalnızca ben"
 msgid "just now"
 msgstr "az önce"
 
-msgctxt "file size unit, kilobytes"
-msgid "KB"
-msgstr "KB"
-
 msgid "Kbd"
 msgstr "Kbd"
 
@@ -8253,10 +8190,6 @@ msgstr "açık"
 msgid "Light"
 msgstr "Açık"
 
-msgctxt "reasoning effort"
-msgid "Light"
-msgstr "Hafif"
-
 msgid "Light theme"
 msgstr "Açık tema"
 
@@ -8335,17 +8268,8 @@ msgstr "Pull request bağla"
 msgid "Link task"
 msgstr "Görev bağla"
 
-msgid "Link workspaces"
-msgstr "Çalışma alanlarını bağla"
-
-msgid "Linked"
-msgstr "Bağlandı"
-
 msgid "Linked {slug} to workspace"
 msgstr "{slug} çalışma alanına bağlandı"
-
-msgid "Linked workspaces"
-msgstr "Bağlı çalışma alanları"
 
 msgid "Links"
 msgstr "Bağlantılar"
@@ -8506,9 +8430,6 @@ msgstr "Terminal betikleri yükleniyor..."
 msgid "Loading usage history…"
 msgstr "Kullanım geçmişi yükleniyor…"
 
-msgid "Loading workspaces…"
-msgstr "Çalışma alanları yükleniyor…"
-
 msgid "Loading..."
 msgstr "Yükleniyor..."
 
@@ -8578,10 +8499,6 @@ msgstr "Kurulu tarayıcılar aranıyor…"
 msgid "Looks good"
 msgstr "İyi görünüyor"
 
-msgid "Low"
-msgstr "Düşük"
-
-msgctxt "reasoning effort"
 msgid "Low"
 msgstr "Düşük"
 
@@ -8721,10 +8638,6 @@ msgstr "Kısayolları klavyenizdeki etiketlerle eşleştirin (örn. ⌘Z her zam
 msgid "Max"
 msgstr "En yüksek"
 
-msgctxt "reasoning effort"
-msgid "Max"
-msgstr "Maks"
-
 msgid "Maximum"
 msgstr "En yüksek"
 
@@ -8733,10 +8646,6 @@ msgstr "En yüksek akıl yürütme çabası"
 
 msgid "Maximum size is 256 KB."
 msgstr "En büyük boyut 256 KB."
-
-msgctxt "file size unit, megabytes"
-msgid "MB"
-msgstr "MB"
 
 msgid "MCP"
 msgstr "MCP"
@@ -8766,10 +8675,6 @@ msgstr "Rutin işler için medyan bilet-üretim süresi bir günün altında."
 msgid "Median time from previous"
 msgstr "Öncekinden medyan süre"
 
-msgid "Medium"
-msgstr "Orta"
-
-msgctxt "reasoning effort"
 msgid "Medium"
 msgstr "Orta"
 
@@ -8890,10 +8795,6 @@ msgstr "2027 ortası"
 msgid "Mine"
 msgstr "Benim"
 
-msgctxt "reasoning effort"
-msgid "Minimal"
-msgstr "En düşük"
-
 msgid "Minimal reasoning effort"
 msgstr "En az akıl yürütme çabası"
 
@@ -8946,9 +8847,6 @@ msgstr "model"
 msgid "Model"
 msgstr "Model"
 
-msgid "Model and reasoning effort"
-msgstr "Model ve akıl yürütme çabası"
-
 msgid "Model context usage"
 msgstr "Model bağlam kullanımı"
 
@@ -8957,9 +8855,6 @@ msgstr "Seçili ajanla sınırlı model seçici"
 
 msgid "Model Selector"
 msgstr "Model seçici"
-
-msgid "Model shortcuts"
-msgstr "Model kısayolları"
 
 msgid "Model volume"
 msgstr "Model hacmi"
@@ -9054,17 +8949,11 @@ msgstr "Yazılım tarihinin çoğu"
 msgid "Move {count} to Group"
 msgstr "{count} öğeyi gruba taşı"
 
-msgid "Move down"
-msgstr "Aşağı taşı"
-
 msgid "Move to group"
 msgstr "Gruba taşı"
 
 msgid "Move to Tab"
 msgstr "Sekmeye taşı"
-
-msgid "Move up"
-msgstr "Yukarı taşı"
 
 msgid "MRR"
 msgstr "MRR"
@@ -9224,9 +9113,6 @@ msgstr "Yeni sohbet"
 
 msgid "New cloud workspace"
 msgstr "Yeni bulut çalışma alanı"
-
-msgid "New Codex Chat"
-msgstr "Yeni Codex Sohbeti"
 
 msgid "New environment"
 msgstr "Yeni ortam"
@@ -9512,9 +9398,6 @@ msgstr "Konsol çıktısı yok"
 
 msgid "No contributors found."
 msgstr "Katkıda bulunan bulunamadı."
-
-msgid "No conversations yet"
-msgstr "Henüz sohbet yok"
 
 msgid "No credit card required."
 msgstr "Kredi kartı gerekmez."
@@ -9928,10 +9811,6 @@ msgstr "Marka dışı tıklamalar"
 msgid "None"
 msgstr "Yok"
 
-msgctxt "reasoning effort"
-msgid "None"
-msgstr "Yok"
-
 msgid "none (session)"
 msgstr "yok (oturum)"
 
@@ -9968,9 +9847,6 @@ msgstr "Bağlı değil"
 msgid "Not connected · cloud workspaces push as your organization's GitHub App"
 msgstr "Bağlı değil · bulut çalışma alanları organizasyonunun GitHub App'i olarak push yapar"
 
-msgid "Not connected to a host yet — try attaching again."
-msgstr "Henüz bir ana bilgisayara bağlı değil — yeniden eklemeyi deneyin."
-
 msgid "Not connected: {unavailableReason}. Add a Google service account to the Search Console property and set GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 msgstr "Bağlı değil: {unavailableReason}. Search Console mülküne bir Google hizmet hesabı ekleyin ve GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT değerini ayarlayın."
 
@@ -9988,9 +9864,6 @@ msgstr "Verilmedi"
 
 msgid "Not included"
 msgstr "Dahil değil"
-
-msgid "Not linked"
-msgstr "Bağlı değil"
 
 msgid "Not loaded"
 msgstr "Yüklenmedi"
@@ -11162,9 +11035,6 @@ msgstr "Plan"
 msgid "Plan restored"
 msgstr "Plan geri yüklendi"
 
-msgid "Planning"
-msgstr "Planlama"
-
 msgid "Planning the tooltip refactor"
 msgstr "Tooltip yeniden düzenlemesi planlanıyor"
 
@@ -11806,6 +11676,9 @@ msgstr "Kullanım okunuyor…"
 msgid "Reading your local usage…"
 msgstr "Yerel kullanımınız okunuyor…"
 
+msgid "Ready"
+msgstr "Hazır"
+
 msgid "Ready for review"
 msgstr "İncelemeye hazır"
 
@@ -11831,9 +11704,6 @@ msgstr "Tüm commit'leri yeniden uygular"
 msgid "Reasoning"
 msgstr "Akıl yürütme"
 
-msgid "Reasoning effort"
-msgstr "Akıl yürütme çabası"
-
 msgid "Reassign"
 msgstr "Yeniden ata"
 
@@ -11845,9 +11715,6 @@ msgstr "Rebase ve birleştir"
 
 msgid "Recent Activity"
 msgstr "Son etkinlik"
-
-msgid "Recent chats"
-msgstr "Son sohbetler"
 
 msgid "Recent invoices"
 msgstr "Son faturalar"
@@ -12503,9 +12370,6 @@ msgstr "Birkaç saniye sonra yeniden deneyin; sorun sürerse Superset'i yeniden 
 msgid "Retry in a few seconds."
 msgstr "Birkaç saniye sonra yeniden deneyin."
 
-msgid "Retry upload"
-msgstr "Yüklemeyi yeniden dene"
-
 msgid "Retrying…"
 msgstr "Yeniden deneniyor…"
 
@@ -13057,9 +12921,6 @@ msgstr "Tetikleyici ara..."
 msgid "Search workspaces"
 msgstr "Çalışma alanlarında ara"
 
-msgid "Search workspaces on this host and link them to this chat."
-msgstr "Bu ana bilgisayardaki çalışma alanlarını arayın ve bu sohbete bağlayın."
-
 msgid "Search workspaces..."
 msgstr "Çalışma alanı ara..."
 
@@ -13134,9 +12995,6 @@ msgstr "Son 30 gününüzün herkese açık liderlik tablosunda nereye düştü�
 
 msgid "Select"
 msgstr "Seçim"
-
-msgid "Select a default preset"
-msgstr "Varsayılan ön ayarı seçin"
 
 msgid "Select a project"
 msgstr "Bir proje seçin"
@@ -13933,9 +13791,6 @@ msgstr "Bazı dosyalar en büyük boyutu aşıyor ve eklenmedi."
 
 msgid "Some models were priced with a fallback rate"
 msgstr "Bazı modeller yedek bir tarifeyle fiyatlandırıldı"
-
-msgid "Some presets are unavailable on this host."
-msgstr "Bazı ön ayarlar bu ana makinede kullanılamıyor."
 
 #. placeholder {0}: error.message
 msgid "Some repositories could not be loaded: {0}"
@@ -15102,9 +14957,6 @@ msgstr "Kuruluşunuzun veya takımınızın adı"
 msgid "The network connection changed"
 msgstr "Ağ bağlantısı değişti"
 
-msgid "The next message becomes the goal. Codex will continue until it finishes or needs your input."
-msgstr "Sonraki mesaj hedef olur. Codex bitirene veya yanıtınıza ihtiyaç duyana kadar çalışmaya devam eder."
-
 msgid "The overnight shift"
 msgstr "Gece vardiyası"
 
@@ -15888,10 +15740,6 @@ msgstr "V2 terminal panellerinde kullanılan tipografi ve imleç davranışı."
 msgid "Typography used in V2 editors and diff views."
 msgstr "V2 düzenleyicilerde ve fark görünümlerinde kullanılan tipografi."
 
-msgctxt "reasoning effort"
-msgid "Ultra"
-msgstr "Ultra"
-
 msgid "Unable to check for updates. Please check your internet connection."
 msgstr "Güncellemeler denetlenemiyor. Lütfen internet bağlantınızı kontrol edin."
 
@@ -15930,9 +15778,6 @@ msgstr "8 saat ve üzeri gözetimsiz çalıştırmalar, bir insanın engel kald�
 
 msgid "Unavailable"
 msgstr "Kullanılamıyor"
-
-msgid "Unavailable on this host"
-msgstr "Bu ana makinede kullanılamıyor"
 
 msgid "Unavailable: {unavailableReason}"
 msgstr "Kullanılamıyor: {unavailableReason}"
@@ -16041,13 +15886,6 @@ msgstr "Sınırsız"
 
 msgid "Unlimited users"
 msgstr "Sınırsız kullanıcı"
-
-msgid "Unlink"
-msgstr "Bağlantıyı kaldır"
-
-#. placeholder {0}: workspace.name
-msgid "Unlink {0}"
-msgstr "{0} bağlantısını kaldır"
 
 msgid "Unmute notifications"
 msgstr "Bildirimlerin sesini aç"
@@ -16210,9 +16048,6 @@ msgstr "{0} planına yükselt"
 msgid "Upgrade to Pro"
 msgstr "Pro'ya yükselt"
 
-msgid "Upload failed."
-msgstr "Yükleme başarısız."
-
 msgid "Upload files"
 msgstr "Dosya yükle"
 
@@ -16245,9 +16080,6 @@ msgstr "Kullanım"
 
 msgid "Usage is out of date"
 msgstr "Kullanım verileri güncel değil"
-
-msgid "Usage limit reached"
-msgstr "Kullanım sınırına ulaşıldı"
 
 msgid "Usage sections"
 msgstr "Kullanım bölümleri"
@@ -16819,9 +16651,6 @@ msgstr "Biletlerden çalışma"
 
 msgid "Work with your agents across your favorite tools"
 msgstr "Ajanlarınızla en sevdiğiniz araçlar üzerinden çalışın"
-
-msgid "Worked for {duration}"
-msgstr "{duration} çalıştı"
 
 msgid "Worked for 39s"
 msgstr "39 sn çalıştı"

@@ -13,11 +13,6 @@ export class CommandDedupe {
 		}
 		const result = execute();
 		this.results.set(commandId, result);
-		if (result instanceof Promise)
-			void result.catch(() => {
-				if (this.results.get(commandId) === result)
-					this.results.delete(commandId);
-			});
 		this.evict();
 		return result;
 	}

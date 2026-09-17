@@ -12,7 +12,6 @@ import { workspaceTrpc } from "@superset/workspace-client";
 import { ChevronRight, Minus, Plus } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { LuUndo2 } from "react-icons/lu";
-import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { DiscardConfirmDialog } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/DiscardConfirmDialog";
 import {
 	useV2ChangesSectionsStore,
@@ -176,7 +175,7 @@ export function ChangesSection({
 					/>
 					<span className="truncate font-medium">{title}</span>
 					<span className="shrink-0 text-[10px] text-muted-foreground">
-						<AnimatedNumber value={count} />
+						{count}
 					</span>
 					{(additions > 0 || deletions > 0) && (
 						<span className="ml-auto shrink-0 pl-2 text-[10px] tabular-nums">

@@ -311,10 +311,6 @@
 		"./theme-colors": {
 			"types": "./src/themes/types.ts",
 			"default": "./src/themes/types.ts"
-		},
-		"./codex-chat-settings": {
-			"types": "./src/codex-chat-settings.ts",
-			"default": "./src/codex-chat-settings.ts"
 		}
 	},
 	"scripts": {

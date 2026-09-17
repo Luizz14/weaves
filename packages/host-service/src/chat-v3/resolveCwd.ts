@@ -18,19 +18,3 @@ export function createResolveCwd(db: HostDb): (workspaceId: string) => string {
 		return workspace.worktreePath;
 	};
 }
-
-export function createResolveWorkspace(
-	db: HostDb,
-): (workspaceId: string) => { path: string; name: string; branch?: string } {
-	return (workspaceId: string) => {
-		const workspace = db.query.workspaces
-			.findFirst({ where: eq(workspaces.id, workspaceId) })
-			.sync();
-		if (!workspace) throw new ChatWorkspaceNotFoundError(workspaceId);
-		return {
-			path: workspace.worktreePath,
-			name: workspace.name,
-			branch: workspace.branch,
-		};
-	};
-}

@@ -36,8 +36,6 @@ export const threadSchema = z.looseObject({
 });
 
 export const threadStartResponseSchema = z.looseObject({
-	reasoningEffort: z.string().nullish(),
-	serviceTier: z.string().nullish(),
 	thread: threadSchema,
 	model: z.string().optional(),
 	cwd: z.string().optional(),

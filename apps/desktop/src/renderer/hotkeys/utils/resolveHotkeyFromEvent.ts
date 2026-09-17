@@ -52,9 +52,7 @@ function buildRegisteredAppChords(
 	layoutMap: ReadonlyMap<string, string> | null,
 ): Map<string, HotkeyId> {
 	const map = new Map<string, HotkeyId>();
-	for (const id of (Object.keys(HOTKEYS) as HotkeyId[]).sort(
-		(a, b) => Number(a in overrides) - Number(b in overrides),
-	)) {
+	for (const id of Object.keys(HOTKEYS) as HotkeyId[]) {
 		const hasOverride = id in overrides;
 		const override = hasOverride ? overrides[id] : undefined;
 		// Explicit unassignment (null override) must drop from the index — else

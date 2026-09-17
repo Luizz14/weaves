@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { SessionClient, SessionStream, StreamStatus } from "../../client";
 import type { OutboxEntry, SessionSnapshot } from "../../core";
 import { emptySnapshot, Outbox, reduceMany } from "../../core";
-import type { CodexExecution } from "../../protocol/codex";
 import type { Cursor } from "../../protocol/cursor";
 import type { DeltaChannel, Envelope } from "../../protocol/envelope";
 import { isDurableEnvelope } from "../../protocol/envelope";
@@ -46,7 +45,7 @@ export type ChatSession = {
 	connection: StreamStatus;
 	outbox: OutboxEntry[];
 	hasOlder: boolean;
-	sendPrompt(content: UserContent[], execution?: CodexExecution): OutboxEntry;
+	sendPrompt(content: UserContent[]): OutboxEntry;
 	retryPrompt(clientId: string): void;
 	discardPrompt(clientId: string): void;
 	loadOlder(): Promise<void>;
@@ -98,7 +97,6 @@ export function useChatSession(options: UseChatSessionOptions): ChatSession {
 						commandId: entry.commandId,
 						clientId: entry.clientId,
 						content: entry.content,
-						execution: entry.execution,
 					});
 				},
 			}),
@@ -182,7 +180,6 @@ export function useChatSession(options: UseChatSessionOptions): ChatSession {
 				nextBeforeRef.current = page.nextBefore;
 				setHasOlder(page.nextBefore !== null);
 			}
-			if (session.state) seeded = { ...seeded, session: session.state };
 			if (!seeded.session)
 				seeded = {
 					...seeded,
@@ -222,8 +219,8 @@ export function useChatSession(options: UseChatSessionOptions): ChatSession {
 	}, [client, deltasKey, pageSize, enqueue, resync, loadAttempt]);
 
 	const sendPrompt = useCallback(
-		(content: UserContent[], execution?: CodexExecution) => {
-			const entry = outbox.enqueue(content, execution);
+		(content: UserContent[]) => {
+			const entry = outbox.enqueue(content);
 			void outbox.flush();
 			return entry;
 		},

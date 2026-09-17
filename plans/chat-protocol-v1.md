@@ -33,7 +33,7 @@ Every server→client frame:
 ```ts
 type Envelope =
   | { v: 1; sessionId: string; cursor: Cursor; ts: number; event: DurableEvent }
-  | { v: 1; sessionId: string; ts: number; delta: Delta } // no cursor: not part of the spine
+  | { v: 1; sessionId: string; ts: number; delta: Delta }      // no cursor: not part of the spine
   | { v: 1; sessionId: string; ts: number; reset: Reset };
 ```
 
@@ -45,9 +45,9 @@ Durable events get cursors; deltas do not (they are not replayable and carry `it
 
 ```ts
 type DurableEvent =
-  | { type: "item"; item: Item; turnId: string } // FULL snapshot, upsert by item.id
-  | { type: "turn"; turn: Turn } // full snapshot, upsert by turn.id
-  | { type: "session"; session: SessionState }; // full snapshot
+  | { type: "item";    item: Item;   turnId: string }        // FULL snapshot, upsert by item.id
+  | { type: "turn";    turn: Turn }                          // full snapshot, upsert by turn.id
+  | { type: "session"; session: SessionState };              // full snapshot
 ```
 
 **There is no create/update distinction and no patch format.** Every `item` event carries the complete item. The client reducer is `items.set(item.id, item)` — this is the decision that makes reconnection, replay, and multi-client trivial, and it is not negotiable within v1.
@@ -58,17 +58,17 @@ type DurableEvent =
 type Turn = {
   id: string;
   status: "running" | "completed" | "failed" | "interrupted";
-  error?: { message: string }; // present iff failed
-  usage?: Usage; // a LEVEL, not a delta — latest wins
+  error?: { message: string };            // present iff failed
+  usage?: Usage;                          // a LEVEL, not a delta — latest wins
   startedAtMs: number;
   completedAtMs?: number;
 };
 
 type Usage = {
   inputTokens: number;
-  cachedInputTokens: number; // distinct so cost display is honest
+  cachedInputTokens: number;              // distinct so cost display is honest
   outputTokens: number;
-  contextUsed?: number; // tokens in context window
+  contextUsed?: number;                   // tokens in context window
   contextSize?: number;
   costUsd?: number;
 };
@@ -78,14 +78,15 @@ type Usage = {
 
 ```ts
 type SessionState = {
-  status: "starting" | "running" | "awaiting_input" | "idle" | "not_loaded" | "offline" | "dead";
-  harness: string; // e.g. "claude-code", "codex"
+  status: "starting" | "running" | "awaiting_input" | "idle"
+        | "not_loaded" | "offline" | "dead";
+  harness: string;                        // e.g. "claude-code", "codex"
   title?: string;
-  modeId?: string; // harness mode (plan/default/...)
+  modeId?: string;                        // harness mode (plan/default/...)
   modelId?: string;
-  availableModes?: { id: string; label: string }[]; // adapter-advertised;
-  availableModels?: { id: string; label: string }[]; // pickers render from these,
-  // never from hardcoded lists
+  availableModes?: { id: string; label: string }[];   // adapter-advertised;
+  availableModels?: { id: string; label: string }[];  // pickers render from these,
+                                                      // never from hardcoded lists
 };
 ```
 
@@ -99,8 +100,8 @@ Common fields on every item:
 
 ```ts
 type ItemBase = {
-  id: string; // stable across all snapshots of this item
-  parentItemId?: string; // subagent / nested provenance
+  id: string;                             // stable across all snapshots of this item
+  parentItemId?: string;                  // subagent / nested provenance
   startedAtMs: number;
   completedAtMs?: number;
 };
@@ -109,7 +110,8 @@ type ItemBase = {
 The v1 vocabulary — seven kinds:
 
 ```ts
-type Item = UserMessage | AgentMessage | Reasoning | ToolCall | Plan | ApprovalRequest | Notice;
+type Item = UserMessage | AgentMessage | Reasoning | ToolCall
+          | Plan | ApprovalRequest | Notice;
 ```
 
 ### 3.1 `user_message`
@@ -117,7 +119,7 @@ type Item = UserMessage | AgentMessage | Reasoning | ToolCall | Plan | ApprovalR
 ```ts
 type UserMessage = ItemBase & {
   kind: "user_message";
-  clientId?: string; // client-minted id for optimistic reconciliation
+  clientId?: string;                      // client-minted id for optimistic reconciliation
   content: UserContent[];
 };
 
@@ -125,8 +127,7 @@ type UserContent =
   | { type: "text"; text: string; elements?: TextElement[] }
   | { type: "attachment"; attachmentId: string; name: string; mimeType: string };
 
-type TextElement = {
-  // mention/command chips as byte ranges (Codex)
+type TextElement = {                      // mention/command chips as byte ranges (Codex)
   byteRange: { start: number; end: number };
   elementKind: "file_mention" | "slash_command" | "other";
 };
@@ -139,7 +140,7 @@ Optimistic sends reconcile on `clientId` echo — never on text equality (the cu
 ```ts
 type AgentMessage = ItemBase & {
   kind: "agent_message";
-  text: string; // markdown; AUTHORITATIVE over concatenated deltas
+  text: string;                           // markdown; AUTHORITATIVE over concatenated deltas
 };
 ```
 
@@ -158,23 +159,25 @@ type Reasoning = ItemBase & {
 ```ts
 type ToolCall = ItemBase & {
   kind: "tool_call";
-  title: string; // human-readable, ADAPTER-SUPPLIED, required.
-  // "Editing src/foo.ts", never "edit_file".
-  toolKind: "read" | "edit" | "delete" | "move" | "search" | "execute" | "think" | "fetch" | "other"; // renderers dispatch on THIS,
-  toolName: string; // ...never on toolName (detail display only)
+  title: string;                          // human-readable, ADAPTER-SUPPLIED, required.
+                                          // "Editing src/foo.ts", never "edit_file".
+  toolKind: "read" | "edit" | "delete" | "move" | "search"
+          | "execute" | "think" | "fetch" | "other";   // renderers dispatch on THIS,
+  toolName: string;                       // ...never on toolName (detail display only)
   status: "running" | "completed" | "failed" | "declined" | "canceled";
   content: ToolContent[];
-  locations?: { path: string; line?: number }[]; // follow-along hook
-  rawInput?: unknown; // detail view only; may be truncated by adapter
+  locations?: { path: string; line?: number }[];       // follow-along hook
+  rawInput?: unknown;                     // detail view only; may be truncated by adapter
   rawOutput?: unknown;
 };
 
 type ToolContent =
   | { type: "text"; text: string }
   | { type: "diff"; path: string; oldText: string | null; newText: string }
-  // oldText null = file creation; one renderer for create + modify
-  | { type: "terminal"; command: string; output: string; exitCode?: number; truncated?: boolean };
-// output is an authoritative snapshot; live bytes arrive as deltas
+        // oldText null = file creation; one renderer for create + modify
+  | { type: "terminal"; command: string; output: string; exitCode?: number;
+      truncated?: boolean };
+        // output is an authoritative snapshot; live bytes arrive as deltas
 ```
 
 `declined` and `canceled` are **statuses, not errors** — a refused tool renders as a normal settled row.
@@ -185,32 +188,29 @@ type ToolContent =
 type Plan = ItemBase & {
   kind: "plan";
   entries: { text: string; status: "pending" | "in_progress" | "completed" }[];
-  text?: string;
 };
 ```
 
 Each snapshot **replaces the plan wholesale** (ACP rule). Clients diff against the previous array to animate; they never merge.
-
-A plan carries **either** `entries` (the checklist the agent ticks off while working) **or** `text` (a written plan document, the deliverable of a planning turn, streamed on the `text` channel). Clients render the document as prose, not as a checklist row.
 
 ### 3.6 `approval_request`
 
 ```ts
 type ApprovalRequest = ItemBase & {
   kind: "approval_request";
-  targetItemId: string | null; // null = not attributable to one item
+  targetItemId: string | null;            // null = not attributable to one item
   title: string;
-  detail?: ToolContent[]; // e.g. the diff being approved
-  options?: { optionId: string; label: string }[]; // harness-supplied choices (ACP)
+  detail?: ToolContent[];                 // e.g. the diff being approved
+  options?: { optionId: string; label: string }[];  // harness-supplied choices (ACP)
   status: "pending" | "answered" | "stale";
-  decision?: Decision; // present iff answered
+  decision?: Decision;                    // present iff answered
 };
 
 type Decision =
   | { type: "accept" }
   | { type: "accept_for_session" }
-  | { type: "decline" } // agent continues the turn
-  | { type: "cancel" } // turn is interrupted
+  | { type: "decline" }                   // agent continues the turn
+  | { type: "cancel" }                    // turn is interrupted
   | { type: "option"; optionId: string }; // harness-native option passthrough
 ```
 
@@ -226,7 +226,7 @@ type Notice = ItemBase & {
 };
 ```
 
-The generic-row fallback: adapters emit `notice` for harness events with no better mapping, and clients render unknown _item kinds_ with the same visual treatment.
+The generic-row fallback: adapters emit `notice` for harness events with no better mapping, and clients render unknown *item kinds* with the same visual treatment.
 
 ---
 
@@ -234,9 +234,9 @@ The generic-row fallback: adapters emit `notice` for harness events with no bett
 
 ```ts
 type Delta =
-  | { type: "text"; itemId: string; append: string } // agent_message / reasoning text
-  | { type: "tool_input"; itemId: string; append: string } // streaming raw JSON input
-  | { type: "terminal"; itemId: string; append: string }; // raw output bytes (utf8-lossy)
+  | { type: "text";      itemId: string; append: string }   // agent_message / reasoning text
+  | { type: "tool_input"; itemId: string; append: string }  // streaming raw JSON input
+  | { type: "terminal";  itemId: string; append: string };  // raw output bytes (utf8-lossy)
 ```
 
 Rules:
@@ -298,9 +298,9 @@ Append-only journal per session in host SQLite: `(epoch, seq, ts, event_json)` r
 3. Deltas are optional, droppable, per-client, and always superseded by the next snapshot.
 4. The transcript never shrinks; edit-a-past-message forks a session (`forkedFromSessionId`), never truncates.
 5. `declined`/`canceled`/`stale` are statuses, not errors.
-   5b. In-flight turns do not survive host death (true of every surveyed implementation). On resurrection the host journals the truth: the running turn → `interrupted`, its running tool_calls → `canceled`, pending approvals → `stale`. The UI renders an honest seam, never a spinner that outlived its process.
+5b. In-flight turns do not survive host death (true of every surveyed implementation). On resurrection the host journals the truth: the running turn → `interrupted`, its running tool_calls → `canceled`, pending approvals → `stale`. The UI renders an honest seam, never a spinner that outlived its process.
 6. Cursors are epoch-qualified; cross-epoch cursors reset, never partially replay.
-7. `stop`/`cancel` are in-band commands; a dropped socket means _nothing_ about user intent.
+7. `stop`/`cancel` are in-band commands; a dropped socket means *nothing* about user intent.
 8. All unions are open; unknown kinds render generically, unknown fields are preserved on round-trip.
 9. Everything crossing a process/network/persistence boundary is **parsed** (zod), not asserted.
 10. Adapters supply `title` and `toolKind` — renderers never parse tool names, shell commands, or raw payloads to produce summaries.
@@ -309,7 +309,7 @@ Append-only journal per session in host SQLite: `(epoch, seq, ts, event_json)` r
 
 An adapter (host-side, e.g. Claude Code via ACP v1 / `claude-code-acp` shapes) must:
 
-- Mint stable item ids and map harness updates into full item snapshots (tracking in-flight state as needed — the v1 create/update race lives _here_, invisibly to clients).
+- Mint stable item ids and map harness updates into full item snapshots (tracking in-flight state as needed — the v1 create/update race lives *here*, invisibly to clients).
 - Synthesize `title`/`toolKind` when the harness omits them.
 - Emit `approval_request` items from permission callbacks, mark them `stale` on provider loss, and translate `Decision` back into the harness's response format (harness-native options via `Decision.option`).
 - Downsample firehoses (terminal output) into snapshot + bounded deltas; set `truncated`.
