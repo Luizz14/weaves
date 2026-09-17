@@ -506,11 +506,20 @@ export const HOTKEYS_REGISTRY = {
 	},
 	NEW_GROUP: {
 		key: {
+			mac: L("meta+j"),
+			windows: L("ctrl+shift+j"),
+			linux: L("ctrl+shift+j"),
+		},
+		label: msg({ message: "New Terminal" }),
+		category: "Terminal",
+	},
+	NEW_CODEX_CHAT: {
+		key: {
 			mac: L("meta+t"),
 			windows: L("ctrl+shift+t"),
 			linux: L("ctrl+shift+t"),
 		},
-		label: msg({ message: "New Terminal" }),
+		label: msg({ message: "New Codex Chat" }),
 		category: "Terminal",
 	},
 	REOPEN_TAB: {
@@ -804,11 +813,7 @@ export const HOTKEYS_REGISTRY = {
 
 	// Chat
 	FOCUS_CHAT_INPUT: {
-		key: {
-			mac: L("meta+j"),
-			windows: L("ctrl+shift+j"),
-			linux: L("ctrl+shift+j"),
-		},
+		key: { mac: null, windows: null, linux: null },
 		label: msg({
 			message: "Focus Chat Input",
 		}),

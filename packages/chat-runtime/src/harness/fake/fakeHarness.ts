@@ -1,6 +1,7 @@
 import type {
 	ApprovalRequest,
 	Decision,
+	LinkedWorkspace,
 	ToolCall,
 	Turn,
 	UserContent,
@@ -131,6 +132,12 @@ export class FakeHarness implements HarnessAdapter {
 		};
 		this.emit({ kind: "item", item: answered, turnId: pending.turnId });
 		pending.release();
+	}
+
+	async setLinkedWorkspaces(
+		workspaces: LinkedWorkspace[],
+	): Promise<LinkedWorkspace[]> {
+		return workspaces;
 	}
 
 	setMode(modeId: string): void {

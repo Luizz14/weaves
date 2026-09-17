@@ -2,6 +2,7 @@ import { useLingui } from "@lingui/react/macro";
 import { cn } from "@superset/ui/utils";
 import { GitCompareArrows } from "lucide-react";
 import { memo, useMemo } from "react";
+import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { useWorkspaceGitStatus } from "../../providers/WorkspaceGitStatusProvider";
 import { changesPillStats } from "./changesPillStats";
 import { PRStatusGroup } from "./components/PRStatusGroup";
@@ -79,16 +80,18 @@ export const ChangesControl = memo(function ChangesControl({
 					<GitCompareArrows className="size-3.5" />
 					{visibleStats.additions > 0 && (
 						<span className="tabular-nums text-emerald-600 [.dark_&]:text-[#34d399]">
-							+{visibleStats.additions}
+							+<AnimatedNumber value={visibleStats.additions} />
 						</span>
 					)}
 					{visibleStats.deletions > 0 && (
 						<span className="tabular-nums text-red-600 [.dark_&]:text-[#f87171]">
-							−{visibleStats.deletions}
+							−<AnimatedNumber value={visibleStats.deletions} />
 						</span>
 					)}
 					{visibleStats.additions === 0 && visibleStats.deletions === 0 && (
-						<span className="tabular-nums">{visibleStats.fileCount}</span>
+						<span className="tabular-nums">
+							<AnimatedNumber value={visibleStats.fileCount} />
+						</span>
 					)}
 				</button>
 			)}

@@ -1,3 +1,4 @@
+import type { CodexChatSettings } from "@superset/shared/codex-chat-settings";
 import type { InstalledPlugin } from "@superset/shared/plugins";
 import {
 	index,
@@ -184,6 +185,7 @@ export type InsertWorkspaceSection = typeof workspaceSections.$inferInsert;
 export type SelectWorkspaceSection = typeof workspaceSections.$inferSelect;
 
 export const settings = sqliteTable("settings", {
+	codexChat: text("codex_chat", { mode: "json" }).$type<CodexChatSettings>(),
 	id: integer("id").primaryKey().default(1),
 	lastActiveWorkspaceId: text("last_active_workspace_id"),
 	terminalPresets: text("terminal_presets", { mode: "json" }).$type<

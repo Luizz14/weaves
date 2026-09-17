@@ -69,3 +69,11 @@ describe("codex version gate", () => {
 		});
 	});
 });
+
+test("recognizes the desktop-branded Codex app-server user agent", () => {
+	expect(
+		parseCodexVersion(
+			"Codex Desktop/0.154.0 (Mac OS 27.0.0; arm64) dumb (superset-chat-runtime; 0.0.0)",
+		),
+	).toBe("0.154.0");
+});

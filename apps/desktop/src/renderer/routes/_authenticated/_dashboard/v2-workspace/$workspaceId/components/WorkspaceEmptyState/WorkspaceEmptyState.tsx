@@ -16,6 +16,7 @@ interface WorkspaceEmptyStateProps {
 	onOpenChatV3?: (() => void) | undefined;
 	onOpenQuickOpen: () => void;
 	onOpenTerminal: () => void;
+	onOpenCodexChat: () => void;
 }
 
 interface WorkspaceEmptyStateAction {
@@ -32,9 +33,11 @@ export function WorkspaceEmptyState({
 	onOpenChatV3,
 	onOpenQuickOpen,
 	onOpenTerminal,
+	onOpenCodexChat,
 }: WorkspaceEmptyStateProps) {
 	const { t } = useLingui();
 	const activeTheme = useTheme();
+	const { keys: newChatDisplay } = useHotkeyDisplay("NEW_CODEX_CHAT");
 	const { keys: newGroupDisplay } = useHotkeyDisplay("NEW_GROUP");
 	const { keys: newBrowserDisplay } = useHotkeyDisplay("NEW_BROWSER");
 	const { keys: quickOpenDisplay } = useHotkeyDisplay("QUICK_OPEN");
@@ -42,6 +45,13 @@ export function WorkspaceEmptyState({
 
 	const actions = useMemo<Array<WorkspaceEmptyStateAction>>(
 		() => [
+			{
+				id: "codex-chat",
+				label: t({ message: "New Codex Chat" }),
+				display: newChatDisplay,
+				icon: TbMessageCirclePlus,
+				onClick: onOpenCodexChat,
+			},
 			{
 				id: "terminal",
 				label: t({
@@ -94,6 +104,8 @@ export function WorkspaceEmptyState({
 		],
 		[
 			newBrowserDisplay,
+			newChatDisplay,
+			onOpenCodexChat,
 			newGroupDisplay,
 			onOpenBrowser,
 			onOpenChanges,

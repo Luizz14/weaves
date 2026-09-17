@@ -64,6 +64,12 @@ export interface PagePaneData {
 	title?: string;
 }
 
+export interface CodexChatPaneData {
+	sessionId: string | null;
+	title?: string;
+	status?: string;
+}
+
 export interface ChatV3PaneData {
 	sessionId: string | null;
 }
@@ -89,6 +95,7 @@ export type PaneViewerData =
 	| FilePaneData
 	| TerminalPaneData
 	| ChatV3PaneData
+	| CodexChatPaneData
 	| BrowserPaneData
 	| DevtoolsPaneData
 	| DiffPaneData

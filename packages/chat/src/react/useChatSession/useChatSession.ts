@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { SessionClient, SessionStream, StreamStatus } from "../../client";
 import type { OutboxEntry, SessionSnapshot } from "../../core";
 import { emptySnapshot, Outbox, reduceMany } from "../../core";
+import type { CodexExecution } from "../../protocol/codex";
 import type { Cursor } from "../../protocol/cursor";
 import type { DeltaChannel, Envelope } from "../../protocol/envelope";
 import { isDurableEnvelope } from "../../protocol/envelope";
@@ -40,10 +41,12 @@ export type ChatSessionStatus = "loading" | "ready";
 export type ChatSession = {
 	snapshot: SessionSnapshot;
 	status: ChatSessionStatus;
+	error: Error | null;
+	reload(): void;
 	connection: StreamStatus;
 	outbox: OutboxEntry[];
 	hasOlder: boolean;
-	sendPrompt(content: UserContent[]): OutboxEntry;
+	sendPrompt(content: UserContent[], execution?: CodexExecution): OutboxEntry;
 	retryPrompt(clientId: string): void;
 	discardPrompt(clientId: string): void;
 	loadOlder(): Promise<void>;
@@ -68,6 +71,9 @@ export function useChatSession(options: UseChatSessionOptions): ChatSession {
 	const pageSize = options.pageSize;
 	const deltasKey = (options.deltas ?? DEFAULT_DELTAS).join(",");
 
+	const [error, setError] = useState<Error | null>(null);
+	const [loadAttempt, setLoadAttempt] = useState(0);
+	const reload = useCallback(() => setLoadAttempt((value) => value + 1), []);
 	const [snapshot, setSnapshot] = useState<SessionSnapshot>(emptySnapshot);
 	const [status, setStatus] = useState<ChatSessionStatus>("loading");
 	const [connection, setConnection] = useState<StreamStatus>("connecting");
@@ -92,6 +98,7 @@ export function useChatSession(options: UseChatSessionOptions): ChatSession {
 						commandId: entry.commandId,
 						clientId: entry.clientId,
 						content: entry.content,
+						execution: entry.execution,
 					});
 				},
 			}),
@@ -137,6 +144,9 @@ export function useChatSession(options: UseChatSessionOptions): ChatSession {
 					page.envelopes,
 				),
 			);
+		} catch (cause) {
+			if (clientRef.current === client)
+				setError(cause instanceof Error ? cause : new Error(String(cause)));
 		} finally {
 			resyncingRef.current = false;
 		}
@@ -146,12 +156,14 @@ export function useChatSession(options: UseChatSessionOptions): ChatSession {
 		if (snapshot.pendingReset) void resync();
 	}, [snapshot.pendingReset, resync]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Explicit reload restarts the seed and subscription even when the client is unchanged.
 	useEffect(() => {
 		let cancelled = false;
 		let stream: SessionStream | null = null;
 		const deltas = deltasKey ? (deltasKey.split(",") as DeltaChannel[]) : [];
 
 		setStatus("loading");
+		setError(null);
 		setConnection("connecting");
 		setSnapshot(emptySnapshot());
 		setHasOlder(false);
@@ -160,13 +172,27 @@ export function useChatSession(options: UseChatSessionOptions): ChatSession {
 
 		const seed = async () => {
 			const session = await client.getSession();
+			if (!session.session) throw new Error("Chat session not found");
 			const page = await client.getItems({ limit: pageSize });
 			if (cancelled) return;
+			if (!page.ok) throw new Error(`Chat history unavailable: ${page.reset}`);
 			let seeded = emptySnapshot();
 			if (page.ok) {
 				seeded = reduceMany(seeded, page.envelopes);
 				nextBeforeRef.current = page.nextBefore;
 				setHasOlder(page.nextBefore !== null);
+			}
+			if (session.state) seeded = { ...seeded, session: session.state };
+			if (!seeded.session)
+				seeded = {
+					...seeded,
+					session: { harness: session.session.harness, status: "not_loaded" },
+				};
+			if (session.isLive === false && seeded.session?.harness === "codex") {
+				seeded = {
+					...seeded,
+					session: { ...seeded.session, status: "not_loaded" },
+				};
 			}
 			setSnapshot(seeded);
 			setStatus("ready");
@@ -180,7 +206,11 @@ export function useChatSession(options: UseChatSessionOptions): ChatSession {
 				onStatusChange: setConnection,
 			});
 		};
-		void seed();
+		void seed().catch((cause: unknown) => {
+			if (cancelled) return;
+			setError(cause instanceof Error ? cause : new Error(String(cause)));
+			setConnection("closed");
+		});
 
 		return () => {
 			cancelled = true;
@@ -189,11 +219,11 @@ export function useChatSession(options: UseChatSessionOptions): ChatSession {
 			pendingRef.current = [];
 			stream?.close();
 		};
-	}, [client, deltasKey, pageSize, enqueue, resync]);
+	}, [client, deltasKey, pageSize, enqueue, resync, loadAttempt]);
 
 	const sendPrompt = useCallback(
-		(content: UserContent[]) => {
-			const entry = outbox.enqueue(content);
+		(content: UserContent[], execution?: CodexExecution) => {
+			const entry = outbox.enqueue(content, execution);
 			void outbox.flush();
 			return entry;
 		},
@@ -254,6 +284,8 @@ export function useChatSession(options: UseChatSessionOptions): ChatSession {
 	return {
 		snapshot,
 		status,
+		error,
+		reload,
 		connection,
 		outbox: outboxEntries,
 		hasOlder,

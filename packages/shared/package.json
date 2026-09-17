@@ -319,6 +319,10 @@
 		"./plugins/manifest-schema": {
 			"types": "./src/plugins/manifest-schema.ts",
 			"default": "./src/plugins/manifest-schema.ts"
+		},
+		"./codex-chat-settings": {
+			"types": "./src/codex-chat-settings.ts",
+			"default": "./src/codex-chat-settings.ts"
 		}
 	},
 	"scripts": {

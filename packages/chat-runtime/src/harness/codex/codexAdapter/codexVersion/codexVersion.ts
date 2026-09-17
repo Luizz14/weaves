@@ -1,7 +1,7 @@
 export const MIN_CODEX_VERSION = "0.143.0";
 
 export function parseCodexVersion(userAgent: string): string | null {
-	const match = userAgent.match(/^[^/\s]+\/(\d+\.\d+\.\d+)/);
+	const match = userAgent.match(/^[^/\r\n]+\/(\d+\.\d+\.\d+)/);
 	return match?.[1] ?? null;
 }
 

@@ -29,7 +29,12 @@ const SCRIPT: FakeHarnessScript = {
 	],
 };
 
-function newCaller() {
+function newCaller(
+	fixtures: {
+		workspaces?: Record<string, { path: string; name: string }>;
+		attachments?: Record<string, { path: string; mimeType: string }>;
+	} = {},
+) {
 	const { harnesses, adapters } = fakeHarnessRegistry(SCRIPT);
 	const runtime = createTestRuntime({ harnesses });
 	const cwd = mkdtempSync(join(tmpdir(), "chat-router-cwd-"));
@@ -39,11 +44,19 @@ function newCaller() {
 			resolvedWorkspaceIds.push(workspaceId);
 			return cwd;
 		},
+		resolveWorkspace: (workspaceId) => {
+			const workspace = fixtures.workspaces?.[workspaceId];
+			if (!workspace) throw new Error(`no workspace ${workspaceId}`);
+			return workspace;
+		},
+		resolveAttachment: (attachmentId) =>
+			fixtures.attachments?.[attachmentId] ?? null,
 	});
 	const caller = createChatCallerFactory(router)({});
 	return {
 		runtime,
 		caller,
+		adapters,
 		resolvedWorkspaceIds,
 		adapterCount: () => adapters.length,
 	};
@@ -204,6 +217,63 @@ describe("createChatRouter", () => {
 				),
 			).size,
 		).toBe(1);
+		await runtime.dispose();
+	});
+
+	test("setLinkedWorkspaces resolves ids and rejects an unknown one", async () => {
+		const { runtime, caller } = newCaller({
+			workspaces: {
+				"workspace-2": { path: "/tmp/docs", name: "docs" },
+			},
+		});
+		const created = await caller.createSession(createSessionInput());
+
+		expect(
+			await caller.setLinkedWorkspaces({
+				commandId: randomUUID(),
+				sessionId: created.sessionId,
+				workspaceIds: ["workspace-2"],
+			}),
+		).toEqual([
+			{ workspaceId: "workspace-2", path: "/tmp/docs", name: "docs" },
+		]);
+
+		await expect(
+			caller.setLinkedWorkspaces({
+				commandId: randomUUID(),
+				sessionId: created.sessionId,
+				workspaceIds: ["workspace-nope"],
+			}),
+		).rejects.toMatchObject({ code: "NOT_FOUND" });
+		await runtime.dispose();
+	});
+
+	test("an unresolvable attachment fails the prompt", async () => {
+		const { runtime, caller } = newCaller({
+			attachments: {
+				"a-1": { path: "/tmp/shot.png", mimeType: "image/png" },
+			},
+		});
+		const created = await caller.createSession(createSessionInput());
+
+		await expect(
+			caller.prompt({
+				commandId: randomUUID(),
+				sessionId: created.sessionId,
+				clientId: "client-1",
+				content: [
+					{
+						type: "attachment",
+						attachmentId: "a-missing",
+						name: "ghost.txt",
+						mimeType: "text/plain",
+					},
+				],
+			}),
+		).rejects.toMatchObject({
+			code: "NOT_FOUND",
+			message: "Attachment not found: a-missing",
+		});
 		await runtime.dispose();
 	});
 

@@ -81,6 +81,9 @@ export class ChatJournal {
 				title: next.title,
 				queuedCount: next.queuedItemIds.size,
 				updatedAt: ts,
+				...(parsed.type === "session" && parsed.session.harnessSessionId
+					? { harnessSessionId: parsed.session.harnessSessionId }
+					: {}),
 			});
 		});
 

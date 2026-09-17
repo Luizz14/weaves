@@ -8,9 +8,13 @@ import { BsTerminalPlus } from "react-icons/bs";
 import { LuGitCompareArrows } from "react-icons/lu";
 import { TbDeviceDesktop, TbMessageCirclePlus, TbWorld } from "react-icons/tb";
 import { HotkeyMenuShortcut } from "renderer/components/HotkeyMenuShortcut";
+import { RecentCodexChats } from "./components/RecentCodexChats/RecentCodexChats";
 
 interface AddTabMenuProps {
 	onAddTerminal: () => void;
+	onAddCodexChat: () => void;
+	workspaceId?: string;
+	onOpenCodexSession?: (sessionId: string, title?: string | null) => void;
 	onAddChatV3?: (() => void) | undefined;
 	onAddBrowser: () => void;
 	onAddChanges: () => void;
@@ -21,6 +25,9 @@ interface AddTabMenuProps {
 
 export function AddTabMenu({
 	onAddTerminal,
+	onAddCodexChat,
+	workspaceId,
+	onOpenCodexSession,
 	onAddChatV3,
 	onAddBrowser,
 	onAddChanges,
@@ -37,6 +44,19 @@ export function AddTabMenu({
 				</span>
 				<HotkeyMenuShortcut hotkeyId="NEW_GROUP" />
 			</DropdownMenuItem>
+			<DropdownMenuItem className="gap-2" onClick={onAddCodexChat}>
+				<TbMessageCirclePlus className="size-4" />
+				<span>
+					<Trans>Codex Chat</Trans>
+				</span>
+				<HotkeyMenuShortcut hotkeyId="NEW_CODEX_CHAT" />
+			</DropdownMenuItem>
+			{workspaceId && onOpenCodexSession && (
+				<RecentCodexChats
+					workspaceId={workspaceId}
+					onSelect={onOpenCodexSession}
+				/>
+			)}
 			{onAddChatV3 && (
 				<DropdownMenuItem className="gap-2" onClick={onAddChatV3}>
 					<TbMessageCirclePlus className="size-4" />

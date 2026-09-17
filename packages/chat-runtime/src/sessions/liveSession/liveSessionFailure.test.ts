@@ -134,3 +134,21 @@ describe("live session adapter failures", () => {
 		await runtime.dispose();
 	});
 });
+
+test("a dead adapter is not reported as running while a prompt awaits its first turn", async () => {
+	const { runtime, sessionId } = startSession(
+		new FakeHarness({
+			start: [{ kind: "session", session: { status: "dead" }, delayMs: 5 }],
+			turns: [[]],
+		}),
+	);
+	runtime.commands.prompt({
+		commandId: randomUUID(),
+		sessionId,
+		clientId: "pending",
+		content: [{ type: "text", text: "hello" }],
+	});
+	await waitFor(() => runtime.live.get(sessionId)?.state.status === "dead");
+	expect(runtime.sessions.get(sessionId)?.status).toBe("dead");
+	await runtime.dispose();
+});

@@ -110,3 +110,18 @@ describe("CodexRpcClient", () => {
 		await expect(pending).rejects.toThrow(/exited/);
 	});
 });
+
+test("a missing executable rejects initialization instead of crashing the host", async () => {
+	const { spawnCodexTransport } = await import("./rpcClient");
+	const client = new CodexRpcClient({
+		createTransport: (handlers) =>
+			spawnCodexTransport(
+				{ command: "/missing/superset-codex-binary" },
+				handlers,
+			),
+		onNotification: () => undefined,
+		onServerRequest: () => undefined,
+	});
+	await expect(client.initialize()).rejects.toThrow();
+	await client.close();
+});

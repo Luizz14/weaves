@@ -1,29 +1,40 @@
 import { randomUUID } from "node:crypto";
 import type {
 	CancelTurnInput,
+	CodexExecution,
+	ConfigureCodexInput,
 	Cursor,
 	GetItemsInput,
 	GetSessionInput,
-	PromptInput,
+	LinkedWorkspace,
 	RespondToApprovalInput,
+	RespondToUserInput,
+	SessionState,
 	SetModeInput,
+	UpdateCodexGoalInput,
 } from "@superset/chat/protocol";
 import {
 	cancelTurnInputSchema,
+	configureCodexInputSchema,
 	createSessionInputSchema,
 	getItemsInputSchema,
 	getSessionInputSchema,
+	linkedWorkspaceSchema,
 	listSessionsInputSchema,
 	promptInputSchema,
 	respondToApprovalInputSchema,
+	respondToUserInputSchema,
+	setLinkedWorkspacesInputSchema,
 	setModeInputSchema,
+	steerInputSchema,
+	updateCodexGoalInputSchema,
 } from "@superset/chat/protocol";
 import { z } from "zod";
 import type { ChatDb, ChatSessionRow } from "../../db";
 import type { ChatJournal } from "../../journal";
 import type { ChatSessionStore } from "../../projection";
 import type { PageResult } from "../../replay";
-import { readPage } from "../../replay";
+import { readLatestSessionState, readPage } from "../../replay";
 import type { LiveSessionRegistry, PromptResult } from "../../sessions";
 
 export const createSessionCommandSchema = createSessionInputSchema
@@ -40,6 +51,31 @@ export type ListSessionsCommandInput = z.input<
 	typeof listSessionsCommandSchema
 >;
 
+export const resolvedAttachmentSchema = z.object({
+	attachmentId: z.string().min(1),
+	path: z.string().min(1),
+	mimeType: z.string().min(1),
+});
+
+// Host paths stay out of the journalled `user_message` content: clients read
+// those items, and an attachment's location on the host is not theirs to see.
+export const promptCommandInputSchema = promptInputSchema.extend({
+	resolvedAttachments: z.array(resolvedAttachmentSchema).optional(),
+});
+export type PromptCommandInput = z.infer<typeof promptCommandInputSchema>;
+
+export const steerCommandInputSchema = steerInputSchema.extend({
+	resolvedAttachments: z.array(resolvedAttachmentSchema).optional(),
+});
+export type SteerCommandInput = z.infer<typeof steerCommandInputSchema>;
+
+export const setLinkedWorkspacesCommandSchema = setLinkedWorkspacesInputSchema
+	.omit({ workspaceIds: true })
+	.extend({ workspaces: z.array(linkedWorkspaceSchema).max(10) });
+export type SetLinkedWorkspacesCommandInput = z.infer<
+	typeof setLinkedWorkspacesCommandSchema
+>;
+
 export type CreateSessionResult = {
 	sessionId: string;
 	epoch: string;
@@ -47,15 +83,23 @@ export type CreateSessionResult = {
 
 export type GetSessionResult = {
 	session: ChatSessionRow | null;
+	isLive?: boolean;
+	state?: SessionState | null;
 	cursor: Cursor | null;
 };
 
 export type ChatCommands = {
+	configureCodex(input: ConfigureCodexInput): Promise<CodexExecution>;
+	updateCodexGoal(input: UpdateCodexGoalInput): Promise<void>;
+	respondToUserInput(input: RespondToUserInput): void;
+	setLinkedWorkspaces(
+		input: SetLinkedWorkspacesCommandInput,
+	): Promise<LinkedWorkspace[]>;
 	createSession(input: CreateSessionCommandInput): CreateSessionResult;
-	prompt(input: PromptInput): PromptResult;
+	prompt(input: PromptCommandInput): PromptResult;
 	cancelTurn(input: CancelTurnInput): void;
 	respondToApproval(input: RespondToApprovalInput): void;
-	setMode(input: SetModeInput): void;
+	setMode(input: SetModeInput): void | Promise<void>;
 	getSession(input: GetSessionInput): GetSessionResult;
 	listSessions(input: ListSessionsCommandInput): ChatSessionRow[];
 	getItems(input: z.input<typeof getItemsInputSchema>): PageResult;
@@ -78,10 +122,42 @@ export function createCommands(options: CommandsOptions): ChatCommands {
 		const rows = parsed.scopeId
 			? options.sessions.listByScope(parsed.scopeId)
 			: options.sessions.list();
-		return rows.slice(0, parsed.limit);
+		return rows
+			.filter(
+				(row) => parsed.harness === undefined || row.harness === parsed.harness,
+			)
+			.slice(0, parsed.limit);
 	};
 
 	return {
+		configureCodex(input) {
+			const parsed = configureCodexInputSchema.parse(input);
+			return options.dedupe.run(`configure:${parsed.commandId}`, () =>
+				options.live.require(parsed.sessionId).configureCodex(parsed.execution),
+			);
+		},
+		updateCodexGoal(input) {
+			const parsed = updateCodexGoalInputSchema.parse(input);
+			return options.dedupe.run(`goal:${parsed.commandId}`, () =>
+				options.live.require(parsed.sessionId).updateGoal(parsed.change),
+			);
+		},
+		respondToUserInput(input) {
+			const parsed = respondToUserInputSchema.parse(input);
+			options.dedupe.run(`answer:${parsed.commandId}`, () =>
+				options.live
+					.require(parsed.sessionId)
+					.respondToUserInput(parsed.requestId, parsed.answers),
+			);
+		},
+		setLinkedWorkspaces(input) {
+			const parsed = setLinkedWorkspacesCommandSchema.parse(input);
+			return options.dedupe.run(`linkedWorkspaces:${parsed.commandId}`, () =>
+				options.live
+					.require(parsed.sessionId)
+					.setLinkedWorkspaces(parsed.workspaces),
+			);
+		},
 		createSession(input) {
 			const parsed = createSessionCommandSchema.parse(input);
 			return options.dedupe.run(`createSession:${parsed.commandId}`, () => {
@@ -102,6 +178,7 @@ export function createCommands(options: CommandsOptions): ChatCommands {
 						cwd: parsed.cwd,
 						modeId: parsed.modeId,
 						modelId: parsed.modelId,
+						execution: parsed.execution,
 					});
 				} catch (error) {
 					options.journal.discard(sessionId);
@@ -112,11 +189,16 @@ export function createCommands(options: CommandsOptions): ChatCommands {
 		},
 
 		prompt(input) {
-			const parsed: PromptInput = promptInputSchema.parse(input);
+			const parsed = promptCommandInputSchema.parse(input);
 			return options.dedupe.run(`prompt:${parsed.commandId}`, () =>
 				options.live
 					.require(parsed.sessionId)
-					.prompt(parsed.content, parsed.clientId),
+					.prompt(
+						parsed.content,
+						parsed.clientId,
+						parsed.execution,
+						parsed.resolvedAttachments,
+					),
 			);
 		},
 
@@ -139,9 +221,9 @@ export function createCommands(options: CommandsOptions): ChatCommands {
 
 		setMode(input) {
 			const parsed: SetModeInput = setModeInputSchema.parse(input);
-			options.dedupe.run(`setMode:${parsed.commandId}`, () => {
-				options.live.require(parsed.sessionId).setMode(parsed.modeId);
-			});
+			return options.dedupe.run(`setMode:${parsed.commandId}`, () =>
+				options.live.require(parsed.sessionId).setMode(parsed.modeId),
+			);
 		},
 
 		getSession(input) {
@@ -149,6 +231,16 @@ export function createCommands(options: CommandsOptions): ChatCommands {
 			const session = options.sessions.get(parsed.sessionId);
 			return {
 				session,
+				...(session?.harness === "codex"
+					? {
+							state:
+								options.live.get(parsed.sessionId)?.state ??
+								readLatestSessionState(options.db, parsed.sessionId),
+							isLive:
+								options.live.get(parsed.sessionId)?.state.status !== "dead" &&
+								options.live.get(parsed.sessionId) !== null,
+						}
+					: {}),
 				cursor: session
 					? {
 							epoch: session.epoch,

@@ -1,0 +1,1 @@
+export { ModelIcon } from "./ModelIcon";

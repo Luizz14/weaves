@@ -1,4 +1,9 @@
 import { z } from "zod";
+import {
+	codexExecutionSchema,
+	codexGoalActionSchema,
+	userInputAnswersSchema,
+} from "./codex";
 import { cursorSchema } from "./cursor";
 import { decisionSchema, userContentSchema } from "./items";
 
@@ -13,6 +18,7 @@ export const createSessionInputSchema = z.object({
 	harness: z.string().min(1),
 	modeId: z.string().optional(),
 	modelId: z.string().optional(),
+	execution: codexExecutionSchema.optional(),
 });
 export type CreateSessionInput = z.infer<typeof createSessionInputSchema>;
 
@@ -20,6 +26,7 @@ export const promptInputSchema = z.object({
 	...commandBaseFields,
 	clientId: z.string().min(1),
 	content: z.array(userContentSchema).min(1),
+	execution: codexExecutionSchema.optional(),
 });
 export type PromptInput = z.infer<typeof promptInputSchema>;
 
@@ -27,6 +34,7 @@ export const steerInputSchema = z.object({
 	...commandBaseFields,
 	expectedTurnId: z.string().min(1),
 	content: z.array(userContentSchema).min(1),
+	execution: codexExecutionSchema.optional(),
 });
 export type SteerInput = z.infer<typeof steerInputSchema>;
 
@@ -57,6 +65,14 @@ export const setModelInputSchema = z.object({
 });
 export type SetModelInput = z.infer<typeof setModelInputSchema>;
 
+export const setLinkedWorkspacesInputSchema = z.object({
+	...commandBaseFields,
+	workspaceIds: z.array(z.string().min(1)).max(10),
+});
+export type SetLinkedWorkspacesInput = z.infer<
+	typeof setLinkedWorkspacesInputSchema
+>;
+
 export const setConfigOptionInputSchema = z.object({
 	...commandBaseFields,
 	optionId: z.string().min(1),
@@ -75,6 +91,7 @@ export const getSessionInputSchema = z.object({ sessionId: z.string().min(1) });
 export type GetSessionInput = z.infer<typeof getSessionInputSchema>;
 
 export const listSessionsInputSchema = z.object({
+	harness: z.string().min(1).optional(),
 	workspaceId: z.string().min(1).optional(),
 	limit: z.number().int().positive().max(200).default(50),
 });
@@ -86,3 +103,20 @@ export const getItemsInputSchema = z.object({
 	limit: z.number().int().positive().max(500).default(200),
 });
 export type GetItemsInput = z.infer<typeof getItemsInputSchema>;
+
+export const configureCodexInputSchema = z.object({
+	...commandBaseFields,
+	execution: codexExecutionSchema,
+});
+export const updateCodexGoalInputSchema = z.object({
+	...commandBaseFields,
+	change: codexGoalActionSchema,
+});
+export const respondToUserInputSchema = z.object({
+	...commandBaseFields,
+	requestId: z.string(),
+	answers: userInputAnswersSchema,
+});
+export type ConfigureCodexInput = z.infer<typeof configureCodexInputSchema>;
+export type UpdateCodexGoalInput = z.infer<typeof updateCodexGoalInputSchema>;
+export type RespondToUserInput = z.infer<typeof respondToUserInputSchema>;

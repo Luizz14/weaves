@@ -131,6 +131,7 @@ export const planSchema = z.looseObject({
 			status: z.enum(["pending", "in_progress", "completed"]),
 		}),
 	),
+	text: z.string().optional(),
 });
 export type Plan = z.infer<typeof planSchema>;
 
@@ -156,7 +157,28 @@ export const noticeSchema = z.looseObject({
 });
 export type Notice = z.infer<typeof noticeSchema>;
 
+export const userInputRequestSchema = z.looseObject({
+	...itemBaseFields,
+	kind: z.literal("user_input_request"),
+	status: z.enum(["pending", "answered", "stale"]),
+	questions: z.array(
+		z.object({
+			id: z.string(),
+			header: z.string(),
+			question: z.string(),
+			isOther: z.boolean(),
+			isSecret: z.boolean(),
+			options: z
+				.array(z.object({ label: z.string(), description: z.string() }))
+				.nullable(),
+		}),
+	),
+	isBlocking: z.boolean(),
+});
+export type UserInputRequest = z.infer<typeof userInputRequestSchema>;
+
 export const knownItemSchema = z.discriminatedUnion("kind", [
+	userInputRequestSchema,
 	userMessageSchema,
 	agentMessageSchema,
 	reasoningSchema,
@@ -177,6 +199,7 @@ export const itemSchema = z.union([knownItemSchema, unknownItemSchema]);
 export type Item = KnownItem | UnknownItem;
 
 const KNOWN_ITEM_KINDS = new Set<string>([
+	"user_input_request",
 	"user_message",
 	"agent_message",
 	"reasoning",
@@ -188,4 +211,15 @@ const KNOWN_ITEM_KINDS = new Set<string>([
 
 export function isKnownItem(item: Item): item is KnownItem {
 	return KNOWN_ITEM_KINDS.has(item.kind);
+}
+
+// A plan carries either a written plan document (plan mode's deliverable) or a
+// checklist of steps the agent ticks off as it works, never both.
+export function planDocument(item: Plan): string | null {
+	const text = item.text?.trim();
+	return text ? text : null;
+}
+
+export function isPlanDocument(item: Item): item is Plan {
+	return item.kind === "plan" && planDocument(item as Plan) !== null;
 }

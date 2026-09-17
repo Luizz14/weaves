@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. js-lingui-explicit-id
+msgid "greeting"
+msgstr ""
+
 msgid " and "
 msgstr "和"
 
@@ -559,6 +563,10 @@ msgstr "{closedCount, plural, one {已关闭#个端口} other {已关闭#个端�
 
 msgid "{closedCount} closed"
 msgstr "{closedCount}项未开启"
+
+#. placeholder {0}: items.length
+msgid "{completed} / {0}"
+msgstr "{completed} / {0}"
 
 #. placeholder {0}: relevant.length
 msgid "{completed} of {0} checks complete"
@@ -1477,6 +1485,9 @@ msgstr "将议题#{0}添加到工作区"
 msgid "Add member"
 msgstr "添加成员"
 
+msgid "Add model shortcut"
+msgstr "添加模型快捷选项"
+
 msgid "Add one from the menu in the sidebar to get started."
 msgstr "从侧边栏菜单中添加一个即可开始。"
 
@@ -2090,6 +2101,12 @@ msgctxt "job application"
 msgid "Apply"
 msgstr "申请"
 
+msgid "Applying changes"
+msgstr "正在应用更改"
+
+msgid "Approval required"
+msgstr "需要批准"
+
 msgid "Approve"
 msgstr "批准"
 
@@ -2098,6 +2115,9 @@ msgstr "已批准"
 
 msgid "Approved review"
 msgstr "审查已批准"
+
+msgid "Approving"
+msgstr "正在批准"
 
 msgid "apps/desktop/src/renderer"
 msgstr "apps/desktop/src/renderer"
@@ -2150,8 +2170,17 @@ msgstr "升序"
 msgid "Ask an agent to publish one from the desktop app."
 msgstr "让智能体从桌面应用中发布一个页面。"
 
+msgid "Ask Codex to explore, change, or review this workspace."
+msgstr "让 Codex 探索、修改或审查此工作区。"
+
+msgid "Ask Codex to work on this workspace…"
+msgstr "让 Codex 在此工作区中工作…"
+
 msgid "Ask for this to be removed"
 msgstr "请求移除"
+
+msgid "Ask the agent to do something…"
+msgstr "让代理执行任务…"
 
 msgid "Ask the agent…"
 msgstr "向智能体提问…"
@@ -2224,6 +2253,9 @@ msgstr "附件上传失败：{0}"
 
 msgid "Attachment was not uploaded — send the bytes first"
 msgstr "附件尚未上传 — 请先发送数据"
+
+msgid "Attachments"
+msgstr "附件"
 
 msgid "Attachments are not wired yet"
 msgstr "附件功能尚未接入"
@@ -2406,6 +2438,10 @@ msgstr "等待你的审查"
 msgid "Awaiting review from you or your team"
 msgstr "等待你或你团队的审查"
 
+msgctxt "file size unit, bytes"
+msgid "B"
+msgstr "B"
+
 msgid "Back"
 msgstr "返回"
 
@@ -2556,6 +2592,9 @@ msgstr "方块"
 
 msgid "blocked"
 msgstr "已阻止"
+
+msgid "Blocked"
+msgstr "已阻塞"
 
 msgid "Blocked by Branch Rules"
 msgstr "被分支规则阻止"
@@ -2713,6 +2752,9 @@ msgstr "浏览数据已清除"
 
 msgid "Browsing history"
 msgstr "浏览历史"
+
+msgid "Budget limit reached"
+msgstr "已达到预算上限"
 
 msgid "Bug"
 msgstr "虫子"
@@ -2970,6 +3012,9 @@ msgstr "更新日志"
 msgid "Changes"
 msgstr "更改"
 
+msgid "Changes applied"
+msgstr "已应用更改"
+
 msgid "Changes are isolated"
 msgstr "改动彼此隔离"
 
@@ -3035,6 +3080,9 @@ msgstr "查看资源"
 
 msgid "Check the rendered prompt and launch output before saving"
 msgstr "保存前检查渲染后的提示词和启动输出"
+
+msgid "Check the workspace host connection and Codex installation. If sign-in is required, run <0>codex login</0> in that host's terminal, then retry."
+msgstr "请检查工作区主机连接和 Codex 安装。如果需要登录，请在该主机的终端中运行 <0>codex login</0>，然后重试。"
 
 msgid "Check your access under Settings > Security on that device."
 msgstr "请在该设备的“设置 > 安全”中检查你的访问权限。"
@@ -3128,6 +3176,9 @@ msgstr "选择从顶栏打开更改视图的方式"
 
 msgid "Choose how to open file paths when Cmd+clicking in the terminal"
 msgstr "选择在终端中Cmd+点击文件路径时的打开方式"
+
+msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
+msgstr "选择新聊天的默认设置并自定义模型快捷选项。现有聊天保留其选择。"
 
 msgid "Choose what to clear from the in-app browser."
 msgstr "选择要从应用内浏览器清除的内容。"
@@ -3407,6 +3458,9 @@ msgstr "关闭审查筛选"
 msgid "Close session"
 msgstr "关闭会话"
 
+msgid "Close sidebar"
+msgstr "关闭侧边栏"
+
 msgid "Close Superset"
 msgstr "关闭Superset"
 
@@ -3479,6 +3533,9 @@ msgstr "代码块"
 
 msgid "Code Block"
 msgstr "代码块"
+
+msgid "Codex Chat"
+msgstr "Codex 聊天"
 
 msgid "Cohort"
 msgstr "同期群"
@@ -3710,6 +3767,9 @@ msgstr "配置哪些智能体出现在启动器中，以及它们的启动方式
 msgid "Configure workspace run command"
 msgstr "配置工作区运行命令"
 
+msgid "Confirm"
+msgstr "确认"
+
 msgid "Confirm before quitting"
 msgstr "退出前确认"
 
@@ -3727,6 +3787,9 @@ msgstr "连接设备"
 
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "连接一个Google账户。它的日历和邮箱均为只读，触发器以连接者的身份运行。"
+
+msgid "Connect a host to load Codex models."
+msgstr "连接主机以加载 Codex 模型。"
 
 msgid "Connect a microphone to use dictation"
 msgstr "请连接麦克风以使用语音输入"
@@ -4031,6 +4094,9 @@ msgstr "复制分支名"
 
 msgid "Copy browsing history and logins from Chrome, Brave, Arc, or another Chromium browser into Superset."
 msgstr "将Chrome、Brave、Arc或其他Chromium浏览器的浏览历史和登录信息复制到Superset。"
+
+msgid "Copy code"
+msgstr "复制代码"
 
 msgid "Copy Code"
 msgstr "复制认证码"
@@ -5114,6 +5180,9 @@ msgstr "降序"
 msgid "Describe the change…"
 msgstr "描述要做的更改…"
 
+msgid "Describe the goal and how to verify it…"
+msgstr "描述目标及其验证方式…"
+
 msgid "Describe the task for the agent…"
 msgstr "描述交给智能体的任务…"
 
@@ -5720,6 +5789,9 @@ msgstr "启用中继访问…"
 msgid "Enable skill"
 msgstr "启用技能"
 
+msgid "End goal"
+msgstr "结束目标"
+
 msgid "Engineering deep-dives and launches."
 msgstr "工程深度文章与新功能发布。"
 
@@ -5974,6 +6046,10 @@ msgstr "外部编辑器"
 
 msgid "extra ${used} of ${limit}"
 msgstr "额外用量${used}/${limit}"
+
+msgctxt "reasoning effort"
+msgid "Extra high"
+msgstr "超高"
 
 msgid "Extra small"
 msgstr "超小"
@@ -6465,6 +6541,12 @@ msgstr "失败"
 msgid "FAQ"
 msgstr "常见问题"
 
+msgid "Fast"
+msgstr "Fast"
+
+msgid "Fast uses more of your allowance."
+msgstr "Fast 会消耗更多使用额度。"
+
 msgid "Fatal"
 msgstr "致命"
 
@@ -6503,6 +6585,9 @@ msgstr "提一个工单，拿回一个已验证、可直接合并的PR，并附�
 
 msgid "File actions"
 msgstr "文件操作"
+
+msgid "File changes"
+msgstr "文件更改"
 
 msgid "File is too large to preview"
 msgstr "文件过大，无法预览"
@@ -6870,6 +6955,9 @@ msgstr "已隐藏front matter，切换到Markdown可编辑"
 msgid "Front matter hidden — switch to the Markdown view to edit it"
 msgstr "已隐藏front matter — 切换到Markdown视图进行编辑"
 
+msgid "Full access"
+msgstr "完全访问"
+
 msgid "Full changelog →"
 msgstr "完整更新日志 →"
 
@@ -6893,6 +6981,10 @@ msgstr "关卡"
 
 msgid "Gates open"
 msgstr "已开启关卡"
+
+msgctxt "file size unit, gigabytes"
+msgid "GB"
+msgstr "GB"
 
 msgid "General"
 msgstr "通用"
@@ -7059,6 +7151,9 @@ msgstr "前往Slack集成设置"
 msgid "Go to Superset"
 msgstr "前往Superset"
 
+msgid "Goal"
+msgstr "目标"
+
 msgid "Google did not grant lasting access. Remove Superset from your Google account's third-party access and try again."
 msgstr "Google没有授予持久访问权限。请在你的Google账户的第三方访问中移除Superset，然后重试。"
 
@@ -7219,6 +7314,10 @@ msgstr "隐藏会话"
 msgid "Hide unchanged regions"
 msgstr "隐藏未更改区域"
 
+msgid "High"
+msgstr "高"
+
+msgctxt "reasoning effort"
 msgid "High"
 msgstr "高"
 
@@ -7444,6 +7543,12 @@ msgstr "{0}的图片预览。用加号和减号缩放，用方向键平移，按
 
 msgid "Images"
 msgstr "图片"
+
+msgid "Implement plan"
+msgstr "执行计划"
+
+msgid "Implementation plan"
+msgstr "实施计划"
 
 msgid "Import"
 msgstr "导入"
@@ -7923,6 +8028,10 @@ msgstr "仅我的"
 msgid "just now"
 msgstr "刚刚"
 
+msgctxt "file size unit, kilobytes"
+msgid "KB"
+msgstr "KB"
+
 msgid "Kbd"
 msgstr "Kbd"
 
@@ -8188,6 +8297,10 @@ msgstr "浅色"
 msgid "Light"
 msgstr "浅色"
 
+msgctxt "reasoning effort"
+msgid "Light"
+msgstr "轻量"
+
 msgid "Light theme"
 msgstr "浅色主题"
 
@@ -8266,8 +8379,17 @@ msgstr "关联拉取请求"
 msgid "Link task"
 msgstr "关联任务"
 
+msgid "Link workspaces"
+msgstr "关联工作区"
+
+msgid "Linked"
+msgstr "已关联"
+
 msgid "Linked {slug} to workspace"
 msgstr "已将{slug}关联到工作区"
+
+msgid "Linked workspaces"
+msgstr "已关联的工作区"
 
 msgid "Links"
 msgstr "链接"
@@ -8331,6 +8453,9 @@ msgstr "加载更早的消息"
 
 msgid "Load more"
 msgstr "加载更多"
+
+msgid "Load older messages"
+msgstr "加载更早的消息"
 
 msgid "Loader"
 msgstr "加载器"
@@ -8425,6 +8550,9 @@ msgstr "正在加载终端脚本..."
 msgid "Loading usage history…"
 msgstr "正在加载用量历史…"
 
+msgid "Loading workspaces…"
+msgstr "正在加载工作区…"
+
 msgid "Loading..."
 msgstr "加载中..."
 
@@ -8494,6 +8622,10 @@ msgstr "正在查找已安装的浏览器…"
 msgid "Looks good"
 msgstr "看起来不错"
 
+msgid "Low"
+msgstr "低"
+
+msgctxt "reasoning effort"
 msgid "Low"
 msgstr "低"
 
@@ -8633,6 +8765,10 @@ msgstr "让快捷键匹配键盘上的标签（例如⌘Z始终触发标有“Z�
 msgid "Max"
 msgstr "最大"
 
+msgctxt "reasoning effort"
+msgid "Max"
+msgstr "最高"
+
 msgid "Maximum"
 msgstr "最大"
 
@@ -8641,6 +8777,10 @@ msgstr "最大的推理投入"
 
 msgid "Maximum size is 256 KB."
 msgstr "最大为256 KB。"
+
+msgctxt "file size unit, megabytes"
+msgid "MB"
+msgstr "MB"
 
 msgid "MCP"
 msgstr "MCP"
@@ -8670,6 +8810,10 @@ msgstr "常规工作从工单到上线的中位耗时不足一天。"
 msgid "Median time from previous"
 msgstr "距上一步中位耗时"
 
+msgid "Medium"
+msgstr "中"
+
+msgctxt "reasoning effort"
 msgid "Medium"
 msgstr "中"
 
@@ -8754,8 +8898,14 @@ msgstr "正在合并拉取请求"
 msgid "Mesh Gradient"
 msgstr "网格渐变"
 
+msgid "Message"
+msgstr "消息"
+
 msgid "Message in channel"
 msgstr "频道中的消息"
+
+msgid "Message navigation"
+msgstr "消息导航"
 
 msgid "Message the agent"
 msgstr "给智能体发消息"
@@ -8783,6 +8933,10 @@ msgstr "2027年中"
 
 msgid "Mine"
 msgstr "我的"
+
+msgctxt "reasoning effort"
+msgid "Minimal"
+msgstr "最低"
 
 msgid "Minimal reasoning effort"
 msgstr "最少的推理投入"
@@ -8836,6 +8990,9 @@ msgstr "模型"
 msgid "Model"
 msgstr "模型"
 
+msgid "Model and reasoning effort"
+msgstr "模型和推理强度"
+
 msgid "Model context usage"
 msgstr "模型上下文用量"
 
@@ -8844,6 +9001,9 @@ msgstr "限定在所选智能体范围内的模型选择器"
 
 msgid "Model Selector"
 msgstr "模型选择器"
+
+msgid "Model shortcuts"
+msgstr "模型快捷选项"
 
 msgid "Model volume"
 msgstr "模型用量"
@@ -8942,11 +9102,17 @@ msgstr "软件史的大部分时间"
 msgid "Move {count} to Group"
 msgstr "将{count}个移动到分组"
 
+msgid "Move down"
+msgstr "下移"
+
 msgid "Move to group"
 msgstr "移动到分组"
 
 msgid "Move to Tab"
 msgstr "移动到标签页"
+
+msgid "Move up"
+msgstr "上移"
 
 msgid "MRR"
 msgstr "MRR"
@@ -9106,6 +9272,9 @@ msgstr "新建聊天"
 
 msgid "New cloud workspace"
 msgstr "新建云端工作区"
+
+msgid "New Codex Chat"
+msgstr "新建 Codex 聊天"
 
 msgid "New environment"
 msgstr "新建环境"
@@ -9391,6 +9560,9 @@ msgstr "没有控制台输出"
 
 msgid "No contributors found."
 msgstr "未找到贡献者。"
+
+msgid "No conversations yet"
+msgstr "暂无对话"
 
 msgid "No credit card required."
 msgstr "无需信用卡。"
@@ -9804,6 +9976,10 @@ msgstr "非品牌点击"
 msgid "None"
 msgstr "无"
 
+msgctxt "reasoning effort"
+msgid "None"
+msgstr "无"
+
 msgid "none (session)"
 msgstr "无（会话）"
 
@@ -9840,6 +10016,9 @@ msgstr "未连接"
 msgid "Not connected · cloud workspaces push as your organization's GitHub App"
 msgstr "未连接 · 云端工作区以组织的 GitHub App 身份推送"
 
+msgid "Not connected to a host yet — try attaching again."
+msgstr "尚未连接到主机，请重新尝试添加附件。"
+
 msgid "Not connected: {unavailableReason}. Add a Google service account to the Search Console property and set GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT."
 msgstr "未连接：{unavailableReason}。请将 Google 服务账号添加到 Search Console 资源，并设置 GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT。"
 
@@ -9857,6 +10036,9 @@ msgstr "未授予"
 
 msgid "Not included"
 msgstr "不包含"
+
+msgid "Not linked"
+msgstr "未关联"
 
 msgid "Not loaded"
 msgstr "未加载"
@@ -10891,6 +11073,9 @@ msgstr "PDF"
 msgid "Peak pace"
 msgstr "峰值速度"
 
+msgid "Pending"
+msgstr "待处理"
+
 msgid "Pending Invitations"
 msgstr "待处理邀请"
 
@@ -11024,6 +11209,9 @@ msgstr "方案"
 
 msgid "Plan restored"
 msgstr "方案已恢复"
+
+msgid "Planning"
+msgstr "规划"
 
 msgid "Planning the tooltip refactor"
 msgstr "正在规划tooltip重构"
@@ -11645,6 +11833,9 @@ msgstr "正在重新激活…"
 msgid "Read"
 msgstr "已读取"
 
+msgid "Read only"
+msgstr "只读"
+
 msgid "Read the changelog"
 msgstr "查看更新日志"
 
@@ -11688,6 +11879,9 @@ msgstr "重新应用所有提交"
 msgid "Reasoning"
 msgstr "推理"
 
+msgid "Reasoning effort"
+msgstr "推理强度"
+
 msgid "Reassign"
 msgstr "重新分配"
 
@@ -11699,6 +11893,9 @@ msgstr "变基并合并"
 
 msgid "Recent Activity"
 msgstr "最近动态"
+
+msgid "Recent chats"
+msgstr "最近的聊天"
 
 msgid "Recent invoices"
 msgstr "最近的账单"
@@ -11798,6 +11995,12 @@ msgstr "在内置智能体之外注册任意CLI智能体，各自拥有名称、
 
 msgid "Registers lifecycle hooks in this agent's global config so Superset can show status and send notifications. Turning this off removes Superset's entries everywhere — status and notifications stop for this agent, including inside Superset."
 msgstr "在该智能体的全局配置中注册生命周期钩子，以便Superset显示状态并发送通知。关闭后会在所有位置移除Superset的条目，该智能体的状态和通知都会停止，包括在Superset内部。"
+
+msgid "Reject"
+msgstr "拒绝"
+
+msgid "Rejected"
+msgstr "已拒绝"
 
 msgid "Related Posts"
 msgstr "相关文章"
@@ -12097,6 +12300,9 @@ msgstr "申请试用"
 msgid "Request Body"
 msgstr "请求体"
 
+msgid "Request changes"
+msgstr "请求更改"
+
 msgid "Requested Changes"
 msgstr "已要求修改"
 
@@ -12344,6 +12550,9 @@ msgstr "请在几秒后重试；若问题持续，请重启Superset。"
 
 msgid "Retry in a few seconds."
 msgstr "请在几秒后重试。"
+
+msgid "Retry upload"
+msgstr "重试上传"
 
 msgid "Retrying…"
 msgstr "正在重试…"
@@ -12896,6 +13105,9 @@ msgstr "搜索触发器..."
 msgid "Search workspaces"
 msgstr "搜索工作区"
 
+msgid "Search workspaces on this host and link them to this chat."
+msgstr "搜索此主机上的工作区并将其关联到此聊天。"
+
 msgid "Search workspaces..."
 msgstr "搜索工作区..."
 
@@ -12970,6 +13182,9 @@ msgstr "看看你最近30天在公开排行榜上的位置。仅包含token数�
 
 msgid "Select"
 msgstr "选择框"
+
+msgid "Select a default preset"
+msgstr "选择默认预设"
 
 msgid "Select a project"
 msgstr "请选择项目"
@@ -13767,6 +13982,9 @@ msgstr "部分文件超过大小上限，未添加。"
 msgid "Some models were priced with a fallback rate"
 msgstr "部分模型按兜底费率计价"
 
+msgid "Some presets are unavailable on this host."
+msgstr "此主机上的部分预设不可用。"
+
 #. placeholder {0}: error.message
 msgid "Some repositories could not be loaded: {0}"
 msgstr "部分仓库无法加载：{0}"
@@ -14173,6 +14391,9 @@ msgstr "提交提示词"
 
 msgid "Submit prompt rate limiting is not configured"
 msgstr "未配置提示词提交速率限制"
+
+msgid "Submitting"
+msgstr "正在提交"
 
 msgid "Submitting…"
 msgstr "正在提交…"
@@ -14934,6 +15155,9 @@ msgstr "你的组织或团队的名称"
 
 msgid "The network connection changed"
 msgstr "网络连接已变更"
+
+msgid "The next message becomes the goal. Codex will continue until it finishes or needs your input."
+msgstr "下一条消息将成为目标。Codex 将继续工作，直到完成或需要你提供输入。"
 
 msgid "The overnight shift"
 msgstr "夜班"
@@ -15724,6 +15948,10 @@ msgstr "V2终端面板中使用的排版和光标行为。"
 msgid "Typography used in V2 editors and diff views."
 msgstr "V2编辑器和差异视图中使用的排版。"
 
+msgctxt "reasoning effort"
+msgid "Ultra"
+msgstr "极高"
+
 msgid "Unable to check for updates. Please check your internet connection."
 msgstr "无法检查更新。请检查你的网络连接。"
 
@@ -15762,6 +15990,9 @@ msgstr "无人值守运行8小时以上，在多数常规工单上无需人工�
 
 msgid "Unavailable"
 msgstr "不可用"
+
+msgid "Unavailable on this host"
+msgstr "此主机不支持"
 
 msgid "Unavailable: {unavailableReason}"
 msgstr "不可用：{unavailableReason}"
@@ -15870,6 +16101,13 @@ msgstr "无限"
 
 msgid "Unlimited users"
 msgstr "用户数不限"
+
+msgid "Unlink"
+msgstr "取消关联"
+
+#. placeholder {0}: workspace.name
+msgid "Unlink {0}"
+msgstr "取消关联 {0}"
 
 msgid "Unmute notifications"
 msgstr "取消静音通知"
@@ -16032,6 +16270,9 @@ msgstr "升级到{0}"
 msgid "Upgrade to Pro"
 msgstr "升级到 Pro"
 
+msgid "Upload failed."
+msgstr "上传失败。"
+
 msgid "Upload files"
 msgstr "上传文件"
 
@@ -16064,6 +16305,9 @@ msgstr "用量"
 
 msgid "Usage is out of date"
 msgstr "用量数据已过时"
+
+msgid "Usage limit reached"
+msgstr "已达到使用上限"
 
 msgid "Usage sections"
 msgstr "用量分区"
@@ -16531,6 +16775,9 @@ msgstr "我们正在做什么，接下来做什么。"
 msgid "What would you like to build with Superset in the cloud?"
 msgstr "您想用云端 Superset 构建什么？"
 
+msgid "What would you like to build?"
+msgstr "你想构建什么？"
+
 msgid "What would you like to know?"
 msgstr "你想了解什么？"
 
@@ -16632,6 +16879,9 @@ msgstr "从工单开始工作"
 
 msgid "Work with your agents across your favorite tools"
 msgstr "在你常用的工具里与智能体协作"
+
+msgid "Worked for {duration}"
+msgstr "工作了{duration}"
 
 msgid "Worked for 39s"
 msgstr "工作了39秒"
