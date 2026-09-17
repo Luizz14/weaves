@@ -92,7 +92,7 @@ export function CodexComposer({
 	// A goal is a single string objective, so there is nowhere to put a file.
 	const canAttach = !armed;
 	const toggleClass =
-		"inline-flex min-h-12 min-w-10 shrink-0 items-center justify-center gap-1.5 px-2 rounded-full text-muted-foreground transition-[scale,background-color,color] hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.96] aria-pressed:bg-muted aria-pressed:text-foreground disabled:opacity-40 motion-reduce:active:scale-100";
+		"inline-flex min-h-10 min-w-10 shrink-0 items-center justify-center gap-1.5 px-2 rounded-full text-muted-foreground transition-[scale,background-color,color] hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.96] aria-pressed:bg-muted aria-pressed:text-foreground disabled:opacity-40 motion-reduce:active:scale-100";
 	const layoutTransition = reduce
 		? { duration: 0 }
 		: { type: "spring" as const, duration: 0.3, bounce: 0.2 };
@@ -235,7 +235,7 @@ export function CodexComposer({
 					if (action === LINK_ACTION) setLinkOpen(true);
 				}}
 				className={cn(
-					"rounded-4xl shadow-[0_12px_64px_4px_color-mix(in_srgb,var(--border)_60%,transparent)] [&>div:last-child]:items-end p-3",
+					"rounded-4xl shadow-[0_12px_64px_4px_color-mix(in_srgb,var(--border)_60%,transparent)] [&>div:last-child]:items-end",
 					dropActive && "outline-ring/70",
 				)}
 				leadingAction={
