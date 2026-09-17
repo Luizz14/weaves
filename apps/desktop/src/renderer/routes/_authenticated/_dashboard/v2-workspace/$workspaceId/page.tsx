@@ -233,6 +233,7 @@ function V2WorkspaceContent() {
 		openDiffPane,
 		addTerminalTab,
 		addChatV3Tab,
+		addCodexChatTab,
 		addBrowserTab,
 		openChangesPane,
 		toggleChangesPane,
@@ -399,6 +400,7 @@ function V2WorkspaceContent() {
 							renderAddTabMenu={() => (
 								<AddTabMenu
 									onAddTerminal={addTerminalTab}
+									onAddCodexChat={addCodexChatTab}
 									onAddChatV3={isChatV3Enabled ? addChatV3Tab : undefined}
 									onAddBrowser={addBrowserTab}
 									onAddChanges={openChangesPane}

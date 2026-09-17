@@ -56,6 +56,7 @@ export function useWorkspacePaneOpeners({
 	) => void;
 	addTerminalTab: () => Promise<void>;
 	addChatV3Tab: () => void;
+	addCodexChatTab: () => void;
 	addBrowserTab: () => void;
 	openChangesPane: () => void;
 	/** Close the visible Changes pane, or open/focus one when none is showing. */
@@ -162,6 +163,12 @@ export function useWorkspacePaneOpeners({
 		}
 	}, [addBlankTerminalTab, executePreset, newTabPresets]);
 
+	const addCodexChatTab = useCallback(() => {
+		store
+			.getState()
+			.addTab({ panes: [{ kind: "codex-chat", data: { sessionId: null } }] });
+	}, [store]);
+
 	const addChatV3Tab = useCallback(() => {
 		store.getState().addTab({
 			panes: [
@@ -260,6 +267,7 @@ export function useWorkspacePaneOpeners({
 		openDiffPane,
 		addTerminalTab,
 		addChatV3Tab,
+		addCodexChatTab,
 		addBrowserTab,
 		openChangesPane,
 		toggleChangesPane,

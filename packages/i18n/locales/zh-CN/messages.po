@@ -560,6 +560,10 @@ msgstr "{closedCount, plural, one {已关闭#个端口} other {已关闭#个端�
 msgid "{closedCount} closed"
 msgstr "{closedCount}项未开启"
 
+#. placeholder {0}: items.length
+msgid "{completed} / {0}"
+msgstr "{completed} / {0}"
+
 #. placeholder {0}: relevant.length
 msgid "{completed} of {0} checks complete"
 msgstr "{0}项检查中已完成{completed}项"
@@ -2087,6 +2091,12 @@ msgctxt "job application"
 msgid "Apply"
 msgstr "申请"
 
+msgid "Applying changes"
+msgstr "正在应用更改"
+
+msgid "Approval required"
+msgstr "需要批准"
+
 msgid "Approve"
 msgstr "批准"
 
@@ -2095,6 +2105,9 @@ msgstr "已批准"
 
 msgid "Approved review"
 msgstr "审查已批准"
+
+msgid "Approving"
+msgstr "正在批准"
 
 msgid "apps/desktop/src/renderer"
 msgstr "apps/desktop/src/renderer"
@@ -2147,8 +2160,17 @@ msgstr "升序"
 msgid "Ask an agent to publish one from the desktop app."
 msgstr "让智能体从桌面应用中发布一个页面。"
 
+msgid "Ask Codex to explore, change, or review this workspace."
+msgstr "让 Codex 探索、修改或审查此工作区。"
+
+msgid "Ask Codex to work on this workspace…"
+msgstr "让 Codex 在此工作区中工作…"
+
 msgid "Ask for this to be removed"
 msgstr "请求移除"
+
+msgid "Ask the agent to do something…"
+msgstr "让代理执行任务…"
 
 msgid "Ask the agent…"
 msgstr "向智能体提问…"
@@ -2964,6 +2986,9 @@ msgstr "更新日志"
 msgid "Changes"
 msgstr "更改"
 
+msgid "Changes applied"
+msgstr "已应用更改"
+
 msgid "Changes are isolated"
 msgstr "改动彼此隔离"
 
@@ -3029,6 +3054,9 @@ msgstr "查看资源"
 
 msgid "Check the rendered prompt and launch output before saving"
 msgstr "保存前检查渲染后的提示词和启动输出"
+
+msgid "Check the workspace host connection and Codex installation. If sign-in is required, run <0>codex login</0> in that host's terminal, then retry."
+msgstr "请检查工作区主机连接和 Codex 安装。如果需要登录，请在该主机的终端中运行 <0>codex login</0>，然后重试。"
 
 msgid "Check your access under Settings > Security on that device."
 msgstr "请在该设备的“设置 > 安全”中检查你的访问权限。"
@@ -3401,6 +3429,9 @@ msgstr "关闭审查筛选"
 msgid "Close session"
 msgstr "关闭会话"
 
+msgid "Close sidebar"
+msgstr "关闭侧边栏"
+
 msgid "Close Superset"
 msgstr "关闭Superset"
 
@@ -3473,6 +3504,9 @@ msgstr "代码块"
 
 msgid "Code Block"
 msgstr "代码块"
+
+msgid "Codex Chat"
+msgstr "Codex 聊天"
 
 msgid "Cohort"
 msgstr "同期群"
@@ -3703,6 +3737,9 @@ msgstr "配置哪些智能体出现在启动器中，以及它们的启动方式
 
 msgid "Configure workspace run command"
 msgstr "配置工作区运行命令"
+
+msgid "Confirm"
+msgstr "确认"
 
 msgid "Confirm before quitting"
 msgstr "退出前确认"
@@ -4001,6 +4038,9 @@ msgstr "复制分支名"
 
 msgid "Copy browsing history and logins from Chrome, Brave, Arc, or another Chromium browser into Superset."
 msgstr "将Chrome、Brave、Arc或其他Chromium浏览器的浏览历史和登录信息复制到Superset。"
+
+msgid "Copy code"
+msgstr "复制代码"
 
 msgid "Copy Code"
 msgstr "复制认证码"
@@ -6469,6 +6509,9 @@ msgstr "提一个工单，拿回一个已验证、可直接合并的PR，并附�
 msgid "File actions"
 msgstr "文件操作"
 
+msgid "File changes"
+msgstr "文件更改"
+
 msgid "File is too large to preview"
 msgstr "文件过大，无法预览"
 
@@ -6834,6 +6877,9 @@ msgstr "已隐藏front matter，切换到Markdown可编辑"
 
 msgid "Front matter hidden — switch to the Markdown view to edit it"
 msgstr "已隐藏front matter — 切换到Markdown视图进行编辑"
+
+msgid "Full access"
+msgstr "完全访问"
 
 msgid "Full changelog →"
 msgstr "完整更新日志 →"
@@ -8288,6 +8334,9 @@ msgstr "加载更早的消息"
 msgid "Load more"
 msgstr "加载更多"
 
+msgid "Load older messages"
+msgstr "加载更早的消息"
+
 msgid "Loader"
 msgstr "加载器"
 
@@ -8710,8 +8759,14 @@ msgstr "正在合并拉取请求"
 msgid "Mesh Gradient"
 msgstr "网格渐变"
 
+msgid "Message"
+msgstr "消息"
+
 msgid "Message in channel"
 msgstr "频道中的消息"
+
+msgid "Message navigation"
+msgstr "消息导航"
 
 msgid "Message the agent"
 msgstr "给智能体发消息"
@@ -10843,6 +10898,9 @@ msgstr "PDF"
 msgid "Peak pace"
 msgstr "峰值速度"
 
+msgid "Pending"
+msgstr "待处理"
+
 msgid "Pending Invitations"
 msgstr "待处理邀请"
 
@@ -11597,6 +11655,9 @@ msgstr "正在重新激活…"
 msgid "Read"
 msgstr "已读取"
 
+msgid "Read only"
+msgstr "只读"
+
 msgid "Read the changelog"
 msgstr "查看更新日志"
 
@@ -11614,6 +11675,9 @@ msgstr "正在读取用量…"
 
 msgid "Reading your local usage…"
 msgstr "正在读取本地用量…"
+
+msgid "Ready"
+msgstr "就绪"
 
 msgid "Ready for review"
 msgstr "待审查"
@@ -11750,6 +11814,12 @@ msgstr "在内置智能体之外注册任意CLI智能体，各自拥有名称、
 
 msgid "Registers lifecycle hooks in this agent's global config so Superset can show status and send notifications. Turning this off removes Superset's entries everywhere — status and notifications stop for this agent, including inside Superset."
 msgstr "在该智能体的全局配置中注册生命周期钩子，以便Superset显示状态并发送通知。关闭后会在所有位置移除Superset的条目，该智能体的状态和通知都会停止，包括在Superset内部。"
+
+msgid "Reject"
+msgstr "拒绝"
+
+msgid "Rejected"
+msgstr "已拒绝"
 
 msgid "Related Posts"
 msgstr "相关文章"
@@ -12048,6 +12118,9 @@ msgstr "申请试用"
 
 msgid "Request Body"
 msgstr "请求体"
+
+msgid "Request changes"
+msgstr "请求更改"
 
 msgid "Requested Changes"
 msgstr "已要求修改"
@@ -14125,6 +14198,9 @@ msgstr "提交提示词"
 
 msgid "Submit prompt rate limiting is not configured"
 msgstr "未配置提示词提交速率限制"
+
+msgid "Submitting"
+msgstr "正在提交"
 
 msgid "Submitting…"
 msgstr "正在提交…"
@@ -16470,6 +16546,9 @@ msgstr "我们正在做什么，接下来做什么。"
 
 msgid "What would you like to build with Superset in the cloud?"
 msgstr "您想用云端 Superset 构建什么？"
+
+msgid "What would you like to build?"
+msgstr "你想构建什么？"
 
 msgid "What would you like to know?"
 msgstr "你想了解什么？"

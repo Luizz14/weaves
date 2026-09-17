@@ -560,6 +560,10 @@ msgstr "{closedCount, plural, one {Закрыт # порт} few {Закрыто 
 msgid "{closedCount} closed"
 msgstr "{closedCount} закрыто"
 
+#. placeholder {0}: items.length
+msgid "{completed} / {0}"
+msgstr "{completed} / {0}"
+
 #. placeholder {0}: relevant.length
 msgid "{completed} of {0} checks complete"
 msgstr "{completed} из {0} проверок завершено"
@@ -2087,6 +2091,12 @@ msgctxt "job application"
 msgid "Apply"
 msgstr "Откликнуться"
 
+msgid "Applying changes"
+msgstr "Применение изменений"
+
+msgid "Approval required"
+msgstr "Требуется одобрение"
+
 msgid "Approve"
 msgstr "Одобрить"
 
@@ -2095,6 +2105,9 @@ msgstr "Одобрено"
 
 msgid "Approved review"
 msgstr "Одобренное ревью"
+
+msgid "Approving"
+msgstr "Одобрение"
 
 msgid "apps/desktop/src/renderer"
 msgstr "apps/desktop/src/renderer"
@@ -2147,8 +2160,17 @@ msgstr "по возрастанию"
 msgid "Ask an agent to publish one from the desktop app."
 msgstr "Попросите агента опубликовать её из десктопного приложения."
 
+msgid "Ask Codex to explore, change, or review this workspace."
+msgstr "Попросите Codex изучить, изменить или проверить это рабочее пространство."
+
+msgid "Ask Codex to work on this workspace…"
+msgstr "Попросите Codex поработать в этом пространстве…"
+
 msgid "Ask for this to be removed"
 msgstr "Попросить удалить"
+
+msgid "Ask the agent to do something…"
+msgstr "Попросите агента выполнить задачу…"
 
 msgid "Ask the agent…"
 msgstr "Спросите агента…"
@@ -2964,6 +2986,9 @@ msgstr "Changelog"
 msgid "Changes"
 msgstr "Изменения"
 
+msgid "Changes applied"
+msgstr "Изменения применены"
+
 msgid "Changes are isolated"
 msgstr "Изменения изолированы"
 
@@ -3029,6 +3054,9 @@ msgstr "Проверить ресурсы"
 
 msgid "Check the rendered prompt and launch output before saving"
 msgstr "Проверьте отрендеренный промпт и вывод запуска перед сохранением"
+
+msgid "Check the workspace host connection and Codex installation. If sign-in is required, run <0>codex login</0> in that host's terminal, then retry."
+msgstr "Проверьте соединение с хостом рабочего пространства и установку Codex. Если требуется вход, выполните <0>codex login</0> в терминале этого хоста и повторите попытку."
 
 msgid "Check your access under Settings > Security on that device."
 msgstr "Проверьте свой доступ в разделе «Настройки» > «Безопасность» на этом устройстве."
@@ -3401,6 +3429,9 @@ msgstr "Закрыть фильтр по ревью"
 msgid "Close session"
 msgstr "Закрыть сессию"
 
+msgid "Close sidebar"
+msgstr "Закрыть боковую панель"
+
 msgid "Close Superset"
 msgstr "Закрыть Superset"
 
@@ -3473,6 +3504,9 @@ msgstr "Блок кода"
 
 msgid "Code Block"
 msgstr "Блок кода"
+
+msgid "Codex Chat"
+msgstr "Чат Codex"
 
 msgid "Cohort"
 msgstr "Когорта"
@@ -3703,6 +3737,9 @@ msgstr "Настройте, какие агенты появляются в за
 
 msgid "Configure workspace run command"
 msgstr "Настроить команду запуска рабочей области"
+
+msgid "Confirm"
+msgstr "Подтвердить"
 
 msgid "Confirm before quitting"
 msgstr "Подтверждать выход"
@@ -4001,6 +4038,9 @@ msgstr "Скопировать имя ветки"
 
 msgid "Copy browsing history and logins from Chrome, Brave, Arc, or another Chromium browser into Superset."
 msgstr "Скопируйте историю просмотров и логины из Chrome, Brave, Arc или другого браузера на Chromium в Superset."
+
+msgid "Copy code"
+msgstr "Копировать код"
 
 msgid "Copy Code"
 msgstr "Скопировать код"
@@ -6469,6 +6509,9 @@ msgstr "Заведите тикет — получите проверенный 
 msgid "File actions"
 msgstr "Действия с файлом"
 
+msgid "File changes"
+msgstr "Изменения файла"
+
 msgid "File is too large to preview"
 msgstr "Файл слишком большой для предпросмотра"
 
@@ -6834,6 +6877,9 @@ msgstr "Front matter скрыт — переключитесь на Markdown, ч
 
 msgid "Front matter hidden — switch to the Markdown view to edit it"
 msgstr "Front matter скрыт — переключитесь в режим Markdown, чтобы его изменить"
+
+msgid "Full access"
+msgstr "Полный доступ"
 
 msgid "Full changelog →"
 msgstr "Полный changelog →"
@@ -8288,6 +8334,9 @@ msgstr "Загрузить более ранние сообщения"
 msgid "Load more"
 msgstr "Показать ещё"
 
+msgid "Load older messages"
+msgstr "Загрузить предыдущие сообщения"
+
 msgid "Loader"
 msgstr "Загрузчик"
 
@@ -8710,8 +8759,14 @@ msgstr "Объединение пул-реквеста"
 msgid "Mesh Gradient"
 msgstr "Mesh-градиент"
 
+msgid "Message"
+msgstr "Сообщение"
+
 msgid "Message in channel"
 msgstr "Сообщение в канале"
+
+msgid "Message navigation"
+msgstr "Навигация по сообщениям"
 
 msgid "Message the agent"
 msgstr "Напишите агенту"
@@ -10843,6 +10898,9 @@ msgstr "PDF"
 msgid "Peak pace"
 msgstr "Пиковый темп"
 
+msgid "Pending"
+msgstr "Ожидание"
+
 msgid "Pending Invitations"
 msgstr "Ожидающие приглашения"
 
@@ -11597,6 +11655,9 @@ msgstr "Активация…"
 msgid "Read"
 msgstr "Прочитано"
 
+msgid "Read only"
+msgstr "Только чтение"
+
 msgid "Read the changelog"
 msgstr "Читать changelog"
 
@@ -11614,6 +11675,9 @@ msgstr "Чтение данных об использовании…"
 
 msgid "Reading your local usage…"
 msgstr "Чтение локальной статистики…"
+
+msgid "Ready"
+msgstr "Готово"
 
 msgid "Ready for review"
 msgstr "Готово к ревью"
@@ -11750,6 +11814,12 @@ msgstr "Регистрируйте любого CLI-агента рядом со
 
 msgid "Registers lifecycle hooks in this agent's global config so Superset can show status and send notifications. Turning this off removes Superset's entries everywhere — status and notifications stop for this agent, including inside Superset."
 msgstr "Регистрирует хуки жизненного цикла в глобальной конфигурации этого агента, чтобы Superset мог показывать статус и отправлять уведомления. Отключение убирает записи Superset везде — статус и уведомления для этого агента перестанут работать, в том числе внутри Superset."
+
+msgid "Reject"
+msgstr "Отклонить"
+
+msgid "Rejected"
+msgstr "Отклонено"
 
 msgid "Related Posts"
 msgstr "Похожие посты"
@@ -12048,6 +12118,9 @@ msgstr "Запросить пробный период"
 
 msgid "Request Body"
 msgstr "Тело запроса"
+
+msgid "Request changes"
+msgstr "Запросить изменения"
 
 msgid "Requested Changes"
 msgstr "Запросил изменения"
@@ -14125,6 +14198,9 @@ msgstr "Отправить промпт"
 
 msgid "Submit prompt rate limiting is not configured"
 msgstr "Ограничение частоты отправки промптов не настроено"
+
+msgid "Submitting"
+msgstr "Отправка"
 
 msgid "Submitting…"
 msgstr "Отправка…"
@@ -16470,6 +16546,9 @@ msgstr "Что мы делаем сейчас и что дальше."
 
 msgid "What would you like to build with Superset in the cloud?"
 msgstr "Что вы хотели бы создать с помощью Superset в облаке?"
+
+msgid "What would you like to build?"
+msgstr "Что вы хотите создать?"
 
 msgid "What would you like to know?"
 msgstr "Что вы хотите узнать?"

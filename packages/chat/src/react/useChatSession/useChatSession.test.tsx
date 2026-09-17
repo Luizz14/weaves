@@ -296,3 +296,30 @@ describe("useChatSession", () => {
 		await stack.runtime.dispose();
 	});
 });
+
+test("exposes an initial host failure and recovers on reload without sending a prompt", async () => {
+	const stack = await startStack();
+	let fail = true;
+	const transport: ChatTransport = new Proxy(stack.transport, {
+		get(target, property, receiver) {
+			if (property === "getSession")
+				return async (input: Parameters<ChatTransport["getSession"]>[0]) => {
+					if (fail) throw new Error("Host offline");
+					return target.getSession(input);
+				};
+			return Reflect.get(target, property, receiver);
+		},
+	});
+	const client = stack.makeClient({ transport });
+	const view = render(<Probe client={client} />);
+	await domWaitFor(() => expect(session().error?.message).toBe("Host offline"));
+	expect(session().outbox).toEqual([]);
+	fail = false;
+	act(() => session().reload());
+	await domWaitFor(() => expect(session().status).toBe("ready"));
+	expect(session().error).toBeNull();
+	expect(session().outbox).toEqual([]);
+	view.unmount();
+	client.close();
+	await stack.runtime.dispose();
+});

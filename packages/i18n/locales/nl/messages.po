@@ -560,6 +560,10 @@ msgstr "{closedCount, plural, one {# poort gesloten} other {# poorten gesloten}}
 msgid "{closedCount} closed"
 msgstr "{closedCount} gesloten"
 
+#. placeholder {0}: items.length
+msgid "{completed} / {0}"
+msgstr "{completed} / {0}"
+
 #. placeholder {0}: relevant.length
 msgid "{completed} of {0} checks complete"
 msgstr "{completed} van {0} checks afgerond"
@@ -2087,6 +2091,12 @@ msgctxt "job application"
 msgid "Apply"
 msgstr "Solliciteer"
 
+msgid "Applying changes"
+msgstr "Wijzigingen toepassen"
+
+msgid "Approval required"
+msgstr "Goedkeuring vereist"
+
 msgid "Approve"
 msgstr "Goedkeuren"
 
@@ -2095,6 +2105,9 @@ msgstr "Goedgekeurd"
 
 msgid "Approved review"
 msgstr "Goedgekeurde review"
+
+msgid "Approving"
+msgstr "Goedkeuren"
 
 msgid "apps/desktop/src/renderer"
 msgstr "apps/desktop/src/renderer"
@@ -2147,8 +2160,17 @@ msgstr "oplopend"
 msgid "Ask an agent to publish one from the desktop app."
 msgstr "Vraag een agent om er een te publiceren vanuit de desktop-app."
 
+msgid "Ask Codex to explore, change, or review this workspace."
+msgstr "Vraag Codex om deze werkruimte te verkennen, te wijzigen of te beoordelen."
+
+msgid "Ask Codex to work on this workspace…"
+msgstr "Vraag Codex om in deze werkruimte te werken…"
+
 msgid "Ask for this to be removed"
 msgstr "Vraag om verwijdering"
+
+msgid "Ask the agent to do something…"
+msgstr "Vraag de agent om iets te doen…"
 
 msgid "Ask the agent…"
 msgstr "Vraag het de agent…"
@@ -2964,6 +2986,9 @@ msgstr "Changelog"
 msgid "Changes"
 msgstr "Wijzigingen"
 
+msgid "Changes applied"
+msgstr "Wijzigingen toegepast"
+
 msgid "Changes are isolated"
 msgstr "Wijzigingen zijn geïsoleerd"
 
@@ -3029,6 +3054,9 @@ msgstr "Resources controleren"
 
 msgid "Check the rendered prompt and launch output before saving"
 msgstr "Bekijk de gerenderde prompt en startuitvoer voordat je opslaat"
+
+msgid "Check the workspace host connection and Codex installation. If sign-in is required, run <0>codex login</0> in that host's terminal, then retry."
+msgstr "Controleer de verbinding met de werkruimtehost en de Codex-installatie. Als aanmelden vereist is, voer dan <0>codex login</0> uit in de terminal van die host en probeer het opnieuw."
 
 msgid "Check your access under Settings > Security on that device."
 msgstr "Controleer je toegang onder Instellingen > Beveiliging op dat apparaat."
@@ -3401,6 +3429,9 @@ msgstr "Reviewfilter sluiten"
 msgid "Close session"
 msgstr "Sessie sluiten"
 
+msgid "Close sidebar"
+msgstr "Zijbalk sluiten"
+
 msgid "Close Superset"
 msgstr "Superset sluiten"
 
@@ -3473,6 +3504,9 @@ msgstr "Codeblok"
 
 msgid "Code Block"
 msgstr "Codeblok"
+
+msgid "Codex Chat"
+msgstr "Codex-chat"
 
 msgid "Cohort"
 msgstr "Cohort"
@@ -3703,6 +3737,9 @@ msgstr "Bepaal welke agents in launchers verschijnen en hoe hun starts worden op
 
 msgid "Configure workspace run command"
 msgstr "Run-commando van werkruimte configureren"
+
+msgid "Confirm"
+msgstr "Bevestigen"
 
 msgid "Confirm before quitting"
 msgstr "Bevestigen voor afsluiten"
@@ -4001,6 +4038,9 @@ msgstr "Branchnaam kopiëren"
 
 msgid "Copy browsing history and logins from Chrome, Brave, Arc, or another Chromium browser into Superset."
 msgstr "Kopieer browsegeschiedenis en logins uit Chrome, Brave, Arc of een andere Chromium-browser naar Superset."
+
+msgid "Copy code"
+msgstr "Code kopiëren"
 
 msgid "Copy Code"
 msgstr "Code kopiëren"
@@ -6469,6 +6509,9 @@ msgstr "Dien een ticket in en krijg een geverifieerde, merge-klare PR terug, met
 msgid "File actions"
 msgstr "Bestandsacties"
 
+msgid "File changes"
+msgstr "Bestandswijzigingen"
+
 msgid "File is too large to preview"
 msgstr "Bestand is te groot voor een voorbeeld"
 
@@ -6834,6 +6877,9 @@ msgstr "Front matter verborgen — schakel over naar Markdown om die te bewerken
 
 msgid "Front matter hidden — switch to the Markdown view to edit it"
 msgstr "Front matter verborgen — schakel over naar de Markdown-weergave om die te bewerken"
+
+msgid "Full access"
+msgstr "Volledige toegang"
 
 msgid "Full changelog →"
 msgstr "Volledige changelog →"
@@ -8288,6 +8334,9 @@ msgstr "Eerdere berichten laden"
 msgid "Load more"
 msgstr "Meer laden"
 
+msgid "Load older messages"
+msgstr "Oudere berichten laden"
+
 msgid "Loader"
 msgstr "Loader"
 
@@ -8710,8 +8759,14 @@ msgstr "Pull request mergen"
 msgid "Mesh Gradient"
 msgstr "Mesh Gradient"
 
+msgid "Message"
+msgstr "Bericht"
+
 msgid "Message in channel"
 msgstr "Bericht in kanaal"
+
+msgid "Message navigation"
+msgstr "Berichtnavigatie"
 
 msgid "Message the agent"
 msgstr "Bericht aan de agent"
@@ -10843,6 +10898,9 @@ msgstr "PDF"
 msgid "Peak pace"
 msgstr "Piektempo"
 
+msgid "Pending"
+msgstr "In afwachting"
+
 msgid "Pending Invitations"
 msgstr "Openstaande uitnodigingen"
 
@@ -11597,6 +11655,9 @@ msgstr "Reactiveren…"
 msgid "Read"
 msgstr "Gelezen"
 
+msgid "Read only"
+msgstr "Alleen lezen"
+
 msgid "Read the changelog"
 msgstr "Lees de changelog"
 
@@ -11614,6 +11675,9 @@ msgstr "Gebruik wordt gelezen…"
 
 msgid "Reading your local usage…"
 msgstr "Je lokale gebruik wordt gelezen…"
+
+msgid "Ready"
+msgstr "Gereed"
 
 msgid "Ready for review"
 msgstr "Klaar voor review"
@@ -11750,6 +11814,12 @@ msgstr "Registreer elke CLI-agent naast de ingebouwde, elk met een eigen naam, i
 
 msgid "Registers lifecycle hooks in this agent's global config so Superset can show status and send notifications. Turning this off removes Superset's entries everywhere — status and notifications stop for this agent, including inside Superset."
 msgstr "Registreert lifecycle-hooks in de globale configuratie van deze agent zodat Superset status kan tonen en meldingen kan sturen. Uitzetten verwijdert de items van Superset overal — status en meldingen stoppen voor deze agent, ook binnen Superset."
+
+msgid "Reject"
+msgstr "Afwijzen"
+
+msgid "Rejected"
+msgstr "Afgewezen"
 
 msgid "Related Posts"
 msgstr "Gerelateerde berichten"
@@ -12048,6 +12118,9 @@ msgstr "Proefperiode aanvragen"
 
 msgid "Request Body"
 msgstr "Request body"
+
+msgid "Request changes"
+msgstr "Wijzigingen aanvragen"
 
 msgid "Requested Changes"
 msgstr "Wijzigingen gevraagd"
@@ -14125,6 +14198,9 @@ msgstr "Prompt insturen"
 
 msgid "Submit prompt rate limiting is not configured"
 msgstr "Rate limiting voor het insturen van prompts is niet geconfigureerd"
+
+msgid "Submitting"
+msgstr "Verzenden"
 
 msgid "Submitting…"
 msgstr "Insturen…"
@@ -16470,6 +16546,9 @@ msgstr "Wat we nu en hierna bouwen."
 
 msgid "What would you like to build with Superset in the cloud?"
 msgstr "Wat wil je bouwen met Superset in de cloud?"
+
+msgid "What would you like to build?"
+msgstr "Wat wil je bouwen?"
 
 msgid "What would you like to know?"
 msgstr "Wat wil je weten?"

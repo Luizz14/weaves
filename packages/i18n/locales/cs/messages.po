@@ -560,6 +560,10 @@ msgstr "{closedCount, plural, one {Zavřen # port} few {Zavřeny # porty} many {
 msgid "{closedCount} closed"
 msgstr "{closedCount} zavřených"
 
+#. placeholder {0}: items.length
+msgid "{completed} / {0}"
+msgstr "{completed} / {0}"
+
 #. placeholder {0}: relevant.length
 msgid "{completed} of {0} checks complete"
 msgstr "Dokončeno {completed} z {0} kontrol"
@@ -2087,6 +2091,12 @@ msgctxt "job application"
 msgid "Apply"
 msgstr "Přihlásit se"
 
+msgid "Applying changes"
+msgstr "Používání změn"
+
+msgid "Approval required"
+msgstr "Vyžadováno schválení"
+
 msgid "Approve"
 msgstr "Schválit"
 
@@ -2095,6 +2105,9 @@ msgstr "Schváleno"
 
 msgid "Approved review"
 msgstr "Schválená revize"
+
+msgid "Approving"
+msgstr "Schvalování"
 
 msgid "apps/desktop/src/renderer"
 msgstr "apps/desktop/src/renderer"
@@ -2147,8 +2160,17 @@ msgstr "vzestupně"
 msgid "Ask an agent to publish one from the desktop app."
 msgstr "Požádejte agenta, aby nějakou publikoval z desktopové aplikace."
 
+msgid "Ask Codex to explore, change, or review this workspace."
+msgstr "Požádejte Codex o prozkoumání, úpravu nebo kontrolu tohoto pracovního prostoru."
+
+msgid "Ask Codex to work on this workspace…"
+msgstr "Požádejte Codex o práci v tomto prostoru…"
+
 msgid "Ask for this to be removed"
 msgstr "Požádat o odstranění"
+
+msgid "Ask the agent to do something…"
+msgstr "Požádejte agenta o provedení úkolu…"
 
 msgid "Ask the agent…"
 msgstr "Zeptejte se agenta…"
@@ -2964,6 +2986,9 @@ msgstr "Changelog"
 msgid "Changes"
 msgstr "Změny"
 
+msgid "Changes applied"
+msgstr "Změny použity"
+
 msgid "Changes are isolated"
 msgstr "Změny jsou izolované"
 
@@ -3029,6 +3054,9 @@ msgstr "Zkontrolovat prostředky"
 
 msgid "Check the rendered prompt and launch output before saving"
 msgstr "Před uložením zkontrolujte vykreslený prompt a výstup spuštění"
+
+msgid "Check the workspace host connection and Codex installation. If sign-in is required, run <0>codex login</0> in that host's terminal, then retry."
+msgstr "Zkontrolujte připojení k hostiteli pracovního prostoru a instalaci Codex. Je-li nutné přihlášení, spusťte <0>codex login</0> v terminálu daného hostitele a zkuste to znovu."
 
 msgid "Check your access under Settings > Security on that device."
 msgstr "Zkontrolujte svůj přístup v Nastavení > Zabezpečení na daném zařízení."
@@ -3401,6 +3429,9 @@ msgstr "Zavřít filtr revizí"
 msgid "Close session"
 msgstr "Zavřít relaci"
 
+msgid "Close sidebar"
+msgstr "Zavřít postranní panel"
+
 msgid "Close Superset"
 msgstr "Zavřít Superset"
 
@@ -3473,6 +3504,9 @@ msgstr "Blok kódu"
 
 msgid "Code Block"
 msgstr "Blok kódu"
+
+msgid "Codex Chat"
+msgstr "Chat Codex"
 
 msgid "Cohort"
 msgstr "Kohorta"
@@ -3703,6 +3737,9 @@ msgstr "Nastavte, kteří agenti se zobrazují ve spouštěčích a jak se jejic
 
 msgid "Configure workspace run command"
 msgstr "Nastavit spouštěcí příkaz pracovního prostoru"
+
+msgid "Confirm"
+msgstr "Potvrdit"
 
 msgid "Confirm before quitting"
 msgstr "Potvrdit před ukončením"
@@ -4001,6 +4038,9 @@ msgstr "Kopírovat název větve"
 
 msgid "Copy browsing history and logins from Chrome, Brave, Arc, or another Chromium browser into Superset."
 msgstr "Zkopírujte historii prohlížení a přihlášení z Chrome, Brave, Arc nebo jiného prohlížeče na Chromiu do Superset."
+
+msgid "Copy code"
+msgstr "Kopírovat kód"
 
 msgid "Copy Code"
 msgstr "Kopírovat kód"
@@ -6469,6 +6509,9 @@ msgstr "Založte ticket a dostanete zpět ověřený PR připravený ke sloučen
 msgid "File actions"
 msgstr "Akce souboru"
 
+msgid "File changes"
+msgstr "Změny souboru"
+
 msgid "File is too large to preview"
 msgstr "Soubor je pro náhled příliš velký"
 
@@ -6834,6 +6877,9 @@ msgstr "Front matter je skrytý — pro úpravy přepněte na Markdown"
 
 msgid "Front matter hidden — switch to the Markdown view to edit it"
 msgstr "Front matter je skrytý — pro úpravy přepněte na zobrazení Markdown"
+
+msgid "Full access"
+msgstr "Plný přístup"
 
 msgid "Full changelog →"
 msgstr "Celý changelog →"
@@ -8288,6 +8334,9 @@ msgstr "Načíst starší zprávy"
 msgid "Load more"
 msgstr "Načíst další"
 
+msgid "Load older messages"
+msgstr "Načíst starší zprávy"
+
 msgid "Loader"
 msgstr "Načítání"
 
@@ -8710,8 +8759,14 @@ msgstr "Slučuji pull request"
 msgid "Mesh Gradient"
 msgstr "Mesh Gradient"
 
+msgid "Message"
+msgstr "Zpráva"
+
 msgid "Message in channel"
 msgstr "Zpráva v kanálu"
+
+msgid "Message navigation"
+msgstr "Navigace zpráv"
 
 msgid "Message the agent"
 msgstr "Napište agentovi"
@@ -10843,6 +10898,9 @@ msgstr "PDF"
 msgid "Peak pace"
 msgstr "Nejvyšší tempo"
 
+msgid "Pending"
+msgstr "Čeká na vyřízení"
+
 msgid "Pending Invitations"
 msgstr "Čekající pozvánky"
 
@@ -11597,6 +11655,9 @@ msgstr "Obnovování…"
 msgid "Read"
 msgstr "Přečteno"
 
+msgid "Read only"
+msgstr "Pouze čtení"
+
 msgid "Read the changelog"
 msgstr "Přečíst changelog"
 
@@ -11614,6 +11675,9 @@ msgstr "Načítání využití…"
 
 msgid "Reading your local usage…"
 msgstr "Načítám vaše lokální využití…"
+
+msgid "Ready"
+msgstr "Připraveno"
 
 msgid "Ready for review"
 msgstr "Připraveno k revizi"
@@ -11750,6 +11814,12 @@ msgstr "Zaregistrujte vedle vestavěných libovolného CLI agenta, každého s v
 
 msgid "Registers lifecycle hooks in this agent's global config so Superset can show status and send notifications. Turning this off removes Superset's entries everywhere — status and notifications stop for this agent, including inside Superset."
 msgstr "Zaregistruje lifecycle hooky do globální konfigurace tohoto agenta, aby Superset mohl zobrazovat stav a posílat oznámení. Vypnutím se záznamy Superset odeberou všude — stav a oznámení pro tohoto agenta přestanou fungovat, i uvnitř Superset."
+
+msgid "Reject"
+msgstr "Odmítnout"
+
+msgid "Rejected"
+msgstr "Odmítnuto"
 
 msgid "Related Posts"
 msgstr "Související články"
@@ -12048,6 +12118,9 @@ msgstr "Požádat o zkušební verzi"
 
 msgid "Request Body"
 msgstr "Tělo požadavku"
+
+msgid "Request changes"
+msgstr "Požádat o změny"
 
 msgid "Requested Changes"
 msgstr "Vyžádal změny"
@@ -14125,6 +14198,9 @@ msgstr "Odeslat prompt"
 
 msgid "Submit prompt rate limiting is not configured"
 msgstr "Omezení počtu odeslaných promptů není nastavené"
+
+msgid "Submitting"
+msgstr "Odesílání"
 
 msgid "Submitting…"
 msgstr "Odesílám…"
@@ -16470,6 +16546,9 @@ msgstr "Co stavíme teď a co bude dál."
 
 msgid "What would you like to build with Superset in the cloud?"
 msgstr "Co byste chtěli vytvořit se Superset v cloudu?"
+
+msgid "What would you like to build?"
+msgstr "Co chcete vytvořit?"
 
 msgid "What would you like to know?"
 msgstr "Co byste chtěli vědět?"

@@ -560,6 +560,10 @@ msgstr "{closedCount, plural, one {#個のポートを閉じました} other {#�
 msgid "{closedCount} closed"
 msgstr "{closedCount}件未通過"
 
+#. placeholder {0}: items.length
+msgid "{completed} / {0}"
+msgstr "{completed} / {0}"
+
 #. placeholder {0}: relevant.length
 msgid "{completed} of {0} checks complete"
 msgstr "{0}件中{completed}件のチェックが完了"
@@ -2087,6 +2091,12 @@ msgctxt "job application"
 msgid "Apply"
 msgstr "応募"
 
+msgid "Applying changes"
+msgstr "変更を適用中"
+
+msgid "Approval required"
+msgstr "承認が必要です"
+
 msgid "Approve"
 msgstr "承認"
 
@@ -2095,6 +2105,9 @@ msgstr "承認"
 
 msgid "Approved review"
 msgstr "承認済みレビュー"
+
+msgid "Approving"
+msgstr "承認中"
 
 msgid "apps/desktop/src/renderer"
 msgstr "apps/desktop/src/renderer"
@@ -2147,8 +2160,17 @@ msgstr "昇順"
 msgid "Ask an agent to publish one from the desktop app."
 msgstr "デスクトップアプリからエージェントに公開してもらいましょう。"
 
+msgid "Ask Codex to explore, change, or review this workspace."
+msgstr "Codex にこのワークスペースの調査、変更、レビューを依頼しましょう。"
+
+msgid "Ask Codex to work on this workspace…"
+msgstr "Codex にこのワークスペースでの作業を依頼…"
+
 msgid "Ask for this to be removed"
 msgstr "削除を依頼"
+
+msgid "Ask the agent to do something…"
+msgstr "エージェントに作業を依頼…"
 
 msgid "Ask the agent…"
 msgstr "エージェントに質問…"
@@ -2964,6 +2986,9 @@ msgstr "Changelog"
 msgid "Changes"
 msgstr "変更"
 
+msgid "Changes applied"
+msgstr "変更を適用しました"
+
 msgid "Changes are isolated"
 msgstr "変更は分離される"
 
@@ -3029,6 +3054,9 @@ msgstr "リソースを確認"
 
 msgid "Check the rendered prompt and launch output before saving"
 msgstr "保存前にレンダリングされたプロンプトと起動出力を確認"
+
+msgid "Check the workspace host connection and Codex installation. If sign-in is required, run <0>codex login</0> in that host's terminal, then retry."
+msgstr "ワークスペースのホスト接続と Codex のインストールを確認してください。ログインが必要な場合は、そのホストのターミナルで <0>codex login</0> を実行してから再試行してください。"
 
 msgid "Check your access under Settings > Security on that device."
 msgstr "そのデバイスの「設定」>「セキュリティ」でアクセス権を確認してください。"
@@ -3401,6 +3429,9 @@ msgstr "レビューフィルターを閉じる"
 msgid "Close session"
 msgstr "セッションを閉じる"
 
+msgid "Close sidebar"
+msgstr "サイドバーを閉じる"
+
 msgid "Close Superset"
 msgstr "Supersetを閉じる"
 
@@ -3473,6 +3504,9 @@ msgstr "コードブロック"
 
 msgid "Code Block"
 msgstr "Code Block"
+
+msgid "Codex Chat"
+msgstr "Codex チャット"
 
 msgid "Cohort"
 msgstr "コホート"
@@ -3703,6 +3737,9 @@ msgstr "ランチャーに表示するエージェントと起動方法を設定
 
 msgid "Configure workspace run command"
 msgstr "ワークスペースの実行コマンドを設定"
+
+msgid "Confirm"
+msgstr "確認"
 
 msgid "Confirm before quitting"
 msgstr "終了前に確認"
@@ -4001,6 +4038,9 @@ msgstr "ブランチ名をコピー"
 
 msgid "Copy browsing history and logins from Chrome, Brave, Arc, or another Chromium browser into Superset."
 msgstr "Chrome、Brave、Arc、その他ChromiumブラウザからブラウジングHistoryとログイン情報をSupersetにコピーします。"
+
+msgid "Copy code"
+msgstr "コードをコピー"
 
 msgid "Copy Code"
 msgstr "コードをコピー"
@@ -6469,6 +6509,9 @@ msgstr "チケットを起票すれば、検証済みでマージ可能なPRが�
 msgid "File actions"
 msgstr "ファイルの操作"
 
+msgid "File changes"
+msgstr "ファイルの変更"
+
 msgid "File is too large to preview"
 msgstr "ファイルが大きすぎてプレビューできません"
 
@@ -6834,6 +6877,9 @@ msgstr "フロントマターは非表示です — 編集するにはMarkdown�
 
 msgid "Front matter hidden — switch to the Markdown view to edit it"
 msgstr "フロントマターは非表示です — 編集するにはMarkdownビューに切り替えてください"
+
+msgid "Full access"
+msgstr "フルアクセス"
 
 msgid "Full changelog →"
 msgstr "Changelog全体 →"
@@ -8288,6 +8334,9 @@ msgstr "以前のメッセージを読み込む"
 msgid "Load more"
 msgstr "もっと見る"
 
+msgid "Load older messages"
+msgstr "以前のメッセージを読み込む"
+
 msgid "Loader"
 msgstr "ローダー"
 
@@ -8710,8 +8759,14 @@ msgstr "プルリクエストをマージ中"
 msgid "Mesh Gradient"
 msgstr "Mesh Gradient"
 
+msgid "Message"
+msgstr "メッセージ"
+
 msgid "Message in channel"
 msgstr "チャンネルのメッセージ"
+
+msgid "Message navigation"
+msgstr "メッセージナビゲーション"
 
 msgid "Message the agent"
 msgstr "エージェントにメッセージ"
@@ -10843,6 +10898,9 @@ msgstr "PDF"
 msgid "Peak pace"
 msgstr "最速ペース"
 
+msgid "Pending"
+msgstr "保留中"
+
 msgid "Pending Invitations"
 msgstr "保留中の招待"
 
@@ -11597,6 +11655,9 @@ msgstr "再有効化中…"
 msgid "Read"
 msgstr "読み取り"
 
+msgid "Read only"
+msgstr "読み取り専用"
+
 msgid "Read the changelog"
 msgstr "Changelogを読む"
 
@@ -11614,6 +11675,9 @@ msgstr "使用量を取得中…"
 
 msgid "Reading your local usage…"
 msgstr "ローカルの使用量を読み取り中…"
+
+msgid "Ready"
+msgstr "準備完了"
 
 msgid "Ready for review"
 msgstr "レビュー可能"
@@ -11750,6 +11814,12 @@ msgstr "組み込みのエージェントと並べて、任意のCLIエージェ
 
 msgid "Registers lifecycle hooks in this agent's global config so Superset can show status and send notifications. Turning this off removes Superset's entries everywhere — status and notifications stop for this agent, including inside Superset."
 msgstr "このエージェントのグローバル設定にライフサイクルフックを登録し、Supersetがステータス表示と通知を行えるようにします。オフにするとSupersetのエントリがすべて削除され、Superset内も含めてこのエージェントのステータスと通知が停止します。"
+
+msgid "Reject"
+msgstr "拒否"
+
+msgid "Rejected"
+msgstr "拒否済み"
 
 msgid "Related Posts"
 msgstr "関連記事"
@@ -12048,6 +12118,9 @@ msgstr "トライアルを申し込む"
 
 msgid "Request Body"
 msgstr "リクエストボディ"
+
+msgid "Request changes"
+msgstr "変更を依頼"
 
 msgid "Requested Changes"
 msgstr "変更をリクエスト"
@@ -14125,6 +14198,9 @@ msgstr "プロンプトを投稿"
 
 msgid "Submit prompt rate limiting is not configured"
 msgstr "プロンプト送信のレート制限が設定されていません"
+
+msgid "Submitting"
+msgstr "送信中"
 
 msgid "Submitting…"
 msgstr "送信中…"
@@ -16470,6 +16546,9 @@ msgstr "いま作っているものと、次に作るもの。"
 
 msgid "What would you like to build with Superset in the cloud?"
 msgstr "クラウド上のSupersetで何を作りたいですか？"
+
+msgid "What would you like to build?"
+msgstr "何を作りたいですか？"
 
 msgid "What would you like to know?"
 msgstr "何を知りたいですか?"

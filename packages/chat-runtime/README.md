@@ -43,6 +43,8 @@ The registry is empty by default; tests register the fake via `fakeHarnessRegist
 
 Codex's `initialize` response advertises no capabilities, so the only handshake signal is the version inside `userAgent`. The adapter gates on `MIN_CODEX_VERSION` and ends the session with a `notice` plus `status: "dead"` rather than streaming a transcript it cannot map; everything else is handled by tolerating unknown notifications (they become `notice` items) instead of comparing versions.
 
+The Codex thread ID is persisted with session events in the existing `harness_session_id` column. A prompt or mode change resumes a dormant Codex session against the host-resolved workspace directory. Concurrent resumes share one startup; interrupted turns and pending approvals are settled before the new turn. Legacy sessions without a recorded thread ID remain readable but cannot be resumed once their host stops.
+
 `SessionState.modeId` maps to codex's sandbox/approval pairing — `read-only`, `auto`, `full-access` — applied to each `turn/start`, because the app-server has no per-thread collaboration-mode setter.
 
 Fixtures in `harness/codex/fixtures/*.jsonl` are real recorded frames, replayed through `fixturePlayer/` as a transport so the adapter tests exercise the actual wire. Re-record them with a codex binary on PATH:
@@ -54,6 +56,6 @@ bun run scripts/recordCodexFixtures.ts approval   # one scenario
 
 The recorder copies only `auth.json` into a throwaway `CODEX_HOME`, so recordings carry no local hooks, MCP servers or home paths.
 
-Host-service registers the `/chat-v3/*` routes unconditionally: they carry the same auth as every other host route, and the runtime is built on first request, so a host nobody chats with never creates `chat.db`. Rollout is a client concern — the desktop renderer gates the pane on the `chat-v3` PostHog flag, so flips take effect live rather than waiting for a host restart.
+Host-service registers the `/chat-v3/*` routes unconditionally: they carry the same auth as every other host route, and the runtime is built on first request, so a host nobody chats with never creates `chat.db`. The desktop keeps the original pane behind the `chat-v3` PostHog flag. The separate `codex-chat` pane is always available and shares these authenticated routes and Codex sessions. `listSessions` can filter by harness before applying its limit.
 
 When host-service mounts this package it must pass `migrationsFolder`: the generated `src/db/drizzle/` directory is a runtime file dependency that the bundler will not inline.

@@ -560,6 +560,10 @@ msgstr "{closedCount, plural, one {Đã đóng # cổng} other {Đã đóng # c�
 msgid "{closedCount} closed"
 msgstr "{closedCount} đã đóng"
 
+#. placeholder {0}: items.length
+msgid "{completed} / {0}"
+msgstr "{completed} / {0}"
+
 #. placeholder {0}: relevant.length
 msgid "{completed} of {0} checks complete"
 msgstr "{completed} trong {0} check đã xong"
@@ -2087,6 +2091,12 @@ msgctxt "job application"
 msgid "Apply"
 msgstr "Ứng tuyển"
 
+msgid "Applying changes"
+msgstr "Đang áp dụng thay đổi"
+
+msgid "Approval required"
+msgstr "Cần phê duyệt"
+
 msgid "Approve"
 msgstr "Duyệt"
 
@@ -2095,6 +2105,9 @@ msgstr "Đã duyệt"
 
 msgid "Approved review"
 msgstr "Review đã duyệt"
+
+msgid "Approving"
+msgstr "Đang phê duyệt"
 
 msgid "apps/desktop/src/renderer"
 msgstr "apps/desktop/src/renderer"
@@ -2147,8 +2160,17 @@ msgstr "tăng dần"
 msgid "Ask an agent to publish one from the desktop app."
 msgstr "Hãy nhờ một agent xuất bản một trang từ ứng dụng máy tính."
 
+msgid "Ask Codex to explore, change, or review this workspace."
+msgstr "Yêu cầu Codex khám phá, thay đổi hoặc đánh giá không gian làm việc này."
+
+msgid "Ask Codex to work on this workspace…"
+msgstr "Yêu cầu Codex làm việc trong không gian này…"
+
 msgid "Ask for this to be removed"
 msgstr "Yêu cầu xóa phần này"
+
+msgid "Ask the agent to do something…"
+msgstr "Yêu cầu tác nhân thực hiện một việc…"
 
 msgid "Ask the agent…"
 msgstr "Hỏi agent…"
@@ -2964,6 +2986,9 @@ msgstr "Changelog"
 msgid "Changes"
 msgstr "Thay đổi"
 
+msgid "Changes applied"
+msgstr "Đã áp dụng thay đổi"
+
 msgid "Changes are isolated"
 msgstr "Thay đổi được tách biệt"
 
@@ -3029,6 +3054,9 @@ msgstr "Kiểm tra tài nguyên"
 
 msgid "Check the rendered prompt and launch output before saving"
 msgstr "Kiểm tra prompt đã dựng và kết quả khởi chạy trước khi lưu"
+
+msgid "Check the workspace host connection and Codex installation. If sign-in is required, run <0>codex login</0> in that host's terminal, then retry."
+msgstr "Kiểm tra kết nối máy chủ của không gian làm việc và bản cài đặt Codex. Nếu cần đăng nhập, hãy chạy <0>codex login</0> trong terminal của máy chủ đó rồi thử lại."
 
 msgid "Check your access under Settings > Security on that device."
 msgstr "Kiểm tra quyền truy cập của bạn trong Cài đặt > Bảo mật trên thiết bị đó."
@@ -3401,6 +3429,9 @@ msgstr "Đóng bộ lọc review"
 msgid "Close session"
 msgstr "Đóng phiên"
 
+msgid "Close sidebar"
+msgstr "Đóng thanh bên"
+
 msgid "Close Superset"
 msgstr "Đóng Superset"
 
@@ -3473,6 +3504,9 @@ msgstr "Khối mã"
 
 msgid "Code Block"
 msgstr "Code Block"
+
+msgid "Codex Chat"
+msgstr "Trò chuyện Codex"
 
 msgid "Cohort"
 msgstr "Nhóm"
@@ -3703,6 +3737,9 @@ msgstr "Chọn agent nào xuất hiện trong trình khởi chạy và cách d�
 
 msgid "Configure workspace run command"
 msgstr "Cấu hình lệnh chạy của workspace"
+
+msgid "Confirm"
+msgstr "Xác nhận"
 
 msgid "Confirm before quitting"
 msgstr "Xác nhận trước khi thoát"
@@ -4001,6 +4038,9 @@ msgstr "Sao chép tên nhánh"
 
 msgid "Copy browsing history and logins from Chrome, Brave, Arc, or another Chromium browser into Superset."
 msgstr "Sao chép lịch sử duyệt web và thông tin đăng nhập từ Chrome, Brave, Arc hoặc trình duyệt Chromium khác vào Superset."
+
+msgid "Copy code"
+msgstr "Sao chép mã"
 
 msgid "Copy Code"
 msgstr "Sao chép mã"
@@ -6469,6 +6509,9 @@ msgstr "Tạo một ticket, nhận lại một PR đã kiểm chứng và sẵn 
 msgid "File actions"
 msgstr "Hành động tệp"
 
+msgid "File changes"
+msgstr "Thay đổi tệp"
+
 msgid "File is too large to preview"
 msgstr "Tệp quá lớn để xem trước"
 
@@ -6834,6 +6877,9 @@ msgstr "Front matter đang ẩn — chuyển sang Markdown để sửa"
 
 msgid "Front matter hidden — switch to the Markdown view to edit it"
 msgstr "Đã ẩn front matter — hãy chuyển sang chế độ xem Markdown để sửa"
+
+msgid "Full access"
+msgstr "Toàn quyền truy cập"
 
 msgid "Full changelog →"
 msgstr "Changelog đầy đủ →"
@@ -8288,6 +8334,9 @@ msgstr "Tải tin nhắn cũ hơn"
 msgid "Load more"
 msgstr "Tải thêm"
 
+msgid "Load older messages"
+msgstr "Tải tin nhắn cũ hơn"
+
 msgid "Loader"
 msgstr "Trình tải"
 
@@ -8710,8 +8759,14 @@ msgstr "Đang merge pull request"
 msgid "Mesh Gradient"
 msgstr "Mesh Gradient"
 
+msgid "Message"
+msgstr "Tin nhắn"
+
 msgid "Message in channel"
 msgstr "Tin nhắn trong kênh"
+
+msgid "Message navigation"
+msgstr "Điều hướng tin nhắn"
 
 msgid "Message the agent"
 msgstr "Nhắn cho agent"
@@ -10843,6 +10898,9 @@ msgstr "PDF"
 msgid "Peak pace"
 msgstr "Tốc độ đỉnh"
 
+msgid "Pending"
+msgstr "Đang chờ"
+
 msgid "Pending Invitations"
 msgstr "Lời mời đang chờ"
 
@@ -11597,6 +11655,9 @@ msgstr "Đang kích hoạt lại…"
 msgid "Read"
 msgstr "Đã đọc"
 
+msgid "Read only"
+msgstr "Chỉ đọc"
+
 msgid "Read the changelog"
 msgstr "Đọc changelog"
 
@@ -11614,6 +11675,9 @@ msgstr "Đang đọc mức sử dụng…"
 
 msgid "Reading your local usage…"
 msgstr "Đang đọc mức sử dụng cục bộ của bạn…"
+
+msgid "Ready"
+msgstr "Sẵn sàng"
 
 msgid "Ready for review"
 msgstr "Sẵn sàng review"
@@ -11750,6 +11814,12 @@ msgstr "Đăng ký bất kỳ agent CLI nào bên cạnh các agent có sẵn, m
 
 msgid "Registers lifecycle hooks in this agent's global config so Superset can show status and send notifications. Turning this off removes Superset's entries everywhere — status and notifications stop for this agent, including inside Superset."
 msgstr "Đăng ký các hook vòng đời vào cấu hình toàn cục của agent này để Superset hiển thị trạng thái và gửi thông báo. Tắt tùy chọn này sẽ gỡ các mục của Superset ở mọi nơi — trạng thái và thông báo cho agent này sẽ dừng, kể cả bên trong Superset."
+
+msgid "Reject"
+msgstr "Từ chối"
+
+msgid "Rejected"
+msgstr "Đã từ chối"
 
 msgid "Related Posts"
 msgstr "Bài viết liên quan"
@@ -12048,6 +12118,9 @@ msgstr "Yêu cầu dùng thử"
 
 msgid "Request Body"
 msgstr "Thân yêu cầu"
+
+msgid "Request changes"
+msgstr "Yêu cầu thay đổi"
 
 msgid "Requested Changes"
 msgstr "Đã yêu cầu thay đổi"
@@ -14125,6 +14198,9 @@ msgstr "Gửi prompt"
 
 msgid "Submit prompt rate limiting is not configured"
 msgstr "Chưa cấu hình giới hạn tần suất gửi prompt"
+
+msgid "Submitting"
+msgstr "Đang gửi"
 
 msgid "Submitting…"
 msgstr "Đang gửi…"
@@ -16470,6 +16546,9 @@ msgstr "Chúng tôi đang và sắp xây gì."
 
 msgid "What would you like to build with Superset in the cloud?"
 msgstr "Bạn muốn xây dựng gì với Superset trên đám mây?"
+
+msgid "What would you like to build?"
+msgstr "Bạn muốn tạo gì?"
 
 msgid "What would you like to know?"
 msgstr "Bạn muốn biết điều gì?"

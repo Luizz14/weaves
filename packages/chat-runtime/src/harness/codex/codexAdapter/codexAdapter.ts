@@ -41,7 +41,12 @@ import {
 } from "../wire";
 import type { CodexDecisionOption } from "./approvalDecisions";
 import { codexDecision, decisionOptions } from "./approvalDecisions";
-import { CODEX_MODES, codexTurnPolicy, DEFAULT_CODEX_MODE } from "./codexModes";
+import {
+	CODEX_MODES,
+	codexSandboxPolicy,
+	codexTurnPolicy,
+	DEFAULT_CODEX_MODE,
+} from "./codexModes";
 import {
 	MIN_CODEX_VERSION,
 	meetsMinimumVersion,
@@ -259,6 +264,7 @@ export class CodexAdapter implements HarnessAdapter {
 
 			this.emitSession({
 				status: "idle",
+				harnessSessionId: this.threadId,
 				modeId: this.modeId,
 				availableModes: [...CODEX_MODES],
 				...(this.modelId ? { modelId: this.modelId } : {}),
@@ -281,7 +287,8 @@ export class CodexAdapter implements HarnessAdapter {
 			const response = await client.request("turn/start", {
 				threadId: this.threadId,
 				input,
-				...codexTurnPolicy(this.modeId),
+				approvalPolicy: codexTurnPolicy(this.modeId).approvalPolicy,
+				sandboxPolicy: codexSandboxPolicy(this.modeId, this.cwd),
 				...(this.modelId ? { model: this.modelId } : {}),
 			});
 			const parsed = turnLifecycleSchema
@@ -690,7 +697,7 @@ export class CodexAdapter implements HarnessAdapter {
 				completedAtMs: this.now(),
 				...(text ? { text } : {}),
 			},
-			this.currentTurn?.id ?? "",
+			this.currentTurn?.id ?? "codex:session",
 		);
 	}
 

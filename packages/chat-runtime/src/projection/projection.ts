@@ -5,6 +5,7 @@ import { chatSessionsLocal } from "../db";
 export type SessionRowInsert = typeof chatSessionsLocal.$inferInsert;
 
 export type SessionProjection = {
+	harnessSessionId?: string;
 	status: string;
 	title: string | null;
 	queuedCount: number;

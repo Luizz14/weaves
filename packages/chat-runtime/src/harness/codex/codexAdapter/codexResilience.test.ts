@@ -272,3 +272,39 @@ describe("codex fixtures still map after the guards", () => {
 		expect(calls.at(-1)).toMatchObject({ status: "completed" });
 	});
 });
+
+test("session notices can be persisted before the first turn", async () => {
+	const harness = startAdapter();
+	await harness.settle();
+	harness.receive({ method: "future/sessionNotification", params: {} });
+	await harness.settle();
+	const notice = harness.events.find(
+		(event) => event.kind === "item" && event.item.kind === "notice",
+	);
+	expect(notice?.kind === "item" ? notice.turnId : null).toBe("codex:session");
+	await harness.adapter.dispose();
+});
+
+test("mode changes use the app-server sandboxPolicy on subsequent turns", async () => {
+	const harness = startAdapter();
+	await harness.settle();
+	harness.adapter.setMode("full-access");
+	harness.adapter.prompt([{ type: "text", text: "first" }]);
+	await harness.settle();
+	harness.adapter.setMode("read-only");
+	harness.adapter.prompt([{ type: "text", text: "second" }]);
+	await harness.settle();
+	const requests = harness.sent.filter(
+		(frame) => frame.method === "turn/start",
+	);
+	expect(requests[0]?.params).toMatchObject({
+		approvalPolicy: "never",
+		sandboxPolicy: { type: "dangerFullAccess" },
+	});
+	expect(requests[1]?.params).toMatchObject({
+		approvalPolicy: "on-request",
+		sandboxPolicy: { type: "readOnly", networkAccess: false },
+	});
+	expect(requests[1]?.params).not.toHaveProperty("sandbox");
+	await harness.adapter.dispose();
+});

@@ -560,6 +560,10 @@ msgstr "{closedCount, plural, one {# porta fechada} other {# portas fechadas}}"
 msgid "{closedCount} closed"
 msgstr "{closedCount} fechados"
 
+#. placeholder {0}: items.length
+msgid "{completed} / {0}"
+msgstr "{completed} / {0}"
+
 #. placeholder {0}: relevant.length
 msgid "{completed} of {0} checks complete"
 msgstr "{completed} de {0} verificações concluídas"
@@ -2087,6 +2091,12 @@ msgctxt "job application"
 msgid "Apply"
 msgstr "Candidatar-se"
 
+msgid "Applying changes"
+msgstr "Aplicando alterações"
+
+msgid "Approval required"
+msgstr "Aprovação necessária"
+
 msgid "Approve"
 msgstr "Aprovar"
 
@@ -2095,6 +2105,9 @@ msgstr "Aprovada"
 
 msgid "Approved review"
 msgstr "Revisão aprovada"
+
+msgid "Approving"
+msgstr "Aprovando"
 
 msgid "apps/desktop/src/renderer"
 msgstr "apps/desktop/src/renderer"
@@ -2147,8 +2160,17 @@ msgstr "crescente"
 msgid "Ask an agent to publish one from the desktop app."
 msgstr "Peça a um agente para publicar uma no aplicativo para desktop."
 
+msgid "Ask Codex to explore, change, or review this workspace."
+msgstr "Peça ao Codex para explorar, alterar ou revisar este workspace."
+
+msgid "Ask Codex to work on this workspace…"
+msgstr "Peça ao Codex para trabalhar neste workspace…"
+
 msgid "Ask for this to be removed"
 msgstr "Pedir remoção"
+
+msgid "Ask the agent to do something…"
+msgstr "Peça ao agente para fazer algo…"
 
 msgid "Ask the agent…"
 msgstr "Pergunte ao agente…"
@@ -2964,6 +2986,9 @@ msgstr "Changelog"
 msgid "Changes"
 msgstr "Alterações"
 
+msgid "Changes applied"
+msgstr "Alterações aplicadas"
+
 msgid "Changes are isolated"
 msgstr "As mudanças ficam isoladas"
 
@@ -3029,6 +3054,9 @@ msgstr "Verificar recursos"
 
 msgid "Check the rendered prompt and launch output before saving"
 msgstr "Confira o prompt renderizado e a saída de execução antes de salvar"
+
+msgid "Check the workspace host connection and Codex installation. If sign-in is required, run <0>codex login</0> in that host's terminal, then retry."
+msgstr "Verifique a conexão com o host do workspace e a instalação do Codex. Se precisar entrar na conta, execute <0>codex login</0> no terminal desse host e tente novamente."
 
 msgid "Check your access under Settings > Security on that device."
 msgstr "Confira seu acesso em Configurações > Segurança nesse dispositivo."
@@ -3401,6 +3429,9 @@ msgstr "Fechar o filtro de revisões"
 msgid "Close session"
 msgstr "Fechar sessão"
 
+msgid "Close sidebar"
+msgstr "Fechar barra lateral"
+
 msgid "Close Superset"
 msgstr "Fechar o Superset"
 
@@ -3473,6 +3504,9 @@ msgstr "Bloco de código"
 
 msgid "Code Block"
 msgstr "Bloco de código"
+
+msgid "Codex Chat"
+msgstr "Chat Codex"
 
 msgid "Cohort"
 msgstr "Coorte"
@@ -3703,6 +3737,9 @@ msgstr "Escolha quais agentes aparecem nos lançadores e como as execuções del
 
 msgid "Configure workspace run command"
 msgstr "Configurar o comando de execução da área de trabalho"
+
+msgid "Confirm"
+msgstr "Confirmar"
 
 msgid "Confirm before quitting"
 msgstr "Confirmar antes de encerrar"
@@ -4001,6 +4038,9 @@ msgstr "Copiar nome da branch"
 
 msgid "Copy browsing history and logins from Chrome, Brave, Arc, or another Chromium browser into Superset."
 msgstr "Copie o histórico de navegação e os logins do Chrome, Brave, Arc ou outro navegador Chromium para o Superset."
+
+msgid "Copy code"
+msgstr "Copiar código"
 
 msgid "Copy Code"
 msgstr "Copiar código"
@@ -6469,6 +6509,9 @@ msgstr "Abra um ticket e receba de volta um PR verificado e pronto para merge, c
 msgid "File actions"
 msgstr "Ações do arquivo"
 
+msgid "File changes"
+msgstr "Alterações do arquivo"
+
 msgid "File is too large to preview"
 msgstr "O arquivo é grande demais para pré-visualizar"
 
@@ -6834,6 +6877,9 @@ msgstr "Front matter oculto — mude para Markdown para editá-lo"
 
 msgid "Front matter hidden — switch to the Markdown view to edit it"
 msgstr "Front matter oculto — mude para a visualização Markdown para editá-lo"
+
+msgid "Full access"
+msgstr "Acesso completo"
 
 msgid "Full changelog →"
 msgstr "Changelog completo →"
@@ -8288,6 +8334,9 @@ msgstr "Carregar mensagens anteriores"
 msgid "Load more"
 msgstr "Carregar mais"
 
+msgid "Load older messages"
+msgstr "Carregar mensagens anteriores"
+
 msgid "Loader"
 msgstr "Carregador"
 
@@ -8710,8 +8759,14 @@ msgstr "Fazendo merge do pull request"
 msgid "Mesh Gradient"
 msgstr "Mesh Gradient"
 
+msgid "Message"
+msgstr "Mensagem"
+
 msgid "Message in channel"
 msgstr "Mensagem no canal"
+
+msgid "Message navigation"
+msgstr "Navegação de mensagens"
 
 msgid "Message the agent"
 msgstr "Escreva para o agente"
@@ -10843,6 +10898,9 @@ msgstr "PDF"
 msgid "Peak pace"
 msgstr "Ritmo máximo"
 
+msgid "Pending"
+msgstr "Pendente"
+
 msgid "Pending Invitations"
 msgstr "Convites pendentes"
 
@@ -11597,6 +11655,9 @@ msgstr "Reativando…"
 msgid "Read"
 msgstr "Leitura"
 
+msgid "Read only"
+msgstr "Somente leitura"
+
 msgid "Read the changelog"
 msgstr "Ler o changelog"
 
@@ -11614,6 +11675,9 @@ msgstr "Lendo o uso…"
 
 msgid "Reading your local usage…"
 msgstr "Lendo seu uso local…"
+
+msgid "Ready"
+msgstr "Pronto"
 
 msgid "Ready for review"
 msgstr "Pronta para revisão"
@@ -11750,6 +11814,12 @@ msgstr "Registre qualquer agente de CLI ao lado dos nativos, cada um com nome, �
 
 msgid "Registers lifecycle hooks in this agent's global config so Superset can show status and send notifications. Turning this off removes Superset's entries everywhere — status and notifications stop for this agent, including inside Superset."
 msgstr "Registra hooks de ciclo de vida na configuração global deste agente para o Superset mostrar o status e enviar notificações. Desligar isso remove as entradas do Superset em todo lugar — status e notificações param para este agente, inclusive dentro do Superset."
+
+msgid "Reject"
+msgstr "Rejeitar"
+
+msgid "Rejected"
+msgstr "Rejeitado"
 
 msgid "Related Posts"
 msgstr "Posts relacionados"
@@ -12048,6 +12118,9 @@ msgstr "Solicitar um teste"
 
 msgid "Request Body"
 msgstr "Corpo da requisição"
+
+msgid "Request changes"
+msgstr "Solicitar alterações"
 
 msgid "Requested Changes"
 msgstr "Alterações solicitadas"
@@ -14125,6 +14198,9 @@ msgstr "Enviar prompt"
 
 msgid "Submit prompt rate limiting is not configured"
 msgstr "O limite de envio de prompts não está configurado"
+
+msgid "Submitting"
+msgstr "Enviando"
 
 msgid "Submitting…"
 msgstr "Enviando…"
@@ -16470,6 +16546,9 @@ msgstr "O que estamos construindo agora e a seguir."
 
 msgid "What would you like to build with Superset in the cloud?"
 msgstr "O que você gostaria de criar com o Superset na nuvem?"
+
+msgid "What would you like to build?"
+msgstr "O que você gostaria de criar?"
 
 msgid "What would you like to know?"
 msgstr "O que você quer saber?"

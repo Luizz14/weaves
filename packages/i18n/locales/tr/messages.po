@@ -560,6 +560,10 @@ msgstr "{closedCount, plural, one {# port kapatıldı} other {# port kapatıldı
 msgid "{closedCount} closed"
 msgstr "{closedCount} kapalı"
 
+#. placeholder {0}: items.length
+msgid "{completed} / {0}"
+msgstr "{completed} / {0}"
+
 #. placeholder {0}: relevant.length
 msgid "{completed} of {0} checks complete"
 msgstr "{0} kontrolden {completed} tanesi tamamlandı"
@@ -2087,6 +2091,12 @@ msgctxt "job application"
 msgid "Apply"
 msgstr "Başvur"
 
+msgid "Applying changes"
+msgstr "Değişiklikler uygulanıyor"
+
+msgid "Approval required"
+msgstr "Onay gerekli"
+
 msgid "Approve"
 msgstr "Onayla"
 
@@ -2095,6 +2105,9 @@ msgstr "Onaylandı"
 
 msgid "Approved review"
 msgstr "Onaylanmış inceleme"
+
+msgid "Approving"
+msgstr "Onaylanıyor"
 
 msgid "apps/desktop/src/renderer"
 msgstr "apps/desktop/src/renderer"
@@ -2147,8 +2160,17 @@ msgstr "artan"
 msgid "Ask an agent to publish one from the desktop app."
 msgstr "Bir ajandan masaüstü uygulamasından bir tane yayımlamasını isteyin."
 
+msgid "Ask Codex to explore, change, or review this workspace."
+msgstr "Codex’ten bu çalışma alanını incelemesini, değiştirmesini veya gözden geçirmesini isteyin."
+
+msgid "Ask Codex to work on this workspace…"
+msgstr "Codex’ten bu çalışma alanında çalışmasını isteyin…"
+
 msgid "Ask for this to be removed"
 msgstr "Kaldırılmasını iste"
+
+msgid "Ask the agent to do something…"
+msgstr "Ajandan bir şey yapmasını isteyin…"
 
 msgid "Ask the agent…"
 msgstr "Ajana sorun…"
@@ -2964,6 +2986,9 @@ msgstr "Değişiklik günlüğü"
 msgid "Changes"
 msgstr "Değişiklikler"
 
+msgid "Changes applied"
+msgstr "Değişiklikler uygulandı"
+
 msgid "Changes are isolated"
 msgstr "Değişiklikler yalıtılmıştır"
 
@@ -3029,6 +3054,9 @@ msgstr "Kaynakları denetle"
 
 msgid "Check the rendered prompt and launch output before saving"
 msgstr "Kaydetmeden önce oluşturulan istemi ve başlatma çıktısını kontrol edin"
+
+msgid "Check the workspace host connection and Codex installation. If sign-in is required, run <0>codex login</0> in that host's terminal, then retry."
+msgstr "Çalışma alanının ana makine bağlantısını ve Codex kurulumunu kontrol edin. Oturum açmak gerekiyorsa o ana makinenin terminalinde <0>codex login</0> komutunu çalıştırıp yeniden deneyin."
 
 msgid "Check your access under Settings > Security on that device."
 msgstr "O cihazda Ayarlar > Güvenlik bölümünden erişiminizi kontrol edin."
@@ -3401,6 +3429,9 @@ msgstr "İnceleme filtresini kapat"
 msgid "Close session"
 msgstr "Oturumu kapat"
 
+msgid "Close sidebar"
+msgstr "Kenar çubuğunu kapat"
+
 msgid "Close Superset"
 msgstr "Superset'i kapat"
 
@@ -3473,6 +3504,9 @@ msgstr "Kod bloğu"
 
 msgid "Code Block"
 msgstr "Kod bloğu"
+
+msgid "Codex Chat"
+msgstr "Codex Sohbeti"
 
 msgid "Cohort"
 msgstr "Kohort"
@@ -3703,6 +3737,9 @@ msgstr "Başlatıcılarda hangi ajanların görüneceğini ve başlatmalarının
 
 msgid "Configure workspace run command"
 msgstr "Çalışma alanı çalıştırma komutunu yapılandır"
+
+msgid "Confirm"
+msgstr "Onayla"
 
 msgid "Confirm before quitting"
 msgstr "Çıkmadan önce onay iste"
@@ -4001,6 +4038,9 @@ msgstr "Dal adını kopyala"
 
 msgid "Copy browsing history and logins from Chrome, Brave, Arc, or another Chromium browser into Superset."
 msgstr "Tarama geçmişini ve oturum bilgilerini Chrome, Brave, Arc veya başka bir Chromium tarayıcısından Superset'e kopyalayın."
+
+msgid "Copy code"
+msgstr "Kodu kopyala"
 
 msgid "Copy Code"
 msgstr "Kodu kopyala"
@@ -6469,6 +6509,9 @@ msgstr "Bir bilet açın, değişikliğin çalıştığının kanıtı olarak ek
 msgid "File actions"
 msgstr "Dosya eylemleri"
 
+msgid "File changes"
+msgstr "Dosya değişiklikleri"
+
 msgid "File is too large to preview"
 msgstr "Dosya önizlenemeyecek kadar büyük"
 
@@ -6834,6 +6877,9 @@ msgstr "Front matter gizli — düzenlemek için Markdown'a geçin"
 
 msgid "Front matter hidden — switch to the Markdown view to edit it"
 msgstr "Front matter gizli — düzenlemek için Markdown görünümüne geçin"
+
+msgid "Full access"
+msgstr "Tam erişim"
 
 msgid "Full changelog →"
 msgstr "Tüm değişiklik günlüğü →"
@@ -8288,6 +8334,9 @@ msgstr "Daha eski mesajları yükle"
 msgid "Load more"
 msgstr "Daha fazla yükle"
 
+msgid "Load older messages"
+msgstr "Önceki mesajları yükle"
+
 msgid "Loader"
 msgstr "Yükleyici"
 
@@ -8710,8 +8759,14 @@ msgstr "Pull request birleştiriliyor"
 msgid "Mesh Gradient"
 msgstr "Mesh gradyanı"
 
+msgid "Message"
+msgstr "Mesaj"
+
 msgid "Message in channel"
 msgstr "Kanalda mesaj"
+
+msgid "Message navigation"
+msgstr "Mesaj gezinmesi"
 
 msgid "Message the agent"
 msgstr "Ajana mesaj yazın"
@@ -10843,6 +10898,9 @@ msgstr "PDF"
 msgid "Peak pace"
 msgstr "Zirve hız"
 
+msgid "Pending"
+msgstr "Beklemede"
+
 msgid "Pending Invitations"
 msgstr "Bekleyen davetler"
 
@@ -11597,6 +11655,9 @@ msgstr "Yeniden etkinleştiriliyor…"
 msgid "Read"
 msgstr "Okundu"
 
+msgid "Read only"
+msgstr "Salt okunur"
+
 msgid "Read the changelog"
 msgstr "Değişiklik günlüğünü oku"
 
@@ -11614,6 +11675,9 @@ msgstr "Kullanım okunuyor…"
 
 msgid "Reading your local usage…"
 msgstr "Yerel kullanımınız okunuyor…"
+
+msgid "Ready"
+msgstr "Hazır"
 
 msgid "Ready for review"
 msgstr "İncelemeye hazır"
@@ -11750,6 +11814,12 @@ msgstr "Herhangi bir CLI ajanını, kendi adı, simgesi ve başlatma komutuyla y
 
 msgid "Registers lifecycle hooks in this agent's global config so Superset can show status and send notifications. Turning this off removes Superset's entries everywhere — status and notifications stop for this agent, including inside Superset."
 msgstr "Superset'in durum gösterebilmesi ve bildirim gönderebilmesi için bu ajanın genel yapılandırmasına yaşam döngüsü hook'ları kaydeder. Bunu kapatmak Superset'in kayıtlarını her yerden kaldırır — Superset içinde dahil olmak üzere bu ajan için durum ve bildirimler durur."
+
+msgid "Reject"
+msgstr "Reddet"
+
+msgid "Rejected"
+msgstr "Reddedildi"
 
 msgid "Related Posts"
 msgstr "İlgili yazılar"
@@ -12048,6 +12118,9 @@ msgstr "Deneme talep et"
 
 msgid "Request Body"
 msgstr "İstek gövdesi"
+
+msgid "Request changes"
+msgstr "Değişiklik iste"
 
 msgid "Requested Changes"
 msgstr "Değişiklik istedi"
@@ -14125,6 +14198,9 @@ msgstr "İstemi gönder"
 
 msgid "Submit prompt rate limiting is not configured"
 msgstr "İstem gönderme hız sınırlaması yapılandırılmamış"
+
+msgid "Submitting"
+msgstr "Gönderiliyor"
 
 msgid "Submitting…"
 msgstr "Gönderiliyor…"
@@ -16470,6 +16546,9 @@ msgstr "Şimdi ve sırada ne geliştiriyoruz."
 
 msgid "What would you like to build with Superset in the cloud?"
 msgstr "Bulutta Superset ile ne geliştirmek istersiniz?"
+
+msgid "What would you like to build?"
+msgstr "Ne oluşturmak istersiniz?"
 
 msgid "What would you like to know?"
 msgstr "Ne öğrenmek istersiniz?"

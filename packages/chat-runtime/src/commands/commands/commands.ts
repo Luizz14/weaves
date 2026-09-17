@@ -47,6 +47,7 @@ export type CreateSessionResult = {
 
 export type GetSessionResult = {
 	session: ChatSessionRow | null;
+	isLive?: boolean;
 	cursor: Cursor | null;
 };
 
@@ -78,7 +79,11 @@ export function createCommands(options: CommandsOptions): ChatCommands {
 		const rows = parsed.scopeId
 			? options.sessions.listByScope(parsed.scopeId)
 			: options.sessions.list();
-		return rows.slice(0, parsed.limit);
+		return rows
+			.filter(
+				(row) => parsed.harness === undefined || row.harness === parsed.harness,
+			)
+			.slice(0, parsed.limit);
 	};
 
 	return {
@@ -149,6 +154,13 @@ export function createCommands(options: CommandsOptions): ChatCommands {
 			const session = options.sessions.get(parsed.sessionId);
 			return {
 				session,
+				...(session?.harness === "codex"
+					? {
+							isLive:
+								options.live.get(parsed.sessionId)?.state.status !== "dead" &&
+								options.live.get(parsed.sessionId) !== null,
+						}
+					: {}),
 				cursor: session
 					? {
 							epoch: session.epoch,

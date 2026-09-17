@@ -1,0 +1,1 @@
+export { ChatError } from "./ChatError";

@@ -75,6 +75,7 @@ export const getSessionInputSchema = z.object({ sessionId: z.string().min(1) });
 export type GetSessionInput = z.infer<typeof getSessionInputSchema>;
 
 export const listSessionsInputSchema = z.object({
+	harness: z.string().min(1).optional(),
 	workspaceId: z.string().min(1).optional(),
 	limit: z.number().int().positive().max(200).default(50),
 });

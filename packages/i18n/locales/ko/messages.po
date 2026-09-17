@@ -560,6 +560,10 @@ msgstr "{closedCount, plural, one {포트 #개를 닫았습니다} other {포트
 msgid "{closedCount} closed"
 msgstr "{closedCount}개 닫힘"
 
+#. placeholder {0}: items.length
+msgid "{completed} / {0}"
+msgstr "{completed} / {0}"
+
 #. placeholder {0}: relevant.length
 msgid "{completed} of {0} checks complete"
 msgstr "검사 {0}개 중 {completed}개 완료"
@@ -2087,6 +2091,12 @@ msgctxt "job application"
 msgid "Apply"
 msgstr "지원"
 
+msgid "Applying changes"
+msgstr "변경 사항 적용 중"
+
+msgid "Approval required"
+msgstr "승인 필요"
+
 msgid "Approve"
 msgstr "승인"
 
@@ -2095,6 +2105,9 @@ msgstr "승인됨"
 
 msgid "Approved review"
 msgstr "승인된 리뷰"
+
+msgid "Approving"
+msgstr "승인 중"
 
 msgid "apps/desktop/src/renderer"
 msgstr "apps/desktop/src/renderer"
@@ -2147,8 +2160,17 @@ msgstr "오름차순"
 msgid "Ask an agent to publish one from the desktop app."
 msgstr "데스크톱 앱에서 에이전트에게 게시를 요청하세요."
 
+msgid "Ask Codex to explore, change, or review this workspace."
+msgstr "Codex에 이 워크스페이스를 탐색, 변경 또는 검토하도록 요청하세요."
+
+msgid "Ask Codex to work on this workspace…"
+msgstr "Codex에 이 워크스페이스에서 작업하도록 요청…"
+
 msgid "Ask for this to be removed"
 msgstr "삭제 요청"
+
+msgid "Ask the agent to do something…"
+msgstr "에이전트에 작업 요청…"
 
 msgid "Ask the agent…"
 msgstr "에이전트에게 물어보세요…"
@@ -2964,6 +2986,9 @@ msgstr "변경 로그"
 msgid "Changes"
 msgstr "변경"
 
+msgid "Changes applied"
+msgstr "변경 사항 적용됨"
+
 msgid "Changes are isolated"
 msgstr "변경은 격리됩니다"
 
@@ -3029,6 +3054,9 @@ msgstr "리소스 확인"
 
 msgid "Check the rendered prompt and launch output before saving"
 msgstr "저장하기 전에 렌더링된 프롬프트와 실행 결과를 확인하세요"
+
+msgid "Check the workspace host connection and Codex installation. If sign-in is required, run <0>codex login</0> in that host's terminal, then retry."
+msgstr "워크스페이스 호스트 연결과 Codex 설치를 확인하세요. 로그인이 필요한 경우 해당 호스트의 터미널에서 <0>codex login</0>을 실행한 후 다시 시도하세요."
 
 msgid "Check your access under Settings > Security on that device."
 msgstr "해당 기기의 설정 > 보안에서 접근 권한을 확인해 주세요."
@@ -3401,6 +3429,9 @@ msgstr "리뷰 필터 닫기"
 msgid "Close session"
 msgstr "세션 닫기"
 
+msgid "Close sidebar"
+msgstr "사이드바 닫기"
+
 msgid "Close Superset"
 msgstr "Superset 닫기"
 
@@ -3473,6 +3504,9 @@ msgstr "코드 블록"
 
 msgid "Code Block"
 msgstr "코드 블록"
+
+msgid "Codex Chat"
+msgstr "Codex 채팅"
 
 msgid "Cohort"
 msgstr "코호트"
@@ -3703,6 +3737,9 @@ msgstr "실행기에 표시할 에이전트와 실행 구성 방식을 설정합
 
 msgid "Configure workspace run command"
 msgstr "워크스페이스 실행 명령 구성"
+
+msgid "Confirm"
+msgstr "확인"
 
 msgid "Confirm before quitting"
 msgstr "종료 전 확인"
@@ -4001,6 +4038,9 @@ msgstr "브랜치 이름 복사"
 
 msgid "Copy browsing history and logins from Chrome, Brave, Arc, or another Chromium browser into Superset."
 msgstr "Chrome, Brave, Arc 등 Chromium 브라우저의 방문 기록과 로그인 정보를 Superset으로 복사합니다."
+
+msgid "Copy code"
+msgstr "코드 복사"
 
 msgid "Copy Code"
 msgstr "코드 복사"
@@ -6469,6 +6509,9 @@ msgstr "티켓을 등록하면 검증된 머지 가능한 PR이 돌아옵니다.
 msgid "File actions"
 msgstr "파일 작업"
 
+msgid "File changes"
+msgstr "파일 변경 사항"
+
 msgid "File is too large to preview"
 msgstr "파일이 너무 커서 미리 볼 수 없습니다"
 
@@ -6834,6 +6877,9 @@ msgstr "프런트매터 숨김 — 편집하려면 Markdown으로 전환하세�
 
 msgid "Front matter hidden — switch to the Markdown view to edit it"
 msgstr "front matter 숨김 — 편집하려면 Markdown 보기로 전환하세요"
+
+msgid "Full access"
+msgstr "전체 접근"
 
 msgid "Full changelog →"
 msgstr "전체 변경 로그 →"
@@ -8288,6 +8334,9 @@ msgstr "이전 메시지 불러오기"
 msgid "Load more"
 msgstr "더 보기"
 
+msgid "Load older messages"
+msgstr "이전 메시지 불러오기"
+
 msgid "Loader"
 msgstr "로더"
 
@@ -8710,8 +8759,14 @@ msgstr "풀 리퀘스트 머지 중"
 msgid "Mesh Gradient"
 msgstr "메시 그라데이션"
 
+msgid "Message"
+msgstr "메시지"
+
 msgid "Message in channel"
 msgstr "채널 내 메시지"
+
+msgid "Message navigation"
+msgstr "메시지 탐색"
 
 msgid "Message the agent"
 msgstr "에이전트에게 메시지 보내기"
@@ -10843,6 +10898,9 @@ msgstr "PDF"
 msgid "Peak pace"
 msgstr "최고 속도"
 
+msgid "Pending"
+msgstr "대기 중"
+
 msgid "Pending Invitations"
 msgstr "대기 중인 초대"
 
@@ -11597,6 +11655,9 @@ msgstr "다시 활성화하는 중…"
 msgid "Read"
 msgstr "읽음"
 
+msgid "Read only"
+msgstr "읽기 전용"
+
 msgid "Read the changelog"
 msgstr "변경 로그 읽기"
 
@@ -11614,6 +11675,9 @@ msgstr "사용량 읽는 중…"
 
 msgid "Reading your local usage…"
 msgstr "로컬 사용량을 읽는 중…"
+
+msgid "Ready"
+msgstr "준비됨"
 
 msgid "Ready for review"
 msgstr "리뷰 준비됨"
@@ -11750,6 +11814,12 @@ msgstr "기본 제공 에이전트 옆에 어떤 CLI 에이전트든 이름, 아
 
 msgid "Registers lifecycle hooks in this agent's global config so Superset can show status and send notifications. Turning this off removes Superset's entries everywhere — status and notifications stop for this agent, including inside Superset."
 msgstr "이 에이전트의 전역 구성에 라이프사이클 훅을 등록해 Superset이 상태를 표시하고 알림을 보낼 수 있게 합니다. 이 기능을 끄면 모든 곳에서 Superset의 항목이 제거되며, Superset 안에서도 이 에이전트의 상태와 알림이 중단됩니다."
+
+msgid "Reject"
+msgstr "거부"
+
+msgid "Rejected"
+msgstr "거부됨"
 
 msgid "Related Posts"
 msgstr "관련 게시물"
@@ -12048,6 +12118,9 @@ msgstr "체험판 요청"
 
 msgid "Request Body"
 msgstr "요청 본문"
+
+msgid "Request changes"
+msgstr "변경 요청"
 
 msgid "Requested Changes"
 msgstr "변경 요청함"
@@ -14125,6 +14198,9 @@ msgstr "프롬프트 제출"
 
 msgid "Submit prompt rate limiting is not configured"
 msgstr "프롬프트 제출 요청 한도가 구성되지 않았습니다"
+
+msgid "Submitting"
+msgstr "제출 중"
 
 msgid "Submitting…"
 msgstr "제출하는 중…"
@@ -16470,6 +16546,9 @@ msgstr "지금 만들고 있는 것과 다음에 만들 것."
 
 msgid "What would you like to build with Superset in the cloud?"
 msgstr "클라우드의 Superset으로 무엇을 만들고 싶으신가요?"
+
+msgid "What would you like to build?"
+msgstr "무엇을 만들고 싶으신가요?"
 
 msgid "What would you like to know?"
 msgstr "무엇을 알고 싶으신가요?"

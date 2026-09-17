@@ -12,6 +12,8 @@ import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import type { ChatRuntime } from "../../index";
 
+import { createEnsureCodexSession } from "./ensureCodexSession";
+
 const t = initTRPC.create();
 
 export const createChatCallerFactory = t.createCallerFactory;
@@ -48,6 +50,10 @@ export function createChatRouter(
 	runtime: ChatRuntime,
 	options: ChatRouterOptions,
 ) {
+	const ensureCodexSession = createEnsureCodexSession(
+		runtime,
+		options.resolveCwd,
+	);
 	function guarded<T>(execute: () => T): T {
 		try {
 			return execute();
@@ -71,9 +77,10 @@ export function createChatRouter(
 				);
 			}),
 
-		prompt: t.procedure
-			.input(promptInputSchema)
-			.mutation(({ input }) => guarded(() => runtime.commands.prompt(input))),
+		prompt: t.procedure.input(promptInputSchema).mutation(async ({ input }) => {
+			await ensureCodexSession(input.sessionId);
+			return guarded(() => runtime.commands.prompt(input));
+		}),
 
 		cancelTurn: t.procedure
 			.input(cancelTurnInputSchema)
@@ -89,7 +96,10 @@ export function createChatRouter(
 
 		setMode: t.procedure
 			.input(setModeInputSchema)
-			.mutation(({ input }) => guarded(() => runtime.commands.setMode(input))),
+			.mutation(async ({ input }) => {
+				await ensureCodexSession(input.sessionId);
+				return guarded(() => runtime.commands.setMode(input));
+			}),
 
 		getSession: t.procedure
 			.input(getSessionInputSchema)
@@ -100,6 +110,7 @@ export function createChatRouter(
 			.query(({ input }) =>
 				runtime.commands.listSessions({
 					limit: input.limit,
+					harness: input.harness,
 					...(input.workspaceId === undefined
 						? {}
 						: { scopeId: input.workspaceId }),

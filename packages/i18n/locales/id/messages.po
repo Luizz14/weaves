@@ -560,6 +560,10 @@ msgstr "{closedCount, plural, one {Menutup # port} other {Menutup # port}}"
 msgid "{closedCount} closed"
 msgstr "{closedCount} tertutup"
 
+#. placeholder {0}: items.length
+msgid "{completed} / {0}"
+msgstr "{completed} / {0}"
+
 #. placeholder {0}: relevant.length
 msgid "{completed} of {0} checks complete"
 msgstr "{completed} dari {0} check selesai"
@@ -2087,6 +2091,12 @@ msgctxt "job application"
 msgid "Apply"
 msgstr "Lamar"
 
+msgid "Applying changes"
+msgstr "Menerapkan perubahan"
+
+msgid "Approval required"
+msgstr "Persetujuan diperlukan"
+
 msgid "Approve"
 msgstr "Setujui"
 
@@ -2095,6 +2105,9 @@ msgstr "Disetujui"
 
 msgid "Approved review"
 msgstr "Review disetujui"
+
+msgid "Approving"
+msgstr "Menyetujui"
 
 msgid "apps/desktop/src/renderer"
 msgstr "apps/desktop/src/renderer"
@@ -2147,8 +2160,17 @@ msgstr "menaik"
 msgid "Ask an agent to publish one from the desktop app."
 msgstr "Minta agen untuk memublikasikan satu dari aplikasi desktop."
 
+msgid "Ask Codex to explore, change, or review this workspace."
+msgstr "Minta Codex menjelajahi, mengubah, atau meninjau ruang kerja ini."
+
+msgid "Ask Codex to work on this workspace…"
+msgstr "Minta Codex bekerja di ruang kerja ini…"
+
 msgid "Ask for this to be removed"
 msgstr "Minta ini dihapus"
+
+msgid "Ask the agent to do something…"
+msgstr "Minta agen melakukan sesuatu…"
 
 msgid "Ask the agent…"
 msgstr "Tanya agennya…"
@@ -2964,6 +2986,9 @@ msgstr "Changelog"
 msgid "Changes"
 msgstr "Perubahan"
 
+msgid "Changes applied"
+msgstr "Perubahan diterapkan"
+
 msgid "Changes are isolated"
 msgstr "Perubahan terisolasi"
 
@@ -3029,6 +3054,9 @@ msgstr "Periksa Sumber Daya"
 
 msgid "Check the rendered prompt and launch output before saving"
 msgstr "Periksa prompt yang dirender dan output peluncuran sebelum menyimpan"
+
+msgid "Check the workspace host connection and Codex installation. If sign-in is required, run <0>codex login</0> in that host's terminal, then retry."
+msgstr "Periksa koneksi host ruang kerja dan instalasi Codex. Jika perlu masuk, jalankan <0>codex login</0> di terminal host tersebut, lalu coba lagi."
 
 msgid "Check your access under Settings > Security on that device."
 msgstr "Periksa akses Anda di Pengaturan > Keamanan pada perangkat tersebut."
@@ -3401,6 +3429,9 @@ msgstr "Tutup filter review"
 msgid "Close session"
 msgstr "Tutup sesi"
 
+msgid "Close sidebar"
+msgstr "Tutup bilah samping"
+
 msgid "Close Superset"
 msgstr "Tutup Superset"
 
@@ -3473,6 +3504,9 @@ msgstr "Blok kode"
 
 msgid "Code Block"
 msgstr "Blok Kode"
+
+msgid "Codex Chat"
+msgstr "Chat Codex"
 
 msgid "Cohort"
 msgstr "Kohor"
@@ -3703,6 +3737,9 @@ msgstr "Atur agen mana yang muncul di peluncur dan bagaimana peluncurannya disus
 
 msgid "Configure workspace run command"
 msgstr "Atur perintah run workspace"
+
+msgid "Confirm"
+msgstr "Konfirmasi"
 
 msgid "Confirm before quitting"
 msgstr "Konfirmasi sebelum keluar"
@@ -4001,6 +4038,9 @@ msgstr "Salin Nama Branch"
 
 msgid "Copy browsing history and logins from Chrome, Brave, Arc, or another Chromium browser into Superset."
 msgstr "Salin riwayat penjelajahan dan login dari Chrome, Brave, Arc, atau browser Chromium lain ke Superset."
+
+msgid "Copy code"
+msgstr "Salin kode"
 
 msgid "Copy Code"
 msgstr "Salin Kode"
@@ -6469,6 +6509,9 @@ msgstr "Buat tiket, dapatkan PR terverifikasi yang siap di-merge, lengkap dengan
 msgid "File actions"
 msgstr "Aksi file"
 
+msgid "File changes"
+msgstr "Perubahan berkas"
+
 msgid "File is too large to preview"
 msgstr "File terlalu besar untuk dipratinjau"
 
@@ -6834,6 +6877,9 @@ msgstr "Front matter disembunyikan — beralih ke Markdown untuk mengeditnya"
 
 msgid "Front matter hidden — switch to the Markdown view to edit it"
 msgstr "Front matter disembunyikan — beralih ke tampilan Markdown untuk mengeditnya"
+
+msgid "Full access"
+msgstr "Akses penuh"
 
 msgid "Full changelog →"
 msgstr "Changelog lengkap →"
@@ -8288,6 +8334,9 @@ msgstr "Muat pesan sebelumnya"
 msgid "Load more"
 msgstr "Muat lagi"
 
+msgid "Load older messages"
+msgstr "Muat pesan sebelumnya"
+
 msgid "Loader"
 msgstr "Loader"
 
@@ -8710,8 +8759,14 @@ msgstr "Me-merge pull request"
 msgid "Mesh Gradient"
 msgstr "Mesh Gradient"
 
+msgid "Message"
+msgstr "Pesan"
+
 msgid "Message in channel"
 msgstr "Pesan di channel"
+
+msgid "Message navigation"
+msgstr "Navigasi pesan"
 
 msgid "Message the agent"
 msgstr "Kirim pesan ke agen"
@@ -10843,6 +10898,9 @@ msgstr "PDF"
 msgid "Peak pace"
 msgstr "Laju puncak"
 
+msgid "Pending"
+msgstr "Tertunda"
+
 msgid "Pending Invitations"
 msgstr "Undangan Tertunda"
 
@@ -11597,6 +11655,9 @@ msgstr "Mengaktifkan kembali…"
 msgid "Read"
 msgstr "Dibaca"
 
+msgid "Read only"
+msgstr "Hanya baca"
+
 msgid "Read the changelog"
 msgstr "Baca changelog"
 
@@ -11614,6 +11675,9 @@ msgstr "Membaca penggunaan…"
 
 msgid "Reading your local usage…"
 msgstr "Membaca penggunaan lokal Anda…"
+
+msgid "Ready"
+msgstr "Siap"
 
 msgid "Ready for review"
 msgstr "Siap direview"
@@ -11750,6 +11814,12 @@ msgstr "Daftarkan agen CLI apa pun bersama agen bawaan, masing-masing dengan nam
 
 msgid "Registers lifecycle hooks in this agent's global config so Superset can show status and send notifications. Turning this off removes Superset's entries everywhere — status and notifications stop for this agent, including inside Superset."
 msgstr "Mendaftarkan hook lifecycle di konfigurasi global agen ini agar Superset bisa menampilkan status dan mengirim notifikasi. Mematikannya menghapus entri Superset di mana-mana — status dan notifikasi berhenti untuk agen ini, termasuk di dalam Superset."
+
+msgid "Reject"
+msgstr "Tolak"
+
+msgid "Rejected"
+msgstr "Ditolak"
 
 msgid "Related Posts"
 msgstr "Tulisan Terkait"
@@ -12048,6 +12118,9 @@ msgstr "Minta uji coba"
 
 msgid "Request Body"
 msgstr "Body Permintaan"
+
+msgid "Request changes"
+msgstr "Minta perubahan"
 
 msgid "Requested Changes"
 msgstr "Meminta Perubahan"
@@ -14125,6 +14198,9 @@ msgstr "Kirim prompt"
 
 msgid "Submit prompt rate limiting is not configured"
 msgstr "Pembatasan laju pengiriman prompt belum dikonfigurasi"
+
+msgid "Submitting"
+msgstr "Mengirim"
 
 msgid "Submitting…"
 msgstr "Mengirim…"
@@ -16470,6 +16546,9 @@ msgstr "Apa yang kami bangun sekarang dan berikutnya."
 
 msgid "What would you like to build with Superset in the cloud?"
 msgstr "Apa yang ingin Anda bangun dengan Superset di komputasi awan?"
+
+msgid "What would you like to build?"
+msgstr "Apa yang ingin Anda buat?"
 
 msgid "What would you like to know?"
 msgstr "Apa yang ingin Anda ketahui?"

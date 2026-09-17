@@ -57,6 +57,12 @@ export function spawnCodexTransport(
 	child.on("exit", (code, signal) => handlers.onExit(code, signal));
 
 	let exited = false;
+	child.on("error", (error) => {
+		exited = true;
+		handlers.onStderr(error.message);
+		handlers.onExit(null, null);
+	});
+	child.stdin.on("error", () => undefined);
 	child.on("close", () => {
 		exited = true;
 	});
