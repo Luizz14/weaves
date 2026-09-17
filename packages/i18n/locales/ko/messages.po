@@ -15,7 +15,7 @@ msgstr ""
 
 #. js-lingui-explicit-id
 msgid "greeting"
-msgstr ""
+msgstr "안녕하세요"
 
 msgid " and "
 msgstr " 및 "

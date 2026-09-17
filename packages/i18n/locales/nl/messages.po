@@ -15,7 +15,7 @@ msgstr ""
 
 #. js-lingui-explicit-id
 msgid "greeting"
-msgstr ""
+msgstr "Hallo"
 
 msgid " and "
 msgstr " en "
