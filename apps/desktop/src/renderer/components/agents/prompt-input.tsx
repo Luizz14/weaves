@@ -28,7 +28,6 @@ import {
 	SelectItem,
 	SelectTrigger,
 } from "renderer/components/motion/select";
-import { SPRING_SWAP } from "renderer/lib/ease";
 import { cn } from "renderer/lib/utils";
 
 export interface PromptModel {
@@ -62,6 +61,7 @@ export interface PromptInputProps
 	onAction?: (action: string) => void;
 	onSubmit?: (value: string, model?: string) => void | Promise<void>;
 	loading?: boolean;
+	submitDisabled?: boolean;
 	onStop?: () => void;
 	minRows?: number;
 	maxRows?: number;
@@ -81,6 +81,7 @@ export function PromptInput({
 	onAction,
 	onSubmit,
 	loading = false,
+	submitDisabled = false,
 	onStop,
 	minRows = 2,
 	maxRows = 8,
@@ -105,7 +106,8 @@ export function PromptInput({
 	const currentModel = models.find(
 		(option) => option.value === currentModelValue,
 	);
-	const canSubmit = Boolean(currentValue.trim()) && !disabled && !loading;
+	const canSubmit =
+		Boolean(currentValue.trim()) && !disabled && !loading && !submitDisabled;
 
 	const resizeTextarea = useCallback(() => {
 		const textarea = textareaRef.current;
@@ -146,7 +148,7 @@ export function PromptInput({
 	const submit = (event?: FormEvent) => {
 		event?.preventDefault();
 		const prompt = currentValue.trim();
-		if (!prompt || disabled || loading) return;
+		if (!prompt || disabled || loading || submitDisabled) return;
 
 		onSubmit?.(prompt, currentModelValue);
 		if (value === undefined) setInternalValue("");
@@ -171,7 +173,7 @@ export function PromptInput({
 		<form
 			onSubmit={submit}
 			className={cn(
-				"relative w-full rounded-2xl border border-border/80 bg-background p-2 transition-colors focus-within:border-foreground/25",
+				"outline-[2px] outline-border/40 -outline-offset-3 relative w-full rounded-2xl bg-background p-2 transition-colors",
 				disabled && "opacity-60",
 				className,
 			)}
@@ -211,7 +213,11 @@ export function PromptInput({
 								<motion.span
 									aria-hidden="true"
 									animate={{ rotate: actionsOpen ? 45 : 0 }}
-									transition={reduce ? { duration: 0 } : SPRING_SWAP}
+									transition={
+										reduce
+											? { duration: 0 }
+											: { type: "spring", duration: 0.3, bounce: 0 }
+									}
 								>
 									<Plus className="size-4" />
 								</motion.span>
@@ -310,17 +316,28 @@ export function PromptInput({
 							: i18n._(msg({ message: "Send" }))
 					}
 					onClick={loading ? onStop : undefined}
-					className="ml-auto size-8 rounded-full"
+					className="ml-auto size-10 rounded-full"
+					pressScale={0.96}
 				>
 					<AnimatePresence initial={false} mode="popLayout">
 						<motion.span
 							key={loading ? "stop" : "send"}
 							initial={
-								reduce ? { opacity: 1 } : { opacity: 0, y: 3, scale: 0.8 }
+								reduce
+									? { opacity: 1 }
+									: { opacity: 0, scale: 0.25, filter: "blur(4px)" }
 							}
-							animate={{ opacity: 1, y: 0, scale: 1 }}
-							exit={reduce ? { opacity: 0 } : { opacity: 0, y: -3, scale: 0.8 }}
-							transition={reduce ? { duration: 0 } : SPRING_SWAP}
+							animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+							exit={
+								reduce
+									? { opacity: 0 }
+									: { opacity: 0, scale: 0.25, filter: "blur(4px)" }
+							}
+							transition={
+								reduce
+									? { duration: 0 }
+									: { type: "spring", duration: 0.3, bounce: 0 }
+							}
 							className="grid place-items-center"
 						>
 							{loading ? (

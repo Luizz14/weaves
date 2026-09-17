@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. js-lingui-explicit-id
+msgid "greeting"
+msgstr ""
+
 msgid " and "
 msgstr "と"
 
@@ -1475,6 +1479,9 @@ msgstr "issue #{0}をワークスペースに追加"
 msgid "Add member"
 msgstr "メンバーを追加"
 
+msgid "Add model shortcut"
+msgstr "モデルのショートカットを追加"
+
 msgid "Add one from the menu in the sidebar to get started."
 msgstr "サイドバーのメニューから追加して始めましょう。"
 
@@ -2573,6 +2580,9 @@ msgstr "ブロック"
 msgid "blocked"
 msgstr "ブロック"
 
+msgid "Blocked"
+msgstr "ブロック中"
+
 msgid "Blocked by Branch Rules"
 msgstr "ブランチルールによりブロック"
 
@@ -2729,6 +2739,9 @@ msgstr "閲覧データを消去しました"
 
 msgid "Browsing history"
 msgstr "閲覧履歴"
+
+msgid "Budget limit reached"
+msgstr "予算の上限に達しました"
 
 msgid "Bug"
 msgstr "バグ"
@@ -3150,6 +3163,9 @@ msgstr "トップバーから変更ビューをどのように開くかを選択
 
 msgid "Choose how to open file paths when Cmd+clicking in the terminal"
 msgstr "ターミナルでCmd+クリックしたときのファイルパスの開き方"
+
+msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
+msgstr "新しいチャットのデフォルトとモデルのショートカットを設定します。既存のチャットの選択は変わりません。"
 
 msgid "Choose what to clear from the in-app browser."
 msgstr "アプリ内ブラウザから消去する項目を選択してください。"
@@ -3752,6 +3768,9 @@ msgstr "デバイスを接続"
 
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "Googleアカウントを接続します。カレンダーとメールボックスは読み取り専用で、トリガーは接続した本人として実行されます。"
+
+msgid "Connect a host to load Codex models."
+msgstr "ホストに接続して Codex のモデルを読み込んでください。"
 
 msgid "Connect a microphone to use dictation"
 msgstr "音声入力を使うにはマイクを接続してください"
@@ -5118,6 +5137,9 @@ msgstr "降順"
 msgid "Describe the change…"
 msgstr "変更内容を説明…"
 
+msgid "Describe the goal and how to verify it…"
+msgstr "目標と検証方法を入力…"
+
 msgid "Describe the task for the agent…"
 msgstr "エージェントに任せるタスクを説明…"
 
@@ -5725,6 +5747,9 @@ msgstr "リレーアクセスを有効にする…"
 msgid "Enable skill"
 msgstr "スキルを有効にする"
 
+msgid "End goal"
+msgstr "目標を終了"
+
 msgid "Engineering deep-dives and launches."
 msgstr "技術の深掘りとリリース情報。"
 
@@ -5979,6 +6004,10 @@ msgstr "外部エディタ"
 
 msgid "extra ${used} of ${limit}"
 msgstr "追加分 ${limit}中${used}"
+
+msgctxt "reasoning effort"
+msgid "Extra high"
+msgstr "非常に高い"
 
 msgid "Extra small"
 msgstr "極小"
@@ -6469,6 +6498,9 @@ msgstr "失敗"
 
 msgid "FAQ"
 msgstr "FAQ"
+
+msgid "Fast uses more of your allowance."
+msgstr "Fast は使用枠をより多く消費します。"
 
 msgid "Fatal"
 msgstr "致命的"
@@ -7070,6 +7102,9 @@ msgstr "Slack連携の設定へ"
 msgid "Go to Superset"
 msgstr "Supersetへ移動"
 
+msgid "Goal"
+msgstr "目標"
+
 msgid "Google did not grant lasting access. Remove Superset from your Google account's third-party access and try again."
 msgstr "Googleが継続的なアクセスを許可しませんでした。GoogleアカウントのサードパーティアクセスからSupersetを削除して、もう一度お試しください。"
 
@@ -7230,6 +7265,10 @@ msgstr "セッションを隠す"
 msgid "Hide unchanged regions"
 msgstr "変更のない領域を隠す"
 
+msgid "High"
+msgstr "高"
+
+msgctxt "reasoning effort"
 msgid "High"
 msgstr "高"
 
@@ -7455,6 +7494,12 @@ msgstr "{0}の画像プレビュー。プラスとマイナスでズーム、矢
 
 msgid "Images"
 msgstr "画像"
+
+msgid "Implement plan"
+msgstr "プランを実行"
+
+msgid "Implementation plan"
+msgstr "実装プラン"
 
 msgid "Import"
 msgstr "インポート"
@@ -8190,6 +8235,10 @@ msgstr "ライト"
 msgid "Light"
 msgstr "ライト"
 
+msgctxt "reasoning effort"
+msgid "Light"
+msgstr "軽め"
+
 msgid "Light theme"
 msgstr "ライトテーマ"
 
@@ -8502,6 +8551,10 @@ msgstr "良さそう"
 msgid "Low"
 msgstr "低"
 
+msgctxt "reasoning effort"
+msgid "Low"
+msgstr "低"
+
 msgid "Lower memory with many terminals open, smoother git in big repos, and less background CPU."
 msgstr "ターミナルを多数開いてもメモリ消費を抑え、大きなリポジトリでのgitを滑らかにし、バックグラウンドのCPU使用を減らします。"
 
@@ -8638,6 +8691,10 @@ msgstr "ショートカットをキーボードの刻印に合わせます(例: 
 msgid "Max"
 msgstr "最大"
 
+msgctxt "reasoning effort"
+msgid "Max"
+msgstr "最大"
+
 msgid "Maximum"
 msgstr "最大"
 
@@ -8675,6 +8732,10 @@ msgstr "定型作業のチケットから本番までの時間が中央値で1�
 msgid "Median time from previous"
 msgstr "前ステップからの時間の中央値"
 
+msgid "Medium"
+msgstr "中"
+
+msgctxt "reasoning effort"
 msgid "Medium"
 msgstr "中"
 
@@ -8795,6 +8856,10 @@ msgstr "2027年半ば"
 msgid "Mine"
 msgstr "自分"
 
+msgctxt "reasoning effort"
+msgid "Minimal"
+msgstr "最小"
+
 msgid "Minimal reasoning effort"
 msgstr "最小限の推論"
 
@@ -8847,6 +8912,9 @@ msgstr "モデル"
 msgid "Model"
 msgstr "モデル"
 
+msgid "Model and reasoning effort"
+msgstr "モデルと推論の強度"
+
 msgid "Model context usage"
 msgstr "モデルのコンテキスト使用量"
 
@@ -8855,6 +8923,9 @@ msgstr "選択中のエージェントに絞ったモデルピッカー"
 
 msgid "Model Selector"
 msgstr "モデルを選択"
+
+msgid "Model shortcuts"
+msgstr "モデルのショートカット"
 
 msgid "Model volume"
 msgstr "モデル別ボリューム"
@@ -8949,11 +9020,17 @@ msgstr "ソフトウェアの歴史のほとんど"
 msgid "Move {count} to Group"
 msgstr "{count}件をグループへ移動"
 
+msgid "Move down"
+msgstr "下に移動"
+
 msgid "Move to group"
 msgstr "グループへ移動"
 
 msgid "Move to Tab"
 msgstr "タブに移動"
+
+msgid "Move up"
+msgstr "上に移動"
 
 msgid "MRR"
 msgstr "MRR"
@@ -9113,6 +9190,9 @@ msgstr "新しいチャット"
 
 msgid "New cloud workspace"
 msgstr "新規クラウドワークスペース"
+
+msgid "New Codex Chat"
+msgstr "新しい Codex チャット"
 
 msgid "New environment"
 msgstr "新しい環境"
@@ -9398,6 +9478,9 @@ msgstr "コンソール出力はありません"
 
 msgid "No contributors found."
 msgstr "コントリビューターが見つかりません。"
+
+msgid "No conversations yet"
+msgstr "会話はまだありません"
 
 msgid "No credit card required."
 msgstr "クレジットカードは不要です。"
@@ -9808,6 +9891,10 @@ msgstr "非ブランド"
 msgid "Non-brand clicks"
 msgstr "非ブランドクリック"
 
+msgid "None"
+msgstr "なし"
+
+msgctxt "reasoning effort"
 msgid "None"
 msgstr "なし"
 
@@ -11035,6 +11122,9 @@ msgstr "プラン"
 msgid "Plan restored"
 msgstr "プランを復元しました"
 
+msgid "Planning"
+msgstr "計画"
+
 msgid "Planning the tooltip refactor"
 msgstr "tooltipのリファクタリングを計画中"
 
@@ -11676,9 +11766,6 @@ msgstr "使用量を取得中…"
 msgid "Reading your local usage…"
 msgstr "ローカルの使用量を読み取り中…"
 
-msgid "Ready"
-msgstr "準備完了"
-
 msgid "Ready for review"
 msgstr "レビュー可能"
 
@@ -11704,6 +11791,9 @@ msgstr "すべてのコミットを再適用"
 msgid "Reasoning"
 msgstr "推論"
 
+msgid "Reasoning effort"
+msgstr "推論の強度"
+
 msgid "Reassign"
 msgstr "再割り当て"
 
@@ -11715,6 +11805,9 @@ msgstr "リベースしてマージ"
 
 msgid "Recent Activity"
 msgstr "最近のアクティビティ"
+
+msgid "Recent chats"
+msgstr "最近のチャット"
 
 msgid "Recent invoices"
 msgstr "最近の請求書"
@@ -12996,6 +13089,9 @@ msgstr "直近30日の実績が公開リーダーボードでどの位置にな�
 msgid "Select"
 msgstr "Select"
 
+msgid "Select a default preset"
+msgstr "デフォルトのプリセットを選択"
+
 msgid "Select a project"
 msgstr "プロジェクトを選択してください"
 
@@ -13791,6 +13887,9 @@ msgstr "一部のファイルは最大サイズを超えているため追加さ
 
 msgid "Some models were priced with a fallback rate"
 msgstr "一部のモデルはフォールバックのレートで計算しています"
+
+msgid "Some presets are unavailable on this host."
+msgstr "このホストでは一部のプリセットを利用できません。"
 
 #. placeholder {0}: error.message
 msgid "Some repositories could not be loaded: {0}"
@@ -14957,6 +15056,9 @@ msgstr "組織またはチームの名前"
 msgid "The network connection changed"
 msgstr "ネットワーク接続が変更されました"
 
+msgid "The next message becomes the goal. Codex will continue until it finishes or needs your input."
+msgstr "次のメッセージが目標になります。Codex は完了するか、あなたの入力が必要になるまで続行します。"
+
 msgid "The overnight shift"
 msgstr "夜間シフト"
 
@@ -15740,6 +15842,10 @@ msgstr "V2ターミナルパネルで使用するタイポグラフィとカー�
 msgid "Typography used in V2 editors and diff views."
 msgstr "V2エディタと差分ビューで使用するタイポグラフィ。"
 
+msgctxt "reasoning effort"
+msgid "Ultra"
+msgstr "ウルトラ"
+
 msgid "Unable to check for updates. Please check your internet connection."
 msgstr "アップデートを確認できません。インターネット接続を確認してください。"
 
@@ -15778,6 +15884,9 @@ msgstr "8時間以上の無人実行が、人間の介入なしに定型チケ�
 
 msgid "Unavailable"
 msgstr "利用不可"
+
+msgid "Unavailable on this host"
+msgstr "このホストでは利用できません"
 
 msgid "Unavailable: {unavailableReason}"
 msgstr "利用不可: {unavailableReason}"
@@ -16080,6 +16189,9 @@ msgstr "使用量"
 
 msgid "Usage is out of date"
 msgstr "使用状況が古くなっています"
+
+msgid "Usage limit reached"
+msgstr "使用量の上限に達しました"
 
 msgid "Usage sections"
 msgstr "使用量セクション"
@@ -16651,6 +16763,9 @@ msgstr "チケットから作業を始める"
 
 msgid "Work with your agents across your favorite tools"
 msgstr "お気に入りのツールでエージェントと連携"
+
+msgid "Worked for {duration}"
+msgstr "{duration}作業しました"
 
 msgid "Worked for 39s"
 msgstr "39秒作業しました"

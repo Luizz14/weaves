@@ -1,5 +1,11 @@
 import { Trans, useLingui } from "@lingui/react/macro";
-import { type Decision, type Item, isKnownItem } from "@superset/chat/protocol";
+import type { UserInputAnswers } from "@superset/chat/protocol";
+import {
+	type Decision,
+	type Item,
+	isKnownItem,
+	planDocument,
+} from "@superset/chat/protocol";
 import { AgentActivity } from "renderer/components/agents/agent-activity";
 import { Message, MessageContent } from "renderer/components/agents/message";
 import { TodoList } from "renderer/components/agents/todo-list";
@@ -7,21 +13,27 @@ import { ToolResult } from "renderer/components/agents/tool-result";
 import { ChatError } from "../ChatError/ChatError";
 import { CodexApproval } from "../CodexApproval/CodexApproval";
 import { CodexMarkdown } from "../CodexMarkdown/CodexMarkdown";
+import { CodexPlanCard } from "../CodexPlanCard";
+import { CodexQuestion } from "../CodexQuestion/CodexQuestion";
 import { CodexToolContent } from "../CodexToolContent/CodexToolContent";
 
 export function CodexItem({
 	item,
 	running,
 	onRespond,
+	onAnswer,
 }: {
 	item: Item;
 	running: boolean;
 	onRespond: (id: string, decision: Decision) => Promise<void>;
+	onAnswer: (id: string, answers: UserInputAnswers) => Promise<void>;
 }) {
 	const { t } = useLingui();
 	if (!isKnownItem(item))
 		return <p className="text-xs text-muted-foreground">{item.kind}</p>;
 	switch (item.kind) {
+		case "user_input_request":
+			return <CodexQuestion item={item} onAnswer={onAnswer} />;
 		case "user_message":
 			return (
 				<Message from="user" animateIn={false}>
@@ -84,7 +96,15 @@ export function CodexItem({
 					</div>
 				</ToolResult>
 			);
-		case "plan":
+		case "plan": {
+			const document = planDocument(item);
+			if (document)
+				return (
+					<CodexPlanCard
+						text={document}
+						running={running && !item.completedAtMs}
+					/>
+				);
 			return (
 				<TodoList
 					title={t({ message: "Plan" })}
@@ -96,6 +116,7 @@ export function CodexItem({
 					}))}
 				/>
 			);
+		}
 		case "approval_request":
 			return <CodexApproval item={item} onRespond={onRespond} />;
 		case "notice":

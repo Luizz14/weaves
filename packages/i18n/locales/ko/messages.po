@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. js-lingui-explicit-id
+msgid "greeting"
+msgstr ""
+
 msgid " and "
 msgstr " 및 "
 
@@ -1475,6 +1479,9 @@ msgstr "이슈 #{0}을(를) 워크스페이스에 추가"
 msgid "Add member"
 msgstr "멤버 추가"
 
+msgid "Add model shortcut"
+msgstr "모델 바로가기 추가"
+
 msgid "Add one from the menu in the sidebar to get started."
 msgstr "사이드바 메뉴에서 하나 추가해 시작하세요."
 
@@ -2573,6 +2580,9 @@ msgstr "블록"
 msgid "blocked"
 msgstr "차단됨"
 
+msgid "Blocked"
+msgstr "차단됨"
+
 msgid "Blocked by Branch Rules"
 msgstr "브랜치 규칙으로 차단됨"
 
@@ -2729,6 +2739,9 @@ msgstr "인터넷 사용 기록을 삭제했습니다"
 
 msgid "Browsing history"
 msgstr "방문 기록"
+
+msgid "Budget limit reached"
+msgstr "예산 한도 도달"
 
 msgid "Bug"
 msgstr "버그"
@@ -3150,6 +3163,9 @@ msgstr "상단 바에서 변경 사항 보기를 여는 방식을 선택합니�
 
 msgid "Choose how to open file paths when Cmd+clicking in the terminal"
 msgstr "터미널에서 Cmd+클릭할 때 파일 경로를 여는 방식을 선택하세요"
+
+msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
+msgstr "새 채팅의 기본값과 모델 바로가기를 설정하세요. 기존 채팅은 선택 사항을 유지합니다."
 
 msgid "Choose what to clear from the in-app browser."
 msgstr "인앱 브라우저에서 삭제할 항목을 선택하세요."
@@ -3752,6 +3768,9 @@ msgstr "기기 연결"
 
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "Google 계정을 연결하세요. 캘린더와 메일함은 읽기 전용이며, 트리거는 계정을 연결한 사람의 권한으로 실행됩니다."
+
+msgid "Connect a host to load Codex models."
+msgstr "호스트에 연결하여 Codex 모델을 불러오세요."
 
 msgid "Connect a microphone to use dictation"
 msgstr "받아쓰기를 사용하려면 마이크를 연결하세요"
@@ -5118,6 +5137,9 @@ msgstr "내림차순"
 msgid "Describe the change…"
 msgstr "변경할 내용을 설명하세요…"
 
+msgid "Describe the goal and how to verify it…"
+msgstr "목표와 검증 방법을 설명하세요…"
+
 msgid "Describe the task for the agent…"
 msgstr "에이전트에게 맡길 작업을 설명하세요…"
 
@@ -5725,6 +5747,9 @@ msgstr "릴레이 접근 활성화…"
 msgid "Enable skill"
 msgstr "스킬 활성화"
 
+msgid "End goal"
+msgstr "목표 종료"
+
 msgid "Engineering deep-dives and launches."
 msgstr "엔지니어링 심층 글과 출시 소식."
 
@@ -5979,6 +6004,10 @@ msgstr "외부 편집기"
 
 msgid "extra ${used} of ${limit}"
 msgstr "${limit} 중 추가 ${used}"
+
+msgctxt "reasoning effort"
+msgid "Extra high"
+msgstr "매우 높음"
 
 msgid "Extra small"
 msgstr "아주 작음"
@@ -6469,6 +6498,9 @@ msgstr "실패"
 
 msgid "FAQ"
 msgstr "FAQ"
+
+msgid "Fast uses more of your allowance."
+msgstr "Fast는 사용 할당량을 더 많이 소비합니다."
 
 msgid "Fatal"
 msgstr "치명적"
@@ -7070,6 +7102,9 @@ msgstr "Slack 연동 설정으로 이동"
 msgid "Go to Superset"
 msgstr "Superset으로 가기"
 
+msgid "Goal"
+msgstr "목표"
+
 msgid "Google did not grant lasting access. Remove Superset from your Google account's third-party access and try again."
 msgstr "Google이 지속적인 접근 권한을 부여하지 않았습니다. Google 계정의 서드파티 접근에서 Superset을 제거한 뒤 다시 시도해 주세요."
 
@@ -7230,6 +7265,10 @@ msgstr "세션 숨기기"
 msgid "Hide unchanged regions"
 msgstr "변경되지 않은 부분 숨기기"
 
+msgid "High"
+msgstr "높음"
+
+msgctxt "reasoning effort"
 msgid "High"
 msgstr "높음"
 
@@ -7455,6 +7494,12 @@ msgstr "{0}의 이미지 미리 보기입니다. 플러스와 마이너스로 �
 
 msgid "Images"
 msgstr "이미지"
+
+msgid "Implement plan"
+msgstr "계획 실행"
+
+msgid "Implementation plan"
+msgstr "구현 계획"
 
 msgid "Import"
 msgstr "가져오기"
@@ -8190,6 +8235,10 @@ msgstr "라이트"
 msgid "Light"
 msgstr "라이트"
 
+msgctxt "reasoning effort"
+msgid "Light"
+msgstr "가벼움"
+
 msgid "Light theme"
 msgstr "라이트 테마"
 
@@ -8502,6 +8551,10 @@ msgstr "좋아 보입니다"
 msgid "Low"
 msgstr "낮음"
 
+msgctxt "reasoning effort"
+msgid "Low"
+msgstr "낮음"
+
 msgid "Lower memory with many terminals open, smoother git in big repos, and less background CPU."
 msgstr "터미널을 많이 열어도 메모리를 덜 쓰고, 큰 리포지토리에서 git이 더 매끄럽고, 백그라운드 CPU 사용이 줄어듭니다."
 
@@ -8638,6 +8691,10 @@ msgstr "키보드에 인쇄된 문자에 맞춰 단축키를 매핑합니다(예
 msgid "Max"
 msgstr "최대"
 
+msgctxt "reasoning effort"
+msgid "Max"
+msgstr "최대"
+
 msgid "Maximum"
 msgstr "최대"
 
@@ -8675,6 +8732,10 @@ msgstr "일상적인 작업에서 티켓부터 프로덕션까지 걸리는 시�
 msgid "Median time from previous"
 msgstr "이전 단계로부터 중앙값 시간"
 
+msgid "Medium"
+msgstr "보통"
+
+msgctxt "reasoning effort"
 msgid "Medium"
 msgstr "보통"
 
@@ -8795,6 +8856,10 @@ msgstr "2027년 중반"
 msgid "Mine"
 msgstr "내 자동화"
 
+msgctxt "reasoning effort"
+msgid "Minimal"
+msgstr "최소"
+
 msgid "Minimal reasoning effort"
 msgstr "최소한의 추론"
 
@@ -8847,6 +8912,9 @@ msgstr "모델"
 msgid "Model"
 msgstr "모델"
 
+msgid "Model and reasoning effort"
+msgstr "모델 및 추론 강도"
+
 msgid "Model context usage"
 msgstr "모델 컨텍스트 사용량"
 
@@ -8855,6 +8923,9 @@ msgstr "선택한 에이전트로 범위가 한정된 모델 선택기"
 
 msgid "Model Selector"
 msgstr "모델 선택기"
+
+msgid "Model shortcuts"
+msgstr "모델 바로가기"
 
 msgid "Model volume"
 msgstr "모델 사용량"
@@ -8949,11 +9020,17 @@ msgstr "소프트웨어 역사의 대부분"
 msgid "Move {count} to Group"
 msgstr "{count}개를 그룹으로 이동"
 
+msgid "Move down"
+msgstr "아래로 이동"
+
 msgid "Move to group"
 msgstr "그룹으로 이동"
 
 msgid "Move to Tab"
 msgstr "탭으로 이동"
+
+msgid "Move up"
+msgstr "위로 이동"
 
 msgid "MRR"
 msgstr "MRR"
@@ -9113,6 +9190,9 @@ msgstr "새 채팅"
 
 msgid "New cloud workspace"
 msgstr "새 클라우드 워크스페이스"
+
+msgid "New Codex Chat"
+msgstr "새 Codex 채팅"
 
 msgid "New environment"
 msgstr "새 환경"
@@ -9398,6 +9478,9 @@ msgstr "콘솔 출력 없음"
 
 msgid "No contributors found."
 msgstr "기여자를 찾을 수 없습니다."
+
+msgid "No conversations yet"
+msgstr "아직 대화가 없습니다"
 
 msgid "No credit card required."
 msgstr "신용카드가 필요 없습니다."
@@ -9808,6 +9891,10 @@ msgstr "비브랜드"
 msgid "Non-brand clicks"
 msgstr "비브랜드 클릭"
 
+msgid "None"
+msgstr "없음"
+
+msgctxt "reasoning effort"
 msgid "None"
 msgstr "없음"
 
@@ -11035,6 +11122,9 @@ msgstr "플랜"
 msgid "Plan restored"
 msgstr "플랜이 복원되었습니다"
 
+msgid "Planning"
+msgstr "계획"
+
 msgid "Planning the tooltip refactor"
 msgstr "툴팁 리팩터링 계획 중"
 
@@ -11676,9 +11766,6 @@ msgstr "사용량 읽는 중…"
 msgid "Reading your local usage…"
 msgstr "로컬 사용량을 읽는 중…"
 
-msgid "Ready"
-msgstr "준비됨"
-
 msgid "Ready for review"
 msgstr "리뷰 준비됨"
 
@@ -11704,6 +11791,9 @@ msgstr "모든 커밋 다시 적용"
 msgid "Reasoning"
 msgstr "추론"
 
+msgid "Reasoning effort"
+msgstr "추론 강도"
+
 msgid "Reassign"
 msgstr "다시 지정"
 
@@ -11715,6 +11805,9 @@ msgstr "리베이스 후 머지"
 
 msgid "Recent Activity"
 msgstr "최근 활동"
+
+msgid "Recent chats"
+msgstr "최근 채팅"
 
 msgid "Recent invoices"
 msgstr "최근 청구서"
@@ -12996,6 +13089,9 @@ msgstr "최근 30일 사용량이 공개 리더보드에서 어디쯤인지 확�
 msgid "Select"
 msgstr "선택"
 
+msgid "Select a default preset"
+msgstr "기본 프리셋 선택"
+
 msgid "Select a project"
 msgstr "프로젝트를 선택하세요"
 
@@ -13791,6 +13887,9 @@ msgstr "일부 파일이 최대 크기를 초과해 추가되지 않았습니다
 
 msgid "Some models were priced with a fallback rate"
 msgstr "일부 모델은 대체 단가로 계산했습니다"
+
+msgid "Some presets are unavailable on this host."
+msgstr "일부 프리셋은 이 호스트에서 사용할 수 없습니다."
 
 #. placeholder {0}: error.message
 msgid "Some repositories could not be loaded: {0}"
@@ -14957,6 +15056,9 @@ msgstr "조직 또는 팀의 이름"
 msgid "The network connection changed"
 msgstr "네트워크 연결이 바뀌었습니다"
 
+msgid "The next message becomes the goal. Codex will continue until it finishes or needs your input."
+msgstr "다음 메시지가 목표가 됩니다. Codex는 완료하거나 사용자의 입력이 필요할 때까지 계속합니다."
+
 msgid "The overnight shift"
 msgstr "야간 근무"
 
@@ -15740,6 +15842,10 @@ msgstr "V2 터미널 패널에 사용하는 타이포그래피와 커서 동작�
 msgid "Typography used in V2 editors and diff views."
 msgstr "V2 편집기와 차이 보기에 사용하는 타이포그래피입니다."
 
+msgctxt "reasoning effort"
+msgid "Ultra"
+msgstr "최상"
+
 msgid "Unable to check for updates. Please check your internet connection."
 msgstr "업데이트를 확인할 수 없습니다. 인터넷 연결을 확인해 주세요."
 
@@ -15778,6 +15884,9 @@ msgstr "8시간 이상 무인으로 실행한 작업이 사람이 막힌 곳을 
 
 msgid "Unavailable"
 msgstr "사용할 수 없음"
+
+msgid "Unavailable on this host"
+msgstr "이 호스트에서 사용할 수 없음"
 
 msgid "Unavailable: {unavailableReason}"
 msgstr "사용할 수 없음: {unavailableReason}"
@@ -16080,6 +16189,9 @@ msgstr "사용량"
 
 msgid "Usage is out of date"
 msgstr "사용량 정보가 오래되었습니다"
+
+msgid "Usage limit reached"
+msgstr "사용량 한도 도달"
 
 msgid "Usage sections"
 msgstr "사용량 섹션"
@@ -16651,6 +16763,9 @@ msgstr "티켓에서 바로 작업"
 
 msgid "Work with your agents across your favorite tools"
 msgstr "즐겨 쓰는 도구 전반에서 에이전트와 함께 작업하세요"
+
+msgid "Worked for {duration}"
+msgstr "{duration} 동안 작업"
 
 msgid "Worked for 39s"
 msgstr "39초 동안 작업"

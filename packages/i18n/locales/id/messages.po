@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. js-lingui-explicit-id
+msgid "greeting"
+msgstr ""
+
 msgid " and "
 msgstr " dan "
 
@@ -1475,6 +1479,9 @@ msgstr "Tambahkan issue #{0} ke workspace"
 msgid "Add member"
 msgstr "Tambah anggota"
 
+msgid "Add model shortcut"
+msgstr "Tambah pintasan model"
+
 msgid "Add one from the menu in the sidebar to get started."
 msgstr "Tambahkan satu dari menu di sidebar untuk memulai."
 
@@ -2573,6 +2580,9 @@ msgstr "Blok"
 msgid "blocked"
 msgstr "terblokir"
 
+msgid "Blocked"
+msgstr "Terblokir"
+
 msgid "Blocked by Branch Rules"
 msgstr "Terblokir oleh Aturan Branch"
 
@@ -2729,6 +2739,9 @@ msgstr "Data penjelajahan dibersihkan"
 
 msgid "Browsing history"
 msgstr "Riwayat penjelajahan"
+
+msgid "Budget limit reached"
+msgstr "Batas anggaran tercapai"
 
 msgid "Bug"
 msgstr "Bug"
@@ -3150,6 +3163,9 @@ msgstr "Pilih cara membuka tampilan perubahan dari bilah atas"
 
 msgid "Choose how to open file paths when Cmd+clicking in the terminal"
 msgstr "Pilih cara membuka path file saat Cmd+klik di terminal"
+
+msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
+msgstr "Pilih default untuk chat baru dan sesuaikan pintasan model. Chat yang sudah ada mempertahankan pilihannya."
 
 msgid "Choose what to clear from the in-app browser."
 msgstr "Pilih apa yang ingin dibersihkan dari browser dalam aplikasi."
@@ -3752,6 +3768,9 @@ msgstr "Hubungkan perangkat"
 
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "Hubungkan sebuah akun Google. Kalender dan kotak suratnya bersifat baca-saja, dan pemicunya berjalan atas nama orang yang menghubungkannya."
+
+msgid "Connect a host to load Codex models."
+msgstr "Hubungkan host untuk memuat model Codex."
 
 msgid "Connect a microphone to use dictation"
 msgstr "Hubungkan mikrofon untuk memakai dikte"
@@ -5118,6 +5137,9 @@ msgstr "menurun"
 msgid "Describe the change…"
 msgstr "Jelaskan perubahannya…"
 
+msgid "Describe the goal and how to verify it…"
+msgstr "Jelaskan tujuan dan cara memverifikasinya…"
+
 msgid "Describe the task for the agent…"
 msgstr "Jelaskan tugas untuk agennya…"
 
@@ -5725,6 +5747,9 @@ msgstr "Aktifkan akses relay…"
 msgid "Enable skill"
 msgstr "Aktifkan skill"
 
+msgid "End goal"
+msgstr "Akhiri tujuan"
+
 msgid "Engineering deep-dives and launches."
 msgstr "Bahasan mendalam soal teknik dan peluncuran."
 
@@ -5979,6 +6004,10 @@ msgstr "Editor eksternal"
 
 msgid "extra ${used} of ${limit}"
 msgstr "tambahan ${used} dari ${limit}"
+
+msgctxt "reasoning effort"
+msgid "Extra high"
+msgstr "Sangat tinggi"
 
 msgid "Extra small"
 msgstr "Ekstra kecil"
@@ -6469,6 +6498,9 @@ msgstr "Gagal"
 
 msgid "FAQ"
 msgstr "FAQ"
+
+msgid "Fast uses more of your allowance."
+msgstr "Fast menggunakan lebih banyak kuota Anda."
 
 msgid "Fatal"
 msgstr "Fatal"
@@ -7070,6 +7102,9 @@ msgstr "Ke pengaturan integrasi Slack"
 msgid "Go to Superset"
 msgstr "Ke Superset"
 
+msgid "Goal"
+msgstr "Tujuan"
+
 msgid "Google did not grant lasting access. Remove Superset from your Google account's third-party access and try again."
 msgstr "Google tidak memberikan akses jangka panjang. Hapus Superset dari akses pihak ketiga di akun Google Anda lalu coba lagi."
 
@@ -7230,6 +7265,10 @@ msgstr "Sembunyikan sesi"
 msgid "Hide unchanged regions"
 msgstr "Sembunyikan bagian yang tidak berubah"
 
+msgid "High"
+msgstr "Tinggi"
+
+msgctxt "reasoning effort"
 msgid "High"
 msgstr "Tinggi"
 
@@ -7455,6 +7494,12 @@ msgstr "Pratinjau gambar {0}. Zoom dengan plus dan minus, geser dengan tombol pa
 
 msgid "Images"
 msgstr "Gambar"
+
+msgid "Implement plan"
+msgstr "Jalankan rencana"
+
+msgid "Implementation plan"
+msgstr "Rencana implementasi"
 
 msgid "Import"
 msgstr "Impor"
@@ -8190,6 +8235,10 @@ msgstr "terang"
 msgid "Light"
 msgstr "Terang"
 
+msgctxt "reasoning effort"
+msgid "Light"
+msgstr "Ringan"
+
 msgid "Light theme"
 msgstr "Tema terang"
 
@@ -8502,6 +8551,10 @@ msgstr "Terlihat bagus"
 msgid "Low"
 msgstr "Rendah"
 
+msgctxt "reasoning effort"
+msgid "Low"
+msgstr "Rendah"
+
 msgid "Lower memory with many terminals open, smoother git in big repos, and less background CPU."
 msgstr "Memori lebih rendah saat banyak terminal terbuka, git lebih mulus di repo besar, dan CPU latar belakang lebih hemat."
 
@@ -8638,6 +8691,10 @@ msgstr "Cocokkan pintasan dengan label pada keyboard Anda (mis. ⌘Z selalu akti
 msgid "Max"
 msgstr "Maks"
 
+msgctxt "reasoning effort"
+msgid "Max"
+msgstr "Maks"
+
 msgid "Maximum"
 msgstr "Maksimum"
 
@@ -8675,6 +8732,10 @@ msgstr "Waktu median dari tiket ke produksi di bawah satu hari untuk pekerjaan r
 msgid "Median time from previous"
 msgstr "Waktu median dari langkah sebelumnya"
 
+msgid "Medium"
+msgstr "Sedang"
+
+msgctxt "reasoning effort"
 msgid "Medium"
 msgstr "Sedang"
 
@@ -8795,6 +8856,10 @@ msgstr "Pertengahan 2027"
 msgid "Mine"
 msgstr "Milik saya"
 
+msgctxt "reasoning effort"
+msgid "Minimal"
+msgstr "Minimal"
+
 msgid "Minimal reasoning effort"
 msgstr "Upaya penalaran minimal"
 
@@ -8847,6 +8912,9 @@ msgstr "model"
 msgid "Model"
 msgstr "Model"
 
+msgid "Model and reasoning effort"
+msgstr "Model dan upaya penalaran"
+
 msgid "Model context usage"
 msgstr "Penggunaan konteks model"
 
@@ -8855,6 +8923,9 @@ msgstr "Pemilih model yang dibatasi pada agen yang dipilih"
 
 msgid "Model Selector"
 msgstr "Pemilih Model"
+
+msgid "Model shortcuts"
+msgstr "Pintasan model"
 
 msgid "Model volume"
 msgstr "Volume model"
@@ -8949,11 +9020,17 @@ msgstr "Sebagian besar sejarah perangkat lunak"
 msgid "Move {count} to Group"
 msgstr "Pindahkan {count} ke Grup"
 
+msgid "Move down"
+msgstr "Pindah ke bawah"
+
 msgid "Move to group"
 msgstr "Pindahkan ke grup"
 
 msgid "Move to Tab"
 msgstr "Pindahkan ke Tab"
+
+msgid "Move up"
+msgstr "Pindah ke atas"
 
 msgid "MRR"
 msgstr "MRR"
@@ -9113,6 +9190,9 @@ msgstr "Chat baru"
 
 msgid "New cloud workspace"
 msgstr "Workspace cloud baru"
+
+msgid "New Codex Chat"
+msgstr "Chat Codex baru"
 
 msgid "New environment"
 msgstr "Environment baru"
@@ -9398,6 +9478,9 @@ msgstr "Tidak ada output console"
 
 msgid "No contributors found."
 msgstr "Tidak ada kontributor ditemukan."
+
+msgid "No conversations yet"
+msgstr "Belum ada percakapan"
 
 msgid "No credit card required."
 msgstr "Tanpa kartu kredit."
@@ -9808,6 +9891,10 @@ msgstr "non-merek"
 msgid "Non-brand clicks"
 msgstr "Klik non-merek"
 
+msgid "None"
+msgstr "Tidak ada"
+
+msgctxt "reasoning effort"
 msgid "None"
 msgstr "Tidak ada"
 
@@ -11035,6 +11122,9 @@ msgstr "Paket"
 msgid "Plan restored"
 msgstr "Paket dipulihkan"
 
+msgid "Planning"
+msgstr "Perencanaan"
+
 msgid "Planning the tooltip refactor"
 msgstr "Merencanakan refactor tooltip"
 
@@ -11676,9 +11766,6 @@ msgstr "Membaca penggunaan…"
 msgid "Reading your local usage…"
 msgstr "Membaca penggunaan lokal Anda…"
 
-msgid "Ready"
-msgstr "Siap"
-
 msgid "Ready for review"
 msgstr "Siap direview"
 
@@ -11704,6 +11791,9 @@ msgstr "Terapkan ulang semua commit"
 msgid "Reasoning"
 msgstr "Penalaran"
 
+msgid "Reasoning effort"
+msgstr "Upaya penalaran"
+
 msgid "Reassign"
 msgstr "Tetapkan ulang"
 
@@ -11715,6 +11805,9 @@ msgstr "Rebase dan merge"
 
 msgid "Recent Activity"
 msgstr "Aktivitas Terbaru"
+
+msgid "Recent chats"
+msgstr "Chat terbaru"
 
 msgid "Recent invoices"
 msgstr "Faktur terbaru"
@@ -12996,6 +13089,9 @@ msgstr "Lihat posisi 30 hari terakhir Anda di papan peringkat publik. Hanya juml
 msgid "Select"
 msgstr "Select"
 
+msgid "Select a default preset"
+msgstr "Pilih preset default"
+
 msgid "Select a project"
 msgstr "Pilih sebuah proyek"
 
@@ -13791,6 +13887,9 @@ msgstr "Sebagian file melebihi ukuran maksimum dan tidak ditambahkan."
 
 msgid "Some models were priced with a fallback rate"
 msgstr "Sebagian model dihitung dengan tarif cadangan"
+
+msgid "Some presets are unavailable on this host."
+msgstr "Beberapa preset tidak tersedia di host ini."
 
 #. placeholder {0}: error.message
 msgid "Some repositories could not be loaded: {0}"
@@ -14957,6 +15056,9 @@ msgstr "Nama organisasi atau tim Anda"
 msgid "The network connection changed"
 msgstr "Koneksi jaringan berubah"
 
+msgid "The next message becomes the goal. Codex will continue until it finishes or needs your input."
+msgstr "Pesan berikutnya menjadi tujuan. Codex akan terus bekerja hingga selesai atau membutuhkan masukan Anda."
+
 msgid "The overnight shift"
 msgstr "Shift malam"
 
@@ -15740,6 +15842,10 @@ msgstr "Tipografi dan perilaku kursor yang dipakai di panel terminal V2."
 msgid "Typography used in V2 editors and diff views."
 msgstr "Tipografi yang dipakai di editor dan tampilan diff V2."
 
+msgctxt "reasoning effort"
+msgid "Ultra"
+msgstr "Ultra"
+
 msgid "Unable to check for updates. Please check your internet connection."
 msgstr "Tidak bisa memeriksa pembaruan. Silakan periksa koneksi internet Anda."
 
@@ -15778,6 +15884,9 @@ msgstr "Run tanpa pengawasan selama 8 jam atau lebih berhasil pada mayoritas tik
 
 msgid "Unavailable"
 msgstr "Tidak tersedia"
+
+msgid "Unavailable on this host"
+msgstr "Tidak tersedia di host ini"
 
 msgid "Unavailable: {unavailableReason}"
 msgstr "Tidak tersedia: {unavailableReason}"
@@ -16080,6 +16189,9 @@ msgstr "Penggunaan"
 
 msgid "Usage is out of date"
 msgstr "Data penggunaan sudah tidak mutakhir"
+
+msgid "Usage limit reached"
+msgstr "Batas penggunaan tercapai"
 
 msgid "Usage sections"
 msgstr "Bagian penggunaan"
@@ -16651,6 +16763,9 @@ msgstr "Bekerja dari tiket"
 
 msgid "Work with your agents across your favorite tools"
 msgstr "Bekerja dengan agen Anda lintas alat favorit Anda"
+
+msgid "Worked for {duration}"
+msgstr "Bekerja selama {duration}"
 
 msgid "Worked for 39s"
 msgstr "Bekerja 39 dtk"

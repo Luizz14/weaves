@@ -2,6 +2,7 @@ import { Workspace } from "@superset/panes";
 import { FEATURE_FLAGS } from "@superset/shared/constants";
 import { workspaceTrpc } from "@superset/workspace-client";
 import { createFileRoute } from "@tanstack/react-router";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useFeatureFlagEnabled } from "posthog-js/react";
 import { useCallback, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
@@ -11,6 +12,7 @@ import { useWorkspaceHostTarget } from "renderer/hooks/host-service/useWorkspace
 import { useV2UserPreferences } from "renderer/hooks/useV2UserPreferences";
 import { useZoomFactor } from "renderer/hooks/useZoomFactor";
 import { useHotkey } from "renderer/hotkeys";
+import { SPRING_LAYOUT } from "renderer/lib/ease";
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import { AppMenuButton } from "renderer/routes/_authenticated/_dashboard/components/AppMenuButton";
 import { NavigationControls } from "renderer/routes/_authenticated/_dashboard/components/NavigationControls";
@@ -162,6 +164,8 @@ function V2WorkspaceContent() {
 	} = useV2UserPreferences();
 	const showPresetsBar = v2UserPreferences.showPresetsBar;
 	const sidebarOpen = v2UserPreferences.rightSidebarOpen;
+	const reduceMotion = useReducedMotion() ?? false;
+	const [sidebarSliding, setSidebarSliding] = useState(false);
 	const { store, isLayoutReady } = useV2WorkspacePaneLayout();
 	useClearActivePaneAttention({ store });
 	const launcher = useV2TerminalLauncher();
@@ -234,6 +238,7 @@ function V2WorkspaceContent() {
 		addTerminalTab,
 		addChatV3Tab,
 		addCodexChatTab,
+		openCodexChatSession,
 		addBrowserTab,
 		openChangesPane,
 		toggleChangesPane,
@@ -333,6 +338,7 @@ function V2WorkspaceContent() {
 		matchedPresets,
 		executePreset,
 		addTerminalTab,
+		addCodexChatTab,
 		openChangesPane,
 		paneRegistry,
 		launcher,
@@ -401,6 +407,8 @@ function V2WorkspaceContent() {
 								<AddTabMenu
 									onAddTerminal={addTerminalTab}
 									onAddCodexChat={addCodexChatTab}
+									workspaceId={workspaceId}
+									onOpenCodexSession={openCodexChatSession}
 									onAddChatV3={isChatV3Enabled ? addChatV3Tab : undefined}
 									onAddBrowser={addBrowserTab}
 									onAddChanges={openChangesPane}
@@ -473,6 +481,7 @@ function V2WorkspaceContent() {
 								<WorkspaceEmptyState
 									onOpenBrowser={addBrowserTab}
 									onOpenChanges={openChangesPane}
+									onOpenCodexChat={addCodexChatTab}
 									onOpenChatV3={isChatV3Enabled ? addChatV3Tab : undefined}
 									onOpenQuickOpen={handleQuickOpen}
 									onOpenTerminal={addTerminalTab}
@@ -484,32 +493,58 @@ function V2WorkspaceContent() {
 						/>
 					</div>
 				</div>
-				{sidebarOpen &&
-					sidebarSlotEl &&
+				{sidebarSlotEl &&
 					createPortal(
-						<ResizablePanel
-							width={sidebarWidth}
-							onWidthChange={setRightSidebarWidth}
-							isResizing={isSidebarResizing}
-							onResizingChange={handleSidebarResizingChange}
-							minWidth={240}
-							maxWidth={640}
-							handleSide="left"
-							onDoubleClickHandle={() => setRightSidebarWidth(340)}
-						>
-							<WorkspaceSidebar
-								workspaceId={workspaceId}
-								runButton={workspaceRunButton}
-								onSelectFile={openFilePaneFromTreeClick}
-								onSelectDiffFile={openDiffPane}
-								onOpenComment={openCommentPane}
-								onOpenPullRequest={openPullRequestPane}
-								onSearch={handleQuickOpen}
-								selectedFilePath={selectedFilePath}
-								selectedDiffTarget={diffPaneTarget}
-								pendingReveal={pendingReveal}
-							/>
-						</ResizablePanel>,
+						// The panel keeps its own width, so the wrapper is what opens and
+						// closes: it clips the panel to nothing rather than resizing it,
+						// which keeps the sidebar's layout stable while it slides away.
+						// Clipping is lifted once it settles, or it would cut off the
+						// resize handle that overhangs the panel's edge.
+						<AnimatePresence initial={false}>
+							{sidebarOpen && (
+								<motion.div
+									className={
+										sidebarSliding
+											? "flex h-full shrink-0 overflow-hidden"
+											: "flex h-full shrink-0"
+									}
+									initial={{ width: 0, opacity: 0 }}
+									animate={{ width: "auto", opacity: 1 }}
+									exit={{ width: 0, opacity: 0 }}
+									onAnimationStart={() => setSidebarSliding(true)}
+									onAnimationComplete={() => setSidebarSliding(false)}
+									transition={
+										reduceMotion
+											? { duration: 0 }
+											: { ...SPRING_LAYOUT, opacity: { duration: 0.12 } }
+									}
+								>
+									<ResizablePanel
+										width={sidebarWidth}
+										onWidthChange={setRightSidebarWidth}
+										isResizing={isSidebarResizing}
+										onResizingChange={handleSidebarResizingChange}
+										minWidth={240}
+										maxWidth={640}
+										handleSide="left"
+										onDoubleClickHandle={() => setRightSidebarWidth(340)}
+									>
+										<WorkspaceSidebar
+											workspaceId={workspaceId}
+											runButton={workspaceRunButton}
+											onSelectFile={openFilePaneFromTreeClick}
+											onSelectDiffFile={openDiffPane}
+											onOpenComment={openCommentPane}
+											onOpenPullRequest={openPullRequestPane}
+											onSearch={handleQuickOpen}
+											selectedFilePath={selectedFilePath}
+											selectedDiffTarget={diffPaneTarget}
+											pendingReveal={pendingReveal}
+										/>
+									</ResizablePanel>
+								</motion.div>
+							)}
+						</AnimatePresence>,
 						sidebarSlotEl,
 					)}
 			</WorkspaceGitStatusProvider>

@@ -3,6 +3,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@superset/ui/popover";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { useState } from "react";
 import { LuRadioTower } from "react-icons/lu";
+import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { useIsV2CloudEnabled } from "renderer/hooks/useIsV2CloudEnabled";
 import { useDashboardSidebarAllPorts } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/providers/DashboardSidebarPortsProvider";
 import { STROKE_WIDTH } from "renderer/screens/main/components/WorkspaceSidebar/constants";
@@ -57,7 +58,9 @@ export function TopBarPortsDropdown({
 							className="flex items-center gap-1.5 rounded-md px-2 py-1 text-muted-foreground text-xs transition-colors hover:bg-fill-hover hover:text-foreground data-[state=open]:bg-fill-hover data-[state=open]:text-foreground"
 						>
 							<LuRadioTower className="size-3.5" strokeWidth={STROKE_WIDTH} />
-							<span className="font-medium tabular-nums">{totalPortCount}</span>
+							<span className="font-medium tabular-nums">
+								<AnimatedNumber value={totalPortCount} />
+							</span>
 						</button>
 					</PopoverTrigger>
 				</TooltipTrigger>

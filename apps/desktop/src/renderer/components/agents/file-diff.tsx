@@ -20,6 +20,7 @@ import {
 	useRef,
 	useState,
 } from "react";
+import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import {
 	type AgentCodeLanguage,
 	AgentCodeLine,
@@ -73,7 +74,7 @@ function ChangeCount({
 			)}
 		>
 			{type === "added" ? "+" : "−"}
-			{value}
+			<AnimatedNumber value={value} />
 		</span>
 	);
 }

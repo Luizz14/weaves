@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. js-lingui-explicit-id
+msgid "greeting"
+msgstr ""
+
 msgid " and "
 msgstr " và "
 
@@ -1475,6 +1479,9 @@ msgstr "Thêm issue #{0} vào workspace"
 msgid "Add member"
 msgstr "Thêm thành viên"
 
+msgid "Add model shortcut"
+msgstr "Thêm lối tắt mô hình"
+
 msgid "Add one from the menu in the sidebar to get started."
 msgstr "Thêm một agent từ menu ở thanh bên để bắt đầu."
 
@@ -2573,6 +2580,9 @@ msgstr "Khối"
 msgid "blocked"
 msgstr "bị chặn"
 
+msgid "Blocked"
+msgstr "Bị chặn"
+
 msgid "Blocked by Branch Rules"
 msgstr "Bị chặn bởi quy tắc nhánh"
 
@@ -2729,6 +2739,9 @@ msgstr "Đã xóa dữ liệu duyệt web"
 
 msgid "Browsing history"
 msgstr "Lịch sử duyệt web"
+
+msgid "Budget limit reached"
+msgstr "Đã đạt giới hạn ngân sách"
 
 msgid "Bug"
 msgstr "Bug"
@@ -3150,6 +3163,9 @@ msgstr "Chọn cách chế độ xem thay đổi mở từ thanh trên cùng"
 
 msgid "Choose how to open file paths when Cmd+clicking in the terminal"
 msgstr "Chọn cách mở đường dẫn tệp khi Cmd+nhấp trong terminal"
+
+msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
+msgstr "Chọn mặc định cho các cuộc trò chuyện mới và tùy chỉnh lối tắt mô hình. Các cuộc trò chuyện hiện có giữ nguyên lựa chọn."
 
 msgid "Choose what to clear from the in-app browser."
 msgstr "Chọn thứ cần xóa khỏi trình duyệt trong ứng dụng."
@@ -3752,6 +3768,9 @@ msgstr "Kết nối một thiết bị"
 
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "Kết nối một tài khoản Google. Lịch và hộp thư của tài khoản chỉ được đọc, và các trigger chạy dưới danh nghĩa người đã kết nối."
+
+msgid "Connect a host to load Codex models."
+msgstr "Kết nối máy chủ để tải các mô hình Codex."
 
 msgid "Connect a microphone to use dictation"
 msgstr "Kết nối micro để dùng đọc chính tả"
@@ -5118,6 +5137,9 @@ msgstr "giảm dần"
 msgid "Describe the change…"
 msgstr "Mô tả thay đổi…"
 
+msgid "Describe the goal and how to verify it…"
+msgstr "Mô tả mục tiêu và cách xác minh…"
+
 msgid "Describe the task for the agent…"
 msgstr "Mô tả tác vụ cho agent…"
 
@@ -5725,6 +5747,9 @@ msgstr "Bật truy cập relay…"
 msgid "Enable skill"
 msgstr "Bật skill"
 
+msgid "End goal"
+msgstr "Kết thúc mục tiêu"
+
 msgid "Engineering deep-dives and launches."
 msgstr "Bài kỹ thuật chuyên sâu và các lần ra mắt."
 
@@ -5979,6 +6004,10 @@ msgstr "Trình soạn thảo ngoài"
 
 msgid "extra ${used} of ${limit}"
 msgstr "dùng thêm ${used} trên ${limit}"
+
+msgctxt "reasoning effort"
+msgid "Extra high"
+msgstr "Rất cao"
 
 msgid "Extra small"
 msgstr "Rất nhỏ"
@@ -6469,6 +6498,9 @@ msgstr "Thất bại"
 
 msgid "FAQ"
 msgstr "FAQ"
+
+msgid "Fast uses more of your allowance."
+msgstr "Fast tiêu thụ nhiều hạn mức hơn."
 
 msgid "Fatal"
 msgstr "Nghiêm trọng"
@@ -7070,6 +7102,9 @@ msgstr "Tới cài đặt tích hợp Slack"
 msgid "Go to Superset"
 msgstr "Tới Superset"
 
+msgid "Goal"
+msgstr "Mục tiêu"
+
 msgid "Google did not grant lasting access. Remove Superset from your Google account's third-party access and try again."
 msgstr "Google không cấp quyền truy cập lâu dài. Hãy gỡ Superset khỏi phần truy cập của bên thứ ba trong tài khoản Google của bạn rồi thử lại."
 
@@ -7230,6 +7265,10 @@ msgstr "Ẩn phiên"
 msgid "Hide unchanged regions"
 msgstr "Ẩn các vùng không đổi"
 
+msgid "High"
+msgstr "Cao"
+
+msgctxt "reasoning effort"
 msgid "High"
 msgstr "Cao"
 
@@ -7455,6 +7494,12 @@ msgstr "Xem trước ảnh của {0}. Thu phóng bằng phím cộng và trừ, 
 
 msgid "Images"
 msgstr "Hình ảnh"
+
+msgid "Implement plan"
+msgstr "Thực hiện kế hoạch"
+
+msgid "Implementation plan"
+msgstr "Kế hoạch triển khai"
 
 msgid "Import"
 msgstr "Nhập"
@@ -8190,6 +8235,10 @@ msgstr "sáng"
 msgid "Light"
 msgstr "Sáng"
 
+msgctxt "reasoning effort"
+msgid "Light"
+msgstr "Nhẹ"
+
 msgid "Light theme"
 msgstr "Theme sáng"
 
@@ -8502,6 +8551,10 @@ msgstr "Trông ổn"
 msgid "Low"
 msgstr "Thấp"
 
+msgctxt "reasoning effort"
+msgid "Low"
+msgstr "Thấp"
+
 msgid "Lower memory with many terminals open, smoother git in big repos, and less background CPU."
 msgstr "Ít bộ nhớ hơn khi mở nhiều terminal, git mượt hơn trong repo lớn và CPU nền thấp hơn."
 
@@ -8638,6 +8691,10 @@ msgstr "Khớp phím tắt với ký tự in trên bàn phím của bạn (ví d
 msgid "Max"
 msgstr "Tối đa"
 
+msgctxt "reasoning effort"
+msgid "Max"
+msgstr "Tối đa"
+
 msgid "Maximum"
 msgstr "Tối đa"
 
@@ -8675,6 +8732,10 @@ msgstr "Thời gian trung vị từ ticket đến production dưới một ngày
 msgid "Median time from previous"
 msgstr "Thời gian trung vị từ bước trước"
 
+msgid "Medium"
+msgstr "Trung bình"
+
+msgctxt "reasoning effort"
 msgid "Medium"
 msgstr "Trung bình"
 
@@ -8795,6 +8856,10 @@ msgstr "Giữa 2027"
 msgid "Mine"
 msgstr "Của tôi"
 
+msgctxt "reasoning effort"
+msgid "Minimal"
+msgstr "Tối thiểu"
+
 msgid "Minimal reasoning effort"
 msgstr "Mức suy luận tối thiểu"
 
@@ -8847,6 +8912,9 @@ msgstr "mô hình"
 msgid "Model"
 msgstr "Mô hình"
 
+msgid "Model and reasoning effort"
+msgstr "Mô hình và mức độ suy luận"
+
 msgid "Model context usage"
 msgstr "Mức dùng ngữ cảnh của mô hình"
 
@@ -8855,6 +8923,9 @@ msgstr "Bộ chọn mô hình giới hạn theo agent đang chọn"
 
 msgid "Model Selector"
 msgstr "Bộ chọn mô hình"
+
+msgid "Model shortcuts"
+msgstr "Lối tắt mô hình"
 
 msgid "Model volume"
 msgstr "Lưu lượng theo mô hình"
@@ -8949,11 +9020,17 @@ msgstr "Gần như suốt lịch sử phần mềm"
 msgid "Move {count} to Group"
 msgstr "Chuyển {count} vào nhóm"
 
+msgid "Move down"
+msgstr "Di chuyển xuống"
+
 msgid "Move to group"
 msgstr "Chuyển vào nhóm"
 
 msgid "Move to Tab"
 msgstr "Chuyển sang tab"
+
+msgid "Move up"
+msgstr "Di chuyển lên"
 
 msgid "MRR"
 msgstr "MRR"
@@ -9113,6 +9190,9 @@ msgstr "Chat mới"
 
 msgid "New cloud workspace"
 msgstr "Workspace cloud mới"
+
+msgid "New Codex Chat"
+msgstr "Trò chuyện Codex mới"
 
 msgid "New environment"
 msgstr "Environment mới"
@@ -9398,6 +9478,9 @@ msgstr "Không có kết quả console"
 
 msgid "No contributors found."
 msgstr "Không tìm thấy người đóng góp nào."
+
+msgid "No conversations yet"
+msgstr "Chưa có cuộc trò chuyện"
 
 msgid "No credit card required."
 msgstr "Không cần thẻ tín dụng."
@@ -9810,6 +9893,10 @@ msgstr "Lượt nhấp không thương hiệu"
 
 msgid "None"
 msgstr "Không có"
+
+msgctxt "reasoning effort"
+msgid "None"
+msgstr "Không"
 
 msgid "none (session)"
 msgstr "không có (phiên)"
@@ -11035,6 +11122,9 @@ msgstr "Gói"
 msgid "Plan restored"
 msgstr "Đã khôi phục gói"
 
+msgid "Planning"
+msgstr "Lập kế hoạch"
+
 msgid "Planning the tooltip refactor"
 msgstr "Lên kế hoạch refactor tooltip"
 
@@ -11676,9 +11766,6 @@ msgstr "Đang đọc mức sử dụng…"
 msgid "Reading your local usage…"
 msgstr "Đang đọc mức sử dụng cục bộ của bạn…"
 
-msgid "Ready"
-msgstr "Sẵn sàng"
-
 msgid "Ready for review"
 msgstr "Sẵn sàng review"
 
@@ -11704,6 +11791,9 @@ msgstr "Áp dụng lại toàn bộ commit"
 msgid "Reasoning"
 msgstr "Suy luận"
 
+msgid "Reasoning effort"
+msgstr "Mức độ suy luận"
+
 msgid "Reassign"
 msgstr "Gán lại"
 
@@ -11715,6 +11805,9 @@ msgstr "Rebase và merge"
 
 msgid "Recent Activity"
 msgstr "Hoạt động gần đây"
+
+msgid "Recent chats"
+msgstr "Trò chuyện gần đây"
 
 msgid "Recent invoices"
 msgstr "Hóa đơn gần đây"
@@ -12996,6 +13089,9 @@ msgstr "Xem 30 ngày qua của bạn đứng ở đâu trên bảng xếp hạng
 msgid "Select"
 msgstr "Select"
 
+msgid "Select a default preset"
+msgstr "Chọn cấu hình mặc định"
+
 msgid "Select a project"
 msgstr "Chọn một dự án"
 
@@ -13791,6 +13887,9 @@ msgstr "Một số tệp vượt quá kích thước tối đa nên không đư�
 
 msgid "Some models were priced with a fallback rate"
 msgstr "Một số mô hình được tính giá theo mức dự phòng"
+
+msgid "Some presets are unavailable on this host."
+msgstr "Một số cấu hình không khả dụng trên máy chủ này."
 
 #. placeholder {0}: error.message
 msgid "Some repositories could not be loaded: {0}"
@@ -14957,6 +15056,9 @@ msgstr "Tên tổ chức hoặc nhóm của bạn"
 msgid "The network connection changed"
 msgstr "Kết nối mạng đã thay đổi"
 
+msgid "The next message becomes the goal. Codex will continue until it finishes or needs your input."
+msgstr "Tin nhắn tiếp theo trở thành mục tiêu. Codex sẽ tiếp tục cho đến khi hoàn thành hoặc cần bạn phản hồi."
+
 msgid "The overnight shift"
 msgstr "Ca đêm"
 
@@ -15740,6 +15842,10 @@ msgstr "Kiểu chữ và hành vi con trỏ dùng trong khung terminal V2."
 msgid "Typography used in V2 editors and diff views."
 msgstr "Kiểu chữ dùng trong trình soạn thảo và khung diff V2."
 
+msgctxt "reasoning effort"
+msgid "Ultra"
+msgstr "Siêu cao"
+
 msgid "Unable to check for updates. Please check your internet connection."
 msgstr "Không thể kiểm tra cập nhật. Vui lòng kiểm tra kết nối internet."
 
@@ -15778,6 +15884,9 @@ msgstr "Các lần chạy không giám sát từ 8 giờ trở lên thành công
 
 msgid "Unavailable"
 msgstr "Không khả dụng"
+
+msgid "Unavailable on this host"
+msgstr "Không khả dụng trên máy chủ này"
 
 msgid "Unavailable: {unavailableReason}"
 msgstr "Không khả dụng: {unavailableReason}"
@@ -16080,6 +16189,9 @@ msgstr "Mức sử dụng"
 
 msgid "Usage is out of date"
 msgstr "Dữ liệu sử dụng đã cũ"
+
+msgid "Usage limit reached"
+msgstr "Đã đạt giới hạn sử dụng"
 
 msgid "Usage sections"
 msgstr "Các mục mức sử dụng"
@@ -16651,6 +16763,9 @@ msgstr "Làm việc từ ticket"
 
 msgid "Work with your agents across your favorite tools"
 msgstr "Làm việc với agent của bạn trên các công cụ ưa thích"
+
+msgid "Worked for {duration}"
+msgstr "Đã làm việc trong {duration}"
 
 msgid "Worked for 39s"
 msgstr "Đã làm trong 39 giây"

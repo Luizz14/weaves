@@ -1,10 +1,13 @@
 import { randomUUID } from "node:crypto";
 import type {
+	CodexExecution,
+	CodexGoalAction,
 	DurableEvent,
 	Envelope,
 	SessionState,
 	Turn,
 	UserContent,
+	UserInputAnswers,
 	UserMessage,
 } from "@superset/chat/protocol";
 import { sessionStateSchema } from "@superset/chat/protocol";
@@ -19,6 +22,7 @@ export type LiveSessionOptions = {
 	sessionId: string;
 	scopeId: string;
 	harness: string;
+	title?: string;
 	journal: ChatJournal;
 	publish: (envelope: Envelope) => void;
 	adapter: HarnessAdapter;
@@ -34,6 +38,7 @@ export type PromptResult = {
 type PendingPrompt = {
 	item: UserMessage;
 	content: UserContent[];
+	execution?: CodexExecution;
 };
 
 function withoutQueued(item: UserMessage): UserMessage {
@@ -51,7 +56,11 @@ export class LiveSession {
 	private stopped = false;
 
 	constructor(private readonly options: LiveSessionOptions) {
-		this.sessionState = { status: "starting", harness: options.harness };
+		this.sessionState = {
+			status: "starting",
+			harness: options.harness,
+			...(options.title ? { title: options.title } : {}),
+		};
 	}
 
 	get sessionId(): string {
@@ -83,7 +92,19 @@ export class LiveSession {
 		);
 	}
 
-	prompt(content: UserContent[], clientId: string): PromptResult {
+	prompt(
+		content: UserContent[],
+		clientId: string,
+		execution?: CodexExecution,
+	): PromptResult {
+		const captured = execution ?? this.sessionState.execution;
+		if (this.options.harness === "codex" && !this.sessionState.title) {
+			const text = content.find((part) => part.type === "text");
+			if (text?.type === "text")
+				this.emitSession({
+					title: text.text.trim().replace(/\s+/g, " ").slice(0, 80),
+				});
+		}
 		const itemId = this.mintId();
 		const queued = this.isBusy();
 		const item: UserMessage = {
@@ -97,10 +118,10 @@ export class LiveSession {
 		this.appendDurable({ type: "item", item, turnId: this.mintId() });
 
 		if (queued) {
-			this.queue.push({ item, content });
+			this.queue.push({ item, content, execution: captured });
 			return { itemId, queued: true };
 		}
-		this.deliver({ item, content });
+		this.deliver({ item, content, execution: captured });
 		return { itemId, queued: false };
 	}
 
@@ -116,8 +137,45 @@ export class LiveSession {
 		this.options.adapter.respondToApproval(approvalId, decision);
 	}
 
-	setMode(modeId: string): void {
-		this.options.adapter.setMode(modeId);
+	async configureCodex(execution: CodexExecution): Promise<CodexExecution> {
+		if (!this.options.adapter.configureCodex)
+			throw new Error("Codex configuration is not supported by this session");
+		const configured = await this.options.adapter.configureCodex(execution);
+		if (this.stopped) throw new Error("Chat session stopped");
+		const applied = configured;
+		this.emitSession({ execution: applied });
+		return applied;
+	}
+	async updateGoal(change: CodexGoalAction): Promise<void> {
+		if (!this.options.adapter.updateGoal)
+			throw new Error("Goals are not supported by this session");
+		const startedAtMs = this.now();
+		await this.options.adapter.updateGoal(change);
+		if (this.stopped) throw new Error("Chat session stopped");
+		if (change.action === "set") {
+			const id = this.mintId();
+			this.appendDurable({
+				type: "item",
+				turnId: `goal:${id}`,
+				item: {
+					id,
+					kind: "user_message",
+					startedAtMs,
+					content: [{ type: "text", text: change.objective }],
+				},
+			});
+		}
+		if (change.action === "set" && !this.sessionState.title)
+			this.emitSession({ title: change.objective.slice(0, 80) });
+	}
+	respondToUserInput(requestId: string, answers: UserInputAnswers): void {
+		if (!this.options.adapter.respondToUserInput)
+			throw new Error("Questions are not supported by this session");
+		this.options.adapter.respondToUserInput(requestId, answers);
+	}
+
+	setMode(modeId: string): void | Promise<void> {
+		return this.options.adapter.setMode(modeId);
 	}
 
 	async dispose(): Promise<void> {
@@ -180,7 +238,7 @@ export class LiveSession {
 	private deliver(prompt: PendingPrompt): void {
 		this.awaitingTurn = prompt;
 		try {
-			this.options.adapter.prompt(prompt.content);
+			this.options.adapter.prompt(prompt.content, prompt.execution);
 		} catch (error) {
 			this.awaitingTurn = null;
 			throw error;
@@ -225,8 +283,8 @@ export class LiveSession {
 	private emitSession(partial: Partial<SessionState>): void {
 		const merged: SessionState = { ...this.sessionState, ...partial };
 		const status =
-			merged.status === "dead"
-				? "dead"
+			merged.status === "dead" || merged.status === "awaiting_input"
+				? merged.status
 				: this.hasPendingWork()
 					? "running"
 					: merged.status;

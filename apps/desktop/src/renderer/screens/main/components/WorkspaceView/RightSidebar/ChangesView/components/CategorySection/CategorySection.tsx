@@ -6,6 +6,7 @@ import {
 import { cn } from "@superset/ui/utils";
 import type { ReactNode } from "react";
 import { VscChevronRight } from "react-icons/vsc";
+import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { useChangesSectionDnd } from "renderer/screens/main/components/WorkspaceView/hooks/useChangesSectionDnd";
 import type { ChangeCategory } from "shared/changes-types";
 
@@ -91,7 +92,7 @@ export function CategorySection({
 								: "text-muted-foreground",
 						)}
 					>
-						{count}
+						<AnimatedNumber value={count} />
 					</span>
 				</CollapsibleTrigger>
 				{actions && <div className="pr-1.5 shrink-0">{actions}</div>}

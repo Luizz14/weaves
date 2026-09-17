@@ -1,29 +1,37 @@
 import { randomUUID } from "node:crypto";
 import type {
 	CancelTurnInput,
+	CodexExecution,
+	ConfigureCodexInput,
 	Cursor,
 	GetItemsInput,
 	GetSessionInput,
 	PromptInput,
 	RespondToApprovalInput,
+	RespondToUserInput,
+	SessionState,
 	SetModeInput,
+	UpdateCodexGoalInput,
 } from "@superset/chat/protocol";
 import {
 	cancelTurnInputSchema,
+	configureCodexInputSchema,
 	createSessionInputSchema,
 	getItemsInputSchema,
 	getSessionInputSchema,
 	listSessionsInputSchema,
 	promptInputSchema,
 	respondToApprovalInputSchema,
+	respondToUserInputSchema,
 	setModeInputSchema,
+	updateCodexGoalInputSchema,
 } from "@superset/chat/protocol";
 import { z } from "zod";
 import type { ChatDb, ChatSessionRow } from "../../db";
 import type { ChatJournal } from "../../journal";
 import type { ChatSessionStore } from "../../projection";
 import type { PageResult } from "../../replay";
-import { readPage } from "../../replay";
+import { readLatestSessionState, readPage } from "../../replay";
 import type { LiveSessionRegistry, PromptResult } from "../../sessions";
 
 export const createSessionCommandSchema = createSessionInputSchema
@@ -48,15 +56,19 @@ export type CreateSessionResult = {
 export type GetSessionResult = {
 	session: ChatSessionRow | null;
 	isLive?: boolean;
+	state?: SessionState | null;
 	cursor: Cursor | null;
 };
 
 export type ChatCommands = {
+	configureCodex(input: ConfigureCodexInput): Promise<CodexExecution>;
+	updateCodexGoal(input: UpdateCodexGoalInput): Promise<void>;
+	respondToUserInput(input: RespondToUserInput): void;
 	createSession(input: CreateSessionCommandInput): CreateSessionResult;
 	prompt(input: PromptInput): PromptResult;
 	cancelTurn(input: CancelTurnInput): void;
 	respondToApproval(input: RespondToApprovalInput): void;
-	setMode(input: SetModeInput): void;
+	setMode(input: SetModeInput): void | Promise<void>;
 	getSession(input: GetSessionInput): GetSessionResult;
 	listSessions(input: ListSessionsCommandInput): ChatSessionRow[];
 	getItems(input: z.input<typeof getItemsInputSchema>): PageResult;
@@ -87,6 +99,26 @@ export function createCommands(options: CommandsOptions): ChatCommands {
 	};
 
 	return {
+		configureCodex(input) {
+			const parsed = configureCodexInputSchema.parse(input);
+			return options.dedupe.run(`configure:${parsed.commandId}`, () =>
+				options.live.require(parsed.sessionId).configureCodex(parsed.execution),
+			);
+		},
+		updateCodexGoal(input) {
+			const parsed = updateCodexGoalInputSchema.parse(input);
+			return options.dedupe.run(`goal:${parsed.commandId}`, () =>
+				options.live.require(parsed.sessionId).updateGoal(parsed.change),
+			);
+		},
+		respondToUserInput(input) {
+			const parsed = respondToUserInputSchema.parse(input);
+			options.dedupe.run(`answer:${parsed.commandId}`, () =>
+				options.live
+					.require(parsed.sessionId)
+					.respondToUserInput(parsed.requestId, parsed.answers),
+			);
+		},
 		createSession(input) {
 			const parsed = createSessionCommandSchema.parse(input);
 			return options.dedupe.run(`createSession:${parsed.commandId}`, () => {
@@ -107,6 +139,7 @@ export function createCommands(options: CommandsOptions): ChatCommands {
 						cwd: parsed.cwd,
 						modeId: parsed.modeId,
 						modelId: parsed.modelId,
+						execution: parsed.execution,
 					});
 				} catch (error) {
 					options.journal.discard(sessionId);
@@ -121,7 +154,7 @@ export function createCommands(options: CommandsOptions): ChatCommands {
 			return options.dedupe.run(`prompt:${parsed.commandId}`, () =>
 				options.live
 					.require(parsed.sessionId)
-					.prompt(parsed.content, parsed.clientId),
+					.prompt(parsed.content, parsed.clientId, parsed.execution),
 			);
 		},
 
@@ -144,9 +177,9 @@ export function createCommands(options: CommandsOptions): ChatCommands {
 
 		setMode(input) {
 			const parsed: SetModeInput = setModeInputSchema.parse(input);
-			options.dedupe.run(`setMode:${parsed.commandId}`, () => {
-				options.live.require(parsed.sessionId).setMode(parsed.modeId);
-			});
+			return options.dedupe.run(`setMode:${parsed.commandId}`, () =>
+				options.live.require(parsed.sessionId).setMode(parsed.modeId),
+			);
 		},
 
 		getSession(input) {
@@ -156,6 +189,9 @@ export function createCommands(options: CommandsOptions): ChatCommands {
 				session,
 				...(session?.harness === "codex"
 					? {
+							state:
+								options.live.get(parsed.sessionId)?.state ??
+								readLatestSessionState(options.db, parsed.sessionId),
 							isLive:
 								options.live.get(parsed.sessionId)?.state.status !== "dead" &&
 								options.live.get(parsed.sessionId) !== null,

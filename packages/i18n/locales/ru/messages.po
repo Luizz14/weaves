@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. js-lingui-explicit-id
+msgid "greeting"
+msgstr ""
+
 msgid " and "
 msgstr " и "
 
@@ -1475,6 +1479,9 @@ msgstr "Добавить задачу #{0} в рабочую область"
 msgid "Add member"
 msgstr "Добавить участника"
 
+msgid "Add model shortcut"
+msgstr "Добавить ярлык модели"
+
 msgid "Add one from the menu in the sidebar to get started."
 msgstr "Добавьте агента из меню в боковой панели, чтобы начать."
 
@@ -2573,6 +2580,9 @@ msgstr "Блок"
 msgid "blocked"
 msgstr "заблокирован"
 
+msgid "Blocked"
+msgstr "Заблокировано"
+
 msgid "Blocked by Branch Rules"
 msgstr "Заблокирован правилами ветки"
 
@@ -2729,6 +2739,9 @@ msgstr "Данные браузера очищены"
 
 msgid "Browsing history"
 msgstr "История просмотров"
+
+msgid "Budget limit reached"
+msgstr "Достигнут лимит бюджета"
 
 msgid "Bug"
 msgstr "Жук"
@@ -3150,6 +3163,9 @@ msgstr "Выберите, как открывается представлени
 
 msgid "Choose how to open file paths when Cmd+clicking in the terminal"
 msgstr "Выберите, как открывать пути файлов при Cmd+клике в терминале"
+
+msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
+msgstr "Выберите настройки новых чатов и настройте ярлыки моделей. Существующие чаты сохраняют свои настройки."
 
 msgid "Choose what to clear from the in-app browser."
 msgstr "Выберите, что очистить во встроенном браузере."
@@ -3752,6 +3768,9 @@ msgstr "Подключите устройство"
 
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "Подключите аккаунт Google. Его календари и почтовый ящик доступны только для чтения, а триггеры работают от имени подключившего."
+
+msgid "Connect a host to load Codex models."
+msgstr "Подключите хост, чтобы загрузить модели Codex."
 
 msgid "Connect a microphone to use dictation"
 msgstr "Подключите микрофон, чтобы использовать диктовку"
@@ -5118,6 +5137,9 @@ msgstr "по убыванию"
 msgid "Describe the change…"
 msgstr "Опишите изменение…"
 
+msgid "Describe the goal and how to verify it…"
+msgstr "Опишите цель и способ её проверки…"
+
 msgid "Describe the task for the agent…"
 msgstr "Опишите задачу для агента…"
 
@@ -5725,6 +5747,9 @@ msgstr "Включить доступ через реле…"
 msgid "Enable skill"
 msgstr "Включить навык"
 
+msgid "End goal"
+msgstr "Завершить цель"
+
 msgid "Engineering deep-dives and launches."
 msgstr "Инженерные разборы и запуски."
 
@@ -5979,6 +6004,10 @@ msgstr "Внешний редактор"
 
 msgid "extra ${used} of ${limit}"
 msgstr "сверх лимита ${used} из ${limit}"
+
+msgctxt "reasoning effort"
+msgid "Extra high"
+msgstr "Очень высокий"
 
 msgid "Extra small"
 msgstr "Очень маленький"
@@ -6469,6 +6498,9 @@ msgstr "Ошибка"
 
 msgid "FAQ"
 msgstr "FAQ"
+
+msgid "Fast uses more of your allowance."
+msgstr "Fast расходует больше вашей квоты."
 
 msgid "Fatal"
 msgstr "Критическая"
@@ -7070,6 +7102,9 @@ msgstr "Перейти к настройкам интеграции Slack"
 msgid "Go to Superset"
 msgstr "Перейти в Superset"
 
+msgid "Goal"
+msgstr "Цель"
+
 msgid "Google did not grant lasting access. Remove Superset from your Google account's third-party access and try again."
 msgstr "Google не выдал длительный доступ. Удалите Superset из стороннего доступа в аккаунте Google и повторите."
 
@@ -7230,6 +7265,10 @@ msgstr "Скрыть сессии"
 msgid "Hide unchanged regions"
 msgstr "Скрыть неизменённые участки"
 
+msgid "High"
+msgstr "Высокий"
+
+msgctxt "reasoning effort"
 msgid "High"
 msgstr "Высокий"
 
@@ -7455,6 +7494,12 @@ msgstr "Предпросмотр изображения {0}. Масштаб — 
 
 msgid "Images"
 msgstr "Изображения"
+
+msgid "Implement plan"
+msgstr "Выполнить план"
+
+msgid "Implementation plan"
+msgstr "План реализации"
 
 msgid "Import"
 msgstr "Импортировать"
@@ -8190,6 +8235,10 @@ msgstr "светлая"
 msgid "Light"
 msgstr "Светлая"
 
+msgctxt "reasoning effort"
+msgid "Light"
+msgstr "Лёгкий"
+
 msgid "Light theme"
 msgstr "Светлая тема"
 
@@ -8502,6 +8551,10 @@ msgstr "Выглядит хорошо"
 msgid "Low"
 msgstr "Низкий"
 
+msgctxt "reasoning effort"
+msgid "Low"
+msgstr "Низкий"
+
 msgid "Lower memory with many terminals open, smoother git in big repos, and less background CPU."
 msgstr "Меньше памяти при множестве открытых терминалов, плавнее git в больших репозиториях, меньше фоновой нагрузки на CPU."
 
@@ -8638,6 +8691,10 @@ msgstr "Привязывать сочетания к обозначениям н
 msgid "Max"
 msgstr "Макс."
 
+msgctxt "reasoning effort"
+msgid "Max"
+msgstr "Макс"
+
 msgid "Maximum"
 msgstr "Максимум"
 
@@ -8675,6 +8732,10 @@ msgstr "Медианное время от тикета до продакшен�
 msgid "Median time from previous"
 msgstr "Медианное время от предыдущего"
 
+msgid "Medium"
+msgstr "Средний"
+
+msgctxt "reasoning effort"
 msgid "Medium"
 msgstr "Средний"
 
@@ -8795,6 +8856,10 @@ msgstr "Середина 2027"
 msgid "Mine"
 msgstr "Мои"
 
+msgctxt "reasoning effort"
+msgid "Minimal"
+msgstr "Минимальный"
+
 msgid "Minimal reasoning effort"
 msgstr "Минимальные рассуждения"
 
@@ -8847,6 +8912,9 @@ msgstr "модель"
 msgid "Model"
 msgstr "Модель"
 
+msgid "Model and reasoning effort"
+msgstr "Модель и уровень рассуждений"
+
 msgid "Model context usage"
 msgstr "Использование контекста модели"
 
@@ -8855,6 +8923,9 @@ msgstr "Выбор модели в рамках выбранного агент�
 
 msgid "Model Selector"
 msgstr "Выбор модели"
+
+msgid "Model shortcuts"
+msgstr "Ярлыки моделей"
 
 msgid "Model volume"
 msgstr "Объём по моделям"
@@ -8949,11 +9020,17 @@ msgstr "Почти вся история софта"
 msgid "Move {count} to Group"
 msgstr "Переместить {count} в группу"
 
+msgid "Move down"
+msgstr "Переместить вниз"
+
 msgid "Move to group"
 msgstr "Переместить в группу"
 
 msgid "Move to Tab"
 msgstr "Переместить во вкладку"
+
+msgid "Move up"
+msgstr "Переместить вверх"
 
 msgid "MRR"
 msgstr "MRR"
@@ -9113,6 +9190,9 @@ msgstr "Новый чат"
 
 msgid "New cloud workspace"
 msgstr "Новая облачная рабочая область"
+
+msgid "New Codex Chat"
+msgstr "Новый чат Codex"
 
 msgid "New environment"
 msgstr "Новое окружение"
@@ -9398,6 +9478,9 @@ msgstr "Нет вывода в консоль"
 
 msgid "No contributors found."
 msgstr "Контрибьюторы не найдены."
+
+msgid "No conversations yet"
+msgstr "Пока нет разговоров"
 
 msgid "No credit card required."
 msgstr "Карта не нужна."
@@ -9808,6 +9891,10 @@ msgstr "не бренд"
 msgid "Non-brand clicks"
 msgstr "Небрендовые клики"
 
+msgid "None"
+msgstr "Нет"
+
+msgctxt "reasoning effort"
 msgid "None"
 msgstr "Нет"
 
@@ -11035,6 +11122,9 @@ msgstr "Тариф"
 msgid "Plan restored"
 msgstr "Тариф восстановлен"
 
+msgid "Planning"
+msgstr "Планирование"
+
 msgid "Planning the tooltip refactor"
 msgstr "Планируем рефакторинг tooltip"
 
@@ -11676,9 +11766,6 @@ msgstr "Чтение данных об использовании…"
 msgid "Reading your local usage…"
 msgstr "Чтение локальной статистики…"
 
-msgid "Ready"
-msgstr "Готово"
-
 msgid "Ready for review"
 msgstr "Готово к ревью"
 
@@ -11704,6 +11791,9 @@ msgstr "Применить все коммиты заново"
 msgid "Reasoning"
 msgstr "Рассуждения"
 
+msgid "Reasoning effort"
+msgstr "Уровень рассуждений"
+
 msgid "Reassign"
 msgstr "Переназначить"
 
@@ -11715,6 +11805,9 @@ msgstr "Перебазировать и объединить"
 
 msgid "Recent Activity"
 msgstr "Недавняя активность"
+
+msgid "Recent chats"
+msgstr "Недавние чаты"
 
 msgid "Recent invoices"
 msgstr "Недавние счета"
@@ -12996,6 +13089,9 @@ msgstr "Посмотрите, какое место ваши последние 
 msgid "Select"
 msgstr "Селект"
 
+msgid "Select a default preset"
+msgstr "Выберите предустановку по умолчанию"
+
 msgid "Select a project"
 msgstr "Выберите проект"
 
@@ -13791,6 +13887,9 @@ msgstr "Некоторые файлы превышают максимальны�
 
 msgid "Some models were priced with a fallback rate"
 msgstr "Для части моделей использована резервная ставка тарификации"
+
+msgid "Some presets are unavailable on this host."
+msgstr "Некоторые предустановки недоступны на этом хосте."
 
 #. placeholder {0}: error.message
 msgid "Some repositories could not be loaded: {0}"
@@ -14957,6 +15056,9 @@ msgstr "Название организации или команды"
 msgid "The network connection changed"
 msgstr "Сетевое соединение изменилось"
 
+msgid "The next message becomes the goal. Codex will continue until it finishes or needs your input."
+msgstr "Следующее сообщение станет целью. Codex продолжит работу до завершения или пока не потребуется ваш ответ."
+
 msgid "The overnight shift"
 msgstr "Ночная смена"
 
@@ -15740,6 +15842,10 @@ msgstr "Типографика и поведение курсора в пане�
 msgid "Typography used in V2 editors and diff views."
 msgstr "Типографика в редакторах V2 и просмотре diff."
 
+msgctxt "reasoning effort"
+msgid "Ultra"
+msgstr "Ультра"
+
 msgid "Unable to check for updates. Please check your internet connection."
 msgstr "Не удалось проверить обновления. Проверьте подключение к интернету."
 
@@ -15778,6 +15884,9 @@ msgstr "Автономные прогоны от 8 часов и дольше у
 
 msgid "Unavailable"
 msgstr "Недоступно"
+
+msgid "Unavailable on this host"
+msgstr "Недоступно на этом хосте"
 
 msgid "Unavailable: {unavailableReason}"
 msgstr "Недоступно: {unavailableReason}"
@@ -16080,6 +16189,9 @@ msgstr "Использование"
 
 msgid "Usage is out of date"
 msgstr "Данные об использовании устарели"
+
+msgid "Usage limit reached"
+msgstr "Достигнут лимит использования"
 
 msgid "Usage sections"
 msgstr "Разделы использования"
@@ -16651,6 +16763,9 @@ msgstr "Работа из тикетов"
 
 msgid "Work with your agents across your favorite tools"
 msgstr "Работайте с агентами в любимых инструментах"
+
+msgid "Worked for {duration}"
+msgstr "Работал {duration}"
 
 msgid "Worked for 39s"
 msgstr "Работал 39 с"

@@ -1,4 +1,5 @@
 import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
+import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 
 interface FolderHeaderProps {
 	/** Display label — a folder path like "src/components", or "Root Path". */
@@ -36,7 +37,7 @@ export function FolderHeader({
 						{label}
 					</span>
 					<span className="ml-auto shrink-0 text-[11px] tabular-nums">
-						{fileCount}
+						<AnimatedNumber value={fileCount} />
 					</span>
 				</button>
 			</TooltipTrigger>

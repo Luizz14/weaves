@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. js-lingui-explicit-id
+msgid "greeting"
+msgstr ""
+
 msgid " and "
 msgstr "和"
 
@@ -1475,6 +1479,9 @@ msgstr "將議題#{0}新增到工作區"
 msgid "Add member"
 msgstr "新增成員"
 
+msgid "Add model shortcut"
+msgstr "新增模型快捷選項"
+
 msgid "Add one from the menu in the sidebar to get started."
 msgstr "從側邊欄選單中新增一個即可開始。"
 
@@ -2573,6 +2580,9 @@ msgstr "方塊"
 msgid "blocked"
 msgstr "已阻止"
 
+msgid "Blocked"
+msgstr "已阻擋"
+
 msgid "Blocked by Branch Rules"
 msgstr "被分支規則阻止"
 
@@ -2729,6 +2739,9 @@ msgstr "瀏覽資料已清除"
 
 msgid "Browsing history"
 msgstr "瀏覽歷史"
+
+msgid "Budget limit reached"
+msgstr "已達預算上限"
 
 msgid "Bug"
 msgstr "蟲子"
@@ -3150,6 +3163,9 @@ msgstr "選擇從頂欄開啟變更檢視的方式"
 
 msgid "Choose how to open file paths when Cmd+clicking in the terminal"
 msgstr "選擇在終端中Cmd+點選檔案路徑時的開啟方式"
+
+msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
+msgstr "選擇新聊天的預設值並自訂模型快捷選項。現有聊天保留其選擇。"
 
 msgid "Choose what to clear from the in-app browser."
 msgstr "選擇要從應用程式內瀏覽器清除的內容。"
@@ -3752,6 +3768,9 @@ msgstr "連線裝置"
 
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "連線一個Google帳戶。它的日曆和電子郵件均為唯讀，觸發器以連線者的身份執行。"
+
+msgid "Connect a host to load Codex models."
+msgstr "連接主機以載入 Codex 模型。"
 
 msgid "Connect a microphone to use dictation"
 msgstr "請連線麥克風以使用語音輸入"
@@ -5118,6 +5137,9 @@ msgstr "降序"
 msgid "Describe the change…"
 msgstr "描述要做的更改…"
 
+msgid "Describe the goal and how to verify it…"
+msgstr "描述目標及其驗證方式…"
+
 msgid "Describe the task for the agent…"
 msgstr "描述交給代理程式的任務…"
 
@@ -5725,6 +5747,9 @@ msgstr "啟用中繼存取…"
 msgid "Enable skill"
 msgstr "啟用技能"
 
+msgid "End goal"
+msgstr "結束目標"
+
 msgid "Engineering deep-dives and launches."
 msgstr "工程深度文章與新功能釋出。"
 
@@ -5979,6 +6004,10 @@ msgstr "外部編輯器"
 
 msgid "extra ${used} of ${limit}"
 msgstr "額外用量${used}/${limit}"
+
+msgctxt "reasoning effort"
+msgid "Extra high"
+msgstr "超高"
 
 msgid "Extra small"
 msgstr "超小"
@@ -6469,6 +6498,9 @@ msgstr "失敗"
 
 msgid "FAQ"
 msgstr "常見問題"
+
+msgid "Fast uses more of your allowance."
+msgstr "Fast 會消耗更多使用額度。"
 
 msgid "Fatal"
 msgstr "致命"
@@ -7070,6 +7102,9 @@ msgstr "前往Slack整合設定"
 msgid "Go to Superset"
 msgstr "前往Superset"
 
+msgid "Goal"
+msgstr "目標"
+
 msgid "Google did not grant lasting access. Remove Superset from your Google account's third-party access and try again."
 msgstr "Google沒有授予持久存取權限。請在你的Google帳戶的第三方存取中移除Superset，然後重試。"
 
@@ -7230,6 +7265,10 @@ msgstr "隱藏會話"
 msgid "Hide unchanged regions"
 msgstr "隱藏未更改區域"
 
+msgid "High"
+msgstr "高"
+
+msgctxt "reasoning effort"
 msgid "High"
 msgstr "高"
 
@@ -7455,6 +7494,12 @@ msgstr "{0}的圖片預覽。用加號和減號縮放，用方向鍵平移，按
 
 msgid "Images"
 msgstr "圖片"
+
+msgid "Implement plan"
+msgstr "執行計畫"
+
+msgid "Implementation plan"
+msgstr "實作計畫"
 
 msgid "Import"
 msgstr "匯入"
@@ -8190,6 +8235,10 @@ msgstr "淺色"
 msgid "Light"
 msgstr "淺色"
 
+msgctxt "reasoning effort"
+msgid "Light"
+msgstr "輕量"
+
 msgid "Light theme"
 msgstr "淺色主題"
 
@@ -8502,6 +8551,10 @@ msgstr "看起來不錯"
 msgid "Low"
 msgstr "低"
 
+msgctxt "reasoning effort"
+msgid "Low"
+msgstr "低"
+
 msgid "Lower memory with many terminals open, smoother git in big repos, and less background CPU."
 msgstr "開很多終端時佔用更低的記憶體，大儲存庫裡的git更順，背景CPU更少。"
 
@@ -8638,6 +8691,10 @@ msgstr "讓快速鍵匹配鍵盤上的標籤（例如⌘Z始終觸發標有「Z�
 msgid "Max"
 msgstr "最大"
 
+msgctxt "reasoning effort"
+msgid "Max"
+msgstr "最高"
+
 msgid "Maximum"
 msgstr "最大"
 
@@ -8675,6 +8732,10 @@ msgstr "常規工作從工單到上線的中位耗時不足一天。"
 msgid "Median time from previous"
 msgstr "距上一步中位耗時"
 
+msgid "Medium"
+msgstr "中"
+
+msgctxt "reasoning effort"
 msgid "Medium"
 msgstr "中"
 
@@ -8795,6 +8856,10 @@ msgstr "2027年中"
 msgid "Mine"
 msgstr "我的"
 
+msgctxt "reasoning effort"
+msgid "Minimal"
+msgstr "最低"
+
 msgid "Minimal reasoning effort"
 msgstr "最少的推理投入"
 
@@ -8847,6 +8912,9 @@ msgstr "模型"
 msgid "Model"
 msgstr "模型"
 
+msgid "Model and reasoning effort"
+msgstr "模型與推理強度"
+
 msgid "Model context usage"
 msgstr "模型上下文用量"
 
@@ -8855,6 +8923,9 @@ msgstr "限定在所選代理程式範圍內的模型選擇器"
 
 msgid "Model Selector"
 msgstr "模型選擇器"
+
+msgid "Model shortcuts"
+msgstr "模型快捷選項"
 
 msgid "Model volume"
 msgstr "模型用量"
@@ -8949,11 +9020,17 @@ msgstr "軟體史的大部分時間"
 msgid "Move {count} to Group"
 msgstr "將{count}個移動到群組"
 
+msgid "Move down"
+msgstr "下移"
+
 msgid "Move to group"
 msgstr "移動到群組"
 
 msgid "Move to Tab"
 msgstr "移動到分頁"
+
+msgid "Move up"
+msgstr "上移"
 
 msgid "MRR"
 msgstr "MRR"
@@ -9113,6 +9190,9 @@ msgstr "新建聊天"
 
 msgid "New cloud workspace"
 msgstr "新建雲端工作區"
+
+msgid "New Codex Chat"
+msgstr "新增 Codex 聊天"
 
 msgid "New environment"
 msgstr "新增環境"
@@ -9398,6 +9478,9 @@ msgstr "沒有主控台輸出"
 
 msgid "No contributors found."
 msgstr "未找到貢獻者。"
+
+msgid "No conversations yet"
+msgstr "尚無對話"
 
 msgid "No credit card required."
 msgstr "無需信用卡。"
@@ -9808,6 +9891,10 @@ msgstr "非品牌"
 msgid "Non-brand clicks"
 msgstr "非品牌點擊"
 
+msgid "None"
+msgstr "無"
+
+msgctxt "reasoning effort"
 msgid "None"
 msgstr "無"
 
@@ -11035,6 +11122,9 @@ msgstr "方案"
 msgid "Plan restored"
 msgstr "方案已恢復"
 
+msgid "Planning"
+msgstr "規劃"
+
 msgid "Planning the tooltip refactor"
 msgstr "正在規劃tooltip重構"
 
@@ -11676,9 +11766,6 @@ msgstr "正在讀取用量…"
 msgid "Reading your local usage…"
 msgstr "正在讀取本地用量…"
 
-msgid "Ready"
-msgstr "就緒"
-
 msgid "Ready for review"
 msgstr "待審查"
 
@@ -11704,6 +11791,9 @@ msgstr "重新套用所有提交"
 msgid "Reasoning"
 msgstr "推理"
 
+msgid "Reasoning effort"
+msgstr "推理強度"
+
 msgid "Reassign"
 msgstr "重新分配"
 
@@ -11715,6 +11805,9 @@ msgstr "變基併合併"
 
 msgid "Recent Activity"
 msgstr "最近動態"
+
+msgid "Recent chats"
+msgstr "最近的聊天"
 
 msgid "Recent invoices"
 msgstr "最近的帳單"
@@ -12996,6 +13089,9 @@ msgstr "看看你最近 30 天的表現在公開排行榜上的位置。僅包�
 msgid "Select"
 msgstr "選擇框"
 
+msgid "Select a default preset"
+msgstr "選擇預設組合"
+
 msgid "Select a project"
 msgstr "請選擇專案"
 
@@ -13791,6 +13887,9 @@ msgstr "部分檔案超過大小上限，未新增。"
 
 msgid "Some models were priced with a fallback rate"
 msgstr "部分模型按備用費率計價"
+
+msgid "Some presets are unavailable on this host."
+msgstr "此主機上的部分預設組合無法使用。"
 
 #. placeholder {0}: error.message
 msgid "Some repositories could not be loaded: {0}"
@@ -14957,6 +15056,9 @@ msgstr "你的組織或團隊的名稱"
 msgid "The network connection changed"
 msgstr "網路連線已變更"
 
+msgid "The next message becomes the goal. Codex will continue until it finishes or needs your input."
+msgstr "下一則訊息將成為目標。Codex 會持續工作，直到完成或需要你提供輸入。"
+
 msgid "The overnight shift"
 msgstr "夜班"
 
@@ -15740,6 +15842,10 @@ msgstr "V2終端面板中使用的排版和游標行為。"
 msgid "Typography used in V2 editors and diff views."
 msgstr "V2編輯器和差異檢視中使用的排版。"
 
+msgctxt "reasoning effort"
+msgid "Ultra"
+msgstr "極高"
+
 msgid "Unable to check for updates. Please check your internet connection."
 msgstr "無法檢查更新。請檢查你的網路連線。"
 
@@ -15778,6 +15884,9 @@ msgstr "無人值守執行8小時以上，在多數常規工單上無需人工�
 
 msgid "Unavailable"
 msgstr "不可用"
+
+msgid "Unavailable on this host"
+msgstr "此主機不支援"
 
 msgid "Unavailable: {unavailableReason}"
 msgstr "不可用：{unavailableReason}"
@@ -16080,6 +16189,9 @@ msgstr "用量"
 
 msgid "Usage is out of date"
 msgstr "用量資料已過期"
+
+msgid "Usage limit reached"
+msgstr "已達使用上限"
 
 msgid "Usage sections"
 msgstr "用量分區"
@@ -16651,6 +16763,9 @@ msgstr "從工單開始工作"
 
 msgid "Work with your agents across your favorite tools"
 msgstr "在你常用的工具裡與代理程式協作"
+
+msgid "Worked for {duration}"
+msgstr "工作了{duration}"
 
 msgid "Worked for 39s"
 msgstr "工作了39秒"

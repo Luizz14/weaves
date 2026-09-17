@@ -16,7 +16,7 @@ function stack(dataDir: string, starts: HarnessFactoryOptions[]) {
 		harnesses: new Map([
 			[
 				"codex",
-				(options) => {
+				(options: HarnessFactoryOptions) => {
 					starts.push(options);
 					const id = `turn-${starts.length}`;
 					return new FakeHarness({
@@ -160,6 +160,9 @@ describe("Codex chat sessions", () => {
 			expect(starts).toHaveLength(2);
 			expect(starts[1]?.resume).toEqual({ harnessSessionId: "codex-thread" });
 			expect(starts[1]?.modeId).toBe("read-only");
+			expect(second.runtime.live.get(created.sessionId)?.state.title).toBe(
+				"hello",
+			);
 			expect(second.resolved).toEqual(["workspace"]);
 			const after = await second.caller.getItems({
 				sessionId: created.sessionId,
@@ -217,4 +220,46 @@ describe("Codex chat sessions", () => {
 			rmSync(dir, { recursive: true, force: true });
 		}
 	});
+});
+
+test("restores Codex options even when the latest message page has no session event", async () => {
+	const dir = mkdtempSync(join(tmpdir(), "codex-config-page-"));
+	const { runtime, caller } = stack(dir, []);
+	try {
+		runtime.journal.open({
+			sessionId: "saved",
+			scopeId: "workspace",
+			harness: "codex",
+		});
+		const execution = {
+			modelId: "gpt-5.6-luna",
+			reasoningEffort: "max",
+			collaborationMode: "plan" as const,
+			fast: true,
+		};
+		runtime.journal.append("saved", {
+			type: "session",
+			session: { harness: "codex", status: "idle", execution },
+		});
+		runtime.journal.append("saved", {
+			type: "item",
+			turnId: "turn",
+			item: {
+				id: "answer",
+				kind: "agent_message",
+				text: "done",
+				startedAtMs: 1,
+			},
+		});
+		const page = await caller.getItems({ sessionId: "saved", limit: 1 });
+		expect(
+			page.ok && page.envelopes.every((e) => e.event.type !== "session"),
+		).toBe(true);
+		expect(
+			(await caller.getSession({ sessionId: "saved" })).state?.execution,
+		).toEqual(execution);
+	} finally {
+		await runtime.dispose();
+		rmSync(dir, { recursive: true, force: true });
+	}
 });

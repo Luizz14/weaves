@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. js-lingui-explicit-id
+msgid "greeting"
+msgstr ""
+
 msgid " and "
 msgstr " en "
 
@@ -1475,6 +1479,9 @@ msgstr "Issue #{0} toevoegen aan werkruimte"
 msgid "Add member"
 msgstr "Lid toevoegen"
 
+msgid "Add model shortcut"
+msgstr "Modelsnelkoppeling toevoegen"
+
 msgid "Add one from the menu in the sidebar to get started."
 msgstr "Voeg er een toe via het menu in de zijbalk om te beginnen."
 
@@ -2573,6 +2580,9 @@ msgstr "Blok"
 msgid "blocked"
 msgstr "geblokkeerd"
 
+msgid "Blocked"
+msgstr "Geblokkeerd"
+
 msgid "Blocked by Branch Rules"
 msgstr "Geblokkeerd door branchregels"
 
@@ -2729,6 +2739,9 @@ msgstr "Browsegegevens gewist"
 
 msgid "Browsing history"
 msgstr "Browsegeschiedenis"
+
+msgid "Budget limit reached"
+msgstr "Budgetlimiet bereikt"
 
 msgid "Bug"
 msgstr "Bug"
@@ -3150,6 +3163,9 @@ msgstr "Kies hoe de weergave Wijzigingen vanuit de bovenbalk wordt geopend"
 
 msgid "Choose how to open file paths when Cmd+clicking in the terminal"
 msgstr "Kies hoe bestandspaden openen bij Cmd+klik in de terminal"
+
+msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
+msgstr "Kies de standaard voor nieuwe chats en pas je modelsnelkoppelingen aan. Bestaande chats behouden hun keuzes."
 
 msgid "Choose what to clear from the in-app browser."
 msgstr "Kies wat je uit de ingebouwde browser wilt wissen."
@@ -3752,6 +3768,9 @@ msgstr "Apparaat koppelen"
 
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "Verbind een Google-account. De agenda's en mailbox worden alleen gelezen, en triggers draaien voor de persoon die de koppeling maakte."
+
+msgid "Connect a host to load Codex models."
+msgstr "Verbind een host om Codex-modellen te laden."
 
 msgid "Connect a microphone to use dictation"
 msgstr "Sluit een microfoon aan om te dicteren"
@@ -5118,6 +5137,9 @@ msgstr "aflopend"
 msgid "Describe the change…"
 msgstr "Beschrijf de wijziging…"
 
+msgid "Describe the goal and how to verify it…"
+msgstr "Beschrijf het doel en hoe het te verifiëren…"
+
 msgid "Describe the task for the agent…"
 msgstr "Beschrijf de taak voor de agent…"
 
@@ -5725,6 +5747,9 @@ msgstr "Relaytoegang inschakelen…"
 msgid "Enable skill"
 msgstr "Skill inschakelen"
 
+msgid "End goal"
+msgstr "Doel beëindigen"
+
 msgid "Engineering deep-dives and launches."
 msgstr "Technische verdiepingen en lanceringen."
 
@@ -5979,6 +6004,10 @@ msgstr "Externe editor"
 
 msgid "extra ${used} of ${limit}"
 msgstr "extra ${used} van ${limit}"
+
+msgctxt "reasoning effort"
+msgid "Extra high"
+msgstr "Extra hoog"
 
 msgid "Extra small"
 msgstr "Extra klein"
@@ -6469,6 +6498,9 @@ msgstr "Mislukt"
 
 msgid "FAQ"
 msgstr "FAQ"
+
+msgid "Fast uses more of your allowance."
+msgstr "Fast verbruikt meer van je quotum."
 
 msgid "Fatal"
 msgstr "Fatal"
@@ -7070,6 +7102,9 @@ msgstr "Naar de instellingen van de Slack-integratie"
 msgid "Go to Superset"
 msgstr "Naar Superset"
 
+msgid "Goal"
+msgstr "Doel"
+
 msgid "Google did not grant lasting access. Remove Superset from your Google account's third-party access and try again."
 msgstr "Google heeft geen blijvende toegang verleend. Verwijder Superset uit de externe toegang van je Google-account en probeer het opnieuw."
 
@@ -7230,6 +7265,10 @@ msgstr "Sessies verbergen"
 msgid "Hide unchanged regions"
 msgstr "Ongewijzigde stukken verbergen"
 
+msgid "High"
+msgstr "Hoog"
+
+msgctxt "reasoning effort"
 msgid "High"
 msgstr "Hoog"
 
@@ -7455,6 +7494,12 @@ msgstr "Voorbeeld van afbeelding {0}. Zoom met plus en min, verschuif met de pij
 
 msgid "Images"
 msgstr "Afbeeldingen"
+
+msgid "Implement plan"
+msgstr "Plan uitvoeren"
+
+msgid "Implementation plan"
+msgstr "Implementatieplan"
 
 msgid "Import"
 msgstr "Importeren"
@@ -8190,6 +8235,10 @@ msgstr "licht"
 msgid "Light"
 msgstr "Licht"
 
+msgctxt "reasoning effort"
+msgid "Light"
+msgstr "Licht"
+
 msgid "Light theme"
 msgstr "Licht thema"
 
@@ -8502,6 +8551,10 @@ msgstr "Ziet er goed uit"
 msgid "Low"
 msgstr "Laag"
 
+msgctxt "reasoning effort"
+msgid "Low"
+msgstr "Laag"
+
 msgid "Lower memory with many terminals open, smoother git in big repos, and less background CPU."
 msgstr "Minder geheugen met veel terminals open, soepeler git in grote repo's en minder CPU op de achtergrond."
 
@@ -8638,6 +8691,10 @@ msgstr "Koppel sneltoetsen aan de opschriften op je toetsenbord (bijv. ⌘Z werk
 msgid "Max"
 msgstr "Max"
 
+msgctxt "reasoning effort"
+msgid "Max"
+msgstr "Max"
+
 msgid "Maximum"
 msgstr "Maximaal"
 
@@ -8675,6 +8732,10 @@ msgstr "Mediane tijd van ticket tot productie onder één dag voor routinewerk."
 msgid "Median time from previous"
 msgstr "Mediane tijd sinds vorige"
 
+msgid "Medium"
+msgstr "Gemiddeld"
+
+msgctxt "reasoning effort"
 msgid "Medium"
 msgstr "Gemiddeld"
 
@@ -8795,6 +8856,10 @@ msgstr "Medio 2027"
 msgid "Mine"
 msgstr "Mijn"
 
+msgctxt "reasoning effort"
+msgid "Minimal"
+msgstr "Minimaal"
+
 msgid "Minimal reasoning effort"
 msgstr "Minimale redeneerinspanning"
 
@@ -8847,6 +8912,9 @@ msgstr "model"
 msgid "Model"
 msgstr "Model"
 
+msgid "Model and reasoning effort"
+msgstr "Model en redeneerinspanning"
+
 msgid "Model context usage"
 msgstr "Contextgebruik van model"
 
@@ -8855,6 +8923,9 @@ msgstr "Modelkiezer beperkt tot de gekozen agent"
 
 msgid "Model Selector"
 msgstr "Modelkiezer"
+
+msgid "Model shortcuts"
+msgstr "Modelsnelkoppelingen"
 
 msgid "Model volume"
 msgstr "Modelvolume"
@@ -8949,11 +9020,17 @@ msgstr "Het grootste deel van de softwaregeschiedenis"
 msgid "Move {count} to Group"
 msgstr "{count} naar groep verplaatsen"
 
+msgid "Move down"
+msgstr "Omlaag verplaatsen"
+
 msgid "Move to group"
 msgstr "Naar groep verplaatsen"
 
 msgid "Move to Tab"
 msgstr "Verplaatsen naar tabblad"
+
+msgid "Move up"
+msgstr "Omhoog verplaatsen"
 
 msgid "MRR"
 msgstr "MRR"
@@ -9113,6 +9190,9 @@ msgstr "Nieuwe chat"
 
 msgid "New cloud workspace"
 msgstr "Nieuwe cloudwerkruimte"
+
+msgid "New Codex Chat"
+msgstr "Nieuwe Codex-chat"
 
 msgid "New environment"
 msgstr "Nieuwe omgeving"
@@ -9398,6 +9478,9 @@ msgstr "Geen console-uitvoer"
 
 msgid "No contributors found."
 msgstr "Geen contributors gevonden."
+
+msgid "No conversations yet"
+msgstr "Nog geen gesprekken"
 
 msgid "No credit card required."
 msgstr "Geen creditcard nodig."
@@ -9808,6 +9891,10 @@ msgstr "niet-merk"
 msgid "Non-brand clicks"
 msgstr "Niet-merkklikken"
 
+msgid "None"
+msgstr "Geen"
+
+msgctxt "reasoning effort"
 msgid "None"
 msgstr "Geen"
 
@@ -11035,6 +11122,9 @@ msgstr "Plan"
 msgid "Plan restored"
 msgstr "Plan hersteld"
 
+msgid "Planning"
+msgstr "Planning"
+
 msgid "Planning the tooltip refactor"
 msgstr "De tooltip-refactor plannen"
 
@@ -11676,9 +11766,6 @@ msgstr "Gebruik wordt gelezen…"
 msgid "Reading your local usage…"
 msgstr "Je lokale gebruik wordt gelezen…"
 
-msgid "Ready"
-msgstr "Gereed"
-
 msgid "Ready for review"
 msgstr "Klaar voor review"
 
@@ -11704,6 +11791,9 @@ msgstr "Alle commits opnieuw toepassen"
 msgid "Reasoning"
 msgstr "Redeneren"
 
+msgid "Reasoning effort"
+msgstr "Redeneerinspanning"
+
 msgid "Reassign"
 msgstr "Opnieuw toewijzen"
 
@@ -11715,6 +11805,9 @@ msgstr "Rebasen en mergen"
 
 msgid "Recent Activity"
 msgstr "Recente activiteit"
+
+msgid "Recent chats"
+msgstr "Recente chats"
 
 msgid "Recent invoices"
 msgstr "Recente facturen"
@@ -12996,6 +13089,9 @@ msgstr "Bekijk waar je laatste 30 dagen staan op de publieke ranglijst. Alleen t
 msgid "Select"
 msgstr "Select"
 
+msgid "Select a default preset"
+msgstr "Selecteer een standaardvoorinstelling"
+
 msgid "Select a project"
 msgstr "Kies een project"
 
@@ -13791,6 +13887,9 @@ msgstr "Sommige bestanden zijn groter dan de maximale grootte en zijn niet toege
 
 msgid "Some models were priced with a fallback rate"
 msgstr "Voor sommige modellen is een terugvaltarief gebruikt"
+
+msgid "Some presets are unavailable on this host."
+msgstr "Sommige voorinstellingen zijn niet beschikbaar op deze host."
 
 #. placeholder {0}: error.message
 msgid "Some repositories could not be loaded: {0}"
@@ -14957,6 +15056,9 @@ msgstr "De naam van je organisatie of team"
 msgid "The network connection changed"
 msgstr "De netwerkverbinding is gewijzigd"
 
+msgid "The next message becomes the goal. Codex will continue until it finishes or needs your input."
+msgstr "Het volgende bericht wordt het doel. Codex gaat door totdat het klaar is of je invoer nodig heeft."
+
 msgid "The overnight shift"
 msgstr "De nachtploeg"
 
@@ -15740,6 +15842,10 @@ msgstr "Typografie en cursorgedrag in V2-terminalpanelen."
 msgid "Typography used in V2 editors and diff views."
 msgstr "Typografie in V2-editors en diff-weergaven."
 
+msgctxt "reasoning effort"
+msgid "Ultra"
+msgstr "Ultra"
+
 msgid "Unable to check for updates. Please check your internet connection."
 msgstr "Kan niet op updates controleren. Controleer je internetverbinding."
 
@@ -15778,6 +15884,9 @@ msgstr "Onbewaakte runs van 8 uur of langer slagen bij een meerderheid van de ro
 
 msgid "Unavailable"
 msgstr "Niet beschikbaar"
+
+msgid "Unavailable on this host"
+msgstr "Niet beschikbaar op deze host"
 
 msgid "Unavailable: {unavailableReason}"
 msgstr "Niet beschikbaar: {unavailableReason}"
@@ -16080,6 +16189,9 @@ msgstr "Gebruik"
 
 msgid "Usage is out of date"
 msgstr "De gebruiksgegevens zijn verouderd"
+
+msgid "Usage limit reached"
+msgstr "Gebruikslimiet bereikt"
 
 msgid "Usage sections"
 msgstr "Onderdelen van gebruik"
@@ -16651,6 +16763,9 @@ msgstr "Werken vanuit tickets"
 
 msgid "Work with your agents across your favorite tools"
 msgstr "Werk met je agents in je favoriete tools"
+
+msgid "Worked for {duration}"
+msgstr "{duration} gewerkt"
 
 msgid "Worked for 39s"
 msgstr "39s gewerkt"

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { codexExecutionSchema, codexGoalSchema } from "./codex";
 import { cursorSchema } from "./cursor";
 import { itemSchema } from "./items";
 
@@ -23,8 +24,12 @@ export const sessionStateSchema = z.looseObject({
 	harness: z.string().min(1),
 	harnessSessionId: z.string().min(1).optional(),
 	title: z.string().optional(),
+	execution: codexExecutionSchema.optional(),
+	goal: codexGoalSchema.nullable().optional(),
 	modeId: z.string().optional(),
 	modelId: z.string().optional(),
+	reasoningEffort: z.string().optional(),
+	serviceTier: z.string().optional(),
 	availableModes: z.array(selectOptionSchema).optional(),
 	availableModels: z.array(selectOptionSchema).optional(),
 });

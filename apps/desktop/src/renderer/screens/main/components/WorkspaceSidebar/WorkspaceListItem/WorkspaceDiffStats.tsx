@@ -1,4 +1,5 @@
 import { cn } from "@superset/ui/utils";
+import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 
 interface WorkspaceDiffStatsProps {
 	additions: number;
@@ -19,8 +20,12 @@ export function WorkspaceDiffStats({
 			)}
 		>
 			<div className="flex items-center gap-1.5 leading-none">
-				<span className="text-emerald-500/90">+{additions}</span>
-				<span className="text-red-400/90">−{deletions}</span>
+				<span className="text-emerald-500/90">
+					+<AnimatedNumber value={additions} />
+				</span>
+				<span className="text-red-400/90">
+					−<AnimatedNumber value={deletions} />
+				</span>
 			</div>
 		</div>
 	);

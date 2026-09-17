@@ -143,6 +143,7 @@ function QuestionOptions({
 
 			{question.allowCustom ? (
 				<Input
+					type={question.customInputType ?? "text"}
 					value={custom}
 					disabled={disabled}
 					placeholder={

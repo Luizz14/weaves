@@ -13,6 +13,7 @@ export type SettingsSection =
 	| "browser"
 	| "git"
 	| "agents"
+	| "codexChat"
 	| "terminal"
 	| "links"
 	| "experimental"

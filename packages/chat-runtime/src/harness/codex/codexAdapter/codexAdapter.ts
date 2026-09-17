@@ -8,13 +8,25 @@ import type {
 	Turn,
 	UserContent,
 } from "@superset/chat/protocol";
-import { isKnownItem } from "@superset/chat/protocol";
+import {
+	type CodexExecution,
+	type CodexGoal,
+	type CodexGoalAction,
+	type CodexModel,
+	codexGoalSchema,
+	isKnownItem,
+	type UserInputAnswers,
+	type UserInputRequest,
+	userInputRequestSchema,
+} from "@superset/chat/protocol";
+import { z } from "zod";
 import { EventQueue } from "../../eventQueue";
 import type {
 	AdapterEvent,
 	HarnessAdapter,
 	HarnessStartOptions,
 } from "../../types";
+import { readCodexModels, validateCodexExecution } from "../catalog";
 import { mapThreadItem } from "../mapThreadItem";
 import type {
 	CodexNotification,
@@ -23,7 +35,11 @@ import type {
 	CodexTransportHandlers,
 	SpawnCodexOptions,
 } from "../rpcClient";
-import { CodexRpcClient, spawnCodexTransport } from "../rpcClient";
+import {
+	CodexRpcClient,
+	CodexRpcError,
+	spawnCodexTransport,
+} from "../rpcClient";
 import type { CodexRequestId, CodexThreadItem, CodexTurn } from "../wire";
 import {
 	commandApprovalParamsSchema,
@@ -129,12 +145,27 @@ export class CodexAdapter implements HarnessAdapter {
 	private readonly settledTurns = new Set<string>();
 	private pendingTurnStart = false;
 	private cancelRequested = false;
-	private readonly queuedInput: unknown[][] = [];
+	private readonly queuedInput: {
+		input: unknown[];
+		execution?: CodexExecution;
+	}[] = [];
+	private execution: CodexExecution | undefined;
+	private goal: CodexGoal | null = null;
+	private models: CodexModel[] | null = null;
+	private ready: Promise<void> = Promise.resolve();
+	private startupError: unknown;
+	private hasHistory = false;
+	private goalActivationGeneration = 0;
+	private readonly questions = new Map<
+		string,
+		{ requestId: CodexRequestId; turnId: string; item: UserInputRequest }
+	>();
 	private client: CodexRpcClient | null = null;
 	private threadId: string | null = null;
 	private cwd = process.cwd();
 	private modeId: string = DEFAULT_CODEX_MODE;
 	private modelId: string | undefined;
+	private nativeReasoningEffort: string | undefined;
 	private currentTurn: Turn | null = null;
 	private usage: Turn["usage"];
 	private disposed = false;
@@ -143,19 +174,21 @@ export class CodexAdapter implements HarnessAdapter {
 
 	start(startOptions: HarnessStartOptions): AsyncIterable<AdapterEvent> {
 		this.cwd = startOptions.cwd;
+		this.hasHistory = Boolean(startOptions.resume);
 		this.modeId = startOptions.modeId ?? DEFAULT_CODEX_MODE;
 		this.modelId = startOptions.modelId;
-		void this.bootstrap(startOptions);
+		this.execution = startOptions.execution;
+		this.ready = this.bootstrap(startOptions);
 		return this.queue.iterable();
 	}
 
-	prompt(content: UserContent[]): void {
+	prompt(content: UserContent[], execution?: CodexExecution): void {
 		const input = this.toCodexInput(content);
 		if (!this.threadId || !this.client) {
-			this.queuedInput.push(input);
+			this.queuedInput.push({ input, execution: execution ?? this.execution });
 			return;
 		}
-		void this.startTurn(input);
+		void this.startTurn(input, execution ?? this.execution);
 	}
 
 	cancelTurn(): void {
@@ -193,14 +226,192 @@ export class CodexAdapter implements HarnessAdapter {
 		);
 	}
 
-	setMode(modeId: string): void {
+	setMode(modeId: string): void | Promise<void> {
+		if (this.goal?.status === "active" && this.client && this.threadId) {
+			return this.client
+				.request("thread/resume", {
+					threadId: this.threadId,
+					cwd: this.cwd,
+					...codexTurnPolicy(modeId),
+				})
+				.then(() => {
+					this.modeId = modeId;
+					this.emitSession({ modeId });
+				});
+		}
 		this.modeId = modeId;
 		this.emitSession({ modeId });
 	}
 
+	private async requireReady(): Promise<CodexRpcClient> {
+		await this.ready;
+		if (this.startupError) throw this.startupError;
+		if (!this.client || !this.threadId || this.disposed)
+			throw new Error("Codex session is unavailable");
+		return this.client;
+	}
+	private nativeSettings(execution: CodexExecution) {
+		return {
+			model: execution.modelId,
+			serviceTier: execution.fast ? "priority" : "default",
+			config: {
+				model_reasoning_effort: execution.reasoningEffort,
+			},
+		};
+	}
+	async configureCodex(execution: CodexExecution): Promise<CodexExecution> {
+		const client = await this.requireReady();
+		this.models ??= await readCodexModels(client);
+		const requested =
+			execution.reasoningEffort === "default"
+				? {
+						...execution,
+						reasoningEffort:
+							(execution.modelId === this.modelId
+								? this.nativeReasoningEffort
+								: undefined) ??
+							this.models.find((model) => model.model === execution.modelId)
+								?.defaultReasoningEffort ??
+							"",
+					}
+				: execution;
+		const validated = validateCodexExecution(requested, this.models);
+		if (
+			validated.collaborationMode === "plan" &&
+			this.goal?.status === "active"
+		)
+			await this.updateGoal({ action: "pause" });
+		if (!this.hasHistory && !this.currentTurn && !this.pendingTurnStart) {
+			const oldThreadId = this.threadId;
+			const started = threadStartResponseSchema.parse(
+				await client.request("thread/start", {
+					cwd: this.cwd,
+					...codexTurnPolicy(this.modeId),
+					...this.nativeSettings(validated),
+				}),
+			);
+			this.threadId = started.thread.id;
+			this.emitSession({ harnessSessionId: this.threadId });
+			await client.request("thread/unsubscribe", { threadId: oldThreadId });
+		} else {
+			await client.request("thread/resume", {
+				threadId: this.threadId,
+				cwd: this.cwd,
+				...codexTurnPolicy(this.modeId),
+				...this.nativeSettings(validated),
+			});
+		}
+		this.execution = validated;
+		this.nativeReasoningEffort = validated.reasoningEffort;
+		this.modelId = validated.modelId;
+		this.emitSession({ execution: validated, modelId: validated.modelId });
+		return validated;
+	}
+	async updateGoal(change: CodexGoalAction): Promise<void> {
+		const generation = ++this.goalActivationGeneration;
+		const client = await this.requireReady();
+		if (change.action === "resume" && this.goal?.status === "complete")
+			throw new Error("This goal is already complete");
+		if (change.action === "set" || change.action === "resume") {
+			if (!this.execution)
+				throw new Error("Configure a Codex model before starting a goal");
+			if (this.execution.collaborationMode === "plan")
+				await this.configureCodex({
+					...this.execution,
+					collaborationMode: "default",
+				});
+			const paused = await client.request("thread/goal/set", {
+				threadId: this.threadId,
+				status: "paused",
+				...(change.action === "set" ? { objective: change.objective } : {}),
+			});
+			if (generation !== this.goalActivationGeneration || this.disposed) return;
+			this.goal = z
+				.object({ goal: codexGoalSchema.nullable() })
+				.parse(paused).goal;
+			this.emitSession({ goal: this.goal });
+			this.cancelTurn();
+			const deadline = Date.now() + 10000;
+			while (this.currentTurn?.status === "running") {
+				if (this.disposed || Date.now() > deadline)
+					throw new Error(
+						"Codex is still stopping. Retry when the turn finishes.",
+					);
+				await new Promise((resolve) => setTimeout(resolve, 25));
+			}
+			if (generation !== this.goalActivationGeneration || this.disposed) return;
+			const text =
+				change.action === "set"
+					? change.objective
+					: `Continue working toward the existing goal: ${this.goal?.objective ?? ""}`;
+			const started = await this.startTurn(
+				this.toCodexInput([{ type: "text", text }]),
+				{ ...this.execution, collaborationMode: "default" },
+			);
+			if (!started) throw new Error("Could not start the goal turn");
+			if (generation !== this.goalActivationGeneration || this.disposed) return;
+			const response = await client.request("thread/goal/set", {
+				threadId: this.threadId,
+				status: "active",
+			});
+			if (generation !== this.goalActivationGeneration || this.disposed) return;
+			this.goal = z
+				.object({ goal: codexGoalSchema.nullable() })
+				.parse(response).goal;
+		} else {
+			const response = await client.request(
+				change.action === "clear" ? "thread/goal/clear" : "thread/goal/set",
+				{
+					threadId: this.threadId,
+					...(change.action === "pause" ? { status: "paused" } : {}),
+				},
+			);
+			this.goal =
+				change.action === "clear"
+					? null
+					: z.object({ goal: codexGoalSchema.nullable() }).parse(response).goal;
+			this.cancelTurn();
+		}
+		this.emitSession({ goal: this.goal });
+	}
+
+	respondToUserInput(requestId: string, answers: UserInputAnswers): void {
+		const pending = this.questions.get(requestId);
+		if (!pending || !this.client) throw new Error("This question has expired");
+		for (const question of pending.item.questions) {
+			const values = answers[question.id];
+			if (!values?.length || values.some((value) => !value.trim()))
+				throw new Error("Answer every question");
+			if (
+				question.options &&
+				!question.isOther &&
+				values.some(
+					(value) =>
+						!question.options?.some((option) => option.label === value),
+				)
+			)
+				throw new Error("Choose one of the offered answers");
+		}
+		this.client.respond(pending.requestId, {
+			answers: Object.fromEntries(
+				pending.item.questions.map((question) => [
+					question.id,
+					{ answers: answers[question.id] },
+				]),
+			),
+		});
+		this.questions.delete(requestId);
+		this.emitItem(
+			{ ...pending.item, status: "answered", completedAtMs: this.now() },
+			pending.turnId,
+		);
+	}
+
 	async dispose(): Promise<void> {
 		if (this.disposed) return;
+
 		this.disposed = true;
+		this.goalActivationGeneration += 1;
 		this.stalePendingApprovals();
 		await this.client?.close();
 		this.queue.close();
@@ -246,7 +457,41 @@ export class CodexAdapter implements HarnessAdapter {
 				return;
 			}
 
-			const policy = codexTurnPolicy(this.modeId);
+			if (startOptions.resume) {
+				try {
+					const response = await client.request("thread/goal/get", {
+						threadId: startOptions.resume.harnessSessionId,
+					});
+					this.goal = z
+						.object({ goal: codexGoalSchema.nullable() })
+						.parse(response).goal;
+					if (this.goal?.status === "active") {
+						const paused = await client.request("thread/goal/set", {
+							threadId: startOptions.resume.harnessSessionId,
+							status: "paused",
+						});
+						this.goal = z
+							.object({ goal: codexGoalSchema.nullable() })
+							.parse(paused).goal;
+					}
+				} catch (error) {
+					const unsupported =
+						error instanceof CodexRpcError &&
+						(error.rpcError.code === -32601 ||
+							/unknown (?:variant|method)|method not found/i.test(
+								error.rpcError.message,
+							));
+					if (!unsupported || startOptions.goal || this.goal) throw error;
+				}
+			}
+			if (this.execution) {
+				this.models = await readCodexModels(client);
+				validateCodexExecution(this.execution, this.models);
+			}
+			const policy = {
+				...codexTurnPolicy(this.modeId),
+				...(this.execution ? this.nativeSettings(this.execution) : {}),
+			};
 			const response = startOptions.resume
 				? await client.request("thread/resume", {
 						threadId: startOptions.resume.harnessSessionId,
@@ -256,45 +501,84 @@ export class CodexAdapter implements HarnessAdapter {
 				: await client.request("thread/start", {
 						cwd: startOptions.cwd,
 						...policy,
-						...(this.modelId ? { model: this.modelId } : {}),
+						...(this.execution
+							? {}
+							: this.modelId
+								? { model: this.modelId }
+								: {}),
 					});
 			const thread = threadStartResponseSchema.parse(response);
 			this.threadId = thread.thread.id;
 			this.modelId = thread.model ?? this.modelId;
+			this.nativeReasoningEffort =
+				thread.reasoningEffort ?? this.execution?.reasoningEffort;
 
 			this.emitSession({
 				status: "idle",
 				harnessSessionId: this.threadId,
 				modeId: this.modeId,
 				availableModes: [...CODEX_MODES],
+				...(thread.reasoningEffort
+					? { reasoningEffort: thread.reasoningEffort }
+					: {}),
+				...(thread.serviceTier ? { serviceTier: thread.serviceTier } : {}),
+				...(this.execution ? { execution: this.execution } : {}),
+				...(startOptions.resume ? { goal: this.goal } : {}),
 				...(this.modelId ? { modelId: this.modelId } : {}),
 			});
 
 			const queued = this.queuedInput.splice(0, this.queuedInput.length);
-			for (const input of queued) await this.startTurn(input);
+			for (const entry of queued)
+				await this.startTurn(entry.input, entry.execution);
 		} catch (error) {
+			this.startupError = error;
 			this.emitNotice("error", (error as Error).message);
 			this.emitSession({ status: "dead" });
 			this.queue.close();
 		}
 	}
 
-	private async startTurn(input: unknown[]): Promise<void> {
+	private async startTurn(
+		input: unknown[],
+		execution?: CodexExecution,
+	): Promise<boolean> {
 		const client = this.client;
-		if (!client || !this.threadId) return;
+		if (!client || !this.threadId) return false;
+		this.hasHistory = true;
 		this.pendingTurnStart = true;
 		try {
+			if (execution) {
+				this.models ??= await readCodexModels(client);
+				validateCodexExecution(execution, this.models);
+			}
 			const response = await client.request("turn/start", {
 				threadId: this.threadId,
 				input,
 				approvalPolicy: codexTurnPolicy(this.modeId).approvalPolicy,
 				sandboxPolicy: codexSandboxPolicy(this.modeId, this.cwd),
-				...(this.modelId ? { model: this.modelId } : {}),
+				...(execution
+					? {
+							model: execution.modelId,
+							effort: execution.reasoningEffort,
+							serviceTier: execution.fast ? "priority" : "default",
+							collaborationMode: {
+								mode: execution.collaborationMode,
+								settings: {
+									model: execution.modelId,
+									reasoning_effort: execution.reasoningEffort,
+									developer_instructions: null,
+								},
+							},
+						}
+					: this.modelId
+						? { model: this.modelId }
+						: {}),
 			});
 			const parsed = turnLifecycleSchema
 				.partial({ threadId: true })
 				.safeParse(response);
 			if (parsed.success && parsed.data.turn) this.emitTurn(parsed.data.turn);
+			return !parsed.success || parsed.data.turn?.status !== "failed";
 		} catch (error) {
 			this.emitNotice("error", (error as Error).message);
 			this.emitTurnState({
@@ -304,11 +588,29 @@ export class CodexAdapter implements HarnessAdapter {
 				startedAtMs: this.now(),
 				completedAtMs: this.now(),
 			});
+			return false;
 		}
 	}
 
 	private handleNotification({ method, params }: CodexNotification): void {
+		if (
+			this.threadId &&
+			params &&
+			typeof params === "object" &&
+			"threadId" in params &&
+			typeof params.threadId === "string" &&
+			params.threadId !== this.threadId
+		)
+			return;
 		if (IGNORED_METHODS.has(method)) return;
+		if (method === "thread/goal/updated" || method === "thread/goal/cleared") {
+			this.goal =
+				method === "thread/goal/cleared"
+					? null
+					: z.object({ goal: codexGoalSchema }).parse(params).goal;
+			this.emitSession({ goal: this.goal });
+			return;
+		}
 
 		if (method === "item/started" || method === "item/completed") {
 			this.handleItemLifecycle(method, params);
@@ -449,6 +751,32 @@ export class CodexAdapter implements HarnessAdapter {
 	private handleServerRequest(request: CodexServerRequest): void {
 		const client = this.client;
 		if (!client) return;
+		if (request.method === "item/tool/requestUserInput") {
+			const parsed = z
+				.object({
+					turnId: z.string(),
+					itemId: z.string(),
+					questions: userInputRequestSchema.shape.questions,
+					isBlocking: z.boolean().default(true),
+				})
+				.parse(request.params);
+			const item: UserInputRequest = {
+				id: `question:${parsed.turnId}:${parsed.itemId}:${request.id}`,
+				kind: "user_input_request",
+				status: "pending",
+				startedAtMs: this.now(),
+				questions: parsed.questions,
+				isBlocking: parsed.isBlocking,
+			};
+			this.questions.set(item.id, {
+				requestId: request.id,
+				turnId: parsed.turnId,
+				item,
+			});
+			this.emitItem(item, parsed.turnId);
+			if (item.isBlocking) this.emitSession({ status: "awaiting_input" });
+			return;
+		}
 		if (!APPROVAL_METHODS.has(request.method)) {
 			client.respondWithError(
 				request.id,
@@ -558,7 +886,7 @@ export class CodexAdapter implements HarnessAdapter {
 			const toolCall = asToolCall(item);
 			this.emitItem(toolCall ? { ...toolCall, status } : item, pending.turnId);
 		}
-		this.stalePendingApprovals();
+		this.stalePendingApprovals(turn.status !== "completed");
 	}
 
 	private withAccumulatedText(
@@ -575,7 +903,15 @@ export class CodexAdapter implements HarnessAdapter {
 		return codexItem;
 	}
 
-	private stalePendingApprovals(): void {
+	private stalePendingApprovals(expireNonBlocking = true): void {
+		for (const [id, pending] of this.questions) {
+			if (!expireNonBlocking && !pending.item.isBlocking) continue;
+			this.questions.delete(id);
+			this.emitItem(
+				{ ...pending.item, status: "stale", completedAtMs: this.now() },
+				pending.turnId,
+			);
+		}
 		for (const [approvalId, pending] of [...this.pendingApprovals]) {
 			this.pendingApprovals.delete(approvalId);
 			this.emitItem(
@@ -586,6 +922,11 @@ export class CodexAdapter implements HarnessAdapter {
 	}
 
 	private staleApprovalForRequest(requestId: CodexRequestId): void {
+		for (const [id, pending] of this.questions)
+			if (pending.requestId === requestId) {
+				this.questions.delete(id);
+				this.emitItem({ ...pending.item, status: "stale" }, pending.turnId);
+			}
 		for (const [approvalId, pending] of [...this.pendingApprovals]) {
 			if (pending.requestId !== requestId) continue;
 			this.pendingApprovals.delete(approvalId);
@@ -614,7 +955,10 @@ export class CodexAdapter implements HarnessAdapter {
 			case "systemError":
 				return "dead";
 			case "active":
-				return this.pendingApprovals.size > 0 ? "awaiting_input" : "running";
+				return this.pendingApprovals.size > 0 ||
+					[...this.questions.values()].some((entry) => entry.item.isBlocking)
+					? "awaiting_input"
+					: "running";
 			default:
 				return "idle";
 		}

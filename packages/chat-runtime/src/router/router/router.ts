@@ -1,15 +1,19 @@
 import {
 	cancelTurnInputSchema,
+	configureCodexInputSchema,
 	createSessionInputSchema,
 	getItemsInputSchema,
 	getSessionInputSchema,
 	listSessionsInputSchema,
 	promptInputSchema,
 	respondToApprovalInputSchema,
+	respondToUserInputSchema,
 	setModeInputSchema,
+	updateCodexGoalInputSchema,
 } from "@superset/chat/protocol";
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { initTRPC, TRPCError } from "@trpc/server";
+import { listCodexModels } from "../../harness/codex/catalog";
 import type { ChatRuntime } from "../../index";
 
 import { createEnsureCodexSession } from "./ensureCodexSession";
@@ -63,6 +67,22 @@ export function createChatRouter(
 	}
 
 	return t.router({
+		listCodexModels: t.procedure.query(() => listCodexModels()),
+		configureCodex: t.procedure
+			.input(configureCodexInputSchema)
+			.mutation(async ({ input }) => {
+				await ensureCodexSession(input.sessionId);
+				return runtime.commands.configureCodex(input);
+			}),
+		updateCodexGoal: t.procedure
+			.input(updateCodexGoalInputSchema)
+			.mutation(async ({ input }) => {
+				await ensureCodexSession(input.sessionId);
+				return runtime.commands.updateCodexGoal(input);
+			}),
+		respondToUserInput: t.procedure
+			.input(respondToUserInputSchema)
+			.mutation(({ input }) => runtime.commands.respondToUserInput(input)),
 		createSession: t.procedure
 			.input(createSessionInputSchema)
 			.mutation(async ({ input }) => {

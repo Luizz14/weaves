@@ -2,6 +2,11 @@ import type {
 	ChatRouterInputs,
 	ChatRouterOutputs,
 } from "@superset/chat-runtime";
+import type {
+	CodexExecution,
+	CodexGoalAction,
+	UserInputAnswers,
+} from "../../protocol/codex";
 import type { Cursor } from "../../protocol/cursor";
 import type { DeltaChannel, Envelope } from "../../protocol/envelope";
 import type { Decision, UserContent } from "../../protocol/items";
@@ -13,11 +18,19 @@ import type {
 } from "../subscribeToSession";
 import { buildStreamUrl, subscribeToSession } from "../subscribeToSession";
 
-export type ChatTransport = {
+type CodexProcedure =
+	| "listCodexModels"
+	| "configureCodex"
+	| "updateCodexGoal"
+	| "respondToUserInput";
+type FullTransport = {
 	[Procedure in keyof ChatRouterInputs & keyof ChatRouterOutputs]: (
 		input: ChatRouterInputs[Procedure],
 	) => Promise<ChatRouterOutputs[Procedure]>;
 };
+
+export type ChatTransport = Omit<FullTransport, CodexProcedure> &
+	Partial<Pick<FullTransport, CodexProcedure>>;
 
 export type GetItemsPage = {
 	before?: Cursor;
@@ -28,6 +41,7 @@ export type PromptOptions = {
 	content: UserContent[];
 	clientId: string;
 	commandId?: string;
+	execution?: CodexExecution;
 };
 
 export type SessionSubscribeOptions = {
@@ -51,6 +65,12 @@ export type SessionClientOptions = {
 
 export type SessionClient = {
 	sessionId: string;
+	configureCodex?(execution: CodexExecution): Promise<CodexExecution>;
+	updateGoal?(change: CodexGoalAction, commandId?: string): Promise<void>;
+	respondToUserInput?(
+		requestId: string,
+		answers: UserInputAnswers,
+	): Promise<void>;
 	getSession(): Promise<ChatRouterOutputs["getSession"]>;
 	getItems(page?: GetItemsPage): Promise<ChatRouterOutputs["getItems"]>;
 	prompt(options: PromptOptions): Promise<ChatRouterOutputs["prompt"]>;
@@ -71,6 +91,34 @@ export function createSessionClient(
 	return {
 		sessionId,
 
+		configureCodex: async (execution) => {
+			if (!options.transport.configureCodex)
+				throw new Error("Update the host to configure Codex");
+			return await options.transport.configureCodex({
+				commandId: mintId(),
+				sessionId,
+				execution,
+			});
+		},
+		updateGoal: async (change, commandId) => {
+			if (!options.transport.updateCodexGoal)
+				throw new Error("Update the host to use goals");
+			await options.transport.updateCodexGoal({
+				commandId: commandId ?? mintId(),
+				sessionId,
+				change,
+			});
+		},
+		respondToUserInput: async (requestId, answers) => {
+			if (!options.transport.respondToUserInput)
+				throw new Error("Update the host to answer questions");
+			await options.transport.respondToUserInput({
+				commandId: mintId(),
+				sessionId,
+				requestId,
+				answers,
+			});
+		},
 		getSession: () => options.transport.getSession({ sessionId }),
 
 		getItems: (page = {}) =>
@@ -86,6 +134,7 @@ export function createSessionClient(
 				sessionId,
 				clientId: promptOptions.clientId,
 				content: promptOptions.content,
+				execution: promptOptions.execution,
 			}),
 
 		cancelTurn: async (turnId) => {
