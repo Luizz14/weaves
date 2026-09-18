@@ -5,6 +5,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 ENV_FILE="$ROOT_DIR/.env"
 ENV_BACKUP=""
+APP_BUNDLE="$ROOT_DIR/apps/desktop/release/mac-arm64/Superset.app"
+APPLICATIONS_APP="/Applications/Superset.app"
 
 restore_env() {
   if [ -n "$ENV_BACKUP" ] && [ -f "$ENV_BACKUP" ]; then
@@ -30,4 +32,12 @@ RELAY_URL=https://relay.superset.sh \
 REALTIME_URL=https://realtime.superset.sh \
 bun run build --force
 
-echo "Build criada em $ROOT_DIR/apps/desktop/release"
+if [ ! -d "$APP_BUNDLE" ]; then
+  echo "Bundle não encontrado em $APP_BUNDLE" >&2
+  exit 1
+fi
+
+rm -rf "$APPLICATIONS_APP"
+ditto "$APP_BUNDLE" "$APPLICATIONS_APP"
+
+echo "Build criada e instalada em $APPLICATIONS_APP"
