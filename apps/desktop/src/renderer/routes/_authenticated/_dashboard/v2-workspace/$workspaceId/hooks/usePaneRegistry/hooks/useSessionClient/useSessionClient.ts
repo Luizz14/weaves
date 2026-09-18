@@ -4,15 +4,15 @@ import type {
 	StreamSocket,
 } from "@superset/chat/client";
 import { createSessionClient } from "@superset/chat/client";
-import type { ChatRouter } from "@superset/chat-runtime";
 import { useWorkspaceClient } from "@superset/workspace-client";
-import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import { useEffect, useMemo } from "react";
-import { getHostServiceHeaders } from "renderer/lib/host-service-auth";
+import { createCodexChatTransport } from "renderer/lib/codex-chat-transport";
 
 export type ChatWiring = {
 	transport: ChatTransport;
 	streamBaseUrl: string;
+	/** The host that owns this session — also where attachments upload. */
+	hostUrl: string;
 	createSocket: (url: string) => StreamSocket;
 };
 
@@ -20,24 +20,7 @@ export function useChatWiring(): ChatWiring {
 	const { getWsToken, hostUrl } = useWorkspaceClient();
 
 	return useMemo(() => {
-		const client = createTRPCClient<ChatRouter>({
-			links: [
-				httpBatchLink({
-					url: `${hostUrl}/chat-v3/trpc`,
-					headers: () => getHostServiceHeaders(hostUrl),
-				}),
-			],
-		});
-		const transport: ChatTransport = {
-			createSession: (input) => client.createSession.mutate(input),
-			prompt: (input) => client.prompt.mutate(input),
-			cancelTurn: (input) => client.cancelTurn.mutate(input),
-			respondToApproval: (input) => client.respondToApproval.mutate(input),
-			setMode: (input) => client.setMode.mutate(input),
-			getSession: (input) => client.getSession.query(input),
-			listSessions: (input) => client.listSessions.query(input),
-			getItems: (input) => client.getItems.query(input),
-		};
+		const transport = createCodexChatTransport(hostUrl);
 		const createSocket = (url: string): StreamSocket => {
 			const wsUrl = new URL(url);
 			wsUrl.protocol = wsUrl.protocol === "https:" ? "wss:" : "ws:";
@@ -45,7 +28,12 @@ export function useChatWiring(): ChatWiring {
 			if (token) wsUrl.searchParams.set("token", token);
 			return new WebSocket(wsUrl.toString());
 		};
-		return { transport, streamBaseUrl: `${hostUrl}/chat-v3`, createSocket };
+		return {
+			transport,
+			streamBaseUrl: `${hostUrl}/chat-v3`,
+			hostUrl,
+			createSocket,
+		};
 	}, [hostUrl, getWsToken]);
 }
 

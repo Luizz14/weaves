@@ -64,7 +64,8 @@ export function createEnsureCodexSession(
 		for (const { item, turnId } of items.values()) {
 			if (
 				isKnownItem(item) &&
-				item.kind === "approval_request" &&
+				(item.kind === "approval_request" ||
+					item.kind === "user_input_request") &&
 				item.status === "pending"
 			)
 				publish({ type: "item", turnId, item: { ...item, status: "stale" } });
@@ -86,6 +87,10 @@ export function createEnsureCodexSession(
 			cwd,
 			modeId: state?.modeId ?? "auto",
 			modelId: state?.modelId,
+			title: state?.title ?? row.title ?? undefined,
+			execution: state?.execution,
+			goal: state?.goal,
+			linkedWorkspaces: state?.linkedWorkspaces,
 			...(row.harnessSessionId
 				? { resume: { harnessSessionId: row.harnessSessionId } }
 				: {}),

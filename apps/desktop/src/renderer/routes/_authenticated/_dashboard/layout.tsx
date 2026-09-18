@@ -229,28 +229,33 @@ function DashboardLayout() {
 		</ResizablePanel>
 	);
 
-	// Only lift the sidebar out of the TopBar column when v2 + expanded.
-	// Collapsed/closed sidebars stay inside so the TopBar runs full-width.
-	const sidebarOutsideColumn =
-		isV2CloudEnabled &&
-		isWorkspaceSidebarOpen &&
-		!isWorkspaceSidebarCollapsed();
-
 	// On the v2 workspace route with an open sidebar the TopBar row is merged
 	// into the pane tab bar (which provides the drag region and hosts the
 	// right-sidebar toggle). Expanded sidebars host the traffic-light pad in
 	// their header; collapsed rails host it via their headroom spacer plus the
 	// tab bar's leading inset. Only a fully closed sidebar keeps the TopBar,
-	// whose inset then keeps content clear of the macOS traffic lights. The
-	// new-workspace page brings its own drag strip, and the dashboard views
+	// whose inset then keeps content clear of the macOS traffic lights.
+	const topBarMergedIntoTabBar =
+		onV2WorkspaceRoute &&
+		!versionMismatch &&
+		isV2CloudEnabled &&
+		isWorkspaceSidebarOpen;
+
+	// Only lift the sidebar out of the TopBar column when v2 + expanded, so a
+	// collapsed rail leaves the TopBar running full-width. Without a TopBar the
+	// two positions render identically, and staying put across a collapse is
+	// what lets the panel animate its width instead of remounting at the new one.
+	const sidebarOutsideColumn =
+		isV2CloudEnabled &&
+		isWorkspaceSidebarOpen &&
+		(!isWorkspaceSidebarCollapsed() || topBarMergedIntoTabBar);
+
+	// The new-workspace page brings its own drag strip, and the dashboard views
 	// (automations/tasks/workspaces) carry drag fillers in their own headers,
 	// so they hide the TopBar whenever the expanded sidebar sits outside the
 	// column — otherwise it renders as an empty strip above their headers.
 	const hideTopBar =
-		(onV2WorkspaceRoute &&
-			!versionMismatch &&
-			isV2CloudEnabled &&
-			isWorkspaceSidebarOpen) ||
+		topBarMergedIntoTabBar ||
 		((onNewWorkspaceRoute || onDashboardViewRoute) && sidebarOutsideColumn);
 
 	return (

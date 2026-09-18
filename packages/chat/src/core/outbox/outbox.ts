@@ -1,3 +1,4 @@
+import type { CodexExecution } from "../../protocol/codex";
 import type { UserContent } from "../../protocol/items";
 
 export type OutboxEntryState = "queued" | "inflight" | "failed";
@@ -6,6 +7,7 @@ export type OutboxEntry = {
 	commandId: string;
 	clientId: string;
 	content: UserContent[];
+	execution?: CodexExecution;
 	state: OutboxEntryState;
 	attempts: number;
 	lastError: string | null;
@@ -30,11 +32,12 @@ export class Outbox {
 		this.maxAttempts = options.maxAttempts ?? 5;
 	}
 
-	enqueue(content: UserContent[]): OutboxEntry {
+	enqueue(content: UserContent[], execution?: CodexExecution): OutboxEntry {
 		const entry: OutboxEntry = {
 			commandId: this.mintId(),
 			clientId: this.mintId(),
 			content,
+			...(execution ? { execution: { ...execution } } : {}),
 			state: "queued",
 			attempts: 0,
 			lastError: null,

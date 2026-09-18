@@ -24,6 +24,7 @@ import {
 	LuSettings,
 	LuX,
 } from "react-icons/lu";
+import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { ColorSelector } from "renderer/components/ColorSelector";
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import { useUpdateProject } from "renderer/react-query/projects/useUpdateProject";
@@ -301,7 +302,7 @@ export function ProjectHeader({
 								/>
 								<span className="truncate">{projectName}</span>
 								<span className="text-xs text-muted-foreground tabular-nums font-normal">
-									({workspaceCount})
+									(<AnimatedNumber value={workspaceCount} />)
 								</span>
 							</button>
 						)}

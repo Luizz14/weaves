@@ -66,6 +66,8 @@ export interface PagePaneData {
 
 export interface CodexChatPaneData {
 	sessionId: string | null;
+	title?: string;
+	status?: string;
 }
 
 export interface ChatV3PaneData {

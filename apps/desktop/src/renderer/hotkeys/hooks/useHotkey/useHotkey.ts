@@ -6,6 +6,7 @@ import { PLATFORM } from "../../registry";
 import { useEffectiveLayoutMap } from "../../stores/keyboardPreferencesStore";
 import type { HotkeyDisplay } from "../../types";
 import { bindingToDispatchChord } from "../../utils/binding";
+import { resolveHotkeyFromEvent } from "../../utils/resolveHotkeyFromEvent";
 import { useBinding } from "../useBinding";
 
 // react-hotkeys-hook doesn't check AltGraph or IME composition. Use its
@@ -32,6 +33,11 @@ export function useHotkey(
 	useHotkeys(
 		chord ?? "",
 		(e, _h) => {
+			if (
+				(id === "NEW_GROUP" || id === "NEW_CODEX_CHAT") &&
+				resolveHotkeyFromEvent(e) !== id
+			)
+				return;
 			if (options?.preventDefault !== false) {
 				e.preventDefault();
 			}

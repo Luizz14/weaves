@@ -17,10 +17,19 @@ type Harness = {
 	settle(): Promise<void>;
 };
 
-function startAdapter(): Harness {
+function startAdapter({
+	respondTurnStart = false,
+	reportedModel = "gpt-5.5",
+	reportedEffort,
+}: {
+	respondTurnStart?: boolean;
+	reportedModel?: string;
+	reportedEffort?: string;
+} = {}): Harness {
 	const sent: Record<string, unknown>[] = [];
 	const events: AdapterEvent[] = [];
 	let handlers: CodexTransportHandlers | null = null;
+	let nativeGoal: Record<string, unknown> | null = null;
 
 	const adapter = new CodexAdapter({
 		now: () => 1_785_000_000_000,
@@ -32,6 +41,7 @@ function startAdapter(): Harness {
 					const frame = JSON.parse(line) as {
 						id?: number;
 						method?: string;
+						params?: Record<string, unknown>;
 					};
 					sent.push(frame);
 					if (frame.method === "initialize") {
@@ -45,11 +55,77 @@ function startAdapter(): Harness {
 						);
 						return;
 					}
-					if (frame.method === "thread/start") {
+					if (frame.method === "thread/goal/set") {
+						nativeGoal = {
+							objective: "goal",
+							status: "paused",
+							tokenBudget: null,
+							tokensUsed: 0,
+							timeUsedSeconds: 0,
+							...nativeGoal,
+							...frame.params,
+						};
+						handlers?.onLine(
+							JSON.stringify({ id: frame.id, result: { goal: nativeGoal } }),
+						);
+					}
+					if (frame.method === "thread/goal/clear") {
+						nativeGoal = null;
+						handlers?.onLine(JSON.stringify({ id: frame.id, result: {} }));
+					}
+					if (frame.method === "turn/start" && respondTurnStart)
 						handlers?.onLine(
 							JSON.stringify({
 								id: frame.id,
-								result: { thread: { id: THREAD_ID }, model: "gpt-5.5" },
+								result: {
+									turn: {
+										id: TURN_ID,
+										status: "inProgress",
+										items: [],
+										error: null,
+									},
+								},
+							}),
+						);
+					if (frame.method === "model/list") {
+						handlers?.onLine(
+							JSON.stringify({
+								id: frame.id,
+								result: {
+									data: [
+										{
+											id: "gpt-5.6-luna",
+											model: "gpt-5.6-luna",
+											displayName: "Luna",
+											supportedReasoningEfforts: [
+												{ reasoningEffort: "medium", description: "" },
+												{ reasoningEffort: "max", description: "" },
+											],
+											defaultReasoningEffort: "medium",
+											serviceTiers: [
+												{ id: "priority", name: "Fast", description: "" },
+											],
+										},
+									],
+									nextCursor: null,
+								},
+							}),
+						);
+					}
+					if (frame.method === "thread/unsubscribe")
+						handlers?.onLine(JSON.stringify({ id: frame.id, result: {} }));
+					if (
+						frame.method === "thread/start" ||
+						frame.method === "thread/resume"
+					) {
+						handlers?.onLine(
+							JSON.stringify({
+								id: frame.id,
+								result: {
+									thread: { id: THREAD_ID },
+									model: reportedModel,
+									reasoningEffort: reportedEffort,
+								},
 							}),
 						);
 					}
@@ -87,6 +163,21 @@ function notices(events: AdapterEvent[]): Notice[] {
 }
 
 describe("codex adapter resilience", () => {
+	test("ignores deprecation notices", async () => {
+		const harness = startAdapter();
+		await harness.settle();
+		const initialNoticeCount = notices(harness.events).length;
+
+		harness.receive({
+			method: "deprecationNotice",
+			params: { message: "deprecated", threadId: THREAD_ID },
+		});
+		await harness.settle();
+
+		expect(notices(harness.events)).toHaveLength(initialNoticeCount);
+		await harness.adapter.dispose();
+	});
+
 	test("an unreadable notification becomes a notice, not a thrown frame", async () => {
 		const harness = startAdapter();
 		await harness.settle();
@@ -307,4 +398,235 @@ test("mode changes use the app-server sandboxPolicy on subsequent turns", async 
 	});
 	expect(requests[1]?.params).not.toHaveProperty("sandbox");
 	await harness.adapter.dispose();
+});
+
+test("configured model, effort, Fast, and native planning are sent together", async () => {
+	const h = startAdapter();
+	await h.settle();
+	const execution = {
+		modelId: "gpt-5.6-luna",
+		reasoningEffort: "max",
+		fast: true,
+		collaborationMode: "plan" as const,
+	};
+	await h.adapter.configureCodex(execution);
+	h.adapter.prompt([{ type: "text", text: "plan" }], execution);
+	await h.settle();
+	const frame = [...h.sent]
+		.reverse()
+		.find((entry) => entry.method === "turn/start");
+	expect(frame?.params).toMatchObject({
+		model: "gpt-5.6-luna",
+		effort: "max",
+		serviceTier: "priority",
+		collaborationMode: {
+			mode: "plan",
+			settings: {
+				model: "gpt-5.6-luna",
+				reasoning_effort: "max",
+				developer_instructions: null,
+			},
+		},
+	});
+	await h.adapter.dispose();
+});
+test("answers structured questions through the original server request and expires them", async () => {
+	const h = startAdapter();
+	await h.settle();
+	const params = {
+		threadId: THREAD_ID,
+		turnId: TURN_ID,
+		itemId: "q",
+		isBlocking: true,
+		questions: [
+			{
+				id: "decision",
+				header: "Scope",
+				question: "Which scope?",
+				isOther: false,
+				isSecret: false,
+				options: [{ label: "Local", description: "Current workspace" }],
+			},
+		],
+	};
+	h.receive({ id: 99, method: "item/tool/requestUserInput", params });
+	await h.settle();
+	expect(() =>
+		h.adapter.respondToUserInput("question:turn-1:q:99", {
+			decision: ["unexpected"],
+		}),
+	).toThrow();
+	h.adapter.respondToUserInput("question:turn-1:q:99", { decision: ["Local"] });
+	await h.settle();
+	expect(h.sent.find((entry) => entry.id === 99)).toMatchObject({
+		result: { answers: { decision: { answers: ["Local"] } } },
+	});
+	const answered = [...h.events]
+		.reverse()
+		.find(
+			(event) =>
+				event.kind === "item" && event.item.id === "question:turn-1:q:99",
+		);
+	expect(answered?.kind === "item" ? answered.item : null).toMatchObject({
+		status: "answered",
+	});
+	h.receive({ id: 100, method: "item/tool/requestUserInput", params });
+	await h.settle();
+	h.receive({
+		method: "serverRequest/resolved",
+		params: { threadId: THREAD_ID, requestId: 100 },
+	});
+	await h.settle();
+	expect(() =>
+		h.adapter.respondToUserInput("question:turn-1:q:100", {
+			decision: ["Local"],
+		}),
+	).toThrow("expired");
+	await h.adapter.dispose();
+});
+
+test("goal activation leaves native planning with exactly one kickoff turn", async () => {
+	const h = startAdapter({ respondTurnStart: true });
+	await h.settle();
+	await h.adapter.configureCodex({
+		modelId: "gpt-5.6-luna",
+		reasoningEffort: "medium",
+		fast: false,
+		collaborationMode: "plan",
+	});
+	await h.adapter.updateGoal({
+		action: "set",
+		objective: "Implement the plan",
+	});
+	const requests = h.sent.filter(
+		(entry) =>
+			entry.method === "thread/goal/set" || entry.method === "turn/start",
+	);
+	expect(requests.map((entry) => entry.method)).toEqual([
+		"thread/goal/set",
+		"turn/start",
+		"thread/goal/set",
+	]);
+	expect(requests[0]?.params).toMatchObject({
+		status: "paused",
+		objective: "Implement the plan",
+	});
+	expect(requests[1]?.params).toMatchObject({
+		collaborationMode: { mode: "default" },
+		input: [{ type: "text", text: "Implement the plan" }],
+	});
+	expect(requests[2]?.params).toMatchObject({ status: "active" });
+	await h.adapter.dispose();
+});
+
+test("pausing during kickoff never reactivates the goal after turn/start returns", async () => {
+	const h = startAdapter();
+	await h.settle();
+	await h.adapter.configureCodex({
+		modelId: "gpt-5.6-luna",
+		reasoningEffort: "medium",
+		fast: false,
+		collaborationMode: "default",
+	});
+	const activation = h.adapter.updateGoal({ action: "set", objective: "Work" });
+	await h.settle();
+	const request = [...h.sent]
+		.reverse()
+		.find((entry) => entry.method === "turn/start");
+	if (!request) throw Error("missing kickoff");
+	await h.adapter.updateGoal({ action: "pause" });
+	h.receive({
+		id: request.id,
+		result: {
+			turn: { id: TURN_ID, status: "inProgress", items: [], error: null },
+		},
+	});
+	await activation;
+	const goals = h.sent.filter((entry) => entry.method === "thread/goal/set");
+	expect(goals.map((entry) => entry.params)).toEqual([
+		{ threadId: THREAD_ID, objective: "Work", status: "paused" },
+		{ threadId: THREAD_ID, status: "paused" },
+	]);
+	await h.adapter.dispose();
+});
+
+test("permission changes also reach native autonomous goal turns", async () => {
+	const h = startAdapter({ respondTurnStart: true });
+	await h.settle();
+	await h.adapter.configureCodex({
+		modelId: "gpt-5.6-luna",
+		reasoningEffort: "medium",
+		fast: false,
+		collaborationMode: "default",
+	});
+	await h.adapter.updateGoal({ action: "set", objective: "Work" });
+	await h.adapter.setMode("read-only");
+	expect(
+		[...h.sent].reverse().find((entry) => entry.method === "thread/resume")
+			?.params,
+	).toMatchObject({ sandbox: "read-only", approvalPolicy: "on-request" });
+	await h.adapter.dispose();
+});
+
+test("non-blocking questions remain answerable after a completed turn", async () => {
+	const h = startAdapter();
+	await h.settle();
+	h.receive({
+		id: 110,
+		method: "item/tool/requestUserInput",
+		params: {
+			threadId: THREAD_ID,
+			turnId: TURN_ID,
+			itemId: "async",
+			isBlocking: false,
+			questions: [
+				{
+					id: "answer",
+					header: "Choice",
+					question: "Continue?",
+					isOther: true,
+					isSecret: false,
+					options: null,
+				},
+			],
+		},
+	});
+	await h.settle();
+	h.receive({
+		method: "turn/completed",
+		params: {
+			threadId: THREAD_ID,
+			turn: { id: TURN_ID, status: "completed", items: [], error: null },
+		},
+	});
+	await h.settle();
+	expect(() =>
+		h.adapter.respondToUserInput("question:turn-1:async:110", {
+			answer: ["Yes"],
+		}),
+	).not.toThrow();
+	expect(h.sent.find((entry) => entry.id === 110)).toMatchObject({
+		result: { answers: { answer: { answers: ["Yes"] } } },
+	});
+	await h.adapter.dispose();
+});
+
+test("legacy chats retain their CLI effort when planning is enabled", async () => {
+	const h = startAdapter({
+		reportedModel: "gpt-5.6-luna",
+		reportedEffort: "max",
+	});
+	await h.settle();
+	const configured = await h.adapter.configureCodex({
+		modelId: "gpt-5.6-luna",
+		reasoningEffort: "default",
+		fast: false,
+		collaborationMode: "plan",
+	});
+	expect(configured.reasoningEffort).toBe("max");
+	expect(
+		[...h.sent].reverse().find((entry) => entry.method === "thread/start")
+			?.params,
+	).toMatchObject({ config: { model_reasoning_effort: "max" } });
+	await h.adapter.dispose();
 });

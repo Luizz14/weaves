@@ -47,6 +47,11 @@ function startStack(): {
 	const runtime = createTestRuntime({ harnesses });
 	const router = createChatRouter(runtime, {
 		resolveCwd: () => "/tmp/workspace",
+		resolveWorkspace: (workspaceId) => ({
+			path: "/tmp/workspace",
+			name: workspaceId,
+		}),
+		resolveAttachment: () => null,
 	});
 	const transport: ChatTransport = createChatCallerFactory(router)({});
 	const server = createMemoryStreamServer(runtime);
@@ -99,6 +104,41 @@ describe("createSessionClient", () => {
 		expect(older.envelopes.at(-1)?.cursor.seq).toBe(
 			(newest.nextBefore?.seq ?? 0) - 1,
 		);
+		await runtime.dispose();
+	});
+
+	test("setLinkedWorkspaces sends ids and guards an older host", async () => {
+		const { runtime, transport, server } = startStack();
+		const created = await transport.createSession({
+			commandId: randomUUID(),
+			workspaceId: "workspace-1",
+			harness: FAKE_HARNESS,
+		});
+		const client = createSessionClient({
+			sessionId: created.sessionId,
+			transport,
+			streamBaseUrl: "ws://test/chat-v3",
+			createSocket: server.createSocket,
+		});
+
+		expect(await client.setLinkedWorkspaces?.(["workspace-2"])).toEqual([
+			{
+				workspaceId: "workspace-2",
+				path: "/tmp/workspace",
+				name: "workspace-2",
+			},
+		]);
+
+		const { setLinkedWorkspaces: _omitted, ...older } = transport;
+		const olderClient = createSessionClient({
+			sessionId: created.sessionId,
+			transport: older,
+			streamBaseUrl: "ws://test/chat-v3",
+			createSocket: server.createSocket,
+		});
+		await expect(
+			olderClient.setLinkedWorkspaces?.(["workspace-2"]),
+		).rejects.toThrow("Update the host to link workspaces");
 		await runtime.dispose();
 	});
 

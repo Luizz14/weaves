@@ -16,4 +16,5 @@ export type {
 	AdapterEvent,
 	HarnessAdapter,
 	HarnessStartOptions,
+	ResolvedAttachment,
 } from "./types";

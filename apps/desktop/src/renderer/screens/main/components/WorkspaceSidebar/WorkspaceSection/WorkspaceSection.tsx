@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { HiChevronRight } from "react-icons/hi2";
 import { LuPalette, LuPencil, LuTrash2 } from "react-icons/lu";
+import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { ColorSelector } from "renderer/components/ColorSelector";
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import { useReorderProjectChildren } from "renderer/react-query/workspaces";
@@ -249,7 +250,7 @@ export function WorkspaceSection({
 								/>
 								<span className="truncate">{name}</span>
 								<span className="text-[10px] tabular-nums font-normal">
-									({workspaces.length})
+									(<AnimatedNumber value={workspaces.length} />)
 								</span>
 							</button>
 						)}

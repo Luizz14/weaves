@@ -10,6 +10,7 @@ import { Separator } from "@superset/ui/separator";
 import { toast } from "@superset/ui/sonner";
 import { cn } from "@superset/ui/utils";
 import { LuLoaderCircle, LuRadioTower, LuX } from "react-icons/lu";
+import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { useDashboardSidebarPortKill } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/hooks/useDashboardSidebarPortKill";
 import type { DashboardSidebarPort } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/hooks/useDashboardSidebarPortsData";
 import { STROKE_WIDTH } from "renderer/screens/main/components/WorkspaceSidebar/constants";
@@ -107,7 +108,9 @@ export function DashboardSidebarPortsChip({
 								strokeWidth={STROKE_WIDTH}
 							/>
 						) : (
-							<span className="shrink-0">{ports.length}</span>
+							<span className="shrink-0">
+								<AnimatedNumber value={ports.length} />
+							</span>
 						)}
 					</button>
 				</Badge>
@@ -122,7 +125,9 @@ export function DashboardSidebarPortsChip({
 					<span>
 						<Trans>Ports</Trans>
 					</span>
-					<span className="tabular-nums">{ports.length}</span>
+					<span className="tabular-nums">
+						<AnimatedNumber value={ports.length} />
+					</span>
 				</div>
 				<div className="max-h-60 overflow-y-auto">
 					{ports.map((port) => (
