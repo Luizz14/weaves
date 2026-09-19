@@ -7,10 +7,12 @@ import { promisify } from "node:util";
 import type { BranchPrefixMode } from "@superset/local-db";
 import { runWithPostCheckoutHookTolerance } from "@superset/shared/git-hook-tolerance";
 import {
+	generateFriendlyBranchName,
 	sanitizeAuthorPrefix,
 	sanitizeBranchName,
 	sanitizeBranchNameWithMaxLength,
 } from "@superset/shared/workspace-launch";
+import { recordDiscoveryByBranch } from "@superset/shared/ordem-paranormal";
 import friendlyWords from "friendly-words";
 import type { StatusResult } from "simple-git";
 import { execGitWithShellPath, getSimpleGitWithShellPath } from "./git-client";
@@ -600,20 +602,18 @@ export function generateBranchName({
 		return name;
 	};
 
-	const randomTwoWord = () => {
-		const predicate = predicates[Math.floor(Math.random() * predicates.length)];
-		const object = objects[Math.floor(Math.random() * objects.length)];
-		return `${predicate}-${object}`;
+	const randomCandidate = () => {
+		return generateFriendlyBranchName(existingBranches);
 	};
 
 	for (let i = 0; i < MAX_ATTEMPTS; i++) {
-		const candidate = addPrefix(randomTwoWord());
+		const candidate = addPrefix(randomCandidate());
 		if (!existingSet.has(candidate.toLowerCase())) {
 			return candidate;
 		}
 	}
 
-	const baseWord = randomTwoWord();
+	const baseWord = randomCandidate();
 	for (let n = 0; n < FALLBACK_MAX_SUFFIX; n++) {
 		const candidate = addPrefix(`${baseWord}-${n}`);
 		if (!existingSet.has(candidate.toLowerCase())) {
@@ -659,6 +659,9 @@ export async function createWorktree(
 			["-C", worktreePath, "config", "--local", "push.autoSetupRemote", "true"],
 			{ timeout: 10_000 },
 		);
+
+		// Record character discovery in persistent Pokédex
+		recordDiscoveryByBranch(branch);
 
 		console.log(
 			`Created worktree at ${worktreePath} with branch ${branch} from ${startPoint}`,

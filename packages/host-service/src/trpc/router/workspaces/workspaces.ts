@@ -5,6 +5,7 @@ import {
 	generateFriendlyBranchName,
 	sanitizeUserBranchName,
 } from "@superset/shared/workspace-launch";
+import { recordDiscoveryByBranch } from "@superset/shared/ordem-paranormal";
 import { workspaceTagsInputSchema } from "@superset/shared/workspace-tags";
 import { TRPCError } from "@trpc/server";
 import { and, eq, isNull } from "drizzle-orm";
@@ -1058,9 +1059,11 @@ export const workspacesRouter = router({
 					const typedNameSlug = input.name
 						? sanitizeBranchCandidate(input.name)
 						: "";
-					const candidate = typedNameSlug || generateFriendlyBranchName();
+					const candidate =
+						typedNameSlug || generateFriendlyBranchName(existing);
 					const prefixed = prefix ? `${prefix}/${candidate}` : candidate;
 					resolvedBranch = deduplicateBranchName(prefixed, existing);
+					recordDiscoveryByBranch(resolvedBranch, { project: input.projectId });
 					plan = {
 						branch: resolvedBranch,
 						startPoint,

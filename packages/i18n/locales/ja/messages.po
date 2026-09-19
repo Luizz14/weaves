@@ -16899,6 +16899,9 @@ msgctxt "agent status"
 msgid "Working"
 msgstr "実行中"
 
+msgid "Working for {duration}"
+msgstr "{duration}作業中"
+
 msgid "Works when environments are clean. Environments are rarely clean."
 msgstr "環境がきれいなら動きます。環境がきれいなことは滅多にありません。"
 

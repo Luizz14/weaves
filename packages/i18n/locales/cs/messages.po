@@ -16899,6 +16899,9 @@ msgctxt "agent status"
 msgid "Working"
 msgstr "Pracuje"
 
+msgid "Working for {duration}"
+msgstr "Pracuje {duration}"
+
 msgid "Works when environments are clean. Environments are rarely clean."
 msgstr "Funguje, když jsou prostředí čistá. Prostředí bývají čistá zřídka."
 

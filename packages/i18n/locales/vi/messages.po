@@ -16899,6 +16899,9 @@ msgctxt "agent status"
 msgid "Working"
 msgstr "Đang chạy"
 
+msgid "Working for {duration}"
+msgstr "Đang làm việc trong {duration}"
+
 msgid "Works when environments are clean. Environments are rarely clean."
 msgstr "Chạy được khi môi trường sạch. Môi trường hiếm khi sạch."
 

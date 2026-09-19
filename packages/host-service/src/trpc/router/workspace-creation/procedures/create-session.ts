@@ -107,10 +107,10 @@ export const createSession = protectedProcedure
 				})
 			: null;
 
-		const typedName = input.name?.trim();
+		const claimed = claimedSessionNames(ctx);
 		const folderCandidate =
 			(typedName ? sanitizeBranchCandidate(typedName) : "") ||
-			generateFriendlyBranchName();
+			generateFriendlyBranchName(claimed);
 
 		mkdirSync(defaultSessionsRoot(), { recursive: true });
 

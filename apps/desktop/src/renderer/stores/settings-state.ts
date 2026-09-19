@@ -14,6 +14,7 @@ export type SettingsSection =
 	| "git"
 	| "agents"
 	| "codexChat"
+	| "pokedex"
 	| "terminal"
 	| "links"
 	| "experimental"

@@ -22,6 +22,7 @@ import {
 	useOpenNewProjectModal,
 	useOpenTemplateGalleryModal,
 } from "renderer/stores/add-repository-modal";
+import { PokedexButton } from "../PokedexButton";
 import { SettingsButton } from "../SettingsButton";
 import { STROKE_WIDTH } from "./constants";
 
@@ -126,6 +127,11 @@ export function WorkspaceSidebarFooter({
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
+				<PokedexButton
+					side="right"
+					className="size-8 text-muted-foreground hover:text-foreground"
+					iconClassName="size-4"
+				/>
 				<SettingsButton
 					side="right"
 					className="size-8 text-muted-foreground hover:text-foreground"
@@ -173,6 +179,11 @@ export function WorkspaceSidebarFooter({
 				</DropdownMenuContent>
 			</DropdownMenu>
 			<UpdatesPill />
+			<PokedexButton
+				side="top"
+				className="size-8 shrink-0 text-muted-foreground hover:text-foreground"
+				iconClassName="size-4"
+			/>
 			<SettingsButton
 				side="top"
 				className="size-8 shrink-0 text-muted-foreground hover:text-foreground"

@@ -16899,6 +16899,9 @@ msgctxt "agent status"
 msgid "Working"
 msgstr "Bekerja"
 
+msgid "Working for {duration}"
+msgstr "Bekerja selama {duration}"
+
 msgid "Works when environments are clean. Environments are rarely clean."
 msgstr "Berhasil kalau environment-nya bersih. Environment jarang bersih."
 

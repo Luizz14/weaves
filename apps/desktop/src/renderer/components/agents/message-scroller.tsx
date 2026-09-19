@@ -93,6 +93,8 @@ export interface MessageScrollerProps extends ComponentPropsWithRef<"div"> {
 	busy?: boolean;
 	/** Adds a compact rail for navigating between rendered Message rows. */
 	navigation?: "rail";
+	/** Which side of the scroll area the navigation rail appears on. */
+	navigationSide?: "start" | "end";
 	/** Accessible label for the optional message navigation rail. */
 	navigationLabel?: string;
 	viewportClassName?: string;
@@ -109,6 +111,7 @@ export interface MessageScrollerProps extends ComponentPropsWithRef<"div"> {
 	>;
 }
 
+
 export function MessageScroller({
 	followOutput = true,
 	followThreshold = 56,
@@ -117,6 +120,7 @@ export function MessageScroller({
 	label = i18n._(msg({ message: "Conversation" })),
 	busy,
 	navigation,
+	navigationSide = "end",
 	navigationLabel = i18n._(msg({ message: "Message navigation" })),
 	viewportClassName,
 	contentClassName,
@@ -128,6 +132,7 @@ export function MessageScroller({
 	children,
 	...props
 }: MessageScrollerProps) {
+
 	const reduce = useReducedMotion() ?? false;
 	const viewportRef = useRef<HTMLElement>(null);
 	const contentRef = useRef<HTMLDivElement>(null);
@@ -443,7 +448,9 @@ export function MessageScroller({
 					? "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
 					: "[scrollbar-gutter:stable]",
 				viewportClassName,
-				navigation === "rail" && railOverflowing && "pr-10",
+				navigation === "rail" &&
+					railOverflowing &&
+					(navigationSide === "start" ? "pl-10" : "pr-10"),
 			)}
 		>
 			<div
@@ -472,14 +479,22 @@ export function MessageScroller({
 					label={navigationLabel}
 					activeId={activeRailId}
 					onItemSelect={scrollToRailItem}
-					previewSide="before"
+					previewSide={navigationSide === "start" ? "after" : "before"}
 					highlightActive
 					itemSize={14}
 					className="h-full min-h-0 overflow-hidden"
-					previewContainerClassName="right-8 left-3"
-					previewClassName="mr-1 w-64 max-w-full [&_[data-slot=preview-rail-card]]:h-20 [&_[data-slot=preview-rail-card]]:overflow-hidden [&_[data-slot=preview-rail-card]]:p-3 [&_[data-slot=preview-rail-title]]:line-clamp-1 [&_[data-slot=preview-rail-title]]:text-xs [&_[data-slot=preview-rail-title]]:leading-4 [&_[data-slot=preview-rail-description]]:line-clamp-2 [&_[data-slot=preview-rail-description]]:text-xs [&_[data-slot=preview-rail-description]]:leading-4"
+					previewContainerClassName={
+						navigationSide === "start" ? "left-8 right-3" : "right-8 left-3"
+					}
+					previewClassName={cn(
+						"w-64 max-w-full [&_[data-slot=preview-rail-card]]:h-20 [&_[data-slot=preview-rail-card]]:overflow-hidden [&_[data-slot=preview-rail-card]]:p-3 [&_[data-slot=preview-rail-title]]:line-clamp-1 [&_[data-slot=preview-rail-title]]:text-xs [&_[data-slot=preview-rail-title]]:leading-4 [&_[data-slot=preview-rail-description]]:line-clamp-2 [&_[data-slot=preview-rail-description]]:text-xs [&_[data-slot=preview-rail-description]]:leading-4",
+						navigationSide === "start" ? "ml-1" : "mr-1",
+					)}
 					railClassName={cn(
-						"absolute inset-y-3 right-1 w-7 content-center py-1 [&_[data-slot=preview-rail-item]]:w-7 [&_[data-slot=preview-rail-item]]:justify-end [&_[data-slot=preview-rail-tick]]:h-px [&_[data-slot=preview-rail-tick]]:w-4 [&_[data-slot=preview-rail-tick]]:origin-right",
+						"absolute inset-y-3 w-7 content-center py-1 [&_[data-slot=preview-rail-item]]:w-7 [&_[data-slot=preview-rail-tick]]:h-px [&_[data-slot=preview-rail-tick]]:w-4",
+						navigationSide === "start"
+							? "left-1 [&_[data-slot=preview-rail-item]]:justify-start [&_[data-slot=preview-rail-tick]]:origin-left"
+							: "right-1 [&_[data-slot=preview-rail-item]]:justify-end [&_[data-slot=preview-rail-tick]]:origin-right",
 						railOverflowing
 							? "pointer-events-auto opacity-100"
 							: "pointer-events-none opacity-0",
@@ -494,3 +509,4 @@ export function MessageScroller({
 		</div>
 	);
 }
+
