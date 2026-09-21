@@ -5,6 +5,7 @@ import {
 import type { SettingsSection } from "renderer/stores/settings-state";
 
 export const SETTING_ITEM_ID = {
+	ORDEM_POKEDEX: "ordem-pokedex",
 	CODEX_CHAT: "codex-chat",
 	ACCOUNT_PROFILE: "account-profile",
 	ACCOUNT_SIGNOUT: "account-signout",
@@ -153,6 +154,7 @@ const INTEGRATION_ITEM_VARIANTS = Object.fromEntries(
 ) as Record<IntegrationSettingItemId, SettingVariant>;
 
 export const SETTING_ITEM_VARIANT: Record<SettingItemId, SettingVariant> = {
+	[SETTING_ITEM_ID.ORDEM_POKEDEX]: "shared",
 	[SETTING_ITEM_ID.CODEX_CHAT]: "v2",
 	...INTEGRATION_ITEM_VARIANTS,
 
@@ -359,6 +361,27 @@ export const SETTINGS_ITEMS: SettingsItem[] = [
 			"commit message",
 			"branch name",
 			"pull request",
+		],
+	},
+	{
+		id: SETTING_ITEM_ID.ORDEM_POKEDEX,
+		section: "pokedex",
+		title: "Arquivo Paranormal (Pokédex)",
+		description:
+			"Catálogo e dossiê sigiloso de agentes, criaturas e relíquias de Ordem Paranormal",
+		keywords: [
+			"pokedex",
+			"ordem",
+			"paranormal",
+			"cards",
+			"cartas",
+			"rpg",
+			"ordo",
+			"realitas",
+			"entidades",
+			"personagens",
+			"criaturas",
+			"reliquias",
 		],
 	},
 	{

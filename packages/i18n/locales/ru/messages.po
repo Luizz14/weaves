@@ -1217,6 +1217,9 @@ msgstr "Лучший встроенный браузер: смотрите св�
 msgid "A better Superset is ready"
 msgstr "Улучшенная версия Superset готова"
 
+msgid "A branch changed during integration. Cancel this attempt and start again."
+msgstr "Ветка изменилась во время интеграции. Отмените эту попытку и начните заново."
+
 #. js-lingui-explicit-id
 msgid "serverError.common.cloudWorkspaceCannotCallThis"
 msgstr "Облачное рабочее пространство не может вызвать {path}. Сделайте это в клиенте, где вы вошли в систему."
@@ -1754,6 +1757,9 @@ msgstr "Все комментарии"
 msgid "All commits"
 msgstr "Все коммиты"
 
+msgid "All conflicts are resolved. Complete the integration when ready."
+msgstr "Все конфликты разрешены. Завершите интеграцию, когда будете готовы."
+
 #. placeholder {0}: members.length
 msgid "All data will be permanently deleted for all {0} members — this cannot be undone."
 msgstr "Все данные будут безвозвратно удалены у всех {0} участников — это нельзя отменить."
@@ -1860,11 +1866,17 @@ msgstr "Разрешите доступ через реле"
 msgid "Allow for session"
 msgstr "Разрешить на сессию"
 
+msgid "Allow merge into principal"
+msgstr "Разрешить слияние в основную ветку"
+
 msgid "Allow microphone access to use dictation"
 msgstr "Разрешите доступ к микрофону, чтобы использовать диктовку"
 
 msgid "Allow remote access to this device via relay"
 msgstr "Разрешить удалённый доступ к этому устройству через реле"
+
+msgid "Allow update from remote principal"
+msgstr "Разрешить обновление из удалённой основной ветки"
 
 msgid "Allowed"
 msgstr "Разрешено"
@@ -1958,6 +1970,9 @@ msgstr "Анонимный сборщик"
 
 msgid "another device"
 msgstr "другое устройство"
+
+msgid "Another integration operation is running. Try again shortly."
+msgstr "Выполняется другая интеграция. Повторите попытку чуть позже."
 
 msgid "Answered"
 msgstr "Отвечено"
@@ -2596,6 +2611,9 @@ msgstr "Изменён бинарный файл"
 msgid "Binary file hidden"
 msgstr "Бинарный файл скрыт"
 
+msgid "Binary, large, or special file. Choose a version to resolve."
+msgstr "Двоичный, большой или специальный файл. Выберите версию для разрешения конфликта."
+
 msgid "Bio"
 msgstr "О себе"
 
@@ -2661,6 +2679,12 @@ msgstr "Поведение веток для новых рабочих обла�
 
 msgid "Branch copied"
 msgstr "Ветка скопирована"
+
+msgid "Branch integration"
+msgstr "Интеграция веток"
+
+msgid "Branch integration completed"
+msgstr "Интеграция веток завершена"
 
 msgid "branch name"
 msgstr "имя ветки"
@@ -2913,6 +2937,9 @@ msgstr "Отменить загрузку"
 msgid "Cancel edits"
 msgstr "Отменить правки"
 
+msgid "Cancel integration"
+msgstr "Отменить интеграцию"
+
 msgid "Cancel plan"
 msgstr "Отменить тариф"
 
@@ -3083,6 +3110,9 @@ msgstr "Проверить обновления..."
 
 msgid "Check on running agents and read what they changed from your phone."
 msgstr "Следите за работающими агентами и смотрите, что они изменили, прямо с телефона."
+
+msgid "Check out a branch before continuing."
+msgstr "Переключитесь на ветку перед продолжением."
 
 msgid "Check resources"
 msgstr "Проверить ресурсы"
@@ -3680,6 +3710,9 @@ msgstr "Не удалось закоммитить: {0}"
 msgid "Commit message"
 msgstr "Сообщение коммита"
 
+msgid "Commit or stash pending changes in the source and destination workspaces first."
+msgstr "Сначала создайте коммит или отложите изменения в исходном и целевом рабочих пространствах."
+
 msgid "Commits"
 msgstr "Коммиты"
 
@@ -3731,6 +3764,9 @@ msgstr "Сравнили со стилем по умолчанию"
 msgid "complete"
 msgstr "завершён"
 
+msgid "Complete integration"
+msgstr "Завершить интеграцию"
+
 msgid "Completed"
 msgstr "Завершено"
 
@@ -3773,6 +3809,9 @@ msgstr "Настройте автоматизацию самостоятельн
 msgid "Configure the in-app browser"
 msgstr "Настройка встроенного браузера"
 
+msgid "Configure the principal branch and remote in project settings."
+msgstr "Настройте основную ветку и удалённый репозиторий в настройках проекта."
+
 msgid "Configure which agents appear in launchers and how their launches are built."
 msgstr "Настройте, какие агенты появляются в запускалках и как формируется их запуск."
 
@@ -3784,6 +3823,9 @@ msgstr "Подтвердить"
 
 msgid "Confirm before quitting"
 msgstr "Подтверждать выход"
+
+msgid "Conflicting files"
+msgstr "Конфликтующие файлы"
 
 msgid "Connect"
 msgstr "Подключить"
@@ -4284,6 +4326,9 @@ msgstr "Не удалось удалить файл"
 
 msgid "Could not delete this page"
 msgstr "Не удалось удалить эту страницу"
+
+msgid "Could not fetch the principal branch. Check your connection, credentials, and remote branch."
+msgstr "Не удалось получить основную ветку. Проверьте подключение, учётные данные и удалённую ветку."
 
 msgid "Could not forget {domain}"
 msgstr "Не удалось забыть {domain}"
@@ -6612,6 +6657,9 @@ msgstr "Действия с файлом"
 msgid "File changes"
 msgstr "Изменения файла"
 
+msgid "File deleted"
+msgstr "Файл удалён"
+
 msgid "File is too large to preview"
 msgstr "Файл слишком большой для предпросмотра"
 
@@ -6743,6 +6791,9 @@ msgstr "Finder"
 
 msgid "Finish review"
 msgstr "Завершить ревью"
+
+msgid "Finish the pending Git operation first."
+msgstr "Сначала завершите текущую операцию Git."
 
 msgid "Finished"
 msgstr "Завершено"
@@ -7086,6 +7137,9 @@ msgstr "Git и worktree"
 
 msgid "Git author name"
 msgstr "Имя автора Git"
+
+msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
+msgstr "Интеграция Git не удалась. Проверьте репозиторий и повторите попытку или отмените её."
 
 msgid "GitHub"
 msgstr "GitHub"
@@ -7824,6 +7878,9 @@ msgstr "Установки"
 msgid "Instructions"
 msgstr "Инструкции"
 
+msgid "Integrate committed changes locally. These settings do not change workspace creation or pull requests."
+msgstr "Интегрируйте закоммиченные изменения локально. Эти настройки не влияют на создание рабочих пространств и запросы на слияние."
+
 msgid "Integrations"
 msgstr "Интеграции"
 
@@ -8490,9 +8547,6 @@ msgstr "Загрузить более ранние сообщения"
 msgid "Load more"
 msgstr "Показать ещё"
 
-msgid "Load older messages"
-msgstr "Загрузить предыдущие сообщения"
-
 msgid "Loader"
 msgstr "Загрузчик"
 
@@ -8759,6 +8813,9 @@ msgstr "Отметить как непросмотренный"
 msgid "Mark as Read"
 msgstr "Отметить как прочитанное"
 
+msgid "Mark as resolved"
+msgstr "Отметить как разрешённый"
+
 msgid "Mark as Unread"
 msgstr "Отметить как непрочитанное"
 
@@ -8905,6 +8962,12 @@ msgstr "Коммит слияния"
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Не удалось объединить: {0}"
+
+msgid "Merge into {branch}"
+msgstr "Слить в {branch}"
+
+msgid "Merge into principal"
+msgstr "Слить в основную ветку"
 
 msgid "Merge pull request"
 msgstr "Объединить пул-реквест"
@@ -10807,6 +10870,9 @@ msgstr "Чат оркестрации"
 msgid "Orchestration guide"
 msgstr "Руководство по оркестрации"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "Органический поиск"
 
@@ -11309,6 +11375,9 @@ msgstr "Маркетплейс плагинов"
 msgid "Plugins"
 msgstr "Плагины"
 
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
+
 msgid "Popover"
 msgstr "Поповер"
 
@@ -11401,6 +11470,9 @@ msgstr "Настройки"
 msgid "Prefix"
 msgstr "Префикс"
 
+msgid "Preparation was interrupted. Cancel this attempt and start again."
+msgstr "Подготовка была прервана. Отмените эту попытку и начните заново."
+
 msgid "Preparing"
 msgstr "Подготовка"
 
@@ -11487,6 +11559,9 @@ msgstr "Первичный ключ"
 
 msgid "Primitives"
 msgstr "Примитивы"
+
+msgid "Principal branch"
+msgstr "Основная ветка"
 
 msgid "Print"
 msgstr "Печать"
@@ -11597,6 +11672,9 @@ msgstr "Проект настроен в {0}"
 
 msgid "Project Settings"
 msgstr "Настройки проекта"
+
+msgid "Project settings changed. Cancel this attempt and start again."
+msgstr "Настройки проекта изменились. Отмените эту попытку и начните заново."
 
 msgid "Project worktree location reset"
 msgstr "Расположение worktree проекта сброшено"
@@ -12101,6 +12179,9 @@ msgstr "Удалённый доступ"
 msgid "Remote Access"
 msgstr "Удалённый доступ"
 
+msgid "Remote for updates"
+msgstr "Удалённый репозиторий для обновлений"
+
 msgid "Remote MCP server — connects over HTTP"
 msgstr "Удалённый сервер MCP — подключается по HTTP"
 
@@ -12432,6 +12513,9 @@ msgstr "Решить"
 msgid "Resolve all"
 msgstr "Закрыть все"
 
+msgid "Resolve all conflicts before completing the integration."
+msgstr "Разрешите все конфликты перед завершением интеграции."
+
 msgid "Resolve Conflicts to Merge"
 msgstr "Разрешите конфликты для слияния"
 
@@ -12449,6 +12533,9 @@ msgstr "Закрыть ветку"
 
 msgid "Resolved"
 msgstr "Решено"
+
+msgid "Resolved content"
+msgstr "Разрешённое содержимое"
 
 msgid "Resource consumption"
 msgstr "Потребление ресурсов"
@@ -12561,6 +12648,12 @@ msgstr "Аргументы возобновления"
 
 msgid "Resume automation"
 msgstr "Возобновить автоматизацию"
+
+msgid "Resume integration"
+msgstr "Продолжить интеграцию"
+
+msgid "Resume or cancel the existing integration first."
+msgstr "Сначала продолжите или отмените существующую интеграцию."
 
 #. placeholder {0}: candidate.agentLabel
 msgid "Resuming {0}…"
@@ -13225,6 +13318,9 @@ msgstr "Посмотрите, какое место ваши последние 
 msgid "Select"
 msgstr "Селект"
 
+msgid "Select a branch"
+msgstr "Выберите ветку"
+
 msgid "Select a default preset"
 msgstr "Выберите предустановку по умолчанию"
 
@@ -13242,6 +13338,9 @@ msgstr "Выберите проект, чтобы видеть пул-рекве
 
 msgid "Select a pull request to preview it here."
 msgstr "Выберите пул-реквест, чтобы посмотреть его здесь."
+
+msgid "Select a remote"
+msgstr "Выберите удалённый репозиторий"
 
 msgid "Select a team"
 msgstr "Выберите команду"
@@ -13538,11 +13637,11 @@ msgstr "Настройка в фоне..."
 msgid "Settings"
 msgstr "Настройки"
 
-msgid "Settings ({settingsHotkey})"
-msgstr "Настройки ({settingsHotkey})"
-
 msgid "Settings → Remote Access → “Allow remote access to this device via relay”."
 msgstr "Настройки → Удалённый доступ → «Разрешить удалённый доступ к этому устройству через реле»."
+
+msgid "Settings saved"
+msgstr "Настройки сохранены"
 
 msgid "Settings..."
 msgstr "Настройки..."
@@ -15059,11 +15158,17 @@ msgstr "Вход в Codex"
 msgid "The config repository must be one of the environment's repositories"
 msgstr "Репозиторий конфигурации должен быть одним из репозиториев окружения"
 
+msgid "The configured remote no longer exists."
+msgstr "Настроенный удалённый репозиторий больше не существует."
+
 msgid "The connection timed out"
 msgstr "Истекло время ожидания соединения"
 
 msgid "The connection was closed"
 msgstr "Соединение было закрыто"
+
+msgid "The current branch is already the principal branch."
+msgstr "Текущая ветка уже является основной."
 
 msgid "The current prompt will be replaced with the selected version. A new \"Restored\" entry will be added to history so you can undo this."
 msgstr "Текущий промпт будет заменён выбранной версией. В историю добавится запись «Восстановлено», чтобы это можно было отменить."
@@ -15076,6 +15181,12 @@ msgstr "Мы готовим Superset для Windows и Linux. Оставьте e
 
 msgid "The desktop app runs on macOS, with an experimental Linux AppImage; Windows is not yet available. Beyond the desktop app there's a CLI, a TypeScript SDK, and an MCP server, so you can drive Superset from scripts, terminals, and other agents."
 msgstr "Десктопное приложение работает на macOS, есть экспериментальный AppImage для Linux; Windows пока нет. Кроме приложения есть CLI, TypeScript SDK и сервер MCP, так что Superset можно водить из скриптов, терминалов и других агентов."
+
+msgid "The destination branch is checked out in multiple worktrees."
+msgstr "Целевая ветка извлечена в нескольких рабочих деревьях."
+
+msgid "The destination stays unchanged until completion. Closing this window keeps the attempt available to resume."
+msgstr "Целевая ветка не изменится до завершения. Закрыв это окно, вы сможете продолжить попытку позже."
 
 msgid "The device that hosts this project is unavailable."
 msgstr "Устройство, где размещён этот проект, недоступно."
@@ -15233,6 +15344,9 @@ msgstr "Такой страницы не существует."
 
 msgid "The people behind Superset."
 msgstr "Люди, которые делают Superset."
+
+msgid "The principal branch does not exist locally."
+msgstr "Основная ветка не существует локально."
 
 msgid "The project's checkout as it is: files and branch are shared"
 msgstr "Checkout проекта как есть: файлы и ветка общие"
@@ -15509,6 +15623,9 @@ msgstr "В этом месяце"
 
 msgid "This only changes the display name, not the branch."
 msgstr "Это меняет только отображаемое имя, а не ветку."
+
+msgid "This operation is disabled for this project."
+msgstr "Эта операция отключена для данного проекта."
 
 msgid "this organization"
 msgstr "эта организация"
@@ -16250,6 +16367,12 @@ msgstr "Обновить демон"
 msgid "Update Error"
 msgstr "Ошибка обновления"
 
+msgid "Update from {remote}/{branch}"
+msgstr "Обновить из {remote}/{branch}"
+
+msgid "Update from remote principal"
+msgstr "Обновить из удалённой основной ветки"
+
 msgid "Update host service"
 msgstr "Обновить службу хоста"
 
@@ -16369,6 +16492,9 @@ msgstr "Данные об использовании недоступны."
 #. placeholder {0}: search.trim()
 msgid "Use “{0}”"
 msgstr "Использовать «{0}»"
+
+msgid "Use {label}"
+msgstr "Использовать {label}"
 
 msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
 msgstr "Используйте небольшую локальную CLI-модель для названий веток, сообщений коммитов и черновиков pull request."
@@ -16955,6 +17081,9 @@ msgstr "Работает"
 msgctxt "agent status"
 msgid "Working"
 msgstr "Работает"
+
+msgid "Working for {duration}"
+msgstr "Работает {duration}"
 
 msgid "Works when environments are clean. Environments are rarely clean."
 msgstr "Работает, когда окружения чистые. Чистые они редко."

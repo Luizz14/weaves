@@ -1,0 +1,1 @@
+export { PokedexGrid } from "./PokedexGrid";

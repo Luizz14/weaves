@@ -1,0 +1,1 @@
+export { PokedexConfidentialCard } from "./PokedexConfidentialCard";

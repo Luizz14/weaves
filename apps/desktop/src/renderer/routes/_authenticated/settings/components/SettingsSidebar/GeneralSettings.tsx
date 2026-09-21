@@ -55,6 +55,7 @@ type SettingsRoute =
 	| "/settings/ai"
 	| "/settings/agents"
 	| "/settings/codex-chat"
+	| "/settings/pokedex"
 	| "/settings/terminal"
 	| "/settings/links"
 	| "/settings/agent-accounts"
@@ -174,6 +175,13 @@ const SECTION_GROUPS: SectionGroup[] = [
 				section: "codexChat",
 				label: msg({ message: "Codex Chat" }),
 				icon: <HiOutlineSparkles className="h-4 w-4" />,
+			},
+			{
+				id: "/settings/pokedex",
+				section: "pokedex",
+				label: msg({ message: "Pokédex Ordem Paranormal" }),
+				icon: <HiOutlineShieldCheck className="h-4 w-4" />,
+				fullWidth: true,
 			},
 			{
 				id: "/settings/agents",

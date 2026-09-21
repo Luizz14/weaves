@@ -58,7 +58,7 @@
 		"db:generate:desktop": "bun run --cwd packages/local-db generate",
 		"db:seed-shared-environments": "bun run --cwd packages/sandbox seed",
 		"sandbox:release": "bun run --cwd packages/sandbox release",
-        "pg": "8.16.3",
+		"pg": "8.16.3",
 		"sandbox:measure": "bun run --cwd packages/sandbox measure"
 	},
 	"type": "module",

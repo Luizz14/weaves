@@ -1217,6 +1217,9 @@ msgstr "A better in-app browser: preview your changes and click any element to s
 msgid "A better Superset is ready"
 msgstr "A better Superset is ready"
 
+msgid "A branch changed during integration. Cancel this attempt and start again."
+msgstr "A branch changed during integration. Cancel this attempt and start again."
+
 #. js-lingui-explicit-id
 msgid "serverError.common.cloudWorkspaceCannotCallThis"
 msgstr "A cloud workspace cannot call {path}. Run this from a client you are signed into."
@@ -1754,6 +1757,9 @@ msgstr "All comments"
 msgid "All commits"
 msgstr "All commits"
 
+msgid "All conflicts are resolved. Complete the integration when ready."
+msgstr "All conflicts are resolved. Complete the integration when ready."
+
 #. placeholder {0}: members.length
 msgid "All data will be permanently deleted for all {0} members — this cannot be undone."
 msgstr "All data will be permanently deleted for all {0} members — this cannot be undone."
@@ -1860,11 +1866,17 @@ msgstr "Allow access through the relay"
 msgid "Allow for session"
 msgstr "Allow for session"
 
+msgid "Allow merge into principal"
+msgstr "Allow merge into principal"
+
 msgid "Allow microphone access to use dictation"
 msgstr "Allow microphone access to use dictation"
 
 msgid "Allow remote access to this device via relay"
 msgstr "Allow remote access to this device via relay"
+
+msgid "Allow update from remote principal"
+msgstr "Allow update from remote principal"
 
 msgid "Allowed"
 msgstr "Allowed"
@@ -1958,6 +1970,9 @@ msgstr "Anonymous Assembler"
 
 msgid "another device"
 msgstr "another device"
+
+msgid "Another integration operation is running. Try again shortly."
+msgstr "Another integration operation is running. Try again shortly."
 
 msgid "Answered"
 msgstr "Answered"
@@ -2596,6 +2611,9 @@ msgstr "Binary file changed"
 msgid "Binary file hidden"
 msgstr "Binary file hidden"
 
+msgid "Binary, large, or special file. Choose a version to resolve."
+msgstr "Binary, large, or special file. Choose a version to resolve."
+
 msgid "Bio"
 msgstr "Bio"
 
@@ -2661,6 +2679,12 @@ msgstr "Branch behavior for new workspaces on this device. Projects can override
 
 msgid "Branch copied"
 msgstr "Branch copied"
+
+msgid "Branch integration"
+msgstr "Branch integration"
+
+msgid "Branch integration completed"
+msgstr "Branch integration completed"
 
 msgid "branch name"
 msgstr "branch name"
@@ -2913,6 +2937,9 @@ msgstr "Cancel download"
 msgid "Cancel edits"
 msgstr "Cancel edits"
 
+msgid "Cancel integration"
+msgstr "Cancel integration"
+
 msgid "Cancel plan"
 msgstr "Cancel plan"
 
@@ -3083,6 +3110,9 @@ msgstr "Check for Updates..."
 
 msgid "Check on running agents and read what they changed from your phone."
 msgstr "Check on running agents and read what they changed from your phone."
+
+msgid "Check out a branch before continuing."
+msgstr "Check out a branch before continuing."
 
 msgid "Check resources"
 msgstr "Check resources"
@@ -3680,6 +3710,9 @@ msgstr "Commit failed: {0}"
 msgid "Commit message"
 msgstr "Commit message"
 
+msgid "Commit or stash pending changes in the source and destination workspaces first."
+msgstr "Commit or stash pending changes in the source and destination workspaces first."
+
 msgid "Commits"
 msgstr "Commits"
 
@@ -3731,6 +3764,9 @@ msgstr "Compared against the default style"
 msgid "complete"
 msgstr "complete"
 
+msgid "Complete integration"
+msgstr "Complete integration"
+
 msgid "Completed"
 msgstr "Completed"
 
@@ -3773,6 +3809,9 @@ msgstr "Configure the automation yourself"
 msgid "Configure the in-app browser"
 msgstr "Configure the in-app browser"
 
+msgid "Configure the principal branch and remote in project settings."
+msgstr "Configure the principal branch and remote in project settings."
+
 msgid "Configure which agents appear in launchers and how their launches are built."
 msgstr "Configure which agents appear in launchers and how their launches are built."
 
@@ -3784,6 +3823,9 @@ msgstr "Confirm"
 
 msgid "Confirm before quitting"
 msgstr "Confirm before quitting"
+
+msgid "Conflicting files"
+msgstr "Conflicting files"
 
 msgid "Connect"
 msgstr "Connect"
@@ -4284,6 +4326,9 @@ msgstr "Could not delete file"
 
 msgid "Could not delete this page"
 msgstr "Could not delete this page"
+
+msgid "Could not fetch the principal branch. Check your connection, credentials, and remote branch."
+msgstr "Could not fetch the principal branch. Check your connection, credentials, and remote branch."
 
 msgid "Could not forget {domain}"
 msgstr "Could not forget {domain}"
@@ -6612,6 +6657,9 @@ msgstr "File actions"
 msgid "File changes"
 msgstr "File changes"
 
+msgid "File deleted"
+msgstr "File deleted"
+
 msgid "File is too large to preview"
 msgstr "File is too large to preview"
 
@@ -6743,6 +6791,9 @@ msgstr "Finder"
 
 msgid "Finish review"
 msgstr "Finish review"
+
+msgid "Finish the pending Git operation first."
+msgstr "Finish the pending Git operation first."
 
 msgid "Finished"
 msgstr "Finished"
@@ -7086,6 +7137,9 @@ msgstr "Git & Worktrees"
 
 msgid "Git author name"
 msgstr "Git author name"
+
+msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
+msgstr "Git integration failed. Check the repository and retry, or cancel the attempt."
 
 msgid "GitHub"
 msgstr "GitHub"
@@ -7824,6 +7878,9 @@ msgstr "Installs"
 msgid "Instructions"
 msgstr "Instructions"
 
+msgid "Integrate committed changes locally. These settings do not change workspace creation or pull requests."
+msgstr "Integrate committed changes locally. These settings do not change workspace creation or pull requests."
+
 msgid "Integrations"
 msgstr "Integrations"
 
@@ -8490,9 +8547,6 @@ msgstr "Load earlier messages"
 msgid "Load more"
 msgstr "Load more"
 
-msgid "Load older messages"
-msgstr "Load older messages"
-
 msgid "Loader"
 msgstr "Loader"
 
@@ -8759,6 +8813,9 @@ msgstr "Mark as not viewed"
 msgid "Mark as Read"
 msgstr "Mark as Read"
 
+msgid "Mark as resolved"
+msgstr "Mark as resolved"
+
 msgid "Mark as Unread"
 msgstr "Mark as Unread"
 
@@ -8905,6 +8962,12 @@ msgstr "Merge Commit"
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Merge failed: {0}"
+
+msgid "Merge into {branch}"
+msgstr "Merge into {branch}"
+
+msgid "Merge into principal"
+msgstr "Merge into principal"
 
 msgid "Merge pull request"
 msgstr "Merge pull request"
@@ -10807,6 +10870,9 @@ msgstr "Orchestration chat"
 msgid "Orchestration guide"
 msgstr "Orchestration guide"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "Organic search"
 
@@ -11309,6 +11375,9 @@ msgstr "Plugin marketplace"
 msgid "Plugins"
 msgstr "Plugins"
 
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
+
 msgid "Popover"
 msgstr "Popover"
 
@@ -11401,6 +11470,9 @@ msgstr "Preferences"
 msgid "Prefix"
 msgstr "Prefix"
 
+msgid "Preparation was interrupted. Cancel this attempt and start again."
+msgstr "Preparation was interrupted. Cancel this attempt and start again."
+
 msgid "Preparing"
 msgstr "Preparing"
 
@@ -11487,6 +11559,9 @@ msgstr "Primary Key"
 
 msgid "Primitives"
 msgstr "Primitives"
+
+msgid "Principal branch"
+msgstr "Principal branch"
 
 msgid "Print"
 msgstr "Print"
@@ -11597,6 +11672,9 @@ msgstr "Project set up at {0}"
 
 msgid "Project Settings"
 msgstr "Project Settings"
+
+msgid "Project settings changed. Cancel this attempt and start again."
+msgstr "Project settings changed. Cancel this attempt and start again."
 
 msgid "Project worktree location reset"
 msgstr "Project worktree location reset"
@@ -12101,6 +12179,9 @@ msgstr "Remote access"
 msgid "Remote Access"
 msgstr "Remote Access"
 
+msgid "Remote for updates"
+msgstr "Remote for updates"
+
 msgid "Remote MCP server — connects over HTTP"
 msgstr "Remote MCP server — connects over HTTP"
 
@@ -12432,6 +12513,9 @@ msgstr "Resolve"
 msgid "Resolve all"
 msgstr "Resolve all"
 
+msgid "Resolve all conflicts before completing the integration."
+msgstr "Resolve all conflicts before completing the integration."
+
 msgid "Resolve Conflicts to Merge"
 msgstr "Resolve Conflicts to Merge"
 
@@ -12449,6 +12533,9 @@ msgstr "Resolve thread"
 
 msgid "Resolved"
 msgstr "Resolved"
+
+msgid "Resolved content"
+msgstr "Resolved content"
 
 msgid "Resource consumption"
 msgstr "Resource consumption"
@@ -12561,6 +12648,12 @@ msgstr "Resume args"
 
 msgid "Resume automation"
 msgstr "Resume automation"
+
+msgid "Resume integration"
+msgstr "Resume integration"
+
+msgid "Resume or cancel the existing integration first."
+msgstr "Resume or cancel the existing integration first."
 
 #. placeholder {0}: candidate.agentLabel
 msgid "Resuming {0}…"
@@ -13225,6 +13318,9 @@ msgstr "See where your last 30 days land on the public leaderboard. Token counts
 msgid "Select"
 msgstr "Select"
 
+msgid "Select a branch"
+msgstr "Select a branch"
+
 msgid "Select a default preset"
 msgstr "Select a default preset"
 
@@ -13242,6 +13338,9 @@ msgstr "Select a project to see pull requests."
 
 msgid "Select a pull request to preview it here."
 msgstr "Select a pull request to preview it here."
+
+msgid "Select a remote"
+msgstr "Select a remote"
 
 msgid "Select a team"
 msgstr "Select a team"
@@ -13538,11 +13637,11 @@ msgstr "Setting up in the background..."
 msgid "Settings"
 msgstr "Settings"
 
-msgid "Settings ({settingsHotkey})"
-msgstr "Settings ({settingsHotkey})"
-
 msgid "Settings → Remote Access → “Allow remote access to this device via relay”."
 msgstr "Settings → Remote Access → “Allow remote access to this device via relay”."
+
+msgid "Settings saved"
+msgstr "Settings saved"
 
 msgid "Settings..."
 msgstr "Settings..."
@@ -15059,11 +15158,17 @@ msgstr "The Codex sign-in"
 msgid "The config repository must be one of the environment's repositories"
 msgstr "The config repository must be one of the environment's repositories"
 
+msgid "The configured remote no longer exists."
+msgstr "The configured remote no longer exists."
+
 msgid "The connection timed out"
 msgstr "The connection timed out"
 
 msgid "The connection was closed"
 msgstr "The connection was closed"
+
+msgid "The current branch is already the principal branch."
+msgstr "The current branch is already the principal branch."
 
 msgid "The current prompt will be replaced with the selected version. A new \"Restored\" entry will be added to history so you can undo this."
 msgstr "The current prompt will be replaced with the selected version. A new \"Restored\" entry will be added to history so you can undo this."
@@ -15076,6 +15181,12 @@ msgstr "The desktop app runs on macOS and Linux today. Drop your email and we'll
 
 msgid "The desktop app runs on macOS, with an experimental Linux AppImage; Windows is not yet available. Beyond the desktop app there's a CLI, a TypeScript SDK, and an MCP server, so you can drive Superset from scripts, terminals, and other agents."
 msgstr "The desktop app runs on macOS, with an experimental Linux AppImage; Windows is not yet available. Beyond the desktop app there's a CLI, a TypeScript SDK, and an MCP server, so you can drive Superset from scripts, terminals, and other agents."
+
+msgid "The destination branch is checked out in multiple worktrees."
+msgstr "The destination branch is checked out in multiple worktrees."
+
+msgid "The destination stays unchanged until completion. Closing this window keeps the attempt available to resume."
+msgstr "The destination stays unchanged until completion. Closing this window keeps the attempt available to resume."
 
 msgid "The device that hosts this project is unavailable."
 msgstr "The device that hosts this project is unavailable."
@@ -15233,6 +15344,9 @@ msgstr "The page you're looking for doesn't exist."
 
 msgid "The people behind Superset."
 msgstr "The people behind Superset."
+
+msgid "The principal branch does not exist locally."
+msgstr "The principal branch does not exist locally."
 
 msgid "The project's checkout as it is: files and branch are shared"
 msgstr "The project's checkout as it is: files and branch are shared"
@@ -15509,6 +15623,9 @@ msgstr "This month"
 
 msgid "This only changes the display name, not the branch."
 msgstr "This only changes the display name, not the branch."
+
+msgid "This operation is disabled for this project."
+msgstr "This operation is disabled for this project."
 
 msgid "this organization"
 msgstr "this organization"
@@ -16250,6 +16367,12 @@ msgstr "Update daemon"
 msgid "Update Error"
 msgstr "Update Error"
 
+msgid "Update from {remote}/{branch}"
+msgstr "Update from {remote}/{branch}"
+
+msgid "Update from remote principal"
+msgstr "Update from remote principal"
+
 msgid "Update host service"
 msgstr "Update host service"
 
@@ -16369,6 +16492,9 @@ msgstr "Usage unavailable."
 #. placeholder {0}: search.trim()
 msgid "Use “{0}”"
 msgstr "Use “{0}”"
+
+msgid "Use {label}"
+msgstr "Use {label}"
 
 msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
 msgstr "Use a small local CLI model for branch names, commit messages, and pull request drafts."
@@ -16955,6 +17081,9 @@ msgstr "Working"
 msgctxt "agent status"
 msgid "Working"
 msgstr "Working"
+
+msgid "Working for {duration}"
+msgstr "Working for {duration}"
 
 msgid "Works when environments are clean. Environments are rarely clean."
 msgstr "Works when environments are clean. Environments are rarely clean."

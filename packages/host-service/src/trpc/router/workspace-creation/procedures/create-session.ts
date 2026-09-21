@@ -12,6 +12,7 @@ import {
 	getLocalWorkspace,
 	insertLocalWorkspace,
 	toCloudShape,
+	updateLocalWorkspace,
 } from "../../../../workspaces/local-workspace-store";
 import { protectedProcedure } from "../../../index";
 import { validateAgentLaunchOptions } from "../../agents";
@@ -25,7 +26,10 @@ import {
 	defaultSessionsRoot,
 	safeResolveSessionPath,
 } from "../shared/session-paths";
-import { sanitizeBranchCandidate } from "../utils/ai-workspace-names";
+import {
+	generateWorkspaceNamesFromPrompt,
+	sanitizeBranchCandidate,
+} from "../utils/ai-workspace-names";
 import { deduplicateBranchName } from "../utils/sanitize-branch";
 
 const createSessionInputSchema = z.object({
@@ -87,9 +91,27 @@ export const createSession = protectedProcedure
 		}
 
 		const typedName = input.name?.trim();
+		// AI title, same contract as `workspaces.create`: only when the
+		// caller supplied a prompt but no name. Sessions never rename their
+		// folder — the generated title only relabels the row.
+		const composerPrompt =
+			input.agents?.[0]?.prompt?.trim() || input.namingPrompt?.trim() || "";
+		const wantAi = input.name === undefined && !!composerPrompt;
+		const namingAgent = input.agents?.[0]?.agent;
+		const aiNamesPromise = wantAi
+			? generateWorkspaceNamesFromPrompt(
+					composerPrompt,
+					namingAgent ? { db: ctx.db, agent: namingAgent } : undefined,
+				).catch((err) => {
+					console.warn("[workspaces.createSession] AI naming failed", err);
+					return null;
+				})
+			: null;
+
+		const claimed = claimedSessionNames(ctx);
 		const folderCandidate =
 			(typedName ? sanitizeBranchCandidate(typedName) : "") ||
-			generateFriendlyBranchName();
+			generateFriendlyBranchName(claimed);
 
 		mkdirSync(defaultSessionsRoot(), { recursive: true });
 
@@ -157,6 +179,11 @@ export const createSession = protectedProcedure
 				}
 			}
 			throw err;
+		}
+
+		const aiNames = aiNamesPromise ? await aiNamesPromise : null;
+		if (aiNames?.title) {
+			row = updateLocalWorkspace(ctx, row.id, { name: aiNames.title }) ?? row;
 		}
 
 		const terminalsResult: Array<{ terminalId: string; label: string }> = [];

@@ -1217,6 +1217,9 @@ msgstr "更好用的應用程式內瀏覽器：預覽改動，點選任意元素
 msgid "A better Superset is ready"
 msgstr "更好的 Superset 已準備就緒"
 
+msgid "A branch changed during integration. Cancel this attempt and start again."
+msgstr "整合期間分支發生了變化。請取消本次嘗試並重新開始。"
+
 #. js-lingui-explicit-id
 msgid "serverError.common.cloudWorkspaceCannotCallThis"
 msgstr "雲端工作區無法呼叫 {path}。請在你已登入的用戶端中執行。"
@@ -1754,6 +1757,9 @@ msgstr "所有評論"
 msgid "All commits"
 msgstr "所有提交"
 
+msgid "All conflicts are resolved. Complete the integration when ready."
+msgstr "所有衝突均已解決。準備好後請完成整合。"
+
 #. placeholder {0}: members.length
 msgid "All data will be permanently deleted for all {0} members — this cannot be undone."
 msgstr "全部{0}名成員的所有資料都將被永久刪除——此操作無法復原。"
@@ -1860,11 +1866,17 @@ msgstr "允許通過中繼存取"
 msgid "Allow for session"
 msgstr "本次會話內允許"
 
+msgid "Allow merge into principal"
+msgstr "允許合併至主分支"
+
 msgid "Allow microphone access to use dictation"
 msgstr "請允許麥克風存取以使用語音輸入"
 
 msgid "Allow remote access to this device via relay"
 msgstr "允許透過中繼遠端存取此裝置"
+
+msgid "Allow update from remote principal"
+msgstr "允許從遠端主分支更新"
 
 msgid "Allowed"
 msgstr "已允許"
@@ -1958,6 +1970,9 @@ msgstr "匿名組裝工"
 
 msgid "another device"
 msgstr "另一臺裝置"
+
+msgid "Another integration operation is running. Try again shortly."
+msgstr "另一個整合操作正在執行。請稍後重試。"
 
 msgid "Answered"
 msgstr "已回答"
@@ -2596,6 +2611,9 @@ msgstr "二進位檔案已更改"
 msgid "Binary file hidden"
 msgstr "二進位檔案已隱藏"
 
+msgid "Binary, large, or special file. Choose a version to resolve."
+msgstr "二進位、大型或特殊檔案。請選擇一個版本來解決衝突。"
+
 msgid "Bio"
 msgstr "簡介"
 
@@ -2661,6 +2679,12 @@ msgstr "本裝置上新建工作區的分支行為。專案可以單獨覆蓋字
 
 msgid "Branch copied"
 msgstr "分支已複製"
+
+msgid "Branch integration"
+msgstr "分支整合"
+
+msgid "Branch integration completed"
+msgstr "分支整合已完成"
 
 msgid "branch name"
 msgstr "分支名稱"
@@ -2913,6 +2937,9 @@ msgstr "取消下載"
 msgid "Cancel edits"
 msgstr "取消編輯"
 
+msgid "Cancel integration"
+msgstr "取消整合"
+
 msgid "Cancel plan"
 msgstr "取消方案"
 
@@ -3083,6 +3110,9 @@ msgstr "檢查更新..."
 
 msgid "Check on running agents and read what they changed from your phone."
 msgstr "在手機上查看執行中的 agent，並閱讀它們變更了哪些內容。"
+
+msgid "Check out a branch before continuing."
+msgstr "請先切換至一個分支再繼續。"
 
 msgid "Check resources"
 msgstr "檢查資源"
@@ -3680,6 +3710,9 @@ msgstr "提交失敗：{0}"
 msgid "Commit message"
 msgstr "提交訊息"
 
+msgid "Commit or stash pending changes in the source and destination workspaces first."
+msgstr "請先提交或暫存來源與目標工作區中待處理的變更。"
+
 msgid "Commits"
 msgstr "提交"
 
@@ -3731,6 +3764,9 @@ msgstr "與預設樣式做了對比"
 msgid "complete"
 msgstr "已結束"
 
+msgid "Complete integration"
+msgstr "完成整合"
+
 msgid "Completed"
 msgstr "完成時間"
 
@@ -3773,6 +3809,9 @@ msgstr "自行設定自動化"
 msgid "Configure the in-app browser"
 msgstr "配置應用程式內瀏覽器"
 
+msgid "Configure the principal branch and remote in project settings."
+msgstr "請在專案設定中設定主分支與遠端儲存庫。"
+
 msgid "Configure which agents appear in launchers and how their launches are built."
 msgstr "配置哪些代理程式出現在啟動器中，以及它們的啟動方式。"
 
@@ -3784,6 +3823,9 @@ msgstr "確認"
 
 msgid "Confirm before quitting"
 msgstr "退出前確認"
+
+msgid "Conflicting files"
+msgstr "衝突檔案"
 
 msgid "Connect"
 msgstr "連線"
@@ -4284,6 +4326,9 @@ msgstr "無法刪除檔案"
 
 msgid "Could not delete this page"
 msgstr "無法刪除這個頁面"
+
+msgid "Could not fetch the principal branch. Check your connection, credentials, and remote branch."
+msgstr "無法取得主分支。請檢查連線、憑證與遠端分支。"
 
 msgid "Could not forget {domain}"
 msgstr "無法忘記{domain}"
@@ -6612,6 +6657,9 @@ msgstr "檔案操作"
 msgid "File changes"
 msgstr "檔案變更"
 
+msgid "File deleted"
+msgstr "檔案已刪除"
+
 msgid "File is too large to preview"
 msgstr "檔案過大，無法預覽"
 
@@ -6743,6 +6791,9 @@ msgstr "Finder"
 
 msgid "Finish review"
 msgstr "完成審查"
+
+msgid "Finish the pending Git operation first."
+msgstr "請先完成待處理的 Git 操作。"
 
 msgid "Finished"
 msgstr "已完成"
@@ -7086,6 +7137,9 @@ msgstr "Git與worktree"
 
 msgid "Git author name"
 msgstr "Git作者名"
+
+msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
+msgstr "Git 整合失敗。請檢查儲存庫並重試，或取消本次嘗試。"
 
 msgid "GitHub"
 msgstr "GitHub"
@@ -7824,6 +7878,9 @@ msgstr "安裝"
 msgid "Instructions"
 msgstr "說明"
 
+msgid "Integrate committed changes locally. These settings do not change workspace creation or pull requests."
+msgstr "在本機整合已提交的變更。這些設定不會變更工作區建立方式或提取請求。"
+
 msgid "Integrations"
 msgstr "整合"
 
@@ -8490,9 +8547,6 @@ msgstr "載入更早的訊息"
 msgid "Load more"
 msgstr "載入更多"
 
-msgid "Load older messages"
-msgstr "載入較早的訊息"
-
 msgid "Loader"
 msgstr "載入器"
 
@@ -8759,6 +8813,9 @@ msgstr "標記為未檢視"
 msgid "Mark as Read"
 msgstr "標為已讀"
 
+msgid "Mark as resolved"
+msgstr "標記為已解決"
+
 msgid "Mark as Unread"
 msgstr "標為未讀"
 
@@ -8905,6 +8962,12 @@ msgstr "合併提交"
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "合併失敗：{0}"
+
+msgid "Merge into {branch}"
+msgstr "合併至 {branch}"
+
+msgid "Merge into principal"
+msgstr "合併至主分支"
 
 msgid "Merge pull request"
 msgstr "合併拉取請求"
@@ -10807,6 +10870,9 @@ msgstr "編排聊天"
 msgid "Orchestration guide"
 msgstr "編排指南"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "自然搜尋"
 
@@ -11309,6 +11375,9 @@ msgstr "外掛市場"
 msgid "Plugins"
 msgstr "外掛"
 
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
+
 msgid "Popover"
 msgstr "氣泡卡片"
 
@@ -11401,6 +11470,9 @@ msgstr "偏好設定"
 msgid "Prefix"
 msgstr "字首"
 
+msgid "Preparation was interrupted. Cancel this attempt and start again."
+msgstr "準備作業已中斷。請取消本次嘗試並重新開始。"
+
 msgid "Preparing"
 msgstr "正在準備"
 
@@ -11487,6 +11559,9 @@ msgstr "主鍵"
 
 msgid "Primitives"
 msgstr "基礎元件"
+
+msgid "Principal branch"
+msgstr "主分支"
 
 msgid "Print"
 msgstr "列印"
@@ -11597,6 +11672,9 @@ msgstr "專案已設定在{0}"
 
 msgid "Project Settings"
 msgstr "專案設定"
+
+msgid "Project settings changed. Cancel this attempt and start again."
+msgstr "專案設定已變更。請取消本次嘗試並重新開始。"
 
 msgid "Project worktree location reset"
 msgstr "已重置專案worktree位置"
@@ -12101,6 +12179,9 @@ msgstr "遠端存取"
 msgid "Remote Access"
 msgstr "遠端存取"
 
+msgid "Remote for updates"
+msgstr "用於更新的遠端儲存庫"
+
 msgid "Remote MCP server — connects over HTTP"
 msgstr "遠端MCP伺服器，通過HTTP連線"
 
@@ -12432,6 +12513,9 @@ msgstr "解決"
 msgid "Resolve all"
 msgstr "全部解決"
 
+msgid "Resolve all conflicts before completing the integration."
+msgstr "請先解決所有衝突再完成整合。"
+
 msgid "Resolve Conflicts to Merge"
 msgstr "解決衝突後才能合併"
 
@@ -12449,6 +12533,9 @@ msgstr "解決討論串"
 
 msgid "Resolved"
 msgstr "已解決"
+
+msgid "Resolved content"
+msgstr "解決後的內容"
 
 msgid "Resource consumption"
 msgstr "資源佔用"
@@ -12561,6 +12648,12 @@ msgstr "恢復引數"
 
 msgid "Resume automation"
 msgstr "恢復自動化"
+
+msgid "Resume integration"
+msgstr "繼續整合"
+
+msgid "Resume or cancel the existing integration first."
+msgstr "請先繼續或取消現有整合。"
 
 #. placeholder {0}: candidate.agentLabel
 msgid "Resuming {0}…"
@@ -13225,6 +13318,9 @@ msgstr "看看你最近 30 天的表現在公開排行榜上的位置。僅包�
 msgid "Select"
 msgstr "選擇框"
 
+msgid "Select a branch"
+msgstr "選擇分支"
+
 msgid "Select a default preset"
 msgstr "選擇預設組合"
 
@@ -13242,6 +13338,9 @@ msgstr "選擇一個專案來檢視拉取請求。"
 
 msgid "Select a pull request to preview it here."
 msgstr "選擇一個拉取請求，在這裡預覽。"
+
+msgid "Select a remote"
+msgstr "選擇遠端儲存庫"
 
 msgid "Select a team"
 msgstr "選擇團隊"
@@ -13538,11 +13637,11 @@ msgstr "正在背景配置..."
 msgid "Settings"
 msgstr "設定"
 
-msgid "Settings ({settingsHotkey})"
-msgstr "設定（{settingsHotkey}）"
-
 msgid "Settings → Remote Access → “Allow remote access to this device via relay”."
 msgstr "設定 → 遠端存取 → 「允許遠端工作區通過中繼存取此裝置」。"
+
+msgid "Settings saved"
+msgstr "設定已儲存"
 
 msgid "Settings..."
 msgstr "設定..."
@@ -15059,11 +15158,17 @@ msgstr "Codex登入"
 msgid "The config repository must be one of the environment's repositories"
 msgstr "設定儲存庫必須是該環境的儲存庫之一"
 
+msgid "The configured remote no longer exists."
+msgstr "設定的遠端儲存庫已不存在。"
+
 msgid "The connection timed out"
 msgstr "連線已逾時"
 
 msgid "The connection was closed"
 msgstr "連線已被關閉"
+
+msgid "The current branch is already the principal branch."
+msgstr "目前分支已經是主分支。"
 
 msgid "The current prompt will be replaced with the selected version. A new \"Restored\" entry will be added to history so you can undo this."
 msgstr "目前提示詞會被所選版本替換。歷史中會新增一條「已恢復」記錄，方便你復原。"
@@ -15076,6 +15181,12 @@ msgstr "我們正在把Superset帶到Windows和Linux。留下電子郵件，一�
 
 msgid "The desktop app runs on macOS, with an experimental Linux AppImage; Windows is not yet available. Beyond the desktop app there's a CLI, a TypeScript SDK, and an MCP server, so you can drive Superset from scripts, terminals, and other agents."
 msgstr "桌面應用程式支援macOS，另有實驗性的Linux AppImage；Windows暫未提供。除了桌面應用程式，還有CLI、TypeScript SDK和MCP伺服器，你可以從指令碼、終端和其他代理程式來驅動Superset。"
+
+msgid "The destination branch is checked out in multiple worktrees."
+msgstr "目標分支已在多個工作樹中簽出。"
+
+msgid "The destination stays unchanged until completion. Closing this window keeps the attempt available to resume."
+msgstr "完成前目標維持不變。關閉此視窗後仍可繼續本次嘗試。"
 
 msgid "The device that hosts this project is unavailable."
 msgstr "承載這個專案的裝置不可用。"
@@ -15233,6 +15344,9 @@ msgstr "你要找的頁面不存在。"
 
 msgid "The people behind Superset."
 msgstr "Superset背後的團隊。"
+
+msgid "The principal branch does not exist locally."
+msgstr "主分支在本機不存在。"
 
 msgid "The project's checkout as it is: files and branch are shared"
 msgstr "按原樣使用專案的簽出: 檔案和分支是共用的"
@@ -15509,6 +15623,9 @@ msgstr "本月"
 
 msgid "This only changes the display name, not the branch."
 msgstr "這只會更改顯示名稱，不會更改分支。"
+
+msgid "This operation is disabled for this project."
+msgstr "此專案已停用該操作。"
 
 msgid "this organization"
 msgstr "此組織"
@@ -16250,6 +16367,12 @@ msgstr "更新守護程式"
 msgid "Update Error"
 msgstr "更新出錯"
 
+msgid "Update from {remote}/{branch}"
+msgstr "從 {remote}/{branch} 更新"
+
+msgid "Update from remote principal"
+msgstr "從遠端主分支更新"
+
 msgid "Update host service"
 msgstr "更新主機服務"
 
@@ -16369,6 +16492,9 @@ msgstr "無法獲取用量。"
 #. placeholder {0}: search.trim()
 msgid "Use “{0}”"
 msgstr "使用「{0}」"
+
+msgid "Use {label}"
+msgstr "使用 {label}"
 
 msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
 msgstr "使用小型本機 CLI 模型產生分支名稱、提交訊息和提取要求草稿。"
@@ -16955,6 +17081,9 @@ msgstr "工作中"
 msgctxt "agent status"
 msgid "Working"
 msgstr "執行中"
+
+msgid "Working for {duration}"
+msgstr "正在工作 {duration}"
 
 msgid "Works when environments are clean. Environments are rarely clean."
 msgstr "環境乾淨時可行。而環境很少乾淨。"

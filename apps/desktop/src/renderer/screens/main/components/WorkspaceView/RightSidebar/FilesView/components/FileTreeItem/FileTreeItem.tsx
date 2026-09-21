@@ -7,9 +7,9 @@ import {
 	ContextMenuTrigger,
 } from "@superset/ui/context-menu";
 import { cn } from "@superset/ui/utils";
+import { ChevronRight } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
-	LuChevronDown,
-	LuChevronRight,
 	LuClipboard,
 	LuCopy,
 	LuExternalLink,
@@ -22,6 +22,8 @@ import {
 import type { DirectoryEntry } from "shared/file-tree-types";
 import { useFileDrag, usePathActions } from "../../../ChangesView/hooks";
 import { FileIcon } from "../../utils";
+
+const ICON_SWAP = { type: "spring", duration: 0.3, bounce: 0 } as const;
 
 interface FileTreeItemProps {
 	item: ItemInstance<DirectoryEntry>;
@@ -52,6 +54,7 @@ export function FileTreeItem({
 	onRename,
 	onDelete,
 }: FileTreeItemProps) {
+	const reduce = useReducedMotion() ?? false;
 	const isFolder = entry.isDirectory;
 	const isExpanded = item.isExpanded();
 	const level = item.getItemMeta().level;
@@ -118,34 +121,79 @@ export function FileTreeItem({
 			}}
 			role="treeitem"
 			tabIndex={0}
+			aria-selected={item.isSelected()}
 			aria-expanded={isFolder ? isExpanded : undefined}
 			className={cn(
-				"flex items-center gap-1 px-1 cursor-pointer select-none",
-				"hover:bg-accent/50 transition-colors",
-				item.isSelected() && "bg-accent",
+				"group/file-tree relative flex w-full items-center gap-1 overflow-hidden rounded-sm px-1",
+				"cursor-pointer select-none text-muted-foreground outline-none",
+				"transition-colors hover:bg-accent/50 hover:text-foreground",
+				"focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+				item.isSelected() && "bg-accent font-medium text-foreground",
 			)}
 			onClick={handleClick}
 			onDoubleClick={handleDoubleClick}
 			onKeyDown={handleKeyDown}
 		>
-			<span className="flex items-center justify-center w-4 h-4 shrink-0">
-				{isFolder ? (
-					isExpanded ? (
-						<LuChevronDown className="size-3.5 text-muted-foreground" />
-					) : (
-						<LuChevronRight className="size-3.5 text-muted-foreground" />
-					)
-				) : null}
+			{level > 0 ? (
+				<span
+					aria-hidden="true"
+					className="pointer-events-none absolute inset-y-0 w-px bg-border/70"
+					style={{ left: 8 + (level - 1) * indent }}
+				/>
+			) : null}
+
+			<motion.span
+				aria-hidden="true"
+				initial={false}
+				animate={{ rotate: isExpanded ? 90 : 0 }}
+				transition={reduce ? { duration: 0 } : ICON_SWAP}
+				className={cn(
+					"relative z-10 grid size-4 shrink-0 place-items-center",
+					!isFolder && "opacity-0",
+				)}
+			>
+				<ChevronRight className="size-3.5" />
+			</motion.span>
+
+			<span
+				aria-hidden="true"
+				className={cn(
+					"relative z-10 grid size-4 shrink-0 place-items-center",
+					"text-muted-foreground transition-colors group-hover/file-tree:text-foreground",
+					isFolder && isExpanded && "text-foreground",
+				)}
+			>
+				{reduce ? (
+					<FileIcon
+						fileName={entry.name}
+						isDirectory={isFolder}
+						isOpen={isExpanded}
+						className="size-4"
+					/>
+				) : (
+					<AnimatePresence initial={false} mode="popLayout">
+						<motion.span
+							key={isFolder ? (isExpanded ? "open" : "closed") : "file"}
+							initial={{ opacity: 0, scale: 0.25, filter: "blur(4px)" }}
+							animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+							exit={{ opacity: 0, scale: 0.25, filter: "blur(4px)" }}
+							transition={ICON_SWAP}
+							className="absolute inset-0 grid place-items-center"
+						>
+							<FileIcon
+								fileName={entry.name}
+								isDirectory={isFolder}
+								isOpen={isExpanded}
+								className="size-4"
+							/>
+						</motion.span>
+					</AnimatePresence>
+				)}
 			</span>
 
-			<FileIcon
-				fileName={entry.name}
-				isDirectory={isFolder}
-				isOpen={isExpanded}
-				className="size-4 shrink-0"
-			/>
-
-			<span className="flex-1 min-w-0 text-xs truncate">{entry.name}</span>
+			<span className="relative z-10 min-w-0 flex-1 truncate text-xs">
+				{entry.name}
+			</span>
 		</div>
 	);
 

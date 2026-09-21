@@ -15,6 +15,7 @@ export type SettingsSection =
 	| "ai"
 	| "agents"
 	| "codexChat"
+	| "pokedex"
 	| "terminal"
 	| "links"
 	| "experimental"

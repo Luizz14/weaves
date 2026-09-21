@@ -36,6 +36,7 @@ import { StateScreenShell } from "../components/StateScreenShell";
 import { useWorkspace } from "../providers/WorkspaceProvider";
 import { AddTabMenu } from "./components/AddTabMenu";
 import { BackgroundTerminalsButton } from "./components/BackgroundTerminalsButton";
+import { BranchIntegrationControl } from "./components/BranchIntegrationControl";
 import { ChangesControl } from "./components/ChangesControl";
 import { V2NotificationStatusIndicator } from "./components/V2NotificationStatusIndicator";
 import { V2PresetsBar } from "./components/V2PresetsBar";
@@ -458,6 +459,12 @@ function V2WorkspaceContent() {
 										<BackgroundTerminalsButton
 											workspaceId={workspaceId}
 											store={store}
+										/>
+									)}
+									{isLayoutReady && (
+										<BranchIntegrationControl
+											key={workspaceId}
+											workspaceId={workspaceId}
 										/>
 									)}
 									{isLayoutReady && (

@@ -208,6 +208,10 @@
 			"types": "./src/workspace-launch/index.ts",
 			"default": "./src/workspace-launch/index.ts"
 		},
+		"./ordem-paranormal": {
+			"types": "./src/ordem-paranormal/index.ts",
+			"default": "./src/ordem-paranormal/index.ts"
+		},
 		"./agent-settings": {
 			"types": "./src/agent-settings.ts",
 			"default": "./src/agent-settings.ts"

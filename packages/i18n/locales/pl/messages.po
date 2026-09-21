@@ -1217,6 +1217,9 @@ msgstr "Lepsza przeglądarka w aplikacji: podejrzyj swoje zmiany i kliknij dowol
 msgid "A better Superset is ready"
 msgstr "Lepsza wersja Superset jest gotowa"
 
+msgid "A branch changed during integration. Cancel this attempt and start again."
+msgstr "Gałąź zmieniła się podczas integracji. Anuluj tę próbę i zacznij ponownie."
+
 #. js-lingui-explicit-id
 msgid "serverError.common.cloudWorkspaceCannotCallThis"
 msgstr "Workspace w chmurze nie może wywołać {path}. Zrób to z klienta, do którego jesteś zalogowany."
@@ -1754,6 +1757,9 @@ msgstr "Wszystkie komentarze"
 msgid "All commits"
 msgstr "Wszystkie commity"
 
+msgid "All conflicts are resolved. Complete the integration when ready."
+msgstr "Wszystkie konflikty rozwiązano. Zakończ integrację, gdy będziesz gotowy."
+
 #. placeholder {0}: members.length
 msgid "All data will be permanently deleted for all {0} members — this cannot be undone."
 msgstr "Wszystkie dane zostaną trwale usunięte dla wszystkich {0} członków — tej operacji nie można cofnąć."
@@ -1860,11 +1866,17 @@ msgstr "Zezwól na dostęp przez przekaźnik"
 msgid "Allow for session"
 msgstr "Zezwól na czas sesji"
 
+msgid "Allow merge into principal"
+msgstr "Zezwalaj na scalanie do gałęzi głównej"
+
 msgid "Allow microphone access to use dictation"
 msgstr "Zezwól na dostęp do mikrofonu, aby korzystać z dyktowania"
 
 msgid "Allow remote access to this device via relay"
 msgstr "Zezwól na zdalny dostęp do tego urządzenia przez przekaźnik"
+
+msgid "Allow update from remote principal"
+msgstr "Zezwalaj na aktualizację ze zdalnej gałęzi głównej"
 
 msgid "Allowed"
 msgstr "Dozwolone"
@@ -1958,6 +1970,9 @@ msgstr "Anonimowy Monter"
 
 msgid "another device"
 msgstr "inne urządzenie"
+
+msgid "Another integration operation is running. Try again shortly."
+msgstr "Trwa inna integracja. Spróbuj ponownie za chwilę."
 
 msgid "Answered"
 msgstr "Odpowiedziano"
@@ -2596,6 +2611,9 @@ msgstr "Zmieniono plik binarny"
 msgid "Binary file hidden"
 msgstr "Plik binarny ukryty"
 
+msgid "Binary, large, or special file. Choose a version to resolve."
+msgstr "Plik binarny, duży lub specjalny. Wybierz wersję, aby rozwiązać konflikt."
+
 msgid "Bio"
 msgstr "O sobie"
 
@@ -2661,6 +2679,12 @@ msgstr "Zachowanie gałęzi dla nowych obszarów roboczych na tym urządzeniu. P
 
 msgid "Branch copied"
 msgstr "Skopiowano gałąź"
+
+msgid "Branch integration"
+msgstr "Integracja gałęzi"
+
+msgid "Branch integration completed"
+msgstr "Integracja gałęzi zakończona"
 
 msgid "branch name"
 msgstr "nazwa gałęzi"
@@ -2913,6 +2937,9 @@ msgstr "Anuluj pobieranie"
 msgid "Cancel edits"
 msgstr "Anuluj edycję"
 
+msgid "Cancel integration"
+msgstr "Anuluj integrację"
+
 msgid "Cancel plan"
 msgstr "Anuluj plan"
 
@@ -3083,6 +3110,9 @@ msgstr "Sprawdź aktualizacje..."
 
 msgid "Check on running agents and read what they changed from your phone."
 msgstr "Sprawdzaj działających agentów i czytaj ich zmiany z telefonu."
+
+msgid "Check out a branch before continuing."
+msgstr "Przełącz się na gałąź przed kontynuowaniem."
 
 msgid "Check resources"
 msgstr "Sprawdź zasoby"
@@ -3680,6 +3710,9 @@ msgstr "Commit nie powiódł się: {0}"
 msgid "Commit message"
 msgstr "Opis commita"
 
+msgid "Commit or stash pending changes in the source and destination workspaces first."
+msgstr "Najpierw zatwierdź lub odłóż zmiany w źródłowym i docelowym obszarze roboczym."
+
 msgid "Commits"
 msgstr "Commity"
 
@@ -3731,6 +3764,9 @@ msgstr "Porównane ze stylem domyślnym"
 msgid "complete"
 msgstr "zakończony"
 
+msgid "Complete integration"
+msgstr "Zakończ integrację"
+
 msgid "Completed"
 msgstr "Zakończono"
 
@@ -3773,6 +3809,9 @@ msgstr "Samodzielnie skonfiguruj automatyzację"
 msgid "Configure the in-app browser"
 msgstr "Skonfiguruj przeglądarkę w aplikacji"
 
+msgid "Configure the principal branch and remote in project settings."
+msgstr "Skonfiguruj gałąź główną i repozytorium zdalne w ustawieniach projektu."
+
 msgid "Configure which agents appear in launchers and how their launches are built."
 msgstr "Skonfiguruj, którzy agenci pojawiają się w launcherach i jak budowane są ich uruchomienia."
 
@@ -3784,6 +3823,9 @@ msgstr "Potwierdź"
 
 msgid "Confirm before quitting"
 msgstr "Potwierdzaj przed zamknięciem"
+
+msgid "Conflicting files"
+msgstr "Pliki z konfliktami"
 
 msgid "Connect"
 msgstr "Połącz"
@@ -4284,6 +4326,9 @@ msgstr "Nie udało się usunąć pliku"
 
 msgid "Could not delete this page"
 msgstr "Nie udało się usunąć tej strony"
+
+msgid "Could not fetch the principal branch. Check your connection, credentials, and remote branch."
+msgstr "Nie udało się pobrać gałęzi głównej. Sprawdź połączenie, dane uwierzytelniające i gałąź zdalną."
 
 msgid "Could not forget {domain}"
 msgstr "Nie udało się zapomnieć {domain}"
@@ -6612,6 +6657,9 @@ msgstr "Akcje pliku"
 msgid "File changes"
 msgstr "Zmiany pliku"
 
+msgid "File deleted"
+msgstr "Plik usunięty"
+
 msgid "File is too large to preview"
 msgstr "Plik jest za duży, aby go podejrzeć"
 
@@ -6743,6 +6791,9 @@ msgstr "Finder"
 
 msgid "Finish review"
 msgstr "Zakończ przegląd"
+
+msgid "Finish the pending Git operation first."
+msgstr "Najpierw zakończ oczekującą operację Git."
 
 msgid "Finished"
 msgstr "Zakończono"
@@ -7086,6 +7137,9 @@ msgstr "Git i worktree"
 
 msgid "Git author name"
 msgstr "Nazwa autora w Git"
+
+msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
+msgstr "Integracja Git nie powiodła się. Sprawdź repozytorium i ponów próbę lub ją anuluj."
 
 msgid "GitHub"
 msgstr "GitHub"
@@ -7824,6 +7878,9 @@ msgstr "Instalacje"
 msgid "Instructions"
 msgstr "Instrukcje"
 
+msgid "Integrate committed changes locally. These settings do not change workspace creation or pull requests."
+msgstr "Integruj zatwierdzone zmiany lokalnie. Te ustawienia nie zmieniają tworzenia obszarów roboczych ani żądań scalenia."
+
 msgid "Integrations"
 msgstr "Integracje"
 
@@ -8490,9 +8547,6 @@ msgstr "Wczytaj wcześniejsze wiadomości"
 msgid "Load more"
 msgstr "Wczytaj więcej"
 
-msgid "Load older messages"
-msgstr "Wczytaj starsze wiadomości"
-
 msgid "Loader"
 msgstr "Wskaźnik ładowania"
 
@@ -8759,6 +8813,9 @@ msgstr "Oznacz jako nieprzejrzany"
 msgid "Mark as Read"
 msgstr "Oznacz jako przeczytane"
 
+msgid "Mark as resolved"
+msgstr "Oznacz jako rozwiązane"
+
 msgid "Mark as Unread"
 msgstr "Oznacz jako nieprzeczytane"
 
@@ -8905,6 +8962,12 @@ msgstr "Commit scalający"
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Scalanie nie powiodło się: {0}"
+
+msgid "Merge into {branch}"
+msgstr "Scal do {branch}"
+
+msgid "Merge into principal"
+msgstr "Scal do gałęzi głównej"
 
 msgid "Merge pull request"
 msgstr "Scal pull request"
@@ -10807,6 +10870,9 @@ msgstr "Czat orkiestracji"
 msgid "Orchestration guide"
 msgstr "Przewodnik po orkiestracji"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "Wyszukiwanie organiczne"
 
@@ -11309,6 +11375,9 @@ msgstr "Marketplace wtyczek"
 msgid "Plugins"
 msgstr "Wtyczki"
 
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
+
 msgid "Popover"
 msgstr "Popover"
 
@@ -11401,6 +11470,9 @@ msgstr "Preferencje"
 msgid "Prefix"
 msgstr "Prefiks"
 
+msgid "Preparation was interrupted. Cancel this attempt and start again."
+msgstr "Przygotowanie przerwano. Anuluj tę próbę i zacznij ponownie."
+
 msgid "Preparing"
 msgstr "Przygotowywanie"
 
@@ -11487,6 +11559,9 @@ msgstr "Klucz główny"
 
 msgid "Primitives"
 msgstr "Prymitywy"
+
+msgid "Principal branch"
+msgstr "Gałąź główna"
 
 msgid "Print"
 msgstr "Drukuj"
@@ -11597,6 +11672,9 @@ msgstr "Projekt skonfigurowany w {0}"
 
 msgid "Project Settings"
 msgstr "Ustawienia projektu"
+
+msgid "Project settings changed. Cancel this attempt and start again."
+msgstr "Ustawienia projektu zmieniły się. Anuluj tę próbę i zacznij ponownie."
 
 msgid "Project worktree location reset"
 msgstr "Zresetowano lokalizację worktree projektu"
@@ -12101,6 +12179,9 @@ msgstr "Dostęp zdalny"
 msgid "Remote Access"
 msgstr "Dostęp zdalny"
 
+msgid "Remote for updates"
+msgstr "Repozytorium zdalne do aktualizacji"
+
 msgid "Remote MCP server — connects over HTTP"
 msgstr "Zdalny serwer MCP — łączy się przez HTTP"
 
@@ -12432,6 +12513,9 @@ msgstr "Rozwiąż"
 msgid "Resolve all"
 msgstr "Rozwiąż wszystkie"
 
+msgid "Resolve all conflicts before completing the integration."
+msgstr "Rozwiąż wszystkie konflikty przed zakończeniem integracji."
+
 msgid "Resolve Conflicts to Merge"
 msgstr "Rozwiąż konflikty, aby scalić"
 
@@ -12449,6 +12533,9 @@ msgstr "Rozwiąż wątek"
 
 msgid "Resolved"
 msgstr "Rozwiązany"
+
+msgid "Resolved content"
+msgstr "Rozwiązana zawartość"
 
 msgid "Resource consumption"
 msgstr "Zużycie zasobów"
@@ -12561,6 +12648,12 @@ msgstr "Argumenty wznawiania"
 
 msgid "Resume automation"
 msgstr "Wznów automatyzację"
+
+msgid "Resume integration"
+msgstr "Wznów integrację"
+
+msgid "Resume or cancel the existing integration first."
+msgstr "Najpierw wznów lub anuluj istniejącą integrację."
 
 #. placeholder {0}: candidate.agentLabel
 msgid "Resuming {0}…"
@@ -13225,6 +13318,9 @@ msgstr "Zobacz, jak twoje ostatnie 30 dni wypada w publicznym rankingu. Tylko li
 msgid "Select"
 msgstr "Select"
 
+msgid "Select a branch"
+msgstr "Wybierz gałąź"
+
 msgid "Select a default preset"
 msgstr "Wybierz domyślne ustawienie"
 
@@ -13242,6 +13338,9 @@ msgstr "Wybierz projekt, aby zobaczyć pull requesty."
 
 msgid "Select a pull request to preview it here."
 msgstr "Wybierz pull request, aby zobaczyć tu podgląd."
+
+msgid "Select a remote"
+msgstr "Wybierz repozytorium zdalne"
 
 msgid "Select a team"
 msgstr "Wybierz zespół"
@@ -13538,11 +13637,11 @@ msgstr "Konfigurowanie w tle..."
 msgid "Settings"
 msgstr "Ustawienia"
 
-msgid "Settings ({settingsHotkey})"
-msgstr "Ustawienia ({settingsHotkey})"
-
 msgid "Settings → Remote Access → “Allow remote access to this device via relay”."
 msgstr "Ustawienia → Dostęp zdalny → „Zezwól na zdalny dostęp do tego urządzenia przez przekaźnik”."
+
+msgid "Settings saved"
+msgstr "Ustawienia zapisane"
 
 msgid "Settings..."
 msgstr "Ustawienia..."
@@ -15059,11 +15158,17 @@ msgstr "Logowanie Codex"
 msgid "The config repository must be one of the environment's repositories"
 msgstr "Repozytorium konfiguracji musi być jednym z repozytoriów środowiska"
 
+msgid "The configured remote no longer exists."
+msgstr "Skonfigurowane repozytorium zdalne już nie istnieje."
+
 msgid "The connection timed out"
 msgstr "Przekroczono czas połączenia"
 
 msgid "The connection was closed"
 msgstr "Połączenie zostało zamknięte"
+
+msgid "The current branch is already the principal branch."
+msgstr "Bieżąca gałąź jest już gałęzią główną."
 
 msgid "The current prompt will be replaced with the selected version. A new \"Restored\" entry will be added to history so you can undo this."
 msgstr "Bieżący prompt zostanie zastąpiony wybraną wersją. W historii pojawi się nowy wpis „Przywrócona”, dzięki czemu można to cofnąć."
@@ -15076,6 +15181,12 @@ msgstr "Pracujemy nad Superset na Windows i Linux. Zostaw e-mail, a damy znać, 
 
 msgid "The desktop app runs on macOS, with an experimental Linux AppImage; Windows is not yet available. Beyond the desktop app there's a CLI, a TypeScript SDK, and an MCP server, so you can drive Superset from scripts, terminals, and other agents."
 msgstr "Aplikacja desktopowa działa na macOS, z eksperymentalnym AppImage dla Linuksa; Windows nie jest jeszcze dostępny. Poza aplikacją są też CLI, SDK w TypeScripcie i serwer MCP, więc Superset można sterować ze skryptów, terminali i innych agentów."
+
+msgid "The destination branch is checked out in multiple worktrees."
+msgstr "Gałąź docelowa jest aktywna w wielu drzewach roboczych."
+
+msgid "The destination stays unchanged until completion. Closing this window keeps the attempt available to resume."
+msgstr "Cel pozostaje bez zmian do zakończenia. Po zamknięciu tego okna można wznowić próbę."
 
 msgid "The device that hosts this project is unavailable."
 msgstr "Urządzenie hostujące ten projekt jest niedostępne."
@@ -15233,6 +15344,9 @@ msgstr "Szukana strona nie istnieje."
 
 msgid "The people behind Superset."
 msgstr "Ludzie stojący za Superset."
+
+msgid "The principal branch does not exist locally."
+msgstr "Gałąź główna nie istnieje lokalnie."
 
 msgid "The project's checkout as it is: files and branch are shared"
 msgstr "Checkout projektu bez zmian: pliki i gałąź są współdzielone"
@@ -15509,6 +15623,9 @@ msgstr "W tym miesiącu"
 
 msgid "This only changes the display name, not the branch."
 msgstr "Zmienia to tylko nazwę wyświetlaną, nie gałąź."
+
+msgid "This operation is disabled for this project."
+msgstr "Ta operacja jest wyłączona dla tego projektu."
 
 msgid "this organization"
 msgstr "tej organizacji"
@@ -16250,6 +16367,12 @@ msgstr "Zaktualizuj demona"
 msgid "Update Error"
 msgstr "Błąd aktualizacji"
 
+msgid "Update from {remote}/{branch}"
+msgstr "Aktualizuj z {remote}/{branch}"
+
+msgid "Update from remote principal"
+msgstr "Aktualizuj ze zdalnej gałęzi głównej"
+
 msgid "Update host service"
 msgstr "Zaktualizuj usługę hosta"
 
@@ -16369,6 +16492,9 @@ msgstr "Zużycie niedostępne."
 #. placeholder {0}: search.trim()
 msgid "Use “{0}”"
 msgstr "Użyj „{0}”"
+
+msgid "Use {label}"
+msgstr "Użyj {label}"
 
 msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
 msgstr "Użyj małego lokalnego modelu CLI do nazw gałęzi, komunikatów commitów i szkiców pull requestów."
@@ -16955,6 +17081,9 @@ msgstr "Pracuje"
 msgctxt "agent status"
 msgid "Working"
 msgstr "Pracuje"
+
+msgid "Working for {duration}"
+msgstr "Pracuje od {duration}"
 
 msgid "Works when environments are clean. Environments are rarely clean."
 msgstr "Działa, gdy środowiska są czyste. Środowiska rzadko są czyste."

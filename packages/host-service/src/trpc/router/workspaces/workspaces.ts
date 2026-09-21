@@ -1,5 +1,6 @@
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
+import { recordDiscoveryByBranch } from "@superset/shared/ordem-paranormal";
 import {
 	deriveWorkspaceBranchFromPrompt,
 	generateFriendlyBranchName,
@@ -1053,9 +1054,11 @@ export const workspacesRouter = router({
 					const typedNameSlug = input.name
 						? sanitizeBranchCandidate(input.name)
 						: "";
-					const candidate = typedNameSlug || generateFriendlyBranchName();
+					const candidate =
+						typedNameSlug || generateFriendlyBranchName(existing);
 					const prefixed = prefix ? `${prefix}/${candidate}` : candidate;
 					resolvedBranch = deduplicateBranchName(prefixed, existing);
+					recordDiscoveryByBranch(resolvedBranch, { project: input.projectId });
 					plan = {
 						branch: resolvedBranch,
 						startPoint,
@@ -1418,6 +1421,7 @@ export const workspacesRouter = router({
 						ok: true,
 						canonicalWorkspaceId: result.workspace.id,
 						projectId: result.workspace.projectId ?? null,
+						branch: result.workspace.branch,
 						terminals: result.terminals,
 						agents: result.agents,
 						alreadyExists: result.alreadyExists,
