@@ -103,4 +103,6 @@ export interface AgentActivityProps {
 	maxHeight?: number;
 	className?: string;
 	contentClassName?: string;
+	/** Optional extra content rendered inside the disclosure panel below the activity rows. */
+	children?: ReactNode;
 }

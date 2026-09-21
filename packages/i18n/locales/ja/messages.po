@@ -1217,6 +1217,9 @@ msgstr "アプリ内ブラウザを改良します。変更をプレビューし
 msgid "A better Superset is ready"
 msgstr "新しいSupersetの準備ができました"
 
+msgid "A branch changed during integration. Cancel this attempt and start again."
+msgstr "統合中にブランチが変更されました。この試行をキャンセルしてやり直してください。"
+
 #. js-lingui-explicit-id
 msgid "serverError.common.cloudWorkspaceCannotCallThis"
 msgstr "クラウドワークスペースからは {path} を呼び出せません。サインイン済みのクライアントから実行してください。"
@@ -1751,6 +1754,9 @@ msgstr "すべてのコメント"
 msgid "All commits"
 msgstr "すべてのコミット"
 
+msgid "All conflicts are resolved. Complete the integration when ready."
+msgstr "すべての競合が解決されました。準備ができたら統合を完了してください。"
+
 #. placeholder {0}: members.length
 msgid "All data will be permanently deleted for all {0} members — this cannot be undone."
 msgstr "{0}人のメンバー全員のデータが完全に削除されます — この操作は元に戻せません。"
@@ -1857,11 +1863,17 @@ msgstr "リレー経由のアクセスを許可"
 msgid "Allow for session"
 msgstr "セッション中は許可"
 
+msgid "Allow merge into principal"
+msgstr "メインブランチへのマージを許可"
+
 msgid "Allow microphone access to use dictation"
 msgstr "音声入力を使うにはマイクへのアクセスを許可してください"
 
 msgid "Allow remote access to this device via relay"
 msgstr "リレー経由でこのデバイスへのリモートアクセスを許可"
+
+msgid "Allow update from remote principal"
+msgstr "リモートのメインブランチからの更新を許可"
 
 msgid "Allowed"
 msgstr "許可済み"
@@ -1955,6 +1967,9 @@ msgstr "匿名の組立工"
 
 msgid "another device"
 msgstr "別のデバイス"
+
+msgid "Another integration operation is running. Try again shortly."
+msgstr "別の統合処理が実行中です。しばらくしてから再試行してください。"
 
 msgid "Answered"
 msgstr "回答済み"
@@ -2584,6 +2599,9 @@ msgstr "バイナリファイルが変更されました"
 msgid "Binary file hidden"
 msgstr "バイナリファイルは非表示"
 
+msgid "Binary, large, or special file. Choose a version to resolve."
+msgstr "バイナリ、大容量、または特殊ファイルです。解決に使用するバージョンを選択してください。"
+
 msgid "Bio"
 msgstr "自己紹介"
 
@@ -2649,6 +2667,12 @@ msgstr "このデバイスの新規ワークスペースのブランチ動作。
 
 msgid "Branch copied"
 msgstr "ブランチをコピーしました"
+
+msgid "Branch integration"
+msgstr "ブランチの統合"
+
+msgid "Branch integration completed"
+msgstr "ブランチの統合が完了しました"
 
 msgid "branch name"
 msgstr "ブランチ名"
@@ -2901,6 +2925,9 @@ msgstr "ダウンロードをキャンセル"
 msgid "Cancel edits"
 msgstr "編集をキャンセル"
 
+msgid "Cancel integration"
+msgstr "統合をキャンセル"
+
 msgid "Cancel plan"
 msgstr "プランをキャンセル"
 
@@ -3071,6 +3098,9 @@ msgstr "アップデートを確認..."
 
 msgid "Check on running agents and read what they changed from your phone."
 msgstr "実行中のエージェントの状況を確認し、変更内容をスマートフォンから読めます。"
+
+msgid "Check out a branch before continuing."
+msgstr "続行する前にブランチをチェックアウトしてください。"
 
 msgid "Check resources"
 msgstr "リソースを確認"
@@ -3668,6 +3698,9 @@ msgstr "コミットに失敗しました: {0}"
 msgid "Commit message"
 msgstr "コミットメッセージ"
 
+msgid "Commit or stash pending changes in the source and destination workspaces first."
+msgstr "まずソースと宛先のワークスペースで未確定の変更をコミットまたはスタッシュしてください。"
+
 msgid "Commits"
 msgstr "コミット"
 
@@ -3719,6 +3752,9 @@ msgstr "デフォルトスタイルと比較"
 msgid "complete"
 msgstr "終了"
 
+msgid "Complete integration"
+msgstr "統合を完了"
+
 msgid "Completed"
 msgstr "完了"
 
@@ -3761,6 +3797,9 @@ msgstr "自分でオートメーションを設定する"
 msgid "Configure the in-app browser"
 msgstr "アプリ内ブラウザを設定"
 
+msgid "Configure the principal branch and remote in project settings."
+msgstr "プロジェクト設定でメインブランチとリモートを設定してください。"
+
 msgid "Configure which agents appear in launchers and how their launches are built."
 msgstr "ランチャーに表示するエージェントと起動方法を設定します。"
 
@@ -3772,6 +3811,9 @@ msgstr "確認"
 
 msgid "Confirm before quitting"
 msgstr "終了前に確認"
+
+msgid "Conflicting files"
+msgstr "競合ファイル"
 
 msgid "Connect"
 msgstr "接続"
@@ -4272,6 +4314,9 @@ msgstr "ファイルを削除できませんでした"
 
 msgid "Could not delete this page"
 msgstr "このページを削除できませんでした"
+
+msgid "Could not fetch the principal branch. Check your connection, credentials, and remote branch."
+msgstr "メインブランチを取得できませんでした。接続、認証情報、リモートブランチを確認してください。"
 
 msgid "Could not forget {domain}"
 msgstr "{domain}を削除できませんでした"
@@ -6589,6 +6634,9 @@ msgstr "ファイルの操作"
 msgid "File changes"
 msgstr "ファイルの変更"
 
+msgid "File deleted"
+msgstr "ファイルは削除されました"
+
 msgid "File is too large to preview"
 msgstr "ファイルが大きすぎてプレビューできません"
 
@@ -6720,6 +6768,9 @@ msgstr "Finder"
 
 msgid "Finish review"
 msgstr "レビューを完了"
+
+msgid "Finish the pending Git operation first."
+msgstr "まず進行中のGit操作を完了してください。"
 
 msgid "Finished"
 msgstr "完了"
@@ -7057,6 +7108,9 @@ msgstr "Gitとワークツリー"
 
 msgid "Git author name"
 msgstr "Gitの作成者名"
+
+msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
+msgstr "Git統合に失敗しました。リポジトリを確認して再試行するか、キャンセルしてください。"
 
 msgid "GitHub"
 msgstr "GitHub"
@@ -7787,6 +7841,9 @@ msgstr "インストール"
 
 msgid "Instructions"
 msgstr "指示"
+
+msgid "Integrate committed changes locally. These settings do not change workspace creation or pull requests."
+msgstr "コミット済みの変更をローカルで統合します。ワークスペースの作成やプルリクエストには影響しません。"
 
 msgid "Integrations"
 msgstr "連携"
@@ -8720,6 +8777,9 @@ msgstr "未確認にする"
 msgid "Mark as Read"
 msgstr "既読にする"
 
+msgid "Mark as resolved"
+msgstr "解決済みにする"
+
 msgid "Mark as Unread"
 msgstr "未読にする"
 
@@ -8866,6 +8926,12 @@ msgstr "マージコミット"
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "マージに失敗しました: {0}"
+
+msgid "Merge into {branch}"
+msgstr "{branch}にマージ"
+
+msgid "Merge into principal"
+msgstr "メインブランチにマージ"
 
 msgid "Merge pull request"
 msgstr "プルリクエストをマージ"
@@ -11368,6 +11434,9 @@ msgstr "環境設定"
 msgid "Prefix"
 msgstr "プレフィックス"
 
+msgid "Preparation was interrupted. Cancel this attempt and start again."
+msgstr "準備が中断されました。この試行をキャンセルしてやり直してください。"
+
 msgid "Preparing"
 msgstr "準備中"
 
@@ -11454,6 +11523,9 @@ msgstr "主キー"
 
 msgid "Primitives"
 msgstr "プリミティブ"
+
+msgid "Principal branch"
+msgstr "メインブランチ"
 
 msgid "Print"
 msgstr "印刷"
@@ -11564,6 +11636,9 @@ msgstr "{0}にプロジェクトをセットアップしました"
 
 msgid "Project Settings"
 msgstr "プロジェクト設定"
+
+msgid "Project settings changed. Cancel this attempt and start again."
+msgstr "プロジェクト設定が変更されました。この試行をキャンセルしてやり直してください。"
 
 msgid "Project worktree location reset"
 msgstr "プロジェクトのワークツリーの場所をリセットしました"
@@ -12062,6 +12137,9 @@ msgstr "リモートアクセス"
 msgid "Remote Access"
 msgstr "リモートアクセス"
 
+msgid "Remote for updates"
+msgstr "更新用リモート"
+
 msgid "Remote MCP server — connects over HTTP"
 msgstr "リモートMCPサーバー — HTTP経由で接続"
 
@@ -12393,6 +12471,9 @@ msgstr "解決する"
 msgid "Resolve all"
 msgstr "すべて解決"
 
+msgid "Resolve all conflicts before completing the integration."
+msgstr "統合を完了する前にすべての競合を解決してください。"
+
 msgid "Resolve Conflicts to Merge"
 msgstr "マージにはコンフリクトの解消が必要"
 
@@ -12410,6 +12491,9 @@ msgstr "スレッドを解決"
 
 msgid "Resolved"
 msgstr "解決済み"
+
+msgid "Resolved content"
+msgstr "解決後の内容"
 
 msgid "Resource consumption"
 msgstr "リソース消費"
@@ -12522,6 +12606,12 @@ msgstr "再開時の引数"
 
 msgid "Resume automation"
 msgstr "オートメーションを再開"
+
+msgid "Resume integration"
+msgstr "統合を再開"
+
+msgid "Resume or cancel the existing integration first."
+msgstr "まず既存の統合を再開またはキャンセルしてください。"
 
 #. placeholder {0}: candidate.agentLabel
 msgid "Resuming {0}…"
@@ -13186,6 +13276,9 @@ msgstr "直近30日の実績が公開リーダーボードでどの位置にな�
 msgid "Select"
 msgstr "Select"
 
+msgid "Select a branch"
+msgstr "ブランチを選択"
+
 msgid "Select a default preset"
 msgstr "デフォルトのプリセットを選択"
 
@@ -13203,6 +13296,9 @@ msgstr "プロジェクトを選択するとプルリクエストが表示され
 
 msgid "Select a pull request to preview it here."
 msgstr "プルリクエストを選択するとここでプレビューできます。"
+
+msgid "Select a remote"
+msgstr "リモートを選択"
 
 msgid "Select a team"
 msgstr "チームを選択"
@@ -13504,6 +13600,9 @@ msgstr "設定 ({settingsHotkey})"
 
 msgid "Settings → Remote Access → “Allow remote access to this device via relay”."
 msgstr "設定 → リモートアクセス →「リレー経由でこのデバイスへのリモートアクセスを許可」。"
+
+msgid "Settings saved"
+msgstr "設定を保存しました"
 
 msgid "Settings..."
 msgstr "設定..."
@@ -15014,11 +15113,17 @@ msgstr "Codexのサインイン"
 msgid "The config repository must be one of the environment's repositories"
 msgstr "設定リポジトリは環境のリポジトリのいずれかである必要があります"
 
+msgid "The configured remote no longer exists."
+msgstr "設定されたリモートは存在しません。"
+
 msgid "The connection timed out"
 msgstr "接続がタイムアウトしました"
 
 msgid "The connection was closed"
 msgstr "接続が閉じられました"
+
+msgid "The current branch is already the principal branch."
+msgstr "現在のブランチはすでにメインブランチです。"
 
 msgid "The current prompt will be replaced with the selected version. A new \"Restored\" entry will be added to history so you can undo this."
 msgstr "現在のプロンプトが選択したバージョンで置き換えられます。履歴に新しい「復元済み」エントリが追加されるので、元に戻せます。"
@@ -15031,6 +15136,12 @@ msgstr "デスクトップアプリは現在macOSとLinuxに対応していま�
 
 msgid "The desktop app runs on macOS, with an experimental Linux AppImage; Windows is not yet available. Beyond the desktop app there's a CLI, a TypeScript SDK, and an MCP server, so you can drive Superset from scripts, terminals, and other agents."
 msgstr "デスクトップアプリはmacOSで動作し、Linux向けには実験的なAppImageがあります。Windowsはまだ利用できません。デスクトップアプリのほかにCLI、TypeScript SDK、MCPサーバーがあるので、スクリプトやターミナル、他のエージェントからSupersetを操作できます。"
+
+msgid "The destination branch is checked out in multiple worktrees."
+msgstr "宛先ブランチが複数の作業ツリーでチェックアウトされています。"
+
+msgid "The destination stays unchanged until completion. Closing this window keeps the attempt available to resume."
+msgstr "完了するまで宛先は変更されません。このウィンドウを閉じても後で再開できます。"
 
 msgid "The device that hosts this project is unavailable."
 msgstr "このプロジェクトをホストするデバイスが利用できません。"
@@ -15188,6 +15299,9 @@ msgstr "お探しのページは存在しません。"
 
 msgid "The people behind Superset."
 msgstr "Supersetを作っている人たち。"
+
+msgid "The principal branch does not exist locally."
+msgstr "メインブランチがローカルに存在しません。"
 
 msgid "The project's checkout as it is: files and branch are shared"
 msgstr "プロジェクトのチェックアウトをそのまま使用: ファイルとブランチは共有されます"
@@ -15464,6 +15578,9 @@ msgstr "今月"
 
 msgid "This only changes the display name, not the branch."
 msgstr "変更されるのは表示名だけで、ブランチは変わりません。"
+
+msgid "This operation is disabled for this project."
+msgstr "このプロジェクトではこの操作が無効です。"
 
 msgid "this organization"
 msgstr "この組織"
@@ -16202,6 +16319,12 @@ msgstr "デーモンを更新"
 msgid "Update Error"
 msgstr "アップデートエラー"
 
+msgid "Update from {remote}/{branch}"
+msgstr "{remote}/{branch}から更新"
+
+msgid "Update from remote principal"
+msgstr "リモートのメインブランチから更新"
+
 msgid "Update host service"
 msgstr "ホストサービスを更新"
 
@@ -16321,6 +16444,9 @@ msgstr "使用量を取得できません。"
 #. placeholder {0}: search.trim()
 msgid "Use “{0}”"
 msgstr "「{0}」を使用"
+
+msgid "Use {label}"
+msgstr "{label}を使用"
 
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "ワークスペースからの相対パスか絶対パスのフォルダを指定します。"

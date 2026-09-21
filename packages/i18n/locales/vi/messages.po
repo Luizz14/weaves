@@ -1217,6 +1217,9 @@ msgstr "Trình duyệt trong ứng dụng tốt hơn: xem trước thay đổi v
 msgid "A better Superset is ready"
 msgstr "Phiên bản Superset tốt hơn đã sẵn sàng"
 
+msgid "A branch changed during integration. Cancel this attempt and start again."
+msgstr "Một nhánh đã thay đổi trong lúc tích hợp. Hãy hủy lần thử này và bắt đầu lại."
+
 #. js-lingui-explicit-id
 msgid "serverError.common.cloudWorkspaceCannotCallThis"
 msgstr "Workspace trên cloud không thể gọi {path}. Hãy làm việc này từ một client bạn đã đăng nhập."
@@ -1751,6 +1754,9 @@ msgstr "Tất cả bình luận"
 msgid "All commits"
 msgstr "Tất cả commit"
 
+msgid "All conflicts are resolved. Complete the integration when ready."
+msgstr "Đã giải quyết mọi xung đột. Hoàn tất tích hợp khi bạn sẵn sàng."
+
 #. placeholder {0}: members.length
 msgid "All data will be permanently deleted for all {0} members — this cannot be undone."
 msgstr "Toàn bộ dữ liệu sẽ bị xóa vĩnh viễn với cả {0} thành viên — không thể hoàn tác."
@@ -1857,11 +1863,17 @@ msgstr "Cho phép truy cập qua relay"
 msgid "Allow for session"
 msgstr "Cho phép trong phiên này"
 
+msgid "Allow merge into principal"
+msgstr "Cho phép hợp nhất vào nhánh chính"
+
 msgid "Allow microphone access to use dictation"
 msgstr "Cho phép truy cập micro để dùng đọc chính tả"
 
 msgid "Allow remote access to this device via relay"
 msgstr "Cho phép truy cập từ xa vào thiết bị này qua relay"
+
+msgid "Allow update from remote principal"
+msgstr "Cho phép cập nhật từ nhánh chính từ xa"
 
 msgid "Allowed"
 msgstr "Đã cho phép"
@@ -1955,6 +1967,9 @@ msgstr "Thợ lắp ráp ẩn danh"
 
 msgid "another device"
 msgstr "thiết bị khác"
+
+msgid "Another integration operation is running. Try again shortly."
+msgstr "Một thao tác tích hợp khác đang chạy. Vui lòng thử lại sau ít phút."
 
 msgid "Answered"
 msgstr "Đã trả lời"
@@ -2584,6 +2599,9 @@ msgstr "Tệp nhị phân đã thay đổi"
 msgid "Binary file hidden"
 msgstr "Đã ẩn tệp nhị phân"
 
+msgid "Binary, large, or special file. Choose a version to resolve."
+msgstr "Tệp nhị phân, lớn hoặc đặc biệt. Chọn một phiên bản để giải quyết."
+
 msgid "Bio"
 msgstr "Giới thiệu"
 
@@ -2649,6 +2667,12 @@ msgstr "Hành vi nhánh cho workspace mới trên thiết bị này. Từng dự
 
 msgid "Branch copied"
 msgstr "Đã sao chép tên nhánh"
+
+msgid "Branch integration"
+msgstr "Tích hợp nhánh"
+
+msgid "Branch integration completed"
+msgstr "Đã hoàn tất tích hợp nhánh"
 
 msgid "branch name"
 msgstr "tên nhánh"
@@ -2901,6 +2925,9 @@ msgstr "Hủy tải xuống"
 msgid "Cancel edits"
 msgstr "Hủy chỉnh sửa"
 
+msgid "Cancel integration"
+msgstr "Hủy tích hợp"
+
 msgid "Cancel plan"
 msgstr "Hủy gói"
 
@@ -3071,6 +3098,9 @@ msgstr "Kiểm tra cập nhật..."
 
 msgid "Check on running agents and read what they changed from your phone."
 msgstr "Theo dõi các agent đang chạy và xem chúng đã thay đổi những gì ngay trên điện thoại."
+
+msgid "Check out a branch before continuing."
+msgstr "Hãy chuyển sang một nhánh trước khi tiếp tục."
 
 msgid "Check resources"
 msgstr "Kiểm tra tài nguyên"
@@ -3668,6 +3698,9 @@ msgstr "Commit thất bại: {0}"
 msgid "Commit message"
 msgstr "Thông điệp commit"
 
+msgid "Commit or stash pending changes in the source and destination workspaces first."
+msgstr "Trước tiên hãy tạo commit hoặc cất tạm các thay đổi đang chờ trong không gian làm việc nguồn và đích."
+
 msgid "Commits"
 msgstr "Commit"
 
@@ -3719,6 +3752,9 @@ msgstr "So sánh với kiểu mặc định"
 msgid "complete"
 msgstr "đã kết thúc"
 
+msgid "Complete integration"
+msgstr "Hoàn tất tích hợp"
+
 msgid "Completed"
 msgstr "Hoàn tất"
 
@@ -3761,6 +3797,9 @@ msgstr "Tự cấu hình quy trình tự động hóa"
 msgid "Configure the in-app browser"
 msgstr "Cấu hình trình duyệt trong ứng dụng"
 
+msgid "Configure the principal branch and remote in project settings."
+msgstr "Cấu hình nhánh chính và kho từ xa trong cài đặt dự án."
+
 msgid "Configure which agents appear in launchers and how their launches are built."
 msgstr "Chọn agent nào xuất hiện trong trình khởi chạy và cách dựng lệnh khởi chạy của chúng."
 
@@ -3772,6 +3811,9 @@ msgstr "Xác nhận"
 
 msgid "Confirm before quitting"
 msgstr "Xác nhận trước khi thoát"
+
+msgid "Conflicting files"
+msgstr "Tệp xung đột"
 
 msgid "Connect"
 msgstr "Kết nối"
@@ -4272,6 +4314,9 @@ msgstr "Không thể xóa tệp"
 
 msgid "Could not delete this page"
 msgstr "Không thể xóa trang này"
+
+msgid "Could not fetch the principal branch. Check your connection, credentials, and remote branch."
+msgstr "Không thể lấy nhánh chính. Kiểm tra kết nối, thông tin xác thực và nhánh từ xa."
 
 msgid "Could not forget {domain}"
 msgstr "Không thể quên {domain}"
@@ -6589,6 +6634,9 @@ msgstr "Hành động tệp"
 msgid "File changes"
 msgstr "Thay đổi tệp"
 
+msgid "File deleted"
+msgstr "Tệp đã bị xóa"
+
 msgid "File is too large to preview"
 msgstr "Tệp quá lớn để xem trước"
 
@@ -6720,6 +6768,9 @@ msgstr "Finder"
 
 msgid "Finish review"
 msgstr "Hoàn tất review"
+
+msgid "Finish the pending Git operation first."
+msgstr "Trước tiên hãy hoàn tất thao tác Git đang chờ."
 
 msgid "Finished"
 msgstr "Đã xong"
@@ -7057,6 +7108,9 @@ msgstr "Git & Worktree"
 
 msgid "Git author name"
 msgstr "Tên tác giả Git"
+
+msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
+msgstr "Tích hợp Git thất bại. Kiểm tra kho và thử lại hoặc hủy lần thử."
 
 msgid "GitHub"
 msgstr "GitHub"
@@ -7787,6 +7841,9 @@ msgstr "Lượt cài đặt"
 
 msgid "Instructions"
 msgstr "Hướng dẫn"
+
+msgid "Integrate committed changes locally. These settings do not change workspace creation or pull requests."
+msgstr "Tích hợp cục bộ các thay đổi đã commit. Những cài đặt này không thay đổi việc tạo không gian làm việc hay yêu cầu hợp nhất."
 
 msgid "Integrations"
 msgstr "Tích hợp"
@@ -8720,6 +8777,9 @@ msgstr "Đánh dấu chưa xem"
 msgid "Mark as Read"
 msgstr "Đánh dấu đã đọc"
 
+msgid "Mark as resolved"
+msgstr "Đánh dấu đã giải quyết"
+
 msgid "Mark as Unread"
 msgstr "Đánh dấu chưa đọc"
 
@@ -8866,6 +8926,12 @@ msgstr "Merge commit"
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Merge thất bại: {0}"
+
+msgid "Merge into {branch}"
+msgstr "Hợp nhất vào {branch}"
+
+msgid "Merge into principal"
+msgstr "Hợp nhất vào nhánh chính"
 
 msgid "Merge pull request"
 msgstr "Merge pull request"
@@ -11368,6 +11434,9 @@ msgstr "Tùy chọn"
 msgid "Prefix"
 msgstr "Tiền tố"
 
+msgid "Preparation was interrupted. Cancel this attempt and start again."
+msgstr "Quá trình chuẩn bị bị gián đoạn. Hủy lần thử này và bắt đầu lại."
+
 msgid "Preparing"
 msgstr "Đang chuẩn bị"
 
@@ -11454,6 +11523,9 @@ msgstr "Khóa chính"
 
 msgid "Primitives"
 msgstr "Thành phần cơ bản"
+
+msgid "Principal branch"
+msgstr "Nhánh chính"
 
 msgid "Print"
 msgstr "In"
@@ -11564,6 +11636,9 @@ msgstr "Đã thiết lập dự án tại {0}"
 
 msgid "Project Settings"
 msgstr "Cài đặt dự án"
+
+msgid "Project settings changed. Cancel this attempt and start again."
+msgstr "Cài đặt dự án đã thay đổi. Hủy lần thử này và bắt đầu lại."
 
 msgid "Project worktree location reset"
 msgstr "Đã đặt lại vị trí worktree của dự án"
@@ -12062,6 +12137,9 @@ msgstr "Truy cập từ xa"
 msgid "Remote Access"
 msgstr "Truy cập từ xa"
 
+msgid "Remote for updates"
+msgstr "Kho từ xa dùng để cập nhật"
+
 msgid "Remote MCP server — connects over HTTP"
 msgstr "Server MCP từ xa — kết nối qua HTTP"
 
@@ -12393,6 +12471,9 @@ msgstr "Giải quyết"
 msgid "Resolve all"
 msgstr "Giải quyết tất cả"
 
+msgid "Resolve all conflicts before completing the integration."
+msgstr "Giải quyết mọi xung đột trước khi hoàn tất tích hợp."
+
 msgid "Resolve Conflicts to Merge"
 msgstr "Giải quyết xung đột để merge"
 
@@ -12410,6 +12491,9 @@ msgstr "Đánh dấu luồng đã xử lý"
 
 msgid "Resolved"
 msgstr "Đã giải quyết"
+
+msgid "Resolved content"
+msgstr "Nội dung đã giải quyết"
 
 msgid "Resource consumption"
 msgstr "Mức tiêu thụ tài nguyên"
@@ -12522,6 +12606,12 @@ msgstr "Tham số resume"
 
 msgid "Resume automation"
 msgstr "Tiếp tục tự động hóa"
+
+msgid "Resume integration"
+msgstr "Tiếp tục tích hợp"
+
+msgid "Resume or cancel the existing integration first."
+msgstr "Trước tiên hãy tiếp tục hoặc hủy tích hợp hiện tại."
 
 #. placeholder {0}: candidate.agentLabel
 msgid "Resuming {0}…"
@@ -13186,6 +13276,9 @@ msgstr "Xem 30 ngày qua của bạn đứng ở đâu trên bảng xếp hạng
 msgid "Select"
 msgstr "Select"
 
+msgid "Select a branch"
+msgstr "Chọn nhánh"
+
 msgid "Select a default preset"
 msgstr "Chọn cấu hình mặc định"
 
@@ -13203,6 +13296,9 @@ msgstr "Chọn một dự án để xem pull request."
 
 msgid "Select a pull request to preview it here."
 msgstr "Chọn một pull request để xem trước ở đây."
+
+msgid "Select a remote"
+msgstr "Chọn kho từ xa"
 
 msgid "Select a team"
 msgstr "Chọn một nhóm"
@@ -13504,6 +13600,9 @@ msgstr "Cài đặt ({settingsHotkey})"
 
 msgid "Settings → Remote Access → “Allow remote access to this device via relay”."
 msgstr "Cài đặt → Truy cập từ xa → “Cho phép truy cập từ xa vào thiết bị này qua relay”."
+
+msgid "Settings saved"
+msgstr "Đã lưu cài đặt"
 
 msgid "Settings..."
 msgstr "Cài đặt..."
@@ -15014,11 +15113,17 @@ msgstr "Lần đăng nhập Codex"
 msgid "The config repository must be one of the environment's repositories"
 msgstr "Repository cấu hình phải là một trong các repository của environment"
 
+msgid "The configured remote no longer exists."
+msgstr "Kho từ xa đã cấu hình không còn tồn tại."
+
 msgid "The connection timed out"
 msgstr "Kết nối đã quá thời gian"
 
 msgid "The connection was closed"
 msgstr "Kết nối đã bị đóng"
+
+msgid "The current branch is already the principal branch."
+msgstr "Nhánh hiện tại đã là nhánh chính."
 
 msgid "The current prompt will be replaced with the selected version. A new \"Restored\" entry will be added to history so you can undo this."
 msgstr "Prompt hiện tại sẽ được thay bằng phiên bản đã chọn. Một mục \"Đã khôi phục\" sẽ được thêm vào lịch sử để bạn có thể hoàn tác."
@@ -15031,6 +15136,12 @@ msgstr "Chúng tôi đang đưa Superset lên Windows & Linux. Để lại email
 
 msgid "The desktop app runs on macOS, with an experimental Linux AppImage; Windows is not yet available. Beyond the desktop app there's a CLI, a TypeScript SDK, and an MCP server, so you can drive Superset from scripts, terminals, and other agents."
 msgstr "Ứng dụng máy tính chạy trên macOS, kèm bản AppImage Linux thử nghiệm; Windows chưa có. Ngoài ứng dụng máy tính còn có CLI, SDK TypeScript và server MCP, nên bạn có thể điều khiển Superset từ script, terminal và các agent khác."
+
+msgid "The destination branch is checked out in multiple worktrees."
+msgstr "Nhánh đích đang được sử dụng trong nhiều cây làm việc."
+
+msgid "The destination stays unchanged until completion. Closing this window keeps the attempt available to resume."
+msgstr "Đích không thay đổi cho đến khi hoàn tất. Đóng cửa sổ này vẫn cho phép tiếp tục lần thử sau."
 
 msgid "The device that hosts this project is unavailable."
 msgstr "Thiết bị chứa dự án này không khả dụng."
@@ -15188,6 +15299,9 @@ msgstr "Trang bạn tìm không tồn tại."
 
 msgid "The people behind Superset."
 msgstr "Những người đứng sau Superset."
+
+msgid "The principal branch does not exist locally."
+msgstr "Nhánh chính không tồn tại cục bộ."
 
 msgid "The project's checkout as it is: files and branch are shared"
 msgstr "Checkout của dự án như hiện có: tệp và nhánh được dùng chung"
@@ -15464,6 +15578,9 @@ msgstr "Tháng này"
 
 msgid "This only changes the display name, not the branch."
 msgstr "Việc này chỉ đổi tên hiển thị, không đổi nhánh."
+
+msgid "This operation is disabled for this project."
+msgstr "Thao tác này đã bị tắt cho dự án."
 
 msgid "this organization"
 msgstr "tổ chức này"
@@ -16202,6 +16319,12 @@ msgstr "Cập nhật daemon"
 msgid "Update Error"
 msgstr "Lỗi cập nhật"
 
+msgid "Update from {remote}/{branch}"
+msgstr "Cập nhật từ {remote}/{branch}"
+
+msgid "Update from remote principal"
+msgstr "Cập nhật từ nhánh chính từ xa"
+
 msgid "Update host service"
 msgstr "Cập nhật dịch vụ máy chủ"
 
@@ -16321,6 +16444,9 @@ msgstr "Không có dữ liệu sử dụng."
 #. placeholder {0}: search.trim()
 msgid "Use “{0}”"
 msgstr "Dùng “{0}”"
+
+msgid "Use {label}"
+msgstr "Dùng {label}"
 
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "Dùng đường dẫn tương đối với workspace hoặc một thư mục tuyệt đối."

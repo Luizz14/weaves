@@ -1217,6 +1217,9 @@ msgstr "更好用的应用内浏览器：预览改动，点击任意元素即可
 msgid "A better Superset is ready"
 msgstr "更好的 Superset 已准备就绪"
 
+msgid "A branch changed during integration. Cancel this attempt and start again."
+msgstr "集成期间分支发生了变化。请取消本次尝试并重新开始。"
+
 #. js-lingui-explicit-id
 msgid "serverError.common.cloudWorkspaceCannotCallThis"
 msgstr "云端工作区无法调用 {path}。请在你已登录的客户端中执行。"
@@ -1751,6 +1754,9 @@ msgstr "全部评论"
 msgid "All commits"
 msgstr "所有提交"
 
+msgid "All conflicts are resolved. Complete the integration when ready."
+msgstr "所有冲突均已解决。准备好后请完成集成。"
+
 #. placeholder {0}: members.length
 msgid "All data will be permanently deleted for all {0} members — this cannot be undone."
 msgstr "全部{0}名成员的所有数据都将被永久删除——此操作无法撤销。"
@@ -1857,11 +1863,17 @@ msgstr "允许通过中继访问"
 msgid "Allow for session"
 msgstr "本次会话内允许"
 
+msgid "Allow merge into principal"
+msgstr "允许合并到主分支"
+
 msgid "Allow microphone access to use dictation"
 msgstr "请允许麦克风访问以使用语音输入"
 
 msgid "Allow remote access to this device via relay"
 msgstr "允许通过中继远程访问本设备"
+
+msgid "Allow update from remote principal"
+msgstr "允许从远程主分支更新"
 
 msgid "Allowed"
 msgstr "已允许"
@@ -1955,6 +1967,9 @@ msgstr "匿名装配工"
 
 msgid "another device"
 msgstr "另一台设备"
+
+msgid "Another integration operation is running. Try again shortly."
+msgstr "另一个集成操作正在运行。请稍后重试。"
 
 msgid "Answered"
 msgstr "已回答"
@@ -2584,6 +2599,9 @@ msgstr "二进制文件已更改"
 msgid "Binary file hidden"
 msgstr "二进制文件已隐藏"
 
+msgid "Binary, large, or special file. Choose a version to resolve."
+msgstr "二进制、大型或特殊文件。请选择一个版本来解决冲突。"
+
 msgid "Bio"
 msgstr "简介"
 
@@ -2649,6 +2667,12 @@ msgstr "本设备上新建工作区的分支行为。项目可以单独覆盖前
 
 msgid "Branch copied"
 msgstr "分支已复制"
+
+msgid "Branch integration"
+msgstr "分支集成"
+
+msgid "Branch integration completed"
+msgstr "分支集成已完成"
 
 msgid "branch name"
 msgstr "分支名称"
@@ -2901,6 +2925,9 @@ msgstr "取消下载"
 msgid "Cancel edits"
 msgstr "取消编辑"
 
+msgid "Cancel integration"
+msgstr "取消集成"
+
 msgid "Cancel plan"
 msgstr "取消方案"
 
@@ -3071,6 +3098,9 @@ msgstr "检查更新..."
 
 msgid "Check on running agents and read what they changed from your phone."
 msgstr "在手机上查看运行中的智能体，并了解它们改动了什么。"
+
+msgid "Check out a branch before continuing."
+msgstr "请先切换到一个分支再继续。"
 
 msgid "Check resources"
 msgstr "检查资源"
@@ -3668,6 +3698,9 @@ msgstr "提交失败：{0}"
 msgid "Commit message"
 msgstr "提交信息"
 
+msgid "Commit or stash pending changes in the source and destination workspaces first."
+msgstr "请先提交或暂存源工作区和目标工作区中待处理的更改。"
+
 msgid "Commits"
 msgstr "提交"
 
@@ -3719,6 +3752,9 @@ msgstr "与默认样式做了对比"
 msgid "complete"
 msgstr "已结束"
 
+msgid "Complete integration"
+msgstr "完成集成"
+
 msgid "Completed"
 msgstr "完成时间"
 
@@ -3761,6 +3797,9 @@ msgstr "自行配置自动化"
 msgid "Configure the in-app browser"
 msgstr "配置应用内浏览器"
 
+msgid "Configure the principal branch and remote in project settings."
+msgstr "请在项目设置中配置主分支和远程仓库。"
+
 msgid "Configure which agents appear in launchers and how their launches are built."
 msgstr "配置哪些智能体出现在启动器中，以及它们的启动方式。"
 
@@ -3772,6 +3811,9 @@ msgstr "确认"
 
 msgid "Confirm before quitting"
 msgstr "退出前确认"
+
+msgid "Conflicting files"
+msgstr "冲突文件"
 
 msgid "Connect"
 msgstr "连接"
@@ -4272,6 +4314,9 @@ msgstr "无法删除文件"
 
 msgid "Could not delete this page"
 msgstr "无法删除这个页面"
+
+msgid "Could not fetch the principal branch. Check your connection, credentials, and remote branch."
+msgstr "无法获取主分支。请检查连接、凭据和远程分支。"
 
 msgid "Could not forget {domain}"
 msgstr "无法忘记{domain}"
@@ -6589,6 +6634,9 @@ msgstr "文件操作"
 msgid "File changes"
 msgstr "文件更改"
 
+msgid "File deleted"
+msgstr "文件已删除"
+
 msgid "File is too large to preview"
 msgstr "文件过大，无法预览"
 
@@ -6720,6 +6768,9 @@ msgstr "Finder"
 
 msgid "Finish review"
 msgstr "完成审查"
+
+msgid "Finish the pending Git operation first."
+msgstr "请先完成待处理的 Git 操作。"
 
 msgid "Finished"
 msgstr "已完成"
@@ -7057,6 +7108,9 @@ msgstr "Git与worktree"
 
 msgid "Git author name"
 msgstr "Git作者名"
+
+msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
+msgstr "Git 集成失败。请检查仓库并重试，或取消本次尝试。"
 
 msgid "GitHub"
 msgstr "GitHub"
@@ -7787,6 +7841,9 @@ msgstr "安装"
 
 msgid "Instructions"
 msgstr "说明"
+
+msgid "Integrate committed changes locally. These settings do not change workspace creation or pull requests."
+msgstr "在本地集成已提交的更改。这些设置不会更改工作区创建方式或拉取请求。"
 
 msgid "Integrations"
 msgstr "集成"
@@ -8720,6 +8777,9 @@ msgstr "标记为未查看"
 msgid "Mark as Read"
 msgstr "标为已读"
 
+msgid "Mark as resolved"
+msgstr "标记为已解决"
+
 msgid "Mark as Unread"
 msgstr "标为未读"
 
@@ -8866,6 +8926,12 @@ msgstr "合并提交"
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "合并失败：{0}"
+
+msgid "Merge into {branch}"
+msgstr "合并到 {branch}"
+
+msgid "Merge into principal"
+msgstr "合并到主分支"
 
 msgid "Merge pull request"
 msgstr "合并拉取请求"
@@ -11368,6 +11434,9 @@ msgstr "偏好设置"
 msgid "Prefix"
 msgstr "前缀"
 
+msgid "Preparation was interrupted. Cancel this attempt and start again."
+msgstr "准备工作已中断。请取消本次尝试并重新开始。"
+
 msgid "Preparing"
 msgstr "正在准备"
 
@@ -11454,6 +11523,9 @@ msgstr "主键"
 
 msgid "Primitives"
 msgstr "基础组件"
+
+msgid "Principal branch"
+msgstr "主分支"
 
 msgid "Print"
 msgstr "打印"
@@ -11564,6 +11636,9 @@ msgstr "项目已设置在{0}"
 
 msgid "Project Settings"
 msgstr "项目设置"
+
+msgid "Project settings changed. Cancel this attempt and start again."
+msgstr "项目设置已更改。请取消本次尝试并重新开始。"
 
 msgid "Project worktree location reset"
 msgstr "已重置项目worktree位置"
@@ -12062,6 +12137,9 @@ msgstr "远程访问"
 msgid "Remote Access"
 msgstr "远程访问"
 
+msgid "Remote for updates"
+msgstr "用于更新的远程仓库"
+
 msgid "Remote MCP server — connects over HTTP"
 msgstr "远程MCP服务器，通过HTTP连接"
 
@@ -12393,6 +12471,9 @@ msgstr "解决"
 msgid "Resolve all"
 msgstr "全部解决"
 
+msgid "Resolve all conflicts before completing the integration."
+msgstr "请先解决所有冲突再完成集成。"
+
 msgid "Resolve Conflicts to Merge"
 msgstr "解决冲突后才能合并"
 
@@ -12410,6 +12491,9 @@ msgstr "解决讨论串"
 
 msgid "Resolved"
 msgstr "已解决"
+
+msgid "Resolved content"
+msgstr "解决后的内容"
 
 msgid "Resource consumption"
 msgstr "资源占用"
@@ -12522,6 +12606,12 @@ msgstr "恢复参数"
 
 msgid "Resume automation"
 msgstr "恢复自动化"
+
+msgid "Resume integration"
+msgstr "恢复集成"
+
+msgid "Resume or cancel the existing integration first."
+msgstr "请先恢复或取消现有集成。"
 
 #. placeholder {0}: candidate.agentLabel
 msgid "Resuming {0}…"
@@ -13186,6 +13276,9 @@ msgstr "看看你最近30天在公开排行榜上的位置。仅包含token数�
 msgid "Select"
 msgstr "选择框"
 
+msgid "Select a branch"
+msgstr "选择分支"
+
 msgid "Select a default preset"
 msgstr "选择默认预设"
 
@@ -13203,6 +13296,9 @@ msgstr "选择一个项目来查看拉取请求。"
 
 msgid "Select a pull request to preview it here."
 msgstr "选择一个拉取请求，在这里预览。"
+
+msgid "Select a remote"
+msgstr "选择远程仓库"
 
 msgid "Select a team"
 msgstr "选择团队"
@@ -13504,6 +13600,9 @@ msgstr "设置（{settingsHotkey}）"
 
 msgid "Settings → Remote Access → “Allow remote access to this device via relay”."
 msgstr "设置 → 远程访问 → “允许通过中继远程访问本设备”。"
+
+msgid "Settings saved"
+msgstr "设置已保存"
 
 msgid "Settings..."
 msgstr "设置..."
@@ -15014,11 +15113,17 @@ msgstr "Codex登录"
 msgid "The config repository must be one of the environment's repositories"
 msgstr "配置仓库必须是该环境的仓库之一"
 
+msgid "The configured remote no longer exists."
+msgstr "配置的远程仓库已不存在。"
+
 msgid "The connection timed out"
 msgstr "连接已超时"
 
 msgid "The connection was closed"
 msgstr "连接已被关闭"
+
+msgid "The current branch is already the principal branch."
+msgstr "当前分支已经是主分支。"
 
 msgid "The current prompt will be replaced with the selected version. A new \"Restored\" entry will be added to history so you can undo this."
 msgstr "当前提示词会被所选版本替换。历史中会新增一条“已恢复”记录，方便你撤销。"
@@ -15031,6 +15136,12 @@ msgstr "桌面应用目前支持macOS和Linux。留下邮箱，Windows版本一�
 
 msgid "The desktop app runs on macOS, with an experimental Linux AppImage; Windows is not yet available. Beyond the desktop app there's a CLI, a TypeScript SDK, and an MCP server, so you can drive Superset from scripts, terminals, and other agents."
 msgstr "桌面应用支持macOS，另有实验性的Linux AppImage；Windows暂未提供。除了桌面应用，还有CLI、TypeScript SDK和MCP服务器，你可以从脚本、终端和其他智能体来驱动Superset。"
+
+msgid "The destination branch is checked out in multiple worktrees."
+msgstr "目标分支已在多个工作树中检出。"
+
+msgid "The destination stays unchanged until completion. Closing this window keeps the attempt available to resume."
+msgstr "完成前目标保持不变。关闭此窗口后仍可恢复本次尝试。"
 
 msgid "The device that hosts this project is unavailable."
 msgstr "承载这个项目的设备不可用。"
@@ -15188,6 +15299,9 @@ msgstr "你要找的页面不存在。"
 
 msgid "The people behind Superset."
 msgstr "Superset背后的团队。"
+
+msgid "The principal branch does not exist locally."
+msgstr "主分支在本地不存在。"
 
 msgid "The project's checkout as it is: files and branch are shared"
 msgstr "按原样使用项目的检出: 文件和分支是共享的"
@@ -15464,6 +15578,9 @@ msgstr "本月"
 
 msgid "This only changes the display name, not the branch."
 msgstr "这只会更改显示名称，不会更改分支。"
+
+msgid "This operation is disabled for this project."
+msgstr "此项目已禁用该操作。"
 
 msgid "this organization"
 msgstr "此组织"
@@ -16202,6 +16319,12 @@ msgstr "更新守护进程"
 msgid "Update Error"
 msgstr "更新出错"
 
+msgid "Update from {remote}/{branch}"
+msgstr "从 {remote}/{branch} 更新"
+
+msgid "Update from remote principal"
+msgstr "从远程主分支更新"
+
 msgid "Update host service"
 msgstr "更新主机服务"
 
@@ -16321,6 +16444,9 @@ msgstr "无法获取用量。"
 #. placeholder {0}: search.trim()
 msgid "Use “{0}”"
 msgstr "使用“{0}”"
+
+msgid "Use {label}"
+msgstr "使用 {label}"
 
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "使用相对于工作区的路径或绝对路径文件夹。"

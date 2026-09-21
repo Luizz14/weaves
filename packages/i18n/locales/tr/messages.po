@@ -1217,6 +1217,9 @@ msgstr "Daha iyi bir uygulama içi tarayıcı: değişikliklerinizi önizleyin v
 msgid "A better Superset is ready"
 msgstr "Daha iyi bir Superset hazır"
 
+msgid "A branch changed during integration. Cancel this attempt and start again."
+msgstr "Entegrasyon sırasında bir dal değişti. Bu denemeyi iptal edip yeniden başlayın."
+
 #. js-lingui-explicit-id
 msgid "serverError.common.cloudWorkspaceCannotCallThis"
 msgstr "Bulut çalışma alanı {path} çağıramaz. Bunu oturum açtığın bir istemciden yap."
@@ -1751,6 +1754,9 @@ msgstr "Tüm yorumlar"
 msgid "All commits"
 msgstr "Tüm commit'ler"
 
+msgid "All conflicts are resolved. Complete the integration when ready."
+msgstr "Tüm çakışmalar çözüldü. Hazır olduğunuzda entegrasyonu tamamlayın."
+
 #. placeholder {0}: members.length
 msgid "All data will be permanently deleted for all {0} members — this cannot be undone."
 msgstr "Tüm veriler {0} üyenin tamamı için kalıcı olarak silinecek — bu geri alınamaz."
@@ -1857,11 +1863,17 @@ msgstr "Röle üzerinden erişime izin verin"
 msgid "Allow for session"
 msgstr "Oturum boyunca izin ver"
 
+msgid "Allow merge into principal"
+msgstr "Ana dala birleştirmeye izin ver"
+
 msgid "Allow microphone access to use dictation"
 msgstr "Sesle yazmak için mikrofon erişimine izin verin"
 
 msgid "Allow remote access to this device via relay"
 msgstr "Bu cihaza röle üzerinden uzaktan erişime izin ver"
+
+msgid "Allow update from remote principal"
+msgstr "Uzak ana daldan güncellemeye izin ver"
 
 msgid "Allowed"
 msgstr "İzin verildi"
@@ -1955,6 +1967,9 @@ msgstr "Anonim Montajcı"
 
 msgid "another device"
 msgstr "başka bir cihaz"
+
+msgid "Another integration operation is running. Try again shortly."
+msgstr "Başka bir entegrasyon işlemi sürüyor. Biraz sonra tekrar deneyin."
 
 msgid "Answered"
 msgstr "Yanıtlandı"
@@ -2584,6 +2599,9 @@ msgstr "İkili dosya değişti"
 msgid "Binary file hidden"
 msgstr "İkili dosya gizlendi"
 
+msgid "Binary, large, or special file. Choose a version to resolve."
+msgstr "İkili, büyük veya özel dosya. Çözmek için bir sürüm seçin."
+
 msgid "Bio"
 msgstr "Hakkında"
 
@@ -2649,6 +2667,12 @@ msgstr "Bu cihazdaki yeni çalışma alanları için dal davranışı. Projeler 
 
 msgid "Branch copied"
 msgstr "Dal kopyalandı"
+
+msgid "Branch integration"
+msgstr "Dal entegrasyonu"
+
+msgid "Branch integration completed"
+msgstr "Dal entegrasyonu tamamlandı"
 
 msgid "branch name"
 msgstr "dal adı"
@@ -2901,6 +2925,9 @@ msgstr "İndirmeyi iptal et"
 msgid "Cancel edits"
 msgstr "Düzenlemeleri iptal et"
 
+msgid "Cancel integration"
+msgstr "Entegrasyonu iptal et"
+
 msgid "Cancel plan"
 msgstr "Planı iptal et"
 
@@ -3071,6 +3098,9 @@ msgstr "Güncellemeleri denetle..."
 
 msgid "Check on running agents and read what they changed from your phone."
 msgstr "Çalışan ajanları telefonunuzdan kontrol edin ve neyi değiştirdiklerini okuyun."
+
+msgid "Check out a branch before continuing."
+msgstr "Devam etmeden önce bir dala geçin."
 
 msgid "Check resources"
 msgstr "Kaynakları denetle"
@@ -3668,6 +3698,9 @@ msgstr "Commit başarısız: {0}"
 msgid "Commit message"
 msgstr "Commit mesajı"
 
+msgid "Commit or stash pending changes in the source and destination workspaces first."
+msgstr "Önce kaynak ve hedef çalışma alanlarındaki bekleyen değişiklikleri commit edin veya zulalayın."
+
 msgid "Commits"
 msgstr "Commit'ler"
 
@@ -3719,6 +3752,9 @@ msgstr "Varsayılan stille karşılaştırıldı"
 msgid "complete"
 msgstr "tamamlandı"
 
+msgid "Complete integration"
+msgstr "Entegrasyonu tamamla"
+
 msgid "Completed"
 msgstr "Tamamlandı"
 
@@ -3761,6 +3797,9 @@ msgstr "Otomasyonu kendiniz yapılandırın"
 msgid "Configure the in-app browser"
 msgstr "Uygulama içi tarayıcıyı yapılandırın"
 
+msgid "Configure the principal branch and remote in project settings."
+msgstr "Proje ayarlarında ana dalı ve uzak depoyu yapılandırın."
+
 msgid "Configure which agents appear in launchers and how their launches are built."
 msgstr "Başlatıcılarda hangi ajanların görüneceğini ve başlatmalarının nasıl kurulacağını yapılandırın."
 
@@ -3772,6 +3811,9 @@ msgstr "Onayla"
 
 msgid "Confirm before quitting"
 msgstr "Çıkmadan önce onay iste"
+
+msgid "Conflicting files"
+msgstr "Çakışan dosyalar"
 
 msgid "Connect"
 msgstr "Bağla"
@@ -4272,6 +4314,9 @@ msgstr "Dosya silinemedi"
 
 msgid "Could not delete this page"
 msgstr "Bu sayfa silinemedi"
+
+msgid "Could not fetch the principal branch. Check your connection, credentials, and remote branch."
+msgstr "Ana dal alınamadı. Bağlantınızı, kimlik bilgilerinizi ve uzak dalı kontrol edin."
 
 msgid "Could not forget {domain}"
 msgstr "{domain} unutulamadı"
@@ -6589,6 +6634,9 @@ msgstr "Dosya eylemleri"
 msgid "File changes"
 msgstr "Dosya değişiklikleri"
 
+msgid "File deleted"
+msgstr "Dosya silindi"
+
 msgid "File is too large to preview"
 msgstr "Dosya önizlenemeyecek kadar büyük"
 
@@ -6720,6 +6768,9 @@ msgstr "Finder"
 
 msgid "Finish review"
 msgstr "İncelemeyi bitir"
+
+msgid "Finish the pending Git operation first."
+msgstr "Önce bekleyen Git işlemini tamamlayın."
 
 msgid "Finished"
 msgstr "Tamamlandı"
@@ -7057,6 +7108,9 @@ msgstr "Git ve worktree'ler"
 
 msgid "Git author name"
 msgstr "Git yazar adı"
+
+msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
+msgstr "Git entegrasyonu başarısız oldu. Depoyu kontrol edip tekrar deneyin veya denemeyi iptal edin."
 
 msgid "GitHub"
 msgstr "GitHub"
@@ -7787,6 +7841,9 @@ msgstr "Kurulumlar"
 
 msgid "Instructions"
 msgstr "Yönergeler"
+
+msgid "Integrate committed changes locally. These settings do not change workspace creation or pull requests."
+msgstr "Commit edilmiş değişiklikleri yerel olarak entegre edin. Bu ayarlar çalışma alanı oluşturmayı veya birleştirme isteklerini değiştirmez."
 
 msgid "Integrations"
 msgstr "Entegrasyonlar"
@@ -8720,6 +8777,9 @@ msgstr "Görülmedi olarak işaretle"
 msgid "Mark as Read"
 msgstr "Okundu olarak işaretle"
 
+msgid "Mark as resolved"
+msgstr "Çözüldü olarak işaretle"
+
 msgid "Mark as Unread"
 msgstr "Okunmadı olarak işaretle"
 
@@ -8866,6 +8926,12 @@ msgstr "Birleştirme commit'i"
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Birleştirme başarısız: {0}"
+
+msgid "Merge into {branch}"
+msgstr "{branch} dalına birleştir"
+
+msgid "Merge into principal"
+msgstr "Ana dala birleştir"
 
 msgid "Merge pull request"
 msgstr "Pull request'i birleştir"
@@ -11368,6 +11434,9 @@ msgstr "Tercihler"
 msgid "Prefix"
 msgstr "Ön ek"
 
+msgid "Preparation was interrupted. Cancel this attempt and start again."
+msgstr "Hazırlık kesintiye uğradı. Bu denemeyi iptal edip yeniden başlayın."
+
 msgid "Preparing"
 msgstr "Hazırlanıyor"
 
@@ -11454,6 +11523,9 @@ msgstr "Birincil anahtar"
 
 msgid "Primitives"
 msgstr "Temel bileşenler"
+
+msgid "Principal branch"
+msgstr "Ana dal"
 
 msgid "Print"
 msgstr "Yazdır"
@@ -11564,6 +11636,9 @@ msgstr "Proje {0} konumunda kuruldu"
 
 msgid "Project Settings"
 msgstr "Proje ayarları"
+
+msgid "Project settings changed. Cancel this attempt and start again."
+msgstr "Proje ayarları değişti. Bu denemeyi iptal edip yeniden başlayın."
 
 msgid "Project worktree location reset"
 msgstr "Proje worktree konumu sıfırlandı"
@@ -12062,6 +12137,9 @@ msgstr "Uzak erişim"
 msgid "Remote Access"
 msgstr "Uzaktan erişim"
 
+msgid "Remote for updates"
+msgstr "Güncellemeler için uzak depo"
+
 msgid "Remote MCP server — connects over HTTP"
 msgstr "Uzak MCP sunucusu — HTTP üzerinden bağlanır"
 
@@ -12393,6 +12471,9 @@ msgstr "Çöz"
 msgid "Resolve all"
 msgstr "Tümünü çöz"
 
+msgid "Resolve all conflicts before completing the integration."
+msgstr "Entegrasyonu tamamlamadan önce tüm çakışmaları çözün."
+
 msgid "Resolve Conflicts to Merge"
 msgstr "Birleştirmek için çakışmaları çözün"
 
@@ -12410,6 +12491,9 @@ msgstr "Konuyu çöz"
 
 msgid "Resolved"
 msgstr "Çözüldü"
+
+msgid "Resolved content"
+msgstr "Çözülmüş içerik"
 
 msgid "Resource consumption"
 msgstr "Kaynak tüketimi"
@@ -12522,6 +12606,12 @@ msgstr "Sürdürme argümanları"
 
 msgid "Resume automation"
 msgstr "Otomasyonu sürdür"
+
+msgid "Resume integration"
+msgstr "Entegrasyona devam et"
+
+msgid "Resume or cancel the existing integration first."
+msgstr "Önce mevcut entegrasyona devam edin veya iptal edin."
 
 #. placeholder {0}: candidate.agentLabel
 msgid "Resuming {0}…"
@@ -13186,6 +13276,9 @@ msgstr "Son 30 gününüzün herkese açık liderlik tablosunda nereye düştü�
 msgid "Select"
 msgstr "Seçim"
 
+msgid "Select a branch"
+msgstr "Bir dal seçin"
+
 msgid "Select a default preset"
 msgstr "Varsayılan ön ayarı seçin"
 
@@ -13203,6 +13296,9 @@ msgstr "Pull request'leri görmek için bir proje seçin."
 
 msgid "Select a pull request to preview it here."
 msgstr "Burada önizlemek için bir pull request seçin."
+
+msgid "Select a remote"
+msgstr "Bir uzak depo seçin"
 
 msgid "Select a team"
 msgstr "Bir takım seçin"
@@ -13504,6 +13600,9 @@ msgstr "Ayarlar ({settingsHotkey})"
 
 msgid "Settings → Remote Access → “Allow remote access to this device via relay”."
 msgstr "Ayarlar → Uzaktan erişim → “Bu cihaza röle üzerinden uzaktan erişime izin ver”."
+
+msgid "Settings saved"
+msgstr "Ayarlar kaydedildi"
 
 msgid "Settings..."
 msgstr "Ayarlar..."
@@ -15014,11 +15113,17 @@ msgstr "Codex oturumu"
 msgid "The config repository must be one of the environment's repositories"
 msgstr "Yapılandırma deposu, ortamın depolarından biri olmalıdır"
 
+msgid "The configured remote no longer exists."
+msgstr "Yapılandırılan uzak depo artık mevcut değil."
+
 msgid "The connection timed out"
 msgstr "Bağlantı zaman aşımına uğradı"
 
 msgid "The connection was closed"
 msgstr "Bağlantı kapatıldı"
+
+msgid "The current branch is already the principal branch."
+msgstr "Geçerli dal zaten ana dal."
 
 msgid "The current prompt will be replaced with the selected version. A new \"Restored\" entry will be added to history so you can undo this."
 msgstr "Geçerli istem, seçilen sürümle değiştirilecek. Bunu geri alabilmeniz için geçmişe yeni bir \"Geri yüklendi\" kaydı eklenecek."
@@ -15031,6 +15136,12 @@ msgstr "Superset'i Windows ve Linux'a getiriyoruz. E-postanızı bırakın, haz�
 
 msgid "The desktop app runs on macOS, with an experimental Linux AppImage; Windows is not yet available. Beyond the desktop app there's a CLI, a TypeScript SDK, and an MCP server, so you can drive Superset from scripts, terminals, and other agents."
 msgstr "Masaüstü uygulaması macOS'ta çalışır; deneysel bir Linux AppImage vardır, Windows henüz kullanılamıyor. Masaüstü uygulamasının ötesinde bir CLI, bir TypeScript SDK ve bir MCP sunucusu var; böylece Superset'i betiklerden, terminallerden ve diğer ajanlardan yönetebilirsiniz."
+
+msgid "The destination branch is checked out in multiple worktrees."
+msgstr "Hedef dal birden fazla çalışma ağacında açık."
+
+msgid "The destination stays unchanged until completion. Closing this window keeps the attempt available to resume."
+msgstr "Hedef, tamamlanana kadar değişmez. Bu pencereyi kapatsanız da denemeye devam edebilirsiniz."
 
 msgid "The device that hosts this project is unavailable."
 msgstr "Bu projeyi barındıran cihaz kullanılamıyor."
@@ -15188,6 +15299,9 @@ msgstr "Aradığınız sayfa mevcut değil."
 
 msgid "The people behind Superset."
 msgstr "Superset'in arkasındaki insanlar."
+
+msgid "The principal branch does not exist locally."
+msgstr "Ana dal yerel olarak mevcut değil."
 
 msgid "The project's checkout as it is: files and branch are shared"
 msgstr "Projenin checkout'u olduğu gibi: dosyalar ve dal paylaşılır"
@@ -15464,6 +15578,9 @@ msgstr "Bu ay"
 
 msgid "This only changes the display name, not the branch."
 msgstr "Bu yalnızca görünen adı değiştirir, dalı değil."
+
+msgid "This operation is disabled for this project."
+msgstr "Bu işlem bu proje için devre dışı."
 
 msgid "this organization"
 msgstr "bu kuruluş"
@@ -16202,6 +16319,12 @@ msgstr "Daemon'u güncelle"
 msgid "Update Error"
 msgstr "Güncelleme hatası"
 
+msgid "Update from {remote}/{branch}"
+msgstr "{remote}/{branch} üzerinden güncelle"
+
+msgid "Update from remote principal"
+msgstr "Uzak ana daldan güncelle"
+
 msgid "Update host service"
 msgstr "Ana makine hizmetini güncelle"
 
@@ -16321,6 +16444,9 @@ msgstr "Kullanım bilgisi yok."
 #. placeholder {0}: search.trim()
 msgid "Use “{0}”"
 msgstr "“{0}” kullan"
+
+msgid "Use {label}"
+msgstr "{label} kullan"
 
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "Çalışma alanına göreli bir yol ya da mutlak bir klasör kullanın."

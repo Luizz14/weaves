@@ -84,6 +84,87 @@ export const HOTKEYS_REGISTRY = {
 			message: "Search and open files in the current workspace",
 		}),
 	},
+	SWITCH_ORGANIZATION_1: {
+		key: {
+			mac: L("ctrl+alt+1"),
+			windows: L("ctrl+alt+1"),
+			linux: L("ctrl+alt+1"),
+		},
+		label: msg({ message: "Switch organization" }),
+		category: "Navigation",
+	},
+	SWITCH_ORGANIZATION_2: {
+		key: {
+			mac: L("ctrl+alt+2"),
+			windows: L("ctrl+alt+2"),
+			linux: L("ctrl+alt+2"),
+		},
+		label: msg({ message: "Switch organization" }),
+		category: "Navigation",
+	},
+	SWITCH_ORGANIZATION_3: {
+		key: {
+			mac: L("ctrl+alt+3"),
+			windows: L("ctrl+alt+3"),
+			linux: L("ctrl+alt+3"),
+		},
+		label: msg({ message: "Switch organization" }),
+		category: "Navigation",
+	},
+	SWITCH_ORGANIZATION_4: {
+		key: {
+			mac: L("ctrl+alt+4"),
+			windows: L("ctrl+alt+4"),
+			linux: L("ctrl+alt+4"),
+		},
+		label: msg({ message: "Switch organization" }),
+		category: "Navigation",
+	},
+	SWITCH_ORGANIZATION_5: {
+		key: {
+			mac: L("ctrl+alt+5"),
+			windows: L("ctrl+alt+5"),
+			linux: L("ctrl+alt+5"),
+		},
+		label: msg({ message: "Switch organization" }),
+		category: "Navigation",
+	},
+	SWITCH_ORGANIZATION_6: {
+		key: {
+			mac: L("ctrl+alt+6"),
+			windows: L("ctrl+alt+6"),
+			linux: L("ctrl+alt+6"),
+		},
+		label: msg({ message: "Switch organization" }),
+		category: "Navigation",
+	},
+	SWITCH_ORGANIZATION_7: {
+		key: {
+			mac: L("ctrl+alt+7"),
+			windows: L("ctrl+alt+7"),
+			linux: L("ctrl+alt+7"),
+		},
+		label: msg({ message: "Switch organization" }),
+		category: "Navigation",
+	},
+	SWITCH_ORGANIZATION_8: {
+		key: {
+			mac: L("ctrl+alt+8"),
+			windows: L("ctrl+alt+8"),
+			linux: L("ctrl+alt+8"),
+		},
+		label: msg({ message: "Switch organization" }),
+		category: "Navigation",
+	},
+	SWITCH_ORGANIZATION_9: {
+		key: {
+			mac: L("ctrl+alt+9"),
+			windows: L("ctrl+alt+9"),
+			linux: L("ctrl+alt+9"),
+		},
+		label: msg({ message: "Switch organization" }),
+		category: "Navigation",
+	},
 
 	// Workspace switching
 	JUMP_TO_WORKSPACE_1: {

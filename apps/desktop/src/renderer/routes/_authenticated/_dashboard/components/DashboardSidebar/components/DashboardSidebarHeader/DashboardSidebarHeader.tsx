@@ -32,6 +32,7 @@ import {
 import { useFrameStackStore } from "renderer/commandPalette";
 import { GATED_FEATURES, usePaywall } from "renderer/components/Paywall";
 import { SidebarKbdHint } from "renderer/components/SidebarKbdHint";
+import { UpdatesPill } from "renderer/components/UpdatesPill";
 import { ZoomStable } from "renderer/components/ZoomStable";
 import { env } from "renderer/env.renderer";
 import {
@@ -45,6 +46,7 @@ import { useFolderFirstImport } from "renderer/routes/_authenticated/_dashboard/
 import { AppMenuButton } from "renderer/routes/_authenticated/_dashboard/components/AppMenuButton";
 import { NavigationControls } from "renderer/routes/_authenticated/_dashboard/components/NavigationControls";
 import { SidebarToggle } from "renderer/routes/_authenticated/_dashboard/components/SidebarToggle";
+import { OrganizationDropdown } from "renderer/routes/_authenticated/_dashboard/components/TopBar/components/OrganizationDropdown";
 import { TopBarPortsDropdown } from "renderer/routes/_authenticated/_dashboard/components/TopBar/components/TopBarPortsDropdown";
 import { useFailedAutomations } from "renderer/routes/_authenticated/_dashboard/hooks/useFailedAutomations";
 import {
@@ -538,6 +540,8 @@ export function DashboardSidebarHeader({
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
+					<UpdatesPill isCollapsed />
+					<OrganizationDropdown variant="actions" menuSide="right" />
 				</div>
 			</div>
 		);
@@ -576,6 +580,8 @@ export function DashboardSidebarHeader({
 					{/* Lives here (persistent chrome) rather than the workspace tab
 					    bar, which remounts on every navigation. */}
 					<TopBarPortsDropdown align="start" />
+					<UpdatesPill isCollapsed />
+					<OrganizationDropdown variant="actions" menuSide="bottom" />
 				</ZoomStable>
 				<div className="drag h-full min-w-0 flex-1" />
 			</div>

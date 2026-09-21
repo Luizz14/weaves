@@ -7,10 +7,12 @@ import {
 	planDocument,
 } from "@superset/chat/protocol";
 import { File as FileIcon, Image as ImageIcon } from "lucide-react";
-import { AgentActivity } from "renderer/components/agents/agent-activity";
+import {
+	AgentActivity,
+	type AgentActivityTrace,
+} from "renderer/components/agents/agent-activity";
 import { Message, MessageContent } from "renderer/components/agents/message";
 import { TodoList } from "renderer/components/agents/todo-list";
-import { ToolResult } from "renderer/components/agents/tool-result";
 import { ChatError } from "../ChatError/ChatError";
 import { CodexApproval } from "../CodexApproval/CodexApproval";
 import { CodexMarkdown } from "../CodexMarkdown/CodexMarkdown";
@@ -93,33 +95,70 @@ export function CodexItem({
 					]}
 				/>
 			);
-		case "tool_call":
-			return (
-				<ToolResult
-					tool={item.toolName}
-					title={item.title}
-					kind={item.toolKind === "execute" ? "terminal" : "custom"}
-					status={
-						item.status === "running"
-							? "running"
-							: item.status === "completed"
-								? "success"
-								: item.status === "failed"
-									? "error"
-									: "cancelled"
+		case "tool_call": {
+				const traceKind = ((): AgentActivityTrace["kind"] => {
+					switch (item.toolKind) {
+						case "execute":
+							return "run";
+						case "edit":
+						case "delete":
+						case "move":
+							return "write";
+						case "read":
+							return "read";
+						case "search":
+						case "fetch":
+							return "thinking";
+						case "think":
+							return "thinking";
+						default:
+							return "message";
 					}
-				>
-					<div className="space-y-2">
-						{item.content.map((content, index) => (
-							<CodexToolContent
-								key={`${item.id}:${index}`}
-								content={content}
-								streaming={item.status === "running"}
-							/>
-						))}
-					</div>
-				</ToolResult>
-			);
+				})();
+
+				const diffContent = item.content.find((c) => c.type === "diff");
+				const terminalContent = item.content.find(
+					(c) => c.type === "terminal",
+				);
+				const detail = diffContent
+					? diffContent.path
+					: terminalContent
+						? terminalContent.command.slice(0, 80)
+						: item.title;
+
+				return (
+					<AgentActivity
+						status={
+							running && item.status === "running" ? "working" : "complete"
+						}
+						contentType="trace"
+						collapseOnComplete={false}
+						defaultOpen={false}
+						items={[
+							{
+								id: item.id,
+								type: "trace",
+								kind: traceKind,
+								label: item.title,
+								detail,
+							},
+						]}
+					>
+						{item.content.length > 0 && (
+							<div className="mt-1 space-y-2">
+								{item.content.map((content, index) => (
+									<CodexToolContent
+										key={`${item.id}:${index}`}
+										content={content}
+										streaming={item.status === "running"}
+									/>
+								))}
+							</div>
+						)}
+					</AgentActivity>
+				);
+			}
+
 		case "plan": {
 			const document = planDocument(item);
 			if (document)

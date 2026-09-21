@@ -87,6 +87,10 @@ export const PERSISTED_KEY_REGISTRY: ReadonlyArray<
 		["sidebar-workspaces-collapse"],
 	],
 	[
+		"src/renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/components/DashboardSidebarOrganizationSwitcher/hooks/useOrganizationOrder/useOrganizationOrder.ts",
+		["organization-switcher-order-v1"],
+	],
+	[
 		"src/renderer/stores/last-active-v2-workspace.ts",
 		["last-active-v2-workspace"],
 	],

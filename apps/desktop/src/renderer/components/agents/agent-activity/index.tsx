@@ -129,6 +129,7 @@ export function AgentActivity({
 	maxHeight = 208,
 	className,
 	contentClassName,
+	children,
 }: AgentActivityProps) {
 	const reduce = useReducedMotion() ?? false;
 	const baseId = useId();
@@ -286,7 +287,10 @@ export function AgentActivity({
 							))}
 						</AnimatePresence>
 					</motion.div>
-				</div>
+					</div>
+				{children ? (
+					<div className="pb-2">{children}</div>
+				) : null}
 			</AgentDisclosure>
 		</div>
 	);
