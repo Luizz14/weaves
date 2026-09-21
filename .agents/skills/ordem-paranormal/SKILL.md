@@ -18,24 +18,32 @@ This skill guides agents working on the **Ordem Paranormal** feature in the Supe
 │    └─► `generateFriendlyBranchName(existing)`                                │
 │        └─► `generateOrdemBranchName(existing)`                              │
 │            └─► Random unused character from `characters.json`                │
+│    Host-Service broadcasts `workspace:changed` (type: created) over eventBus │
 └──────────────────────────────────────┬──────────────────────────────────────┘
-                                       │ calls recordDiscoveryByBranch(branch)
+                                       │
 ┌──────────────────────────────────────▼──────────────────────────────────────┐
-│ 2. Global Persistent Storage & Events (packages/shared/src/ordem-paranormal)│
+│ 2. Cross-Process Bridge (Renderer -> Electron Main)                          │
+│    `useHostWorkspaces` & `useWorkspaceCreates` listen to created event/settle│
+│    Calls `electronTrpcClient.ordemParanormal.recordDiscoveryByBranch`       │
+└──────────────────────────────────────┬──────────────────────────────────────┘
+                                       │
+┌──────────────────────────────────────▼──────────────────────────────────────┐
+│ 3. Global Persistent Storage & Events (Electron Main & packages/shared)     │
 │    `storage.ts`: Loads/Saves `~/.superset/ordem_pokedex.json` (User-wide)   │
-│    `events.ts`: `ordemDiscoveryEmitter.emit("discovery", ...)`              │
-│    Persists: firstDiscoveredAt, timesUsed, appearances (branch, org, proj) │
+│    Debounces repeat events for same branch within 15 seconds                 │
+│    `events.ts`: `ordemDiscoveryEmitter.emit("discovery", ...)` in Main      │
 └──────────────────────────────────────┬──────────────────────────────────────┘
                                        │ Observable tRPC Subscription
 ┌──────────────────────────────────────▼──────────────────────────────────────┐
-│ 3. Desktop tRPC Router (apps/desktop/src/lib/trpc/routers/ordem-paranormal) │
+│ 4. Desktop tRPC Router (apps/desktop/src/lib/trpc/routers/ordem-paranormal) │
 │    `ordemParanormal.getSummary` (summary, stats, active branches in localDb)│
 │    `ordemParanormal.onDiscovery` (real-time stream of newly unlocked cards) │
+│    `ordemParanormal.recordDiscoveryByBranch` (cross-process trigger)        │
 │    `ordemParanormal.triggerTestReveal` (dev/testing card animation)         │
 └──────────────────────────────────────┬──────────────────────────────────────┘
                                        │ React Hooks (electronTrpc)
 ┌──────────────────────────────────────▼──────────────────────────────────────┐
-│ 4. Desktop UI Surfaces (apps/desktop/src/renderer/)                         │
+│ 5. Desktop UI Surfaces (apps/desktop/src/renderer/)                         │
 │    - `OrdemPokemonCardReveal`: Floating holographic foil card popup        │
 │    - `PokedexPage` (/settings/pokedex & /pokedex): Interactive card gallery │
 │    - `PokedexDetailModal`: Full dossier, lore, quote, and worktree history  │
