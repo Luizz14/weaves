@@ -52,6 +52,7 @@ type SettingsRoute =
 	| "/settings/behavior"
 	| "/settings/browser"
 	| "/settings/git"
+	| "/settings/ai"
 	| "/settings/agents"
 	| "/settings/codex-chat"
 	| "/settings/terminal"
@@ -159,6 +160,14 @@ const SECTION_GROUPS: SectionGroup[] = [
 					message: "Git & Worktrees",
 				}),
 				icon: <LuGitBranch className="h-4 w-4" />,
+			},
+			{
+				id: "/settings/ai",
+				section: "ai",
+				label: msg({
+					message: "AI features",
+				}),
+				icon: <HiOutlineSparkles className="h-4 w-4" />,
 			},
 			{
 				id: "/settings/codex-chat",

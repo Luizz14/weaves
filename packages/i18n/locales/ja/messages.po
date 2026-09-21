@@ -1683,6 +1683,9 @@ msgstr "AI アシスタント"
 msgid "AI authentication failed. Please check your AI settings."
 msgstr "AIの認証に失敗しました。AI設定を確認してください。"
 
+msgid "AI features"
+msgstr "AI機能"
+
 msgid "Alert"
 msgstr "Alert"
 
@@ -1964,6 +1967,15 @@ msgstr "AnthropicがこのAPIキーを拒否しました。"
 
 msgid "Anthropic rejected this token."
 msgstr "Anthropicがこのトークンを拒否しました。"
+
+msgid "Antigravity CLI connection failed"
+msgstr "Antigravity CLIへの接続に失敗しました"
+
+msgid "Antigravity CLI is ready"
+msgstr "Antigravity CLIの準備ができました"
+
+msgid "Antigravity CLI status"
+msgstr "Antigravity CLIの状態"
 
 msgid "Any calendar"
 msgstr "すべてのカレンダー"
@@ -4461,6 +4473,14 @@ msgstr "未ステージの変更を破棄できませんでした"
 msgid "Couldn’t finish deleting workspaces"
 msgstr "ワークスペースの削除を完了できませんでした"
 
+#. placeholder {0}: error.message
+msgid "Couldn't generate a commit message: {0}"
+msgstr "コミットメッセージを生成できませんでした: {0}"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate pull request details: {0}"
+msgstr "プルリクエストの詳細を生成できませんでした: {0}"
+
 #. placeholder {0}: configsQuery.error instanceof Error ? configsQuery.error.message : hostServiceUnavailableMessage
 msgid "Couldn't load agent settings: {0}"
 msgstr "エージェント設定を読み込めませんでした: {0}"
@@ -6499,6 +6519,9 @@ msgstr "実行を開始できませんでした"
 msgid "Failed to update agent settings"
 msgstr "エージェント設定の更新に失敗しました"
 
+msgid "Failed to update AI settings"
+msgstr "AI設定を更新できませんでした"
+
 msgid "Failed to update automation"
 msgstr "オートメーションを更新できませんでした"
 
@@ -6757,6 +6780,9 @@ msgstr "フラグ"
 msgid "Flame"
 msgstr "炎"
 
+msgid "Flash balances speed and quality for short development tasks."
+msgstr "Flashは短い開発タスクで速度と品質のバランスを取ります。"
+
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "エージェントのフリートが計画し、実装し、互いの仕事をレビューしテストします。人間は方向を定め、例外を裁定し、審美眼を担います。人間の注意の単位はもうプルリクエストではありません。意思決定です。"
 
@@ -6991,6 +7017,9 @@ msgstr "全般"
 
 msgid "General access"
 msgstr "一般的なアクセス"
+
+msgid "Generate"
+msgstr "生成"
 
 msgid "Generate a key to use with MCP servers."
 msgstr "MCPサーバーで使用するキーを生成します。"
@@ -7757,6 +7786,9 @@ msgstr "プラグインをインストール"
 msgid "Install Superset MCP in your client"
 msgstr "クライアントにSuperset MCPをインストール"
 
+msgid "Install the Antigravity CLI, then run agy in a terminal to sign in."
+msgstr "Antigravity CLIをインストールし、ターミナルでagyを実行してログインしてください。"
+
 msgid "Install the desktop app"
 msgstr "デスクトップアプリをインストール"
 
@@ -7775,6 +7807,10 @@ msgstr "インストール済み"
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceHasInstalls"
 msgstr "インストール済みのプラグインが {name} 由来です: {plugins}。先に削除してください。"
+
+#. placeholder {0}: statusQuery.data.version
+msgid "Installed version {0}"
+msgstr "インストール済みバージョン {0}"
 
 msgid "Installed via"
 msgstr "インストール方法"
@@ -11636,6 +11672,9 @@ msgstr "プロパティ"
 msgid "Provide either id or slug"
 msgstr "idまたはslugのいずれかを指定してください"
 
+msgid "Provider"
+msgstr "プロバイダー"
+
 #. placeholder {0}: sourceConfig?.label ?? binding.agentId
 msgid "Provider: {0}"
 msgstr "プロバイダー: {0}"
@@ -11989,6 +12028,9 @@ msgstr "次に Claude Code を実行すると更新されます。"
 
 msgid "Refreshes when OpenCode next runs."
 msgstr "次に OpenCode を実行すると更新されます。"
+
+msgid "Regenerate"
+msgstr "再生成"
 
 msgid "Register any CLI agent alongside the built-ins, each with its own name, icon, and launch command."
 msgstr "組み込みのエージェントと並べて、任意のCLIエージェントを登録できます。名前、アイコン、起動コマンドはそれぞれ設定できます。"
@@ -14945,6 +14987,12 @@ msgstr "利用規約"
 msgid "Terms of Service"
 msgstr "利用規約"
 
+msgid "Test connection"
+msgstr "接続をテスト"
+
+msgid "Testing..."
+msgstr "テスト中..."
+
 msgid "Text"
 msgstr "テキスト"
 
@@ -16181,6 +16229,9 @@ msgstr "最新"
 msgid "Update"
 msgstr "更新"
 
+msgid "update AI settings"
+msgstr "AI設定を更新"
+
 msgid "Update available"
 msgstr "アップデートあり"
 
@@ -16319,6 +16370,9 @@ msgstr "使用量を取得できません。"
 msgid "Use “{0}”"
 msgstr "「{0}」を使用"
 
+msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
+msgstr "ブランチ名、コミットメッセージ、プルリクエストの下書きには小型のローカルCLIモデルを使用します。"
+
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "ワークスペースからの相対パスか絶対パスのフォルダを指定します。"
 
@@ -16402,6 +16456,9 @@ msgstr "ユーザーが見つかりません"
 
 msgid "user@example.com"
 msgstr "user@example.com"
+
+msgid "Uses the Antigravity CLI and its existing login on this host."
+msgstr "このホストのAntigravity CLIと既存のログインを使用します。"
 
 msgid "Using random branch name (AI generation timed out)"
 msgstr "ランダムなブランチ名を使用します(AI生成がタイムアウトしました)"

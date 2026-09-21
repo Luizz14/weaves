@@ -73,6 +73,7 @@ import {
 	applyAiWorkspaceRename,
 	applyGeneratedWorkspaceNames,
 	type GeneratedWorkspaceNames,
+	generateWorkspaceBranchFromPrompt,
 	generateWorkspaceNamesFromPrompt,
 	sanitizeBranchCandidate,
 } from "../workspace-creation/utils/ai-workspace-names";
@@ -102,11 +103,10 @@ const createInputSchema = z
 		// the checked-out branch are shared with every other local workspace
 		// of the project, so the branch/PR/worktree inputs do not apply.
 		checkout: z.enum(["worktree", "local"]).optional(),
-		// Both `name` and `branch` are optional. A typed `name` also seeds
-		// the branch when `branch` is omitted. When both are omitted with a
-		// non-empty agent prompt, creation proceeds with a friendly-random
-		// branch and an LLM rename is applied before terminals/agents
-		// start. With no prompt, the friendly-random fallback is final.
+		// Both `name` and `branch` are optional. With a prompt and no explicit
+		// branch, creation starts from an immediately available slug and replaces
+		// only the branch with the quick-AI result before terminals/agents start.
+		// `name` always remains the display name chosen by the app or user.
 		name: z.string().min(1).optional(),
 		branch: z.string().min(1).optional(),
 		// Use the typed branch verbatim instead of namespacing it under the
@@ -614,27 +614,22 @@ export const workspacesRouter = router({
 			const localProject = requireLocalProject(ctx, input.projectId);
 			const repoPath = requireProjectRepoPath(localProject);
 
-			// Kick off AI naming when the user supplied a prompt but no
-			// workspace name. The worktree add and registration run with an
-			// immediately-available branch while the LLM call proceeds in
-			// parallel; the AI title (and branch, when auto-generated) is
-			// applied as a rename before terminals/agents start. A typed
-			// name suppresses naming entirely — it titles the workspace and
-			// seeds the branch. The PR and worktree-adopt paths skip too:
-			// their names are already meaningful.
+			// Start branch naming from the first prompt while git creates the
+			// worktree. Display names remain app-owned; only an omitted branch
+			// can be replaced before terminals and agents start. PR and adopted
+			// worktree paths already have meaningful branches and skip this.
 			const composerPrompt =
 				input.agents?.[0]?.prompt?.trim() || input.namingPrompt?.trim() || "";
 			const wantAi =
 				input.pr === undefined &&
 				input.worktreePath === undefined &&
-				input.name === undefined &&
+				input.branch === undefined &&
 				!!composerPrompt;
-			const namingAgent = input.agents?.[0]?.agent;
 			const aiNamesPromise: Promise<GeneratedWorkspaceNames | null> | null =
 				wantAi
-					? generateWorkspaceNamesFromPrompt(
+					? generateWorkspaceBranchFromPrompt(
 							composerPrompt,
-							namingAgent ? { db: ctx.db, agent: namingAgent } : undefined,
+							ctx.db,
 							localProject.namingInstructions,
 						).catch((err) => {
 							console.warn("[workspaces.create] AI naming failed", err);
@@ -1224,13 +1219,13 @@ export const workspacesRouter = router({
 				}
 			}
 
-			// Apply AI names before terminals/agents start, so setup scripts
-			// and agents only ever observe the final branch name. The naming
+			// Apply the generated branch before terminals/agents start, so setup
+			// scripts and agents only ever observe the final name. The naming
 			// call has been running since the top of the mutation and is
 			// bounded by its own timeouts, so this usually adds well under a
 			// second on top of the git work; the rename itself (`branch -m`
-			// plus a row update) is milliseconds. The worktree directory
-			// keeps its creation-time name.
+			// plus a row update) is milliseconds. The workspace display name and
+			// worktree directory keep their creation-time values.
 			if (!alreadyExists && aiNamesPromise && worktreePath !== undefined) {
 				const names = await aiNamesPromise;
 				if (names) {
@@ -1243,7 +1238,7 @@ export const workspacesRouter = router({
 							oldBranchName: resolvedBranch,
 							oldWorkspaceName: workspaceRow.name || resolvedBranch,
 							names,
-							renameTitle: true,
+							renameTitle: false,
 							renameBranch: aiCanRenameBranch,
 							branchPrefix: resolvedBranchPrefix,
 						});
@@ -1517,7 +1512,7 @@ export const workspacesRouter = router({
 				oldWorkspaceName: local.name || local.branch,
 				prompt: input.prompt,
 				namingInstructions: project.namingInstructions,
-				renameTitle: true,
+				renameTitle: false,
 				renameBranch: true,
 				branchPrefix,
 			}).catch((err) => {

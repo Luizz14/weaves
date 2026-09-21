@@ -1683,6 +1683,9 @@ msgstr "ИИ-ассистенты"
 msgid "AI authentication failed. Please check your AI settings."
 msgstr "Не удалось выполнить аутентификацию AI. Проверьте настройки AI."
 
+msgid "AI features"
+msgstr "Функции ИИ"
+
 msgid "Alert"
 msgstr "Оповещение"
 
@@ -1964,6 +1967,15 @@ msgstr "Anthropic отклонил этот ключ API."
 
 msgid "Anthropic rejected this token."
 msgstr "Anthropic отклонил этот токен."
+
+msgid "Antigravity CLI connection failed"
+msgstr "Не удалось подключиться к Antigravity CLI"
+
+msgid "Antigravity CLI is ready"
+msgstr "Antigravity CLI готов"
+
+msgid "Antigravity CLI status"
+msgstr "Состояние Antigravity CLI"
 
 msgid "Any calendar"
 msgstr "Любой календарь"
@@ -4461,6 +4473,14 @@ msgstr "Не удалось отменить непроиндексирован�
 msgid "Couldn’t finish deleting workspaces"
 msgstr "Не удалось завершить удаление рабочих областей"
 
+#. placeholder {0}: error.message
+msgid "Couldn't generate a commit message: {0}"
+msgstr "Не удалось создать сообщение коммита: {0}"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate pull request details: {0}"
+msgstr "Не удалось создать данные pull request: {0}"
+
 #. placeholder {0}: configsQuery.error instanceof Error ? configsQuery.error.message : hostServiceUnavailableMessage
 msgid "Couldn't load agent settings: {0}"
 msgstr "Не удалось загрузить настройки агента: {0}"
@@ -6499,6 +6519,9 @@ msgstr "Не удалось запустить"
 msgid "Failed to update agent settings"
 msgstr "Не удалось обновить настройки агента"
 
+msgid "Failed to update AI settings"
+msgstr "Не удалось обновить настройки ИИ"
+
 msgid "Failed to update automation"
 msgstr "Не удалось обновить автоматизацию"
 
@@ -6757,6 +6780,9 @@ msgstr "Флаг"
 msgid "Flame"
 msgstr "Пламя"
 
+msgid "Flash balances speed and quality for short development tasks."
+msgstr "Flash сочетает скорость и качество для небольших задач разработки."
+
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Флоты агентов планируют, реализуют, проверяют и тестируют работу друг друга. Люди задают направление, разбирают исключения и отвечают за вкус. Единица человеческого внимания — уже не пул-реквест, а решение."
 
@@ -6991,6 +7017,9 @@ msgstr "Общие"
 
 msgid "General access"
 msgstr "Общий доступ"
+
+msgid "Generate"
+msgstr "Создать"
 
 msgid "Generate a key to use with MCP servers."
 msgstr "Создайте ключ для использования с серверами MCP."
@@ -7757,6 +7786,9 @@ msgstr "Установить плагин"
 msgid "Install Superset MCP in your client"
 msgstr "Установите Superset MCP в своём клиенте"
 
+msgid "Install the Antigravity CLI, then run agy in a terminal to sign in."
+msgstr "Установите Antigravity CLI, затем запустите agy в терминале для входа."
+
 msgid "Install the desktop app"
 msgstr "Установите десктопное приложение"
 
@@ -7775,6 +7807,10 @@ msgstr "Установленные"
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceHasInstalls"
 msgstr "Установленные плагины получены из {name}: {plugins}. Сначала удалите их."
+
+#. placeholder {0}: statusQuery.data.version
+msgid "Installed version {0}"
+msgstr "Установленная версия {0}"
 
 msgid "Installed via"
 msgstr "Установлено через"
@@ -11636,6 +11672,9 @@ msgstr "Свойства"
 msgid "Provide either id or slug"
 msgstr "Укажите id или slug"
 
+msgid "Provider"
+msgstr "Провайдер"
+
 #. placeholder {0}: sourceConfig?.label ?? binding.agentId
 msgid "Provider: {0}"
 msgstr "Провайдер: {0}"
@@ -11989,6 +12028,9 @@ msgstr "Обновится при следующем запуске Claude Code.
 
 msgid "Refreshes when OpenCode next runs."
 msgstr "Обновится при следующем запуске OpenCode."
+
+msgid "Regenerate"
+msgstr "Создать заново"
 
 msgid "Register any CLI agent alongside the built-ins, each with its own name, icon, and launch command."
 msgstr "Регистрируйте любого CLI-агента рядом со встроенными — со своим именем, иконкой и командой запуска."
@@ -14945,6 +14987,12 @@ msgstr "Условия"
 msgid "Terms of Service"
 msgstr "Условия использования"
 
+msgid "Test connection"
+msgstr "Проверить подключение"
+
+msgid "Testing..."
+msgstr "Проверка..."
+
 msgid "Text"
 msgstr "Текст"
 
@@ -16181,6 +16229,9 @@ msgstr "Актуально"
 msgid "Update"
 msgstr "Обновить"
 
+msgid "update AI settings"
+msgstr "обновить настройки ИИ"
+
 msgid "Update available"
 msgstr "Доступно обновление"
 
@@ -16319,6 +16370,9 @@ msgstr "Данные об использовании недоступны."
 msgid "Use “{0}”"
 msgstr "Использовать «{0}»"
 
+msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
+msgstr "Используйте небольшую локальную CLI-модель для названий веток, сообщений коммитов и черновиков pull request."
+
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "Укажите путь относительно рабочей области или абсолютную папку."
 
@@ -16402,6 +16456,9 @@ msgstr "Пользователь не найден"
 
 msgid "user@example.com"
 msgstr "user@example.com"
+
+msgid "Uses the Antigravity CLI and its existing login on this host."
+msgstr "Использует Antigravity CLI и существующий вход на этом хосте."
 
 msgid "Using random branch name (AI generation timed out)"
 msgstr "Используется случайное имя ветки (истекло время генерации AI)"

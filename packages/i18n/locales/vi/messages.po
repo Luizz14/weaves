@@ -1683,6 +1683,9 @@ msgstr "Trợ lý AI"
 msgid "AI authentication failed. Please check your AI settings."
 msgstr "Xác thực AI thất bại. Vui lòng kiểm tra cài đặt AI của bạn."
 
+msgid "AI features"
+msgstr "Tính năng AI"
+
 msgid "Alert"
 msgstr "Alert"
 
@@ -1964,6 +1967,15 @@ msgstr "Anthropic đã từ chối khóa API này."
 
 msgid "Anthropic rejected this token."
 msgstr "Anthropic đã từ chối token này."
+
+msgid "Antigravity CLI connection failed"
+msgstr "Kết nối Antigravity CLI thất bại"
+
+msgid "Antigravity CLI is ready"
+msgstr "Antigravity CLI đã sẵn sàng"
+
+msgid "Antigravity CLI status"
+msgstr "Trạng thái Antigravity CLI"
 
 msgid "Any calendar"
 msgstr "Lịch bất kỳ"
@@ -4461,6 +4473,14 @@ msgstr "Không thể bỏ các thay đổi chưa stage"
 msgid "Couldn’t finish deleting workspaces"
 msgstr "Không xóa xong các workspace"
 
+#. placeholder {0}: error.message
+msgid "Couldn't generate a commit message: {0}"
+msgstr "Không thể tạo thông điệp commit: {0}"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate pull request details: {0}"
+msgstr "Không thể tạo chi tiết pull request: {0}"
+
 #. placeholder {0}: configsQuery.error instanceof Error ? configsQuery.error.message : hostServiceUnavailableMessage
 msgid "Couldn't load agent settings: {0}"
 msgstr "Không thể tải cài đặt agent: {0}"
@@ -6499,6 +6519,9 @@ msgstr "Không thể kích hoạt lần chạy"
 msgid "Failed to update agent settings"
 msgstr "Không thể cập nhật cài đặt agent"
 
+msgid "Failed to update AI settings"
+msgstr "Không thể cập nhật cài đặt AI"
+
 msgid "Failed to update automation"
 msgstr "Không thể cập nhật tự động hóa"
 
@@ -6757,6 +6780,9 @@ msgstr "Cờ"
 msgid "Flame"
 msgstr "Ngọn lửa"
 
+msgid "Flash balances speed and quality for short development tasks."
+msgstr "Flash cân bằng tốc độ và chất lượng cho các tác vụ phát triển ngắn."
+
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Các đội agent lên kế hoạch, triển khai, review và kiểm thử công việc của nhau. Con người định hướng, phân xử ngoại lệ và giữ gu thẩm mỹ. Đơn vị chú ý của con người không còn là pull request. Đó là quyết định."
 
@@ -6991,6 +7017,9 @@ msgstr "Chung"
 
 msgid "General access"
 msgstr "Quyền truy cập chung"
+
+msgid "Generate"
+msgstr "Tạo"
 
 msgid "Generate a key to use with MCP servers."
 msgstr "Tạo một khóa để dùng với các server MCP."
@@ -7757,6 +7786,9 @@ msgstr "Cài đặt plugin"
 msgid "Install Superset MCP in your client"
 msgstr "Cài Superset MCP vào client của bạn"
 
+msgid "Install the Antigravity CLI, then run agy in a terminal to sign in."
+msgstr "Cài đặt Antigravity CLI, sau đó chạy agy trong terminal để đăng nhập."
+
 msgid "Install the desktop app"
 msgstr "Cài ứng dụng máy tính"
 
@@ -7775,6 +7807,10 @@ msgstr "Đã cài"
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceHasInstalls"
 msgstr "Các plugin đã cài đến từ {name}: {plugins}. Hãy gỡ chúng trước."
+
+#. placeholder {0}: statusQuery.data.version
+msgid "Installed version {0}"
+msgstr "Phiên bản đã cài đặt {0}"
 
 msgid "Installed via"
 msgstr "Cài đặt qua"
@@ -11636,6 +11672,9 @@ msgstr "Thuộc tính"
 msgid "Provide either id or slug"
 msgstr "Hãy cung cấp id hoặc slug"
 
+msgid "Provider"
+msgstr "Nhà cung cấp"
+
 #. placeholder {0}: sourceConfig?.label ?? binding.agentId
 msgid "Provider: {0}"
 msgstr "Nhà cung cấp: {0}"
@@ -11989,6 +12028,9 @@ msgstr "Làm mới khi Claude Code chạy lần tiếp theo."
 
 msgid "Refreshes when OpenCode next runs."
 msgstr "Làm mới khi OpenCode chạy lần tiếp theo."
+
+msgid "Regenerate"
+msgstr "Tạo lại"
 
 msgid "Register any CLI agent alongside the built-ins, each with its own name, icon, and launch command."
 msgstr "Đăng ký bất kỳ agent CLI nào bên cạnh các agent có sẵn, mỗi agent có tên, biểu tượng và lệnh khởi chạy riêng."
@@ -14945,6 +14987,12 @@ msgstr "Điều khoản"
 msgid "Terms of Service"
 msgstr "Điều khoản dịch vụ"
 
+msgid "Test connection"
+msgstr "Kiểm tra kết nối"
+
+msgid "Testing..."
+msgstr "Đang kiểm tra..."
+
 msgid "Text"
 msgstr "Văn bản"
 
@@ -16181,6 +16229,9 @@ msgstr "Mới nhất"
 msgid "Update"
 msgstr "Cập nhật"
 
+msgid "update AI settings"
+msgstr "cập nhật cài đặt AI"
+
 msgid "Update available"
 msgstr "Có bản cập nhật"
 
@@ -16319,6 +16370,9 @@ msgstr "Không có dữ liệu sử dụng."
 msgid "Use “{0}”"
 msgstr "Dùng “{0}”"
 
+msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
+msgstr "Dùng mô hình CLI cục bộ nhỏ cho tên nhánh, thông điệp commit và bản nháp pull request."
+
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "Dùng đường dẫn tương đối với workspace hoặc một thư mục tuyệt đối."
 
@@ -16402,6 +16456,9 @@ msgstr "Không tìm thấy người dùng"
 
 msgid "user@example.com"
 msgstr "user@example.com"
+
+msgid "Uses the Antigravity CLI and its existing login on this host."
+msgstr "Sử dụng Antigravity CLI và thông tin đăng nhập hiện có trên máy chủ này."
 
 msgid "Using random branch name (AI generation timed out)"
 msgstr "Dùng tên nhánh ngẫu nhiên (AI tạo tên bị quá thời gian)"

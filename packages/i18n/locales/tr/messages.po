@@ -1683,6 +1683,9 @@ msgstr "Yapay zeka asistanları"
 msgid "AI authentication failed. Please check your AI settings."
 msgstr "AI kimlik doğrulaması başarısız. Lütfen AI ayarlarınızı kontrol edin."
 
+msgid "AI features"
+msgstr "Yapay zeka özellikleri"
+
 msgid "Alert"
 msgstr "Uyarı"
 
@@ -1964,6 +1967,15 @@ msgstr "Anthropic bu API anahtarını reddetti."
 
 msgid "Anthropic rejected this token."
 msgstr "Anthropic bu token'ı reddetti."
+
+msgid "Antigravity CLI connection failed"
+msgstr "Antigravity CLI bağlantısı başarısız oldu"
+
+msgid "Antigravity CLI is ready"
+msgstr "Antigravity CLI hazır"
+
+msgid "Antigravity CLI status"
+msgstr "Antigravity CLI durumu"
 
 msgid "Any calendar"
 msgstr "Tüm takvimler"
@@ -4461,6 +4473,14 @@ msgstr "Hazırlanmamış değişiklikler atılamadı"
 msgid "Couldn’t finish deleting workspaces"
 msgstr "Çalışma alanlarını silme işlemi tamamlanamadı"
 
+#. placeholder {0}: error.message
+msgid "Couldn't generate a commit message: {0}"
+msgstr "Commit mesajı oluşturulamadı: {0}"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate pull request details: {0}"
+msgstr "Pull request ayrıntıları oluşturulamadı: {0}"
+
 #. placeholder {0}: configsQuery.error instanceof Error ? configsQuery.error.message : hostServiceUnavailableMessage
 msgid "Couldn't load agent settings: {0}"
 msgstr "Ajan ayarları yüklenemedi: {0}"
@@ -6499,6 +6519,9 @@ msgstr "Çalıştırma tetiklenemedi"
 msgid "Failed to update agent settings"
 msgstr "Ajan ayarları güncellenemedi"
 
+msgid "Failed to update AI settings"
+msgstr "Yapay zeka ayarları güncellenemedi"
+
 msgid "Failed to update automation"
 msgstr "Otomasyon güncellenemedi"
 
@@ -6757,6 +6780,9 @@ msgstr "Bayrak"
 msgid "Flame"
 msgstr "Alev"
 
+msgid "Flash balances speed and quality for short development tasks."
+msgstr "Flash, kısa geliştirme görevleri için hız ve kaliteyi dengeler."
+
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Ajan filoları planlar, uygular, birbirinin işini inceler ve test eder. İnsanlar yönü belirler, istisnalara hakemlik eder ve zevkin sahibi olur. İnsan dikkatinin birimi artık pull request değildir. Karardır."
 
@@ -6991,6 +7017,9 @@ msgstr "Genel"
 
 msgid "General access"
 msgstr "Genel erişim"
+
+msgid "Generate"
+msgstr "Oluştur"
 
 msgid "Generate a key to use with MCP servers."
 msgstr "MCP sunucularıyla kullanmak için bir anahtar oluşturun."
@@ -7757,6 +7786,9 @@ msgstr "Eklenti kur"
 msgid "Install Superset MCP in your client"
 msgstr "Superset MCP'yi istemcinize kurun"
 
+msgid "Install the Antigravity CLI, then run agy in a terminal to sign in."
+msgstr "Antigravity CLI'ı yükleyin, ardından oturum açmak için terminalde agy komutunu çalıştırın."
+
 msgid "Install the desktop app"
 msgstr "Masaüstü uygulamasını kurun"
 
@@ -7775,6 +7807,10 @@ msgstr "Kurulu"
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceHasInstalls"
 msgstr "Kurulu eklentiler {name} kaynağından geldi: {plugins}. Önce onları kaldırın."
+
+#. placeholder {0}: statusQuery.data.version
+msgid "Installed version {0}"
+msgstr "Yüklü sürüm {0}"
 
 msgid "Installed via"
 msgstr "Kurulum yolu"
@@ -11636,6 +11672,9 @@ msgstr "Özellikler"
 msgid "Provide either id or slug"
 msgstr "id veya slug değerlerinden birini sağlayın"
 
+msgid "Provider"
+msgstr "Sağlayıcı"
+
 #. placeholder {0}: sourceConfig?.label ?? binding.agentId
 msgid "Provider: {0}"
 msgstr "Sağlayıcı: {0}"
@@ -11989,6 +12028,9 @@ msgstr "Claude Code bir sonraki çalıştığında yenilenir."
 
 msgid "Refreshes when OpenCode next runs."
 msgstr "OpenCode bir sonraki çalıştığında yenilenir."
+
+msgid "Regenerate"
+msgstr "Yeniden oluştur"
 
 msgid "Register any CLI agent alongside the built-ins, each with its own name, icon, and launch command."
 msgstr "Herhangi bir CLI ajanını, kendi adı, simgesi ve başlatma komutuyla yerleşiklerin yanına kaydedin."
@@ -14945,6 +14987,12 @@ msgstr "Koşullar"
 msgid "Terms of Service"
 msgstr "Hizmet Şartları"
 
+msgid "Test connection"
+msgstr "Bağlantıyı test et"
+
+msgid "Testing..."
+msgstr "Test ediliyor..."
+
 msgid "Text"
 msgstr "Metin"
 
@@ -16181,6 +16229,9 @@ msgstr "Güncel"
 msgid "Update"
 msgstr "Güncelle"
 
+msgid "update AI settings"
+msgstr "yapay zeka ayarlarını güncelle"
+
 msgid "Update available"
 msgstr "Güncelleme mevcut"
 
@@ -16319,6 +16370,9 @@ msgstr "Kullanım bilgisi yok."
 msgid "Use “{0}”"
 msgstr "“{0}” kullan"
 
+msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
+msgstr "Dal adları, commit mesajları ve pull request taslakları için küçük bir yerel CLI modeli kullanın."
+
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "Çalışma alanına göreli bir yol ya da mutlak bir klasör kullanın."
 
@@ -16402,6 +16456,9 @@ msgstr "Kullanıcı bulunamadı"
 
 msgid "user@example.com"
 msgstr "user@example.com"
+
+msgid "Uses the Antigravity CLI and its existing login on this host."
+msgstr "Bu ana makinedeki Antigravity CLI ve mevcut oturumunu kullanır."
 
 msgid "Using random branch name (AI generation timed out)"
 msgstr "Rastgele dal adı kullanılıyor (AI üretimi zaman aşımına uğradı)"

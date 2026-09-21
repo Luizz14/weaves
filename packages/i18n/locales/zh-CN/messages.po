@@ -1683,6 +1683,9 @@ msgstr "AI 助手"
 msgid "AI authentication failed. Please check your AI settings."
 msgstr "AI认证失败。请检查你的AI设置。"
 
+msgid "AI features"
+msgstr "AI 功能"
+
 msgid "Alert"
 msgstr "警告"
 
@@ -1964,6 +1967,15 @@ msgstr "Anthropic拒绝了此API密钥。"
 
 msgid "Anthropic rejected this token."
 msgstr "Anthropic拒绝了此令牌。"
+
+msgid "Antigravity CLI connection failed"
+msgstr "Antigravity CLI 连接失败"
+
+msgid "Antigravity CLI is ready"
+msgstr "Antigravity CLI 已就绪"
+
+msgid "Antigravity CLI status"
+msgstr "Antigravity CLI 状态"
 
 msgid "Any calendar"
 msgstr "任意日历"
@@ -4461,6 +4473,14 @@ msgstr "无法放弃未暂存的更改"
 msgid "Couldn’t finish deleting workspaces"
 msgstr "没能完成工作区的删除"
 
+#. placeholder {0}: error.message
+msgid "Couldn't generate a commit message: {0}"
+msgstr "无法生成提交消息：{0}"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate pull request details: {0}"
+msgstr "无法生成拉取请求详情：{0}"
+
 #. placeholder {0}: configsQuery.error instanceof Error ? configsQuery.error.message : hostServiceUnavailableMessage
 msgid "Couldn't load agent settings: {0}"
 msgstr "无法加载智能体设置：{0}"
@@ -6499,6 +6519,9 @@ msgstr "触发运行失败"
 msgid "Failed to update agent settings"
 msgstr "更新智能体设置失败"
 
+msgid "Failed to update AI settings"
+msgstr "无法更新 AI 设置"
+
 msgid "Failed to update automation"
 msgstr "更新自动化失败"
 
@@ -6757,6 +6780,9 @@ msgstr "标志"
 msgid "Flame"
 msgstr "火焰"
 
+msgid "Flash balances speed and quality for short development tasks."
+msgstr "Flash 在短期开发任务中兼顾速度与质量。"
+
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "成群的智能体规划、实现、审查并测试彼此的工作。人类定方向、裁决例外、把握品味。人类注意力的单位不再是拉取请求，而是决策。"
 
@@ -6991,6 +7017,9 @@ msgstr "通用"
 
 msgid "General access"
 msgstr "通用访问权限"
+
+msgid "Generate"
+msgstr "生成"
 
 msgid "Generate a key to use with MCP servers."
 msgstr "生成一个密钥，用于MCP服务器。"
@@ -7757,6 +7786,9 @@ msgstr "安装插件"
 msgid "Install Superset MCP in your client"
 msgstr "在你的客户端里安装Superset MCP"
 
+msgid "Install the Antigravity CLI, then run agy in a terminal to sign in."
+msgstr "安装 Antigravity CLI，然后在终端中运行 agy 以登录。"
+
 msgid "Install the desktop app"
 msgstr "安装桌面应用"
 
@@ -7775,6 +7807,10 @@ msgstr "已安装"
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceHasInstalls"
 msgstr "已安装的插件来自 {name}：{plugins}。请先移除它们。"
+
+#. placeholder {0}: statusQuery.data.version
+msgid "Installed version {0}"
+msgstr "已安装版本 {0}"
 
 msgid "Installed via"
 msgstr "安装方式"
@@ -11636,6 +11672,9 @@ msgstr "属性"
 msgid "Provide either id or slug"
 msgstr "请提供id或slug"
 
+msgid "Provider"
+msgstr "提供方"
+
 #. placeholder {0}: sourceConfig?.label ?? binding.agentId
 msgid "Provider: {0}"
 msgstr "提供方：{0}"
@@ -11989,6 +12028,9 @@ msgstr "下次运行 Claude Code 时刷新。"
 
 msgid "Refreshes when OpenCode next runs."
 msgstr "下次运行 OpenCode 时刷新。"
+
+msgid "Regenerate"
+msgstr "重新生成"
 
 msgid "Register any CLI agent alongside the built-ins, each with its own name, icon, and launch command."
 msgstr "在内置智能体之外注册任意CLI智能体，各自拥有名称、图标和启动命令。"
@@ -14945,6 +14987,12 @@ msgstr "条款"
 msgid "Terms of Service"
 msgstr "服务条款"
 
+msgid "Test connection"
+msgstr "测试连接"
+
+msgid "Testing..."
+msgstr "正在测试..."
+
 msgid "Text"
 msgstr "正文"
 
@@ -16181,6 +16229,9 @@ msgstr "已是最新"
 msgid "Update"
 msgstr "更新"
 
+msgid "update AI settings"
+msgstr "更新 AI 设置"
+
 msgid "Update available"
 msgstr "有可用更新"
 
@@ -16319,6 +16370,9 @@ msgstr "无法获取用量。"
 msgid "Use “{0}”"
 msgstr "使用“{0}”"
 
+msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
+msgstr "使用小型本地 CLI 模型生成分支名称、提交消息和拉取请求草稿。"
+
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "使用相对于工作区的路径或绝对路径文件夹。"
 
@@ -16402,6 +16456,9 @@ msgstr "未找到用户"
 
 msgid "user@example.com"
 msgstr "user@example.com"
+
+msgid "Uses the Antigravity CLI and its existing login on this host."
+msgstr "使用此主机上的 Antigravity CLI 及其现有登录。"
 
 msgid "Using random branch name (AI generation timed out)"
 msgstr "使用随机分支名（AI生成超时）"

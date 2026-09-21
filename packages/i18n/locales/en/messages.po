@@ -1683,6 +1683,9 @@ msgstr "AI assistants"
 msgid "AI authentication failed. Please check your AI settings."
 msgstr "AI authentication failed. Please check your AI settings."
 
+msgid "AI features"
+msgstr "AI features"
+
 msgid "Alert"
 msgstr "Alert"
 
@@ -1964,6 +1967,15 @@ msgstr "Anthropic rejected this API key."
 
 msgid "Anthropic rejected this token."
 msgstr "Anthropic rejected this token."
+
+msgid "Antigravity CLI connection failed"
+msgstr "Antigravity CLI connection failed"
+
+msgid "Antigravity CLI is ready"
+msgstr "Antigravity CLI is ready"
+
+msgid "Antigravity CLI status"
+msgstr "Antigravity CLI status"
 
 msgid "Any calendar"
 msgstr "Any calendar"
@@ -4461,6 +4473,14 @@ msgstr "Couldn't discard unstaged changes"
 msgid "Couldn’t finish deleting workspaces"
 msgstr "Couldn’t finish deleting workspaces"
 
+#. placeholder {0}: error.message
+msgid "Couldn't generate a commit message: {0}"
+msgstr "Couldn't generate a commit message: {0}"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate pull request details: {0}"
+msgstr "Couldn't generate pull request details: {0}"
+
 #. placeholder {0}: configsQuery.error instanceof Error ? configsQuery.error.message : hostServiceUnavailableMessage
 msgid "Couldn't load agent settings: {0}"
 msgstr "Couldn't load agent settings: {0}"
@@ -6499,6 +6519,9 @@ msgstr "Failed to trigger run"
 msgid "Failed to update agent settings"
 msgstr "Failed to update agent settings"
 
+msgid "Failed to update AI settings"
+msgstr "Failed to update AI settings"
+
 msgid "Failed to update automation"
 msgstr "Failed to update automation"
 
@@ -6757,6 +6780,9 @@ msgstr "Flag"
 msgid "Flame"
 msgstr "Flame"
 
+msgid "Flash balances speed and quality for short development tasks."
+msgstr "Flash balances speed and quality for short development tasks."
+
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 
@@ -6991,6 +7017,9 @@ msgstr "General"
 
 msgid "General access"
 msgstr "General access"
+
+msgid "Generate"
+msgstr "Generate"
 
 msgid "Generate a key to use with MCP servers."
 msgstr "Generate a key to use with MCP servers."
@@ -7757,6 +7786,9 @@ msgstr "Install plugin"
 msgid "Install Superset MCP in your client"
 msgstr "Install Superset MCP in your client"
 
+msgid "Install the Antigravity CLI, then run agy in a terminal to sign in."
+msgstr "Install the Antigravity CLI, then run agy in a terminal to sign in."
+
 msgid "Install the desktop app"
 msgstr "Install the desktop app"
 
@@ -7775,6 +7807,10 @@ msgstr "Installed"
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceHasInstalls"
 msgstr "Installed plugins came from {name}: {plugins}. Remove them first."
+
+#. placeholder {0}: statusQuery.data.version
+msgid "Installed version {0}"
+msgstr "Installed version {0}"
 
 msgid "Installed via"
 msgstr "Installed via"
@@ -11636,6 +11672,9 @@ msgstr "Properties"
 msgid "Provide either id or slug"
 msgstr "Provide either id or slug"
 
+msgid "Provider"
+msgstr "Provider"
+
 #. placeholder {0}: sourceConfig?.label ?? binding.agentId
 msgid "Provider: {0}"
 msgstr "Provider: {0}"
@@ -11989,6 +12028,9 @@ msgstr "Refreshes when Claude Code next runs."
 
 msgid "Refreshes when OpenCode next runs."
 msgstr "Refreshes when OpenCode next runs."
+
+msgid "Regenerate"
+msgstr "Regenerate"
 
 msgid "Register any CLI agent alongside the built-ins, each with its own name, icon, and launch command."
 msgstr "Register any CLI agent alongside the built-ins, each with its own name, icon, and launch command."
@@ -14945,6 +14987,12 @@ msgstr "Terms"
 msgid "Terms of Service"
 msgstr "Terms of Service"
 
+msgid "Test connection"
+msgstr "Test connection"
+
+msgid "Testing..."
+msgstr "Testing..."
+
 msgid "Text"
 msgstr "Text"
 
@@ -16181,6 +16229,9 @@ msgstr "Up to date"
 msgid "Update"
 msgstr "Update"
 
+msgid "update AI settings"
+msgstr "update AI settings"
+
 msgid "Update available"
 msgstr "Update available"
 
@@ -16319,6 +16370,9 @@ msgstr "Usage unavailable."
 msgid "Use “{0}”"
 msgstr "Use “{0}”"
 
+msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
+msgstr "Use a small local CLI model for branch names, commit messages, and pull request drafts."
+
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "Use a workspace-relative path or an absolute folder."
 
@@ -16402,6 +16456,9 @@ msgstr "User not found"
 
 msgid "user@example.com"
 msgstr "user@example.com"
+
+msgid "Uses the Antigravity CLI and its existing login on this host."
+msgstr "Uses the Antigravity CLI and its existing login on this host."
 
 msgid "Using random branch name (AI generation timed out)"
 msgstr "Using random branch name (AI generation timed out)"

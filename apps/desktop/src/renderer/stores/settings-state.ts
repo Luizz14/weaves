@@ -12,6 +12,7 @@ export type SettingsSection =
 	| "behavior"
 	| "browser"
 	| "git"
+	| "ai"
 	| "agents"
 	| "codexChat"
 	| "terminal"

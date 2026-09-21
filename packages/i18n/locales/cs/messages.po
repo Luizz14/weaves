@@ -1683,6 +1683,9 @@ msgstr "AI asistenti"
 msgid "AI authentication failed. Please check your AI settings."
 msgstr "Ověření AI selhalo. Zkontrolujte prosím nastavení AI."
 
+msgid "AI features"
+msgstr "Funkce AI"
+
 msgid "Alert"
 msgstr "Upozornění"
 
@@ -1964,6 +1967,15 @@ msgstr "Anthropic tento API klíč odmítl."
 
 msgid "Anthropic rejected this token."
 msgstr "Anthropic tento token odmítl."
+
+msgid "Antigravity CLI connection failed"
+msgstr "Připojení k Antigravity CLI se nezdařilo"
+
+msgid "Antigravity CLI is ready"
+msgstr "Antigravity CLI je připraveno"
+
+msgid "Antigravity CLI status"
+msgstr "Stav Antigravity CLI"
 
 msgid "Any calendar"
 msgstr "Jakýkoli kalendář"
@@ -4461,6 +4473,14 @@ msgstr "Nepodařilo se zahodit nepřipravené změny"
 msgid "Couldn’t finish deleting workspaces"
 msgstr "Mazání pracovních prostorů se nepodařilo dokončit"
 
+#. placeholder {0}: error.message
+msgid "Couldn't generate a commit message: {0}"
+msgstr "Nepodařilo se vygenerovat zprávu commitu: {0}"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate pull request details: {0}"
+msgstr "Nepodařilo se vygenerovat podrobnosti pull requestu: {0}"
+
 #. placeholder {0}: configsQuery.error instanceof Error ? configsQuery.error.message : hostServiceUnavailableMessage
 msgid "Couldn't load agent settings: {0}"
 msgstr "Nepodařilo se načíst nastavení agenta: {0}"
@@ -6499,6 +6519,9 @@ msgstr "Nepodařilo se spustit běh"
 msgid "Failed to update agent settings"
 msgstr "Nepodařilo se aktualizovat nastavení agenta"
 
+msgid "Failed to update AI settings"
+msgstr "Nastavení AI se nepodařilo aktualizovat"
+
 msgid "Failed to update automation"
 msgstr "Nepodařilo se aktualizovat automatizaci"
 
@@ -6757,6 +6780,9 @@ msgstr "Přepínač"
 msgid "Flame"
 msgstr "Plamen"
 
+msgid "Flash balances speed and quality for short development tasks."
+msgstr "Flash vyvažuje rychlost a kvalitu pro krátké vývojové úlohy."
+
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Flotily agentů plánují, implementují, revidují a testují práci jeden druhého. Lidé určují směr, rozsuzují výjimky a vlastní vkus. Jednotkou lidské pozornosti už není pull request. Je jí rozhodnutí."
 
@@ -6991,6 +7017,9 @@ msgstr "Obecné"
 
 msgid "General access"
 msgstr "Obecný přístup"
+
+msgid "Generate"
+msgstr "Generovat"
 
 msgid "Generate a key to use with MCP servers."
 msgstr "Vygenerujte klíč pro použití s MCP servery."
@@ -7757,6 +7786,9 @@ msgstr "Nainstalovat plugin"
 msgid "Install Superset MCP in your client"
 msgstr "Nainstalujte Superset MCP do svého klienta"
 
+msgid "Install the Antigravity CLI, then run agy in a terminal to sign in."
+msgstr "Nainstalujte Antigravity CLI a poté se přihlaste spuštěním agy v terminálu."
+
 msgid "Install the desktop app"
 msgstr "Nainstalujte desktopovou aplikaci"
 
@@ -7775,6 +7807,10 @@ msgstr "Nainstalované"
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceHasInstalls"
 msgstr "Nainstalované pluginy pocházejí z {name}: {plugins}. Nejprve je odeberte."
+
+#. placeholder {0}: statusQuery.data.version
+msgid "Installed version {0}"
+msgstr "Nainstalovaná verze {0}"
 
 msgid "Installed via"
 msgstr "Nainstalováno přes"
@@ -11636,6 +11672,9 @@ msgstr "Vlastnosti"
 msgid "Provide either id or slug"
 msgstr "Zadejte buď id, nebo slug"
 
+msgid "Provider"
+msgstr "Poskytovatel"
+
 #. placeholder {0}: sourceConfig?.label ?? binding.agentId
 msgid "Provider: {0}"
 msgstr "Poskytovatel: {0}"
@@ -11989,6 +12028,9 @@ msgstr "Obnoví se při příštím spuštění Claude Code."
 
 msgid "Refreshes when OpenCode next runs."
 msgstr "Obnoví se při příštím spuštění OpenCode."
+
+msgid "Regenerate"
+msgstr "Generovat znovu"
 
 msgid "Register any CLI agent alongside the built-ins, each with its own name, icon, and launch command."
 msgstr "Zaregistrujte vedle vestavěných libovolného CLI agenta, každého s vlastním jménem, ikonou a spouštěcím příkazem."
@@ -14945,6 +14987,12 @@ msgstr "Podmínky"
 msgid "Terms of Service"
 msgstr "Podmínky služby"
 
+msgid "Test connection"
+msgstr "Otestovat připojení"
+
+msgid "Testing..."
+msgstr "Testování..."
+
 msgid "Text"
 msgstr "Text"
 
@@ -16181,6 +16229,9 @@ msgstr "Aktuální"
 msgid "Update"
 msgstr "Aktualizovat"
 
+msgid "update AI settings"
+msgstr "aktualizovat nastavení AI"
+
 msgid "Update available"
 msgstr "Dostupná aktualizace"
 
@@ -16319,6 +16370,9 @@ msgstr "Využití není dostupné."
 msgid "Use “{0}”"
 msgstr "Použít „{0}“"
 
+msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
+msgstr "Použijte malý lokální model CLI pro názvy větví, zprávy commitů a návrhy pull requestů."
+
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "Použijte cestu relativní k pracovnímu prostoru nebo absolutní složku."
 
@@ -16402,6 +16456,9 @@ msgstr "Uživatel nenalezen"
 
 msgid "user@example.com"
 msgstr "uzivatel@example.com"
+
+msgid "Uses the Antigravity CLI and its existing login on this host."
+msgstr "Používá Antigravity CLI a existující přihlášení na tomto hostiteli."
 
 msgid "Using random branch name (AI generation timed out)"
 msgstr "Použije se náhodný název větve (generování přes AI vypršelo)"

@@ -1683,6 +1683,9 @@ msgstr "Asisten AI"
 msgid "AI authentication failed. Please check your AI settings."
 msgstr "Autentikasi AI gagal. Silakan periksa pengaturan AI Anda."
 
+msgid "AI features"
+msgstr "Fitur AI"
+
 msgid "Alert"
 msgstr "Alert"
 
@@ -1964,6 +1967,15 @@ msgstr "Anthropic menolak kunci API ini."
 
 msgid "Anthropic rejected this token."
 msgstr "Anthropic menolak token ini."
+
+msgid "Antigravity CLI connection failed"
+msgstr "Koneksi Antigravity CLI gagal"
+
+msgid "Antigravity CLI is ready"
+msgstr "Antigravity CLI siap"
+
+msgid "Antigravity CLI status"
+msgstr "Status Antigravity CLI"
 
 msgid "Any calendar"
 msgstr "Kalender mana pun"
@@ -4461,6 +4473,14 @@ msgstr "Tidak bisa membuang perubahan yang belum di-stage"
 msgid "Couldn’t finish deleting workspaces"
 msgstr "Tidak bisa menyelesaikan penghapusan workspace"
 
+#. placeholder {0}: error.message
+msgid "Couldn't generate a commit message: {0}"
+msgstr "Tidak dapat membuat pesan commit: {0}"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate pull request details: {0}"
+msgstr "Tidak dapat membuat detail pull request: {0}"
+
 #. placeholder {0}: configsQuery.error instanceof Error ? configsQuery.error.message : hostServiceUnavailableMessage
 msgid "Couldn't load agent settings: {0}"
 msgstr "Tidak bisa memuat pengaturan agen: {0}"
@@ -6499,6 +6519,9 @@ msgstr "Gagal memicu run"
 msgid "Failed to update agent settings"
 msgstr "Gagal memperbarui pengaturan agen"
 
+msgid "Failed to update AI settings"
+msgstr "Gagal memperbarui pengaturan AI"
+
 msgid "Failed to update automation"
 msgstr "Gagal memperbarui otomatisasi"
 
@@ -6757,6 +6780,9 @@ msgstr "Flag"
 msgid "Flame"
 msgstr "Api"
 
+msgid "Flash balances speed and quality for short development tasks."
+msgstr "Flash menyeimbangkan kecepatan dan kualitas untuk tugas pengembangan singkat."
+
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Armada agen merencanakan, mengimplementasi, mereview, dan menguji pekerjaan satu sama lain. Manusia menetapkan arah, menengahi pengecualian, dan memegang selera. Satuan perhatian manusia bukan lagi pull request, melainkan keputusan."
 
@@ -6991,6 +7017,9 @@ msgstr "Umum"
 
 msgid "General access"
 msgstr "Akses umum"
+
+msgid "Generate"
+msgstr "Buat"
 
 msgid "Generate a key to use with MCP servers."
 msgstr "Buat kunci untuk dipakai dengan server MCP."
@@ -7757,6 +7786,9 @@ msgstr "Instal plugin"
 msgid "Install Superset MCP in your client"
 msgstr "Pasang Superset MCP di klien Anda"
 
+msgid "Install the Antigravity CLI, then run agy in a terminal to sign in."
+msgstr "Instal Antigravity CLI, lalu jalankan agy di terminal untuk masuk."
+
 msgid "Install the desktop app"
 msgstr "Pasang aplikasi desktop"
 
@@ -7775,6 +7807,10 @@ msgstr "Terpasang"
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceHasInstalls"
 msgstr "Plugin yang terpasang berasal dari {name}: {plugins}. Hapus dulu."
+
+#. placeholder {0}: statusQuery.data.version
+msgid "Installed version {0}"
+msgstr "Versi terinstal {0}"
 
 msgid "Installed via"
 msgstr "Diinstal melalui"
@@ -11636,6 +11672,9 @@ msgstr "Properti"
 msgid "Provide either id or slug"
 msgstr "Berikan id atau slug"
 
+msgid "Provider"
+msgstr "Penyedia"
+
 #. placeholder {0}: sourceConfig?.label ?? binding.agentId
 msgid "Provider: {0}"
 msgstr "Penyedia: {0}"
@@ -11989,6 +12028,9 @@ msgstr "Diperbarui saat Claude Code berikutnya dijalankan."
 
 msgid "Refreshes when OpenCode next runs."
 msgstr "Diperbarui saat OpenCode berikutnya dijalankan."
+
+msgid "Regenerate"
+msgstr "Buat ulang"
 
 msgid "Register any CLI agent alongside the built-ins, each with its own name, icon, and launch command."
 msgstr "Daftarkan agen CLI apa pun bersama agen bawaan, masing-masing dengan nama, ikon, dan perintah peluncurannya sendiri."
@@ -14945,6 +14987,12 @@ msgstr "Ketentuan"
 msgid "Terms of Service"
 msgstr "Ketentuan Layanan"
 
+msgid "Test connection"
+msgstr "Uji koneksi"
+
+msgid "Testing..."
+msgstr "Menguji..."
+
 msgid "Text"
 msgstr "Teks"
 
@@ -16181,6 +16229,9 @@ msgstr "Terbaru"
 msgid "Update"
 msgstr "Perbarui"
 
+msgid "update AI settings"
+msgstr "memperbarui pengaturan AI"
+
 msgid "Update available"
 msgstr "Pembaruan tersedia"
 
@@ -16319,6 +16370,9 @@ msgstr "Penggunaan tidak tersedia."
 msgid "Use “{0}”"
 msgstr "Pakai “{0}”"
 
+msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
+msgstr "Gunakan model CLI lokal kecil untuk nama branch, pesan commit, dan draf pull request."
+
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "Pakai path relatif terhadap workspace atau folder absolut."
 
@@ -16402,6 +16456,9 @@ msgstr "Pengguna tidak ditemukan"
 
 msgid "user@example.com"
 msgstr "user@example.com"
+
+msgid "Uses the Antigravity CLI and its existing login on this host."
+msgstr "Menggunakan Antigravity CLI dan login yang sudah ada di host ini."
 
 msgid "Using random branch name (AI generation timed out)"
 msgstr "Memakai nama branch acak (pembuatan AI kehabisan waktu)"

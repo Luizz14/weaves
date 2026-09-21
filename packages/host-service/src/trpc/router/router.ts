@@ -15,6 +15,7 @@ import { pageWatchRouter } from "./page-watch";
 import { portsRouter } from "./ports";
 import { projectRouter } from "./project";
 import { pullRequestsRouter } from "./pull-requests";
+import { quickAiRouter } from "./quick-ai";
 import { sandboxRouter } from "./sandbox";
 import { settingsRouter } from "./settings";
 import { systemRouter } from "./system";
@@ -41,6 +42,7 @@ export const appRouter = router({
 	issues: issuesRouter,
 	notifications: notificationsRouter,
 	pullRequests: pullRequestsRouter,
+	quickAi: quickAiRouter,
 	project: projectRouter,
 	tagFolders: tagFoldersRouter,
 	pageWatch: pageWatchRouter,

@@ -1683,6 +1683,9 @@ msgstr "Assistenti IA"
 msgid "AI authentication failed. Please check your AI settings."
 msgstr "Autenticazione AI non riuscita. Controlla le impostazioni AI."
 
+msgid "AI features"
+msgstr "Funzionalità IA"
+
 msgid "Alert"
 msgstr "Alert"
 
@@ -1964,6 +1967,15 @@ msgstr "Anthropic ha rifiutato questa chiave API."
 
 msgid "Anthropic rejected this token."
 msgstr "Anthropic ha rifiutato questo token."
+
+msgid "Antigravity CLI connection failed"
+msgstr "Connessione ad Antigravity CLI non riuscita"
+
+msgid "Antigravity CLI is ready"
+msgstr "Antigravity CLI è pronto"
+
+msgid "Antigravity CLI status"
+msgstr "Stato di Antigravity CLI"
 
 msgid "Any calendar"
 msgstr "Qualsiasi calendario"
@@ -4461,6 +4473,14 @@ msgstr "Impossibile scartare le modifiche non in stage"
 msgid "Couldn’t finish deleting workspaces"
 msgstr "Impossibile completare l'eliminazione dei workspace"
 
+#. placeholder {0}: error.message
+msgid "Couldn't generate a commit message: {0}"
+msgstr "Impossibile generare un messaggio di commit: {0}"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate pull request details: {0}"
+msgstr "Impossibile generare i dettagli della pull request: {0}"
+
 #. placeholder {0}: configsQuery.error instanceof Error ? configsQuery.error.message : hostServiceUnavailableMessage
 msgid "Couldn't load agent settings: {0}"
 msgstr "Impossibile caricare le impostazioni degli agenti: {0}"
@@ -6499,6 +6519,9 @@ msgstr "Avvio dell'esecuzione non riuscito"
 msgid "Failed to update agent settings"
 msgstr "Aggiornamento delle impostazioni dell'agente non riuscito"
 
+msgid "Failed to update AI settings"
+msgstr "Impossibile aggiornare le impostazioni IA"
+
 msgid "Failed to update automation"
 msgstr "Aggiornamento dell'automazione non riuscito"
 
@@ -6757,6 +6780,9 @@ msgstr "Flag"
 msgid "Flame"
 msgstr "Fiamma"
 
+msgid "Flash balances speed and quality for short development tasks."
+msgstr "Flash bilancia velocità e qualità per attività di sviluppo brevi."
+
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Flotte di agenti pianificano, implementano, rivedono e testano il lavoro l'una dell'altra. Gli umani danno la direzione, arbitrano le eccezioni e sono responsabili del gusto. L'unità dell'attenzione umana non è più la pull request. È la decisione."
 
@@ -6991,6 +7017,9 @@ msgstr "Generali"
 
 msgid "General access"
 msgstr "Accesso generale"
+
+msgid "Generate"
+msgstr "Genera"
 
 msgid "Generate a key to use with MCP servers."
 msgstr "Genera una chiave da usare con i server MCP."
@@ -7757,6 +7786,9 @@ msgstr "Installa plugin"
 msgid "Install Superset MCP in your client"
 msgstr "Installa Superset MCP nel tuo client"
 
+msgid "Install the Antigravity CLI, then run agy in a terminal to sign in."
+msgstr "Installa Antigravity CLI, quindi esegui agy in un terminale per accedere."
+
 msgid "Install the desktop app"
 msgstr "Installa l'app desktop"
 
@@ -7775,6 +7807,10 @@ msgstr "Installati"
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceHasInstalls"
 msgstr "Alcuni plugin installati provengono da {name}: {plugins}. Rimuovili prima."
+
+#. placeholder {0}: statusQuery.data.version
+msgid "Installed version {0}"
+msgstr "Versione installata {0}"
 
 msgid "Installed via"
 msgstr "Installato tramite"
@@ -11636,6 +11672,9 @@ msgstr "Proprietà"
 msgid "Provide either id or slug"
 msgstr "Fornisci un id oppure uno slug"
 
+msgid "Provider"
+msgstr "Provider"
+
 #. placeholder {0}: sourceConfig?.label ?? binding.agentId
 msgid "Provider: {0}"
 msgstr "Provider: {0}"
@@ -11989,6 +12028,9 @@ msgstr "Si aggiorna alla prossima esecuzione di Claude Code."
 
 msgid "Refreshes when OpenCode next runs."
 msgstr "Si aggiorna alla prossima esecuzione di OpenCode."
+
+msgid "Regenerate"
+msgstr "Rigenera"
 
 msgid "Register any CLI agent alongside the built-ins, each with its own name, icon, and launch command."
 msgstr "Registra qualsiasi agente CLI accanto a quelli integrati, ognuno con nome, icona e comando di avvio propri."
@@ -14945,6 +14987,12 @@ msgstr "Termini"
 msgid "Terms of Service"
 msgstr "Termini di servizio"
 
+msgid "Test connection"
+msgstr "Testa connessione"
+
+msgid "Testing..."
+msgstr "Test in corso..."
+
 msgid "Text"
 msgstr "Testo"
 
@@ -16181,6 +16229,9 @@ msgstr "Aggiornato"
 msgid "Update"
 msgstr "Aggiorna"
 
+msgid "update AI settings"
+msgstr "aggiornare le impostazioni IA"
+
 msgid "Update available"
 msgstr "Aggiornamento disponibile"
 
@@ -16319,6 +16370,9 @@ msgstr "Utilizzo non disponibile."
 msgid "Use “{0}”"
 msgstr "Usa “{0}”"
 
+msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
+msgstr "Usa un piccolo modello CLI locale per nomi di branch, messaggi di commit e bozze di pull request."
+
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "Usa un percorso relativo al workspace o una cartella assoluta."
 
@@ -16402,6 +16456,9 @@ msgstr "Utente non trovato"
 
 msgid "user@example.com"
 msgstr "user@example.com"
+
+msgid "Uses the Antigravity CLI and its existing login on this host."
+msgstr "Usa Antigravity CLI e l'accesso esistente su questo host."
 
 msgid "Using random branch name (AI generation timed out)"
 msgstr "Uso di un nome di branch casuale (generazione AI scaduta)"
