@@ -8454,9 +8454,6 @@ msgstr "Загрузить более ранние сообщения"
 msgid "Load more"
 msgstr "Показать ещё"
 
-msgid "Load older messages"
-msgstr "Загрузить предыдущие сообщения"
-
 msgid "Loader"
 msgstr "Загрузчик"
 
@@ -10771,6 +10768,9 @@ msgstr "Чат оркестрации"
 msgid "Orchestration guide"
 msgstr "Руководство по оркестрации"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "Органический поиск"
 
@@ -11272,6 +11272,9 @@ msgstr "Маркетплейс плагинов"
 
 msgid "Plugins"
 msgstr "Плагины"
+
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
 
 msgid "Popover"
 msgstr "Поповер"

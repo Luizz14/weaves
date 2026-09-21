@@ -6,8 +6,9 @@ import type {
 import { Spinner } from "@superset/ui/spinner";
 import { useMemo, useState } from "react";
 import { electronTrpc } from "renderer/lib/electron-trpc";
-import { PokedexCard } from "../PokedexCard";
 import { PokedexDetailModal } from "../PokedexDetailModal";
+import { PokedexFilterBar } from "../PokedexFilterBar";
+import { PokedexGrid } from "../PokedexGrid";
 import { PokedexHeader } from "../PokedexHeader";
 
 export function PokedexPage() {
@@ -16,8 +17,11 @@ export function PokedexPage() {
 		isLoading,
 		error,
 	} = electronTrpc.ordemParanormal.getSummary.useQuery(undefined, {
-		refetchInterval: 10_000, // Keep active worktree status fresh
+		refetchInterval: 10_000,
 	});
+
+	const triggerTest =
+		electronTrpc.ordemParanormal.triggerTestReveal.useMutation();
 
 	const [searchQuery, setSearchQuery] = useState("");
 	const [selectedElement, setSelectedElement] = useState<
@@ -57,9 +61,12 @@ export function PokedexPage() {
 
 			if (searchQuery.trim()) {
 				const q = searchQuery.toLowerCase().trim();
-				// If not discovered, don't match full name or description to prevent spoilers unless matching generic id
+				// If not discovered, don't match full name or description to prevent spoilers unless matching generic id or teaser
 				if (!isDiscovered) {
-					return character.id.toLowerCase().includes(q);
+					const matchesId = character.id.toLowerCase().includes(q);
+					const matchesTeaser =
+						character.teaser?.toLowerCase().includes(q) ?? false;
+					return matchesId || matchesTeaser;
 				}
 
 				const matchesName = character.name.toLowerCase().includes(q);
@@ -83,7 +90,7 @@ export function PokedexPage() {
 		return (
 			<div className="flex flex-col items-center justify-center min-h-[400px] gap-3 text-muted-foreground">
 				<Spinner className="size-6" />
-				<p className="text-xs">
+				<p className="text-xs font-mono">
 					Acessando os arquivos confidenciais da Ordo Realitas...
 				</p>
 			</div>
@@ -104,6 +111,8 @@ export function PokedexPage() {
 	const totalCharacters = summary?.totalCharacters ?? 0;
 	const totalDiscovered = summary?.totalDiscovered ?? 0;
 	const discoveryPercentage = summary?.discoveryPercentage ?? 0;
+	const activeWorktreesCount =
+		summary?.cards.filter((c) => c.isActiveNow).length ?? 0;
 
 	return (
 		<div className="flex-1 w-full max-w-7xl mx-auto p-6 space-y-6">
@@ -111,39 +120,24 @@ export function PokedexPage() {
 				totalCharacters={totalCharacters}
 				totalDiscovered={totalDiscovered}
 				discoveryPercentage={discoveryPercentage}
+				activeWorktreesCount={activeWorktreesCount}
+				onTriggerTest={() => triggerTest.mutate({})}
+				isTriggerPending={triggerTest.isPending}
+			/>
+
+			<PokedexFilterBar
 				searchQuery={searchQuery}
 				onSearchChange={setSearchQuery}
-				selectedElement={selectedElement}
-				onSelectElement={setSelectedElement}
 				selectedCategory={selectedCategory}
 				onSelectCategory={setSelectedCategory}
+				selectedElement={selectedElement}
+				onSelectElement={setSelectedElement}
 				onlyDiscovered={onlyDiscovered}
 				onToggleOnlyDiscovered={() => setOnlyDiscovered(!onlyDiscovered)}
 			/>
 
-			{/* Cards Grid */}
-			{filteredCards.length === 0 ? (
-				<div className="text-center py-16 text-muted-foreground bg-muted/10 rounded-xl border border-dashed border-border/60">
-					<p className="text-sm font-medium">
-						Nenhum registro paranormal encontrado com estes filtros.
-					</p>
-					<p className="text-xs mt-1">
-						Tente ajustar a busca ou desativar os filtros.
-					</p>
-				</div>
-			) : (
-				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-					{filteredCards.map((card) => (
-						<PokedexCard
-							key={card.character.id}
-							cardData={card}
-							onClick={() => card.isDiscovered && setSelectedCard(card)}
-						/>
-					))}
-				</div>
-			)}
+			<PokedexGrid cards={filteredCards} onSelectCard={setSelectedCard} />
 
-			{/* Detail Modal */}
 			<PokedexDetailModal
 				cardData={selectedCard}
 				isOpen={!!selectedCard}

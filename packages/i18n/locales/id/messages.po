@@ -8454,9 +8454,6 @@ msgstr "Muat pesan sebelumnya"
 msgid "Load more"
 msgstr "Muat lagi"
 
-msgid "Load older messages"
-msgstr "Muat pesan sebelumnya"
-
 msgid "Loader"
 msgstr "Loader"
 
@@ -10771,6 +10768,9 @@ msgstr "Chat orkestrasi"
 msgid "Orchestration guide"
 msgstr "Panduan orkestrasi"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "Pencarian organik"
 
@@ -11272,6 +11272,9 @@ msgstr "Marketplace plugin"
 
 msgid "Plugins"
 msgstr "Plugin"
+
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
 
 msgid "Popover"
 msgstr "Popover"

@@ -8454,9 +8454,6 @@ msgstr "Daha eski mesajları yükle"
 msgid "Load more"
 msgstr "Daha fazla yükle"
 
-msgid "Load older messages"
-msgstr "Önceki mesajları yükle"
-
 msgid "Loader"
 msgstr "Yükleyici"
 
@@ -10771,6 +10768,9 @@ msgstr "Orkestrasyon sohbeti"
 msgid "Orchestration guide"
 msgstr "Orkestrasyon rehberi"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "Organik arama"
 
@@ -11272,6 +11272,9 @@ msgstr "Eklenti pazar yeri"
 
 msgid "Plugins"
 msgstr "Eklentiler"
+
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
 
 msgid "Popover"
 msgstr "Açılır kutu"

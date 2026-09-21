@@ -27,6 +27,8 @@ export const ordemCharacterSchema = z.object({
 	description: z.string().min(1),
 	imageUrl: z.string().url(),
 	quote: z.string().optional(),
+	teaser: z.string().optional(),
+	vd: z.number().int().optional(),
 });
 export type OrdemCharacter = z.infer<typeof ordemCharacterSchema>;
 

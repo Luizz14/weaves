@@ -141,7 +141,7 @@ export function OrdemPokemonCardReveal() {
 						</span>
 					</div>
 					<span className="text-[10px] font-mono font-bold text-zinc-400">
-						VD 100
+						VD {character.vd ?? 100}
 					</span>
 				</div>
 

@@ -8454,9 +8454,6 @@ msgstr "Wczytaj wcześniejsze wiadomości"
 msgid "Load more"
 msgstr "Wczytaj więcej"
 
-msgid "Load older messages"
-msgstr "Wczytaj starsze wiadomości"
-
 msgid "Loader"
 msgstr "Wskaźnik ładowania"
 
@@ -10771,6 +10768,9 @@ msgstr "Czat orkiestracji"
 msgid "Orchestration guide"
 msgstr "Przewodnik po orkiestracji"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "Wyszukiwanie organiczne"
 
@@ -11272,6 +11272,9 @@ msgstr "Marketplace wtyczek"
 
 msgid "Plugins"
 msgstr "Wtyczki"
+
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
 
 msgid "Popover"
 msgstr "Popover"

@@ -8454,9 +8454,6 @@ msgstr "Načíst starší zprávy"
 msgid "Load more"
 msgstr "Načíst další"
 
-msgid "Load older messages"
-msgstr "Načíst starší zprávy"
-
 msgid "Loader"
 msgstr "Načítání"
 
@@ -10771,6 +10768,9 @@ msgstr "Orchestrační chat"
 msgid "Orchestration guide"
 msgstr "Průvodce orchestrací"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "Organické vyhledávání"
 
@@ -11272,6 +11272,9 @@ msgstr "Marketplace pluginů"
 
 msgid "Plugins"
 msgstr "Pluginy"
+
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
 
 msgid "Popover"
 msgstr "Popover"

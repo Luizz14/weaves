@@ -8454,9 +8454,6 @@ msgstr "이전 메시지 불러오기"
 msgid "Load more"
 msgstr "더 보기"
 
-msgid "Load older messages"
-msgstr "이전 메시지 불러오기"
-
 msgid "Loader"
 msgstr "로더"
 
@@ -10771,6 +10768,9 @@ msgstr "오케스트레이션 채팅"
 msgid "Orchestration guide"
 msgstr "오케스트레이션 가이드"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "자연 검색"
 
@@ -11272,6 +11272,9 @@ msgstr "플러그인 마켓플레이스"
 
 msgid "Plugins"
 msgstr "플러그인"
+
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
 
 msgid "Popover"
 msgstr "팝오버"

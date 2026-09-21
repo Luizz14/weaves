@@ -8454,9 +8454,6 @@ msgstr "載入更早的訊息"
 msgid "Load more"
 msgstr "載入更多"
 
-msgid "Load older messages"
-msgstr "載入較早的訊息"
-
 msgid "Loader"
 msgstr "載入器"
 
@@ -10771,6 +10768,9 @@ msgstr "編排聊天"
 msgid "Orchestration guide"
 msgstr "編排指南"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "自然搜尋"
 
@@ -11272,6 +11272,9 @@ msgstr "外掛市場"
 
 msgid "Plugins"
 msgstr "外掛"
+
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
 
 msgid "Popover"
 msgstr "氣泡卡片"

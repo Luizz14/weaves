@@ -8454,9 +8454,6 @@ msgstr "加载更早的消息"
 msgid "Load more"
 msgstr "加载更多"
 
-msgid "Load older messages"
-msgstr "加载更早的消息"
-
 msgid "Loader"
 msgstr "加载器"
 
@@ -10771,6 +10768,9 @@ msgstr "编排聊天"
 msgid "Orchestration guide"
 msgstr "编排指南"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "自然搜索"
 
@@ -11272,6 +11272,9 @@ msgstr "插件市场"
 
 msgid "Plugins"
 msgstr "插件"
+
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
 
 msgid "Popover"
 msgstr "气泡卡片"

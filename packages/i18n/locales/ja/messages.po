@@ -8454,9 +8454,6 @@ msgstr "以前のメッセージを読み込む"
 msgid "Load more"
 msgstr "もっと見る"
 
-msgid "Load older messages"
-msgstr "以前のメッセージを読み込む"
-
 msgid "Loader"
 msgstr "ローダー"
 
@@ -10771,6 +10768,9 @@ msgstr "オーケストレーションチャット"
 msgid "Orchestration guide"
 msgstr "オーケストレーションガイド"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "オーガニック検索"
 
@@ -11272,6 +11272,9 @@ msgstr "プラグインマーケットプレイス"
 
 msgid "Plugins"
 msgstr "プラグイン"
+
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
 
 msgid "Popover"
 msgstr "Popover"

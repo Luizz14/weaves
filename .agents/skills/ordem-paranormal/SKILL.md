@@ -61,7 +61,7 @@ This skill guides agents working on the **Ordem Paranormal** feature in the Supe
 - **`types.ts`**:
   - `ordemElementSchema`: `"Sangue" | "Morte" | "Conhecimento" | "Energia" | "Medo" | "Nenhum"`.
   - `ordemCategorySchema`: `"personagem" | "criatura" | "reliquia"`.
-  - `ordemCharacterSchema`: Zod schema for character objects (`id`, `name`, `category`, `element`, `season`, `role`, `description`, `imageUrl`, `quote`).
+  - `ordemCharacterSchema`: Zod schema for character objects (`id`, `name`, `category`, `element`, `season`, `role`, `description`, `imageUrl`, `quote`, `teaser`, `vd`).
   - `OrdemCharacterStatus`: Extended shape for worktree query status (`isUsed`, `activeBranch`).
 - **`catalog.ts`**:
   - `getAllOrdemCharacters()`: Returns the parsed list of all characters.
@@ -103,11 +103,14 @@ This skill guides agents working on the **Ordem Paranormal** feature in the Supe
 ### Desktop Frontend UI (`apps/desktop/src/renderer/`)
 - **`routes/_authenticated/settings/pokedex/`**:
   - `page.tsx`: Route `/_authenticated/settings/pokedex/`.
-  - `components/PokedexPage/`: Main Pokédex view with `electronTrpc.ordemParanormal.getSummary` query and auto-refetch.
-  - `components/PokedexHeader/`: Header displaying total count, progress bar, search input, category buttons, element badges, and the `✨ Testar Carta Pokémon` button.
-  - `components/PokedexCard/`: Individual card with discovered state (photo, element, role, quotes, active branch badge) and undiscovered state (`[CLASSIFICADO]` confidential card).
-  - `components/PokedexDetailModal/`: Detailed dossier modal opened upon clicking a discovered card. Shows full lore, quote, element info, and appearance history.
-  - `components/ElementBadge/`: Badges for Sangue, Morte, Conhecimento, Energia, and Medo.
+  - `components/PokedexPage/`: Main Pokédex orchestrator with `electronTrpc.ordemParanormal.getSummary` query and auto-refetch.
+  - `components/PokedexHeader/`: Header with `ProgressStat/` pills (worktree activity, counts), progress bar, and test reveal button.
+  - `components/PokedexFilterBar/`: Instant search with debouncing, category pills (Agentes, Criaturas, Relíquias), and element filters (Sangue, Morte, Conhecimento, Energia, Medo).
+  - `components/PokedexGrid/`: Responsive CSS grid rendering discovered and confidential cards with empty state handling.
+  - `components/PokedexCard/`: Collectible Pokémon TCG card with `CardFoilEffect/` (3D mouse tilt and color-dodge iridescent shimmer), VD badge, and element border styling.
+  - `components/PokedexConfidentialCard/`: Redacted confidential dossier card with `[CLASSIFICADO]` stamp, mystery silhouette, and lore teaser.
+  - `components/PokedexDetailModal/`: Detailed dossier modal with high-res portrait, canonical quote, lore description, active branch indicators, and `DossierTimeline/` listing historical worktrees.
+  - `components/ElementBadge/`: Visual elemental badges with canonical glyphs and color styling.
 - **`routes/_authenticated/pokedex/page.tsx`**:
   - Direct route redirecting to `/settings/pokedex`.
 - **`routes/_authenticated/components/OrdemPokemonCardReveal/`**:
@@ -118,6 +121,8 @@ This skill guides agents working on the **Ordem Paranormal** feature in the Supe
   - Shield icon button mounted in `WorkspaceSidebarFooter.tsx` next to Settings.
 - **`commandPalette/modules/settings/commands.ts`**:
   - Registered in Command Palette with keywords: `pokedex`, `ordem`, `paranormal`, `cards`, `rpg`, `entidades`, `personagens`.
+- **`settings-search.ts` & `GeneralSettings.tsx`**:
+  - Registered under "Editor & Workflow" with full-width layout and settings search indexing.
 
 ---
 

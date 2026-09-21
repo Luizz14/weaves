@@ -8454,9 +8454,6 @@ msgstr "Tải tin nhắn cũ hơn"
 msgid "Load more"
 msgstr "Tải thêm"
 
-msgid "Load older messages"
-msgstr "Tải tin nhắn cũ hơn"
-
 msgid "Loader"
 msgstr "Trình tải"
 
@@ -10771,6 +10768,9 @@ msgstr "Chat điều phối"
 msgid "Orchestration guide"
 msgstr "Hướng dẫn điều phối"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "Tìm kiếm tự nhiên"
 
@@ -11272,6 +11272,9 @@ msgstr "Marketplace plugin"
 
 msgid "Plugins"
 msgstr "Plugin"
+
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
 
 msgid "Popover"
 msgstr "Popover"
