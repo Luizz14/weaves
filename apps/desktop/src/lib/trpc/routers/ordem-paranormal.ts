@@ -5,6 +5,7 @@ import {
 	type OrdemDiscoveryEvent,
 	ordemDiscoveryEmitter,
 	recordCharacterDiscovery,
+	recordDiscoveryByBranch,
 } from "@superset/shared/ordem-paranormal";
 import { observable } from "@trpc/server/observable";
 import { localDb } from "main/lib/local-db";
@@ -48,6 +49,21 @@ export const createOrdemParanormalRouter = () => {
 			.mutation(({ input }) => {
 				return recordCharacterDiscovery(input.characterId, {
 					branch: input.branch,
+					project: input.project,
+					org: input.org,
+				});
+			}),
+
+		recordDiscoveryByBranch: publicProcedure
+			.input(
+				z.object({
+					branch: z.string(),
+					project: z.string().optional(),
+					org: z.string().optional(),
+				}),
+			)
+			.mutation(({ input }) => {
+				return recordDiscoveryByBranch(input.branch, {
 					project: input.project,
 					org: input.org,
 				});

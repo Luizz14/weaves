@@ -1,11 +1,11 @@
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
+import { recordDiscoveryByBranch } from "@superset/shared/ordem-paranormal";
 import {
 	deriveWorkspaceBranchFromPrompt,
 	generateFriendlyBranchName,
 	sanitizeUserBranchName,
 } from "@superset/shared/workspace-launch";
-import { recordDiscoveryByBranch } from "@superset/shared/ordem-paranormal";
 import { workspaceTagsInputSchema } from "@superset/shared/workspace-tags";
 import { TRPCError } from "@trpc/server";
 import { and, eq, isNull } from "drizzle-orm";
@@ -1426,6 +1426,7 @@ export const workspacesRouter = router({
 						ok: true,
 						canonicalWorkspaceId: result.workspace.id,
 						projectId: result.workspace.projectId ?? null,
+						branch: result.workspace.branch,
 						terminals: result.terminals,
 						agents: result.agents,
 						alreadyExists: result.alreadyExists,

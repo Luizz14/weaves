@@ -1,5 +1,5 @@
 import friendlyWords from "friendly-words";
-import { generateOrdemBranchName } from "../ordem-paranormal";
+import { generateOrdemBranchName } from "../ordem-paranormal/generator";
 
 /**
  * Generates a branch name for a workspace.
@@ -22,4 +22,3 @@ export function generateLegacyFriendlyBranchName(): string {
 	const object = objects[Math.floor(Math.random() * objects.length)];
 	return `${predicate}-${object}`;
 }
-

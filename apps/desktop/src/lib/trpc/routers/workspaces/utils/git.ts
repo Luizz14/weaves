@@ -6,13 +6,13 @@ import { dirname, join, resolve } from "node:path";
 import { promisify } from "node:util";
 import type { BranchPrefixMode } from "@superset/local-db";
 import { runWithPostCheckoutHookTolerance } from "@superset/shared/git-hook-tolerance";
+import { recordDiscoveryByBranch } from "@superset/shared/ordem-paranormal";
 import {
 	generateFriendlyBranchName,
 	sanitizeAuthorPrefix,
 	sanitizeBranchName,
 	sanitizeBranchNameWithMaxLength,
 } from "@superset/shared/workspace-launch";
-import { recordDiscoveryByBranch } from "@superset/shared/ordem-paranormal";
 import friendlyWords from "friendly-words";
 import type { StatusResult } from "simple-git";
 import { execGitWithShellPath, getSimpleGitWithShellPath } from "./git-client";
@@ -753,6 +753,9 @@ export async function createWorktreeFromExistingBranch({
 			["-C", worktreePath, "config", "--local", "push.autoSetupRemote", "true"],
 			{ timeout: 10_000 },
 		);
+
+		// Record character discovery in persistent Pokédex
+		recordDiscoveryByBranch(branch);
 
 		console.log(
 			`Created worktree at ${worktreePath} using existing branch ${branch}`,

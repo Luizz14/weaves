@@ -2,7 +2,11 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { z } from "zod";
-import { findCharacterByBranch, getOrdemCharacter, getOrdemCharacters } from "./catalog";
+import {
+	findCharacterByBranch,
+	getOrdemCharacter,
+	getOrdemCharacters,
+} from "./catalog";
 import { ordemDiscoveryEmitter } from "./events";
 import type { OrdemCharacter } from "./types";
 
@@ -52,7 +56,9 @@ export function getPokedexStoragePath(): string {
 	return join(baseDir, "ordem_pokedex.json");
 }
 
-export function loadPokedex(filePath = getPokedexStoragePath()): OrdemPokedexData {
+export function loadPokedex(
+	filePath = getPokedexStoragePath(),
+): OrdemPokedexData {
 	try {
 		if (!existsSync(filePath)) {
 			return { version: 1, entries: {} };
@@ -84,6 +90,8 @@ export function savePokedex(
 	}
 }
 
+const recentlyEmittedBranches = new Map<string, number>();
+
 export function recordCharacterDiscovery(
 	characterSlug: string,
 	metadata: { branch: string; project?: string; org?: string },
@@ -93,6 +101,10 @@ export function recordCharacterDiscovery(
 	const now = new Date().toISOString();
 	const existing = data.entries[characterSlug];
 
+	const alreadyRecordedThisBranch = existing?.appearances.some(
+		(a) => a.branch === metadata.branch,
+	);
+
 	const appearance: OrdemAppearance = {
 		branch: metadata.branch,
 		project: metadata.project,
@@ -101,14 +113,26 @@ export function recordCharacterDiscovery(
 	};
 
 	let updatedEntry: OrdemPokedexEntry;
+	let isFirstDiscovery = false;
+
 	if (existing) {
-		updatedEntry = {
-			...existing,
-			lastSeenAt: now,
-			timesUsed: existing.timesUsed + 1,
-			appearances: [appearance, ...existing.appearances].slice(0, 50),
-		};
+		if (alreadyRecordedThisBranch) {
+			updatedEntry = existing;
+			// If it only has this one appearance recorded, it represents the initial discovery of this character
+			isFirstDiscovery =
+				existing.timesUsed === 1 && existing.appearances.length === 1;
+		} else {
+			updatedEntry = {
+				...existing,
+				lastSeenAt: now,
+				timesUsed: existing.timesUsed + 1,
+				appearances: [appearance, ...existing.appearances].slice(0, 50),
+			};
+			data.entries[characterSlug] = updatedEntry;
+			savePokedex(data, filePath);
+		}
 	} else {
+		isFirstDiscovery = true;
 		updatedEntry = {
 			slug: characterSlug,
 			firstDiscoveredAt: now,
@@ -116,18 +140,24 @@ export function recordCharacterDiscovery(
 			timesUsed: 1,
 			appearances: [appearance],
 		};
+		data.entries[characterSlug] = updatedEntry;
+		savePokedex(data, filePath);
 	}
 
-	data.entries[characterSlug] = updatedEntry;
-	savePokedex(data, filePath);
+	const emitKey = `${characterSlug}:${metadata.branch}`;
+	const lastEmitted = recentlyEmittedBranches.get(emitKey);
+	const shouldEmit = !lastEmitted || Date.now() - lastEmitted > 15_000;
 
-	const char = getOrdemCharacter(characterSlug);
-	if (char) {
-		ordemDiscoveryEmitter.emit("discovery", {
-			character: char,
-			entry: updatedEntry,
-			isFirstDiscovery: !existing,
-		});
+	if (shouldEmit) {
+		recentlyEmittedBranches.set(emitKey, Date.now());
+		const char = getOrdemCharacter(characterSlug);
+		if (char) {
+			ordemDiscoveryEmitter.emit("discovery", {
+				character: char,
+				entry: updatedEntry,
+				isFirstDiscovery,
+			});
+		}
 	}
 
 	return updatedEntry;
@@ -162,7 +192,9 @@ export function getOrdemPokedexSummary(
 	const totalDiscovered = cards.filter((c) => c.isDiscovered).length;
 	const totalCharacters = characters.length;
 	const discoveryPercentage =
-		totalCharacters > 0 ? Math.round((totalDiscovered / totalCharacters) * 100) : 0;
+		totalCharacters > 0
+			? Math.round((totalDiscovered / totalCharacters) * 100)
+			: 0;
 
 	return {
 		totalCharacters,
@@ -185,4 +217,3 @@ export function recordDiscoveryByBranch(
 		filePath,
 	);
 }
-

@@ -7,7 +7,6 @@ import {
 	loadPokedex,
 	recordCharacterDiscovery,
 	recordDiscoveryByBranch,
-	savePokedex,
 } from "./storage";
 
 describe("Ordem Paranormal Pokédex Storage", () => {
@@ -41,13 +40,13 @@ describe("Ordem Paranormal Pokédex Storage", () => {
 		expect(entry.slug).toBe("arthur-cervero");
 		expect(entry.timesUsed).toBe(1);
 		expect(entry.appearances.length).toBe(1);
-		expect(entry.appearances[0].branch).toBe("arthur-cervero");
-		expect(entry.appearances[0].project).toBe("project-1");
-		expect(entry.appearances[0].org).toBe("org-1");
+		expect(entry.appearances[0]?.branch).toBe("arthur-cervero");
+		expect(entry.appearances[0]?.project).toBe("project-1");
+		expect(entry.appearances[0]?.org).toBe("org-1");
 
 		const reloaded = loadPokedex(testDbPath);
 		expect(reloaded.entries["arthur-cervero"]).toBeDefined();
-		expect(reloaded.entries["arthur-cervero"].timesUsed).toBe(1);
+		expect(reloaded.entries["arthur-cervero"]?.timesUsed).toBe(1);
 	});
 
 	it("increments usage count on subsequent discoveries across different orgs", () => {
@@ -65,8 +64,8 @@ describe("Ordem Paranormal Pokédex Storage", () => {
 
 		expect(second.timesUsed).toBe(2);
 		expect(second.appearances.length).toBe(2);
-		expect(second.appearances[0].org).toBe("org-other");
-		expect(second.appearances[1].org).toBe("org-acme");
+		expect(second.appearances[0]?.org).toBe("org-other");
+		expect(second.appearances[1]?.org).toBe("org-acme");
 	});
 
 	it("records discovery automatically from branch name", () => {
@@ -102,7 +101,9 @@ describe("Ordem Paranormal Pokédex Storage", () => {
 		expect(summary.totalDiscovered).toBe(2);
 		expect(summary.discoveryPercentage).toBeGreaterThan(0);
 
-		const arthurCard = summary.cards.find((c) => c.character.id === "arthur-cervero");
+		const arthurCard = summary.cards.find(
+			(c) => c.character.id === "arthur-cervero",
+		);
 		expect(arthurCard).toBeDefined();
 		expect(arthurCard?.isDiscovered).toBe(true);
 		expect(arthurCard?.isActiveNow).toBe(true);
@@ -116,5 +117,23 @@ describe("Ordem Paranormal Pokédex Storage", () => {
 		const kaiserCard = summary.cards.find((c) => c.character.id === "kaiser");
 		expect(kaiserCard).toBeDefined();
 		expect(kaiserCard?.isDiscovered).toBe(false);
+	});
+
+	it("does not duplicate appearances or increment timesUsed when called for the same branch", () => {
+		const first = recordCharacterDiscovery(
+			"rubius",
+			{ branch: "rubius-patch-1", project: "proj-1" },
+			testDbPath,
+		);
+		expect(first.timesUsed).toBe(1);
+		expect(first.appearances.length).toBe(1);
+
+		const second = recordCharacterDiscovery(
+			"rubius",
+			{ branch: "rubius-patch-1", project: "proj-1" },
+			testDbPath,
+		);
+		expect(second.timesUsed).toBe(1);
+		expect(second.appearances.length).toBe(1);
 	});
 });
