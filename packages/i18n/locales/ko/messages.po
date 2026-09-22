@@ -1745,6 +1745,9 @@ msgstr "모든 담당자"
 msgid "All authors"
 msgstr "모든 작성자"
 
+msgid "All branches"
+msgstr "모든 브랜치"
+
 msgid "All changes saved"
 msgstr "모든 변경 사항 저장됨"
 
@@ -2482,6 +2485,9 @@ msgstr "Azure CLI on {targetName}"
 
 msgid "Azure DevOps"
 msgstr "Azure DevOps"
+
+msgid "Azure DevOps board configuration updated"
+msgstr "Azure DevOps 보드 구성이 업데이트되었습니다"
 
 msgid "Azure DevOps board connected"
 msgstr "Azure DevOps board connected"
@@ -3818,6 +3824,9 @@ msgstr "Superset을 Cursor, Claude Code, Codex, Windsurf, Devin, GitHub Copilot 
 msgid "Compared against the default style"
 msgstr "기본 스타일과 비교함"
 
+msgid "Compared with first parent"
+msgstr "첫 번째 부모와 비교"
+
 msgid "complete"
 msgstr "종료"
 
@@ -4941,6 +4950,9 @@ msgstr "Ctrl+Shift+클릭"
 msgid "Current"
 msgstr "현재"
 
+msgid "Current branch"
+msgstr "현재 브랜치"
+
 msgid "Current level"
 msgstr "현재 단계"
 
@@ -5059,6 +5071,9 @@ msgstr "대시보드"
 
 msgid "Data display"
 msgstr "데이터 표시"
+
+msgid "Date"
+msgstr "날짜"
 
 msgid "Date created"
 msgstr "생성일"
@@ -5836,6 +5851,9 @@ msgstr "{name} ×{tier} 획득"
 
 msgid "Edit"
 msgstr "편집"
+
+msgid "Edit Azure DevOps board configuration"
+msgstr "Azure DevOps 보드 구성 편집"
 
 msgid "Edit comment"
 msgstr "코멘트 수정"
@@ -7258,6 +7276,9 @@ msgstr "Git 및 worktree"
 
 msgid "Git author name"
 msgstr "Git 작성자 이름"
+
+msgid "Git History"
+msgstr "Git 기록"
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Git 통합에 실패했습니다. 저장소를 확인하고 다시 시도하거나 취소하세요."
@@ -9745,6 +9766,9 @@ msgstr "백그라운드 터미널 세션 없음"
 msgid "No branches found"
 msgstr "브랜치를 찾을 수 없습니다"
 
+msgid "No changed files"
+msgstr "변경된 파일 없음"
+
 msgid "No changed files."
 msgstr "변경된 파일이 없습니다."
 
@@ -9798,6 +9822,9 @@ msgstr "아직 코멘트가 없습니다."
 
 msgid "No comments yet. Turn on comment mode and click anything on the page to start one."
 msgstr "아직 댓글이 없습니다. 댓글 모드를 켜고 페이지의 아무 곳이나 클릭해 시작하세요."
+
+msgid "No commits found"
+msgstr "커밋을 찾을 수 없음"
 
 msgid "No commits on this branch yet."
 msgstr "이 브랜치에는 아직 커밋이 없습니다."
@@ -13181,6 +13208,9 @@ msgstr "저장 및 테스트"
 msgid "Save as environment"
 msgstr "환경으로 저장"
 
+msgid "Save changes"
+msgstr "변경 사항 저장"
+
 msgid "Save edits"
 msgstr "편집 저장"
 
@@ -13375,6 +13405,9 @@ msgstr "{frameTitle}에서 검색…"
 
 msgid "Search issues..."
 msgstr "이슈 검색..."
+
+msgid "Search message or hash"
+msgstr "메시지 또는 해시 검색"
 
 msgid "Search pages"
 msgstr "페이지 검색"
@@ -13862,6 +13895,9 @@ msgstr "설정"
 
 msgid "Setup script"
 msgstr "설정 스크립트"
+
+msgid "SHA"
+msgstr "SHA"
 
 msgid "shadcn/ui tooltip recipe"
 msgstr "shadcn/ui 툴팁 레시피"

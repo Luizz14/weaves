@@ -1745,6 +1745,9 @@ msgstr "Wszyscy przypisani"
 msgid "All authors"
 msgstr "Wszyscy autorzy"
 
+msgid "All branches"
+msgstr "Wszystkie gałęzie"
+
 msgid "All changes saved"
 msgstr "Wszystkie zmiany zapisane"
 
@@ -2482,6 +2485,9 @@ msgstr "Azure CLI on {targetName}"
 
 msgid "Azure DevOps"
 msgstr "Azure DevOps"
+
+msgid "Azure DevOps board configuration updated"
+msgstr "Zaktualizowano konfigurację tablicy Azure DevOps"
 
 msgid "Azure DevOps board connected"
 msgstr "Azure DevOps board connected"
@@ -3818,6 +3824,9 @@ msgstr "Porównaj Superset z Cursor, Claude Code, Codex, Windsurf, Devin, GitHub
 msgid "Compared against the default style"
 msgstr "Porównane ze stylem domyślnym"
 
+msgid "Compared with first parent"
+msgstr "Porównanie z pierwszym rodzicem"
+
 msgid "complete"
 msgstr "zakończony"
 
@@ -4941,6 +4950,9 @@ msgstr "Ctrl+Shift+klik"
 msgid "Current"
 msgstr "Bieżąca"
 
+msgid "Current branch"
+msgstr "Bieżąca gałąź"
+
 msgid "Current level"
 msgstr "Obecny poziom"
 
@@ -5059,6 +5071,9 @@ msgstr "Panel"
 
 msgid "Data display"
 msgstr "Prezentacja danych"
+
+msgid "Date"
+msgstr "Data"
 
 msgid "Date created"
 msgstr "Data utworzenia"
@@ -5836,6 +5851,9 @@ msgstr "Zdobyto: {name} ×{tier}"
 
 msgid "Edit"
 msgstr "Edytuj"
+
+msgid "Edit Azure DevOps board configuration"
+msgstr "Edytuj konfigurację tablicy Azure DevOps"
 
 msgid "Edit comment"
 msgstr "Edytuj komentarz"
@@ -7258,6 +7276,9 @@ msgstr "Git i worktree"
 
 msgid "Git author name"
 msgstr "Nazwa autora w Git"
+
+msgid "Git History"
+msgstr "Historia Git"
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Integracja Git nie powiodła się. Sprawdź repozytorium i ponów próbę lub ją anuluj."
@@ -9745,6 +9766,9 @@ msgstr "Brak sesji terminala w tle"
 msgid "No branches found"
 msgstr "Nie znaleziono gałęzi"
 
+msgid "No changed files"
+msgstr "Brak zmienionych plików"
+
 msgid "No changed files."
 msgstr "Brak zmienionych plików."
 
@@ -9798,6 +9822,9 @@ msgstr "Brak komentarzy."
 
 msgid "No comments yet. Turn on comment mode and click anything on the page to start one."
 msgstr "Nie ma jeszcze komentarzy. Włącz tryb komentowania i kliknij dowolny element strony, aby rozpocząć."
+
+msgid "No commits found"
+msgstr "Nie znaleziono commitów"
 
 msgid "No commits on this branch yet."
 msgstr "Brak commitów na tej gałęzi."
@@ -13181,6 +13208,9 @@ msgstr "Zapisz i przetestuj"
 msgid "Save as environment"
 msgstr "Zapisz jako środowisko"
 
+msgid "Save changes"
+msgstr "Zapisz zmiany"
+
 msgid "Save edits"
 msgstr "Zapisz zmiany"
 
@@ -13375,6 +13405,9 @@ msgstr "Szukaj w {frameTitle}…"
 
 msgid "Search issues..."
 msgstr "Szukaj zgłoszeń..."
+
+msgid "Search message or hash"
+msgstr "Szukaj wiadomości lub skrótu"
 
 msgid "Search pages"
 msgstr "Szukaj stron"
@@ -13862,6 +13895,9 @@ msgstr "Konfiguracja"
 
 msgid "Setup script"
 msgstr "Skrypt konfiguracyjny"
+
+msgid "SHA"
+msgstr "SHA"
 
 msgid "shadcn/ui tooltip recipe"
 msgstr "przepis na tooltip z shadcn/ui"

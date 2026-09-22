@@ -13,7 +13,7 @@ import type { ChangesetFile } from "../../../../../../../useChangeset";
 import type { FileView } from "../../../../../FilePane/registry";
 import { createGetDiffInput } from "../../../../utils/createGetDiffInput";
 import { hashString } from "../../../../utils/hashString";
-import { createSnapshotDocument } from "../../utils/createSnapshotDocument";
+import { createSnapshotDocument } from "../../../../../../utils/createSnapshotDocument";
 
 export type DiffSide = "old" | "new";
 

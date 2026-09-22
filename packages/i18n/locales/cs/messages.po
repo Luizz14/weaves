@@ -1745,6 +1745,9 @@ msgstr "Všichni řešitelé"
 msgid "All authors"
 msgstr "Všichni autoři"
 
+msgid "All branches"
+msgstr "Všechny větve"
+
 msgid "All changes saved"
 msgstr "Všechny změny uloženy"
 
@@ -2482,6 +2485,9 @@ msgstr "Azure CLI on {targetName}"
 
 msgid "Azure DevOps"
 msgstr "Azure DevOps"
+
+msgid "Azure DevOps board configuration updated"
+msgstr "Konfigurace nástěnky Azure DevOps byla aktualizována"
 
 msgid "Azure DevOps board connected"
 msgstr "Azure DevOps board connected"
@@ -3818,6 +3824,9 @@ msgstr "Porovnejte Superset s Cursor, Claude Code, Codex, Windsurf, Devin, GitHu
 msgid "Compared against the default style"
 msgstr "Porovnáno s výchozím stylem"
 
+msgid "Compared with first parent"
+msgstr "Porovnáno s prvním rodičem"
+
 msgid "complete"
 msgstr "dokončeno"
 
@@ -4941,6 +4950,9 @@ msgstr "Ctrl+Shift+kliknutí"
 msgid "Current"
 msgstr "Aktuální"
 
+msgid "Current branch"
+msgstr "Aktuální větev"
+
 msgid "Current level"
 msgstr "Aktuální úroveň"
 
@@ -5059,6 +5071,9 @@ msgstr "Dashboard"
 
 msgid "Data display"
 msgstr "Zobrazení dat"
+
+msgid "Date"
+msgstr "Datum"
 
 msgid "Date created"
 msgstr "Datum vytvoření"
@@ -5836,6 +5851,9 @@ msgstr "Získáno: {name} ×{tier}"
 
 msgid "Edit"
 msgstr "Upravit"
+
+msgid "Edit Azure DevOps board configuration"
+msgstr "Upravit konfiguraci nástěnky Azure DevOps"
 
 msgid "Edit comment"
 msgstr "Upravit komentář"
@@ -7258,6 +7276,9 @@ msgstr "Git a worktree"
 
 msgid "Git author name"
 msgstr "Jméno autora v Gitu"
+
+msgid "Git History"
+msgstr "Historie Gitu"
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Integrace Git selhala. Zkontrolujte repozitář a zkuste to znovu nebo pokus zrušte."
@@ -9745,6 +9766,9 @@ msgstr "Žádné relace terminálu na pozadí"
 msgid "No branches found"
 msgstr "Nenalezeny žádné větve"
 
+msgid "No changed files"
+msgstr "Žádné změněné soubory"
+
 msgid "No changed files."
 msgstr "Žádné změněné soubory."
 
@@ -9798,6 +9822,9 @@ msgstr "Zatím žádné komentáře."
 
 msgid "No comments yet. Turn on comment mode and click anything on the page to start one."
 msgstr "Zatím žádné komentáře. Zapněte režim komentářů a kliknutím na cokoli na stránce začněte."
+
+msgid "No commits found"
+msgstr "Nenalezeny žádné commity"
 
 msgid "No commits on this branch yet."
 msgstr "V této větvi zatím nejsou žádné commity."
@@ -13181,6 +13208,9 @@ msgstr "Uložit a otestovat"
 msgid "Save as environment"
 msgstr "Uložit jako prostředí"
 
+msgid "Save changes"
+msgstr "Uložit změny"
+
 msgid "Save edits"
 msgstr "Uložit úpravy"
 
@@ -13375,6 +13405,9 @@ msgstr "Hledat v {frameTitle}…"
 
 msgid "Search issues..."
 msgstr "Hledat issues..."
+
+msgid "Search message or hash"
+msgstr "Hledat zprávu nebo hash"
 
 msgid "Search pages"
 msgstr "Hledat stránky"
@@ -13862,6 +13895,9 @@ msgstr "Setup"
 
 msgid "Setup script"
 msgstr "Setup skript"
+
+msgid "SHA"
+msgstr "SHA"
 
 msgid "shadcn/ui tooltip recipe"
 msgstr "recept na tooltip v shadcn/ui"

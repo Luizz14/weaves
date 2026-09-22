@@ -1745,6 +1745,9 @@ msgstr "全部負責人"
 msgid "All authors"
 msgstr "所有作者"
 
+msgid "All branches"
+msgstr "所有分支"
+
 msgid "All changes saved"
 msgstr "所有更改已儲存"
 
@@ -2482,6 +2485,9 @@ msgstr "Azure CLI on {targetName}"
 
 msgid "Azure DevOps"
 msgstr "Azure DevOps"
+
+msgid "Azure DevOps board configuration updated"
+msgstr "Azure DevOps 看板設定已更新"
 
 msgid "Azure DevOps board connected"
 msgstr "Azure DevOps board connected"
@@ -3818,6 +3824,9 @@ msgstr "將 Superset 與 Cursor、Claude Code、Codex、Windsurf、Devin、GitHu
 msgid "Compared against the default style"
 msgstr "與預設樣式做了對比"
 
+msgid "Compared with first parent"
+msgstr "與第一個父提交比較"
+
 msgid "complete"
 msgstr "已結束"
 
@@ -4941,6 +4950,9 @@ msgstr "Ctrl+Shift+點選"
 msgid "Current"
 msgstr "目前"
 
+msgid "Current branch"
+msgstr "目前分支"
+
 msgid "Current level"
 msgstr "目前等級"
 
@@ -5059,6 +5071,9 @@ msgstr "控制台"
 
 msgid "Data display"
 msgstr "資料展示"
+
+msgid "Date"
+msgstr "日期"
 
 msgid "Date created"
 msgstr "建立日期"
@@ -5836,6 +5851,9 @@ msgstr "已獲得「{name}」×{tier}"
 
 msgid "Edit"
 msgstr "編輯"
+
+msgid "Edit Azure DevOps board configuration"
+msgstr "編輯 Azure DevOps 看板設定"
 
 msgid "Edit comment"
 msgstr "編輯評論"
@@ -7258,6 +7276,9 @@ msgstr "Git與worktree"
 
 msgid "Git author name"
 msgstr "Git作者名"
+
+msgid "Git History"
+msgstr "Git 歷史"
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Git 整合失敗。請檢查儲存庫並重試，或取消本次嘗試。"
@@ -9745,6 +9766,9 @@ msgstr "沒有背景終端會話"
 msgid "No branches found"
 msgstr "未找到分支"
 
+msgid "No changed files"
+msgstr "沒有變更的檔案"
+
 msgid "No changed files."
 msgstr "沒有更改的檔案。"
 
@@ -9798,6 +9822,9 @@ msgstr "暫無評論。"
 
 msgid "No comments yet. Turn on comment mode and click anything on the page to start one."
 msgstr "還沒有評論。開啟評論模式，點擊頁面上的任何元素即可開始。"
+
+msgid "No commits found"
+msgstr "找不到提交"
 
 msgid "No commits on this branch yet."
 msgstr "此分支上還沒有提交。"
@@ -13181,6 +13208,9 @@ msgstr "儲存並測試"
 msgid "Save as environment"
 msgstr "儲存為環境"
 
+msgid "Save changes"
+msgstr "儲存變更"
+
 msgid "Save edits"
 msgstr "儲存編輯"
 
@@ -13375,6 +13405,9 @@ msgstr "在{frameTitle}中搜尋…"
 
 msgid "Search issues..."
 msgstr "搜尋議題..."
+
+msgid "Search message or hash"
+msgstr "搜尋訊息或雜湊"
 
 msgid "Search pages"
 msgstr "搜尋頁面"
@@ -13862,6 +13895,9 @@ msgstr "初始化"
 
 msgid "Setup script"
 msgstr "設定指令碼"
+
+msgid "SHA"
+msgstr "SHA"
 
 msgid "shadcn/ui tooltip recipe"
 msgstr "shadcn/ui的tooltip方案"

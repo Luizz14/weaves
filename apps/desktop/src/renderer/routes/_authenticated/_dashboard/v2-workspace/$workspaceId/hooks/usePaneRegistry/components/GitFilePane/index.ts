@@ -1,0 +1,1 @@
+export { GitFilePane } from "./GitFilePane";

@@ -13,12 +13,19 @@ import { Input } from "@superset/ui/input";
 import { Label } from "@superset/ui/label";
 import { toast } from "@superset/ui/sonner";
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LuLoaderCircle } from "react-icons/lu";
 import { getHostServiceClientByUrl } from "renderer/lib/host-service-client";
 
 type AzureDevOpsSetupDialogProps = {
 	hostUrl: string | null;
+	initialConfig?: {
+		organizationUrl: string;
+		workItemProject: string;
+		team: string;
+		areaPath: string;
+		assignedTo: string | null;
+	} | null;
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 	onConfigured: () => void;
@@ -26,16 +33,31 @@ type AzureDevOpsSetupDialogProps = {
 
 export function AzureDevOpsSetupDialog({
 	hostUrl,
+	initialConfig = null,
 	open,
 	onOpenChange,
 	onConfigured,
 }: AzureDevOpsSetupDialogProps) {
 	const { t } = useLingui();
-	const [organizationUrl, setOrganizationUrl] = useState("");
-	const [workItemProject, setWorkItemProject] = useState("");
-	const [team, setTeam] = useState("");
-	const [areaPath, setAreaPath] = useState("");
-	const [assignedTo, setAssignedTo] = useState("");
+	const [organizationUrl, setOrganizationUrl] = useState(
+		initialConfig?.organizationUrl ?? "",
+	);
+	const [workItemProject, setWorkItemProject] = useState(
+		initialConfig?.workItemProject ?? "",
+	);
+	const [team, setTeam] = useState(initialConfig?.team ?? "");
+	const [areaPath, setAreaPath] = useState(initialConfig?.areaPath ?? "");
+	const [assignedTo, setAssignedTo] = useState(initialConfig?.assignedTo ?? "");
+	const isEditing = initialConfig !== null && initialConfig !== undefined;
+
+	useEffect(() => {
+		if (!open) return;
+		setOrganizationUrl(initialConfig?.organizationUrl ?? "");
+		setWorkItemProject(initialConfig?.workItemProject ?? "");
+		setTeam(initialConfig?.team ?? "");
+		setAreaPath(initialConfig?.areaPath ?? "");
+		setAssignedTo(initialConfig?.assignedTo ?? "");
+	}, [initialConfig, open]);
 	const save = useMutation({
 		mutationFn: async () => {
 			if (!hostUrl) throw new Error("Host service is unavailable");
@@ -51,7 +73,11 @@ export function AzureDevOpsSetupDialog({
 			});
 		},
 		onSuccess: () => {
-			toast.success(t({ message: "Azure DevOps board connected" }));
+			toast.success(
+				isEditing
+					? t({ message: "Azure DevOps board configuration updated" })
+					: t({ message: "Azure DevOps board connected" }),
+			);
 			onOpenChange(false);
 			onConfigured();
 		},
@@ -71,7 +97,11 @@ export function AzureDevOpsSetupDialog({
 			<DialogContent className="sm:max-w-lg">
 				<DialogHeader>
 					<DialogTitle className="text-balance">
-						<Trans>Connect Azure DevOps board</Trans>
+						{isEditing ? (
+							<Trans>Edit Azure DevOps board configuration</Trans>
+						) : (
+							<Trans>Connect Azure DevOps board</Trans>
+						)}
 					</DialogTitle>
 					<DialogDescription className="text-pretty">
 						<Trans>
@@ -165,7 +195,11 @@ export function AzureDevOpsSetupDialog({
 						{save.isPending ? (
 							<LuLoaderCircle className="animate-spin motion-reduce:animate-none" />
 						) : null}
-						<Trans>Connect board</Trans>
+						{isEditing ? (
+							<Trans>Save changes</Trans>
+						) : (
+							<Trans>Connect board</Trans>
+						)}
 					</Button>
 				</DialogFooter>
 			</DialogContent>

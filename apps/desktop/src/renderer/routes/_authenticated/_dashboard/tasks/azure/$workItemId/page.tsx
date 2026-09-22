@@ -3,6 +3,7 @@ import { errorMessage } from "@superset/i18n/errors";
 import { Badge } from "@superset/ui/badge";
 import { Button } from "@superset/ui/button";
 import { ScrollArea } from "@superset/ui/scroll-area";
+import { Skeleton } from "@superset/ui/skeleton";
 import { toast } from "@superset/ui/sonner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -13,6 +14,7 @@ import {
 	LuFileText,
 	LuLink,
 	LuPlus,
+	LuRefreshCw,
 } from "react-icons/lu";
 import { MarkdownRenderer } from "renderer/components/MarkdownRenderer";
 import { useHostProjects } from "renderer/hooks/host-projects/useHostProjects";
@@ -20,6 +22,7 @@ import { useHostUrl } from "renderer/hooks/host-service/useHostTargetUrl";
 import { getHostServiceClientByUrl } from "renderer/lib/host-service-client";
 import { useHostWorkspaces } from "renderer/routes/_authenticated/providers/HostWorkspacesProvider";
 import { useLocalHostService } from "renderer/routes/_authenticated/providers/LocalHostServiceProvider";
+import type { AzureDevOpsBoardResult } from "../../components/TasksView/components/AzureDevOpsContent/types";
 import { Route as TasksLayoutRoute } from "../../layout";
 import { AzureWorktreeRow } from "./components/AzureWorktreeRow";
 import { CreateAzureWorktreeDialog } from "./components/CreateAzureWorktreeDialog";
@@ -65,6 +68,14 @@ function AzureWorkItemDetailPage() {
 	const { activeHostUrl } = useLocalHostService();
 	const hostUrl = configuredHostUrl ?? activeHostUrl;
 	const [worktreeDialogOpen, setWorktreeDialogOpen] = useState(false);
+	const cachedBoardItem = hostUrl
+		? queryClient
+				.getQueriesData<AzureDevOpsBoardResult>({
+					queryKey: ["azure-devops", "board", hostUrl],
+				})
+				.map(([, board]) => board?.items.find((item) => item.id === workItemId))
+				.find((item) => item !== undefined)
+		: undefined;
 	const workItemQuery = useQuery({
 		queryKey: ["azure-devops", "work-item", hostUrl, workItemId],
 		enabled: hostUrl !== null && Number.isInteger(workItemId),
@@ -74,7 +85,26 @@ function AzureWorkItemDetailPage() {
 						workItemId,
 					})
 				: null,
-		refetchInterval: 30_000,
+		staleTime: Number.POSITIVE_INFINITY,
+		refetchInterval: false,
+		refetchOnReconnect: false,
+		refetchOnWindowFocus: false,
+	});
+	const claimQuery = useQuery({
+		queryKey: ["azure-devops", "work-item-claim", hostUrl, workItemId],
+		enabled: hostUrl !== null && Number.isInteger(workItemId),
+		queryFn: () =>
+			hostUrl
+				? getHostServiceClientByUrl(hostUrl).azureDevOps.getWorkItemClaim.query(
+						{
+							workItemId,
+						},
+					)
+				: null,
+		staleTime: Number.POSITIVE_INFINITY,
+		refetchInterval: false,
+		refetchOnReconnect: false,
+		refetchOnWindowFocus: false,
 	});
 	const { workspaces } = useHostWorkspaces();
 	const { projects } = useHostProjects();
@@ -95,10 +125,11 @@ function AzureWorkItemDetailPage() {
 	const claim = useMutation({
 		mutationFn: async () => {
 			if (!hostUrl) throw new Error("Azure DevOps host is unavailable");
-			const iterationPath = stringField(
-				workItemQuery.data?.item.fields ?? {},
-				"System.IterationPath",
-			);
+			const iterationPath =
+				stringField(
+					workItemQuery.data?.item.fields ?? {},
+					"System.IterationPath",
+				) ?? cachedBoardItem?.iterationPath;
 			if (!iterationPath) throw new Error("Work item has no iteration");
 			return getHostServiceClientByUrl(
 				hostUrl,
@@ -107,10 +138,14 @@ function AzureWorkItemDetailPage() {
 				iterationPath,
 			});
 		},
-		onSuccess: () =>
-			queryClient.invalidateQueries({
+		onSuccess: () => {
+			void queryClient.invalidateQueries({
 				queryKey: ["azure-devops", "work-item", hostUrl, workItemId],
-			}),
+			});
+			void queryClient.invalidateQueries({
+				queryKey: ["azure-devops", "work-item-claim", hostUrl, workItemId],
+			});
+		},
 		onError: (error) => toast.error(errorMessage(error)),
 	});
 	const setStage = useMutation({
@@ -120,10 +155,14 @@ function AzureWorkItemDetailPage() {
 				hostUrl,
 			).azureDevOps.setWorkItemStage.mutate({ workItemId, stage });
 		},
-		onSuccess: () =>
-			queryClient.invalidateQueries({
+		onSuccess: () => {
+			void queryClient.invalidateQueries({
 				queryKey: ["azure-devops", "work-item", hostUrl, workItemId],
-			}),
+			});
+			void queryClient.invalidateQueries({
+				queryKey: ["azure-devops", "work-item-claim", hostUrl, workItemId],
+			});
+		},
 		onError: (error) => toast.error(errorMessage(error)),
 	});
 
@@ -134,14 +173,11 @@ function AzureWorkItemDetailPage() {
 			</div>
 		);
 	}
-	if (workItemQuery.isPending) {
-		return (
-			<div className="flex flex-1 items-center justify-center text-sm text-muted-foreground">
-				<Trans>Loading work item…</Trans>
-			</div>
-		);
-	}
-	if (!workItemQuery.data || workItemQuery.error) {
+	if (
+		!workItemQuery.data &&
+		!cachedBoardItem &&
+		(workItemQuery.error || !workItemQuery.isPending)
+	) {
 		return (
 			<div className="flex flex-1 items-center justify-center p-6 text-sm text-destructive">
 				{workItemQuery.error
@@ -151,17 +187,41 @@ function AzureWorkItemDetailPage() {
 		);
 	}
 
-	const { item, stage, webUrl, claim: workItemClaim } = workItemQuery.data;
+	const item = workItemQuery.data?.item;
+	const fields = item?.fields ?? {};
+	const workItemClaim = claimQuery.isSuccess
+		? claimQuery.data?.claim
+		: cachedBoardItem?.claim;
+	const stage =
+		workItemQuery.data?.stage ??
+		claimQuery.data?.stage ??
+		cachedBoardItem?.stage ??
+		null;
 	const isReadOnly = Boolean(workItemClaim && !workItemClaim.isCurrentUser);
-	const fields = item.fields;
-	const title = stringField(fields, "System.Title") ?? `AB#${workItemId}`;
+	const title =
+		stringField(fields, "System.Title") ??
+		cachedBoardItem?.title ??
+		`AB#${workItemId}`;
 	const type =
-		stringField(fields, "System.WorkItemType") ?? t({ message: "Work item" });
-	const azureState = stringField(fields, "System.State") ?? "Unknown";
-	const iteration = stringField(fields, "System.IterationPath");
-	const assignedTo = identityName(fields, "System.AssignedTo");
+		stringField(fields, "System.WorkItemType") ??
+		cachedBoardItem?.type ??
+		t({ message: "Work item" });
+	const azureState =
+		stringField(fields, "System.State") ?? cachedBoardItem?.state ?? "Unknown";
+	const iteration =
+		stringField(fields, "System.IterationPath") ??
+		cachedBoardItem?.iterationPath ??
+		null;
+	const assignedTo =
+		identityName(fields, "System.AssignedTo") ??
+		cachedBoardItem?.assignedTo?.displayName ??
+		null;
 	const createdBy = identityName(fields, "System.CreatedBy");
-	const tags = (stringField(fields, "System.Tags") ?? "")
+	const tags = (
+		stringField(fields, "System.Tags") ??
+		cachedBoardItem?.tags.join(";") ??
+		""
+	)
 		.split(";")
 		.map((tag) => tag.trim())
 		.filter(Boolean);
@@ -169,7 +229,7 @@ function AzureWorkItemDetailPage() {
 		stringField(fields, "System.Description") ??
 		stringField(fields, "Microsoft.VSTS.TCM.ReproSteps") ??
 		"";
-	const relations = item.relations ?? [];
+	const relations = item?.relations ?? [];
 	const relatedWork = relations.filter((relation) =>
 		[
 			"System.LinkTypes.Hierarchy-Forward",
@@ -184,7 +244,13 @@ function AzureWorkItemDetailPage() {
 		implementation: t({ message: "Implementation" }),
 		homologation: t({ message: "Homologation" }),
 		review: t({ message: "Review" }),
-	}[stage];
+	}[stage ?? "backlog"];
+	const claimResolved = claimQuery.isSuccess && !claimQuery.isFetching;
+	const isRefreshing = workItemQuery.isFetching || claimQuery.isFetching;
+	const webUrl = workItemQuery.data?.webUrl ?? cachedBoardItem?.url ?? "";
+	const refreshWorkItem = () => {
+		void Promise.all([workItemQuery.refetch(), claimQuery.refetch()]);
+	};
 
 	return (
 		<div className="flex min-h-0 flex-1 flex-col bg-background">
@@ -211,30 +277,68 @@ function AzureWorkItemDetailPage() {
 					AB#{workItemId}
 				</span>
 				<div className="h-4 w-px bg-border" />
-				<span className="text-xs text-muted-foreground">{stageLabel}</span>
+				{stage ? (
+					<span className="text-xs text-muted-foreground">{stageLabel}</span>
+				) : (
+					<Skeleton className="h-4 w-24" />
+				)}
 				<div className="flex-1" />
-				<Button variant="ghost" size="sm" asChild>
-					<a href={webUrl} target="_blank" rel="noreferrer">
-						<LuExternalLink />
-						<Trans>Open in Azure</Trans>
-					</a>
+				<Button
+					variant="ghost"
+					size="icon-lg"
+					aria-label={t({ message: "Refresh" })}
+					title={t({ message: "Refresh" })}
+					disabled={isRefreshing}
+					onClick={refreshWorkItem}
+				>
+					<LuRefreshCw
+						className={
+							isRefreshing
+								? "animate-spin motion-reduce:animate-none"
+								: undefined
+						}
+					/>
 				</Button>
+				{webUrl ? (
+					<Button variant="ghost" size="sm" asChild>
+						<a href={webUrl} target="_blank" rel="noreferrer">
+							<LuExternalLink />
+							<Trans>Open in Azure</Trans>
+						</a>
+					</Button>
+				) : (
+					<Skeleton className="h-8 w-28" />
+				)}
 			</header>
 			<ScrollArea className="min-h-0 flex-1">
 				<div className="mx-auto w-full max-w-5xl px-6 py-7">
+					{workItemQuery.error ? (
+						<div className="mb-5 rounded-lg bg-destructive/8 px-4 py-3 text-sm text-destructive">
+							{errorMessage(workItemQuery.error)}
+						</div>
+					) : null}
 					<div className="flex flex-wrap gap-2">
-						<Badge
-							variant="secondary"
-							className="rounded-full font-mono font-normal"
-						>
-							{type}
-						</Badge>
-						<Badge
-							variant="secondary"
-							className="rounded-full font-mono font-normal"
-						>
-							{azureState}
-						</Badge>
+						{item || cachedBoardItem ? (
+							<>
+								<Badge
+									variant="secondary"
+									className="rounded-full font-mono font-normal"
+								>
+									{type}
+								</Badge>
+								<Badge
+									variant="secondary"
+									className="rounded-full font-mono font-normal"
+								>
+									{azureState}
+								</Badge>
+							</>
+						) : (
+							<>
+								<Skeleton className="h-6 w-24 rounded-full" />
+								<Skeleton className="h-6 w-20 rounded-full" />
+							</>
+						)}
 						{isReadOnly ? (
 							<Badge variant="outline" className="rounded-full font-normal">
 								{workItemClaim?.assignedTo?.displayName ?? (
@@ -252,33 +356,57 @@ function AzureWorkItemDetailPage() {
 							</Badge>
 						))}
 					</div>
-					<h1 className="mt-4 max-w-4xl text-balance font-serif text-3xl leading-tight">
-						{title}
-					</h1>
+					{item || cachedBoardItem ? (
+						<h1 className="mt-4 max-w-4xl text-balance font-serif text-3xl leading-tight">
+							{title}
+						</h1>
+					) : (
+						<Skeleton className="mt-4 h-10 w-3/4" />
+					)}
 					<section className="mt-8 grid gap-x-10 gap-y-3 sm:grid-cols-2">
 						<div className="grid grid-cols-[8rem_1fr] text-sm">
 							<span className="text-muted-foreground">
 								<Trans>Sprint</Trans>
 							</span>
-							<span>{iteration ?? "—"}</span>
+							{iteration ? (
+								<span>{iteration}</span>
+							) : item ? (
+								<span>—</span>
+							) : (
+								<Skeleton className="h-4 w-40" />
+							)}
 						</div>
 						<div className="grid grid-cols-[8rem_1fr] text-sm">
 							<span className="text-muted-foreground">
 								<Trans>Stage</Trans>
 							</span>
-							<span>{stageLabel}</span>
+							{stage ? (
+								<span>{stageLabel}</span>
+							) : (
+								<Skeleton className="h-4 w-24" />
+							)}
 						</div>
 						<div className="grid grid-cols-[8rem_1fr] text-sm">
 							<span className="text-muted-foreground">
 								<Trans>Assigned to</Trans>
 							</span>
-							<span>{assignedTo ?? "—"}</span>
+							{assignedTo ? (
+								<span>{assignedTo}</span>
+							) : item || cachedBoardItem ? (
+								<span>—</span>
+							) : (
+								<Skeleton className="h-4 w-32" />
+							)}
 						</div>
 						<div className="grid grid-cols-[8rem_1fr] text-sm">
 							<span className="text-muted-foreground">
 								<Trans>Created by</Trans>
 							</span>
-							<span>{createdBy ?? "—"}</span>
+							{item ? (
+								<span>{createdBy ?? "—"}</span>
+							) : (
+								<Skeleton className="h-4 w-32" />
+							)}
 						</div>
 					</section>
 
@@ -287,7 +415,13 @@ function AzureWorkItemDetailPage() {
 							<Trans>Description</Trans>
 						</h2>
 						<div className="mt-3 min-h-16 text-sm">
-							{description ? (
+							{!item ? (
+								<div className="space-y-3 py-1">
+									<Skeleton className="h-4 w-full" />
+									<Skeleton className="h-4 w-11/12" />
+									<Skeleton className="h-4 w-4/5" />
+								</div>
+							) : description ? (
 								<MarkdownRenderer content={description} allowHtml />
 							) : (
 								<p className="text-muted-foreground">
@@ -297,44 +431,51 @@ function AzureWorkItemDetailPage() {
 						</div>
 					</section>
 
-					{relatedWork.length > 0 || attachments.length > 0 ? (
+					{!item || relatedWork.length > 0 || attachments.length > 0 ? (
 						<section className="mt-10">
 							<h2 className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
 								<Trans>Related work</Trans>
 							</h2>
-							<div className="mt-3 grid gap-3 sm:grid-cols-2">
-								{relatedWork.map((relation) => (
-									<a
-										key={`${relation.rel}:${relation.url}`}
-										href={relation.url}
-										target="_blank"
-										rel="noreferrer"
-										className="flex min-h-14 items-center gap-3 rounded-xl bg-muted/50 px-4 py-3 text-sm shadow-[0_0_0_1px_var(--border)] transition-[background-color,transform] hover:bg-muted active:scale-[0.96]"
-									>
-										<LuLink className="size-4 text-muted-foreground" />
-										<span>
-											{relation.attributes?.name?.toString() ??
-												t({ message: "Work item" })}{" "}
-											#{relationId(relation.url) ?? ""}
-										</span>
-									</a>
-								))}
-								{attachments.map((relation) => (
-									<a
-										key={relation.url}
-										href={relation.url}
-										target="_blank"
-										rel="noreferrer"
-										className="flex min-h-14 items-center gap-3 rounded-xl bg-muted/50 px-4 py-3 text-sm shadow-[0_0_0_1px_var(--border)] transition-[background-color,transform] hover:bg-muted active:scale-[0.96]"
-									>
-										<LuFileText className="size-4 text-muted-foreground" />
-										<span>
-											{relation.attributes?.name?.toString() ??
-												t({ message: "Attachment" })}
-										</span>
-									</a>
-								))}
-							</div>
+							{!item ? (
+								<div className="mt-3 grid gap-3 sm:grid-cols-2">
+									<Skeleton className="h-14 w-full rounded-xl" />
+									<Skeleton className="h-14 w-full rounded-xl" />
+								</div>
+							) : (
+								<div className="mt-3 grid gap-3 sm:grid-cols-2">
+									{relatedWork.map((relation) => (
+										<a
+											key={`${relation.rel}:${relation.url}`}
+											href={relation.url}
+											target="_blank"
+											rel="noreferrer"
+											className="flex min-h-14 items-center gap-3 rounded-xl bg-muted/50 px-4 py-3 text-sm shadow-[0_0_0_1px_var(--border)] transition-[background-color,transform] hover:bg-muted active:scale-[0.96]"
+										>
+											<LuLink className="size-4 text-muted-foreground" />
+											<span>
+												{relation.attributes?.name?.toString() ??
+													t({ message: "Work item" })}{" "}
+												#{relationId(relation.url) ?? ""}
+											</span>
+										</a>
+									))}
+									{attachments.map((relation) => (
+										<a
+											key={relation.url}
+											href={relation.url}
+											target="_blank"
+											rel="noreferrer"
+											className="flex min-h-14 items-center gap-3 rounded-xl bg-muted/50 px-4 py-3 text-sm shadow-[0_0_0_1px_var(--border)] transition-[background-color,transform] hover:bg-muted active:scale-[0.96]"
+										>
+											<LuFileText className="size-4 text-muted-foreground" />
+											<span>
+												{relation.attributes?.name?.toString() ??
+													t({ message: "Attachment" })}
+											</span>
+										</a>
+									))}
+								</div>
+							)}
 						</section>
 					) : null}
 
@@ -352,7 +493,7 @@ function AzureWorkItemDetailPage() {
 							</div>
 							<Button
 								className="h-10"
-								disabled={isReadOnly}
+								disabled={!claimResolved || isReadOnly}
 								onClick={() => setWorktreeDialogOpen(true)}
 							>
 								<LuPlus />
@@ -374,7 +515,9 @@ function AzureWorkItemDetailPage() {
 										workItemType={type}
 										workItemTitle={title}
 										workItemUrl={webUrl}
-										showCreatePullRequest={stage === "review" && !isReadOnly}
+										showCreatePullRequest={
+											claimResolved && stage === "review" && !isReadOnly
+										}
 										onPullRequestCreated={() => workItemQuery.refetch()}
 									/>
 								);
@@ -388,22 +531,30 @@ function AzureWorkItemDetailPage() {
 					</section>
 
 					<section className="mt-10 flex flex-wrap items-center gap-2 border-t border-border pt-6">
+						{claimQuery.error ? (
+							<p className="w-full text-sm text-destructive">
+								{errorMessage(claimQuery.error)}
+							</p>
+						) : null}
+						{!claimResolved && !claimQuery.error ? (
+							<Skeleton className="h-10 w-44" />
+						) : null}
 						{isReadOnly ? (
 							<p className="text-sm text-muted-foreground">
 								<Trans>Claimed in Azure DevOps</Trans>
 							</p>
 						) : null}
-						{!isReadOnly && stage === "backlog" ? (
+						{claimResolved && !isReadOnly && stage === "backlog" ? (
 							<Button disabled={claim.isPending} onClick={() => claim.mutate()}>
 								<Trans>Start implementation</Trans>
 							</Button>
 						) : null}
-						{!isReadOnly && stage === "implementation" ? (
+						{claimResolved && !isReadOnly && stage === "implementation" ? (
 							<Button onClick={() => setStage.mutate("homologation")}>
 								<Trans>Move to homologation</Trans>
 							</Button>
 						) : null}
-						{!isReadOnly && stage === "homologation" ? (
+						{claimResolved && !isReadOnly && stage === "homologation" ? (
 							<>
 								<Button
 									variant="outline"
@@ -416,7 +567,7 @@ function AzureWorkItemDetailPage() {
 								</Button>
 							</>
 						) : null}
-						{!isReadOnly && stage === "review" ? (
+						{claimResolved && !isReadOnly && stage === "review" ? (
 							<Button
 								variant="outline"
 								onClick={() => setStage.mutate("homologation")}

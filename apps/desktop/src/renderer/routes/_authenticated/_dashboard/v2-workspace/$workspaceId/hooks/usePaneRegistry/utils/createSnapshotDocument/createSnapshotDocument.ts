@@ -1,7 +1,7 @@
 import type {
 	ContentState,
 	SharedFileDocument,
-} from "../../../../../../../../state/fileDocumentStore";
+} from "../../../../state/fileDocumentStore";
 
 /** A read-only stand-in for a file that lives in a git object rather than
  * on disk, so the FilePane registry views can render it unchanged. Nothing
@@ -19,7 +19,7 @@ export function createSnapshotDocument({
 	const unsupported = () =>
 		Promise.reject(new Error("Snapshot documents are read-only"));
 	return {
-		id: `snapshot:${workspaceId}:${absolutePath}`,
+		id: `snapshot:${workspaceId}:${absolutePath}:${"revision" in content ? content.revision : content.kind}`,
 		workspaceId,
 		absolutePath,
 		content,
@@ -29,8 +29,13 @@ export function createSnapshotDocument({
 		conflict: null,
 		orphaned: false,
 		hasExternalChange: false,
-		isBinary: true,
-		byteSize: content.kind === "bytes" ? content.value.byteLength : null,
+		isBinary: content.kind !== "text",
+		byteSize:
+			content.kind === "bytes"
+				? content.value.byteLength
+				: content.kind === "text"
+					? new TextEncoder().encode(content.value).byteLength
+					: null,
 		setContent: () => {},
 		save: unsupported,
 		reload: () => Promise.resolve(),

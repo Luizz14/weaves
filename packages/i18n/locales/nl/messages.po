@@ -1745,6 +1745,9 @@ msgstr "Alle personen"
 msgid "All authors"
 msgstr "Alle auteurs"
 
+msgid "All branches"
+msgstr "Alle branches"
+
 msgid "All changes saved"
 msgstr "Alle wijzigingen opgeslagen"
 
@@ -2482,6 +2485,9 @@ msgstr "Azure CLI on {targetName}"
 
 msgid "Azure DevOps"
 msgstr "Azure DevOps"
+
+msgid "Azure DevOps board configuration updated"
+msgstr "Azure DevOps-bordconfiguratie bijgewerkt"
 
 msgid "Azure DevOps board connected"
 msgstr "Azure DevOps board connected"
@@ -3818,6 +3824,9 @@ msgstr "Vergelijk Superset met Cursor, Claude Code, Codex, Windsurf, Devin, GitH
 msgid "Compared against the default style"
 msgstr "Vergeleken met de standaardstijl"
 
+msgid "Compared with first parent"
+msgstr "Vergeleken met de eerste ouder"
+
 msgid "complete"
 msgstr "afgerond"
 
@@ -4941,6 +4950,9 @@ msgstr "Ctrl+Shift+klik"
 msgid "Current"
 msgstr "Huidig"
 
+msgid "Current branch"
+msgstr "Huidige branch"
+
 msgid "Current level"
 msgstr "Huidig niveau"
 
@@ -5059,6 +5071,9 @@ msgstr "Dashboard"
 
 msgid "Data display"
 msgstr "Gegevensweergave"
+
+msgid "Date"
+msgstr "Datum"
 
 msgid "Date created"
 msgstr "Aanmaakdatum"
@@ -5836,6 +5851,9 @@ msgstr "{name} ×{tier} behaald"
 
 msgid "Edit"
 msgstr "Bewerken"
+
+msgid "Edit Azure DevOps board configuration"
+msgstr "Azure DevOps-bordconfiguratie bewerken"
 
 msgid "Edit comment"
 msgstr "Opmerking bewerken"
@@ -7258,6 +7276,9 @@ msgstr "Git en worktrees"
 
 msgid "Git author name"
 msgstr "Naam van git-auteur"
+
+msgid "Git History"
+msgstr "Git-geschiedenis"
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Git-integratie mislukt. Controleer de repository en probeer opnieuw of annuleer de poging."
@@ -9745,6 +9766,9 @@ msgstr "Geen terminalsessies op de achtergrond"
 msgid "No branches found"
 msgstr "Geen branches gevonden"
 
+msgid "No changed files"
+msgstr "Geen gewijzigde bestanden"
+
 msgid "No changed files."
 msgstr "Geen gewijzigde bestanden."
 
@@ -9798,6 +9822,9 @@ msgstr "Nog geen opmerkingen."
 
 msgid "No comments yet. Turn on comment mode and click anything on the page to start one."
 msgstr "Nog geen opmerkingen. Zet de opmerkingsmodus aan en klik op iets op de pagina om er een te plaatsen."
+
+msgid "No commits found"
+msgstr "Geen commits gevonden"
 
 msgid "No commits on this branch yet."
 msgstr "Nog geen commits op deze branch."
@@ -13181,6 +13208,9 @@ msgstr "Opslaan en testen"
 msgid "Save as environment"
 msgstr "Opslaan als omgeving"
 
+msgid "Save changes"
+msgstr "Wijzigingen opslaan"
+
 msgid "Save edits"
 msgstr "Bewerkingen opslaan"
 
@@ -13375,6 +13405,9 @@ msgstr "Zoeken in {frameTitle}…"
 
 msgid "Search issues..."
 msgstr "Issues zoeken..."
+
+msgid "Search message or hash"
+msgstr "Zoek bericht of hash"
 
 msgid "Search pages"
 msgstr "Pagina's zoeken"
@@ -13862,6 +13895,9 @@ msgstr "Setup"
 
 msgid "Setup script"
 msgstr "Setup-script"
+
+msgid "SHA"
+msgstr "SHA"
 
 msgid "shadcn/ui tooltip recipe"
 msgstr "shadcn/ui tooltip-recept"

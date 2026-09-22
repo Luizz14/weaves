@@ -15,6 +15,7 @@ export function MarkdownPreviewView({
 	filePath,
 	isActive,
 	showFrontMatterNote = true,
+	readOnly = false,
 }: ViewProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const search = useMarkdownSearch({
@@ -28,7 +29,8 @@ export function MarkdownPreviewView({
 		return null;
 	}
 
-	const editable = document.content.value.length <= MAX_EDITABLE_LENGTH;
+	const editable =
+		!readOnly && document.content.value.length <= MAX_EDITABLE_LENGTH;
 	// TipTap mangles YAML front matter (no node for it) — keep it out of the
 	// editor and re-attach the verbatim block to every emission.
 	const { frontMatter, body } = splitFrontMatter(document.content.value);
@@ -60,7 +62,7 @@ export function MarkdownPreviewView({
 					editable={editable}
 					preserveSourceFormatting
 					onChange={(next) => document.setContent(frontMatter + next)}
-					onSave={() => void document.save()}
+					onSave={readOnly ? undefined : () => void document.save()}
 				/>
 			</div>
 		</div>

@@ -1,12 +1,14 @@
 import { Database } from "bun:sqlite";
 import { describe, expect, test } from "bun:test";
 import { resolve } from "node:path";
+import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/bun-sqlite";
 import { migrate } from "drizzle-orm/bun-sqlite/migrator";
 import type { HostDb } from "../../../db";
 import * as schema from "../../../db/schema";
 import type { HostServiceContext } from "../../../types";
 import {
+	applyWorkItemStage,
 	azureDevOpsRouter,
 	normalizeAzureDevOpsOrganizationUrl,
 } from "./azure-devops";
@@ -114,7 +116,7 @@ describe("azureDevOpsRouter", () => {
 				organizationUrl: "https://dev.azure.com/Acme",
 				workItemProject: "Work Items",
 				team: "Mobile",
-				areaPath: "Work Items\\Mobile",
+				areaPath: "\\Work Items/Mobile",
 				assignedTo: "me@example.com",
 				workItemTypes: ["Bug", "User Story"],
 			}),
@@ -129,5 +131,111 @@ describe("azureDevOpsRouter", () => {
 		await expect(caller.getBoardConfig()).resolves.toMatchObject({
 			workItemProject: "Work Items",
 		});
+	});
+
+	test("moves a remotely claimed work item and records its local stage", async () => {
+		const ctx = createContext();
+
+		await expect(
+			applyWorkItemStage(
+				ctx,
+				{ workItemId: 42, stage: "homologation" },
+				async () => ({
+					stage: "implementation",
+					claim: {
+						childId: 84,
+						assignedTo: null,
+						state: "In Progress",
+						isCurrentUser: true,
+					},
+				}),
+			),
+		).resolves.toEqual({ stage: "homologation" });
+
+		expect(
+			ctx.db.query.azureDevOpsWorkItemStates
+				.findFirst({
+					where: eq(schema.azureDevOpsWorkItemStates.workItemId, 42),
+				})
+				.sync(),
+		).toMatchObject({ stage: "homologation", childWorkItemId: 84 });
+	});
+
+	test("uses the local stage without reading the remote claim", async () => {
+		const ctx = createContext();
+		ctx.db
+			.insert(schema.azureDevOpsWorkItemStates)
+			.values({
+				workItemId: 42,
+				stage: "implementation",
+				childWorkItemId: 84,
+				createdAt: 1,
+				updatedAt: 1,
+			})
+			.run();
+		let remoteClaimRead = false;
+
+		await expect(
+			applyWorkItemStage(
+				ctx,
+				{ workItemId: 42, stage: "homologation" },
+				async () => {
+					remoteClaimRead = true;
+					return { stage: "backlog", claim: null };
+				},
+			),
+		).resolves.toEqual({ stage: "homologation" });
+
+		expect(remoteClaimRead).toBe(false);
+		expect(
+			ctx.db.query.azureDevOpsWorkItemStates
+				.findFirst({
+					where: eq(schema.azureDevOpsWorkItemStates.workItemId, 42),
+				})
+				.sync(),
+		).toMatchObject({ stage: "homologation", childWorkItemId: 84 });
+	});
+
+	test.each([
+		["unclaimed item", null],
+		[
+			"another user's claim",
+			{
+				childId: 84,
+				assignedTo: null,
+				state: "In Progress",
+				isCurrentUser: false,
+			},
+		],
+	] as const)("rejects stage changes for %s without local state", async (_label, claim) => {
+		const ctx = createContext();
+
+		await expect(
+			applyWorkItemStage(
+				ctx,
+				{ workItemId: 42, stage: "homologation" },
+				async () => ({ stage: claim ? "implementation" : "backlog", claim }),
+			),
+		).rejects.toMatchObject({ code: "PRECONDITION_FAILED" });
+	});
+
+	test("keeps the adjacent-stage validation for a remote claim", async () => {
+		const ctx = createContext();
+
+		await expect(
+			applyWorkItemStage(
+				ctx,
+				{ workItemId: 42, stage: "review" },
+				async () => ({
+					stage: "implementation",
+					claim: {
+						childId: 84,
+						assignedTo: null,
+						state: "In Progress",
+						isCurrentUser: true,
+					},
+				}),
+			),
+		).rejects.toMatchObject({ code: "BAD_REQUEST" });
 	});
 });

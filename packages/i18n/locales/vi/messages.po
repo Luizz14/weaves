@@ -1745,6 +1745,9 @@ msgstr "Tất cả người phụ trách"
 msgid "All authors"
 msgstr "Tất cả tác giả"
 
+msgid "All branches"
+msgstr "Tất cả nhánh"
+
 msgid "All changes saved"
 msgstr "Đã lưu mọi thay đổi"
 
@@ -2482,6 +2485,9 @@ msgstr "Azure CLI on {targetName}"
 
 msgid "Azure DevOps"
 msgstr "Azure DevOps"
+
+msgid "Azure DevOps board configuration updated"
+msgstr "Đã cập nhật cấu hình bảng Azure DevOps"
 
 msgid "Azure DevOps board connected"
 msgstr "Azure DevOps board connected"
@@ -3818,6 +3824,9 @@ msgstr "So sánh Superset với Cursor, Claude Code, Codex, Windsurf, Devin, Git
 msgid "Compared against the default style"
 msgstr "So sánh với kiểu mặc định"
 
+msgid "Compared with first parent"
+msgstr "So sánh với commit cha đầu tiên"
+
 msgid "complete"
 msgstr "đã kết thúc"
 
@@ -4941,6 +4950,9 @@ msgstr "Ctrl+Shift+nhấp"
 msgid "Current"
 msgstr "Hiện tại"
 
+msgid "Current branch"
+msgstr "Nhánh hiện tại"
+
 msgid "Current level"
 msgstr "Mức hiện tại"
 
@@ -5059,6 +5071,9 @@ msgstr "Dashboard"
 
 msgid "Data display"
 msgstr "Hiển thị dữ liệu"
+
+msgid "Date"
+msgstr "Ngày"
 
 msgid "Date created"
 msgstr "Ngày tạo"
@@ -5836,6 +5851,9 @@ msgstr "Đã đạt {name} ×{tier}"
 
 msgid "Edit"
 msgstr "Sửa"
+
+msgid "Edit Azure DevOps board configuration"
+msgstr "Chỉnh sửa cấu hình bảng Azure DevOps"
 
 msgid "Edit comment"
 msgstr "Sửa bình luận"
@@ -7258,6 +7276,9 @@ msgstr "Git & Worktree"
 
 msgid "Git author name"
 msgstr "Tên tác giả Git"
+
+msgid "Git History"
+msgstr "Lịch sử Git"
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Tích hợp Git thất bại. Kiểm tra kho và thử lại hoặc hủy lần thử."
@@ -9745,6 +9766,9 @@ msgstr "Không có phiên terminal nào chạy nền"
 msgid "No branches found"
 msgstr "Không tìm thấy nhánh nào"
 
+msgid "No changed files"
+msgstr "Không có tệp thay đổi"
+
 msgid "No changed files."
 msgstr "Không có tệp nào thay đổi."
 
@@ -9798,6 +9822,9 @@ msgstr "Chưa có bình luận nào."
 
 msgid "No comments yet. Turn on comment mode and click anything on the page to start one."
 msgstr "Chưa có bình luận nào. Bật chế độ bình luận rồi nhấp vào bất kỳ phần nào của trang để bắt đầu."
+
+msgid "No commits found"
+msgstr "Không tìm thấy commit"
 
 msgid "No commits on this branch yet."
 msgstr "Chưa có commit nào trên nhánh này."
@@ -13181,6 +13208,9 @@ msgstr "Lưu và kiểm tra"
 msgid "Save as environment"
 msgstr "Lưu thành environment"
 
+msgid "Save changes"
+msgstr "Lưu thay đổi"
+
 msgid "Save edits"
 msgstr "Lưu chỉnh sửa"
 
@@ -13375,6 +13405,9 @@ msgstr "Tìm trong {frameTitle}…"
 
 msgid "Search issues..."
 msgstr "Tìm issue..."
+
+msgid "Search message or hash"
+msgstr "Tìm thông điệp hoặc mã băm"
 
 msgid "Search pages"
 msgstr "Tìm trang"
@@ -13862,6 +13895,9 @@ msgstr "Thiết lập"
 
 msgid "Setup script"
 msgstr "Script thiết lập"
+
+msgid "SHA"
+msgstr "SHA"
 
 msgid "shadcn/ui tooltip recipe"
 msgstr "Công thức tooltip của shadcn/ui"

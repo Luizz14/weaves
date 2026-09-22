@@ -14,8 +14,10 @@ import {
 } from "../../../db/schema";
 import {
 	type AzureDevOpsBoardConfig,
+	type AzureDevOpsWorkItemClaim,
 	createAzureDevOpsImplementationChild,
 	getAzureDevOpsWorkItem,
+	getAzureDevOpsWorkItemClaim,
 	listAzureDevOpsBoardItems,
 	listAzureDevOpsIterations,
 } from "../../../runtime/azure-devops/board";
@@ -96,7 +98,11 @@ const setBoardConfigSchema = z.object({
 	organizationUrl: organizationUrlSchema,
 	workItemProject: azureIdentifierSchema,
 	team: azureIdentifierSchema,
-	areaPath: z.string().trim().min(1).max(512),
+	areaPath: z
+		.string()
+		.trim()
+		.transform((areaPath) => areaPath.replace(/^\\+/, "").replaceAll("/", "\\"))
+		.pipe(z.string().min(1).max(512)),
 	assignedTo: z.string().trim().min(1).max(320).nullable().optional(),
 	workItemTypes: z
 		.array(azureIdentifierSchema)
@@ -224,6 +230,71 @@ const ALLOWED_STAGE_MOVES = new Set([
 	"review:homologation",
 ]);
 
+type ReadWorkItemClaim = (
+	workItemId: number,
+) => Promise<AzureDevOpsWorkItemClaim>;
+
+export async function applyWorkItemStage(
+	ctx: HostServiceContext,
+	input: { workItemId: number; stage: AzureDevOpsWorkItemStage },
+	readRemoteClaim?: ReadWorkItemClaim,
+) {
+	const storedState = ctx.db.query.azureDevOpsWorkItemStates
+		.findFirst({
+			where: eq(azureDevOpsWorkItemStates.workItemId, input.workItemId),
+		})
+		.sync();
+	let current: {
+		stage: AzureDevOpsWorkItemStage;
+		childWorkItemId: number | null;
+	} | null = storedState
+		? {
+				stage: storedState.stage,
+				childWorkItemId: storedState.childWorkItemId,
+			}
+		: null;
+
+	if (!current) {
+		const remoteState = await (
+			readRemoteClaim ??
+			((workItemId) =>
+				getAzureDevOpsWorkItemClaim(
+					execAz,
+					requireBoardConfig(ctx),
+					workItemId,
+				))
+		)(input.workItemId);
+		if (!remoteState.claim?.isCurrentUser) {
+			throw new TRPCError({
+				code: "PRECONDITION_FAILED",
+				message: "Claim the work item before changing its stage",
+			});
+		}
+		current = {
+			stage: "implementation",
+			childWorkItemId: remoteState.claim.childId,
+		};
+	}
+
+	if (
+		current.stage !== input.stage &&
+		!ALLOWED_STAGE_MOVES.has(`${current.stage}:${input.stage}`)
+	) {
+		throw new TRPCError({
+			code: "BAD_REQUEST",
+			message: "Work items can only move between adjacent stages",
+		});
+	}
+
+	upsertWorkItemStage(
+		ctx,
+		input.workItemId,
+		input.stage,
+		current.childWorkItemId,
+	);
+	return { stage: input.stage };
+}
+
 const notConfiguredDiagnostic: AzureDevOpsDiagnostic = {
 	status: "not_configured",
 	cliVersion: null,
@@ -279,13 +350,13 @@ export const azureDevOpsRouter = router({
 	}),
 
 	listIterations: queryProcedure
-		.meta({ timeoutMs: 30_000 })
+		.meta({ timeoutMs: 60_000 })
 		.query(({ ctx }) =>
 			listAzureDevOpsIterations(execAz, requireBoardConfig(ctx)),
 		),
 
 	listBoard: queryProcedure
-		.meta({ timeoutMs: 45_000 })
+		.meta({ timeoutMs: 60_000 })
 		.input(
 			z.object({
 				iterationPath: z.string().min(1).max(512).optional(),
@@ -344,7 +415,7 @@ export const azureDevOpsRouter = router({
 		}),
 
 	getWorkItem: queryProcedure
-		.meta({ timeoutMs: 30_000 })
+		.meta({ timeoutMs: 60_000 })
 		.input(z.object({ workItemId: z.number().int().positive() }))
 		.query(async ({ ctx, input }) => {
 			const config = requireBoardConfig(ctx);
@@ -358,26 +429,36 @@ export const azureDevOpsRouter = router({
 					where: eq(azureDevOpsWorkItemStates.workItemId, input.workItemId),
 				})
 				.sync();
-			const iterationPath = item.fields["System.IterationPath"];
-			const boardItem =
-				!localState && typeof iterationPath === "string"
-					? await listAzureDevOpsBoardItems(execAz, config, iterationPath)
-							.then((board) =>
-								board.items.find(
-									(candidate) => candidate.id === input.workItemId,
-								),
-							)
-							.catch(() => undefined)
-					: undefined;
 			return {
 				item,
+				stage: localState?.stage ?? null,
+				childWorkItemId: localState?.childWorkItemId ?? null,
+				webUrl: `${config.organizationUrl}/${encodeURIComponent(config.workItemProject)}/_workitems/edit/${input.workItemId}`,
+			};
+		}),
+
+	getWorkItemClaim: queryProcedure
+		.meta({ timeoutMs: 60_000 })
+		.input(z.object({ workItemId: z.number().int().positive() }))
+		.query(async ({ ctx, input }) => {
+			const config = requireBoardConfig(ctx);
+			const localState = ctx.db.query.azureDevOpsWorkItemStates
+				.findFirst({
+					where: eq(azureDevOpsWorkItemStates.workItemId, input.workItemId),
+				})
+				.sync();
+			const remoteState = await getAzureDevOpsWorkItemClaim(
+				execAz,
+				config,
+				input.workItemId,
+			);
+			return {
 				stage:
 					localState?.stage ??
-					(boardItem?.claim ? "implementation" : "backlog"),
+					(localState?.childWorkItemId ? "implementation" : remoteState.stage),
 				childWorkItemId:
-					localState?.childWorkItemId ?? boardItem?.claim?.childId ?? null,
-				claim: boardItem?.claim ?? null,
-				webUrl: `${config.organizationUrl}/${encodeURIComponent(config.workItemProject)}/_workitems/edit/${input.workItemId}`,
+					localState?.childWorkItemId ?? remoteState.claim?.childId ?? null,
+				claim: remoteState.claim,
 			};
 		}),
 
@@ -453,35 +534,7 @@ export const azureDevOpsRouter = router({
 				stage: workItemStageSchema,
 			}),
 		)
-		.mutation(({ ctx, input }) => {
-			const current = ctx.db.query.azureDevOpsWorkItemStates
-				.findFirst({
-					where: eq(azureDevOpsWorkItemStates.workItemId, input.workItemId),
-				})
-				.sync();
-			if (!current) {
-				throw new TRPCError({
-					code: "PRECONDITION_FAILED",
-					message: "Claim the work item before changing its stage",
-				});
-			}
-			if (
-				current.stage !== input.stage &&
-				!ALLOWED_STAGE_MOVES.has(`${current.stage}:${input.stage}`)
-			) {
-				throw new TRPCError({
-					code: "BAD_REQUEST",
-					message: "Work items can only move between adjacent stages",
-				});
-			}
-			upsertWorkItemStage(
-				ctx,
-				input.workItemId,
-				input.stage,
-				current.childWorkItemId,
-			);
-			return { stage: input.stage };
-		}),
+		.mutation(({ ctx, input }) => applyWorkItemStage(ctx, input)),
 
 	listPullRequests: queryProcedure
 		.meta({ timeoutMs: 45_000 })

@@ -242,6 +242,7 @@ function V2WorkspaceContent() {
 		openCodexChatSession,
 		addBrowserTab,
 		openChangesPane,
+		openGitHistory,
 		toggleChangesPane,
 		openCommentPane,
 		openPagePane,
@@ -413,6 +414,7 @@ function V2WorkspaceContent() {
 									onAddChatV3={isChatV3Enabled ? addChatV3Tab : undefined}
 									onAddBrowser={addBrowserTab}
 									onAddChanges={openChangesPane}
+									onAddGitHistory={openGitHistory}
 									onAddDesktop={isSandbox ? addDesktopTab : undefined}
 									showPresetsBar={showPresetsBar}
 									onToggleShowPresetsBar={setShowPresetsBar}

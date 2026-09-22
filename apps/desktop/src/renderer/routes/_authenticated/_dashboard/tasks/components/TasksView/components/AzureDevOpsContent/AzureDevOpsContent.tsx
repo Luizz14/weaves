@@ -17,7 +17,12 @@ import {
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { LuRefreshCw, LuUserRound, LuUsersRound } from "react-icons/lu";
+import {
+	LuPencil,
+	LuRefreshCw,
+	LuUserRound,
+	LuUsersRound,
+} from "react-icons/lu";
 import { VscAzureDevops } from "react-icons/vsc";
 import { useHostUrls } from "renderer/hooks/host-service/useHostTargetUrl";
 import { getHostServiceClientByUrl } from "renderer/lib/host-service-client";
@@ -81,6 +86,8 @@ export function AzureDevOpsContent({ searchQuery }: AzureDevOpsContentProps) {
 	);
 	const configuredTarget =
 		configuredIndex >= 0 ? hostTargets[configuredIndex] : null;
+	const boardConfig =
+		configuredIndex >= 0 ? configQueries[configuredIndex]?.data : null;
 	const targetHostUrl = configuredTarget?.url ?? null;
 	const targetHostId = configuredTarget?.hostId ?? localHostId;
 	const [selectedIteration, setSelectedIteration] = useState<
@@ -103,7 +110,11 @@ export function AzureDevOpsContent({ searchQuery }: AzureDevOpsContentProps) {
 						includeClaimed,
 					})
 				: null,
-		refetchInterval: 30_000,
+		staleTime: Number.POSITIVE_INFINITY,
+		gcTime: Number.POSITIVE_INFINITY,
+		refetchInterval: false,
+		refetchOnWindowFocus: false,
+		refetchOnReconnect: false,
 		placeholderData: (previous) => previous,
 	});
 	const { workspaces } = useHostWorkspaces();
@@ -282,6 +293,30 @@ export function AzureDevOpsContent({ searchQuery }: AzureDevOpsContentProps) {
 		optimisticStages,
 		searchQuery,
 	]);
+	const clearOptimisticStage = (workItemId: number) => {
+		setOptimisticStages((current) => {
+			if (!current.has(workItemId)) return current;
+			const next = new Map(current);
+			next.delete(workItemId);
+			return next;
+		});
+	};
+	const refreshBoard = async () => {
+		const result = await boardQuery.refetch();
+		if (!result.isError) {
+			const refreshedIds = new Set(
+				result.data?.items.map((item) => item.id) ?? [],
+			);
+			setOptimisticStages((current) => {
+				if (![...current.keys()].some((id) => refreshedIds.has(id))) {
+					return current;
+				}
+				const next = new Map(current);
+				for (const id of refreshedIds) next.delete(id);
+				return next;
+			});
+		}
+	};
 	const move = useMutation({
 		mutationFn: async ({
 			item,
@@ -309,20 +344,48 @@ export function AzureDevOpsContent({ searchQuery }: AzureDevOpsContentProps) {
 			});
 		},
 		onError: (error, variables) => {
-			setOptimisticStages((current) => {
-				const next = new Map(current);
-				next.delete(variables.item.id);
-				return next;
-			});
+			clearOptimisticStage(variables.item.id);
 			toast.error(
 				errorMessage(error, t({ message: "Failed to move work item" })),
 			);
 		},
-		onSettled: () => {
+		onSuccess: async (result, variables) => {
 			if (!targetHostUrl) return;
-			void queryClient.invalidateQueries({
-				queryKey: ["azure-devops", "board", targetHostUrl],
-			});
+			const isClaim =
+				variables.item.stage === "backlog" &&
+				variables.stage === "implementation";
+			const childWorkItemId =
+				isClaim && "childWorkItemId" in result
+					? result.childWorkItemId
+					: undefined;
+			const nextStage = isClaim
+				? "implementation"
+				: variables.stage === "backlog" || variables.stage === "completed"
+					? null
+					: variables.stage;
+			if (!nextStage) return;
+			queryClient.setQueriesData<NonNullable<typeof boardQuery.data>>(
+				{ queryKey: ["azure-devops", "board", targetHostUrl] },
+				(current) => {
+					if (!current || current.iterationPath === null) return current;
+					return {
+						...current,
+						items: current.items.map((item) =>
+							item.id === variables.item.id
+								? {
+										...item,
+										stage: nextStage,
+										...(childWorkItemId !== undefined
+											? { childWorkItemId }
+											: {}),
+									}
+								: item,
+						),
+					};
+				},
+			);
+			clearOptimisticStage(variables.item.id);
+			if (isClaim) await boardQuery.refetch();
 		},
 	});
 	const handleMove = (
@@ -380,6 +443,17 @@ export function AzureDevOpsContent({ searchQuery }: AzureDevOpsContentProps) {
 						Azure DevOps
 					</span>
 				</div>
+				<Button
+					type="button"
+					variant="ghost"
+					size="icon-lg"
+					className="transition-[transform,background-color] active:not-disabled:scale-[0.96]"
+					aria-label={t({ message: "Edit Azure DevOps board configuration" })}
+					title={t({ message: "Edit Azure DevOps board configuration" })}
+					onClick={() => setSetupOpen(true)}
+				>
+					<LuPencil />
+				</Button>
 				<Select
 					value={selectedIteration ?? boardQuery.data?.iterationPath ?? ""}
 					onValueChange={(value) => setSelectedIteration(value)}
@@ -412,7 +486,7 @@ export function AzureDevOpsContent({ searchQuery }: AzureDevOpsContentProps) {
 					aria-label={t({ message: "Refresh Azure DevOps board" })}
 					title={t({ message: `Azure CLI on ${targetName}` })}
 					disabled={boardQuery.isFetching}
-					onClick={() => boardQuery.refetch()}
+					onClick={() => void refreshBoard()}
 				>
 					<LuRefreshCw
 						className={
@@ -444,6 +518,20 @@ export function AzureDevOpsContent({ searchQuery }: AzureDevOpsContentProps) {
 						},
 					})
 				}
+			/>
+			<AzureDevOpsSetupDialog
+				hostUrl={targetHostUrl}
+				initialConfig={boardConfig}
+				open={setupOpen}
+				onOpenChange={setSetupOpen}
+				onConfigured={() => {
+					void queryClient.invalidateQueries({
+						queryKey: ["azure-devops", "board-config"],
+					});
+					void queryClient.invalidateQueries({
+						queryKey: ["azure-devops", "board", targetHostUrl],
+					});
+				}}
 			/>
 		</div>
 	);

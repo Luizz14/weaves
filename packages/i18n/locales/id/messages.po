@@ -1745,6 +1745,9 @@ msgstr "Semua penerima tugas"
 msgid "All authors"
 msgstr "Semua penulis"
 
+msgid "All branches"
+msgstr "Semua branch"
+
 msgid "All changes saved"
 msgstr "Semua perubahan tersimpan"
 
@@ -2482,6 +2485,9 @@ msgstr "Azure CLI on {targetName}"
 
 msgid "Azure DevOps"
 msgstr "Azure DevOps"
+
+msgid "Azure DevOps board configuration updated"
+msgstr "Konfigurasi papan Azure DevOps diperbarui"
 
 msgid "Azure DevOps board connected"
 msgstr "Azure DevOps board connected"
@@ -3818,6 +3824,9 @@ msgstr "Bandingkan Superset dengan Cursor, Claude Code, Codex, Windsurf, Devin, 
 msgid "Compared against the default style"
 msgstr "Dibandingkan dengan gaya bawaan"
 
+msgid "Compared with first parent"
+msgstr "Dibandingkan dengan induk pertama"
+
 msgid "complete"
 msgstr "selesai"
 
@@ -4941,6 +4950,9 @@ msgstr "Ctrl+Shift+klik"
 msgid "Current"
 msgstr "Saat ini"
 
+msgid "Current branch"
+msgstr "Branch saat ini"
+
 msgid "Current level"
 msgstr "Level saat ini"
 
@@ -5059,6 +5071,9 @@ msgstr "Dasbor"
 
 msgid "Data display"
 msgstr "Tampilan data"
+
+msgid "Date"
+msgstr "Tanggal"
 
 msgid "Date created"
 msgstr "Tanggal dibuat"
@@ -5836,6 +5851,9 @@ msgstr "{name} ×{tier} diraih"
 
 msgid "Edit"
 msgstr "Edit"
+
+msgid "Edit Azure DevOps board configuration"
+msgstr "Edit konfigurasi papan Azure DevOps"
 
 msgid "Edit comment"
 msgstr "Edit komentar"
@@ -7258,6 +7276,9 @@ msgstr "Git & Worktree"
 
 msgid "Git author name"
 msgstr "Nama author Git"
+
+msgid "Git History"
+msgstr "Riwayat Git"
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Integrasi Git gagal. Periksa repositori dan coba lagi, atau batalkan percobaan."
@@ -9745,6 +9766,9 @@ msgstr "Tidak ada sesi terminal latar belakang"
 msgid "No branches found"
 msgstr "Tidak ada branch ditemukan"
 
+msgid "No changed files"
+msgstr "Tidak ada file yang diubah"
+
 msgid "No changed files."
 msgstr "Tidak ada file yang berubah."
 
@@ -9798,6 +9822,9 @@ msgstr "Belum ada komentar."
 
 msgid "No comments yet. Turn on comment mode and click anything on the page to start one."
 msgstr "Belum ada komentar. Aktifkan mode komentar lalu klik apa pun di halaman untuk memulai."
+
+msgid "No commits found"
+msgstr "Tidak ada commit ditemukan"
 
 msgid "No commits on this branch yet."
 msgstr "Belum ada commit di branch ini."
@@ -13181,6 +13208,9 @@ msgstr "Simpan dan uji"
 msgid "Save as environment"
 msgstr "Simpan sebagai environment"
 
+msgid "Save changes"
+msgstr "Simpan perubahan"
+
 msgid "Save edits"
 msgstr "Simpan suntingan"
 
@@ -13375,6 +13405,9 @@ msgstr "Cari di {frameTitle}…"
 
 msgid "Search issues..."
 msgstr "Cari issue..."
+
+msgid "Search message or hash"
+msgstr "Cari pesan atau hash"
 
 msgid "Search pages"
 msgstr "Cari halaman"
@@ -13862,6 +13895,9 @@ msgstr "Setup"
 
 msgid "Setup script"
 msgstr "Skrip setup"
+
+msgid "SHA"
+msgstr "SHA"
 
 msgid "shadcn/ui tooltip recipe"
 msgstr "Resep tooltip shadcn/ui"

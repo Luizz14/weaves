@@ -61,6 +61,7 @@ export function useWorkspacePaneOpeners({
 	openCodexChatSession: (sessionId: string, title?: string | null) => void;
 	addBrowserTab: () => void;
 	openChangesPane: () => void;
+	openGitHistory: () => void;
 	/** Close the visible Changes pane, or open/focus one when none is showing. */
 	toggleChangesPane: () => void;
 	openCommentPane: (comment: CommentPaneData) => void;
@@ -189,6 +190,22 @@ export function useWorkspacePaneOpeners({
 	}, [store]);
 
 	const defaultBrowserUrl = useDefaultBrowserUrl();
+	const openGitHistory = useCallback(() => {
+		const state = store.getState();
+		for (const tab of state.tabs) {
+			const pane = Object.values(tab.panes).find(
+				(pane) => pane.kind === "git-history",
+			);
+			if (pane) {
+				state.setActiveTab(tab.id);
+				state.setActivePane({ tabId: tab.id, paneId: pane.id });
+				return;
+			}
+		}
+		state.addTab({
+			panes: [{ kind: "git-history", data: { kind: "git-history" } }],
+		});
+	}, [store]);
 	const addBrowserTab = useCallback(() => {
 		store.getState().addTab({
 			panes: [
@@ -273,6 +290,7 @@ export function useWorkspacePaneOpeners({
 
 	return {
 		openDiffPane,
+		openGitHistory,
 		addTerminalTab,
 		addChatV3Tab,
 		addCodexChatTab,

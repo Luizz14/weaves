@@ -9,7 +9,10 @@ mock.module("renderer/components/HotkeyMenuShortcut", () => ({
 }));
 const { AddTabMenu } = await import("./AddTabMenu");
 afterEach(cleanup);
-test("Codex Chat is available without the Chat v3 flag", () => {
+test.each([
+	"Codex Chat",
+	"Git History",
+])("%s is available without the Chat v3 flag", (name) => {
 	const open = mock(() => undefined);
 	const noop = () => undefined;
 	const view = render(
@@ -20,6 +23,7 @@ test("Codex Chat is available without the Chat v3 flag", () => {
 					onAddTerminal={noop}
 					onAddBrowser={noop}
 					onAddChanges={noop}
+					onAddGitHistory={open}
 					showPresetsBar={false}
 					onToggleShowPresetsBar={noop}
 				/>
@@ -27,6 +31,6 @@ test("Codex Chat is available without the Chat v3 flag", () => {
 		</DropdownMenu>,
 	);
 	expect(view.queryByText("Chat v3")).toBeNull();
-	fireEvent.click(view.getByRole("menuitem", { name: "Codex Chat" }));
+	fireEvent.click(view.getByRole("menuitem", { name }));
 	expect(open).toHaveBeenCalledTimes(1);
 });

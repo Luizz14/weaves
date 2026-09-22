@@ -2,6 +2,26 @@ import { describe, expect, test } from "bun:test";
 import { createSnapshotDocument } from "./createSnapshotDocument";
 
 describe("createSnapshotDocument", () => {
+	test("text snapshots are immutable and isolated by revision", async () => {
+		const source = { workspaceId: "ws", absolutePath: "/repo/a.ts" };
+		const first = createSnapshotDocument({
+			...source,
+			content: { kind: "text", value: "old", revision: "one" },
+		});
+		const second = createSnapshotDocument({
+			...source,
+			content: { kind: "text", value: "new", revision: "two" },
+		});
+		expect(first.id).not.toBe(second.id);
+		expect(first.isBinary).toBe(false);
+		first.setContent("edit");
+		expect(first.content).toEqual({
+			kind: "text",
+			value: "old",
+			revision: "one",
+		});
+		await expect(first.save()).rejects.toThrow("read-only");
+	});
 	test("exposes bytes as a binary document with a size", () => {
 		const doc = createSnapshotDocument({
 			workspaceId: "ws",

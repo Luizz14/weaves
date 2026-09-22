@@ -1745,6 +1745,9 @@ msgstr "Tüm atananlar"
 msgid "All authors"
 msgstr "Tüm yazarlar"
 
+msgid "All branches"
+msgstr "Tüm dallar"
+
 msgid "All changes saved"
 msgstr "Tüm değişiklikler kaydedildi"
 
@@ -2482,6 +2485,9 @@ msgstr "Azure CLI on {targetName}"
 
 msgid "Azure DevOps"
 msgstr "Azure DevOps"
+
+msgid "Azure DevOps board configuration updated"
+msgstr "Azure DevOps panosu yapılandırması güncellendi"
 
 msgid "Azure DevOps board connected"
 msgstr "Azure DevOps board connected"
@@ -3818,6 +3824,9 @@ msgstr "Superset'i Cursor, Claude Code, Codex, Windsurf, Devin, GitHub Copilot v
 msgid "Compared against the default style"
 msgstr "Varsayılan stille karşılaştırıldı"
 
+msgid "Compared with first parent"
+msgstr "İlk üst commit ile karşılaştırıldı"
+
 msgid "complete"
 msgstr "tamamlandı"
 
@@ -4941,6 +4950,9 @@ msgstr "Ctrl+Shift+tık"
 msgid "Current"
 msgstr "Geçerli"
 
+msgid "Current branch"
+msgstr "Geçerli dal"
+
 msgid "Current level"
 msgstr "Mevcut düzey"
 
@@ -5059,6 +5071,9 @@ msgstr "Pano"
 
 msgid "Data display"
 msgstr "Veri gösterimi"
+
+msgid "Date"
+msgstr "Tarih"
 
 msgid "Date created"
 msgstr "Oluşturulma tarihi"
@@ -5836,6 +5851,9 @@ msgstr "{name} ×{tier} kazanıldı"
 
 msgid "Edit"
 msgstr "Düzenle"
+
+msgid "Edit Azure DevOps board configuration"
+msgstr "Azure DevOps panosu yapılandırmasını düzenle"
 
 msgid "Edit comment"
 msgstr "Yorumu düzenle"
@@ -7258,6 +7276,9 @@ msgstr "Git ve worktree'ler"
 
 msgid "Git author name"
 msgstr "Git yazar adı"
+
+msgid "Git History"
+msgstr "Git Geçmişi"
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Git entegrasyonu başarısız oldu. Depoyu kontrol edip tekrar deneyin veya denemeyi iptal edin."
@@ -9745,6 +9766,9 @@ msgstr "Arka plan terminal oturumu yok"
 msgid "No branches found"
 msgstr "Dal bulunamadı"
 
+msgid "No changed files"
+msgstr "Değişen dosya yok"
+
 msgid "No changed files."
 msgstr "Değişen dosya yok."
 
@@ -9798,6 +9822,9 @@ msgstr "Henüz yorum yok."
 
 msgid "No comments yet. Turn on comment mode and click anything on the page to start one."
 msgstr "Henüz yorum yok. Yorum modunu açıp sayfadaki herhangi bir öğeye tıklayarak başlayın."
+
+msgid "No commits found"
+msgstr "Commit bulunamadı"
 
 msgid "No commits on this branch yet."
 msgstr "Bu dalda henüz commit yok."
@@ -13181,6 +13208,9 @@ msgstr "Kaydet ve test et"
 msgid "Save as environment"
 msgstr "Ortam olarak kaydet"
 
+msgid "Save changes"
+msgstr "Değişiklikleri kaydet"
+
 msgid "Save edits"
 msgstr "Düzenlemeleri kaydet"
 
@@ -13375,6 +13405,9 @@ msgstr "Şurada ara: {frameTitle}…"
 
 msgid "Search issues..."
 msgstr "Issue ara..."
+
+msgid "Search message or hash"
+msgstr "Mesaj veya hash ara"
 
 msgid "Search pages"
 msgstr "Sayfalarda ara"
@@ -13862,6 +13895,9 @@ msgstr "Kurulum"
 
 msgid "Setup script"
 msgstr "Kurulum betiği"
+
+msgid "SHA"
+msgstr "SHA"
 
 msgid "shadcn/ui tooltip recipe"
 msgstr "shadcn/ui tooltip tarifi"

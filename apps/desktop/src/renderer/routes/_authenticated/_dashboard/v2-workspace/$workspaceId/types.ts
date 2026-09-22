@@ -78,6 +78,19 @@ export interface DesktopPaneData {
 	kind: "desktop";
 }
 
+export interface GitHistoryPaneData {
+	kind: "git-history";
+}
+
+export interface GitFilePaneData {
+	filePath: string;
+	commitHash: string;
+	fromHash: string;
+	side: "old" | "new";
+	viewId?: string;
+	forceViewId?: string;
+}
+
 /**
  * Pointer to one subagent's transcript. The transcript itself is fetched
  * from the host on every read; only this pointer is persisted.
@@ -103,4 +116,6 @@ export type PaneViewerData =
 	| PullRequestPaneData
 	| PagePaneData
 	| DesktopPaneData
+	| GitHistoryPaneData
+	| GitFilePaneData
 	| SubagentPaneData;

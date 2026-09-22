@@ -1745,6 +1745,9 @@ msgstr "すべての担当者"
 msgid "All authors"
 msgstr "すべての作成者"
 
+msgid "All branches"
+msgstr "すべてのブランチ"
+
 msgid "All changes saved"
 msgstr "すべての変更を保存しました"
 
@@ -2482,6 +2485,9 @@ msgstr "Azure CLI on {targetName}"
 
 msgid "Azure DevOps"
 msgstr "Azure DevOps"
+
+msgid "Azure DevOps board configuration updated"
+msgstr "Azure DevOps ボードの構成を更新しました"
 
 msgid "Azure DevOps board connected"
 msgstr "Azure DevOps board connected"
@@ -3818,6 +3824,9 @@ msgstr "SupersetをCursor、Claude Code、Codex、Windsurf、Devin、GitHub Copi
 msgid "Compared against the default style"
 msgstr "デフォルトスタイルと比較"
 
+msgid "Compared with first parent"
+msgstr "最初の親と比較"
+
 msgid "complete"
 msgstr "終了"
 
@@ -4941,6 +4950,9 @@ msgstr "Ctrl+Shift+クリック"
 msgid "Current"
 msgstr "現在"
 
+msgid "Current branch"
+msgstr "現在のブランチ"
+
 msgid "Current level"
 msgstr "現在のレベル"
 
@@ -5059,6 +5071,9 @@ msgstr "ダッシュボード"
 
 msgid "Data display"
 msgstr "データ表示"
+
+msgid "Date"
+msgstr "日付"
 
 msgid "Date created"
 msgstr "作成日"
@@ -5836,6 +5851,9 @@ msgstr "「{name}」×{tier} を獲得"
 
 msgid "Edit"
 msgstr "編集"
+
+msgid "Edit Azure DevOps board configuration"
+msgstr "Azure DevOps ボードの構成を編集"
 
 msgid "Edit comment"
 msgstr "コメントを編集"
@@ -7258,6 +7276,9 @@ msgstr "Gitとワークツリー"
 
 msgid "Git author name"
 msgstr "Gitの作成者名"
+
+msgid "Git History"
+msgstr "Git 履歴"
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Git統合に失敗しました。リポジトリを確認して再試行するか、キャンセルしてください。"
@@ -9745,6 +9766,9 @@ msgstr "バックグラウンドのターミナルセッションはありませ
 msgid "No branches found"
 msgstr "ブランチが見つかりません"
 
+msgid "No changed files"
+msgstr "変更されたファイルはありません"
+
 msgid "No changed files."
 msgstr "変更されたファイルはありません。"
 
@@ -9798,6 +9822,9 @@ msgstr "コメントはまだありません。"
 
 msgid "No comments yet. Turn on comment mode and click anything on the page to start one."
 msgstr "まだコメントはありません。コメントモードをオンにして、ページ上の要素をクリックすると開始できます。"
+
+msgid "No commits found"
+msgstr "コミットが見つかりません"
 
 msgid "No commits on this branch yet."
 msgstr "このブランチにはまだコミットがありません。"
@@ -13181,6 +13208,9 @@ msgstr "保存してテスト"
 msgid "Save as environment"
 msgstr "環境として保存"
 
+msgid "Save changes"
+msgstr "変更を保存"
+
 msgid "Save edits"
 msgstr "編集を保存"
 
@@ -13375,6 +13405,9 @@ msgstr "{frameTitle}内を検索…"
 
 msgid "Search issues..."
 msgstr "Issueを検索..."
+
+msgid "Search message or hash"
+msgstr "メッセージまたはハッシュを検索"
 
 msgid "Search pages"
 msgstr "ページを検索"
@@ -13862,6 +13895,9 @@ msgstr "セットアップ"
 
 msgid "Setup script"
 msgstr "セットアップスクリプト"
+
+msgid "SHA"
+msgstr "SHA"
 
 msgid "shadcn/ui tooltip recipe"
 msgstr "shadcn/uiのtooltipレシピ"
