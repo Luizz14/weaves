@@ -6,6 +6,7 @@ import { useRelayUrl } from "renderer/hooks/useRelayUrl";
 import { authClient } from "renderer/lib/auth-client";
 import { getHostEventBus } from "renderer/lib/host-event-bus";
 import { getHostServiceClientByUrl } from "renderer/lib/host-service-client";
+import { electronTrpcClient } from "renderer/lib/trpc-client";
 import { useLocalHostService } from "renderer/routes/_authenticated/providers/LocalHostServiceProvider";
 import { useSandboxAccess } from "renderer/routes/_authenticated/providers/SandboxAccessProvider";
 import {
@@ -309,6 +310,16 @@ export function useHostWorkspacesSource(
 								target.machineId,
 							],
 						});
+					}
+
+					// Notify Ordem Paranormal Pokédex of new worktree discoveries
+					if (event.eventType === "created" && event.workspace?.branch) {
+						void electronTrpcClient.ordemParanormal.recordDiscoveryByBranch
+							.mutate({
+								branch: event.workspace.branch,
+								project: event.workspace.projectId ?? undefined,
+							})
+							.catch(() => {});
 					}
 				},
 			);

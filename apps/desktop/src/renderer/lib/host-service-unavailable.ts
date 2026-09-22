@@ -41,7 +41,8 @@ export type HostServiceAction =
 	| "runTasksInWorkspaces"
 	| "saveAgent"
 	| "saveAgentCommand"
-	| "updateBranchPrefix";
+	| "updateBranchPrefix"
+	| "updateQuickAiSettings";
 
 const ACTION_MESSAGES: Record<HostServiceAction, MessageDescriptor> = {
 	addAgent: msg({
@@ -103,6 +104,9 @@ const ACTION_MESSAGES: Record<HostServiceAction, MessageDescriptor> = {
 	}),
 	updateBranchPrefix: msg({
 		message: "update the branch prefix",
+	}),
+	updateQuickAiSettings: msg({
+		message: "update AI settings",
 	}),
 };
 

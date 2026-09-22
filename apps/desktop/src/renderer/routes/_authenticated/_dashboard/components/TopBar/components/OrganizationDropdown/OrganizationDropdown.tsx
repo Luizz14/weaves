@@ -7,6 +7,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
+	DropdownMenuShortcut,
 	DropdownMenuSub,
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
@@ -21,11 +22,14 @@ import {
 	HiChevronUpDown,
 	HiOutlineArrowRightOnRectangle,
 	HiOutlineArrowsRightLeft,
+	HiOutlineCog6Tooth,
+	HiOutlineEllipsisHorizontal,
 	HiOutlinePlus,
 	HiOutlineWindow,
 } from "react-icons/hi2";
 import { useCurrentPlan } from "renderer/hooks/useCurrentPlan";
 import { useSignOut } from "renderer/hooks/useSignOut";
+import { useHotkeyDisplay } from "renderer/hotkeys";
 import { authClient } from "renderer/lib/auth-client";
 import { cloudTrpc } from "renderer/lib/cloud-trpc";
 import { electronTrpc } from "renderer/lib/electron-trpc";
@@ -35,8 +39,10 @@ import { SubmitPromptDialog } from "./components/SubmitPromptDialog";
 
 export function OrganizationDropdown({
 	variant = "topbar",
+	menuSide,
 }: {
-	variant?: "topbar" | "expanded" | "collapsed";
+	variant?: "topbar" | "expanded" | "collapsed" | "actions";
+	menuSide?: "top" | "right" | "bottom" | "left";
 }) {
 	const { t } = useLingui();
 	const { data: session } = authClient.useSession();
@@ -44,6 +50,7 @@ export function OrganizationDropdown({
 	const signOut = useSignOut();
 	const navigate = useNavigate();
 	const [submitPromptOpen, setSubmitPromptOpen] = useState(false);
+	const settingsHotkey = useHotkeyDisplay("OPEN_SETTINGS").text;
 	const openNewWindow = electronTrpc.window.openNew.useMutation({
 		onError: (error) =>
 			toast.error(
@@ -91,7 +98,17 @@ export function OrganizationDropdown({
 	) : null;
 
 	const triggerButton =
-		variant === "collapsed" ? (
+		variant === "actions" ? (
+			<button
+				type="button"
+				className="flex size-7 items-center justify-center rounded-md text-muted-foreground outline-none transition-colors hover:bg-fill-hover hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+				aria-label={t({
+					message: "Organization menu",
+				})}
+			>
+				<HiOutlineEllipsisHorizontal className="size-4" />
+			</button>
+		) : variant === "collapsed" ? (
 			<button
 				type="button"
 				className="flex size-8 items-center justify-center rounded-md transition-colors text-muted-foreground hover:bg-fill-hover"
@@ -126,7 +143,7 @@ export function OrganizationDropdown({
 		) : (
 			<button
 				type="button"
-				className="group no-drag flex items-center gap-1.5 h-6 px-1.5 rounded border border-border/60 bg-secondary/50 hover:bg-secondary hover:border-border transition-all duration-150 ease-out focus:outline-none focus:ring-1 focus:ring-ring"
+				className="group no-drag flex items-center gap-1.5 h-6 px-1.5 rounded border border-border/60 bg-secondary/50 hover:bg-secondary hover:border-border transition-[background-color,border-color,box-shadow,color] duration-150 ease-out focus:outline-none focus:ring-1 focus:ring-ring"
 				aria-label={t({
 					message: "Organization menu",
 				})}
@@ -146,6 +163,7 @@ export function OrganizationDropdown({
 		);
 
 	const contentAlign = variant === "topbar" ? "end" : "start";
+	const showOrganizationSwitcher = variant !== "actions";
 
 	return (
 		<>
@@ -153,6 +171,7 @@ export function OrganizationDropdown({
 				<DropdownMenuTrigger asChild>{triggerButton}</DropdownMenuTrigger>
 				<DropdownMenuContent
 					align={contentAlign}
+					side={menuSide}
 					className={
 						variant === "expanded"
 							? "w-[var(--radix-dropdown-menu-trigger-width)] min-w-56"
@@ -168,51 +187,79 @@ export function OrganizationDropdown({
 							<Trans>Manage members</Trans>
 						</span>
 					</DropdownMenuItem>
-					{organizations && organizations.length > 0 && (
-						<DropdownMenuSub>
-							<DropdownMenuSubTrigger className="gap-2">
-								<HiOutlineArrowsRightLeft className="h-4 w-4" />
-								<span>
-									<Trans>Switch organization</Trans>
-								</span>
-							</DropdownMenuSubTrigger>
-							<DropdownMenuSubContent>
-								{userEmail && (
-									<DropdownMenuLabel className="font-normal text-muted-foreground text-xs">
-										{userEmail}
-									</DropdownMenuLabel>
-								)}
-								{organizations.map((organization) => (
-									<DropdownMenuItem
-										key={organization.id}
-										onSelect={() =>
-											collections.switchOrganization(organization.id)
-										}
-										className="gap-2"
-									>
-										<Avatar
-											size="xs"
-											fullName={organization.name}
-											image={organization.logo}
-											className="rounded-md"
-										/>
-										<span className="flex-1 truncate">{organization.name}</span>
-										{organization.id === activeOrganization?.id && (
-											<HiCheck className="h-4 w-4 text-primary" />
-										)}
-									</DropdownMenuItem>
-								))}
-								<DropdownMenuSeparator />
-								<DropdownMenuItem
-									onSelect={() => navigate({ to: "/create-organization" })}
-								>
-									<HiOutlinePlus className="h-4 w-4" />
+					{showOrganizationSwitcher &&
+						organizations &&
+						organizations.length > 0 && (
+							<DropdownMenuSub>
+								<DropdownMenuSubTrigger className="gap-2">
+									<HiOutlineArrowsRightLeft className="h-4 w-4" />
 									<span>
-										<Trans>Create organization</Trans>
+										<Trans>Switch organization</Trans>
 									</span>
-								</DropdownMenuItem>
-							</DropdownMenuSubContent>
-						</DropdownMenuSub>
+								</DropdownMenuSubTrigger>
+								<DropdownMenuSubContent>
+									{userEmail && (
+										<DropdownMenuLabel className="font-normal text-muted-foreground text-xs">
+											{userEmail}
+										</DropdownMenuLabel>
+									)}
+									{organizations.map((organization) => (
+										<DropdownMenuItem
+											key={organization.id}
+											onSelect={() =>
+												collections.switchOrganization(organization.id)
+											}
+											className="gap-2"
+										>
+											<Avatar
+												size="xs"
+												fullName={organization.name}
+												image={organization.logo}
+												className="rounded-md"
+											/>
+											<span className="flex-1 truncate">
+												{organization.name}
+											</span>
+											{organization.id === activeOrganization?.id && (
+												<HiCheck className="h-4 w-4 text-primary" />
+											)}
+										</DropdownMenuItem>
+									))}
+									<DropdownMenuSeparator />
+									<DropdownMenuItem
+										onSelect={() => navigate({ to: "/create-organization" })}
+									>
+										<HiOutlinePlus className="h-4 w-4" />
+										<span>
+											<Trans>Create organization</Trans>
+										</span>
+									</DropdownMenuItem>
+								</DropdownMenuSubContent>
+							</DropdownMenuSub>
+						)}
+
+					{variant === "actions" && (
+						<>
+							<DropdownMenuItem
+								onSelect={() => navigate({ to: "/create-organization" })}
+							>
+								<HiOutlinePlus className="h-4 w-4" />
+								<span>
+									<Trans>Create organization</Trans>
+								</span>
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								onSelect={() => navigate({ to: "/settings/account" })}
+							>
+								<HiOutlineCog6Tooth className="h-4 w-4" />
+								<span>
+									<Trans>Settings</Trans>
+								</span>
+								{settingsHotkey !== "Unassigned" && (
+									<DropdownMenuShortcut>{settingsHotkey}</DropdownMenuShortcut>
+								)}
+							</DropdownMenuItem>
+						</>
 					)}
 
 					<DropdownMenuItem onSelect={() => openNewWindow.mutate()}>

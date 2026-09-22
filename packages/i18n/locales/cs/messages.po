@@ -1217,6 +1217,9 @@ msgstr "Lepší vestavěný prohlížeč: prohlédněte si své změny a kliknut
 msgid "A better Superset is ready"
 msgstr "Lepší verze Superset je připravena"
 
+msgid "A branch changed during integration. Cancel this attempt and start again."
+msgstr "Během integrace se změnila větev. Zrušte tento pokus a začněte znovu."
+
 #. js-lingui-explicit-id
 msgid "serverError.common.cloudWorkspaceCannotCallThis"
 msgstr "Cloudový workspace nemůže volat {path}. Spusť to z klienta, kde jsi přihlášený."
@@ -1686,6 +1689,9 @@ msgstr "AI asistenti"
 msgid "AI authentication failed. Please check your AI settings."
 msgstr "Ověření AI selhalo. Zkontrolujte prosím nastavení AI."
 
+msgid "AI features"
+msgstr "Funkce AI"
+
 msgid "Alert"
 msgstr "Upozornění"
 
@@ -1753,6 +1759,9 @@ msgstr "Všechny komentáře"
 
 msgid "All commits"
 msgstr "Všechny commity"
+
+msgid "All conflicts are resolved. Complete the integration when ready."
+msgstr "Všechny konflikty jsou vyřešeny. Až budete připraveni, dokončete integraci."
 
 #. placeholder {0}: members.length
 msgid "All data will be permanently deleted for all {0} members — this cannot be undone."
@@ -1860,11 +1869,17 @@ msgstr "Povolte přístup přes relay"
 msgid "Allow for session"
 msgstr "Povolit pro relaci"
 
+msgid "Allow merge into principal"
+msgstr "Povolit sloučení do hlavní větve"
+
 msgid "Allow microphone access to use dictation"
 msgstr "Pro diktování povolte přístup k mikrofonu"
 
 msgid "Allow remote access to this device via relay"
 msgstr "Povolit vzdálený přístup k tomuto zařízení přes relay"
+
+msgid "Allow update from remote principal"
+msgstr "Povolit aktualizaci ze vzdálené hlavní větve"
 
 msgid "Allowed"
 msgstr "Povoleno"
@@ -1959,6 +1974,9 @@ msgstr "Anonymní montér"
 msgid "another device"
 msgstr "jiné zařízení"
 
+msgid "Another integration operation is running. Try again shortly."
+msgstr "Probíhá jiná integrace. Zkuste to za chvíli znovu."
+
 msgid "Answered"
 msgstr "Zodpovězeno"
 
@@ -1967,6 +1985,15 @@ msgstr "Anthropic tento API klíč odmítl."
 
 msgid "Anthropic rejected this token."
 msgstr "Anthropic tento token odmítl."
+
+msgid "Antigravity CLI connection failed"
+msgstr "Připojení k Antigravity CLI se nezdařilo"
+
+msgid "Antigravity CLI is ready"
+msgstr "Antigravity CLI je připraveno"
+
+msgid "Antigravity CLI status"
+msgstr "Stav Antigravity CLI"
 
 msgid "Any calendar"
 msgstr "Jakýkoli kalendář"
@@ -2629,6 +2656,9 @@ msgstr "Změněn binární soubor"
 msgid "Binary file hidden"
 msgstr "Binární soubor skryt"
 
+msgid "Binary, large, or special file. Choose a version to resolve."
+msgstr "Binární, velký nebo speciální soubor. Vyberte verzi pro vyřešení konfliktu."
+
 msgid "Bio"
 msgstr "O mně"
 
@@ -2694,6 +2724,12 @@ msgstr "Chování větví u nových pracovních prostorů na tomto zařízení. 
 
 msgid "Branch copied"
 msgstr "Větev zkopírována"
+
+msgid "Branch integration"
+msgstr "Integrace větví"
+
+msgid "Branch integration completed"
+msgstr "Integrace větví dokončena"
 
 msgid "branch name"
 msgstr "název větve"
@@ -2949,6 +2985,9 @@ msgstr "Zrušit stahování"
 msgid "Cancel edits"
 msgstr "Zrušit úpravy"
 
+msgid "Cancel integration"
+msgstr "Zrušit integraci"
+
 msgid "Cancel plan"
 msgstr "Zrušit tarif"
 
@@ -3119,6 +3158,9 @@ msgstr "Zkontrolovat aktualizace..."
 
 msgid "Check on running agents and read what they changed from your phone."
 msgstr "Sledujte běžící agenty a čtěte jejich změny přímo z telefonu."
+
+msgid "Check out a branch before continuing."
+msgstr "Před pokračováním přepněte na větev."
 
 msgid "Check resources"
 msgstr "Zkontrolovat prostředky"
@@ -3725,6 +3767,9 @@ msgstr "Commit se nezdařil: {0}"
 msgid "Commit message"
 msgstr "Zpráva commitu"
 
+msgid "Commit or stash pending changes in the source and destination workspaces first."
+msgstr "Nejprve potvrďte nebo odložte změny ve zdrojovém a cílovém pracovním prostoru."
+
 msgid "Commits"
 msgstr "Commity"
 
@@ -3776,6 +3821,9 @@ msgstr "Porovnáno s výchozím stylem"
 msgid "complete"
 msgstr "dokončeno"
 
+msgid "Complete integration"
+msgstr "Dokončit integraci"
+
 msgid "Completed"
 msgstr "Dokončeno"
 
@@ -3818,6 +3866,9 @@ msgstr "Nastavte automatizaci sami"
 msgid "Configure the in-app browser"
 msgstr "Nastavte vestavěný prohlížeč"
 
+msgid "Configure the principal branch and remote in project settings."
+msgstr "V nastavení projektu nakonfigurujte hlavní větev a vzdálený repozitář."
+
 msgid "Configure which agents appear in launchers and how their launches are built."
 msgstr "Nastavte, kteří agenti se zobrazují ve spouštěčích a jak se jejich spuštění sestavuje."
 
@@ -3829,6 +3880,9 @@ msgstr "Potvrdit"
 
 msgid "Confirm before quitting"
 msgstr "Potvrdit před ukončením"
+
+msgid "Conflicting files"
+msgstr "Soubory s konflikty"
 
 msgid "Connect"
 msgstr "Připojit"
@@ -4342,6 +4396,9 @@ msgstr "Soubor se nepodařilo smazat"
 msgid "Could not delete this page"
 msgstr "Tuto stránku se nepodařilo smazat"
 
+msgid "Could not fetch the principal branch. Check your connection, credentials, and remote branch."
+msgstr "Hlavní větev se nepodařilo načíst. Zkontrolujte připojení, přihlašovací údaje a vzdálenou větev."
+
 msgid "Could not forget {domain}"
 msgstr "Nepodařilo se zapomenout {domain}"
 
@@ -4529,6 +4586,14 @@ msgstr "Nepodařilo se zahodit nepřipravené změny"
 
 msgid "Couldn’t finish deleting workspaces"
 msgstr "Mazání pracovních prostorů se nepodařilo dokončit"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate a commit message: {0}"
+msgstr "Nepodařilo se vygenerovat zprávu commitu: {0}"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate pull request details: {0}"
+msgstr "Nepodařilo se vygenerovat podrobnosti pull requestu: {0}"
 
 #. placeholder {0}: configsQuery.error instanceof Error ? configsQuery.error.message : hostServiceUnavailableMessage
 msgid "Couldn't load agent settings: {0}"
@@ -6617,6 +6682,9 @@ msgstr "Nepodařilo se spustit běh"
 msgid "Failed to update agent settings"
 msgstr "Nepodařilo se aktualizovat nastavení agenta"
 
+msgid "Failed to update AI settings"
+msgstr "Nastavení AI se nepodařilo aktualizovat"
+
 msgid "Failed to update automation"
 msgstr "Nepodařilo se aktualizovat automatizaci"
 
@@ -6706,6 +6774,9 @@ msgstr "Akce souboru"
 
 msgid "File changes"
 msgstr "Změny souboru"
+
+msgid "File deleted"
+msgstr "Soubor odstraněn"
 
 msgid "File is too large to preview"
 msgstr "Soubor je pro náhled příliš velký"
@@ -6839,6 +6910,9 @@ msgstr "Finder"
 msgid "Finish review"
 msgstr "Dokončit revizi"
 
+msgid "Finish the pending Git operation first."
+msgstr "Nejprve dokončete probíhající operaci Git."
+
 msgid "Finished"
 msgstr "Dokončeno"
 
@@ -6874,6 +6948,9 @@ msgstr "Přepínač"
 
 msgid "Flame"
 msgstr "Plamen"
+
+msgid "Flash balances speed and quality for short development tasks."
+msgstr "Flash vyvažuje rychlost a kvalitu pro krátké vývojové úlohy."
 
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Flotily agentů plánují, implementují, revidují a testují práci jeden druhého. Lidé určují směr, rozsuzují výjimky a vlastní vkus. Jednotkou lidské pozornosti už není pull request. Je jí rozhodnutí."
@@ -7113,6 +7190,9 @@ msgstr "Obecný přístup"
 msgid "General comment"
 msgstr "General comment"
 
+msgid "Generate"
+msgstr "Generovat"
+
 msgid "Generate a key to use with MCP servers."
 msgstr "Vygenerujte klíč pro použití s MCP servery."
 
@@ -7178,6 +7258,9 @@ msgstr "Git a worktree"
 
 msgid "Git author name"
 msgstr "Jméno autora v Gitu"
+
+msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
+msgstr "Integrace Git selhala. Zkontrolujte repozitář a zkuste to znovu nebo pokus zrušte."
 
 msgid "GitHub"
 msgstr "GitHub"
@@ -7884,6 +7967,9 @@ msgstr "Nainstalovat plugin"
 msgid "Install Superset MCP in your client"
 msgstr "Nainstalujte Superset MCP do svého klienta"
 
+msgid "Install the Antigravity CLI, then run agy in a terminal to sign in."
+msgstr "Nainstalujte Antigravity CLI a poté se přihlaste spuštěním agy v terminálu."
+
 msgid "Install the desktop app"
 msgstr "Nainstalujte desktopovou aplikaci"
 
@@ -7903,6 +7989,10 @@ msgstr "Nainstalované"
 msgid "serverError.plugins.marketplaceHasInstalls"
 msgstr "Nainstalované pluginy pocházejí z {name}: {plugins}. Nejprve je odeberte."
 
+#. placeholder {0}: statusQuery.data.version
+msgid "Installed version {0}"
+msgstr "Nainstalovaná verze {0}"
+
 msgid "Installed via"
 msgstr "Nainstalováno přes"
 
@@ -7914,6 +8004,9 @@ msgstr "Instalace"
 
 msgid "Instructions"
 msgstr "Instrukce"
+
+msgid "Integrate committed changes locally. These settings do not change workspace creation or pull requests."
+msgstr "Integrujte potvrzené změny lokálně. Tato nastavení nemění vytváření pracovních prostorů ani žádosti o sloučení."
 
 msgid "Integrations"
 msgstr "Integrace"
@@ -8587,9 +8680,6 @@ msgstr "Načíst starší zprávy"
 msgid "Load more"
 msgstr "Načíst další"
 
-msgid "Load older messages"
-msgstr "Načíst starší zprávy"
-
 msgid "Loader"
 msgstr "Načítání"
 
@@ -8865,6 +8955,9 @@ msgstr "Označit jako nezobrazené"
 msgid "Mark as Read"
 msgstr "Označit jako přečtené"
 
+msgid "Mark as resolved"
+msgstr "Označit jako vyřešené"
+
 msgid "Mark as Unread"
 msgstr "Označit jako nepřečtené"
 
@@ -9011,6 +9104,12 @@ msgstr "Merge commit"
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Sloučení selhalo: {0}"
+
+msgid "Merge into {branch}"
+msgstr "Sloučit do {branch}"
+
+msgid "Merge into principal"
+msgstr "Sloučit do hlavní větve"
 
 msgid "Merge pull request"
 msgstr "Sloučit pull request"
@@ -10934,6 +11033,9 @@ msgstr "Orchestrační chat"
 msgid "Orchestration guide"
 msgstr "Průvodce orchestrací"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "Organické vyhledávání"
 
@@ -11439,6 +11541,9 @@ msgstr "Marketplace pluginů"
 msgid "Plugins"
 msgstr "Pluginy"
 
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
+
 msgid "Policies"
 msgstr "Policies"
 
@@ -11534,6 +11639,9 @@ msgstr "Předvolby"
 msgid "Prefix"
 msgstr "Prefix"
 
+msgid "Preparation was interrupted. Cancel this attempt and start again."
+msgstr "Příprava byla přerušena. Zrušte tento pokus a začněte znovu."
+
 msgid "Preparing"
 msgstr "Připravuji"
 
@@ -11620,6 +11728,9 @@ msgstr "Primární klíč"
 
 msgid "Primitives"
 msgstr "Primitiva"
+
+msgid "Principal branch"
+msgstr "Hlavní větev"
 
 msgid "Print"
 msgstr "Tisk"
@@ -11731,6 +11842,9 @@ msgstr "Projekt nastaven v {0}"
 msgid "Project Settings"
 msgstr "Nastavení projektu"
 
+msgid "Project settings changed. Cancel this attempt and start again."
+msgstr "Nastavení projektu se změnilo. Zrušte tento pokus a začněte znovu."
+
 msgid "Project worktree location reset"
 msgstr "Umístění worktree projektu obnoveno"
 
@@ -11807,6 +11921,9 @@ msgstr "Vlastnosti"
 
 msgid "Provide either id or slug"
 msgstr "Zadejte buď id, nebo slug"
+
+msgid "Provider"
+msgstr "Poskytovatel"
 
 #. placeholder {0}: sourceConfig?.label ?? binding.agentId
 msgid "Provider: {0}"
@@ -12168,6 +12285,9 @@ msgstr "Obnoví se při příštím spuštění Claude Code."
 msgid "Refreshes when OpenCode next runs."
 msgstr "Obnoví se při příštím spuštění OpenCode."
 
+msgid "Regenerate"
+msgstr "Generovat znovu"
+
 msgid "Register any CLI agent alongside the built-ins, each with its own name, icon, and launch command."
 msgstr "Zaregistrujte vedle vestavěných libovolného CLI agenta, každého s vlastním jménem, ikonou a spouštěcím příkazem."
 
@@ -12239,6 +12359,9 @@ msgstr "Vzdálený přístup"
 
 msgid "Remote Access"
 msgstr "Vzdálený přístup"
+
+msgid "Remote for updates"
+msgstr "Vzdálený repozitář pro aktualizace"
 
 msgid "Remote MCP server — connects over HTTP"
 msgstr "Vzdálený MCP server — připojuje se přes HTTP"
@@ -12577,6 +12700,9 @@ msgstr "Vyřešit"
 msgid "Resolve all"
 msgstr "Vyřešit vše"
 
+msgid "Resolve all conflicts before completing the integration."
+msgstr "Před dokončením integrace vyřešte všechny konflikty."
+
 msgid "Resolve Conflicts to Merge"
 msgstr "Pro sloučení vyřešte konflikty"
 
@@ -12594,6 +12720,9 @@ msgstr "Vyřešit vlákno"
 
 msgid "Resolved"
 msgstr "Vyřešeno"
+
+msgid "Resolved content"
+msgstr "Vyřešený obsah"
 
 msgid "Resource consumption"
 msgstr "Spotřeba prostředků"
@@ -12706,6 +12835,12 @@ msgstr "Argumenty pro pokračování"
 
 msgid "Resume automation"
 msgstr "Pokračovat v automatizaci"
+
+msgid "Resume integration"
+msgstr "Pokračovat v integraci"
+
+msgid "Resume or cancel the existing integration first."
+msgstr "Nejprve obnovte nebo zrušte stávající integraci."
 
 #. placeholder {0}: candidate.agentLabel
 msgid "Resuming {0}…"
@@ -13385,6 +13520,9 @@ msgstr "Podívejte se, kde se vašich posledních 30 dní umístí ve veřejném
 msgid "Select"
 msgstr "Výběr"
 
+msgid "Select a branch"
+msgstr "Vyberte větev"
+
 msgid "Select a default preset"
 msgstr "Vyberte výchozí předvolbu"
 
@@ -13405,6 +13543,9 @@ msgstr "Vyberte projekt a uvidíte pull requesty."
 
 msgid "Select a pull request to preview it here."
 msgstr "Vyberte pull request a zobrazí se tady jeho náhled."
+
+msgid "Select a remote"
+msgstr "Vyberte vzdálený repozitář"
 
 msgid "Select a team"
 msgstr "Vyberte tým"
@@ -13704,11 +13845,11 @@ msgstr "Nastavuji na pozadí..."
 msgid "Settings"
 msgstr "Nastavení"
 
-msgid "Settings ({settingsHotkey})"
-msgstr "Nastavení ({settingsHotkey})"
-
 msgid "Settings → Remote Access → “Allow remote access to this device via relay”."
 msgstr "Nastavení → Vzdálený přístup → „Povolit vzdálený přístup k tomuto zařízení přes relay“."
+
+msgid "Settings saved"
+msgstr "Nastavení uloženo"
 
 msgid "Settings..."
 msgstr "Nastavení..."
@@ -15168,8 +15309,14 @@ msgstr "Podmínky služby"
 msgid "Test again"
 msgstr "Otestovat znovu"
 
+msgid "Test connection"
+msgstr "Otestovat připojení"
+
 msgid "Testing connection…"
 msgstr "Testování připojení…"
+
+msgid "Testing..."
+msgstr "Testování..."
 
 msgid "Text"
 msgstr "Text"
@@ -15237,11 +15384,17 @@ msgstr "Přihlášení do Codexu"
 msgid "The config repository must be one of the environment's repositories"
 msgstr "Konfigurační repozitář musí být jedním z repozitářů prostředí"
 
+msgid "The configured remote no longer exists."
+msgstr "Nakonfigurovaný vzdálený repozitář již neexistuje."
+
 msgid "The connection timed out"
 msgstr "Vypršel časový limit spojení"
 
 msgid "The connection was closed"
 msgstr "Spojení bylo uzavřeno"
+
+msgid "The current branch is already the principal branch."
+msgstr "Aktuální větev je již hlavní větví."
 
 msgid "The current prompt will be replaced with the selected version. A new \"Restored\" entry will be added to history so you can undo this."
 msgstr "Současný prompt bude nahrazen vybranou verzí. Do historie přibude nový záznam „Obnoveno“, takže půjde vrátit zpět."
@@ -15254,6 +15407,12 @@ msgstr "Superset chystáme i pro Windows a Linux. Nechte nám e-mail a dáme vá
 
 msgid "The desktop app runs on macOS, with an experimental Linux AppImage; Windows is not yet available. Beyond the desktop app there's a CLI, a TypeScript SDK, and an MCP server, so you can drive Superset from scripts, terminals, and other agents."
 msgstr "Desktopová aplikace běží na macOS, k tomu je experimentální AppImage pro Linux; Windows zatím nejsou dostupné. Kromě desktopové aplikace je tu CLI, TypeScript SDK a MCP server, takže Superset můžete řídit ze skriptů, terminálů i jiných agentů."
+
+msgid "The destination branch is checked out in multiple worktrees."
+msgstr "Cílová větev je aktivní v několika pracovních stromech."
+
+msgid "The destination stays unchanged until completion. Closing this window keeps the attempt available to resume."
+msgstr "Cíl zůstane beze změny až do dokončení. Po zavření tohoto okna lze pokus obnovit."
 
 msgid "The device that hosts this project is unavailable."
 msgstr "Zařízení, které hostuje tento projekt, není dostupné."
@@ -15411,6 +15570,9 @@ msgstr "Stránka, kterou hledáte, neexistuje."
 
 msgid "The people behind Superset."
 msgstr "Lidé za Supersetem."
+
+msgid "The principal branch does not exist locally."
+msgstr "Hlavní větev lokálně neexistuje."
 
 msgid "The project's checkout as it is: files and branch are shared"
 msgstr "Checkout projektu tak, jak je: soubory a větev jsou sdílené"
@@ -15687,6 +15849,9 @@ msgstr "Tento měsíc"
 
 msgid "This only changes the display name, not the branch."
 msgstr "Změní se jen zobrazovaný název, ne větev."
+
+msgid "This operation is disabled for this project."
+msgstr "Tato operace je pro tento projekt vypnuta."
 
 msgid "this organization"
 msgstr "této organizace"
@@ -16407,6 +16572,9 @@ msgstr "Aktuální"
 msgid "Update"
 msgstr "Aktualizovat"
 
+msgid "update AI settings"
+msgstr "aktualizovat nastavení AI"
+
 msgid "Update available"
 msgstr "Dostupná aktualizace"
 
@@ -16424,6 +16592,12 @@ msgstr "Aktualizovat démona"
 
 msgid "Update Error"
 msgstr "Chyba aktualizace"
+
+msgid "Update from {remote}/{branch}"
+msgstr "Aktualizovat z {remote}/{branch}"
+
+msgid "Update from remote principal"
+msgstr "Aktualizovat ze vzdálené hlavní větve"
 
 msgid "Update host service"
 msgstr "Aktualizovat službu hostitele"
@@ -16545,6 +16719,12 @@ msgstr "Využití není dostupné."
 msgid "Use “{0}”"
 msgstr "Použít „{0}“"
 
+msgid "Use {label}"
+msgstr "Použít {label}"
+
+msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
+msgstr "Použijte malý lokální model CLI pro názvy větví, zprávy commitů a návrhy pull requestů."
+
 msgid "Use a URL like https://dev.azure.com/organization."
 msgstr "Použijte adresu URL ve tvaru https://dev.azure.com/organization."
 
@@ -16634,6 +16814,9 @@ msgstr "Uživatel nenalezen"
 
 msgid "user@example.com"
 msgstr "uzivatel@example.com"
+
+msgid "Uses the Antigravity CLI and its existing login on this host."
+msgstr "Používá Antigravity CLI a existující přihlášení na tomto hostiteli."
 
 msgid "Using random branch name (AI generation timed out)"
 msgstr "Použije se náhodný název větve (generování přes AI vypršelo)"
@@ -17145,6 +17328,9 @@ msgstr "Pracuje"
 msgctxt "agent status"
 msgid "Working"
 msgstr "Pracuje"
+
+msgid "Working for {duration}"
+msgstr "Pracuje {duration}"
 
 msgid "Works when environments are clean. Environments are rarely clean."
 msgstr "Funguje, když jsou prostředí čistá. Prostředí bývají čistá zřídka."

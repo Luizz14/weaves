@@ -12,10 +12,11 @@ import {
 	ContextMenuTrigger,
 } from "@superset/ui/context-menu";
 import { cn } from "@superset/ui/utils";
+import { ChevronRight } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import { type ReactNode, useState } from "react";
 import {
 	VscAdd,
-	VscChevronRight,
 	VscClippy,
 	VscDiscard,
 	VscFolderOpened,
@@ -27,6 +28,8 @@ import { usePathActions } from "../../hooks";
 import { DiscardConfirmDialog } from "../DiscardConfirmDialog";
 import type { RowHoverAction } from "../RowHoverActions";
 import { RowHoverActions } from "../RowHoverActions";
+
+const ICON_TRANSITION = { type: "spring", duration: 0.3, bounce: 0 } as const;
 
 interface FolderRowProps {
 	name: string;
@@ -65,22 +68,27 @@ function FolderRowHeader({
 	fileCount,
 	isGrouped,
 	isExpanded,
+	reduceMotion,
 }: {
 	name: string;
 	level: number;
 	fileCount?: number;
 	isGrouped: boolean;
 	isExpanded: boolean;
+	reduceMotion: boolean;
 }) {
 	return (
 		<>
 			{!isGrouped && (
-				<VscChevronRight
-					className={cn(
-						"size-2.5 text-muted-foreground shrink-0 transition-transform duration-150",
-						isExpanded && "rotate-90",
-					)}
-				/>
+				<motion.span
+					aria-hidden="true"
+					initial={false}
+					animate={{ rotate: isExpanded ? 90 : 0 }}
+					transition={reduceMotion ? { duration: 0 } : ICON_TRANSITION}
+					className="grid size-4 shrink-0 place-items-center text-muted-foreground"
+				>
+					<ChevronRight className="size-3.5" />
+				</motion.span>
 			)}
 			{!isGrouped && <LevelIndicators level={level} />}
 			<div className="flex items-center gap-1 flex-1 min-w-0">
@@ -122,6 +130,7 @@ export function FolderRow({
 	projectId,
 	defaultApp,
 }: FolderRowProps) {
+	const reduceMotion = useReducedMotion() ?? false;
 	const [showDiscardDialog, setShowDiscardDialog] = useState(false);
 	const isGrouped = variant === "grouped";
 	const isRoot = folderPath === "";
@@ -181,8 +190,8 @@ export function FolderRow({
 	const triggerContent = (
 		<CollapsibleTrigger
 			className={cn(
-				"flex-1 min-w-0 flex gap-1.5 text-left overflow-hidden",
-				"text-xs items-stretch py-0.5",
+				"flex-1 min-w-0 flex gap-1.5 text-left overflow-hidden rounded-sm outline-none",
+				"text-xs items-stretch py-0.5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
 				isGrouped && "text-muted-foreground",
 			)}
 		>
@@ -192,6 +201,7 @@ export function FolderRow({
 				fileCount={fileCount}
 				isGrouped={isGrouped}
 				isExpanded={isExpanded}
+				reduceMotion={reduceMotion}
 			/>
 		</CollapsibleTrigger>
 	);
@@ -258,7 +268,7 @@ export function FolderRow({
 					<ContextMenuTrigger asChild>
 						<div
 							className={cn(
-								"group flex items-center min-w-0 rounded-sm px-1.5",
+								"group flex min-h-7 items-center min-w-0 rounded-sm px-1.5",
 								"hover:bg-accent/50 cursor-pointer transition-colors",
 							)}
 						>

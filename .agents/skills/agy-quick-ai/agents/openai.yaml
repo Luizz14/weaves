@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agy Quick AI"
+  short_description: "Extende tarefas rápidas de IA via Antigravity"
+  default_prompt: "Use $agy-quick-ai para implementar uma nova feature estruturada de IA usando o serviço quickAi e o CLI agy."

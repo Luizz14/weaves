@@ -30,13 +30,21 @@ export function CodexWorkLog({
 	running: boolean;
 }) {
 	const reduce = useReducedMotion() ?? false;
-	const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(running);
 	const [now, setNow] = useState(() => Date.now());
 
 	useEffect(() => {
 		if (!running) return;
 		const timer = window.setInterval(() => setNow(Date.now()), 1000);
 		return () => window.clearInterval(timer);
+	}, [running]);
+
+	useEffect(() => {
+		if (running) {
+			setOpen(true);
+		} else {
+			setOpen(false);
+		}
 	}, [running]);
 
 	const duration = formatWorkDuration(
@@ -52,7 +60,11 @@ export function CodexWorkLog({
 				className="flex min-h-10 w-full items-center gap-1.5 py-1 text-left text-sm text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.96] motion-reduce:active:scale-100"
 			>
 				<span className="tabular-nums">
-					<Trans>Worked for {duration}</Trans>
+					{running ? (
+						<Trans>Working for {duration}</Trans>
+					) : (
+						<Trans>Worked for {duration}</Trans>
+					)}
 				</span>
 				<motion.span
 					aria-hidden="true"

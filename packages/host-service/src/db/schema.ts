@@ -94,6 +94,16 @@ export const projects = sqliteTable(
 		// "fall back to the host-wide default" in `host_settings`.
 		branchPrefixMode: text("branch_prefix_mode").$type<BranchPrefixMode>(),
 		branchPrefixCustom: text("branch_prefix_custom"),
+		mergeTargetBranch: text("merge_target_branch"),
+		updateRemote: text("update_remote"),
+		mergeToMainEnabled: integer("merge_to_main_enabled", { mode: "boolean" })
+			.notNull()
+			.default(true),
+		updateFromMainEnabled: integer("update_from_main_enabled", {
+			mode: "boolean",
+		})
+			.notNull()
+			.default(true),
 		// Custom project icon as a small downscaled data-URI. Null falls back to
 		// the GitHub owner avatar (when a repo is linked) or a placeholder.
 		icon: text("icon"),
@@ -187,6 +197,8 @@ export const hostSettings = sqliteTable("host_settings", {
 	worktreeBaseDir: text("worktree_base_dir"),
 	branchPrefixMode: text("branch_prefix_mode").$type<BranchPrefixMode>(),
 	branchPrefixCustom: text("branch_prefix_custom"),
+	quickAiProvider: text("quick_ai_provider"),
+	quickAiModel: text("quick_ai_model"),
 	// Which provider login newly launched agents use, as the profile dir to
 	// inject (CLAUDE_CONFIG_DIR / CODEX_HOME). Null = the system default login.
 	defaultClaudeConfigDir: text("default_claude_config_dir"),

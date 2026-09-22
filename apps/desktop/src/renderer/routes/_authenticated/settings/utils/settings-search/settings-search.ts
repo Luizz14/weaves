@@ -5,6 +5,7 @@ import {
 import type { SettingsSection } from "renderer/stores/settings-state";
 
 export const SETTING_ITEM_ID = {
+	ORDEM_POKEDEX: "ordem-pokedex",
 	CODEX_CHAT: "codex-chat",
 	ACCOUNT_PROFILE: "account-profile",
 	ACCOUNT_SIGNOUT: "account-signout",
@@ -50,6 +51,7 @@ export const SETTING_ITEM_ID = {
 	GIT_BRANCH_PREFIX: "git-branch-prefix",
 	GIT_DELETE_LOCAL_BRANCH: "git-delete-local-branch",
 	GIT_WORKTREE_LOCATION: "git-worktree-location",
+	AI_FEATURES: "ai-features",
 
 	AGENTS_ENABLED: "agents-enabled",
 	AGENTS_COMMANDS: "agents-commands",
@@ -152,6 +154,7 @@ const INTEGRATION_ITEM_VARIANTS = Object.fromEntries(
 ) as Record<IntegrationSettingItemId, SettingVariant>;
 
 export const SETTING_ITEM_VARIANT: Record<SettingItemId, SettingVariant> = {
+	[SETTING_ITEM_ID.ORDEM_POKEDEX]: "shared",
 	[SETTING_ITEM_ID.CODEX_CHAT]: "v2",
 	...INTEGRATION_ITEM_VARIANTS,
 
@@ -203,6 +206,7 @@ export const SETTING_ITEM_VARIANT: Record<SettingItemId, SettingVariant> = {
 	[SETTING_ITEM_ID.GIT_BRANCH_PREFIX]: "shared",
 	[SETTING_ITEM_ID.GIT_DELETE_LOCAL_BRANCH]: "v1",
 	[SETTING_ITEM_ID.GIT_WORKTREE_LOCATION]: "shared",
+	[SETTING_ITEM_ID.AI_FEATURES]: "v2",
 
 	[SETTING_ITEM_ID.AGENTS_ENABLED]: "shared",
 	[SETTING_ITEM_ID.AGENTS_COMMANDS]: "shared",
@@ -342,6 +346,44 @@ const INTEGRATION_SEARCH_ITEMS: SettingsItem[] = INTEGRATIONS.map(
 );
 
 export const SETTINGS_ITEMS: SettingsItem[] = [
+	{
+		id: SETTING_ITEM_ID.AI_FEATURES,
+		section: "ai",
+		title: "AI features",
+		description:
+			"Antigravity model for branch names, commits, and pull requests",
+		keywords: [
+			"ai",
+			"agy",
+			"antigravity",
+			"gemini",
+			"flash",
+			"commit message",
+			"branch name",
+			"pull request",
+		],
+	},
+	{
+		id: SETTING_ITEM_ID.ORDEM_POKEDEX,
+		section: "pokedex",
+		title: "Arquivo Paranormal (Pokédex)",
+		description:
+			"Catálogo e dossiê sigiloso de agentes, criaturas e relíquias de Ordem Paranormal",
+		keywords: [
+			"pokedex",
+			"ordem",
+			"paranormal",
+			"cards",
+			"cartas",
+			"rpg",
+			"ordo",
+			"realitas",
+			"entidades",
+			"personagens",
+			"criaturas",
+			"reliquias",
+		],
+	},
 	{
 		id: SETTING_ITEM_ID.CODEX_CHAT,
 		section: "codexChat",

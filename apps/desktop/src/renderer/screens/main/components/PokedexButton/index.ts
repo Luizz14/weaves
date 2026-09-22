@@ -1,0 +1,1 @@
+export { PokedexButton } from "./PokedexButton";

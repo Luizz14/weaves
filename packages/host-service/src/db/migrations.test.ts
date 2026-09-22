@@ -142,33 +142,28 @@ describe("host.db migrations", () => {
 		expect(tables(sqlite)).toContain("azure_devops_work_item_states");
 	});
 
-	test("the runner adds Azure DevOps project configuration to an existing database", () => {
+	test("the runner adds Azure DevOps support to an existing database", () => {
 		const sqlite = open();
 		migrate(drizzle(sqlite), {
 			migrationsFolder: folderWithout({
 				omit: [],
-				through: "0035_local_workspaces",
+				through: "0037_closed_onslaught",
 			}),
 		});
 
 		runMigrations(drizzle(sqlite), MIGRATIONS_FOLDER);
 
 		expect(tables(sqlite)).toContain("azure_devops_project_configs");
-	});
-
-	test("the runner adds the Azure DevOps board tables to an existing database", () => {
-		const sqlite = open();
-		migrate(drizzle(sqlite), {
-			migrationsFolder: folderWithout({
-				omit: [],
-				through: "0036_azure_devops_project_configs",
-			}),
-		});
-
-		runMigrations(drizzle(sqlite), MIGRATIONS_FOLDER);
-
 		expect(tables(sqlite)).toContain("azure_devops_board_configs");
 		expect(tables(sqlite)).toContain("azure_devops_work_item_states");
+		expect(() =>
+			sqlite.prepare("SELECT repo_project FROM pull_requests").all(),
+		).not.toThrow();
+		expect(() =>
+			sqlite
+				.prepare("SELECT external_work_item_provider FROM workspaces")
+				.all(),
+		).not.toThrow();
 	});
 
 	test("every shipped journal entry has a distinct `when`", () => {
@@ -179,5 +174,29 @@ describe("host.db migrations", () => {
 		);
 
 		expect(new Set(whens).size).toBe(whens.length);
+	});
+});
+
+test("branch integration is enabled by default when upgrading existing projects", () => {
+	const sqlite = open();
+	runMigrations(
+		drizzle(sqlite),
+		folderWithout({ omit: [], through: "0035_local_workspaces" }),
+	);
+	sqlite.exec(
+		"INSERT INTO projects (id, repo_path, created_at) VALUES ('existing', '/existing', 1)",
+	);
+	runMigrations(drizzle(sqlite), MIGRATIONS_FOLDER);
+	expect(
+		sqlite
+			.query(
+				"SELECT merge_target_branch, update_remote, merge_to_main_enabled, update_from_main_enabled FROM projects WHERE id = 'existing'",
+			)
+			.get(),
+	).toEqual({
+		merge_target_branch: null,
+		update_remote: null,
+		merge_to_main_enabled: 1,
+		update_from_main_enabled: 1,
 	});
 });

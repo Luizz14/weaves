@@ -1,75 +1,9 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "5966e196-27a6-4c3a-b81f-35bb44dfb0e4",
+  "id": "5e2f875f-2143-4a39-8238-8f4435975636",
   "prevId": "1cb7970e-1036-48bc-a9b8-72d93b11443b",
   "tables": {
-    "azure_devops_project_configs": {
-      "name": "azure_devops_project_configs",
-      "columns": {
-        "project_id": {
-          "name": "project_id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "organization_url": {
-          "name": "organization_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "azure_project": {
-          "name": "azure_project",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "repository": {
-          "name": "repository",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "azure_devops_project_configs_project_id_projects_id_fk": {
-          "name": "azure_devops_project_configs_project_id_projects_id_fk",
-          "tableFrom": "azure_devops_project_configs",
-          "tableTo": "projects",
-          "columnsFrom": [
-            "project_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
     "host_agent_configs": {
       "name": "host_agent_configs",
       "columns": {
@@ -218,6 +152,20 @@
         },
         "branch_prefix_custom": {
           "name": "branch_prefix_custom",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "quick_ai_provider": {
+          "name": "quick_ai_provider",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "quick_ai_model": {
+          "name": "quick_ai_model",
           "type": "text",
           "primaryKey": false,
           "notNull": false,

@@ -1217,6 +1217,9 @@ msgstr "Een betere ingebouwde browser: bekijk je wijzigingen en klik op elk elem
 msgid "A better Superset is ready"
 msgstr "Een betere versie van Superset staat klaar"
 
+msgid "A branch changed during integration. Cancel this attempt and start again."
+msgstr "Een branch is tijdens de integratie gewijzigd. Annuleer deze poging en begin opnieuw."
+
 #. js-lingui-explicit-id
 msgid "serverError.common.cloudWorkspaceCannotCallThis"
 msgstr "Een cloud-workspace kan {path} niet aanroepen. Doe dit vanuit een client waarop je bent ingelogd."
@@ -1686,6 +1689,9 @@ msgstr "AI-assistenten"
 msgid "AI authentication failed. Please check your AI settings."
 msgstr "AI-authenticatie mislukt. Controleer je AI-instellingen."
 
+msgid "AI features"
+msgstr "AI-functies"
+
 msgid "Alert"
 msgstr "Alert"
 
@@ -1753,6 +1759,9 @@ msgstr "Alle opmerkingen"
 
 msgid "All commits"
 msgstr "Alle commits"
+
+msgid "All conflicts are resolved. Complete the integration when ready."
+msgstr "Alle conflicten zijn opgelost. Voltooi de integratie wanneer je klaar bent."
 
 #. placeholder {0}: members.length
 msgid "All data will be permanently deleted for all {0} members — this cannot be undone."
@@ -1860,11 +1869,17 @@ msgstr "Toegang via de relay toestaan"
 msgid "Allow for session"
 msgstr "Toestaan voor deze sessie"
 
+msgid "Allow merge into principal"
+msgstr "Samenvoegen naar hoofdbranch toestaan"
+
 msgid "Allow microphone access to use dictation"
 msgstr "Geef toegang tot de microfoon om te dicteren"
 
 msgid "Allow remote access to this device via relay"
 msgstr "Externe toegang tot dit apparaat via de relay toestaan"
+
+msgid "Allow update from remote principal"
+msgstr "Bijwerken vanuit externe hoofdbranch toestaan"
 
 msgid "Allowed"
 msgstr "Toegestaan"
@@ -1959,6 +1974,9 @@ msgstr "Anonieme Assembleur"
 msgid "another device"
 msgstr "een ander apparaat"
 
+msgid "Another integration operation is running. Try again shortly."
+msgstr "Er loopt een andere integratie. Probeer het zo opnieuw."
+
 msgid "Answered"
 msgstr "Beantwoord"
 
@@ -1967,6 +1985,15 @@ msgstr "Anthropic heeft deze API-sleutel geweigerd."
 
 msgid "Anthropic rejected this token."
 msgstr "Anthropic heeft dit token geweigerd."
+
+msgid "Antigravity CLI connection failed"
+msgstr "Verbinding met Antigravity CLI mislukt"
+
+msgid "Antigravity CLI is ready"
+msgstr "Antigravity CLI is gereed"
+
+msgid "Antigravity CLI status"
+msgstr "Status van Antigravity CLI"
 
 msgid "Any calendar"
 msgstr "Elke agenda"
@@ -2629,6 +2656,9 @@ msgstr "Binair bestand gewijzigd"
 msgid "Binary file hidden"
 msgstr "Binair bestand verborgen"
 
+msgid "Binary, large, or special file. Choose a version to resolve."
+msgstr "Binair, groot of speciaal bestand. Kies een versie om het conflict op te lossen."
+
 msgid "Bio"
 msgstr "Bio"
 
@@ -2694,6 +2724,12 @@ msgstr "Branchgedrag voor nieuwe werkruimtes op dit apparaat. Projecten kunnen d
 
 msgid "Branch copied"
 msgstr "Branch gekopieerd"
+
+msgid "Branch integration"
+msgstr "Branchintegratie"
+
+msgid "Branch integration completed"
+msgstr "Branchintegratie voltooid"
 
 msgid "branch name"
 msgstr "branchnaam"
@@ -2949,6 +2985,9 @@ msgstr "Download annuleren"
 msgid "Cancel edits"
 msgstr "Bewerkingen annuleren"
 
+msgid "Cancel integration"
+msgstr "Integratie annuleren"
+
 msgid "Cancel plan"
 msgstr "Plan opzeggen"
 
@@ -3119,6 +3158,9 @@ msgstr "Controleren op updates..."
 
 msgid "Check on running agents and read what they changed from your phone."
 msgstr "Bekijk lopende agents en lees vanaf je telefoon wat ze hebben gewijzigd."
+
+msgid "Check out a branch before continuing."
+msgstr "Schakel naar een branch voordat je doorgaat."
 
 msgid "Check resources"
 msgstr "Resources controleren"
@@ -3725,6 +3767,9 @@ msgstr "Commit mislukt: {0}"
 msgid "Commit message"
 msgstr "Commitbericht"
 
+msgid "Commit or stash pending changes in the source and destination workspaces first."
+msgstr "Commit of stash eerst de openstaande wijzigingen in de bron- en doelwerkruimten."
+
 msgid "Commits"
 msgstr "Commits"
 
@@ -3776,6 +3821,9 @@ msgstr "Vergeleken met de standaardstijl"
 msgid "complete"
 msgstr "afgerond"
 
+msgid "Complete integration"
+msgstr "Integratie voltooien"
+
 msgid "Completed"
 msgstr "Afgerond"
 
@@ -3818,6 +3866,9 @@ msgstr "Configureer de automatisering zelf"
 msgid "Configure the in-app browser"
 msgstr "Configureer de ingebouwde browser"
 
+msgid "Configure the principal branch and remote in project settings."
+msgstr "Stel de hoofdbranch en remote in bij de projectinstellingen."
+
 msgid "Configure which agents appear in launchers and how their launches are built."
 msgstr "Bepaal welke agents in launchers verschijnen en hoe hun starts worden opgebouwd."
 
@@ -3829,6 +3880,9 @@ msgstr "Bevestigen"
 
 msgid "Confirm before quitting"
 msgstr "Bevestigen voor afsluiten"
+
+msgid "Conflicting files"
+msgstr "Bestanden met conflicten"
 
 msgid "Connect"
 msgstr "Verbinden"
@@ -4342,6 +4396,9 @@ msgstr "Kan bestand niet verwijderen"
 msgid "Could not delete this page"
 msgstr "Kan deze pagina niet verwijderen"
 
+msgid "Could not fetch the principal branch. Check your connection, credentials, and remote branch."
+msgstr "De hoofdbranch kon niet worden opgehaald. Controleer je verbinding, toegangsgegevens en externe branch."
+
 msgid "Could not forget {domain}"
 msgstr "Kan {domain} niet vergeten"
 
@@ -4529,6 +4586,14 @@ msgstr "Kan niet-gestagede wijzigingen niet verwerpen"
 
 msgid "Couldn’t finish deleting workspaces"
 msgstr "Kon het verwijderen van werkruimtes niet afronden"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate a commit message: {0}"
+msgstr "Kan geen commitbericht genereren: {0}"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate pull request details: {0}"
+msgstr "Kan geen pull-requestdetails genereren: {0}"
 
 #. placeholder {0}: configsQuery.error instanceof Error ? configsQuery.error.message : hostServiceUnavailableMessage
 msgid "Couldn't load agent settings: {0}"
@@ -6617,6 +6682,9 @@ msgstr "Starten van run mislukt"
 msgid "Failed to update agent settings"
 msgstr "Bijwerken van agentinstellingen mislukt"
 
+msgid "Failed to update AI settings"
+msgstr "Kan AI-instellingen niet bijwerken"
+
 msgid "Failed to update automation"
 msgstr "Bijwerken van automatisering mislukt"
 
@@ -6706,6 +6774,9 @@ msgstr "Bestandsacties"
 
 msgid "File changes"
 msgstr "Bestandswijzigingen"
+
+msgid "File deleted"
+msgstr "Bestand verwijderd"
 
 msgid "File is too large to preview"
 msgstr "Bestand is te groot voor een voorbeeld"
@@ -6839,6 +6910,9 @@ msgstr "Finder"
 msgid "Finish review"
 msgstr "Review afronden"
 
+msgid "Finish the pending Git operation first."
+msgstr "Voltooi eerst de openstaande Git-bewerking."
+
 msgid "Finished"
 msgstr "Voltooid"
 
@@ -6874,6 +6948,9 @@ msgstr "Flag"
 
 msgid "Flame"
 msgstr "Vlam"
+
+msgid "Flash balances speed and quality for short development tasks."
+msgstr "Flash biedt een goede balans tussen snelheid en kwaliteit voor korte ontwikkeltaken."
 
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Vloten van agents plannen, bouwen, reviewen en testen elkaars werk. Mensen bepalen de richting, beslechten uitzonderingen en bewaken de smaak. De eenheid van menselijke aandacht is niet langer de pull request. Het is de beslissing."
@@ -7113,6 +7190,9 @@ msgstr "Algemene toegang"
 msgid "General comment"
 msgstr "General comment"
 
+msgid "Generate"
+msgstr "Genereren"
+
 msgid "Generate a key to use with MCP servers."
 msgstr "Genereer een sleutel om te gebruiken met MCP-servers."
 
@@ -7178,6 +7258,9 @@ msgstr "Git en worktrees"
 
 msgid "Git author name"
 msgstr "Naam van git-auteur"
+
+msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
+msgstr "Git-integratie mislukt. Controleer de repository en probeer opnieuw of annuleer de poging."
 
 msgid "GitHub"
 msgstr "GitHub"
@@ -7884,6 +7967,9 @@ msgstr "Plugin installeren"
 msgid "Install Superset MCP in your client"
 msgstr "Superset MCP installeren in je client"
 
+msgid "Install the Antigravity CLI, then run agy in a terminal to sign in."
+msgstr "Installeer Antigravity CLI en voer daarna agy uit in een terminal om je aan te melden."
+
 msgid "Install the desktop app"
 msgstr "Installeer de desktop-app"
 
@@ -7903,6 +7989,10 @@ msgstr "Geïnstalleerd"
 msgid "serverError.plugins.marketplaceHasInstalls"
 msgstr "Geïnstalleerde plugins komen uit {name}: {plugins}. Verwijder ze eerst."
 
+#. placeholder {0}: statusQuery.data.version
+msgid "Installed version {0}"
+msgstr "Geïnstalleerde versie {0}"
+
 msgid "Installed via"
 msgstr "Geïnstalleerd via"
 
@@ -7914,6 +8004,9 @@ msgstr "Installaties"
 
 msgid "Instructions"
 msgstr "Instructies"
+
+msgid "Integrate committed changes locally. These settings do not change workspace creation or pull requests."
+msgstr "Integreer gecommitte wijzigingen lokaal. Deze instellingen veranderen het aanmaken van werkruimten of pull requests niet."
 
 msgid "Integrations"
 msgstr "Integraties"
@@ -8587,9 +8680,6 @@ msgstr "Eerdere berichten laden"
 msgid "Load more"
 msgstr "Meer laden"
 
-msgid "Load older messages"
-msgstr "Oudere berichten laden"
-
 msgid "Loader"
 msgstr "Loader"
 
@@ -8865,6 +8955,9 @@ msgstr "Markeren als niet bekeken"
 msgid "Mark as Read"
 msgstr "Markeren als gelezen"
 
+msgid "Mark as resolved"
+msgstr "Markeren als opgelost"
+
 msgid "Mark as Unread"
 msgstr "Markeren als ongelezen"
 
@@ -9011,6 +9104,12 @@ msgstr "Merge-commit"
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Mergen mislukt: {0}"
+
+msgid "Merge into {branch}"
+msgstr "Samenvoegen naar {branch}"
+
+msgid "Merge into principal"
+msgstr "Samenvoegen naar hoofdbranch"
 
 msgid "Merge pull request"
 msgstr "Pull request mergen"
@@ -10934,6 +11033,9 @@ msgstr "Orkestratiechat"
 msgid "Orchestration guide"
 msgstr "Orkestratiegids"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "Organisch zoeken"
 
@@ -11439,6 +11541,9 @@ msgstr "Plugin-marketplace"
 msgid "Plugins"
 msgstr "Plugins"
 
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
+
 msgid "Policies"
 msgstr "Policies"
 
@@ -11534,6 +11639,9 @@ msgstr "Voorkeuren"
 msgid "Prefix"
 msgstr "Prefix"
 
+msgid "Preparation was interrupted. Cancel this attempt and start again."
+msgstr "De voorbereiding is onderbroken. Annuleer deze poging en begin opnieuw."
+
 msgid "Preparing"
 msgstr "Voorbereiden"
 
@@ -11620,6 +11728,9 @@ msgstr "Primary key"
 
 msgid "Primitives"
 msgstr "Primitieven"
+
+msgid "Principal branch"
+msgstr "Hoofdbranch"
 
 msgid "Print"
 msgstr "Afdrukken"
@@ -11731,6 +11842,9 @@ msgstr "Project ingesteld op {0}"
 msgid "Project Settings"
 msgstr "Projectinstellingen"
 
+msgid "Project settings changed. Cancel this attempt and start again."
+msgstr "De projectinstellingen zijn gewijzigd. Annuleer deze poging en begin opnieuw."
+
 msgid "Project worktree location reset"
 msgstr "Worktree-locatie van project gereset"
 
@@ -11807,6 +11921,9 @@ msgstr "Eigenschappen"
 
 msgid "Provide either id or slug"
 msgstr "Geef een id of een slug op"
+
+msgid "Provider"
+msgstr "Provider"
 
 #. placeholder {0}: sourceConfig?.label ?? binding.agentId
 msgid "Provider: {0}"
@@ -12168,6 +12285,9 @@ msgstr "Wordt vernieuwd zodra Claude Code opnieuw draait."
 msgid "Refreshes when OpenCode next runs."
 msgstr "Wordt vernieuwd zodra OpenCode opnieuw draait."
 
+msgid "Regenerate"
+msgstr "Opnieuw genereren"
+
 msgid "Register any CLI agent alongside the built-ins, each with its own name, icon, and launch command."
 msgstr "Registreer elke CLI-agent naast de ingebouwde, elk met een eigen naam, icoon en startcommando."
 
@@ -12239,6 +12359,9 @@ msgstr "Externe toegang"
 
 msgid "Remote Access"
 msgstr "Externe toegang"
+
+msgid "Remote for updates"
+msgstr "Remote voor updates"
 
 msgid "Remote MCP server — connects over HTTP"
 msgstr "Externe MCP-server — verbindt via HTTP"
@@ -12577,6 +12700,9 @@ msgstr "Oplossen"
 msgid "Resolve all"
 msgstr "Alles oplossen"
 
+msgid "Resolve all conflicts before completing the integration."
+msgstr "Los alle conflicten op voordat je de integratie voltooit."
+
 msgid "Resolve Conflicts to Merge"
 msgstr "Los conflicten op om te mergen"
 
@@ -12594,6 +12720,9 @@ msgstr "Thread oplossen"
 
 msgid "Resolved"
 msgstr "Opgelost"
+
+msgid "Resolved content"
+msgstr "Opgeloste inhoud"
 
 msgid "Resource consumption"
 msgstr "Resourcegebruik"
@@ -12706,6 +12835,12 @@ msgstr "Resume-argumenten"
 
 msgid "Resume automation"
 msgstr "Automatisering hervatten"
+
+msgid "Resume integration"
+msgstr "Integratie hervatten"
+
+msgid "Resume or cancel the existing integration first."
+msgstr "Hervat of annuleer eerst de bestaande integratie."
 
 #. placeholder {0}: candidate.agentLabel
 msgid "Resuming {0}…"
@@ -13385,6 +13520,9 @@ msgstr "Bekijk waar je laatste 30 dagen staan op de publieke ranglijst. Alleen t
 msgid "Select"
 msgstr "Select"
 
+msgid "Select a branch"
+msgstr "Selecteer een branch"
+
 msgid "Select a default preset"
 msgstr "Selecteer een standaardvoorinstelling"
 
@@ -13405,6 +13543,9 @@ msgstr "Kies een project om pull requests te zien."
 
 msgid "Select a pull request to preview it here."
 msgstr "Kies een pull request om hem hier te bekijken."
+
+msgid "Select a remote"
+msgstr "Selecteer een remote"
 
 msgid "Select a team"
 msgstr "Kies een team"
@@ -13704,11 +13845,11 @@ msgstr "Bezig met instellen op de achtergrond..."
 msgid "Settings"
 msgstr "Instellingen"
 
-msgid "Settings ({settingsHotkey})"
-msgstr "Instellingen ({settingsHotkey})"
-
 msgid "Settings → Remote Access → “Allow remote access to this device via relay”."
 msgstr "Instellingen → Externe toegang → “Externe toegang tot dit apparaat via de relay toestaan”."
+
+msgid "Settings saved"
+msgstr "Instellingen opgeslagen"
 
 msgid "Settings..."
 msgstr "Instellingen..."
@@ -15168,8 +15309,14 @@ msgstr "Servicevoorwaarden"
 msgid "Test again"
 msgstr "Opnieuw testen"
 
+msgid "Test connection"
+msgstr "Verbinding testen"
+
 msgid "Testing connection…"
 msgstr "Verbinding testen…"
+
+msgid "Testing..."
+msgstr "Testen..."
 
 msgid "Text"
 msgstr "Tekst"
@@ -15237,11 +15384,17 @@ msgstr "De Codex-login"
 msgid "The config repository must be one of the environment's repositories"
 msgstr "De configuratierepository moet een van de repositories van de omgeving zijn"
 
+msgid "The configured remote no longer exists."
+msgstr "De ingestelde remote bestaat niet meer."
+
 msgid "The connection timed out"
 msgstr "De verbinding is verlopen"
 
 msgid "The connection was closed"
 msgstr "De verbinding is gesloten"
+
+msgid "The current branch is already the principal branch."
+msgstr "De huidige branch is al de hoofdbranch."
 
 msgid "The current prompt will be replaced with the selected version. A new \"Restored\" entry will be added to history so you can undo this."
 msgstr "De huidige prompt wordt vervangen door de geselecteerde versie. Er wordt een nieuw item \"Hersteld\" aan de geschiedenis toegevoegd, zodat je dit ongedaan kunt maken."
@@ -15254,6 +15407,12 @@ msgstr "We brengen Superset naar Windows en Linux. Laat je e-mailadres achter, d
 
 msgid "The desktop app runs on macOS, with an experimental Linux AppImage; Windows is not yet available. Beyond the desktop app there's a CLI, a TypeScript SDK, and an MCP server, so you can drive Superset from scripts, terminals, and other agents."
 msgstr "De desktop-app draait op macOS, met een experimentele Linux-AppImage; Windows is er nog niet. Naast de desktop-app zijn er een CLI, een TypeScript-SDK en een MCP-server, zodat je Superset kunt aansturen vanuit scripts, terminals en andere agents."
+
+msgid "The destination branch is checked out in multiple worktrees."
+msgstr "De doelbranch is in meerdere werkbomen uitgecheckt."
+
+msgid "The destination stays unchanged until completion. Closing this window keeps the attempt available to resume."
+msgstr "Het doel blijft ongewijzigd tot de voltooiing. Na het sluiten van dit venster kun je de poging hervatten."
 
 msgid "The device that hosts this project is unavailable."
 msgstr "Het apparaat dat dit project host is niet beschikbaar."
@@ -15411,6 +15570,9 @@ msgstr "De pagina die je zoekt bestaat niet."
 
 msgid "The people behind Superset."
 msgstr "De mensen achter Superset."
+
+msgid "The principal branch does not exist locally."
+msgstr "De hoofdbranch bestaat niet lokaal."
 
 msgid "The project's checkout as it is: files and branch are shared"
 msgstr "De checkout van het project zoals die is: bestanden en branch worden gedeeld"
@@ -15687,6 +15849,9 @@ msgstr "Deze maand"
 
 msgid "This only changes the display name, not the branch."
 msgstr "Dit verandert alleen de weergavenaam, niet de branch."
+
+msgid "This operation is disabled for this project."
+msgstr "Deze bewerking is uitgeschakeld voor dit project."
 
 msgid "this organization"
 msgstr "deze organisatie"
@@ -16407,6 +16572,9 @@ msgstr "Up-to-date"
 msgid "Update"
 msgstr "Bijwerken"
 
+msgid "update AI settings"
+msgstr "AI-instellingen bijwerken"
+
 msgid "Update available"
 msgstr "Update beschikbaar"
 
@@ -16424,6 +16592,12 @@ msgstr "Daemon bijwerken"
 
 msgid "Update Error"
 msgstr "Updatefout"
+
+msgid "Update from {remote}/{branch}"
+msgstr "Bijwerken vanuit {remote}/{branch}"
+
+msgid "Update from remote principal"
+msgstr "Bijwerken vanuit externe hoofdbranch"
 
 msgid "Update host service"
 msgstr "Hostservice bijwerken"
@@ -16545,6 +16719,12 @@ msgstr "Gebruik niet beschikbaar."
 msgid "Use “{0}”"
 msgstr "“{0}” gebruiken"
 
+msgid "Use {label}"
+msgstr "{label} gebruiken"
+
+msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
+msgstr "Gebruik een klein lokaal CLI-model voor branchnamen, commitberichten en pull-requestconcepten."
+
 msgid "Use a URL like https://dev.azure.com/organization."
 msgstr "Gebruik een URL zoals https://dev.azure.com/organization."
 
@@ -16634,6 +16814,9 @@ msgstr "Gebruiker niet gevonden"
 
 msgid "user@example.com"
 msgstr "gebruiker@voorbeeld.com"
+
+msgid "Uses the Antigravity CLI and its existing login on this host."
+msgstr "Gebruikt Antigravity CLI en de bestaande aanmelding op deze host."
 
 msgid "Using random branch name (AI generation timed out)"
 msgstr "Willekeurige branchnaam gebruikt (AI-generatie duurde te lang)"
@@ -17145,6 +17328,9 @@ msgstr "Bezig"
 msgctxt "agent status"
 msgid "Working"
 msgstr "Bezig"
+
+msgid "Working for {duration}"
+msgstr "Werkt al {duration}"
 
 msgid "Works when environments are clean. Environments are rarely clean."
 msgstr "Werkt als omgevingen schoon zijn. Omgevingen zijn zelden schoon."

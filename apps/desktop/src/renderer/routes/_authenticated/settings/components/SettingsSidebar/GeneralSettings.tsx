@@ -52,8 +52,10 @@ type SettingsRoute =
 	| "/settings/behavior"
 	| "/settings/browser"
 	| "/settings/git"
+	| "/settings/ai"
 	| "/settings/agents"
 	| "/settings/codex-chat"
+	| "/settings/pokedex"
 	| "/settings/terminal"
 	| "/settings/links"
 	| "/settings/agent-accounts"
@@ -161,10 +163,25 @@ const SECTION_GROUPS: SectionGroup[] = [
 				icon: <LuGitBranch className="h-4 w-4" />,
 			},
 			{
+				id: "/settings/ai",
+				section: "ai",
+				label: msg({
+					message: "AI features",
+				}),
+				icon: <HiOutlineSparkles className="h-4 w-4" />,
+			},
+			{
 				id: "/settings/codex-chat",
 				section: "codexChat",
 				label: msg({ message: "Codex Chat" }),
 				icon: <HiOutlineSparkles className="h-4 w-4" />,
+			},
+			{
+				id: "/settings/pokedex",
+				section: "pokedex",
+				label: msg({ message: "Pokédex Ordem Paranormal" }),
+				icon: <HiOutlineShieldCheck className="h-4 w-4" />,
+				fullWidth: true,
 			},
 			{
 				id: "/settings/agents",

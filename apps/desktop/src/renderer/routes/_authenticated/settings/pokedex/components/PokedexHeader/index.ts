@@ -1,0 +1,1 @@
+export { PokedexHeader } from "./PokedexHeader";

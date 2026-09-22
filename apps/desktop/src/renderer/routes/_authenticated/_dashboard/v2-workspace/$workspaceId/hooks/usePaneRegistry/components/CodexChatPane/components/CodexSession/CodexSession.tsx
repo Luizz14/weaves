@@ -167,6 +167,10 @@ export function CodexSession({
 	const goalInFlight = Boolean(state?.goal && state.goal.status !== "complete");
 	const canImplementPlan =
 		!dormant && !turn && !goalInFlight && Boolean(client.updateGoal);
+	useEffect(() => {
+		if (chat.status !== "ready" || !chat.hasOlder) return;
+		void chat.loadOlder();
+	}, [chat.status, chat.hasOlder, chat.loadOlder]);
 	return (
 		<div ref={root} className="contents">
 			{chat.error && (
@@ -176,17 +180,11 @@ export function CodexSession({
 				className="min-h-0 flex-1"
 				contentClassName="mx-auto w-full max-w-3xl space-y-5 px-4 py-6"
 				label={t({ message: "Messages" })}
+				navigation="rail"
+				navigationSide="start"
+				navigationLabel={t({ message: "Message navigation" })}
 				busy={Boolean(turn)}
 			>
-				{chat.hasOlder && (
-					<Button
-						variant="ghost"
-						size="sm"
-						onClick={() => void act(chat.loadOlder)}
-					>
-						<Trans>Load older messages</Trans>
-					</Button>
-				)}
 				{groups.map((group, index) => (
 					<div key={group.turnId}>
 						<CodexTurn

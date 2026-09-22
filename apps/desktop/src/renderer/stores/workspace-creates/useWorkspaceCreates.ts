@@ -60,7 +60,7 @@ const CREATE_SETTLE_TIMEOUT_MS = 10 * 60_000;
 
 /** What the completed-create pipeline needs, from either transport. */
 interface CreateOutcome {
-	workspace: { id: string; projectId: string | null };
+	workspace: { id: string; projectId: string | null; branch?: string | null };
 	terminals: Array<{ terminalId: string; label?: string }>;
 	agents: Array<
 		| { ok: true; kind: "terminal"; sessionId: string; label: string }
@@ -224,6 +224,7 @@ async function createViaEnqueue(
 			workspace: {
 				id: outcome.canonicalWorkspaceId ?? workspaceId,
 				projectId: outcome.projectId,
+				branch: (outcome as { branch?: string }).branch ?? null,
 			},
 			terminals: outcome.terminals,
 			agents: outcome.agents,
@@ -437,6 +438,19 @@ export function useWorkspaceCreates(): UseWorkspaceCreatesApi {
 								id: result.workspace.id,
 								projectId: result.workspace.projectId,
 							});
+						}
+
+						const createdBranch =
+							result.workspace.branch ??
+							("branch" in snapshot ? snapshot.branch : undefined) ??
+							snapshot.name;
+						if (createdBranch) {
+							void electronTrpcClient.ordemParanormal.recordDiscoveryByBranch
+								.mutate({
+									branch: createdBranch,
+									project: result.workspace.projectId ?? undefined,
+								})
+								.catch(() => {});
 						}
 					}
 					return {

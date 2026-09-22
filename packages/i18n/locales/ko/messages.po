@@ -1217,6 +1217,9 @@ msgstr "더 나은 인앱 브라우저입니다. 변경 사항을 미리 보고,
 msgid "A better Superset is ready"
 msgstr "더 나은 Superset이 준비되었습니다"
 
+msgid "A branch changed during integration. Cancel this attempt and start again."
+msgstr "통합 중 브랜치가 변경되었습니다. 이 시도를 취소하고 다시 시작하세요."
+
 #. js-lingui-explicit-id
 msgid "serverError.common.cloudWorkspaceCannotCallThis"
 msgstr "클라우드 워크스페이스에서는 {path}를 호출할 수 없습니다. 로그인한 클라이언트에서 실행하세요."
@@ -1686,6 +1689,9 @@ msgstr "AI 어시스턴트"
 msgid "AI authentication failed. Please check your AI settings."
 msgstr "AI 인증에 실패했습니다. AI 설정을 확인해 주세요."
 
+msgid "AI features"
+msgstr "AI 기능"
+
 msgid "Alert"
 msgstr "경고"
 
@@ -1753,6 +1759,9 @@ msgstr "모든 댓글"
 
 msgid "All commits"
 msgstr "모든 커밋"
+
+msgid "All conflicts are resolved. Complete the integration when ready."
+msgstr "모든 충돌이 해결되었습니다. 준비되면 통합을 완료하세요."
 
 #. placeholder {0}: members.length
 msgid "All data will be permanently deleted for all {0} members — this cannot be undone."
@@ -1860,11 +1869,17 @@ msgstr "릴레이를 통한 접근 허용"
 msgid "Allow for session"
 msgstr "세션 동안 허용"
 
+msgid "Allow merge into principal"
+msgstr "주 브랜치로 병합 허용"
+
 msgid "Allow microphone access to use dictation"
 msgstr "받아쓰기를 사용하려면 마이크 접근을 허용하세요"
 
 msgid "Allow remote access to this device via relay"
 msgstr "릴레이를 통해 이 기기에 원격 액세스 허용"
+
+msgid "Allow update from remote principal"
+msgstr "원격 주 브랜치에서 업데이트 허용"
 
 msgid "Allowed"
 msgstr "허용됨"
@@ -1959,6 +1974,9 @@ msgstr "익명의 조립공"
 msgid "another device"
 msgstr "다른 기기"
 
+msgid "Another integration operation is running. Try again shortly."
+msgstr "다른 통합 작업이 진행 중입니다. 잠시 후 다시 시도하세요."
+
 msgid "Answered"
 msgstr "응답함"
 
@@ -1967,6 +1985,15 @@ msgstr "Anthropic이 이 API 키를 거부했습니다."
 
 msgid "Anthropic rejected this token."
 msgstr "Anthropic이 이 토큰을 거부했습니다."
+
+msgid "Antigravity CLI connection failed"
+msgstr "Antigravity CLI 연결에 실패했습니다"
+
+msgid "Antigravity CLI is ready"
+msgstr "Antigravity CLI가 준비되었습니다"
+
+msgid "Antigravity CLI status"
+msgstr "Antigravity CLI 상태"
 
 msgid "Any calendar"
 msgstr "모든 캘린더"
@@ -2629,6 +2656,9 @@ msgstr "바이너리 파일 변경됨"
 msgid "Binary file hidden"
 msgstr "바이너리 파일 숨김"
 
+msgid "Binary, large, or special file. Choose a version to resolve."
+msgstr "바이너리, 대용량 또는 특수 파일입니다. 충돌을 해결할 버전을 선택하세요."
+
 msgid "Bio"
 msgstr "소개"
 
@@ -2694,6 +2724,12 @@ msgstr "이 기기에서 새 워크스페이스를 만들 때의 브랜치 동�
 
 msgid "Branch copied"
 msgstr "브랜치 복사됨"
+
+msgid "Branch integration"
+msgstr "브랜치 통합"
+
+msgid "Branch integration completed"
+msgstr "브랜치 통합 완료"
 
 msgid "branch name"
 msgstr "브랜치 이름"
@@ -2949,6 +2985,9 @@ msgstr "다운로드 취소"
 msgid "Cancel edits"
 msgstr "편집 취소"
 
+msgid "Cancel integration"
+msgstr "통합 취소"
+
 msgid "Cancel plan"
 msgstr "플랜 해지"
 
@@ -3119,6 +3158,9 @@ msgstr "업데이트 확인..."
 
 msgid "Check on running agents and read what they changed from your phone."
 msgstr "휴대폰에서 실행 중인 에이전트를 확인하고 무엇을 변경했는지 읽어보세요."
+
+msgid "Check out a branch before continuing."
+msgstr "계속하기 전에 브랜치를 체크아웃하세요."
 
 msgid "Check resources"
 msgstr "리소스 확인"
@@ -3725,6 +3767,9 @@ msgstr "커밋 실패: {0}"
 msgid "Commit message"
 msgstr "커밋 메시지"
 
+msgid "Commit or stash pending changes in the source and destination workspaces first."
+msgstr "먼저 원본 및 대상 작업 공간의 보류 중인 변경 사항을 커밋하거나 스태시하세요."
+
 msgid "Commits"
 msgstr "커밋"
 
@@ -3776,6 +3821,9 @@ msgstr "기본 스타일과 비교함"
 msgid "complete"
 msgstr "종료"
 
+msgid "Complete integration"
+msgstr "통합 완료"
+
 msgid "Completed"
 msgstr "완료"
 
@@ -3818,6 +3866,9 @@ msgstr "자동화를 직접 설정하세요"
 msgid "Configure the in-app browser"
 msgstr "앱 내 브라우저를 설정합니다"
 
+msgid "Configure the principal branch and remote in project settings."
+msgstr "프로젝트 설정에서 주 브랜치와 원격 저장소를 설정하세요."
+
 msgid "Configure which agents appear in launchers and how their launches are built."
 msgstr "실행기에 표시할 에이전트와 실행 구성 방식을 설정합니다."
 
@@ -3829,6 +3880,9 @@ msgstr "확인"
 
 msgid "Confirm before quitting"
 msgstr "종료 전 확인"
+
+msgid "Conflicting files"
+msgstr "충돌 파일"
 
 msgid "Connect"
 msgstr "연결"
@@ -4342,6 +4396,9 @@ msgstr "파일을 삭제할 수 없습니다"
 msgid "Could not delete this page"
 msgstr "이 페이지를 삭제할 수 없습니다"
 
+msgid "Could not fetch the principal branch. Check your connection, credentials, and remote branch."
+msgstr "주 브랜치를 가져올 수 없습니다. 연결, 인증 정보 및 원격 브랜치를 확인하세요."
+
 msgid "Could not forget {domain}"
 msgstr "{domain}을(를) 잊지 못했습니다"
 
@@ -4529,6 +4586,14 @@ msgstr "스테이징되지 않은 변경 사항을 버리지 못했습니다"
 
 msgid "Couldn’t finish deleting workspaces"
 msgstr "워크스페이스 삭제를 끝내지 못했습니다"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate a commit message: {0}"
+msgstr "커밋 메시지를 생성할 수 없습니다: {0}"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate pull request details: {0}"
+msgstr "풀 리퀘스트 세부 정보를 생성할 수 없습니다: {0}"
 
 #. placeholder {0}: configsQuery.error instanceof Error ? configsQuery.error.message : hostServiceUnavailableMessage
 msgid "Couldn't load agent settings: {0}"
@@ -6617,6 +6682,9 @@ msgstr "실행을 시작하지 못했습니다"
 msgid "Failed to update agent settings"
 msgstr "에이전트 설정을 업데이트하지 못했습니다"
 
+msgid "Failed to update AI settings"
+msgstr "AI 설정을 업데이트하지 못했습니다"
+
 msgid "Failed to update automation"
 msgstr "자동화를 업데이트하지 못했습니다"
 
@@ -6706,6 +6774,9 @@ msgstr "파일 작업"
 
 msgid "File changes"
 msgstr "파일 변경 사항"
+
+msgid "File deleted"
+msgstr "파일 삭제됨"
 
 msgid "File is too large to preview"
 msgstr "파일이 너무 커서 미리 볼 수 없습니다"
@@ -6839,6 +6910,9 @@ msgstr "Finder"
 msgid "Finish review"
 msgstr "리뷰 마치기"
 
+msgid "Finish the pending Git operation first."
+msgstr "먼저 보류 중인 Git 작업을 완료하세요."
+
 msgid "Finished"
 msgstr "완료"
 
@@ -6874,6 +6948,9 @@ msgstr "플래그"
 
 msgid "Flame"
 msgstr "불꽃"
+
+msgid "Flash balances speed and quality for short development tasks."
+msgstr "Flash는 짧은 개발 작업에서 속도와 품질의 균형을 맞춥니다."
 
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "에이전트 플릿이 서로의 작업을 계획하고, 구현하고, 리뷰하고, 테스트합니다. 사람은 방향을 정하고, 예외를 중재하고, 안목을 책임집니다. 사람이 주의를 기울이는 단위는 더 이상 풀 리퀘스트가 아니라 의사 결정입니다."
@@ -7113,6 +7190,9 @@ msgstr "일반 접근 권한"
 msgid "General comment"
 msgstr "General comment"
 
+msgid "Generate"
+msgstr "생성"
+
 msgid "Generate a key to use with MCP servers."
 msgstr "MCP 서버에서 사용할 키를 생성하세요."
 
@@ -7178,6 +7258,9 @@ msgstr "Git 및 worktree"
 
 msgid "Git author name"
 msgstr "Git 작성자 이름"
+
+msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
+msgstr "Git 통합에 실패했습니다. 저장소를 확인하고 다시 시도하거나 취소하세요."
 
 msgid "GitHub"
 msgstr "GitHub"
@@ -7884,6 +7967,9 @@ msgstr "플러그인 설치"
 msgid "Install Superset MCP in your client"
 msgstr "클라이언트에 Superset MCP 설치하기"
 
+msgid "Install the Antigravity CLI, then run agy in a terminal to sign in."
+msgstr "Antigravity CLI를 설치한 다음 터미널에서 agy를 실행하여 로그인하세요."
+
 msgid "Install the desktop app"
 msgstr "데스크톱 앱 설치"
 
@@ -7903,6 +7989,10 @@ msgstr "설치됨"
 msgid "serverError.plugins.marketplaceHasInstalls"
 msgstr "설치된 플러그인이 {name}에서 왔습니다: {plugins}. 먼저 제거하세요."
 
+#. placeholder {0}: statusQuery.data.version
+msgid "Installed version {0}"
+msgstr "설치된 버전 {0}"
+
 msgid "Installed via"
 msgstr "설치 경로"
 
@@ -7914,6 +8004,9 @@ msgstr "설치"
 
 msgid "Instructions"
 msgstr "지침"
+
+msgid "Integrate committed changes locally. These settings do not change workspace creation or pull requests."
+msgstr "커밋된 변경 사항을 로컬에서 통합합니다. 이 설정은 작업 공간 생성이나 풀 리퀘스트에 영향을 주지 않습니다."
 
 msgid "Integrations"
 msgstr "연동"
@@ -8587,9 +8680,6 @@ msgstr "이전 메시지 불러오기"
 msgid "Load more"
 msgstr "더 보기"
 
-msgid "Load older messages"
-msgstr "이전 메시지 불러오기"
-
 msgid "Loader"
 msgstr "로더"
 
@@ -8865,6 +8955,9 @@ msgstr "확인 안 함으로 표시"
 msgid "Mark as Read"
 msgstr "읽음으로 표시"
 
+msgid "Mark as resolved"
+msgstr "해결됨으로 표시"
+
 msgid "Mark as Unread"
 msgstr "읽지 않음으로 표시"
 
@@ -9011,6 +9104,12 @@ msgstr "머지 커밋"
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "머지 실패: {0}"
+
+msgid "Merge into {branch}"
+msgstr "{branch}에 병합"
+
+msgid "Merge into principal"
+msgstr "주 브랜치에 병합"
 
 msgid "Merge pull request"
 msgstr "풀 리퀘스트 머지"
@@ -10934,6 +11033,9 @@ msgstr "오케스트레이션 채팅"
 msgid "Orchestration guide"
 msgstr "오케스트레이션 가이드"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "자연 검색"
 
@@ -11439,6 +11541,9 @@ msgstr "플러그인 마켓플레이스"
 msgid "Plugins"
 msgstr "플러그인"
 
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
+
 msgid "Policies"
 msgstr "Policies"
 
@@ -11534,6 +11639,9 @@ msgstr "환경설정"
 msgid "Prefix"
 msgstr "접두사"
 
+msgid "Preparation was interrupted. Cancel this attempt and start again."
+msgstr "준비가 중단되었습니다. 이 시도를 취소하고 다시 시작하세요."
+
 msgid "Preparing"
 msgstr "준비 중"
 
@@ -11620,6 +11728,9 @@ msgstr "기본 키"
 
 msgid "Primitives"
 msgstr "기본 요소"
+
+msgid "Principal branch"
+msgstr "주 브랜치"
 
 msgid "Print"
 msgstr "인쇄"
@@ -11731,6 +11842,9 @@ msgstr "{0}에 프로젝트를 설정했습니다"
 msgid "Project Settings"
 msgstr "프로젝트 설정"
 
+msgid "Project settings changed. Cancel this attempt and start again."
+msgstr "프로젝트 설정이 변경되었습니다. 이 시도를 취소하고 다시 시작하세요."
+
 msgid "Project worktree location reset"
 msgstr "프로젝트 worktree 위치를 초기화했습니다"
 
@@ -11807,6 +11921,9 @@ msgstr "속성"
 
 msgid "Provide either id or slug"
 msgstr "id 또는 슬러그 중 하나를 제공하세요"
+
+msgid "Provider"
+msgstr "제공업체"
 
 #. placeholder {0}: sourceConfig?.label ?? binding.agentId
 msgid "Provider: {0}"
@@ -12168,6 +12285,9 @@ msgstr "다음에 Claude Code를 실행하면 갱신됩니다."
 msgid "Refreshes when OpenCode next runs."
 msgstr "다음에 OpenCode를 실행하면 갱신됩니다."
 
+msgid "Regenerate"
+msgstr "다시 생성"
+
 msgid "Register any CLI agent alongside the built-ins, each with its own name, icon, and launch command."
 msgstr "기본 제공 에이전트 옆에 어떤 CLI 에이전트든 이름, 아이콘, 실행 명령과 함께 등록하세요."
 
@@ -12239,6 +12359,9 @@ msgstr "원격 접속"
 
 msgid "Remote Access"
 msgstr "원격 액세스"
+
+msgid "Remote for updates"
+msgstr "업데이트용 원격 저장소"
 
 msgid "Remote MCP server — connects over HTTP"
 msgstr "원격 MCP 서버 — HTTP로 연결합니다"
@@ -12577,6 +12700,9 @@ msgstr "해결"
 msgid "Resolve all"
 msgstr "모두 해결"
 
+msgid "Resolve all conflicts before completing the integration."
+msgstr "통합을 완료하기 전에 모든 충돌을 해결하세요."
+
 msgid "Resolve Conflicts to Merge"
 msgstr "머지하려면 충돌 해결"
 
@@ -12594,6 +12720,9 @@ msgstr "스레드 해결"
 
 msgid "Resolved"
 msgstr "해결됨"
+
+msgid "Resolved content"
+msgstr "해결된 내용"
 
 msgid "Resource consumption"
 msgstr "리소스 사용량"
@@ -12706,6 +12835,12 @@ msgstr "재개 인수"
 
 msgid "Resume automation"
 msgstr "자동화 재개"
+
+msgid "Resume integration"
+msgstr "통합 재개"
+
+msgid "Resume or cancel the existing integration first."
+msgstr "먼저 기존 통합을 재개하거나 취소하세요."
 
 #. placeholder {0}: candidate.agentLabel
 msgid "Resuming {0}…"
@@ -13385,6 +13520,9 @@ msgstr "최근 30일 사용량이 공개 리더보드에서 어디쯤인지 확�
 msgid "Select"
 msgstr "선택"
 
+msgid "Select a branch"
+msgstr "브랜치 선택"
+
 msgid "Select a default preset"
 msgstr "기본 프리셋 선택"
 
@@ -13405,6 +13543,9 @@ msgstr "풀 리퀘스트를 보려면 프로젝트를 선택하세요."
 
 msgid "Select a pull request to preview it here."
 msgstr "풀 리퀘스트를 선택하면 여기에서 미리 볼 수 있습니다."
+
+msgid "Select a remote"
+msgstr "원격 저장소 선택"
 
 msgid "Select a team"
 msgstr "팀 선택"
@@ -13704,11 +13845,11 @@ msgstr "백그라운드에서 설정하는 중..."
 msgid "Settings"
 msgstr "설정"
 
-msgid "Settings ({settingsHotkey})"
-msgstr "설정 ({settingsHotkey})"
-
 msgid "Settings → Remote Access → “Allow remote access to this device via relay”."
 msgstr "설정 → 원격 액세스 → “릴레이를 통해 이 기기에 원격 액세스 허용”."
+
+msgid "Settings saved"
+msgstr "설정 저장됨"
 
 msgid "Settings..."
 msgstr "설정..."
@@ -15168,8 +15309,14 @@ msgstr "서비스 약관"
 msgid "Test again"
 msgstr "다시 테스트"
 
+msgid "Test connection"
+msgstr "연결 테스트"
+
 msgid "Testing connection…"
 msgstr "연결 테스트 중…"
+
+msgid "Testing..."
+msgstr "테스트 중..."
 
 msgid "Text"
 msgstr "텍스트"
@@ -15237,11 +15384,17 @@ msgstr "Codex 로그인"
 msgid "The config repository must be one of the environment's repositories"
 msgstr "구성 리포지토리는 환경의 리포지토리 중 하나여야 합니다"
 
+msgid "The configured remote no longer exists."
+msgstr "설정된 원격 저장소가 더 이상 존재하지 않습니다."
+
 msgid "The connection timed out"
 msgstr "연결 시간이 초과되었습니다"
 
 msgid "The connection was closed"
 msgstr "연결이 닫혔습니다"
+
+msgid "The current branch is already the principal branch."
+msgstr "현재 브랜치가 이미 주 브랜치입니다."
 
 msgid "The current prompt will be replaced with the selected version. A new \"Restored\" entry will be added to history so you can undo this."
 msgstr "현재 프롬프트가 선택한 버전으로 교체됩니다. 기록에 \"복원됨\" 항목이 새로 추가되므로 되돌릴 수 있습니다."
@@ -15254,6 +15407,12 @@ msgstr "Superset을 Windows와 Linux로 확장하고 있습니다. 이메일을 
 
 msgid "The desktop app runs on macOS, with an experimental Linux AppImage; Windows is not yet available. Beyond the desktop app there's a CLI, a TypeScript SDK, and an MCP server, so you can drive Superset from scripts, terminals, and other agents."
 msgstr "데스크톱 앱은 macOS에서 실행되며 실험적인 Linux AppImage가 있습니다. Windows는 아직 지원하지 않습니다. 데스크톱 앱 외에 CLI, TypeScript SDK, MCP 서버가 있어 스크립트, 터미널, 다른 에이전트에서 Superset을 조작할 수 있습니다."
+
+msgid "The destination branch is checked out in multiple worktrees."
+msgstr "대상 브랜치가 여러 작업 트리에서 체크아웃되어 있습니다."
+
+msgid "The destination stays unchanged until completion. Closing this window keeps the attempt available to resume."
+msgstr "완료될 때까지 대상은 변경되지 않습니다. 창을 닫아도 나중에 이 시도를 재개할 수 있습니다."
 
 msgid "The device that hosts this project is unavailable."
 msgstr "이 프로젝트를 호스팅하는 기기를 사용할 수 없습니다."
@@ -15411,6 +15570,9 @@ msgstr "찾으시는 페이지가 존재하지 않습니다."
 
 msgid "The people behind Superset."
 msgstr "Superset을 만드는 사람들."
+
+msgid "The principal branch does not exist locally."
+msgstr "주 브랜치가 로컬에 존재하지 않습니다."
 
 msgid "The project's checkout as it is: files and branch are shared"
 msgstr "프로젝트의 체크아웃을 그대로 사용: 파일과 브랜치가 공유됩니다"
@@ -15687,6 +15849,9 @@ msgstr "이번 달"
 
 msgid "This only changes the display name, not the branch."
 msgstr "표시 이름만 변경되며 브랜치는 바뀌지 않습니다."
+
+msgid "This operation is disabled for this project."
+msgstr "이 프로젝트에서 해당 작업이 비활성화되어 있습니다."
 
 msgid "this organization"
 msgstr "이 조직"
@@ -16407,6 +16572,9 @@ msgstr "최신 상태"
 msgid "Update"
 msgstr "업데이트"
 
+msgid "update AI settings"
+msgstr "AI 설정 업데이트"
+
 msgid "Update available"
 msgstr "업데이트 있음"
 
@@ -16424,6 +16592,12 @@ msgstr "데몬 업데이트"
 
 msgid "Update Error"
 msgstr "업데이트 오류"
+
+msgid "Update from {remote}/{branch}"
+msgstr "{remote}/{branch}에서 업데이트"
+
+msgid "Update from remote principal"
+msgstr "원격 주 브랜치에서 업데이트"
 
 msgid "Update host service"
 msgstr "호스트 서비스 업데이트"
@@ -16545,6 +16719,12 @@ msgstr "사용량을 볼 수 없습니다."
 msgid "Use “{0}”"
 msgstr "“{0}” 사용"
 
+msgid "Use {label}"
+msgstr "{label} 사용"
+
+msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
+msgstr "브랜치 이름, 커밋 메시지 및 풀 리퀘스트 초안에 작은 로컬 CLI 모델을 사용합니다."
+
 msgid "Use a URL like https://dev.azure.com/organization."
 msgstr "https://dev.azure.com/organization 형식의 URL을 사용하세요."
 
@@ -16634,6 +16814,9 @@ msgstr "사용자를 찾을 수 없습니다"
 
 msgid "user@example.com"
 msgstr "user@example.com"
+
+msgid "Uses the Antigravity CLI and its existing login on this host."
+msgstr "이 호스트의 Antigravity CLI와 기존 로그인을 사용합니다."
 
 msgid "Using random branch name (AI generation timed out)"
 msgstr "임의의 브랜치 이름을 사용합니다 (AI 생성 시간 초과)"
@@ -17145,6 +17328,9 @@ msgstr "작업 중"
 msgctxt "agent status"
 msgid "Working"
 msgstr "작업 중"
+
+msgid "Working for {duration}"
+msgstr "{duration} 동안 작업 중"
 
 msgid "Works when environments are clean. Environments are rarely clean."
 msgstr "환경이 깨끗할 때는 됩니다. 환경이 깨끗한 경우는 드뭅니다."

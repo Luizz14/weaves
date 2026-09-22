@@ -17,6 +17,7 @@ import { createKeyboardLayoutRouter } from "./keyboardLayout";
 import { createMenuRouter } from "./menu";
 import { createMigrationRouter } from "./migration";
 import { createNotificationsRouter } from "./notifications";
+import { createOrdemParanormalRouter } from "./ordem-paranormal";
 import { createPermissionsRouter } from "./permissions";
 import { createPluginsRouter } from "./plugins";
 import { createPortForwardsRouter } from "./port-forwards";
@@ -65,6 +66,7 @@ export const createAppRouter = (getWindow: () => BrowserWindow | null) => {
 		hostServiceCoordinator: createHostServiceCoordinatorRouter(),
 		keyboardLayout: createKeyboardLayoutRouter(),
 		migration: createMigrationRouter(),
+		ordemParanormal: createOrdemParanormalRouter(),
 	});
 };
 

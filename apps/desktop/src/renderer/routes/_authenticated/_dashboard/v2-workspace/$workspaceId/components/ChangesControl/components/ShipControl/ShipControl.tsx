@@ -14,6 +14,7 @@ import { Textarea } from "@superset/ui/textarea";
 import { workspaceTrpc } from "@superset/workspace-client";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { LuSparkles } from "react-icons/lu";
 import {
 	VscChevronDown,
 	VscGitCommit,
@@ -128,6 +129,32 @@ export function ShipControl({
 			);
 		},
 	});
+	const generateCommitMessageMutation =
+		workspaceTrpc.quickAi.generateCommitMessage.useMutation({
+			onSuccess: ({ message }) => setCommitMessage(message),
+			onError: (error) => {
+				toast.error(
+					t({
+						message: `Couldn't generate a commit message: ${error.message}`,
+					}),
+				);
+			},
+		});
+	const generatePullRequestMutation =
+		workspaceTrpc.quickAi.generatePullRequest.useMutation({
+			onSuccess: ({ title, body }) => {
+				prTitleTouchedRef.current = true;
+				setPrTitle(title);
+				setPrBody(body);
+			},
+			onError: (error) => {
+				toast.error(
+					t({
+						message: `Couldn't generate pull request details: ${error.message}`,
+					}),
+				);
+			},
+		});
 
 	const pushMutation = workspaceTrpc.git.push.useMutation({
 		onSuccess: () => {
@@ -474,20 +501,62 @@ export function ShipControl({
 								}
 							}}
 						/>
-						<button
-							type="button"
-							onClick={handleCommit}
-							disabled={commitMutation.isPending}
-							className="flex h-7 items-center justify-center gap-1.5 rounded-md bg-primary px-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
-						>
-							{commitMutation.isPending && (
-								<VscLoading className="size-3.5 animate-spin" />
-							)}
-							<Trans>Commit</Trans>
-						</button>
+						<div className="flex items-center justify-between gap-2">
+							<button
+								type="button"
+								onClick={() =>
+									generateCommitMessageMutation.mutate({ workspaceId })
+								}
+								disabled={generateCommitMessageMutation.isPending}
+								className="flex h-7 items-center gap-1.5 rounded-md px-2 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-50"
+							>
+								{generateCommitMessageMutation.isPending ? (
+									<VscLoading className="size-3.5 animate-spin" />
+								) : (
+									<LuSparkles className="size-3.5" />
+								)}
+								{commitMessage ? (
+									<Trans>Regenerate</Trans>
+								) : (
+									<Trans>Generate</Trans>
+								)}
+							</button>
+							<button
+								type="button"
+								onClick={handleCommit}
+								disabled={commitMutation.isPending}
+								className="flex h-7 items-center justify-center gap-1.5 rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+							>
+								{commitMutation.isPending && (
+									<VscLoading className="size-3.5 animate-spin" />
+								)}
+								<Trans>Commit</Trans>
+							</button>
+						</div>
 					</div>
 				) : (
 					<div className="flex flex-col gap-2">
+						<div className="flex justify-end">
+							<button
+								type="button"
+								onClick={() =>
+									generatePullRequestMutation.mutate({ workspaceId })
+								}
+								disabled={generatePullRequestMutation.isPending}
+								className="flex h-7 items-center gap-1.5 rounded-md px-2 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-50"
+							>
+								{generatePullRequestMutation.isPending ? (
+									<VscLoading className="size-3.5 animate-spin" />
+								) : (
+									<LuSparkles className="size-3.5" />
+								)}
+								{prTitle || prBody ? (
+									<Trans>Regenerate</Trans>
+								) : (
+									<Trans>Generate</Trans>
+								)}
+							</button>
+						</div>
 						<Input
 							autoFocus
 							value={prTitle}

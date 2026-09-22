@@ -74,6 +74,23 @@ const TABS: SettingsTab[] = [
 		icon: GitBranchIcon,
 	},
 	{
+		id: "pokedex",
+		title: msg({ message: "Ordem Paranormal (Pokédex)" }),
+		path: "/settings/pokedex",
+		icon: ShieldIcon,
+		keywords: [
+			"pokedex",
+			"ordem",
+			"paranormal",
+			"cards",
+			"rpg",
+			"entidades",
+			"personagens",
+			"criaturas",
+			"reliquias",
+		],
+	},
+	{
 		id: "experimental",
 		title: msg({
 			message: "Experimental",

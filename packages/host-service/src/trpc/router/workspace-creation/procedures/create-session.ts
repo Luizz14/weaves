@@ -90,6 +90,7 @@ export const createSession = protectedProcedure
 			}
 		}
 
+		const typedName = input.name?.trim();
 		// AI title, same contract as `workspaces.create`: only when the
 		// caller supplied a prompt but no name. Sessions never rename their
 		// folder — the generated title only relabels the row.
@@ -107,10 +108,10 @@ export const createSession = protectedProcedure
 				})
 			: null;
 
-		const typedName = input.name?.trim();
+		const claimed = claimedSessionNames(ctx);
 		const folderCandidate =
 			(typedName ? sanitizeBranchCandidate(typedName) : "") ||
-			generateFriendlyBranchName();
+			generateFriendlyBranchName(claimed);
 
 		mkdirSync(defaultSessionsRoot(), { recursive: true });
 

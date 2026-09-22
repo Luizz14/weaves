@@ -1,0 +1,1 @@
+export { PokedexCard } from "./PokedexCard";

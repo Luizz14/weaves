@@ -1217,6 +1217,9 @@ msgstr "Ein besserer In-App-Browser: Änderungen in der Vorschau ansehen und ein
 msgid "A better Superset is ready"
 msgstr "Eine bessere Version von Superset ist bereit"
 
+msgid "A branch changed during integration. Cancel this attempt and start again."
+msgstr "Ein Branch wurde während der Integration geändert. Brich diesen Versuch ab und starte neu."
+
 #. js-lingui-explicit-id
 msgid "serverError.common.cloudWorkspaceCannotCallThis"
 msgstr "Ein Cloud-Workspace kann {path} nicht aufrufen. Führe das in einem Client aus, in dem du angemeldet bist."
@@ -1686,6 +1689,9 @@ msgstr "KI-Assistenten"
 msgid "AI authentication failed. Please check your AI settings."
 msgstr "KI-Authentifizierung fehlgeschlagen. Bitte prüfe deine KI-Einstellungen."
 
+msgid "AI features"
+msgstr "KI-Funktionen"
+
 msgid "Alert"
 msgstr "Alert"
 
@@ -1753,6 +1759,9 @@ msgstr "Alle Kommentare"
 
 msgid "All commits"
 msgstr "Alle Commits"
+
+msgid "All conflicts are resolved. Complete the integration when ready."
+msgstr "Alle Konflikte sind gelöst. Schließe die Integration ab, wenn du bereit bist."
 
 #. placeholder {0}: members.length
 msgid "All data will be permanently deleted for all {0} members — this cannot be undone."
@@ -1860,11 +1869,17 @@ msgstr "Zugriff über den Relay erlauben"
 msgid "Allow for session"
 msgstr "Für diese Sitzung erlauben"
 
+msgid "Allow merge into principal"
+msgstr "Zusammenführen in den Hauptbranch erlauben"
+
 msgid "Allow microphone access to use dictation"
 msgstr "Erlaube den Mikrofonzugriff, um zu diktieren"
 
 msgid "Allow remote access to this device via relay"
 msgstr "Fernzugriff auf dieses Gerät über den Relay erlauben"
+
+msgid "Allow update from remote principal"
+msgstr "Aktualisieren vom entfernten Hauptbranch erlauben"
 
 msgid "Allowed"
 msgstr "Erlaubt"
@@ -1959,6 +1974,9 @@ msgstr "Anonymer Monteur"
 msgid "another device"
 msgstr "ein anderes Gerät"
 
+msgid "Another integration operation is running. Try again shortly."
+msgstr "Eine andere Integration läuft bereits. Versuche es gleich noch einmal."
+
 msgid "Answered"
 msgstr "Beantwortet"
 
@@ -1967,6 +1985,15 @@ msgstr "Anthropic hat diesen API-Schlüssel abgelehnt."
 
 msgid "Anthropic rejected this token."
 msgstr "Anthropic hat diesen Token abgelehnt."
+
+msgid "Antigravity CLI connection failed"
+msgstr "Verbindung zu Antigravity CLI fehlgeschlagen"
+
+msgid "Antigravity CLI is ready"
+msgstr "Antigravity CLI ist bereit"
+
+msgid "Antigravity CLI status"
+msgstr "Antigravity-CLI-Status"
 
 msgid "Any calendar"
 msgstr "Beliebiger Kalender"
@@ -2629,6 +2656,9 @@ msgstr "Binärdatei geändert"
 msgid "Binary file hidden"
 msgstr "Binärdatei ausgeblendet"
 
+msgid "Binary, large, or special file. Choose a version to resolve."
+msgstr "Binäre, große oder spezielle Datei. Wähle eine Version zur Konfliktlösung."
+
 msgid "Bio"
 msgstr "Bio"
 
@@ -2694,6 +2724,12 @@ msgstr "Branch-Verhalten für neue Arbeitsbereiche auf diesem Gerät. Projekte k
 
 msgid "Branch copied"
 msgstr "Branch kopiert"
+
+msgid "Branch integration"
+msgstr "Branch-Integration"
+
+msgid "Branch integration completed"
+msgstr "Branch-Integration abgeschlossen"
 
 msgid "branch name"
 msgstr "Branch-Name"
@@ -2949,6 +2985,9 @@ msgstr "Download abbrechen"
 msgid "Cancel edits"
 msgstr "Bearbeitung abbrechen"
 
+msgid "Cancel integration"
+msgstr "Integration abbrechen"
+
 msgid "Cancel plan"
 msgstr "Tarif kündigen"
 
@@ -3119,6 +3158,9 @@ msgstr "Nach Updates suchen..."
 
 msgid "Check on running agents and read what they changed from your phone."
 msgstr "Laufende Agents im Blick behalten und deren Änderungen vom Handy aus lesen."
+
+msgid "Check out a branch before continuing."
+msgstr "Wechsle vor dem Fortfahren zu einem Branch."
 
 msgid "Check resources"
 msgstr "Ressourcen prüfen"
@@ -3725,6 +3767,9 @@ msgstr "Commit fehlgeschlagen: {0}"
 msgid "Commit message"
 msgstr "Commit-Nachricht"
 
+msgid "Commit or stash pending changes in the source and destination workspaces first."
+msgstr "Committe oder sichere zuerst die ausstehenden Änderungen in den Quell- und Zielarbeitsbereichen per Stash."
+
 msgid "Commits"
 msgstr "Commits"
 
@@ -3776,6 +3821,9 @@ msgstr "Verglichen mit dem Standardstil"
 msgid "complete"
 msgstr "abgeschlossen"
 
+msgid "Complete integration"
+msgstr "Integration abschließen"
+
 msgid "Completed"
 msgstr "Abgeschlossen"
 
@@ -3818,6 +3866,9 @@ msgstr "Konfiguriere die Automatisierung selbst"
 msgid "Configure the in-app browser"
 msgstr "Den In-App-Browser konfigurieren"
 
+msgid "Configure the principal branch and remote in project settings."
+msgstr "Konfiguriere den Hauptbranch und das Remote in den Projekteinstellungen."
+
 msgid "Configure which agents appear in launchers and how their launches are built."
 msgstr "Lege fest, welche Agenten in Startern erscheinen und wie ihre Starts gebaut werden."
 
@@ -3829,6 +3880,9 @@ msgstr "Bestätigen"
 
 msgid "Confirm before quitting"
 msgstr "Vor dem Beenden bestätigen"
+
+msgid "Conflicting files"
+msgstr "Dateien mit Konflikten"
 
 msgid "Connect"
 msgstr "Verbinden"
@@ -4342,6 +4396,9 @@ msgstr "Datei konnte nicht gelöscht werden"
 msgid "Could not delete this page"
 msgstr "Diese Seite konnte nicht gelöscht werden"
 
+msgid "Could not fetch the principal branch. Check your connection, credentials, and remote branch."
+msgstr "Der Hauptbranch konnte nicht abgerufen werden. Prüfe Verbindung, Zugangsdaten und entfernten Branch."
+
 msgid "Could not forget {domain}"
 msgstr "{domain} konnte nicht vergessen werden"
 
@@ -4529,6 +4586,14 @@ msgstr "Nicht gestagede Änderungen konnten nicht verworfen werden"
 
 msgid "Couldn’t finish deleting workspaces"
 msgstr "Das Löschen der Arbeitsbereiche konnte nicht abgeschlossen werden"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate a commit message: {0}"
+msgstr "Commit-Nachricht konnte nicht erstellt werden: {0}"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate pull request details: {0}"
+msgstr "Pull-Request-Details konnten nicht erstellt werden: {0}"
 
 #. placeholder {0}: configsQuery.error instanceof Error ? configsQuery.error.message : hostServiceUnavailableMessage
 msgid "Couldn't load agent settings: {0}"
@@ -6617,6 +6682,9 @@ msgstr "Lauf konnte nicht ausgelöst werden"
 msgid "Failed to update agent settings"
 msgstr "Agenten-Einstellungen konnten nicht aktualisiert werden"
 
+msgid "Failed to update AI settings"
+msgstr "KI-Einstellungen konnten nicht aktualisiert werden"
+
 msgid "Failed to update automation"
 msgstr "Automatisierung konnte nicht aktualisiert werden"
 
@@ -6706,6 +6774,9 @@ msgstr "Dateiaktionen"
 
 msgid "File changes"
 msgstr "Dateiänderungen"
+
+msgid "File deleted"
+msgstr "Datei gelöscht"
 
 msgid "File is too large to preview"
 msgstr "Die Datei ist zu groß für eine Vorschau"
@@ -6839,6 +6910,9 @@ msgstr "Finder"
 msgid "Finish review"
 msgstr "Review abschließen"
 
+msgid "Finish the pending Git operation first."
+msgstr "Schließe zuerst den ausstehenden Git-Vorgang ab."
+
 msgid "Finished"
 msgstr "Abgeschlossen"
 
@@ -6874,6 +6948,9 @@ msgstr "Flag"
 
 msgid "Flame"
 msgstr "Flamme"
+
+msgid "Flash balances speed and quality for short development tasks."
+msgstr "Flash bietet ein ausgewogenes Verhältnis aus Geschwindigkeit und Qualität für kurze Entwicklungsaufgaben."
 
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Flotten von Agenten planen, implementieren, reviewen und testen die Arbeit der anderen. Menschen geben die Richtung vor, entscheiden Ausnahmen und verantworten den Geschmack. Die Einheit menschlicher Aufmerksamkeit ist nicht mehr der Pull Request. Sie ist die Entscheidung."
@@ -7113,6 +7190,9 @@ msgstr "Allgemeiner Zugriff"
 msgid "General comment"
 msgstr "General comment"
 
+msgid "Generate"
+msgstr "Generieren"
+
 msgid "Generate a key to use with MCP servers."
 msgstr "Erzeuge einen Schlüssel zur Nutzung mit MCP-Servern."
 
@@ -7178,6 +7258,9 @@ msgstr "Git & Worktrees"
 
 msgid "Git author name"
 msgstr "Git-Autorenname"
+
+msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
+msgstr "Git-Integration fehlgeschlagen. Prüfe das Repository und versuche es erneut oder brich den Versuch ab."
 
 msgid "GitHub"
 msgstr "GitHub"
@@ -7884,6 +7967,9 @@ msgstr "Plugin installieren"
 msgid "Install Superset MCP in your client"
 msgstr "Superset MCP in deinem Client installieren"
 
+msgid "Install the Antigravity CLI, then run agy in a terminal to sign in."
+msgstr "Installiere Antigravity CLI und führe dann agy in einem Terminal aus, um dich anzumelden."
+
 msgid "Install the desktop app"
 msgstr "Desktop-App installieren"
 
@@ -7903,6 +7989,10 @@ msgstr "Installiert"
 msgid "serverError.plugins.marketplaceHasInstalls"
 msgstr "Installierte Plugins stammen aus {name}: {plugins}. Entferne sie zuerst."
 
+#. placeholder {0}: statusQuery.data.version
+msgid "Installed version {0}"
+msgstr "Installierte Version {0}"
+
 msgid "Installed via"
 msgstr "Installiert über"
 
@@ -7914,6 +8004,9 @@ msgstr "Installationen"
 
 msgid "Instructions"
 msgstr "Anweisungen"
+
+msgid "Integrate committed changes locally. These settings do not change workspace creation or pull requests."
+msgstr "Integriere committete Änderungen lokal. Diese Einstellungen ändern weder die Erstellung von Arbeitsbereichen noch Pull Requests."
 
 msgid "Integrations"
 msgstr "Integrationen"
@@ -8587,9 +8680,6 @@ msgstr "Frühere Nachrichten laden"
 msgid "Load more"
 msgstr "Mehr laden"
 
-msgid "Load older messages"
-msgstr "Ältere Nachrichten laden"
-
 msgid "Loader"
 msgstr "Ladeanzeige"
 
@@ -8865,6 +8955,9 @@ msgstr "Als nicht angesehen markieren"
 msgid "Mark as Read"
 msgstr "Als gelesen markieren"
 
+msgid "Mark as resolved"
+msgstr "Als gelöst markieren"
+
 msgid "Mark as Unread"
 msgstr "Als ungelesen markieren"
 
@@ -9011,6 +9104,12 @@ msgstr "Merge-Commit"
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Zusammenführen fehlgeschlagen: {0}"
+
+msgid "Merge into {branch}"
+msgstr "In {branch} zusammenführen"
+
+msgid "Merge into principal"
+msgstr "In Hauptbranch zusammenführen"
 
 msgid "Merge pull request"
 msgstr "Pull Request zusammenführen"
@@ -10934,6 +11033,9 @@ msgstr "Orchestrierungs-Chat"
 msgid "Orchestration guide"
 msgstr "Leitfaden zur Orchestrierung"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "Organische Suche"
 
@@ -11439,6 +11541,9 @@ msgstr "Plugin-Marketplace"
 msgid "Plugins"
 msgstr "Plugins"
 
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
+
 msgid "Policies"
 msgstr "Policies"
 
@@ -11534,6 +11639,9 @@ msgstr "Einstellungen"
 msgid "Prefix"
 msgstr "Präfix"
 
+msgid "Preparation was interrupted. Cancel this attempt and start again."
+msgstr "Die Vorbereitung wurde unterbrochen. Brich diesen Versuch ab und starte neu."
+
 msgid "Preparing"
 msgstr "Wird vorbereitet"
 
@@ -11620,6 +11728,9 @@ msgstr "Primärschlüssel"
 
 msgid "Primitives"
 msgstr "Primitive"
+
+msgid "Principal branch"
+msgstr "Hauptbranch"
 
 msgid "Print"
 msgstr "Drucken"
@@ -11731,6 +11842,9 @@ msgstr "Projekt unter {0} eingerichtet"
 msgid "Project Settings"
 msgstr "Projekteinstellungen"
 
+msgid "Project settings changed. Cancel this attempt and start again."
+msgstr "Die Projekteinstellungen wurden geändert. Brich diesen Versuch ab und starte neu."
+
 msgid "Project worktree location reset"
 msgstr "Worktree-Speicherort des Projekts zurückgesetzt"
 
@@ -11807,6 +11921,9 @@ msgstr "Eigenschaften"
 
 msgid "Provide either id or slug"
 msgstr "Gib entweder id oder slug an"
+
+msgid "Provider"
+msgstr "Anbieter"
 
 #. placeholder {0}: sourceConfig?.label ?? binding.agentId
 msgid "Provider: {0}"
@@ -12168,6 +12285,9 @@ msgstr "Wird beim nächsten Start von Claude Code aktualisiert."
 msgid "Refreshes when OpenCode next runs."
 msgstr "Wird beim nächsten Start von OpenCode aktualisiert."
 
+msgid "Regenerate"
+msgstr "Neu generieren"
+
 msgid "Register any CLI agent alongside the built-ins, each with its own name, icon, and launch command."
 msgstr "Registriere neben den eingebauten jeden beliebigen CLI-Agenten, jeweils mit eigenem Namen, Icon und Startbefehl."
 
@@ -12239,6 +12359,9 @@ msgstr "Remote-Zugriff"
 
 msgid "Remote Access"
 msgstr "Fernzugriff"
+
+msgid "Remote for updates"
+msgstr "Remote für Aktualisierungen"
 
 msgid "Remote MCP server — connects over HTTP"
 msgstr "Remote-MCP-Server — verbindet über HTTP"
@@ -12577,6 +12700,9 @@ msgstr "Erledigen"
 msgid "Resolve all"
 msgstr "Alle auflösen"
 
+msgid "Resolve all conflicts before completing the integration."
+msgstr "Löse alle Konflikte, bevor du die Integration abschließt."
+
 msgid "Resolve Conflicts to Merge"
 msgstr "Konflikte lösen, um zusammenzuführen"
 
@@ -12594,6 +12720,9 @@ msgstr "Thread auflösen"
 
 msgid "Resolved"
 msgstr "Gelöst"
+
+msgid "Resolved content"
+msgstr "Aufgelöster Inhalt"
 
 msgid "Resource consumption"
 msgstr "Ressourcenverbrauch"
@@ -12706,6 +12835,12 @@ msgstr "Resume-Argumente"
 
 msgid "Resume automation"
 msgstr "Automatisierung fortsetzen"
+
+msgid "Resume integration"
+msgstr "Integration fortsetzen"
+
+msgid "Resume or cancel the existing integration first."
+msgstr "Setze zuerst die bestehende Integration fort oder brich sie ab."
 
 #. placeholder {0}: candidate.agentLabel
 msgid "Resuming {0}…"
@@ -13385,6 +13520,9 @@ msgstr "Sieh, wo deine letzten 30 Tage in der öffentlichen Bestenliste landen. 
 msgid "Select"
 msgstr "Select"
 
+msgid "Select a branch"
+msgstr "Branch auswählen"
+
 msgid "Select a default preset"
 msgstr "Standardvoreinstellung auswählen"
 
@@ -13405,6 +13543,9 @@ msgstr "Wähle ein Projekt, um Pull Requests zu sehen."
 
 msgid "Select a pull request to preview it here."
 msgstr "Wähle einen Pull Request, um ihn hier in der Vorschau zu sehen."
+
+msgid "Select a remote"
+msgstr "Remote auswählen"
 
 msgid "Select a team"
 msgstr "Team auswählen"
@@ -13704,11 +13845,11 @@ msgstr "Einrichtung läuft im Hintergrund..."
 msgid "Settings"
 msgstr "Einstellungen"
 
-msgid "Settings ({settingsHotkey})"
-msgstr "Einstellungen ({settingsHotkey})"
-
 msgid "Settings → Remote Access → “Allow remote access to this device via relay”."
 msgstr "Einstellungen → Fernzugriff → „Fernzugriff auf dieses Gerät über den Relay erlauben“."
+
+msgid "Settings saved"
+msgstr "Einstellungen gespeichert"
 
 msgid "Settings..."
 msgstr "Einstellungen..."
@@ -15168,8 +15309,14 @@ msgstr "Nutzungsbedingungen"
 msgid "Test again"
 msgstr "Erneut testen"
 
+msgid "Test connection"
+msgstr "Verbindung testen"
+
 msgid "Testing connection…"
 msgstr "Verbindung wird getestet…"
+
+msgid "Testing..."
+msgstr "Test läuft..."
 
 msgid "Text"
 msgstr "Text"
@@ -15237,11 +15384,17 @@ msgstr "Die Codex-Anmeldung"
 msgid "The config repository must be one of the environment's repositories"
 msgstr "Das Konfigurations-Repository muss eines der Repositories der Umgebung sein"
 
+msgid "The configured remote no longer exists."
+msgstr "Das konfigurierte Remote existiert nicht mehr."
+
 msgid "The connection timed out"
 msgstr "Zeitüberschreitung bei der Verbindung"
 
 msgid "The connection was closed"
 msgstr "Die Verbindung wurde geschlossen"
+
+msgid "The current branch is already the principal branch."
+msgstr "Der aktuelle Branch ist bereits der Hauptbranch."
 
 msgid "The current prompt will be replaced with the selected version. A new \"Restored\" entry will be added to history so you can undo this."
 msgstr "Der aktuelle Prompt wird durch die ausgewählte Version ersetzt. Im Verlauf wird ein neuer Eintrag \"Wiederhergestellt\" angelegt, damit du das rückgängig machen kannst."
@@ -15254,6 +15407,12 @@ msgstr "Wir bringen Superset auf Windows & Linux. Lass uns deine E-Mail-Adresse 
 
 msgid "The desktop app runs on macOS, with an experimental Linux AppImage; Windows is not yet available. Beyond the desktop app there's a CLI, a TypeScript SDK, and an MCP server, so you can drive Superset from scripts, terminals, and other agents."
 msgstr "Die Desktop-App läuft auf macOS, dazu ein experimentelles Linux-AppImage; Windows gibt es noch nicht. Neben der Desktop-App gibt es eine CLI, ein TypeScript-SDK und einen MCP-Server, sodass du Superset aus Skripten, Terminals und anderen Agenten heraus steuern kannst."
+
+msgid "The destination branch is checked out in multiple worktrees."
+msgstr "Der Zielbranch ist in mehreren Arbeitsbäumen ausgecheckt."
+
+msgid "The destination stays unchanged until completion. Closing this window keeps the attempt available to resume."
+msgstr "Das Ziel bleibt bis zum Abschluss unverändert. Nach dem Schließen dieses Fensters kannst du den Versuch fortsetzen."
 
 msgid "The device that hosts this project is unavailable."
 msgstr "Das Gerät, das dieses Projekt hostet, ist nicht verfügbar."
@@ -15411,6 +15570,9 @@ msgstr "Die gesuchte Seite gibt es nicht."
 
 msgid "The people behind Superset."
 msgstr "Die Menschen hinter Superset."
+
+msgid "The principal branch does not exist locally."
+msgstr "Der Hauptbranch existiert nicht lokal."
 
 msgid "The project's checkout as it is: files and branch are shared"
 msgstr "Der Checkout des Projekts, wie er ist: Dateien und Branch werden geteilt"
@@ -15687,6 +15849,9 @@ msgstr "Diesen Monat"
 
 msgid "This only changes the display name, not the branch."
 msgstr "Das ändert nur den Anzeigenamen, nicht den Branch."
+
+msgid "This operation is disabled for this project."
+msgstr "Dieser Vorgang ist für dieses Projekt deaktiviert."
 
 msgid "this organization"
 msgstr "diese Organisation"
@@ -16407,6 +16572,9 @@ msgstr "Aktuell"
 msgid "Update"
 msgstr "Aktualisieren"
 
+msgid "update AI settings"
+msgstr "KI-Einstellungen aktualisieren"
+
 msgid "Update available"
 msgstr "Update verfügbar"
 
@@ -16424,6 +16592,12 @@ msgstr "Daemon aktualisieren"
 
 msgid "Update Error"
 msgstr "Update-Fehler"
+
+msgid "Update from {remote}/{branch}"
+msgstr "Von {remote}/{branch} aktualisieren"
+
+msgid "Update from remote principal"
+msgstr "Vom entfernten Hauptbranch aktualisieren"
 
 msgid "Update host service"
 msgstr "Host-Dienst aktualisieren"
@@ -16545,6 +16719,12 @@ msgstr "Nutzung nicht verfügbar."
 msgid "Use “{0}”"
 msgstr "“{0}” verwenden"
 
+msgid "Use {label}"
+msgstr "{label} verwenden"
+
+msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
+msgstr "Verwende ein kleines lokales CLI-Modell für Branch-Namen, Commit-Nachrichten und Pull-Request-Entwürfe."
+
 msgid "Use a URL like https://dev.azure.com/organization."
 msgstr "Verwenden Sie eine URL wie https://dev.azure.com/organization."
 
@@ -16634,6 +16814,9 @@ msgstr "Benutzer nicht gefunden"
 
 msgid "user@example.com"
 msgstr "user@example.com"
+
+msgid "Uses the Antigravity CLI and its existing login on this host."
+msgstr "Verwendet Antigravity CLI und die vorhandene Anmeldung auf diesem Host."
 
 msgid "Using random branch name (AI generation timed out)"
 msgstr "Zufälliger Branch-Name wird verwendet (KI-Generierung: Zeitüberschreitung)"
@@ -17145,6 +17328,9 @@ msgstr "Arbeitet"
 msgctxt "agent status"
 msgid "Working"
 msgstr "Arbeitet"
+
+msgid "Working for {duration}"
+msgstr "Arbeite seit {duration}"
 
 msgid "Works when environments are clean. Environments are rarely clean."
 msgstr "Funktioniert, wenn die Umgebungen sauber sind. Umgebungen sind selten sauber."

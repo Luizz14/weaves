@@ -1217,6 +1217,9 @@ msgstr "Browser dalam aplikasi yang lebih baik: lihat pratinjau perubahan Anda d
 msgid "A better Superset is ready"
 msgstr "Superset yang lebih baik sudah siap"
 
+msgid "A branch changed during integration. Cancel this attempt and start again."
+msgstr "Sebuah cabang berubah selama integrasi. Batalkan percobaan ini dan mulai lagi."
+
 #. js-lingui-explicit-id
 msgid "serverError.common.cloudWorkspaceCannotCallThis"
 msgstr "Workspace cloud tidak bisa memanggil {path}. Lakukan dari klien tempat kamu masuk."
@@ -1686,6 +1689,9 @@ msgstr "Asisten AI"
 msgid "AI authentication failed. Please check your AI settings."
 msgstr "Autentikasi AI gagal. Silakan periksa pengaturan AI Anda."
 
+msgid "AI features"
+msgstr "Fitur AI"
+
 msgid "Alert"
 msgstr "Alert"
 
@@ -1753,6 +1759,9 @@ msgstr "Semua komentar"
 
 msgid "All commits"
 msgstr "Semua commit"
+
+msgid "All conflicts are resolved. Complete the integration when ready."
+msgstr "Semua konflik telah diselesaikan. Selesaikan integrasi saat Anda siap."
 
 #. placeholder {0}: members.length
 msgid "All data will be permanently deleted for all {0} members — this cannot be undone."
@@ -1860,11 +1869,17 @@ msgstr "Izinkan akses lewat relay"
 msgid "Allow for session"
 msgstr "Izinkan untuk sesi ini"
 
+msgid "Allow merge into principal"
+msgstr "Izinkan penggabungan ke cabang utama"
+
 msgid "Allow microphone access to use dictation"
 msgstr "Izinkan akses mikrofon untuk memakai dikte"
 
 msgid "Allow remote access to this device via relay"
 msgstr "Izinkan akses jarak jauh ke perangkat ini melalui relay"
+
+msgid "Allow update from remote principal"
+msgstr "Izinkan pembaruan dari cabang utama jarak jauh"
 
 msgid "Allowed"
 msgstr "Diizinkan"
@@ -1959,6 +1974,9 @@ msgstr "Perakit Anonim"
 msgid "another device"
 msgstr "perangkat lain"
 
+msgid "Another integration operation is running. Try again shortly."
+msgstr "Operasi integrasi lain sedang berjalan. Coba lagi sebentar lagi."
+
 msgid "Answered"
 msgstr "Dijawab"
 
@@ -1967,6 +1985,15 @@ msgstr "Anthropic menolak kunci API ini."
 
 msgid "Anthropic rejected this token."
 msgstr "Anthropic menolak token ini."
+
+msgid "Antigravity CLI connection failed"
+msgstr "Koneksi Antigravity CLI gagal"
+
+msgid "Antigravity CLI is ready"
+msgstr "Antigravity CLI siap"
+
+msgid "Antigravity CLI status"
+msgstr "Status Antigravity CLI"
 
 msgid "Any calendar"
 msgstr "Kalender mana pun"
@@ -2629,6 +2656,9 @@ msgstr "File biner berubah"
 msgid "Binary file hidden"
 msgstr "File biner disembunyikan"
 
+msgid "Binary, large, or special file. Choose a version to resolve."
+msgstr "Berkas biner, besar, atau khusus. Pilih versi untuk menyelesaikannya."
+
 msgid "Bio"
 msgstr "Bio"
 
@@ -2694,6 +2724,12 @@ msgstr "Perilaku branch untuk workspace baru di perangkat ini. Tiap proyek bisa 
 
 msgid "Branch copied"
 msgstr "Branch disalin"
+
+msgid "Branch integration"
+msgstr "Integrasi cabang"
+
+msgid "Branch integration completed"
+msgstr "Integrasi cabang selesai"
 
 msgid "branch name"
 msgstr "nama branch"
@@ -2949,6 +2985,9 @@ msgstr "Batalkan unduhan"
 msgid "Cancel edits"
 msgstr "Batalkan suntingan"
 
+msgid "Cancel integration"
+msgstr "Batalkan integrasi"
+
 msgid "Cancel plan"
 msgstr "Batalkan paket"
 
@@ -3119,6 +3158,9 @@ msgstr "Periksa Pembaruan..."
 
 msgid "Check on running agents and read what they changed from your phone."
 msgstr "Pantau agen yang sedang berjalan dan baca apa yang mereka ubah dari ponsel Anda."
+
+msgid "Check out a branch before continuing."
+msgstr "Beralihlah ke sebuah cabang sebelum melanjutkan."
 
 msgid "Check resources"
 msgstr "Periksa sumber daya"
@@ -3725,6 +3767,9 @@ msgstr "Commit gagal: {0}"
 msgid "Commit message"
 msgstr "Pesan commit"
 
+msgid "Commit or stash pending changes in the source and destination workspaces first."
+msgstr "Commit atau simpan sementara perubahan yang tertunda di ruang kerja sumber dan tujuan terlebih dahulu."
+
 msgid "Commits"
 msgstr "Commit"
 
@@ -3776,6 +3821,9 @@ msgstr "Dibandingkan dengan gaya bawaan"
 msgid "complete"
 msgstr "selesai"
 
+msgid "Complete integration"
+msgstr "Selesaikan integrasi"
+
 msgid "Completed"
 msgstr "Selesai"
 
@@ -3818,6 +3866,9 @@ msgstr "Konfigurasikan otomatisasi sendiri"
 msgid "Configure the in-app browser"
 msgstr "Atur browser dalam aplikasi"
 
+msgid "Configure the principal branch and remote in project settings."
+msgstr "Konfigurasikan cabang utama dan repositori jarak jauh di pengaturan proyek."
+
 msgid "Configure which agents appear in launchers and how their launches are built."
 msgstr "Atur agen mana yang muncul di peluncur dan bagaimana peluncurannya disusun."
 
@@ -3829,6 +3880,9 @@ msgstr "Konfirmasi"
 
 msgid "Confirm before quitting"
 msgstr "Konfirmasi sebelum keluar"
+
+msgid "Conflicting files"
+msgstr "Berkas berkonflik"
 
 msgid "Connect"
 msgstr "Hubungkan"
@@ -4342,6 +4396,9 @@ msgstr "Tidak bisa menghapus file"
 msgid "Could not delete this page"
 msgstr "Tidak bisa menghapus halaman ini"
 
+msgid "Could not fetch the principal branch. Check your connection, credentials, and remote branch."
+msgstr "Tidak dapat mengambil cabang utama. Periksa koneksi, kredensial, dan cabang jarak jauh."
+
 msgid "Could not forget {domain}"
 msgstr "Tidak bisa melupakan {domain}"
 
@@ -4529,6 +4586,14 @@ msgstr "Tidak bisa membuang perubahan yang belum di-stage"
 
 msgid "Couldn’t finish deleting workspaces"
 msgstr "Tidak bisa menyelesaikan penghapusan workspace"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate a commit message: {0}"
+msgstr "Tidak dapat membuat pesan commit: {0}"
+
+#. placeholder {0}: error.message
+msgid "Couldn't generate pull request details: {0}"
+msgstr "Tidak dapat membuat detail pull request: {0}"
 
 #. placeholder {0}: configsQuery.error instanceof Error ? configsQuery.error.message : hostServiceUnavailableMessage
 msgid "Couldn't load agent settings: {0}"
@@ -6617,6 +6682,9 @@ msgstr "Gagal memicu run"
 msgid "Failed to update agent settings"
 msgstr "Gagal memperbarui pengaturan agen"
 
+msgid "Failed to update AI settings"
+msgstr "Gagal memperbarui pengaturan AI"
+
 msgid "Failed to update automation"
 msgstr "Gagal memperbarui otomatisasi"
 
@@ -6706,6 +6774,9 @@ msgstr "Aksi file"
 
 msgid "File changes"
 msgstr "Perubahan berkas"
+
+msgid "File deleted"
+msgstr "Berkas dihapus"
 
 msgid "File is too large to preview"
 msgstr "File terlalu besar untuk dipratinjau"
@@ -6839,6 +6910,9 @@ msgstr "Finder"
 msgid "Finish review"
 msgstr "Selesaikan review"
 
+msgid "Finish the pending Git operation first."
+msgstr "Selesaikan operasi Git yang tertunda terlebih dahulu."
+
 msgid "Finished"
 msgstr "Selesai"
 
@@ -6874,6 +6948,9 @@ msgstr "Flag"
 
 msgid "Flame"
 msgstr "Api"
+
+msgid "Flash balances speed and quality for short development tasks."
+msgstr "Flash menyeimbangkan kecepatan dan kualitas untuk tugas pengembangan singkat."
 
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Armada agen merencanakan, mengimplementasi, mereview, dan menguji pekerjaan satu sama lain. Manusia menetapkan arah, menengahi pengecualian, dan memegang selera. Satuan perhatian manusia bukan lagi pull request, melainkan keputusan."
@@ -7113,6 +7190,9 @@ msgstr "Akses umum"
 msgid "General comment"
 msgstr "General comment"
 
+msgid "Generate"
+msgstr "Buat"
+
 msgid "Generate a key to use with MCP servers."
 msgstr "Buat kunci untuk dipakai dengan server MCP."
 
@@ -7178,6 +7258,9 @@ msgstr "Git & Worktree"
 
 msgid "Git author name"
 msgstr "Nama author Git"
+
+msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
+msgstr "Integrasi Git gagal. Periksa repositori dan coba lagi, atau batalkan percobaan."
 
 msgid "GitHub"
 msgstr "GitHub"
@@ -7884,6 +7967,9 @@ msgstr "Instal plugin"
 msgid "Install Superset MCP in your client"
 msgstr "Pasang Superset MCP di klien Anda"
 
+msgid "Install the Antigravity CLI, then run agy in a terminal to sign in."
+msgstr "Instal Antigravity CLI, lalu jalankan agy di terminal untuk masuk."
+
 msgid "Install the desktop app"
 msgstr "Pasang aplikasi desktop"
 
@@ -7903,6 +7989,10 @@ msgstr "Terpasang"
 msgid "serverError.plugins.marketplaceHasInstalls"
 msgstr "Plugin yang terpasang berasal dari {name}: {plugins}. Hapus dulu."
 
+#. placeholder {0}: statusQuery.data.version
+msgid "Installed version {0}"
+msgstr "Versi terinstal {0}"
+
 msgid "Installed via"
 msgstr "Diinstal melalui"
 
@@ -7914,6 +8004,9 @@ msgstr "Instalasi"
 
 msgid "Instructions"
 msgstr "Instruksi"
+
+msgid "Integrate committed changes locally. These settings do not change workspace creation or pull requests."
+msgstr "Integrasikan perubahan yang sudah di-commit secara lokal. Pengaturan ini tidak mengubah pembuatan ruang kerja atau permintaan penggabungan."
 
 msgid "Integrations"
 msgstr "Integrasi"
@@ -8587,9 +8680,6 @@ msgstr "Muat pesan sebelumnya"
 msgid "Load more"
 msgstr "Muat lagi"
 
-msgid "Load older messages"
-msgstr "Muat pesan sebelumnya"
-
 msgid "Loader"
 msgstr "Loader"
 
@@ -8865,6 +8955,9 @@ msgstr "Tandai belum dilihat"
 msgid "Mark as Read"
 msgstr "Tandai Sudah Dibaca"
 
+msgid "Mark as resolved"
+msgstr "Tandai selesai"
+
 msgid "Mark as Unread"
 msgstr "Tandai Belum Dibaca"
 
@@ -9011,6 +9104,12 @@ msgstr "Merge Commit"
 #. placeholder {0}: error.message
 msgid "Merge failed: {0}"
 msgstr "Merge gagal: {0}"
+
+msgid "Merge into {branch}"
+msgstr "Gabungkan ke {branch}"
+
+msgid "Merge into principal"
+msgstr "Gabungkan ke cabang utama"
 
 msgid "Merge pull request"
 msgstr "Merge pull request"
@@ -10934,6 +11033,9 @@ msgstr "Chat orkestrasi"
 msgid "Orchestration guide"
 msgstr "Panduan orkestrasi"
 
+msgid "Ordem Paranormal (Pokédex)"
+msgstr "Ordem Paranormal (Pokédex)"
+
 msgid "Organic search"
 msgstr "Pencarian organik"
 
@@ -11439,6 +11541,9 @@ msgstr "Marketplace plugin"
 msgid "Plugins"
 msgstr "Plugin"
 
+msgid "Pokédex Ordem Paranormal"
+msgstr "Pokédex Ordem Paranormal"
+
 msgid "Policies"
 msgstr "Policies"
 
@@ -11534,6 +11639,9 @@ msgstr "Preferensi"
 msgid "Prefix"
 msgstr "Prefix"
 
+msgid "Preparation was interrupted. Cancel this attempt and start again."
+msgstr "Persiapan terhenti. Batalkan percobaan ini dan mulai lagi."
+
 msgid "Preparing"
 msgstr "Menyiapkan"
 
@@ -11620,6 +11728,9 @@ msgstr "Primary Key"
 
 msgid "Primitives"
 msgstr "Primitif"
+
+msgid "Principal branch"
+msgstr "Cabang utama"
 
 msgid "Print"
 msgstr "Cetak"
@@ -11731,6 +11842,9 @@ msgstr "Proyek disiapkan di {0}"
 msgid "Project Settings"
 msgstr "Pengaturan Proyek"
 
+msgid "Project settings changed. Cancel this attempt and start again."
+msgstr "Pengaturan proyek berubah. Batalkan percobaan ini dan mulai lagi."
+
 msgid "Project worktree location reset"
 msgstr "Lokasi worktree proyek direset"
 
@@ -11807,6 +11921,9 @@ msgstr "Properti"
 
 msgid "Provide either id or slug"
 msgstr "Berikan id atau slug"
+
+msgid "Provider"
+msgstr "Penyedia"
 
 #. placeholder {0}: sourceConfig?.label ?? binding.agentId
 msgid "Provider: {0}"
@@ -12168,6 +12285,9 @@ msgstr "Diperbarui saat Claude Code berikutnya dijalankan."
 msgid "Refreshes when OpenCode next runs."
 msgstr "Diperbarui saat OpenCode berikutnya dijalankan."
 
+msgid "Regenerate"
+msgstr "Buat ulang"
+
 msgid "Register any CLI agent alongside the built-ins, each with its own name, icon, and launch command."
 msgstr "Daftarkan agen CLI apa pun bersama agen bawaan, masing-masing dengan nama, ikon, dan perintah peluncurannya sendiri."
 
@@ -12239,6 +12359,9 @@ msgstr "Akses jarak jauh"
 
 msgid "Remote Access"
 msgstr "Akses Jarak Jauh"
+
+msgid "Remote for updates"
+msgstr "Repositori jarak jauh untuk pembaruan"
 
 msgid "Remote MCP server — connects over HTTP"
 msgstr "Server MCP remote — terhubung lewat HTTP"
@@ -12577,6 +12700,9 @@ msgstr "Selesaikan"
 msgid "Resolve all"
 msgstr "Selesaikan semua"
 
+msgid "Resolve all conflicts before completing the integration."
+msgstr "Selesaikan semua konflik sebelum menyelesaikan integrasi."
+
 msgid "Resolve Conflicts to Merge"
 msgstr "Selesaikan Konflik untuk Merge"
 
@@ -12594,6 +12720,9 @@ msgstr "Selesaikan thread"
 
 msgid "Resolved"
 msgstr "Terselesaikan"
+
+msgid "Resolved content"
+msgstr "Konten hasil penyelesaian"
 
 msgid "Resource consumption"
 msgstr "Konsumsi sumber daya"
@@ -12706,6 +12835,12 @@ msgstr "Argumen resume"
 
 msgid "Resume automation"
 msgstr "Lanjutkan otomatisasi"
+
+msgid "Resume integration"
+msgstr "Lanjutkan integrasi"
+
+msgid "Resume or cancel the existing integration first."
+msgstr "Lanjutkan atau batalkan integrasi yang ada terlebih dahulu."
 
 #. placeholder {0}: candidate.agentLabel
 msgid "Resuming {0}…"
@@ -13385,6 +13520,9 @@ msgstr "Lihat posisi 30 hari terakhir Anda di papan peringkat publik. Hanya juml
 msgid "Select"
 msgstr "Select"
 
+msgid "Select a branch"
+msgstr "Pilih cabang"
+
 msgid "Select a default preset"
 msgstr "Pilih preset default"
 
@@ -13405,6 +13543,9 @@ msgstr "Pilih proyek untuk melihat pull request."
 
 msgid "Select a pull request to preview it here."
 msgstr "Pilih pull request untuk melihat pratinjaunya di sini."
+
+msgid "Select a remote"
+msgstr "Pilih repositori jarak jauh"
 
 msgid "Select a team"
 msgstr "Pilih sebuah tim"
@@ -13704,11 +13845,11 @@ msgstr "Menyiapkan di latar belakang..."
 msgid "Settings"
 msgstr "Pengaturan"
 
-msgid "Settings ({settingsHotkey})"
-msgstr "Pengaturan ({settingsHotkey})"
-
 msgid "Settings → Remote Access → “Allow remote access to this device via relay”."
 msgstr "Pengaturan → Akses Jarak Jauh → “Izinkan akses jarak jauh ke perangkat ini melalui relay”."
+
+msgid "Settings saved"
+msgstr "Pengaturan disimpan"
 
 msgid "Settings..."
 msgstr "Pengaturan..."
@@ -15168,8 +15309,14 @@ msgstr "Ketentuan Layanan"
 msgid "Test again"
 msgstr "Uji lagi"
 
+msgid "Test connection"
+msgstr "Uji koneksi"
+
 msgid "Testing connection…"
 msgstr "Menguji koneksi…"
+
+msgid "Testing..."
+msgstr "Menguji..."
 
 msgid "Text"
 msgstr "Teks"
@@ -15237,11 +15384,17 @@ msgstr "Sesi masuk Codex"
 msgid "The config repository must be one of the environment's repositories"
 msgstr "Repositori konfigurasi harus salah satu repositori environment"
 
+msgid "The configured remote no longer exists."
+msgstr "Repositori jarak jauh yang dikonfigurasi tidak ada lagi."
+
 msgid "The connection timed out"
 msgstr "Koneksinya kehabisan waktu"
 
 msgid "The connection was closed"
 msgstr "Koneksinya ditutup"
+
+msgid "The current branch is already the principal branch."
+msgstr "Cabang saat ini sudah merupakan cabang utama."
 
 msgid "The current prompt will be replaced with the selected version. A new \"Restored\" entry will be added to history so you can undo this."
 msgstr "Prompt saat ini akan diganti dengan versi yang dipilih. Entri \"Dipulihkan\" yang baru akan ditambahkan ke riwayat sehingga Anda bisa membatalkannya."
@@ -15254,6 +15407,12 @@ msgstr "Kami sedang membawa Superset ke Windows & Linux. Tinggalkan email Anda d
 
 msgid "The desktop app runs on macOS, with an experimental Linux AppImage; Windows is not yet available. Beyond the desktop app there's a CLI, a TypeScript SDK, and an MCP server, so you can drive Superset from scripts, terminals, and other agents."
 msgstr "Aplikasi desktopnya berjalan di macOS, dengan AppImage Linux eksperimental; Windows belum tersedia. Selain aplikasi desktop ada CLI, SDK TypeScript, dan server MCP, jadi Anda bisa mengendalikan Superset dari skrip, terminal, dan agen lain."
+
+msgid "The destination branch is checked out in multiple worktrees."
+msgstr "Cabang tujuan aktif di beberapa pohon kerja."
+
+msgid "The destination stays unchanged until completion. Closing this window keeps the attempt available to resume."
+msgstr "Tujuan tetap tidak berubah hingga selesai. Menutup jendela ini tetap memungkinkan percobaan dilanjutkan."
 
 msgid "The device that hosts this project is unavailable."
 msgstr "Perangkat yang menjadi host proyek ini tidak tersedia."
@@ -15411,6 +15570,9 @@ msgstr "Halaman yang Anda cari tidak ada."
 
 msgid "The people behind Superset."
 msgstr "Orang-orang di balik Superset."
+
+msgid "The principal branch does not exist locally."
+msgstr "Cabang utama tidak ada secara lokal."
 
 msgid "The project's checkout as it is: files and branch are shared"
 msgstr "Checkout proyek apa adanya: file dan branch dibagikan"
@@ -15687,6 +15849,9 @@ msgstr "Bulan ini"
 
 msgid "This only changes the display name, not the branch."
 msgstr "Ini hanya mengubah nama tampilan, bukan branch-nya."
+
+msgid "This operation is disabled for this project."
+msgstr "Operasi ini dinonaktifkan untuk proyek ini."
 
 msgid "this organization"
 msgstr "organisasi ini"
@@ -16407,6 +16572,9 @@ msgstr "Terbaru"
 msgid "Update"
 msgstr "Perbarui"
 
+msgid "update AI settings"
+msgstr "memperbarui pengaturan AI"
+
 msgid "Update available"
 msgstr "Pembaruan tersedia"
 
@@ -16424,6 +16592,12 @@ msgstr "Perbarui daemon"
 
 msgid "Update Error"
 msgstr "Kesalahan Pembaruan"
+
+msgid "Update from {remote}/{branch}"
+msgstr "Perbarui dari {remote}/{branch}"
+
+msgid "Update from remote principal"
+msgstr "Perbarui dari cabang utama jarak jauh"
 
 msgid "Update host service"
 msgstr "Perbarui layanan host"
@@ -16545,6 +16719,12 @@ msgstr "Penggunaan tidak tersedia."
 msgid "Use “{0}”"
 msgstr "Pakai “{0}”"
 
+msgid "Use {label}"
+msgstr "Gunakan {label}"
+
+msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
+msgstr "Gunakan model CLI lokal kecil untuk nama branch, pesan commit, dan draf pull request."
+
 msgid "Use a URL like https://dev.azure.com/organization."
 msgstr "Gunakan URL seperti https://dev.azure.com/organization."
 
@@ -16634,6 +16814,9 @@ msgstr "Pengguna tidak ditemukan"
 
 msgid "user@example.com"
 msgstr "user@example.com"
+
+msgid "Uses the Antigravity CLI and its existing login on this host."
+msgstr "Menggunakan Antigravity CLI dan login yang sudah ada di host ini."
 
 msgid "Using random branch name (AI generation timed out)"
 msgstr "Memakai nama branch acak (pembuatan AI kehabisan waktu)"
@@ -17145,6 +17328,9 @@ msgstr "Bekerja"
 msgctxt "agent status"
 msgid "Working"
 msgstr "Bekerja"
+
+msgid "Working for {duration}"
+msgstr "Bekerja selama {duration}"
 
 msgid "Works when environments are clean. Environments are rarely clean."
 msgstr "Berhasil kalau environment-nya bersih. Environment jarang bersih."

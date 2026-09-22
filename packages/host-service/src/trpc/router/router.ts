@@ -3,6 +3,7 @@ import { agentToolingRouter } from "./agent-tooling";
 import { agentsRouter } from "./agents";
 import { attachmentsRouter } from "./attachments";
 import { azureDevOpsRouter } from "./azure-devops/azure-devops";
+import { branchIntegrationRouter } from "./branch-integration/branch-integration";
 import { browserRouter } from "./browser/browser";
 import { configRouter } from "./config";
 import { filesystemRouter } from "./filesystem";
@@ -16,6 +17,7 @@ import { pageWatchRouter } from "./page-watch";
 import { portsRouter } from "./ports";
 import { projectRouter } from "./project";
 import { pullRequestsRouter } from "./pull-requests";
+import { quickAiRouter } from "./quick-ai";
 import { sandboxRouter } from "./sandbox";
 import { settingsRouter } from "./settings";
 import { systemRouter } from "./system";
@@ -29,6 +31,7 @@ import { workspaceCreationRouter } from "./workspace-creation";
 import { workspacesRouter } from "./workspaces";
 
 export const appRouter = router({
+	branchIntegration: branchIntegrationRouter,
 	agents: agentsRouter,
 	agentTooling: agentToolingRouter,
 	attachments: attachmentsRouter,
@@ -43,6 +46,7 @@ export const appRouter = router({
 	issues: issuesRouter,
 	notifications: notificationsRouter,
 	pullRequests: pullRequestsRouter,
+	quickAi: quickAiRouter,
 	project: projectRouter,
 	tagFolders: tagFoldersRouter,
 	pageWatch: pageWatchRouter,

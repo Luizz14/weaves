@@ -3,6 +3,7 @@ import { Label } from "@superset/ui/label";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef } from "react";
+import { BranchIntegrationSettings } from "renderer/components/BranchIntegrationSettings";
 import {
 	PROJECT_ICON_NONE,
 	resolveProjectIconUrl,
@@ -289,6 +290,19 @@ export function V2ProjectSettings({
 						/>
 					)}
 				</SettingsSection>
+
+				{targetHostUrl && hostProject && (
+					<SettingsSection title={t({ message: "Branch integration" })}>
+						<BranchIntegrationSettings
+							key={`${projectId}:${targetHostUrl}`}
+							projectId={projectId}
+							hostUrl={targetHostUrl}
+							onChanged={() => {
+								void refetchHostProject();
+							}}
+						/>
+					</SettingsSection>
+				)}
 
 				<SettingsSection
 					title={t({

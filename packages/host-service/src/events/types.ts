@@ -220,6 +220,7 @@ export interface WorkspaceCreateSettledMessage {
 	ok: boolean;
 	canonicalWorkspaceId: string | null;
 	projectId: string | null;
+	branch?: string;
 	terminals: WorkspaceCreateTerminalLaunch[];
 	agents: WorkspaceCreateAgentLaunch[];
 	alreadyExists: boolean;
