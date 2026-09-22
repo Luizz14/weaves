@@ -1,0 +1,4 @@
+interface:
+  display_name: "Azure DevOps Workflow"
+  short_description: "Mantém quadro, worktrees e PRs do Azure"
+  default_prompt: "Use $azure-devops-workflow para manter ou estender a integração Azure DevOps do Superset."
