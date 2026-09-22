@@ -6,6 +6,7 @@ import { drizzle } from "drizzle-orm/bun-sqlite";
 import { migrate } from "drizzle-orm/bun-sqlite/migrator";
 import type { HostDb } from "../../../db";
 import * as schema from "../../../db/schema";
+import type { BitriseCredentialStore } from "../../../runtime/azure-devops/bitrise-credentials";
 import type { HostServiceContext } from "../../../types";
 import {
 	applyWorkItemStage,
@@ -15,6 +16,7 @@ import {
 
 const MIGRATIONS_FOLDER = resolve(import.meta.dir, "../../../../drizzle");
 const PROJECT_ID = "11111111-1111-4111-8111-111111111111";
+const WORKSPACE_ID = "33333333-3333-4333-8333-333333333333";
 
 function createContext(): HostServiceContext {
 	const sqlite = new Database(":memory:");
@@ -30,10 +32,40 @@ function createContext(): HostServiceContext {
 			updatedAt: 1,
 		})
 		.run();
+	const credentials = new Map<string, string>();
+	const bitriseCredentialStore: BitriseCredentialStore = {
+		get: async (key) => credentials.get(key),
+		set: async (key, value) => {
+			credentials.set(key, value);
+		},
+		delete: async (key) => {
+			credentials.delete(key);
+		},
+	};
 	return {
 		db: db as unknown as HostDb,
+		organizationId: "test-organization",
+		bitriseCredentialStore,
 		isAuthenticated: true,
 	} as unknown as HostServiceContext;
+}
+
+function insertLinkedWorkspace(
+	ctx: HostServiceContext,
+	branch = "feature/build-without-number",
+) {
+	ctx.db
+		.insert(schema.workspaces)
+		.values({
+			id: WORKSPACE_ID,
+			projectId: PROJECT_ID,
+			worktreePath: "/repo/worktree",
+			branch,
+			type: "worktree",
+			externalWorkItemProvider: "azure-devops",
+			externalWorkItemId: "12345",
+		})
+		.run();
 }
 
 describe("azureDevOpsRouter", () => {
@@ -107,6 +139,62 @@ describe("azureDevOpsRouter", () => {
 			extensionVersion: null,
 			repository: null,
 		});
+	});
+
+	test("stores Bitrise configuration without returning the token", async () => {
+		const caller = azureDevOpsRouter.createCaller(createContext());
+
+		await expect(
+			caller.setBuildConfig({
+				projectId: PROJECT_ID,
+				platform: "android",
+				developerNames: ["Dev Example"],
+				alphaVersionValue: "3.15.",
+				bitriseToken: "secret-token",
+			}),
+		).resolves.toEqual({
+			projectId: PROJECT_ID,
+			platform: "android",
+			developerNames: ["Dev Example"],
+			alphaVersionValue: "3.15.",
+			bitriseTokenConfigured: true,
+		});
+	});
+
+	test("rejects a build for a workspace not linked to the requested work item", async () => {
+		const ctx = createContext();
+		insertLinkedWorkspace(ctx);
+		const caller = azureDevOpsRouter.createCaller(ctx);
+
+		await expect(
+			caller.generateBuild({
+				workItemId: 67890,
+				workspaceId: WORKSPACE_ID,
+				lane: "alpha",
+				developerName: "Dev Example",
+			}),
+		).rejects.toMatchObject({ code: "BAD_REQUEST" });
+	});
+
+	test("rejects a build when the linked branch does not contain a work item number", async () => {
+		const ctx = createContext();
+		insertLinkedWorkspace(ctx);
+		const caller = azureDevOpsRouter.createCaller(ctx);
+		await caller.setBuildConfig({
+			projectId: PROJECT_ID,
+			platform: "android",
+			developerNames: ["Dev Example"],
+			alphaVersionValue: "3.15.",
+		});
+
+		await expect(
+			caller.generateBuild({
+				workItemId: 12345,
+				workspaceId: WORKSPACE_ID,
+				lane: "alpha",
+				developerName: "Dev Example",
+			}),
+		).rejects.toMatchObject({ code: "PRECONDITION_FAILED" });
 	});
 
 	test("stores board configuration separately from repository configuration", async () => {

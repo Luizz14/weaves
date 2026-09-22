@@ -14,7 +14,7 @@ const identitySchema = z.object({
 const repositorySchema = z.object({
 	id: z.string(),
 	name: z.string(),
-	webUrl: z.url(),
+	webUrl: z.url().nullish(),
 	project: z.object({ id: z.string(), name: z.string() }),
 });
 
@@ -103,8 +103,14 @@ function shortRef(ref: string): string {
 	return ref.replace(/^refs\/heads\//, "");
 }
 
-function pullRequestUrl(data: z.infer<typeof pullRequestSchema>): string {
-	return `${data.repository.webUrl}/pullrequest/${data.pullRequestId}`;
+function pullRequestUrl(
+	data: z.infer<typeof pullRequestSchema>,
+	config: AzureDevOpsRepositoryConfig,
+): string {
+	const repositoryUrl =
+		data.repository.webUrl ??
+		`${config.organizationUrl}/${encodeURIComponent(data.repository.project.name)}/_git/${encodeURIComponent(data.repository.name)}`;
+	return `${repositoryUrl.replace(/\/+$/, "")}/pullrequest/${data.pullRequestId}`;
 }
 
 function mapState(status: string): "open" | "closed" | "merged" {
@@ -142,7 +148,7 @@ export async function listAzureDevOpsPullRequests(
 		number: row.pullRequestId,
 		title: row.title,
 		body: row.description ?? "",
-		url: pullRequestUrl(row),
+		url: pullRequestUrl(row, config),
 		state: mapState(row.status),
 		isDraft: row.isDraft,
 		branch: shortRef(row.sourceRefName),
@@ -212,7 +218,7 @@ export async function getAzureDevOpsPullRequest(
 		number: row.pullRequestId,
 		title: row.title,
 		body: row.description ?? "",
-		url: pullRequestUrl(row),
+		url: pullRequestUrl(row, config),
 		state: mapState(row.status),
 		branch: shortRef(row.sourceRefName),
 		baseBranch: shortRef(row.targetRefName),
@@ -317,7 +323,10 @@ export async function createAzureDevOpsPullRequest(
 	if (input.targetBranch) args.push("--target-branch", input.targetBranch);
 	if (input.body) args.push("--description", input.body);
 	const created = pullRequestSchema.parse(await execAz(args));
-	return { number: created.pullRequestId, url: pullRequestUrl(created) };
+	return {
+		number: created.pullRequestId,
+		url: pullRequestUrl(created, config),
+	};
 }
 
 async function writeInvokeBody(body: unknown): Promise<{

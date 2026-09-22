@@ -24,6 +24,7 @@ const result = await Bun.build({
 	},
 	external: [
 		"better-sqlite3",
+		"@napi-rs/keyring",
 		"node-pty",
 		"@parcel/watcher",
 		// Optional peer of webdriverio; the browser-driver code path never

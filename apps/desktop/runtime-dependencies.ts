@@ -69,6 +69,14 @@ const externalizedRuntimeModules: ExternalizedRuntimeModule[] = [
 		],
 		asarUnpackGlobs: ["**/node_modules/@parcel/watcher*/**/*"],
 	},
+	{
+		specifier: "@napi-rs/keyring",
+		materialize: ["@napi-rs/keyring"],
+		packagedCopies: [
+			copyModuleSubtree("@napi-rs", ["keyring/**/*", "keyring-*/**/*"]),
+		],
+		asarUnpackGlobs: ["**/node_modules/@napi-rs/keyring*/**/*"],
+	},
 ];
 
 const packagedSupportModules = [

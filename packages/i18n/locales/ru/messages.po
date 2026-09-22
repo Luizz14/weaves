@@ -375,10 +375,6 @@ msgstr "{0} офлайн"
 msgid "{0} is offline."
 msgstr "{0} офлайн."
 
-#. placeholder {0}: activeOrganization.name
-msgid "{0} is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "{0} на бесплатном тарифе. Superset Mobile доступен организациям на тарифе Pro."
-
 #. placeholder {0}: host?.name ?? t({ message: "This host" })
 #. placeholder {1}: hostCompatibility.hostVersion
 #. placeholder {2}: hostCompatibility.minVersion
@@ -1294,6 +1290,12 @@ msgstr "Отдельный профиль, использующий ваши н�
 msgid "a teammate"
 msgstr "участник команды"
 
+msgid "A token is already stored securely"
+msgstr "Токен уже сохранён в защищённом хранилище"
+
+msgid "A token is stored in this host's secure credential store."
+msgstr "Токен сохранён в защищённом хранилище учётных данных этого хоста."
+
 msgid "A unique identifier for your organization (auto-generated from name)"
 msgstr "Уникальный идентификатор организации (генерируется из названия)"
 
@@ -1418,6 +1420,9 @@ msgstr "Добавить"
 msgid "Add {0} account"
 msgstr "Добавить аккаунт {0}"
 
+msgid "Add a developer name"
+msgstr "Добавить имя разработчика"
+
 msgid "Add a lifecycle run script in Project Settings or mark a terminal script as the workspace run."
 msgstr "Добавьте скрипт запуска в настройках проекта или отметьте скрипт терминала как запуск рабочей области."
 
@@ -1450,6 +1455,9 @@ msgstr "Добавьте окружение в Настройках, прежд�
 
 msgid "Add any machine as a host. Workspaces keep running when your laptop sleeps, and you can check in from wherever you are."
 msgstr "Добавьте любую машину как хост. Рабочие области продолжают работать, когда ноутбук спит, а вы можете заглянуть откуда угодно."
+
+msgid "Add at least one name before generating a build."
+msgstr "Добавьте хотя бы одно имя перед созданием сборки."
 
 msgid "Add attachment"
 msgstr "Добавить вложение"
@@ -1526,6 +1534,12 @@ msgstr "Добавь тесты для самого рискованного н�
 
 msgid "Add tests where they're missing"
 msgstr "Добавить тесты там, где их нет"
+
+msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
+msgstr "Перед созданием сборки добавьте токен Bitrise в настройки Azure DevOps этого проекта."
+
+msgid "Add this build to mocks"
+msgstr "Добавить эту сборку в моки"
 
 msgid "Add to Dictionary"
 msgstr "Добавить в словарь"
@@ -1889,6 +1903,12 @@ msgstr "Разрешено"
 
 msgid "Allowed for session"
 msgstr "Разрешено на сессию"
+
+msgid "Alpha uses the configured version value for this project."
+msgstr "Alpha использует значение версии, настроенное для этого проекта."
+
+msgid "Alpha version value"
+msgstr "Значение версии Alpha"
 
 msgid "Already have an account? <0>Sign in</0>"
 msgstr "Уже есть аккаунт? <0>Войдите</0>"
@@ -2668,6 +2688,12 @@ msgstr "Двоичный, большой или специальный файл.
 msgid "Bio"
 msgstr "О себе"
 
+msgid "Bitrise build trigger token"
+msgstr "Токен запуска сборки Bitrise"
+
+msgid "Bitrise token removed"
+msgstr "Токен Bitrise удалён"
+
 msgid "Block"
 msgstr "Блок"
 
@@ -2849,8 +2875,20 @@ msgstr "Достигнут лимит бюджета"
 msgid "Bug"
 msgstr "Жук"
 
+msgid "Build number"
+msgstr "Номер сборки"
+
+msgid "Build settings saved"
+msgstr "Настройки сборки сохранены"
+
+msgid "Build started"
+msgstr "Сборка запущена"
+
 msgid "Build the future of Superset in the cloud"
 msgstr "Создайте будущее Superset в облаке"
+
+msgid "Build type"
+msgstr "Тип сборки"
 
 msgid "Building the last piece of software"
 msgstr "Строим последнюю программу"
@@ -3866,11 +3904,17 @@ msgstr "Настройка поведения веток git и worktree"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Настройте, как задачи синхронизируются между Superset и Linear."
 
+msgid "Configure mobile build generation in this project's Azure DevOps settings."
+msgstr "Настройте создание мобильных сборок в параметрах Azure DevOps этого проекта."
+
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "Настройка поведения терминала и переиспользуемых скриптов терминала"
 
 msgid "Configure the automation yourself"
 msgstr "Настройте автоматизацию самостоятельно"
+
+msgid "Configure the Bitrise app and the developer names available for this project."
+msgstr "Настройте приложение Bitrise и доступные имена разработчиков для этого проекта."
 
 msgid "Configure the in-app browser"
 msgstr "Настройка встроенного браузера"
@@ -3964,6 +4008,9 @@ msgstr "Подключить Slack"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "Подключите Slack, чтобы управлять задачами из обсуждений. Упомяните бота в любом канале или напишите ему в личные сообщения, чтобы создавать и обновлять задачи."
+
+msgid "Connect to this host to configure mobile builds."
+msgstr "Подключитесь к этому хосту, чтобы настроить мобильные сборки."
 
 msgid "Connect your Azure DevOps board"
 msgstr "Connect your Azure DevOps board"
@@ -4368,9 +4415,6 @@ msgstr "Не удалось изменить общедоступную верс
 
 msgid "Could not change who can see this page"
 msgstr "Не удалось изменить, кто видит эту страницу"
-
-msgid "Could not check your plan. Check your connection and try again."
-msgstr "Не удалось проверить ваш тарифный план. Проверьте подключение и повторите попытку."
 
 msgid "Could not clear browsing data"
 msgstr "Не удалось очистить данные браузера"
@@ -5410,6 +5454,12 @@ msgstr "Разработчик: {author}"
 msgid "Developer"
 msgstr "Разработчик"
 
+msgid "Developer name"
+msgstr "Имя разработчика"
+
+msgid "Developer names"
+msgstr "Имена разработчиков"
+
 msgid "Developers"
 msgstr "Разработчики"
 
@@ -5995,6 +6045,9 @@ msgstr "Введите корректное правило повторения.
 msgid "Enter a value."
 msgstr "Введите значение."
 
+msgid "Enter the Bitrise token"
+msgstr "Введите токен Bitrise"
+
 msgid "Enter URL or search..."
 msgstr "Введите URL или запрос..."
 
@@ -6549,6 +6602,9 @@ msgstr "Не удалось удалить"
 msgid "Failed to remove Azure DevOps configuration"
 msgstr "Не удалось удалить конфигурацию Azure DevOps"
 
+msgid "Failed to remove Bitrise token"
+msgstr "Не удалось удалить токен Bitrise"
+
 msgid "Failed to remove member"
 msgstr "Не удалось удалить участника"
 
@@ -6636,6 +6692,9 @@ msgstr "Не удалось сохранить"
 msgid "Failed to save Azure DevOps configuration"
 msgstr "Не удалось сохранить конфигурацию Azure DevOps"
 
+msgid "Failed to save build settings"
+msgstr "Не удалось сохранить настройки сборки"
+
 msgid "Failed to save installation. Please try again."
 msgstr "Не удалось сохранить установку. Попробуйте ещё раз."
 
@@ -6687,6 +6746,9 @@ msgstr "Не удалось запустить агента"
 
 msgid "Failed to start agent session."
 msgstr "Не удалось запустить сессию агента."
+
+msgid "Failed to start build"
+msgstr "Не удалось запустить сборку"
 
 msgid "Failed to stop workspace run command"
 msgstr "Не удалось остановить команду запуска рабочей области"
@@ -7217,8 +7279,14 @@ msgstr "Создайте ключ для использования с серв�
 msgid "Generate API key"
 msgstr "Создать ключ API"
 
+msgid "Generate build"
+msgstr "Создать сборку"
+
 msgid "Generate key"
 msgstr "Создать ключ"
+
+msgid "Generate mobile build"
+msgstr "Создать мобильную сборку"
 
 msgid "Generated file hidden"
 msgstr "Сгенерированный файл скрыт"
@@ -8758,6 +8826,9 @@ msgstr "Загружаем ещё..."
 msgid "Loading more…"
 msgstr "Загружаем ещё…"
 
+msgid "Loading project build settings…"
+msgstr "Загрузка настроек сборки проекта…"
+
 msgid "Loading project…"
 msgstr "Загрузка проекта…"
 
@@ -8796,9 +8867,6 @@ msgstr "Загрузка скриптов терминала..."
 
 msgid "Loading usage history…"
 msgstr "Загрузка истории использования…"
-
-msgid "Loading work item…"
-msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "Загрузка рабочих пространств…"
@@ -9245,6 +9313,9 @@ msgstr "Мобильное приложение"
 
 msgid "Mobile App"
 msgstr "Мобильное приложение"
+
+msgid "Mobile build generation"
+msgstr "Создание мобильных сборок"
 
 msgid "model"
 msgstr "модель"
@@ -9942,6 +10013,9 @@ msgstr "Нет известных создателей"
 
 msgid "No labels"
 msgstr "Без меток"
+
+msgid "No linked worktree"
+msgstr "Нет связанного worktree"
 
 msgid "No live sessions"
 msgstr "Нет активных сессий"
@@ -12412,6 +12486,12 @@ msgstr "Удалить {label}?"
 msgid "Remove attachment"
 msgstr "Удалить вложение"
 
+msgid "Remove Bitrise token"
+msgstr "Удалить токен Bitrise"
+
+msgid "Remove developer name"
+msgstr "Удалить имя разработчика"
+
 msgid "Remove from Queue"
 msgstr "Убрать из очереди"
 
@@ -13208,6 +13288,9 @@ msgstr "Сохранить и проверить"
 msgid "Save as environment"
 msgstr "Сохранить как окружение"
 
+msgid "Save build settings"
+msgstr "Сохранить настройки сборки"
+
 msgid "Save changes"
 msgstr "Сохранить изменения"
 
@@ -13559,6 +13642,9 @@ msgstr "Выберите ветку"
 msgid "Select a default preset"
 msgstr "Выберите предустановку по умолчанию"
 
+msgid "Select a name"
+msgstr "Выберите имя"
+
 msgid "Select a project"
 msgstr "Выберите проект"
 
@@ -13696,6 +13782,9 @@ msgstr "Выбрать команды"
 
 msgid "Select terminal script directory"
 msgstr "Выберите папку скрипта терминала"
+
+msgid "Select worktree"
+msgstr "Выберите worktree"
 
 msgid "Select worktree location"
 msgstr "Выберите расположение worktree"
@@ -14588,6 +14677,9 @@ msgstr "Звёзд в неделю"
 msgid "Start a {harness} session"
 msgstr "Начать сессию {harness}"
 
+msgid "Start a Bitrise build from a worktree linked to this Azure work item."
+msgstr "Запустить сборку Bitrise из worktree, связанного с этой рабочей задачей Azure."
+
 msgid "Start a conversation to see messages here"
 msgstr "Начните диалог, чтобы сообщения появились здесь"
 
@@ -14611,6 +14703,9 @@ msgstr "Запустите агента или терминал, чтобы на
 
 msgid "Start browsing"
 msgstr "Начните просмотр"
+
+msgid "Start build"
+msgstr "Запустить сборку"
 
 msgid "Start free. Upgrade when your team outgrows it. Enterprise plans for organizations with advanced security and compliance needs."
 msgstr "Начните бесплатно. Переходите на платный, когда команда вырастет. Enterprise — для организаций с повышенными требованиями к безопасности и соответствию."
@@ -14932,9 +15027,6 @@ msgstr "Память Superset"
 
 msgid "Superset memory · last 5 min"
 msgstr "Память Superset · последние 5 мин"
-
-msgid "Superset Mobile is part of Pro"
-msgstr "Superset Mobile входит в Pro"
 
 msgid "Superset Mobile runs agents on the computers you connect."
 msgstr "Superset Mobile запускает агентов на компьютерах, которые вы подключили."
@@ -15699,6 +15791,9 @@ msgstr "Приглашение в команду истекло или не су
 msgid "The title shows everywhere this page is listed and in its link preview."
 msgstr "Заголовок отображается везде, где указана эта страница, и в превью ссылки."
 
+msgid "The token is stored securely and is never displayed again."
+msgstr "Токен сохранён в защищённом хранилище и больше не будет показан."
+
 msgid "The web agents UI is a read-only preview for now."
 msgstr "Веб-интерфейс агентов пока доступен только для просмотра."
 
@@ -15892,9 +15987,6 @@ msgstr "Эта операция отключена для данного про�
 msgid "this organization"
 msgstr "эта организация"
 
-msgid "This organization is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "Эта организация на бесплатном тарифе. Superset Mobile доступен организациям на тарифе Pro."
-
 msgid "This page could not be loaded"
 msgstr "Не удалось загрузить эту страницу"
 
@@ -16058,6 +16150,9 @@ msgstr "Хост этой рабочей области офлайн"
 
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "Хост этого рабочего пространства работает на более старой службе хоста, чем поддерживает приложение. Обновите её, чтобы переподключиться; рабочее пространство и файлы останутся нетронутыми."
+
+msgid "This worktree's host is unavailable."
+msgstr "Хост этого worktree недоступен."
 
 msgid "Thorough reasoning effort"
 msgstr "Тщательные рассуждения"
@@ -16695,10 +16790,6 @@ msgstr "Перейти"
 msgid "Upgrade a dependency and fix what breaks…"
 msgstr "Обнови зависимость и почини то, что сломается…"
 
-#. placeholder {0}: COMPANY.DOMAIN
-msgid "Upgrade on {0}"
-msgstr "Перейти на Pro на {0}"
-
 #. placeholder {0}: i18n._(plan.name)
 msgid "Upgrade to {0}"
 msgstr "Перейти на {0}"
@@ -16818,6 +16909,9 @@ msgstr "Использовать голосовую расшифровку и р
 msgid "Use your existing agent subscriptions and API keys. Superset never proxies model calls or locks your workflow to one provider."
 msgstr "Используйте свои подписки на агентов и ключи API. Superset никогда не проксирует вызовы моделей и не привязывает ваш процесс к одному провайдеру."
 
+msgid "Used as the version name for alpha builds. Leave blank when the workflow generates it automatically."
+msgstr "Используется как имя версии для сборок Alpha. Оставьте пустым, если workflow создаёт его автоматически."
+
 msgid "Used in URLs and APIs."
 msgstr "Используется в URL и API."
 
@@ -16912,8 +17006,14 @@ msgstr "Контроль версий"
 msgid "Version history"
 msgstr "История версий"
 
+msgid "Version name"
+msgstr "Имя версии"
+
 msgid "Version not found"
 msgstr "Версия не найдена"
+
+msgid "Version number"
+msgstr "Номер версии"
 
 msgid "Version unknown"
 msgstr "Версия неизвестна"
@@ -17337,6 +17437,9 @@ msgstr "Work item"
 msgid "Work item not found"
 msgstr "Work item not found"
 
+msgid "Work item number from branch:"
+msgstr "Номер рабочей задачи из ветки:"
+
 msgid "Work item project"
 msgstr "Work item project"
 
@@ -17460,6 +17563,12 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
+
+msgid "Worktree and branch"
+msgstr "Worktree и ветка"
+
+msgid "Worktree branch"
+msgstr "Ветка worktree"
 
 msgid "Worktree created"
 msgstr "Worktree created"

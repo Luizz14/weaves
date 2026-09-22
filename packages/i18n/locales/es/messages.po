@@ -375,10 +375,6 @@ msgstr "{0} está sin conexión"
 msgid "{0} is offline."
 msgstr "{0} está sin conexión."
 
-#. placeholder {0}: activeOrganization.name
-msgid "{0} is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "{0} tiene el plan Gratis. Superset Mobile está disponible para organizaciones con el plan Pro."
-
 #. placeholder {0}: host?.name ?? t({ message: "This host" })
 #. placeholder {1}: hostCompatibility.hostVersion
 #. placeholder {2}: hostCompatibility.minVersion
@@ -1294,6 +1290,12 @@ msgstr "Un perfil aparte que comparte tus skills, plugins, servidores MCP y conf
 msgid "a teammate"
 msgstr "un compañero de equipo"
 
+msgid "A token is already stored securely"
+msgstr "Ya hay un token guardado de forma segura"
+
+msgid "A token is stored in this host's secure credential store."
+msgstr "El token está guardado en el almacén seguro de credenciales de este host."
+
 msgid "A unique identifier for your organization (auto-generated from name)"
 msgstr "Un identificador único para la organización (generado a partir del nombre)"
 
@@ -1418,6 +1420,9 @@ msgstr "Añadir"
 msgid "Add {0} account"
 msgstr "Añadir una cuenta de {0}"
 
+msgid "Add a developer name"
+msgstr "Añadir nombre de desarrollador"
+
 msgid "Add a lifecycle run script in Project Settings or mark a terminal script as the workspace run."
 msgstr "Añade un script de ejecución del ciclo de vida en la configuración del proyecto o marca un script de terminal como la ejecución del espacio de trabajo."
 
@@ -1450,6 +1455,9 @@ msgstr "Añade un entorno en Ajustes antes de crear un espacio de trabajo en la 
 
 msgid "Add any machine as a host. Workspaces keep running when your laptop sleeps, and you can check in from wherever you are."
 msgstr "Añade cualquier máquina como host. Los espacios de trabajo siguen ejecutándose cuando tu portátil se suspende, y puedes consultarlos desde donde estés."
+
+msgid "Add at least one name before generating a build."
+msgstr "Añade al menos un nombre antes de generar una compilación."
 
 msgid "Add attachment"
 msgstr "Añadir adjunto"
@@ -1526,6 +1534,12 @@ msgstr "Añadir pruebas para el código sin cobertura más arriesgado…"
 
 msgid "Add tests where they're missing"
 msgstr "Añadir pruebas donde faltan"
+
+msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
+msgstr "Añade el token de Bitrise en la configuración de Azure DevOps de este proyecto antes de generar una compilación."
+
+msgid "Add this build to mocks"
+msgstr "Añadir esta compilación a los mocks"
 
 msgid "Add to Dictionary"
 msgstr "Añadir al diccionario"
@@ -1889,6 +1903,12 @@ msgstr "Permitido"
 
 msgid "Allowed for session"
 msgstr "Permitido en esta sesión"
+
+msgid "Alpha uses the configured version value for this project."
+msgstr "Alpha usa el valor de versión configurado para este proyecto."
+
+msgid "Alpha version value"
+msgstr "Valor de versión Alpha"
 
 msgid "Already have an account? <0>Sign in</0>"
 msgstr "¿Ya tienes cuenta? <0>Inicia sesión</0>"
@@ -2668,6 +2688,12 @@ msgstr "Archivo binario, grande o especial. Elige una versión para resolverlo."
 msgid "Bio"
 msgstr "Biografía"
 
+msgid "Bitrise build trigger token"
+msgstr "Token de activación de compilaciones de Bitrise"
+
+msgid "Bitrise token removed"
+msgstr "Token de Bitrise eliminado"
+
 msgid "Block"
 msgstr "Bloque"
 
@@ -2849,8 +2875,20 @@ msgstr "Límite de presupuesto alcanzado"
 msgid "Bug"
 msgstr "Insecto"
 
+msgid "Build number"
+msgstr "Número de compilación"
+
+msgid "Build settings saved"
+msgstr "Configuración de compilación guardada"
+
+msgid "Build started"
+msgstr "Compilación iniciada"
+
 msgid "Build the future of Superset in the cloud"
 msgstr "Construye el futuro de Superset en la nube"
+
+msgid "Build type"
+msgstr "Tipo de compilación"
 
 msgid "Building the last piece of software"
 msgstr "Construyendo la última pieza de software"
@@ -3866,11 +3904,17 @@ msgstr "Configura el comportamiento de las ramas y los worktrees de git"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Configura cómo se sincronizan las tareas entre Superset y Linear."
 
+msgid "Configure mobile build generation in this project's Azure DevOps settings."
+msgstr "Configura la generación de compilaciones móviles en la configuración de Azure DevOps de este proyecto."
+
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "Configura el comportamiento de la terminal y los scripts de terminal reutilizables"
 
 msgid "Configure the automation yourself"
 msgstr "Configura la automatización por tu cuenta"
+
+msgid "Configure the Bitrise app and the developer names available for this project."
+msgstr "Configura la app de Bitrise y los nombres de desarrollador disponibles para este proyecto."
 
 msgid "Configure the in-app browser"
 msgstr "Configura el navegador integrado"
@@ -3964,6 +4008,9 @@ msgstr "Conectar Slack"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "Conecta Slack para gestionar tareas desde las conversaciones. Menciona al bot en cualquier canal o envíale un mensaje directo para crear y actualizar tareas."
+
+msgid "Connect to this host to configure mobile builds."
+msgstr "Conéctate a este host para configurar compilaciones móviles."
 
 msgid "Connect your Azure DevOps board"
 msgstr "Connect your Azure DevOps board"
@@ -4368,9 +4415,6 @@ msgstr "No se pudo cambiar la versión compartida"
 
 msgid "Could not change who can see this page"
 msgstr "No se pudo cambiar quién puede ver esta página"
-
-msgid "Could not check your plan. Check your connection and try again."
-msgstr "No se pudo comprobar tu plan. Revisa tu conexión e inténtalo de nuevo."
 
 msgid "Could not clear browsing data"
 msgstr "No se pudieron borrar los datos de navegación"
@@ -5410,6 +5454,12 @@ msgstr "Desarrollado por {author}"
 msgid "Developer"
 msgstr "Desarrollador"
 
+msgid "Developer name"
+msgstr "Nombre del desarrollador"
+
+msgid "Developer names"
+msgstr "Nombres de desarrolladores"
+
 msgid "Developers"
 msgstr "Desarrolladores"
 
@@ -5995,6 +6045,9 @@ msgstr "Introduce una regla de recurrencia válida."
 msgid "Enter a value."
 msgstr "Introduce un valor."
 
+msgid "Enter the Bitrise token"
+msgstr "Introduce el token de Bitrise"
+
 msgid "Enter URL or search..."
 msgstr "Introduce una URL o busca..."
 
@@ -6549,6 +6602,9 @@ msgstr "No se pudo quitar"
 msgid "Failed to remove Azure DevOps configuration"
 msgstr "No se pudo eliminar la configuración de Azure DevOps"
 
+msgid "Failed to remove Bitrise token"
+msgstr "No se pudo eliminar el token de Bitrise"
+
 msgid "Failed to remove member"
 msgstr "No se pudo quitar el miembro"
 
@@ -6636,6 +6692,9 @@ msgstr "No se pudo guardar"
 msgid "Failed to save Azure DevOps configuration"
 msgstr "No se pudo guardar la configuración de Azure DevOps"
 
+msgid "Failed to save build settings"
+msgstr "No se pudo guardar la configuración de compilación"
+
 msgid "Failed to save installation. Please try again."
 msgstr "No se pudo guardar la instalación. Inténtalo de nuevo."
 
@@ -6687,6 +6746,9 @@ msgstr "No se pudo iniciar el agente"
 
 msgid "Failed to start agent session."
 msgstr "No se pudo iniciar la sesión del agente."
+
+msgid "Failed to start build"
+msgstr "No se pudo iniciar la compilación"
 
 msgid "Failed to stop workspace run command"
 msgstr "No se pudo detener el comando de ejecución del espacio de trabajo"
@@ -7217,8 +7279,14 @@ msgstr "Genera una clave para usarla con servidores MCP."
 msgid "Generate API key"
 msgstr "Generar clave de API"
 
+msgid "Generate build"
+msgstr "Generar compilación"
+
 msgid "Generate key"
 msgstr "Generar clave"
+
+msgid "Generate mobile build"
+msgstr "Generar compilación móvil"
 
 msgid "Generated file hidden"
 msgstr "Archivo generado oculto"
@@ -8758,6 +8826,9 @@ msgstr "Cargando más..."
 msgid "Loading more…"
 msgstr "Cargando más…"
 
+msgid "Loading project build settings…"
+msgstr "Cargando la configuración de compilación del proyecto…"
+
 msgid "Loading project…"
 msgstr "Cargando proyecto…"
 
@@ -8796,9 +8867,6 @@ msgstr "Cargando los scripts de terminal..."
 
 msgid "Loading usage history…"
 msgstr "Cargando el historial de uso…"
-
-msgid "Loading work item…"
-msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "Cargando espacios de trabajo…"
@@ -9245,6 +9313,9 @@ msgstr "App móvil"
 
 msgid "Mobile App"
 msgstr "App móvil"
+
+msgid "Mobile build generation"
+msgstr "Generación de compilaciones móviles"
 
 msgid "model"
 msgstr "modelo"
@@ -9942,6 +10013,9 @@ msgstr "Sin creadores conocidos"
 
 msgid "No labels"
 msgstr "Sin etiquetas"
+
+msgid "No linked worktree"
+msgstr "No hay ningún worktree vinculado"
 
 msgid "No live sessions"
 msgstr "No hay sesiones activas"
@@ -12412,6 +12486,12 @@ msgstr "¿Quitar {label}?"
 msgid "Remove attachment"
 msgstr "Quitar adjunto"
 
+msgid "Remove Bitrise token"
+msgstr "Eliminar token de Bitrise"
+
+msgid "Remove developer name"
+msgstr "Eliminar nombre de desarrollador"
+
 msgid "Remove from Queue"
 msgstr "Quitar de la cola"
 
@@ -13208,6 +13288,9 @@ msgstr "Guardar y probar"
 msgid "Save as environment"
 msgstr "Guardar como entorno"
 
+msgid "Save build settings"
+msgstr "Guardar configuración de compilación"
+
 msgid "Save changes"
 msgstr "Guardar cambios"
 
@@ -13559,6 +13642,9 @@ msgstr "Selecciona una rama"
 msgid "Select a default preset"
 msgstr "Selecciona un ajuste predeterminado"
 
+msgid "Select a name"
+msgstr "Selecciona un nombre"
+
 msgid "Select a project"
 msgstr "Selecciona un proyecto"
 
@@ -13696,6 +13782,9 @@ msgstr "Seleccionar equipos"
 
 msgid "Select terminal script directory"
 msgstr "Seleccionar el directorio del script de terminal"
+
+msgid "Select worktree"
+msgstr "Selecciona un worktree"
 
 msgid "Select worktree location"
 msgstr "Seleccionar la ubicación del worktree"
@@ -14588,6 +14677,9 @@ msgstr "Estrellas ganadas por semana"
 msgid "Start a {harness} session"
 msgstr "Inicia una sesión de {harness}"
 
+msgid "Start a Bitrise build from a worktree linked to this Azure work item."
+msgstr "Inicia una compilación de Bitrise desde un worktree vinculado a este elemento de trabajo de Azure."
+
 msgid "Start a conversation to see messages here"
 msgstr "Inicia una conversación para ver los mensajes aquí"
 
@@ -14611,6 +14703,9 @@ msgstr "Inicia un agente o un terminal para empezar a trabajar en este espacio d
 
 msgid "Start browsing"
 msgstr "Empezar a navegar"
+
+msgid "Start build"
+msgstr "Iniciar compilación"
 
 msgid "Start free. Upgrade when your team outgrows it. Enterprise plans for organizations with advanced security and compliance needs."
 msgstr "Empieza gratis. Sube de plan cuando tu equipo se quede corto. Planes Enterprise para organizaciones con necesidades avanzadas de seguridad y cumplimiento."
@@ -14932,9 +15027,6 @@ msgstr "Memoria de Superset"
 
 msgid "Superset memory · last 5 min"
 msgstr "Memoria de Superset · últimos 5 min"
-
-msgid "Superset Mobile is part of Pro"
-msgstr "Superset Mobile forma parte de Pro"
 
 msgid "Superset Mobile runs agents on the computers you connect."
 msgstr "Superset Mobile ejecuta agentes en los equipos que conectes."
@@ -15699,6 +15791,9 @@ msgstr "La invitación al equipo ha caducado o no existe. Pide un enlace nuevo a
 msgid "The title shows everywhere this page is listed and in its link preview."
 msgstr "El título aparece en todos los sitios donde se lista esta página y en la vista previa de su enlace."
 
+msgid "The token is stored securely and is never displayed again."
+msgstr "El token se guarda de forma segura y no volverá a mostrarse."
+
 msgid "The web agents UI is a read-only preview for now."
 msgstr "La interfaz web de agentes es, por ahora, una vista previa de solo lectura."
 
@@ -15892,9 +15987,6 @@ msgstr "Esta operación está desactivada para este proyecto."
 msgid "this organization"
 msgstr "esta organización"
 
-msgid "This organization is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "Esta organización tiene el plan Gratis. Superset Mobile está disponible para organizaciones con el plan Pro."
-
 msgid "This page could not be loaded"
 msgstr "No se pudo cargar esta página"
 
@@ -16058,6 +16150,9 @@ msgstr "El host de este espacio de trabajo está sin conexión"
 
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "El host de este espacio de trabajo ejecuta un servicio de host más antiguo del que admite esta app. Actualízalo para reconectar; el espacio de trabajo y sus archivos no se tocan."
+
+msgid "This worktree's host is unavailable."
+msgstr "El host de este worktree no está disponible."
 
 msgid "Thorough reasoning effort"
 msgstr "Esfuerzo de razonamiento exhaustivo"
@@ -16695,10 +16790,6 @@ msgstr "Mejorar plan"
 msgid "Upgrade a dependency and fix what breaks…"
 msgstr "Actualizar una dependencia y arreglar lo que se rompa…"
 
-#. placeholder {0}: COMPANY.DOMAIN
-msgid "Upgrade on {0}"
-msgstr "Actualizar en {0}"
-
 #. placeholder {0}: i18n._(plan.name)
 msgid "Upgrade to {0}"
 msgstr "Mejorar a {0}"
@@ -16818,6 +16909,9 @@ msgstr "Usar la transcripción de voz y las funciones de pulsar para hablar."
 msgid "Use your existing agent subscriptions and API keys. Superset never proxies model calls or locks your workflow to one provider."
 msgstr "Usa tus suscripciones de agentes y tus claves de API. Superset nunca hace de intermediario en las llamadas a los modelos ni ata tu flujo de trabajo a un solo proveedor."
 
+msgid "Used as the version name for alpha builds. Leave blank when the workflow generates it automatically."
+msgstr "Se usa como nombre de versión para compilaciones Alpha. Déjalo vacío si el workflow lo genera automáticamente."
+
 msgid "Used in URLs and APIs."
 msgstr "Se usa en las URL y las API."
 
@@ -16912,8 +17006,14 @@ msgstr "Control de versiones"
 msgid "Version history"
 msgstr "Historial de versiones"
 
+msgid "Version name"
+msgstr "Nombre de versión"
+
 msgid "Version not found"
 msgstr "Versión no encontrada"
+
+msgid "Version number"
+msgstr "Número de versión"
 
 msgid "Version unknown"
 msgstr "Versión desconocida"
@@ -17337,6 +17437,9 @@ msgstr "Work item"
 msgid "Work item not found"
 msgstr "Work item not found"
 
+msgid "Work item number from branch:"
+msgstr "Número del elemento de trabajo de la rama:"
+
 msgid "Work item project"
 msgstr "Work item project"
 
@@ -17460,6 +17563,12 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
+
+msgid "Worktree and branch"
+msgstr "Worktree y rama"
+
+msgid "Worktree branch"
+msgstr "Rama del worktree"
 
 msgid "Worktree created"
 msgstr "Worktree created"

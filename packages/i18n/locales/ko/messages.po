@@ -375,10 +375,6 @@ msgstr "{0}이(가) 오프라인입니다"
 msgid "{0} is offline."
 msgstr "{0}이(가) 오프라인입니다."
 
-#. placeholder {0}: activeOrganization.name
-msgid "{0} is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "{0}은(는) Free 플랜을 사용 중입니다. Superset Mobile은 Pro 플랜 조직에서 사용할 수 있습니다."
-
 #. placeholder {0}: host?.name ?? t({ message: "This host" })
 #. placeholder {1}: hostCompatibility.hostVersion
 #. placeholder {2}: hostCompatibility.minVersion
@@ -1294,6 +1290,12 @@ msgstr "스킬, 플러그인, MCP 서버, 설정을 공유하는 별도 프로�
 msgid "a teammate"
 msgstr "팀원"
 
+msgid "A token is already stored securely"
+msgstr "토큰이 이미 안전하게 저장되어 있습니다"
+
+msgid "A token is stored in this host's secure credential store."
+msgstr "토큰은 이 호스트의 보안 자격 증명 저장소에 저장되어 있습니다."
+
 msgid "A unique identifier for your organization (auto-generated from name)"
 msgstr "조직의 고유 식별자 (이름에서 자동 생성)"
 
@@ -1418,6 +1420,9 @@ msgstr "추가"
 msgid "Add {0} account"
 msgstr "{0} 계정 추가"
 
+msgid "Add a developer name"
+msgstr "개발자 이름 추가"
+
 msgid "Add a lifecycle run script in Project Settings or mark a terminal script as the workspace run."
 msgstr "프로젝트 설정에서 라이프사이클 실행 스크립트를 추가하거나, 터미널 스크립트를 워크스페이스 실행으로 지정하세요."
 
@@ -1450,6 +1455,9 @@ msgstr "클라우드 워크스페이스를 만들기 전에 설정에서 환경�
 
 msgid "Add any machine as a host. Workspaces keep running when your laptop sleeps, and you can check in from wherever you are."
 msgstr "어떤 머신이든 호스트로 추가하세요. 노트북이 잠자기에 들어가도 워크스페이스는 계속 돌고, 어디서든 확인할 수 있습니다."
+
+msgid "Add at least one name before generating a build."
+msgstr "빌드를 생성하기 전에 이름을 하나 이상 추가하세요."
 
 msgid "Add attachment"
 msgstr "첨부 추가"
@@ -1526,6 +1534,12 @@ msgstr "테스트가 없는 가장 위험한 코드에 테스트 추가…"
 
 msgid "Add tests where they're missing"
 msgstr "빠진 테스트 추가하기"
+
+msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
+msgstr "빌드를 생성하기 전에 이 프로젝트의 Azure DevOps 설정에 Bitrise 토큰을 추가하세요."
+
+msgid "Add this build to mocks"
+msgstr "이 빌드를 모의 데이터에 추가"
 
 msgid "Add to Dictionary"
 msgstr "사전에 추가"
@@ -1889,6 +1903,12 @@ msgstr "허용됨"
 
 msgid "Allowed for session"
 msgstr "세션 동안 허용됨"
+
+msgid "Alpha uses the configured version value for this project."
+msgstr "Alpha는 이 프로젝트에 설정된 버전 값을 사용합니다."
+
+msgid "Alpha version value"
+msgstr "Alpha 버전 값"
 
 msgid "Already have an account? <0>Sign in</0>"
 msgstr "이미 계정이 있으신가요? <0>로그인</0>"
@@ -2668,6 +2688,12 @@ msgstr "바이너리, 대용량 또는 특수 파일입니다. 충돌을 해결�
 msgid "Bio"
 msgstr "소개"
 
+msgid "Bitrise build trigger token"
+msgstr "Bitrise 빌드 트리거 토큰"
+
+msgid "Bitrise token removed"
+msgstr "Bitrise 토큰이 삭제되었습니다"
+
 msgid "Block"
 msgstr "블록"
 
@@ -2849,8 +2875,20 @@ msgstr "예산 한도 도달"
 msgid "Bug"
 msgstr "버그"
 
+msgid "Build number"
+msgstr "빌드 번호"
+
+msgid "Build settings saved"
+msgstr "빌드 설정이 저장되었습니다"
+
+msgid "Build started"
+msgstr "빌드가 시작되었습니다"
+
 msgid "Build the future of Superset in the cloud"
 msgstr "클라우드에서 Superset의 미래를 함께 만드세요"
+
+msgid "Build type"
+msgstr "빌드 유형"
 
 msgid "Building the last piece of software"
 msgstr "마지막 소프트웨어를 만듭니다"
@@ -3866,11 +3904,17 @@ msgstr "git 브랜치와 worktree 동작을 설정합니다"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Superset과 Linear 사이에서 작업을 동기화하는 방식을 설정합니다."
 
+msgid "Configure mobile build generation in this project's Azure DevOps settings."
+msgstr "이 프로젝트의 Azure DevOps 설정에서 모바일 빌드 생성을 구성하세요."
+
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "터미널 동작과 재사용 가능한 터미널 스크립트를 설정합니다"
 
 msgid "Configure the automation yourself"
 msgstr "자동화를 직접 설정하세요"
+
+msgid "Configure the Bitrise app and the developer names available for this project."
+msgstr "이 프로젝트에서 사용할 Bitrise 앱과 개발자 이름을 구성하세요."
 
 msgid "Configure the in-app browser"
 msgstr "앱 내 브라우저를 설정합니다"
@@ -3964,6 +4008,9 @@ msgstr "Slack 연결"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "Slack을 연결해 대화에서 바로 작업을 관리하세요. 아무 채널에서나 봇을 멘션하거나 다이렉트 메시지를 보내 작업을 만들고 업데이트할 수 있습니다."
+
+msgid "Connect to this host to configure mobile builds."
+msgstr "모바일 빌드를 구성하려면 이 호스트에 연결하세요."
 
 msgid "Connect your Azure DevOps board"
 msgstr "Connect your Azure DevOps board"
@@ -4368,9 +4415,6 @@ msgstr "공유 버전을 변경할 수 없습니다"
 
 msgid "Could not change who can see this page"
 msgstr "이 페이지를 볼 수 있는 사람을 변경할 수 없습니다"
-
-msgid "Could not check your plan. Check your connection and try again."
-msgstr "플랜을 확인할 수 없습니다. 연결 상태를 확인한 후 다시 시도하세요."
 
 msgid "Could not clear browsing data"
 msgstr "인터넷 사용 기록을 삭제하지 못했습니다"
@@ -5410,6 +5454,12 @@ msgstr "개발: {author}"
 msgid "Developer"
 msgstr "개발자"
 
+msgid "Developer name"
+msgstr "개발자 이름"
+
+msgid "Developer names"
+msgstr "개발자 이름"
+
 msgid "Developers"
 msgstr "개발자"
 
@@ -5995,6 +6045,9 @@ msgstr "유효한 반복 규칙을 입력하세요."
 msgid "Enter a value."
 msgstr "값을 입력하세요."
 
+msgid "Enter the Bitrise token"
+msgstr "Bitrise 토큰 입력"
+
 msgid "Enter URL or search..."
 msgstr "URL 또는 검색어 입력..."
 
@@ -6549,6 +6602,9 @@ msgstr "제거하지 못했습니다"
 msgid "Failed to remove Azure DevOps configuration"
 msgstr "Azure DevOps 구성을 제거하지 못했습니다"
 
+msgid "Failed to remove Bitrise token"
+msgstr "Bitrise 토큰을 삭제하지 못했습니다"
+
 msgid "Failed to remove member"
 msgstr "멤버를 제거하지 못했습니다"
 
@@ -6636,6 +6692,9 @@ msgstr "저장하지 못했습니다"
 msgid "Failed to save Azure DevOps configuration"
 msgstr "Azure DevOps 구성을 저장하지 못했습니다"
 
+msgid "Failed to save build settings"
+msgstr "빌드 설정을 저장하지 못했습니다"
+
 msgid "Failed to save installation. Please try again."
 msgstr "설치를 저장하지 못했습니다. 다시 시도해 주세요."
 
@@ -6687,6 +6746,9 @@ msgstr "에이전트를 시작하지 못했습니다"
 
 msgid "Failed to start agent session."
 msgstr "에이전트 세션을 시작하지 못했습니다."
+
+msgid "Failed to start build"
+msgstr "빌드를 시작하지 못했습니다"
 
 msgid "Failed to stop workspace run command"
 msgstr "워크스페이스 실행 명령을 중지하지 못했습니다"
@@ -7217,8 +7279,14 @@ msgstr "MCP 서버에서 사용할 키를 생성하세요."
 msgid "Generate API key"
 msgstr "API 키 생성"
 
+msgid "Generate build"
+msgstr "빌드 생성"
+
 msgid "Generate key"
 msgstr "키 생성"
+
+msgid "Generate mobile build"
+msgstr "모바일 빌드 생성"
 
 msgid "Generated file hidden"
 msgstr "생성된 파일 숨김"
@@ -8758,6 +8826,9 @@ msgstr "더 불러오는 중..."
 msgid "Loading more…"
 msgstr "더 불러오는 중…"
 
+msgid "Loading project build settings…"
+msgstr "프로젝트 빌드 설정을 불러오는 중…"
+
 msgid "Loading project…"
 msgstr "프로젝트 불러오는 중…"
 
@@ -8796,9 +8867,6 @@ msgstr "터미널 스크립트를 불러오는 중..."
 
 msgid "Loading usage history…"
 msgstr "사용량 기록을 불러오는 중…"
-
-msgid "Loading work item…"
-msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "워크스페이스 불러오는 중…"
@@ -9245,6 +9313,9 @@ msgstr "모바일 앱"
 
 msgid "Mobile App"
 msgstr "모바일 앱"
+
+msgid "Mobile build generation"
+msgstr "모바일 빌드 생성"
 
 msgid "model"
 msgstr "모델"
@@ -9942,6 +10013,9 @@ msgstr "알려진 만든 사람이 없습니다"
 
 msgid "No labels"
 msgstr "레이블 없음"
+
+msgid "No linked worktree"
+msgstr "연결된 worktree가 없습니다"
 
 msgid "No live sessions"
 msgstr "활성 세션 없음"
@@ -12412,6 +12486,12 @@ msgstr "{label}을(를) 제거할까요?"
 msgid "Remove attachment"
 msgstr "첨부 파일 제거"
 
+msgid "Remove Bitrise token"
+msgstr "Bitrise 토큰 삭제"
+
+msgid "Remove developer name"
+msgstr "개발자 이름 삭제"
+
 msgid "Remove from Queue"
 msgstr "대기열에서 제거"
 
@@ -13208,6 +13288,9 @@ msgstr "저장 및 테스트"
 msgid "Save as environment"
 msgstr "환경으로 저장"
 
+msgid "Save build settings"
+msgstr "빌드 설정 저장"
+
 msgid "Save changes"
 msgstr "변경 사항 저장"
 
@@ -13559,6 +13642,9 @@ msgstr "브랜치 선택"
 msgid "Select a default preset"
 msgstr "기본 프리셋 선택"
 
+msgid "Select a name"
+msgstr "이름 선택"
+
 msgid "Select a project"
 msgstr "프로젝트를 선택하세요"
 
@@ -13696,6 +13782,9 @@ msgstr "팀 선택"
 
 msgid "Select terminal script directory"
 msgstr "터미널 스크립트 디렉터리 선택"
+
+msgid "Select worktree"
+msgstr "worktree 선택"
 
 msgid "Select worktree location"
 msgstr "worktree 위치 선택"
@@ -14588,6 +14677,9 @@ msgstr "한 주에 늘어난 스타"
 msgid "Start a {harness} session"
 msgstr "{harness} 세션 시작"
 
+msgid "Start a Bitrise build from a worktree linked to this Azure work item."
+msgstr "이 Azure 작업 항목에 연결된 worktree에서 Bitrise 빌드를 시작합니다."
+
 msgid "Start a conversation to see messages here"
 msgstr "대화를 시작하면 메시지가 여기에 표시됩니다"
 
@@ -14611,6 +14703,9 @@ msgstr "에이전트나 터미널을 시작해 이 워크스페이스에서 작�
 
 msgid "Start browsing"
 msgstr "탐색 시작"
+
+msgid "Start build"
+msgstr "빌드 시작"
 
 msgid "Start free. Upgrade when your team outgrows it. Enterprise plans for organizations with advanced security and compliance needs."
 msgstr "무료로 시작하세요. 팀이 커지면 업그레이드하세요. 고급 보안과 규정 준수가 필요한 조직을 위한 엔터프라이즈 플랜도 있습니다."
@@ -14932,9 +15027,6 @@ msgstr "Superset 메모리"
 
 msgid "Superset memory · last 5 min"
 msgstr "Superset 메모리 · 최근 5분"
-
-msgid "Superset Mobile is part of Pro"
-msgstr "Superset Mobile은 Pro에 포함되어 있습니다"
 
 msgid "Superset Mobile runs agents on the computers you connect."
 msgstr "Superset Mobile은 연결한 컴퓨터에서 에이전트를 실행합니다."
@@ -15699,6 +15791,9 @@ msgstr "팀 초대가 만료되었거나 존재하지 않습니다. 팀 소유�
 msgid "The title shows everywhere this page is listed and in its link preview."
 msgstr "제목은 이 페이지가 표시되는 모든 곳과 링크 미리보기에 나타납니다."
 
+msgid "The token is stored securely and is never displayed again."
+msgstr "토큰은 안전하게 저장되며 다시 표시되지 않습니다."
+
 msgid "The web agents UI is a read-only preview for now."
 msgstr "웹 에이전트 UI는 아직 읽기 전용 미리 보기입니다."
 
@@ -15892,9 +15987,6 @@ msgstr "이 프로젝트에서 해당 작업이 비활성화되어 있습니다.
 msgid "this organization"
 msgstr "이 조직"
 
-msgid "This organization is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "이 조직은 Free 플랜을 사용 중입니다. Superset Mobile은 Pro 플랜 조직에서 사용할 수 있습니다."
-
 msgid "This page could not be loaded"
 msgstr "이 페이지를 불러올 수 없습니다"
 
@@ -16058,6 +16150,9 @@ msgstr "이 워크스페이스의 호스트가 오프라인입니다"
 
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "이 워크스페이스의 호스트는 이 앱이 지원하는 것보다 오래된 호스트 서비스를 실행 중입니다. 업데이트하면 다시 연결됩니다. 워크스페이스와 파일은 그대로 유지됩니다."
+
+msgid "This worktree's host is unavailable."
+msgstr "이 worktree의 호스트를 사용할 수 없습니다."
 
 msgid "Thorough reasoning effort"
 msgstr "철저한 추론"
@@ -16695,10 +16790,6 @@ msgstr "업그레이드"
 msgid "Upgrade a dependency and fix what breaks…"
 msgstr "의존성을 업그레이드하고 깨진 부분 고치기…"
 
-#. placeholder {0}: COMPANY.DOMAIN
-msgid "Upgrade on {0}"
-msgstr "{0}에서 업그레이드"
-
 #. placeholder {0}: i18n._(plan.name)
 msgid "Upgrade to {0}"
 msgstr "{0}(으)로 업그레이드"
@@ -16818,6 +16909,9 @@ msgstr "음성 받아쓰기와 푸시 투 토크 기능을 사용합니다."
 msgid "Use your existing agent subscriptions and API keys. Superset never proxies model calls or locks your workflow to one provider."
 msgstr "기존 에이전트 구독과 API 키를 그대로 쓰세요. Superset은 모델 호출을 중계하지 않고, 워크플로를 한 제공사에 묶어 두지 않습니다."
 
+msgid "Used as the version name for alpha builds. Leave blank when the workflow generates it automatically."
+msgstr "Alpha 빌드의 버전 이름으로 사용됩니다. workflow가 자동 생성하면 비워 두세요."
+
 msgid "Used in URLs and APIs."
 msgstr "URL과 API에서 사용됩니다."
 
@@ -16912,8 +17006,14 @@ msgstr "버전 관리"
 msgid "Version history"
 msgstr "버전 기록"
 
+msgid "Version name"
+msgstr "버전 이름"
+
 msgid "Version not found"
 msgstr "버전을 찾을 수 없습니다"
+
+msgid "Version number"
+msgstr "버전 번호"
 
 msgid "Version unknown"
 msgstr "버전 알 수 없음"
@@ -17337,6 +17437,9 @@ msgstr "Work item"
 msgid "Work item not found"
 msgstr "Work item not found"
 
+msgid "Work item number from branch:"
+msgstr "브랜치의 작업 항목 번호:"
+
 msgid "Work item project"
 msgstr "Work item project"
 
@@ -17460,6 +17563,12 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "worktree"
+
+msgid "Worktree and branch"
+msgstr "worktree 및 브랜치"
+
+msgid "Worktree branch"
+msgstr "worktree 브랜치"
 
 msgid "Worktree created"
 msgstr "Worktree created"

@@ -375,10 +375,6 @@ msgstr "{0} çevrimdışı"
 msgid "{0} is offline."
 msgstr "{0} çevrimdışı."
 
-#. placeholder {0}: activeOrganization.name
-msgid "{0} is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "{0} Ücretsiz planda. Superset Mobile, Pro planındaki kuruluşlar için kullanılabilir."
-
 #. placeholder {0}: host?.name ?? t({ message: "This host" })
 #. placeholder {1}: hostCompatibility.hostVersion
 #. placeholder {2}: hostCompatibility.minVersion
@@ -1294,6 +1290,12 @@ msgstr "Becerilerinizi, eklentilerinizi, MCP sunucularınızı ve ayarlarınız�
 msgid "a teammate"
 msgstr "bir takım arkadaşı"
 
+msgid "A token is already stored securely"
+msgstr "Bir belirteç zaten güvenli şekilde saklanıyor"
+
+msgid "A token is stored in this host's secure credential store."
+msgstr "Belirteç bu ana makinenin güvenli kimlik bilgisi kasasında saklanıyor."
+
 msgid "A unique identifier for your organization (auto-generated from name)"
 msgstr "Kuruluşunuz için benzersiz bir tanımlayıcı (addan otomatik oluşturulur)"
 
@@ -1418,6 +1420,9 @@ msgstr "Ekle"
 msgid "Add {0} account"
 msgstr "{0} hesabı ekle"
 
+msgid "Add a developer name"
+msgstr "Geliştirici adı ekle"
+
 msgid "Add a lifecycle run script in Project Settings or mark a terminal script as the workspace run."
 msgstr "Proje Ayarları'nda bir yaşam döngüsü çalıştırma betiği ekleyin veya bir terminal betiğini çalışma alanı çalıştırması olarak işaretleyin."
 
@@ -1450,6 +1455,9 @@ msgstr "Bulut çalışma alanı oluşturmadan önce Ayarlar'da bir ortam ekleyin
 
 msgid "Add any machine as a host. Workspaces keep running when your laptop sleeps, and you can check in from wherever you are."
 msgstr "Herhangi bir makineyi host olarak ekleyin. Dizüstünüz uykuya geçtiğinde çalışma alanları çalışmaya devam eder ve nerede olursanız olun durumu kontrol edebilirsiniz."
+
+msgid "Add at least one name before generating a build."
+msgstr "Derleme oluşturmadan önce en az bir ad ekleyin."
 
 msgid "Add attachment"
 msgstr "Ek ekle"
@@ -1526,6 +1534,12 @@ msgstr "Test edilmemiş en riskli kod için test ekle…"
 
 msgid "Add tests where they're missing"
 msgstr "Eksik olan yerlere test ekle"
+
+msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
+msgstr "Derleme oluşturmadan önce bu projenin Azure DevOps ayarlarına Bitrise belirtecini ekleyin."
+
+msgid "Add this build to mocks"
+msgstr "Bu derlemeyi mock'lara ekle"
 
 msgid "Add to Dictionary"
 msgstr "Sözlüğe ekle"
@@ -1889,6 +1903,12 @@ msgstr "İzin verildi"
 
 msgid "Allowed for session"
 msgstr "Oturum boyunca izin verildi"
+
+msgid "Alpha uses the configured version value for this project."
+msgstr "Alpha, bu proje için yapılandırılan sürüm değerini kullanır."
+
+msgid "Alpha version value"
+msgstr "Alpha sürüm değeri"
 
 msgid "Already have an account? <0>Sign in</0>"
 msgstr "Zaten hesabınız var mı? <0>Oturum açın</0>"
@@ -2668,6 +2688,12 @@ msgstr "İkili, büyük veya özel dosya. Çözmek için bir sürüm seçin."
 msgid "Bio"
 msgstr "Hakkında"
 
+msgid "Bitrise build trigger token"
+msgstr "Bitrise derleme tetikleme belirteci"
+
+msgid "Bitrise token removed"
+msgstr "Bitrise belirteci kaldırıldı"
+
 msgid "Block"
 msgstr "Blok"
 
@@ -2849,8 +2875,20 @@ msgstr "Bütçe sınırına ulaşıldı"
 msgid "Bug"
 msgstr "Böcek"
 
+msgid "Build number"
+msgstr "Derleme numarası"
+
+msgid "Build settings saved"
+msgstr "Derleme ayarları kaydedildi"
+
+msgid "Build started"
+msgstr "Derleme başlatıldı"
+
 msgid "Build the future of Superset in the cloud"
 msgstr "Superset’in buluttaki geleceğini inşa edin"
+
+msgid "Build type"
+msgstr "Derleme türü"
 
 msgid "Building the last piece of software"
 msgstr "Son yazılım parçasını inşa etmek"
@@ -3866,11 +3904,17 @@ msgstr "Git dal ve worktree davranışını yapılandırın"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Görevlerin Superset ile Linear arasında nasıl eşitleneceğini yapılandırın."
 
+msgid "Configure mobile build generation in this project's Azure DevOps settings."
+msgstr "Mobil derleme oluşturmayı bu projenin Azure DevOps ayarlarından yapılandırın."
+
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "Terminal davranışını ve yeniden kullanılabilir terminal betiklerini yapılandırın"
 
 msgid "Configure the automation yourself"
 msgstr "Otomasyonu kendiniz yapılandırın"
+
+msgid "Configure the Bitrise app and the developer names available for this project."
+msgstr "Bu proje için Bitrise uygulamasını ve kullanılabilir geliştirici adlarını yapılandırın."
 
 msgid "Configure the in-app browser"
 msgstr "Uygulama içi tarayıcıyı yapılandırın"
@@ -3964,6 +4008,9 @@ msgstr "Slack'i bağla"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "Görevleri konuşmalardan yönetmek için Slack'i bağlayın. Görev oluşturmak ve güncellemek için herhangi bir kanalda bottan bahsedin veya ona doğrudan mesaj gönderin."
+
+msgid "Connect to this host to configure mobile builds."
+msgstr "Mobil derlemeleri yapılandırmak için bu ana makineye bağlanın."
 
 msgid "Connect your Azure DevOps board"
 msgstr "Connect your Azure DevOps board"
@@ -4368,9 +4415,6 @@ msgstr "Paylaşılan sürüm değiştirilemedi"
 
 msgid "Could not change who can see this page"
 msgstr "Bu sayfayı kimlerin görebileceği değiştirilemedi"
-
-msgid "Could not check your plan. Check your connection and try again."
-msgstr "Planınız kontrol edilemedi. Bağlantınızı kontrol edip tekrar deneyin."
 
 msgid "Could not clear browsing data"
 msgstr "Tarama verileri temizlenemedi"
@@ -5410,6 +5454,12 @@ msgstr "Geliştiren: {author}"
 msgid "Developer"
 msgstr "Geliştirici"
 
+msgid "Developer name"
+msgstr "Geliştirici adı"
+
+msgid "Developer names"
+msgstr "Geliştirici adları"
+
 msgid "Developers"
 msgstr "Geliştiriciler"
 
@@ -5995,6 +6045,9 @@ msgstr "Geçerli bir yineleme kuralı girin."
 msgid "Enter a value."
 msgstr "Bir değer girin."
 
+msgid "Enter the Bitrise token"
+msgstr "Bitrise belirtecini girin"
+
 msgid "Enter URL or search..."
 msgstr "URL girin veya arayın..."
 
@@ -6549,6 +6602,9 @@ msgstr "Kaldırılamadı"
 msgid "Failed to remove Azure DevOps configuration"
 msgstr "Azure DevOps yapılandırması kaldırılamadı"
 
+msgid "Failed to remove Bitrise token"
+msgstr "Bitrise belirteci kaldırılamadı"
+
 msgid "Failed to remove member"
 msgstr "Üye kaldırılamadı"
 
@@ -6636,6 +6692,9 @@ msgstr "Kaydedilemedi"
 msgid "Failed to save Azure DevOps configuration"
 msgstr "Azure DevOps yapılandırması kaydedilemedi"
 
+msgid "Failed to save build settings"
+msgstr "Derleme ayarları kaydedilemedi"
+
 msgid "Failed to save installation. Please try again."
 msgstr "Kurulum kaydedilemedi. Lütfen yeniden deneyin."
 
@@ -6687,6 +6746,9 @@ msgstr "Ajan başlatılamadı"
 
 msgid "Failed to start agent session."
 msgstr "Ajan oturumu başlatılamadı."
+
+msgid "Failed to start build"
+msgstr "Derleme başlatılamadı"
 
 msgid "Failed to stop workspace run command"
 msgstr "Çalışma alanı çalıştırma komutu durdurulamadı"
@@ -7217,8 +7279,14 @@ msgstr "MCP sunucularıyla kullanmak için bir anahtar oluşturun."
 msgid "Generate API key"
 msgstr "API anahtarı oluştur"
 
+msgid "Generate build"
+msgstr "Derleme oluştur"
+
 msgid "Generate key"
 msgstr "Anahtar oluştur"
+
+msgid "Generate mobile build"
+msgstr "Mobil derleme oluştur"
 
 msgid "Generated file hidden"
 msgstr "Oluşturulan dosya gizlendi"
@@ -8758,6 +8826,9 @@ msgstr "Daha fazlası yükleniyor..."
 msgid "Loading more…"
 msgstr "Daha fazlası yükleniyor…"
 
+msgid "Loading project build settings…"
+msgstr "Proje derleme ayarları yükleniyor…"
+
 msgid "Loading project…"
 msgstr "Proje yükleniyor…"
 
@@ -8796,9 +8867,6 @@ msgstr "Terminal betikleri yükleniyor..."
 
 msgid "Loading usage history…"
 msgstr "Kullanım geçmişi yükleniyor…"
-
-msgid "Loading work item…"
-msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "Çalışma alanları yükleniyor…"
@@ -9245,6 +9313,9 @@ msgstr "Mobil uygulama"
 
 msgid "Mobile App"
 msgstr "Mobil uygulama"
+
+msgid "Mobile build generation"
+msgstr "Mobil derleme oluşturma"
 
 msgid "model"
 msgstr "model"
@@ -9942,6 +10013,9 @@ msgstr "Bilinen oluşturan yok"
 
 msgid "No labels"
 msgstr "Etiket yok"
+
+msgid "No linked worktree"
+msgstr "Bağlı worktree yok"
 
 msgid "No live sessions"
 msgstr "Canlı oturum yok"
@@ -12412,6 +12486,12 @@ msgstr "{label} kaldırılsın mı?"
 msgid "Remove attachment"
 msgstr "Eki kaldır"
 
+msgid "Remove Bitrise token"
+msgstr "Bitrise belirtecini kaldır"
+
+msgid "Remove developer name"
+msgstr "Geliştirici adını kaldır"
+
 msgid "Remove from Queue"
 msgstr "Kuyruktan çıkar"
 
@@ -13208,6 +13288,9 @@ msgstr "Kaydet ve test et"
 msgid "Save as environment"
 msgstr "Ortam olarak kaydet"
 
+msgid "Save build settings"
+msgstr "Derleme ayarlarını kaydet"
+
 msgid "Save changes"
 msgstr "Değişiklikleri kaydet"
 
@@ -13559,6 +13642,9 @@ msgstr "Bir dal seçin"
 msgid "Select a default preset"
 msgstr "Varsayılan ön ayarı seçin"
 
+msgid "Select a name"
+msgstr "Bir ad seçin"
+
 msgid "Select a project"
 msgstr "Bir proje seçin"
 
@@ -13696,6 +13782,9 @@ msgstr "Takımları seç"
 
 msgid "Select terminal script directory"
 msgstr "Terminal betiği dizinini seçin"
+
+msgid "Select worktree"
+msgstr "Worktree seçin"
 
 msgid "Select worktree location"
 msgstr "Worktree konumunu seçin"
@@ -14588,6 +14677,9 @@ msgstr "Hafta başına kazanılan yıldız"
 msgid "Start a {harness} session"
 msgstr "{harness} oturumu başlatın"
 
+msgid "Start a Bitrise build from a worktree linked to this Azure work item."
+msgstr "Bu Azure iş öğesine bağlı bir worktree'den Bitrise derlemesi başlatın."
+
 msgid "Start a conversation to see messages here"
 msgstr "Mesajları burada görmek için bir konuşma başlatın"
 
@@ -14611,6 +14703,9 @@ msgstr "Bu çalışma alanında çalışmaya başlamak için bir ajan veya termi
 
 msgid "Start browsing"
 msgstr "Taramaya başlayın"
+
+msgid "Start build"
+msgstr "Derlemeyi başlat"
 
 msgid "Start free. Upgrade when your team outgrows it. Enterprise plans for organizations with advanced security and compliance needs."
 msgstr "Ücretsiz başlayın. Takımınız büyüdüğünde yükseltin. Gelişmiş güvenlik ve uyumluluk ihtiyaçları olan kuruluşlar için Enterprise planları."
@@ -14932,9 +15027,6 @@ msgstr "Superset belleği"
 
 msgid "Superset memory · last 5 min"
 msgstr "Superset belleği · son 5 dk"
-
-msgid "Superset Mobile is part of Pro"
-msgstr "Superset Mobile, Pro'nun bir parçasıdır"
 
 msgid "Superset Mobile runs agents on the computers you connect."
 msgstr "Superset Mobile, ajanları bağladığınız bilgisayarlarda çalıştırır."
@@ -15699,6 +15791,9 @@ msgstr "Takım daveti ya süresi dolmuş ya da mevcut değil. Takım sahibinden 
 msgid "The title shows everywhere this page is listed and in its link preview."
 msgstr "Başlık, bu sayfanın listelendiği her yerde ve bağlantı önizlemesinde görünür."
 
+msgid "The token is stored securely and is never displayed again."
+msgstr "Belirteç güvenli şekilde saklanır ve bir daha görüntülenmez."
+
 msgid "The web agents UI is a read-only preview for now."
 msgstr "Web ajan arayüzü şimdilik salt okunur bir önizlemedir."
 
@@ -15892,9 +15987,6 @@ msgstr "Bu işlem bu proje için devre dışı."
 msgid "this organization"
 msgstr "bu kuruluş"
 
-msgid "This organization is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "Bu kuruluş Ücretsiz planda. Superset Mobile, Pro planındaki kuruluşlar için kullanılabilir."
-
 msgid "This page could not be loaded"
 msgstr "Bu sayfa yüklenemedi"
 
@@ -16058,6 +16150,9 @@ msgstr "Bu çalışma alanının host'u çevrimdışı"
 
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "Bu çalışma alanının ana makinesi, bu uygulamanın desteklediğinden daha eski bir ana makine hizmeti çalıştırıyor. Yeniden bağlanmak için güncelleyin; çalışma alanı ve dosyaları olduğu gibi kalır."
+
+msgid "This worktree's host is unavailable."
+msgstr "Bu worktree'nin ana makinesi kullanılamıyor."
 
 msgid "Thorough reasoning effort"
 msgstr "Kapsamlı akıl yürütme çabası"
@@ -16695,10 +16790,6 @@ msgstr "Yükselt"
 msgid "Upgrade a dependency and fix what breaks…"
 msgstr "Bir bağımlılığı yükselt ve bozulanları düzelt…"
 
-#. placeholder {0}: COMPANY.DOMAIN
-msgid "Upgrade on {0}"
-msgstr "{0} üzerinden yükselt"
-
 #. placeholder {0}: i18n._(plan.name)
 msgid "Upgrade to {0}"
 msgstr "{0} planına yükselt"
@@ -16818,6 +16909,9 @@ msgstr "Sesli yazıya dökme ve bas-konuş özelliklerini kullanın."
 msgid "Use your existing agent subscriptions and API keys. Superset never proxies model calls or locks your workflow to one provider."
 msgstr "Mevcut ajan aboneliklerinizi ve API anahtarlarınızı kullanın. Superset model çağrılarını asla vekil olarak iletmez ve iş akışınızı tek bir sağlayıcıya kilitlemez."
 
+msgid "Used as the version name for alpha builds. Leave blank when the workflow generates it automatically."
+msgstr "Alpha derlemelerinde sürüm adı olarak kullanılır. Workflow otomatik oluşturuyorsa boş bırakın."
+
 msgid "Used in URLs and APIs."
 msgstr "URL'lerde ve API'lerde kullanılır."
 
@@ -16912,8 +17006,14 @@ msgstr "Sürüm kontrolü"
 msgid "Version history"
 msgstr "Sürüm geçmişi"
 
+msgid "Version name"
+msgstr "Sürüm adı"
+
 msgid "Version not found"
 msgstr "Sürüm bulunamadı"
+
+msgid "Version number"
+msgstr "Sürüm numarası"
 
 msgid "Version unknown"
 msgstr "Sürüm bilinmiyor"
@@ -17337,6 +17437,9 @@ msgstr "Work item"
 msgid "Work item not found"
 msgstr "Work item not found"
 
+msgid "Work item number from branch:"
+msgstr "Branch'teki iş öğesi numarası:"
+
 msgid "Work item project"
 msgstr "Work item project"
 
@@ -17460,6 +17563,12 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
+
+msgid "Worktree and branch"
+msgstr "Worktree ve branch"
+
+msgid "Worktree branch"
+msgstr "Worktree branch'i"
 
 msgid "Worktree created"
 msgstr "Worktree created"

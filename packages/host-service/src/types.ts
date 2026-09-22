@@ -4,6 +4,7 @@ import type { TRPCClient } from "@trpc/client";
 import type { HostDb } from "./db";
 import type { EventBus } from "./events";
 import type { PageWatchManager } from "./page-watch/index.ts";
+import type { BitriseCredentialStore } from "./runtime/azure-devops/bitrise-credentials";
 import type { WorkspaceFilesystemManager } from "./runtime/filesystem";
 import type { GitCredentialProvider, GitFactory } from "./runtime/git";
 import type { PullRequestRuntimeManager } from "./runtime/pull-requests";
@@ -28,6 +29,7 @@ export interface HostServiceContext {
 	runtime: HostServiceRuntime;
 	eventBus: EventBus;
 	terminalAgentStore: TerminalAgentStore;
+	bitriseCredentialStore?: BitriseCredentialStore;
 	organizationId: string;
 	isAuthenticated: boolean;
 	clientMachineId?: string;

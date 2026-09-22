@@ -147,6 +147,26 @@ export const azureDevOpsProjectConfigs = sqliteTable(
 	},
 );
 
+export type BitriseBuildPlatform = "android" | "ios";
+
+export const azureDevOpsBuildConfigs = sqliteTable(
+	"azure_devops_build_configs",
+	{
+		projectId: text("project_id")
+			.primaryKey()
+			.references(() => projects.id, { onDelete: "cascade" }),
+		platform: text().notNull().$type<BitriseBuildPlatform>(),
+		developerNamesJson: text("developer_names_json").notNull(),
+		alphaVersionValue: text("alpha_version_value").notNull(),
+		createdAt: integer("created_at")
+			.notNull()
+			.$defaultFn(() => Date.now()),
+		updatedAt: integer("updated_at")
+			.notNull()
+			.$defaultFn(() => Date.now()),
+	},
+);
+
 export type AzureDevOpsWorkItemStage =
 	| "implementation"
 	| "homologation"

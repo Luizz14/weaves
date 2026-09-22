@@ -12,6 +12,7 @@ import {
 	LuArrowLeft,
 	LuExternalLink,
 	LuFileText,
+	LuHammer,
 	LuLink,
 	LuPlus,
 	LuRefreshCw,
@@ -26,6 +27,7 @@ import type { AzureDevOpsBoardResult } from "../../components/TasksView/componen
 import { Route as TasksLayoutRoute } from "../../layout";
 import { AzureWorktreeRow } from "./components/AzureWorktreeRow";
 import { CreateAzureWorktreeDialog } from "./components/CreateAzureWorktreeDialog";
+import { GenerateAzureBuildDialog } from "./components/GenerateAzureBuildDialog";
 
 export const Route = createFileRoute(
 	"/_authenticated/_dashboard/tasks/azure/$workItemId/",
@@ -68,6 +70,7 @@ function AzureWorkItemDetailPage() {
 	const { activeHostUrl } = useLocalHostService();
 	const hostUrl = configuredHostUrl ?? activeHostUrl;
 	const [worktreeDialogOpen, setWorktreeDialogOpen] = useState(false);
+	const [buildDialogOpen, setBuildDialogOpen] = useState(false);
 	const cachedBoardItem = hostUrl
 		? queryClient
 				.getQueriesData<AzureDevOpsBoardResult>({
@@ -491,14 +494,25 @@ function AzureWorkItemDetailPage() {
 									</Trans>
 								</p>
 							</div>
-							<Button
-								className="h-10"
-								disabled={!claimResolved || isReadOnly}
-								onClick={() => setWorktreeDialogOpen(true)}
-							>
-								<LuPlus />
-								<Trans>Add worktree</Trans>
-							</Button>
+							<div className="flex flex-wrap gap-2">
+								<Button
+									variant="outline"
+									className="h-10"
+									disabled={linkedWorkspaces.length === 0}
+									onClick={() => setBuildDialogOpen(true)}
+								>
+									<LuHammer />
+									<Trans>Generate build</Trans>
+								</Button>
+								<Button
+									className="h-10"
+									disabled={!claimResolved || isReadOnly}
+									onClick={() => setWorktreeDialogOpen(true)}
+								>
+									<LuPlus />
+									<Trans>Add worktree</Trans>
+								</Button>
+							</div>
 						</div>
 						<div className="mt-4 grid gap-3">
 							{linkedWorkspaces.map((workspace) => {
@@ -584,6 +598,12 @@ function AzureWorkItemDetailPage() {
 				workItemId={workItemId}
 				workItemTitle={title}
 				workItemUrl={webUrl}
+			/>
+			<GenerateAzureBuildDialog
+				open={buildDialogOpen}
+				onOpenChange={setBuildDialogOpen}
+				workItemId={workItemId}
+				workspaces={linkedWorkspaces}
 			/>
 		</div>
 	);
