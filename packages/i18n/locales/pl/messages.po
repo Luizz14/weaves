@@ -2187,6 +2187,10 @@ msgstr "Archiwizuj środowisko"
 msgid "Archived"
 msgstr "Zarchiwizowane"
 
+#. placeholder {0}: themeToDelete?.name
+msgid "Are you sure you want to delete the theme \"{0}\"? This action cannot be undone."
+msgstr "Czy na pewno chcesz usunąć motyw „{0}”? Tej czynności nie można cofnąć."
+
 msgid "Are you sure you want to delete this file? This action cannot be undone."
 msgstr "Na pewno usunąć ten plik? Tej operacji nie można cofnąć."
 
@@ -4775,6 +4779,9 @@ msgstr "Rdzenie CPU"
 msgid "Create"
 msgstr "Utwórz"
 
+msgid "Create a custom theme by choosing a few key colors."
+msgstr "Utwórz własny motyw, wybierając kilka kluczowych kolorów."
+
 msgid "Create a native provider fork with the same conversation context. The original session stays unchanged."
 msgstr "Tworzy natywnego forka u dostawcy z tym samym kontekstem rozmowy. Pierwotna sesja pozostaje bez zmian."
 
@@ -4868,6 +4875,9 @@ msgstr "utworzyć projektu"
 
 msgid "create the workspace"
 msgstr "utworzyć obszaru roboczego"
+
+msgid "Create theme"
+msgstr "Utwórz motyw"
 
 msgid "Create with AI"
 msgstr "Utwórz z AI"
@@ -5284,6 +5294,9 @@ msgstr "Usunąć sesję „{workspaceName}”?"
 
 msgid "Delete team"
 msgstr "Usuń zespół"
+
+msgid "Delete theme?"
+msgstr "Usunąć motyw?"
 
 msgid "Delete this"
 msgstr "Usuń to"
@@ -5928,6 +5941,9 @@ msgstr "Edytuj skrypt uruchamiania"
 
 msgid "Edit script"
 msgstr "Edytuj skrypt"
+
+msgid "Edit theme"
+msgstr "Edytuj motyw"
 
 msgid "Edited"
 msgstr "Edytowano"
@@ -9476,6 +9492,9 @@ msgstr "Wiele projektów używa tego repozytorium ({0}). Otwórz wybrany projekt
 msgid "Mute notifications"
 msgstr "Wycisz powiadomienia"
 
+msgid "Muted"
+msgstr "Wyciszony"
+
 msgid "My Agent"
 msgstr "Mój agent"
 
@@ -11615,6 +11634,9 @@ msgstr "Podaj nazwę projektu"
 
 msgid "Please enter a repository URL"
 msgstr "Podaj URL repozytorium"
+
+msgid "Please enter a theme name"
+msgstr "Podaj nazwę motywu"
 
 msgid "Please select a project location"
 msgstr "Wybierz lokalizację projektu"
@@ -15815,14 +15837,23 @@ msgstr "Worktree ma niezacommitowane zmiany z sesji agenta."
 msgid "Theme"
 msgstr "Motyw"
 
+msgid "Theme created"
+msgstr "Motyw utworzony"
+
 msgid "Theme default"
 msgstr "Domyślny motywu"
+
+msgid "Theme deleted"
+msgstr "Motyw usunięty"
 
 msgid "Theme file too large"
 msgstr "Plik motywu jest za duży"
 
 msgid "Theme Preview Card"
 msgstr "Theme Preview Card"
+
+msgid "Theme updated"
+msgstr "Motyw zaktualizowany"
 
 msgid "Themes"
 msgstr "Motywy"

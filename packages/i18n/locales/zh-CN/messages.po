@@ -2187,6 +2187,10 @@ msgstr "归档环境"
 msgid "Archived"
 msgstr "已归档"
 
+#. placeholder {0}: themeToDelete?.name
+msgid "Are you sure you want to delete the theme \"{0}\"? This action cannot be undone."
+msgstr "确定要删除主题“{0}”吗?此操作无法撤销。"
+
 msgid "Are you sure you want to delete this file? This action cannot be undone."
 msgstr "确定要删除此文件吗？此操作无法撤销。"
 
@@ -4775,6 +4779,9 @@ msgstr "CPU核心"
 msgid "Create"
 msgstr "创建"
 
+msgid "Create a custom theme by choosing a few key colors."
+msgstr "通过选择几种关键颜色来创建自定义主题。"
+
 msgid "Create a native provider fork with the same conversation context. The original session stays unchanged."
 msgstr "在提供方创建一个具有相同对话上下文的原生分叉。原会话保持不变。"
 
@@ -4868,6 +4875,9 @@ msgstr "创建项目"
 
 msgid "create the workspace"
 msgstr "创建工作区"
+
+msgid "Create theme"
+msgstr "创建主题"
 
 msgid "Create with AI"
 msgstr "用AI创建"
@@ -5284,6 +5294,9 @@ msgstr "删除会话“{workspaceName}”？"
 
 msgid "Delete team"
 msgstr "删除团队"
+
+msgid "Delete theme?"
+msgstr "要删除主题吗?"
 
 msgid "Delete this"
 msgstr "删除这里"
@@ -5928,6 +5941,9 @@ msgstr "编辑运行脚本"
 
 msgid "Edit script"
 msgstr "编辑脚本"
+
+msgid "Edit theme"
+msgstr "编辑主题"
 
 msgid "Edited"
 msgstr "已编辑"
@@ -9476,6 +9492,9 @@ msgstr "有多个项目使用此仓库（{0}）。请在设置中打开你想要
 msgid "Mute notifications"
 msgstr "静音通知"
 
+msgid "Muted"
+msgstr "静音"
+
 msgid "My Agent"
 msgstr "我的智能体"
 
@@ -11615,6 +11634,9 @@ msgstr "请输入项目名称"
 
 msgid "Please enter a repository URL"
 msgstr "请输入仓库URL"
+
+msgid "Please enter a theme name"
+msgstr "请输入主题名称"
 
 msgid "Please select a project location"
 msgstr "请选择项目位置"
@@ -15815,14 +15837,23 @@ msgstr "worktree中有智能体会话留下的未提交修改。"
 msgid "Theme"
 msgstr "主题"
 
+msgid "Theme created"
+msgstr "主题已创建"
+
 msgid "Theme default"
 msgstr "主题默认值"
+
+msgid "Theme deleted"
+msgstr "主题已删除"
 
 msgid "Theme file too large"
 msgstr "主题文件过大"
 
 msgid "Theme Preview Card"
 msgstr "主题预览卡片"
+
+msgid "Theme updated"
+msgstr "主题已更新"
 
 msgid "Themes"
 msgstr "主题"

@@ -2187,6 +2187,10 @@ msgstr "Ortamı arşivle"
 msgid "Archived"
 msgstr "Arşivlenmiş"
 
+#. placeholder {0}: themeToDelete?.name
+msgid "Are you sure you want to delete the theme \"{0}\"? This action cannot be undone."
+msgstr "\"{0}\" temasını silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+
 msgid "Are you sure you want to delete this file? This action cannot be undone."
 msgstr "Bu dosyayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
 
@@ -4775,6 +4779,9 @@ msgstr "CPU çekirdeği"
 msgid "Create"
 msgstr "Oluştur"
 
+msgid "Create a custom theme by choosing a few key colors."
+msgstr "Birkaç temel renk seçerek özel bir tema oluşturun."
+
 msgid "Create a native provider fork with the same conversation context. The original session stays unchanged."
 msgstr "Sağlayıcıda aynı konuşma bağlamına sahip yerel bir fork oluşturur. Özgün oturum değişmeden kalır."
 
@@ -4868,6 +4875,9 @@ msgstr "projeyi oluşturma"
 
 msgid "create the workspace"
 msgstr "çalışma alanını oluşturma"
+
+msgid "Create theme"
+msgstr "Tema oluştur"
 
 msgid "Create with AI"
 msgstr "AI ile oluştur"
@@ -5284,6 +5294,9 @@ msgstr "\"{workspaceName}\" oturumu silinsin mi?"
 
 msgid "Delete team"
 msgstr "Takımı sil"
+
+msgid "Delete theme?"
+msgstr "Tema silinsin mi?"
 
 msgid "Delete this"
 msgstr "Bunu sil"
@@ -5928,6 +5941,9 @@ msgstr "Çalıştırma betiğini düzenle"
 
 msgid "Edit script"
 msgstr "Betiği düzenle"
+
+msgid "Edit theme"
+msgstr "Temayı düzenle"
 
 msgid "Edited"
 msgstr "Düzenlendi"
@@ -9476,6 +9492,9 @@ msgstr "Bu depoyu birden fazla proje kullanıyor ({0}). Bu cihazda kurmak için 
 msgid "Mute notifications"
 msgstr "Bildirimleri sustur"
 
+msgid "Muted"
+msgstr "Sessiz"
+
 msgid "My Agent"
 msgstr "Ajanım"
 
@@ -11615,6 +11634,9 @@ msgstr "Lütfen bir proje adı girin"
 
 msgid "Please enter a repository URL"
 msgstr "Lütfen bir depo URL'si girin"
+
+msgid "Please enter a theme name"
+msgstr "Lütfen bir tema adı girin"
 
 msgid "Please select a project location"
 msgstr "Lütfen bir proje konumu seçin"
@@ -15815,14 +15837,23 @@ msgstr "Worktree'de ajan oturumundan kalan commit'lenmemiş düzenlemeler var."
 msgid "Theme"
 msgstr "Tema"
 
+msgid "Theme created"
+msgstr "Tema oluşturuldu"
+
 msgid "Theme default"
 msgstr "Tema varsayılanı"
+
+msgid "Theme deleted"
+msgstr "Tema silindi"
 
 msgid "Theme file too large"
 msgstr "Tema dosyası çok büyük"
 
 msgid "Theme Preview Card"
 msgstr "Tema önizleme kartı"
+
+msgid "Theme updated"
+msgstr "Tema güncellendi"
 
 msgid "Themes"
 msgstr "Temalar"

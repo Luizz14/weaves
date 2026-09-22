@@ -2187,6 +2187,10 @@ msgstr "Arquivar ambiente"
 msgid "Archived"
 msgstr "Arquivadas"
 
+#. placeholder {0}: themeToDelete?.name
+msgid "Are you sure you want to delete the theme \"{0}\"? This action cannot be undone."
+msgstr "Tem certeza de que quer excluir o tema \"{0}\"? Não dá para desfazer."
+
 msgid "Are you sure you want to delete this file? This action cannot be undone."
 msgstr "Tem certeza de que quer excluir este arquivo? Não dá para desfazer."
 
@@ -4775,6 +4779,9 @@ msgstr "Núcleos de CPU"
 msgid "Create"
 msgstr "Criar"
 
+msgid "Create a custom theme by choosing a few key colors."
+msgstr "Crie um tema personalizado escolhendo algumas cores principais."
+
 msgid "Create a native provider fork with the same conversation context. The original session stays unchanged."
 msgstr "Cria uma bifurcação nativa no provedor com o mesmo contexto da conversa. A sessão original permanece inalterada."
 
@@ -4868,6 +4875,9 @@ msgstr "criar o projeto"
 
 msgid "create the workspace"
 msgstr "criar a área de trabalho"
+
+msgid "Create theme"
+msgstr "Criar tema"
 
 msgid "Create with AI"
 msgstr "Criar com IA"
@@ -5284,6 +5294,9 @@ msgstr "Excluir a sessão \"{workspaceName}\"?"
 
 msgid "Delete team"
 msgstr "Excluir equipe"
+
+msgid "Delete theme?"
+msgstr "Excluir tema?"
 
 msgid "Delete this"
 msgstr "Excluir isto"
@@ -5928,6 +5941,9 @@ msgstr "Editar script de execução"
 
 msgid "Edit script"
 msgstr "Editar script"
+
+msgid "Edit theme"
+msgstr "Editar tema"
 
 msgid "Edited"
 msgstr "Editado"
@@ -9476,6 +9492,9 @@ msgstr "Vários projetos usam este repositório ({0}). Abra o projeto desejado n
 msgid "Mute notifications"
 msgstr "Silenciar notificações"
 
+msgid "Muted"
+msgstr "Neutro"
+
 msgid "My Agent"
 msgstr "Meu agente"
 
@@ -11615,6 +11634,9 @@ msgstr "Digite um nome de projeto"
 
 msgid "Please enter a repository URL"
 msgstr "Digite a URL de um repositório"
+
+msgid "Please enter a theme name"
+msgstr "Digite um nome para o tema"
 
 msgid "Please select a project location"
 msgstr "Selecione um local para o projeto"
@@ -15815,14 +15837,23 @@ msgstr "A worktree tem edições sem commit feitas na sessão do agente."
 msgid "Theme"
 msgstr "Tema"
 
+msgid "Theme created"
+msgstr "Tema criado"
+
 msgid "Theme default"
 msgstr "Padrão do tema"
+
+msgid "Theme deleted"
+msgstr "Tema excluído"
 
 msgid "Theme file too large"
 msgstr "Arquivo de tema grande demais"
 
 msgid "Theme Preview Card"
 msgstr "Theme Preview Card"
+
+msgid "Theme updated"
+msgstr "Tema atualizado"
 
 msgid "Themes"
 msgstr "Temas"

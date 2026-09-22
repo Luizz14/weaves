@@ -12,6 +12,11 @@ export {
 	solarizedLightTheme,
 	vellumTheme,
 } from "./built-in";
+export {
+	createThemeFromColors,
+	type CreateThemeFromColorsInput,
+	slugifyThemeId,
+} from "./create";
 export { getEditorTheme } from "./editor-theme";
 export { parseThemeConfigFile, type ThemeConfigParseResult } from "./import";
 export type {
@@ -29,4 +34,4 @@ export {
 	getDefaultTerminalColors,
 	getTerminalColors,
 } from "./types";
-export { withAlpha } from "./utils";
+export { toHex, toHex8, toHexAuto, withAlpha } from "./utils";

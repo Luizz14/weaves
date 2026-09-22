@@ -59,7 +59,6 @@
 		"db:seed-shared-environments": "bun run --cwd packages/sandbox seed",
       	"pg": "8.16.3",
 		"sandbox:release": "bun run --cwd packages/sandbox release",
-		"pg": "8.16.3",
 		"sandbox:measure": "bun run --cwd packages/sandbox measure"
 	},
 	"type": "module",

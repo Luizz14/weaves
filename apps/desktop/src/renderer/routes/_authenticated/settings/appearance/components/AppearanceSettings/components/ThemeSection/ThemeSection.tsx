@@ -19,6 +19,7 @@ import {
 	HiOutlineArrowDownTray,
 	HiOutlineArrowTopRightOnSquare,
 	HiOutlineArrowUpTray,
+	HiOutlinePlus,
 } from "react-icons/hi2";
 import { ThemeSwatch } from "renderer/components/ThemeSwatch";
 import { HighlightText } from "renderer/routes/_authenticated/settings/components/HighlightText";
@@ -40,6 +41,8 @@ import {
 	parseThemeConfigFile,
 	type Theme,
 } from "shared/themes";
+import { CreateThemeDialog } from "./components/CreateThemeDialog";
+import { CustomThemesList } from "./components/CustomThemesList";
 
 const MAX_THEME_FILE_SIZE = 256 * 1024; // 256 KB
 
@@ -152,11 +155,14 @@ export function ThemeSection() {
 	const searchQuery = useSettingsSearchQuery();
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [isImporting, setIsImporting] = useState(false);
+	const [isThemeDialogOpen, setIsThemeDialogOpen] = useState(false);
+	const [editingTheme, setEditingTheme] = useState<Theme | null>(null);
 	const activeThemeId = useThemeId();
 	const setTheme = useSetTheme();
 	const activeTheme = useThemeStore((state) => state.activeTheme);
 	const customThemes = useThemeStore((state) => state.customThemes);
 	const upsertCustomThemes = useThemeStore((state) => state.upsertCustomThemes);
+	const removeCustomTheme = useThemeStore((state) => state.removeCustomTheme);
 	const systemLightThemeId = useSystemLightThemeId();
 	const systemDarkThemeId = useSystemDarkThemeId();
 	const setSystemThemePreference = useSetSystemThemePreference();
@@ -351,6 +357,43 @@ export function ThemeSection() {
 		URL.revokeObjectURL(url);
 	};
 
+	const existingThemeIds = new Set(allThemes.map((theme) => theme.id));
+
+	const handleThemeSaved = (theme: Theme) => {
+		const wasActive = activeThemeId === theme.id;
+		upsertCustomThemes([theme]);
+		if (wasActive || !editingTheme) setTheme(theme.id);
+		toast.success(
+			editingTheme
+				? t({
+						message: "Theme updated",
+					})
+				: t({
+						message: "Theme created",
+					}),
+		);
+		setEditingTheme(null);
+	};
+
+	const handleOpenCreateTheme = () => {
+		setEditingTheme(null);
+		setIsThemeDialogOpen(true);
+	};
+
+	const handleEditTheme = (theme: Theme) => {
+		setEditingTheme(theme);
+		setIsThemeDialogOpen(true);
+	};
+
+	const handleDeleteTheme = (theme: Theme) => {
+		removeCustomTheme(theme.id);
+		toast.success(
+			t({
+				message: "Theme deleted",
+			}),
+		);
+	};
+
 	return (
 		<>
 			<ThemeRow
@@ -450,6 +493,15 @@ export function ThemeSection() {
 						type="button"
 						variant="outline"
 						size="sm"
+						onClick={handleOpenCreateTheme}
+					>
+						<HiOutlinePlus className="mr-1.5 h-4 w-4" />
+						<Trans>Create theme</Trans>
+					</Button>
+					<Button
+						type="button"
+						variant="outline"
+						size="sm"
 						onClick={handleDownloadBaseTheme}
 					>
 						<HiOutlineArrowDownTray className="mr-1.5 h-4 w-4" />
@@ -467,6 +519,20 @@ export function ThemeSection() {
 					</Button>
 				</div>
 			</div>
+			<CustomThemesList
+				themes={customThemes}
+				activeThemeId={activeThemeId}
+				onEdit={handleEditTheme}
+				onDelete={handleDeleteTheme}
+			/>
+			<CreateThemeDialog
+				open={isThemeDialogOpen}
+				onOpenChange={setIsThemeDialogOpen}
+				editingTheme={editingTheme}
+				baseTheme={currentTheme}
+				existingIds={existingThemeIds}
+				onSaved={handleThemeSaved}
+			/>
 		</>
 	);
 }

@@ -2187,6 +2187,10 @@ msgstr "Lưu trữ environment"
 msgid "Archived"
 msgstr "Đã lưu trữ"
 
+#. placeholder {0}: themeToDelete?.name
+msgid "Are you sure you want to delete the theme \"{0}\"? This action cannot be undone."
+msgstr "Bạn có chắc chắn muốn xóa giao diện \"{0}\" không? Hành động này không thể hoàn tác."
+
 msgid "Are you sure you want to delete this file? This action cannot be undone."
 msgstr "Bạn chắc chắn muốn xóa tệp này? Không thể hoàn tác."
 
@@ -4775,6 +4779,9 @@ msgstr "Nhân CPU"
 msgid "Create"
 msgstr "Tạo"
 
+msgid "Create a custom theme by choosing a few key colors."
+msgstr "Tạo giao diện tùy chỉnh bằng cách chọn một vài màu chính."
+
 msgid "Create a native provider fork with the same conversation context. The original session stays unchanged."
 msgstr "Tạo một bản fork gốc ở nhà cung cấp với cùng ngữ cảnh hội thoại. Phiên ban đầu giữ nguyên."
 
@@ -4868,6 +4875,9 @@ msgstr "tạo dự án"
 
 msgid "create the workspace"
 msgstr "tạo workspace"
+
+msgid "Create theme"
+msgstr "Tạo giao diện"
 
 msgid "Create with AI"
 msgstr "Tạo bằng AI"
@@ -5284,6 +5294,9 @@ msgstr "Xóa phiên \"{workspaceName}\"?"
 
 msgid "Delete team"
 msgstr "Xóa nhóm"
+
+msgid "Delete theme?"
+msgstr "Xóa giao diện?"
 
 msgid "Delete this"
 msgstr "Xóa phần này"
@@ -5928,6 +5941,9 @@ msgstr "Sửa script chạy"
 
 msgid "Edit script"
 msgstr "Sửa script"
+
+msgid "Edit theme"
+msgstr "Chỉnh sửa giao diện"
 
 msgid "Edited"
 msgstr "Đã sửa"
@@ -9476,6 +9492,9 @@ msgstr "Nhiều dự án đang dùng repository này ({0}). Mở dự án bạn 
 msgid "Mute notifications"
 msgstr "Tắt thông báo"
 
+msgid "Muted"
+msgstr "Trầm"
+
 msgid "My Agent"
 msgstr "Agent của tôi"
 
@@ -11615,6 +11634,9 @@ msgstr "Vui lòng nhập tên dự án"
 
 msgid "Please enter a repository URL"
 msgstr "Vui lòng nhập URL repository"
+
+msgid "Please enter a theme name"
+msgstr "Vui lòng nhập tên giao diện"
 
 msgid "Please select a project location"
 msgstr "Vui lòng chọn vị trí dự án"
@@ -15815,14 +15837,23 @@ msgstr "Worktree có các chỉnh sửa chưa commit từ phiên agent."
 msgid "Theme"
 msgstr "Theme"
 
+msgid "Theme created"
+msgstr "Đã tạo giao diện"
+
 msgid "Theme default"
 msgstr "Mặc định của theme"
+
+msgid "Theme deleted"
+msgstr "Đã xóa giao diện"
 
 msgid "Theme file too large"
 msgstr "Tệp theme quá lớn"
 
 msgid "Theme Preview Card"
 msgstr "Theme Preview Card"
+
+msgid "Theme updated"
+msgstr "Đã cập nhật giao diện"
 
 msgid "Themes"
 msgstr "Chủ đề"

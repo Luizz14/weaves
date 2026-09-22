@@ -1,5 +1,6 @@
 import { useMatchRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback } from "react";
+import { useActiveOrganizationId } from "renderer/hooks/useActiveOrganizationId";
 import { useV2UserPreferences } from "renderer/hooks/useV2UserPreferences";
 import { useHostWorkspaces } from "renderer/routes/_authenticated/providers/HostWorkspacesProvider";
 import { useLastActiveV2Workspace } from "renderer/stores/last-active-v2-workspace";
@@ -30,7 +31,12 @@ export function useOpenPage(): OpenPage {
 	const navigate = useNavigate();
 	const matchRoute = useMatchRoute();
 	const { workspaces } = useHostWorkspaces();
-	const lastActiveWorkspaceId = useLastActiveV2Workspace((s) => s.workspaceId);
+	const activeOrganizationId = useActiveOrganizationId();
+	const lastActiveWorkspaceId = useLastActiveV2Workspace((state) =>
+		activeOrganizationId
+			? (state.workspaceIdsByOrganizationId[activeOrganizationId] ?? null)
+			: null,
+	);
 	const { preferences } = useV2UserPreferences();
 
 	const routeMatch = matchRoute({

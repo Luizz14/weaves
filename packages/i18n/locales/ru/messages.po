@@ -2187,6 +2187,10 @@ msgstr "Архивировать окружение"
 msgid "Archived"
 msgstr "Архив"
 
+#. placeholder {0}: themeToDelete?.name
+msgid "Are you sure you want to delete the theme \"{0}\"? This action cannot be undone."
+msgstr "Вы уверены, что хотите удалить тему «{0}»? Это действие нельзя отменить."
+
 msgid "Are you sure you want to delete this file? This action cannot be undone."
 msgstr "Точно удалить этот файл? Действие нельзя отменить."
 
@@ -4775,6 +4779,9 @@ msgstr "Ядра CPU"
 msgid "Create"
 msgstr "Создать"
 
+msgid "Create a custom theme by choosing a few key colors."
+msgstr "Создайте собственную тему, выбрав несколько ключевых цветов."
+
 msgid "Create a native provider fork with the same conversation context. The original session stays unchanged."
 msgstr "Создаёт нативный форк на стороне провайдера с тем же контекстом разговора. Исходная сессия остаётся без изменений."
 
@@ -4868,6 +4875,9 @@ msgstr "создать проект"
 
 msgid "create the workspace"
 msgstr "создать рабочую область"
+
+msgid "Create theme"
+msgstr "Создать тему"
 
 msgid "Create with AI"
 msgstr "Создать с помощью AI"
@@ -5284,6 +5294,9 @@ msgstr "Удалить сессию «{workspaceName}»?"
 
 msgid "Delete team"
 msgstr "Удалить команду"
+
+msgid "Delete theme?"
+msgstr "Удалить тему?"
 
 msgid "Delete this"
 msgstr "Удалить это"
@@ -5928,6 +5941,9 @@ msgstr "Изменить скрипт запуска"
 
 msgid "Edit script"
 msgstr "Изменить скрипт"
+
+msgid "Edit theme"
+msgstr "Изменить тему"
 
 msgid "Edited"
 msgstr "Изменено"
@@ -9476,6 +9492,9 @@ msgstr "Этот репозиторий используют несколько 
 msgid "Mute notifications"
 msgstr "Отключить уведомления"
 
+msgid "Muted"
+msgstr "Приглушённый"
+
 msgid "My Agent"
 msgstr "Мой агент"
 
@@ -11615,6 +11634,9 @@ msgstr "Введите название проекта"
 
 msgid "Please enter a repository URL"
 msgstr "Введите URL репозитория"
+
+msgid "Please enter a theme name"
+msgstr "Введите название темы"
 
 msgid "Please select a project location"
 msgstr "Выберите расположение проекта"
@@ -15815,14 +15837,23 @@ msgstr "В worktree есть незакоммиченные правки из с
 msgid "Theme"
 msgstr "Тема"
 
+msgid "Theme created"
+msgstr "Тема создана"
+
 msgid "Theme default"
 msgstr "Как в теме"
+
+msgid "Theme deleted"
+msgstr "Тема удалена"
 
 msgid "Theme file too large"
 msgstr "Файл темы слишком большой"
 
 msgid "Theme Preview Card"
 msgstr "Карточка предпросмотра темы"
+
+msgid "Theme updated"
+msgstr "Тема обновлена"
 
 msgid "Themes"
 msgstr "Темы"

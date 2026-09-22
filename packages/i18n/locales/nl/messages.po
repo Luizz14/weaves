@@ -2187,6 +2187,10 @@ msgstr "Omgeving archiveren"
 msgid "Archived"
 msgstr "Gearchiveerd"
 
+#. placeholder {0}: themeToDelete?.name
+msgid "Are you sure you want to delete the theme \"{0}\"? This action cannot be undone."
+msgstr "Weet je zeker dat je het thema \"{0}\" wilt verwijderen? Dit kan niet ongedaan worden gemaakt."
+
 msgid "Are you sure you want to delete this file? This action cannot be undone."
 msgstr "Weet je zeker dat je dit bestand wilt verwijderen? Dit kan niet ongedaan worden gemaakt."
 
@@ -4775,6 +4779,9 @@ msgstr "CPU-cores"
 msgid "Create"
 msgstr "Aanmaken"
 
+msgid "Create a custom theme by choosing a few key colors."
+msgstr "Maak een aangepast thema door een paar belangrijke kleuren te kiezen."
+
 msgid "Create a native provider fork with the same conversation context. The original session stays unchanged."
 msgstr "Maakt bij de provider een native fork met dezelfde gesprekscontext. De oorspronkelijke sessie blijft ongewijzigd."
 
@@ -4868,6 +4875,9 @@ msgstr "het project aanmaken"
 
 msgid "create the workspace"
 msgstr "de werkruimte aanmaken"
+
+msgid "Create theme"
+msgstr "Thema maken"
 
 msgid "Create with AI"
 msgstr "Maken met AI"
@@ -5284,6 +5294,9 @@ msgstr "Sessie \"{workspaceName}\" verwijderen?"
 
 msgid "Delete team"
 msgstr "Team verwijderen"
+
+msgid "Delete theme?"
+msgstr "Thema verwijderen?"
 
 msgid "Delete this"
 msgstr "Dit verwijderen"
@@ -5928,6 +5941,9 @@ msgstr "Run-script bewerken"
 
 msgid "Edit script"
 msgstr "Script bewerken"
+
+msgid "Edit theme"
+msgstr "Thema bewerken"
 
 msgid "Edited"
 msgstr "Bewerkt"
@@ -9476,6 +9492,9 @@ msgstr "Meerdere projecten gebruiken deze repository ({0}). Open het gewenste pr
 msgid "Mute notifications"
 msgstr "Meldingen dempen"
 
+msgid "Muted"
+msgstr "Gedempt"
+
 msgid "My Agent"
 msgstr "Mijn agent"
 
@@ -11615,6 +11634,9 @@ msgstr "Voer een projectnaam in"
 
 msgid "Please enter a repository URL"
 msgstr "Voer een repository-URL in"
+
+msgid "Please enter a theme name"
+msgstr "Voer een themanaam in"
 
 msgid "Please select a project location"
 msgstr "Kies een projectlocatie"
@@ -15815,14 +15837,23 @@ msgstr "De worktree heeft niet-gecommitte wijzigingen uit de agentsessie."
 msgid "Theme"
 msgstr "Thema"
 
+msgid "Theme created"
+msgstr "Thema aangemaakt"
+
 msgid "Theme default"
 msgstr "Standaard van thema"
+
+msgid "Theme deleted"
+msgstr "Thema verwijderd"
 
 msgid "Theme file too large"
 msgstr "Themabestand te groot"
 
 msgid "Theme Preview Card"
 msgstr "Theme Preview Card"
+
+msgid "Theme updated"
+msgstr "Thema bijgewerkt"
 
 msgid "Themes"
 msgstr "Thema's"

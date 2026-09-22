@@ -3,10 +3,19 @@ import { CSS } from "@dnd-kit/utilities";
 import { Avatar } from "@superset/ui/atoms/Avatar";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { cn } from "@superset/ui/utils";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
+import { AnimatedText } from "renderer/components/CodexModelSelector/components/AnimatedText";
 import type { SidebarOrganization } from "../../types";
 
-const TRANSITION = { type: "spring", duration: 0.3, bounce: 0 } as const;
+// Mirrors the segment-tab indicator glide (beui.dev/components/motion/tabs):
+// settles without overshoot, since a shared-layout highlight bouncing past
+// its target would read as jittery as it slides between organizations.
+const INDICATOR_TRANSITION = {
+	type: "spring",
+	stiffness: 245,
+	damping: 36,
+	mass: 1.2,
+} as const;
 
 interface OrganizationSwitcherItemProps {
 	organization: SidebarOrganization;
@@ -33,6 +42,9 @@ export function OrganizationSwitcherItem({
 		isDragging,
 	} = useSortable({ id: organization.id });
 	const showLabel = isActive && !isCollapsed;
+	const indicatorTransition = reduceMotion
+		? { duration: 0 }
+		: INDICATOR_TRANSITION;
 
 	return (
 		<div
@@ -54,7 +66,7 @@ export function OrganizationSwitcherItem({
 						aria-label={organization.name}
 						aria-pressed={isActive}
 						onClick={onSelect}
-						transition={reduceMotion ? { duration: 0 } : TRANSITION}
+						transition={indicatorTransition}
 						className={cn(
 							"relative flex h-10 items-center overflow-hidden rounded-lg outline-none",
 							"transition-[background-color,color,box-shadow,scale] active:scale-[0.96]",
@@ -65,40 +77,35 @@ export function OrganizationSwitcherItem({
 						)}
 					>
 						{isActive && (
+							// Shared layoutId "barrinha": rendered only for the active item, so
+							// Motion treats it as one element gliding between positions when
+							// the active organization changes, matching the segment-tab indicator.
 							<motion.span
 								layoutId="active-organization-background"
-								transition={reduceMotion ? { duration: 0 } : TRANSITION}
+								layout
+								transition={indicatorTransition}
 								className="pointer-events-none absolute inset-0 rounded-lg bg-fill-selected shadow-sm dark:shadow-[0_0_0_1px_rgba(255,255,255,0.06)]"
 							/>
 						)}
-						<Avatar
-							size="xs"
-							fullName={organization.name}
-							image={organization.logo}
-							className="relative z-10 size-5 shrink-0 rounded-md ring-1 ring-black/10 ring-inset dark:ring-white/10"
+						<motion.span
+							layout
+							transition={indicatorTransition}
+							className="relative z-10 shrink-0"
+						>
+							<Avatar
+								size="xs"
+								fullName={organization.name}
+								image={organization.logo}
+								className="size-5 shrink-0 rounded-md ring-1 ring-black/10 ring-inset dark:ring-white/10"
+							/>
+						</motion.span>
+						{/* Same per-character reveal used by the Codex chat model selector:
+						    letting the value go from "" to the name (and back) drives the
+						    enter/exit through AnimatedText's own character transitions. */}
+						<AnimatedText
+							value={showLabel ? organization.name : ""}
+							className="relative z-10 min-w-0 truncate text-[13px] font-medium"
 						/>
-						<AnimatePresence initial={false}>
-							{showLabel && (
-								<motion.span
-									key="label"
-									initial={
-										reduceMotion
-											? false
-											: { opacity: 0, scale: 0.25, filter: "blur(4px)" }
-									}
-									animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-									exit={
-										reduceMotion
-											? { opacity: 0 }
-											: { opacity: 0, scale: 0.25, filter: "blur(4px)" }
-									}
-									transition={reduceMotion ? { duration: 0 } : TRANSITION}
-									className="relative z-10 min-w-0 truncate text-[13px] font-medium"
-								>
-									{organization.name}
-								</motion.span>
-							)}
-						</AnimatePresence>
 					</motion.button>
 				</TooltipTrigger>
 				<TooltipContent side={isCollapsed ? "right" : "top"}>

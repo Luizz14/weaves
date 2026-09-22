@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useLastActiveV2Workspace } from "renderer/stores/last-active-v2-workspace";
 import { usePagePaneIntent } from "renderer/stores/page-pane-intent";
 import type { PagePaneData } from "../../types";
 
@@ -12,12 +11,7 @@ export function usePagePaneIntentOpener({
 	isLayoutReady: boolean;
 	openPagePane: (page: PagePaneData) => void;
 }): void {
-	const setLastActive = useLastActiveV2Workspace((s) => s.setWorkspaceId);
 	const pendingIntent = usePagePaneIntent((s) => s.intent);
-
-	useEffect(() => {
-		setLastActive(workspaceId);
-	}, [workspaceId, setLastActive]);
 
 	useEffect(() => {
 		if (!isLayoutReady) return;

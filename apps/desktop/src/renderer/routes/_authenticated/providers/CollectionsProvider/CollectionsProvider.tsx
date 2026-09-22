@@ -19,6 +19,7 @@ import {
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import { electronTrpcClient } from "renderer/lib/trpc-client";
 import { electronQueryClient } from "renderer/providers/ElectronTRPCProvider/ElectronTRPCProvider";
+import { useLastActiveV2Workspace } from "renderer/stores/last-active-v2-workspace";
 import { MOCK_ORG_ID } from "shared/constants";
 import {
 	evictInactiveOrgCollections,
@@ -165,6 +166,9 @@ export function CollectionsProvider({ children }: { children: ReactNode }) {
 				// unaffected — they seeded once and own their org from then on. On
 				// failure the UI stays put.
 				await preloadCollections(organizationId);
+				useLastActiveV2Workspace
+					.getState()
+					.prepareOrganizationSwitch(organizationId);
 				setActiveOrganizationId(organizationId);
 				// Record the choice on the server as well. A window that opens with
 				// no org of its own seeds from the login session, and a session that

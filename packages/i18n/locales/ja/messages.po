@@ -2187,6 +2187,10 @@ msgstr "環境をアーカイブ"
 msgid "Archived"
 msgstr "アーカイブ済み"
 
+#. placeholder {0}: themeToDelete?.name
+msgid "Are you sure you want to delete the theme \"{0}\"? This action cannot be undone."
+msgstr "テーマ「{0}」を削除してもよろしいですか?この操作は元に戻せません。"
+
 msgid "Are you sure you want to delete this file? This action cannot be undone."
 msgstr "このファイルを削除してもよろしいですか?この操作は元に戻せません。"
 
@@ -4775,6 +4779,9 @@ msgstr "CPUコア数"
 msgid "Create"
 msgstr "作成"
 
+msgid "Create a custom theme by choosing a few key colors."
+msgstr "いくつかの主要な色を選んでカスタムテーマを作成します。"
+
 msgid "Create a native provider fork with the same conversation context. The original session stays unchanged."
 msgstr "同じ会話コンテキストを持つネイティブのフォークをプロバイダー側に作成します。元のセッションは変更されません。"
 
@@ -4868,6 +4875,9 @@ msgstr "プロジェクトを作成する"
 
 msgid "create the workspace"
 msgstr "ワークスペースを作成する"
+
+msgid "Create theme"
+msgstr "テーマを作成"
 
 msgid "Create with AI"
 msgstr "AIで作成"
@@ -5284,6 +5294,9 @@ msgstr "セッション「{workspaceName}」を削除しますか?"
 
 msgid "Delete team"
 msgstr "チームを削除"
+
+msgid "Delete theme?"
+msgstr "テーマを削除しますか?"
 
 msgid "Delete this"
 msgstr "これを削除"
@@ -5928,6 +5941,9 @@ msgstr "実行スクリプトを編集"
 
 msgid "Edit script"
 msgstr "スクリプトを編集"
+
+msgid "Edit theme"
+msgstr "テーマを編集"
 
 msgid "Edited"
 msgstr "編集"
@@ -9476,6 +9492,9 @@ msgstr "複数のプロジェクトがこのリポジトリ({0})を使用して�
 msgid "Mute notifications"
 msgstr "通知をミュート"
 
+msgid "Muted"
+msgstr "ミュート"
+
 msgid "My Agent"
 msgstr "マイエージェント"
 
@@ -11615,6 +11634,9 @@ msgstr "プロジェクト名を入力してください"
 
 msgid "Please enter a repository URL"
 msgstr "リポジトリのURLを入力してください"
+
+msgid "Please enter a theme name"
+msgstr "テーマ名を入力してください"
 
 msgid "Please select a project location"
 msgstr "プロジェクトの場所を選択してください"
@@ -15815,14 +15837,23 @@ msgstr "ワークツリーにエージェントセッションの未コミット
 msgid "Theme"
 msgstr "テーマ"
 
+msgid "Theme created"
+msgstr "テーマを作成しました"
+
 msgid "Theme default"
 msgstr "テーマのデフォルト"
+
+msgid "Theme deleted"
+msgstr "テーマを削除しました"
 
 msgid "Theme file too large"
 msgstr "テーマファイルが大きすぎます"
 
 msgid "Theme Preview Card"
 msgstr "Theme Preview Card"
+
+msgid "Theme updated"
+msgstr "テーマを更新しました"
 
 msgid "Themes"
 msgstr "テーマ"

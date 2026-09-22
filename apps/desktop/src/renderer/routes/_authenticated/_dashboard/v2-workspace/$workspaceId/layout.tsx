@@ -1,6 +1,6 @@
 import { eq } from "@tanstack/db";
 import { useLiveQuery } from "@tanstack/react-db";
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef } from "react";
 import { useCloudWorkspaces } from "renderer/hooks/useCloudWorkspaces";
 import { useV2UserPreferences } from "renderer/hooks/useV2UserPreferences";
@@ -9,6 +9,7 @@ import { useDashboardSidebarState } from "renderer/routes/_authenticated/hooks/u
 import { useCollections } from "renderer/routes/_authenticated/providers/CollectionsProvider";
 import { useHostWorkspaces } from "renderer/routes/_authenticated/providers/HostWorkspacesProvider";
 import { useSandboxAccess } from "renderer/routes/_authenticated/providers/SandboxAccessProvider";
+import { useLastActiveV2Workspace } from "renderer/stores/last-active-v2-workspace";
 import { useWorkspaceTransactionsStore } from "renderer/stores/workspace-creates";
 import { CloudWorkspaceProvisioningState } from "../components/CloudWorkspaceProvisioningState";
 import { StateScreenShell } from "../components/StateScreenShell";
@@ -32,7 +33,17 @@ function V2WorkspaceLayout() {
 	// the id and then render an empty shell for the "no id" case that route
 	// could always reach and this one cannot.
 	const { workspaceId } = Route.useParams();
+	const navigate = useNavigate();
 	const collections = useCollections();
+	const pendingOrganizationSwitch = useLastActiveV2Workspace(
+		(state) => state.pendingOrganizationSwitch,
+	);
+	const recordWorkspace = useLastActiveV2Workspace(
+		(state) => state.recordWorkspace,
+	);
+	const clearWorkspace = useLastActiveV2Workspace(
+		(state) => state.clearWorkspace,
+	);
 	const { ensureWorkspaceInSidebar } = useDashboardSidebarState();
 	const pendingTransaction = useWorkspaceTransactionsStore((state) =>
 		workspaceId ? (state.byWorkspaceId[workspaceId] ?? null) : null,
@@ -114,6 +125,51 @@ function V2WorkspaceLayout() {
 		},
 		cache.refetchAll,
 	);
+	const switchTargetsActiveOrganization =
+		pendingOrganizationSwitch?.organizationId ===
+		collections.activeOrganizationId;
+	const switchTargetsCurrentWorkspace =
+		switchTargetsActiveOrganization &&
+		pendingOrganizationSwitch.targetWorkspaceId === workspaceId;
+	const switchingAwayFromCurrentWorkspace =
+		switchTargetsActiveOrganization &&
+		!switchTargetsCurrentWorkspace &&
+		!pendingOrganizationSwitch.hasReachedTarget;
+	const workspaceExists = workspace !== null || cloudWorkspace !== null;
+	const restoredWorkspaceMissing =
+		switchTargetsCurrentWorkspace && !workspaceExists && missConfirmed;
+
+	useEffect(() => {
+		if (!workspaceExists || switchingAwayFromCurrentWorkspace) return;
+		recordWorkspace(collections.activeOrganizationId, workspaceId);
+	}, [
+		collections.activeOrganizationId,
+		recordWorkspace,
+		switchingAwayFromCurrentWorkspace,
+		workspaceExists,
+		workspaceId,
+	]);
+
+	useEffect(() => {
+		if (!restoredWorkspaceMissing) return;
+		clearWorkspace(collections.activeOrganizationId, workspaceId);
+		void navigate({ to: "/v2-workspaces", replace: true }).catch((error) => {
+			console.error(
+				"[organization-workspace-restore] Failed to open workspace list:",
+				error,
+			);
+		});
+	}, [
+		clearWorkspace,
+		collections.activeOrganizationId,
+		navigate,
+		restoredWorkspaceMissing,
+		workspaceId,
+	]);
+
+	if (switchingAwayFromCurrentWorkspace || restoredWorkspaceMissing) {
+		return <StateScreenShell>{null}</StateScreenShell>;
+	}
 
 	// Before "not found": a cloud workspace is navigated to as soon as its row
 	// exists, so for the first seconds of its life there is nothing in the
