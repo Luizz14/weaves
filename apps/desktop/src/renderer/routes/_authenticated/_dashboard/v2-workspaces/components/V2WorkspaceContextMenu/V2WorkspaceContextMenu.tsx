@@ -25,7 +25,7 @@ import { useDashboardSidebarState } from "renderer/routes/_authenticated/hooks/u
 import { useDeleteWorkspaceIntent } from "renderer/stores/delete-workspace-intent";
 
 export interface V2WorkspaceActions {
-	/** Navigate to the workspace (paywall-gated for remote hosts). */
+	/** Navigate to the workspace. */
 	open: () => void;
 	addToSidebar: () => void;
 	removeFromSidebar: () => void;

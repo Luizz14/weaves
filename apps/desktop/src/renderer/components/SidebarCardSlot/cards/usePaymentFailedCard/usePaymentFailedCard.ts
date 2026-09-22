@@ -13,13 +13,8 @@ import type { SidebarCardEntry } from "../../types";
  * `past_due` — Stripe is still retrying and access continues, so the card
  * warns while paying the invoice still saves the subscription.
  *
- * `lapsed` — Stripe gave up, cancelled, and the organization dropped to free.
- * Keying only on `past_due` meant the card vanished at exactly that moment:
- * every one of the 87 organizations this happened to recorded zero
- * `payment_failed_banner_shown`. They were never told, they just quietly lost
- * their triggers. Paying the old invoice cannot undo it either — Stripe will
- * not reactivate a cancelled subscription — so this state sends people to
- * Billing to resubscribe instead of to the invoice.
+ * `lapsed` — Stripe gave up and cancelled the subscription. Paying the old
+ * invoice cannot undo it; the card sends owners to Billing to resubscribe.
  *
  * Neither state gets an `onDismiss`.
  */
@@ -80,8 +75,8 @@ export function usePaymentFailedCard({
 			// chose to leave that a failed charge is why they lost Pro would be
 			// the same wrong-reason bug this card exists to stop.
 			description: isOwner
-				? "This organization is on the free plan and its triggers have stopped running. Restart Pro to turn them back on."
-				: "This organization is on the free plan and its triggers have stopped running. Ask an owner to restart Pro.",
+				? "This organization is on the free plan. Restart Pro to restore the subscription."
+				: "This organization is on the free plan. Ask an owner about restarting Pro.",
 			actionLabel: isOwner ? "Restart Pro" : undefined,
 			onAction: isOwner
 				? () => {
