@@ -137,6 +137,38 @@ describe("host.db migrations", () => {
 		expect(tables(sqlite)).toContain("workspaces");
 		expect(tables(sqlite)).toContain("workspace_tags");
 		expect(tables(sqlite)).toContain("tag_folder_settings");
+		expect(tables(sqlite)).toContain("azure_devops_project_configs");
+		expect(tables(sqlite)).toContain("azure_devops_board_configs");
+		expect(tables(sqlite)).toContain("azure_devops_work_item_states");
+	});
+
+	test("the runner adds Azure DevOps project configuration to an existing database", () => {
+		const sqlite = open();
+		migrate(drizzle(sqlite), {
+			migrationsFolder: folderWithout({
+				omit: [],
+				through: "0035_local_workspaces",
+			}),
+		});
+
+		runMigrations(drizzle(sqlite), MIGRATIONS_FOLDER);
+
+		expect(tables(sqlite)).toContain("azure_devops_project_configs");
+	});
+
+	test("the runner adds the Azure DevOps board tables to an existing database", () => {
+		const sqlite = open();
+		migrate(drizzle(sqlite), {
+			migrationsFolder: folderWithout({
+				omit: [],
+				through: "0036_azure_devops_project_configs",
+			}),
+		});
+
+		runMigrations(drizzle(sqlite), MIGRATIONS_FOLDER);
+
+		expect(tables(sqlite)).toContain("azure_devops_board_configs");
+		expect(tables(sqlite)).toContain("azure_devops_work_item_states");
 	});
 
 	test("every shipped journal entry has a distinct `when`", () => {

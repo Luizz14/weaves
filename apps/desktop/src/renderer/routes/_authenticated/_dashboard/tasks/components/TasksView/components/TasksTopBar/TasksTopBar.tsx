@@ -11,6 +11,7 @@ import {
 	HiXMark,
 } from "react-icons/hi2";
 import { SiLinear } from "react-icons/si";
+import { VscAzureDevops } from "react-icons/vsc";
 import { useIsV2CloudEnabled } from "renderer/hooks/useIsV2CloudEnabled";
 import { OpenClosedFilter } from "renderer/routes/_authenticated/_dashboard/components/OpenClosedFilter";
 import { ProjectFilter } from "renderer/routes/_authenticated/_dashboard/components/ProjectFilter";
@@ -35,7 +36,7 @@ export type TabValue =
 	| "started"
 	| "completed"
 	| "canceled";
-export type TaskSource = "tasks" | "issues";
+export type TaskSource = "tasks" | "issues" | "azure";
 
 interface TasksTopBarProps {
 	currentTab: TabValue;
@@ -63,6 +64,7 @@ interface TasksTopBarProps {
 const TASK_SOURCES = [
 	{ value: "tasks" as const, Icon: SiLinear },
 	{ value: "issues" as const, Icon: GoIssueOpened },
+	{ value: "azure" as const, Icon: VscAzureDevops },
 ] as const;
 
 export function TasksTopBar({
@@ -95,12 +97,19 @@ export function TasksTopBar({
 		issues: t({
 			message: "GitHub issues",
 		}),
+		azure: t({
+			message: "Azure DevOps",
+		}),
 	};
 	const showTaskOnlyControls = taskSource === "tasks";
 	const showIssues = taskSource === "issues";
 	const taskSelectedCount = selectedTasks.length;
 	const issueSelectedCount = selectedIssues.length;
-	const selectedCount = showIssues ? issueSelectedCount : taskSelectedCount;
+	const selectedCount = showIssues
+		? issueSelectedCount
+		: taskSource === "tasks"
+			? taskSelectedCount
+			: 0;
 	const selectedIssueProjectIds = new Set(
 		selectedIssues.map((issue) => issue.projectId),
 	);
@@ -199,7 +208,7 @@ export function TasksTopBar({
 											onChange={onAssigneeFilterChange}
 										/>
 									</>
-								) : (
+								) : showIssues ? (
 									<>
 										<div className="flex items-center gap-2">
 											<span className="text-xs text-muted-foreground">
@@ -216,7 +225,7 @@ export function TasksTopBar({
 											onChange={onIncludeClosedIssuesChange}
 										/>
 									</>
-								)}
+								) : null}
 							</>
 						)}
 					</div>
@@ -295,18 +304,22 @@ export function TasksTopBar({
 									? t({
 											message: "Search GitHub issues…",
 										})
-									: t({
-											message: "Search tasks…",
-										})
+									: taskSource === "azure"
+										? t({ message: "Search Azure work items…" })
+										: t({
+												message: "Search tasks…",
+											})
 							}
 							label={
 								showIssues
 									? t({
 											message: "Search GitHub issues",
 										})
-									: t({
-											message: "Search tasks",
-										})
+									: taskSource === "azure"
+										? t({ message: "Search Azure work items" })
+										: t({
+												message: "Search tasks",
+											})
 							}
 						/>
 					</div>

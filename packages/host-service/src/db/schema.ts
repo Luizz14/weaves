@@ -119,6 +119,63 @@ export const projects = sqliteTable(
 	(table) => [index("projects_repo_path_idx").on(table.repoPath)],
 );
 
+export const azureDevOpsProjectConfigs = sqliteTable(
+	"azure_devops_project_configs",
+	{
+		projectId: text("project_id")
+			.primaryKey()
+			.references(() => projects.id, { onDelete: "cascade" }),
+		organizationUrl: text("organization_url").notNull(),
+		azureProject: text("azure_project").notNull(),
+		repository: text().notNull(),
+		createdAt: integer("created_at")
+			.notNull()
+			.$defaultFn(() => Date.now()),
+		updatedAt: integer("updated_at")
+			.notNull()
+			.$defaultFn(() => Date.now()),
+	},
+);
+
+export type AzureDevOpsWorkItemStage =
+	| "implementation"
+	| "homologation"
+	| "review";
+
+export const azureDevOpsBoardConfigs = sqliteTable(
+	"azure_devops_board_configs",
+	{
+		id: integer().primaryKey().default(1),
+		organizationUrl: text("organization_url").notNull(),
+		workItemProject: text("work_item_project").notNull(),
+		team: text().notNull(),
+		areaPath: text("area_path").notNull(),
+		assignedTo: text("assigned_to"),
+		workItemTypesJson: text("work_item_types_json").notNull(),
+		createdAt: integer("created_at")
+			.notNull()
+			.$defaultFn(() => Date.now()),
+		updatedAt: integer("updated_at")
+			.notNull()
+			.$defaultFn(() => Date.now()),
+	},
+);
+
+export const azureDevOpsWorkItemStates = sqliteTable(
+	"azure_devops_work_item_states",
+	{
+		workItemId: integer("work_item_id").primaryKey(),
+		stage: text().notNull().$type<AzureDevOpsWorkItemStage>(),
+		childWorkItemId: integer("child_work_item_id"),
+		createdAt: integer("created_at")
+			.notNull()
+			.$defaultFn(() => Date.now()),
+		updatedAt: integer("updated_at")
+			.notNull()
+			.$defaultFn(() => Date.now()),
+	},
+);
+
 /**
  * Single-row host-wide settings (always `id = 1`). The host-service has no
  * generic settings store yet; this row holds host-wide knobs (worktree base
@@ -146,6 +203,7 @@ export const pullRequests = sqliteTable(
 		repoProvider: text("repo_provider").notNull(),
 		repoOwner: text("repo_owner").notNull(),
 		repoName: text("repo_name").notNull(),
+		repoProject: text("repo_project").notNull().default(""),
 		prNumber: integer("pr_number").notNull(),
 		url: text().notNull(),
 		title: text().notNull(),
@@ -180,6 +238,7 @@ export const pullRequests = sqliteTable(
 		uniqueIndex("pull_requests_repo_pr_unique").on(
 			table.repoProvider,
 			table.repoOwner,
+			table.repoProject,
 			table.repoName,
 			table.prNumber,
 		),
@@ -255,6 +314,9 @@ export const workspaces = sqliteTable(
 			.notNull()
 			.default("worktree"),
 		taskId: text("task_id"),
+		externalWorkItemProvider: text("external_work_item_provider"),
+		externalWorkItemId: text("external_work_item_id"),
+		externalWorkItemUrl: text("external_work_item_url"),
 		createdByUserId: text("created_by_user_id"),
 		createdAt: integer("created_at")
 			.notNull()

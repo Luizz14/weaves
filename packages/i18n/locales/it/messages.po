@@ -1533,6 +1533,9 @@ msgstr "Aggiungi al prompt"
 msgid "Add to workspace"
 msgstr "Aggiungi al workspace"
 
+msgid "Add worktree"
+msgstr "Add worktree"
+
 msgid "Add your own terminal agent to this device."
 msgstr "Aggiungi un tuo agente da terminale a questo dispositivo."
 
@@ -2152,6 +2155,9 @@ msgstr "Vuoi davvero rimuovere {memberName} ({memberEmail}) dall'organizzazione?
 msgid "Are you sure you want to revoke \"{keyName}\"? This action cannot be undone."
 msgstr "Vuoi davvero revocare \"{keyName}\"? L'operazione non può essere annullata."
 
+msgid "Area path"
+msgstr "Area path"
+
 msgid "Arguments"
 msgstr "Argomenti"
 
@@ -2202,6 +2208,12 @@ msgstr "Aspect Ratio"
 
 msgid "Assigned"
 msgstr "Assegnata"
+
+msgid "Assigned to"
+msgstr "Assigned to"
+
+msgid "Assigned-to fallback"
+msgstr "Assigned-to fallback"
 
 msgid "Assignee"
 msgstr "Assegnatario"
@@ -2438,6 +2450,30 @@ msgstr "In attesa della tua revisione"
 msgid "Awaiting review from you or your team"
 msgstr "In attesa della revisione tua o del tuo team"
 
+msgid "Azure CLI on {targetName}"
+msgstr "Azure CLI on {targetName}"
+
+msgid "Azure DevOps"
+msgstr "Azure DevOps"
+
+msgid "Azure DevOps board connected"
+msgstr "Azure DevOps board connected"
+
+msgid "Azure DevOps configuration removed"
+msgstr "Configurazione di Azure DevOps rimossa"
+
+msgid "Azure DevOps configuration saved"
+msgstr "Configurazione di Azure DevOps salvata"
+
+msgid "Azure host"
+msgstr "Azure host"
+
+msgid "Azure project"
+msgstr "Progetto Azure"
+
+msgid "Azure pull requests"
+msgstr "Azure pull requests"
+
 msgctxt "file size unit, bytes"
 msgid "B"
 msgstr "B"
@@ -2454,6 +2490,9 @@ msgstr "Torna alla fatturazione"
 msgid "Back to Blog"
 msgstr "Torna al blog"
 
+msgid "Back to board"
+msgstr "Back to board"
+
 msgid "Back to Changelog"
 msgstr "Torna al changelog"
 
@@ -2468,6 +2507,12 @@ msgstr "Torna alle issue GitHub"
 
 msgid "Back to Home"
 msgstr "Torna alla home"
+
+msgid "Back to homologation"
+msgstr "Back to homologation"
+
+msgid "Back to implementation"
+msgstr "Back to implementation"
 
 msgid "Back to Integrations"
 msgstr "Torna alle integrazioni"
@@ -2710,6 +2755,9 @@ msgstr "Importa i tuoi script del terminale"
 
 msgid "Bring over your workspaces"
 msgstr "Importa i tuoi spazi di lavoro"
+
+msgid "Bring the current sprint into Superset, claim work items, and keep worktrees and pull requests together."
+msgstr "Bring the current sprint into Superset, claim work items, and keep worktrees and pull requests together."
 
 msgid "Bring v1 projects, workspaces, and terminal scripts over to v2. Each item is imported individually and can be retried."
 msgstr "Porta progetti, workspace e script del terminale da v1 a v2. Ogni elemento viene importato singolarmente e si può riprovare."
@@ -3105,6 +3153,9 @@ msgstr "Conto corrente + risparmio + Treasury nel tempo; i gradini sono le tranc
 msgid "Checking agents…"
 msgstr "Verifica degli agenti…"
 
+msgid "Checking Azure CLI, the Azure DevOps extension, and repository access."
+msgstr "Verifica di Azure CLI, dell’estensione Azure DevOps e dell’accesso al repository."
+
 msgid "Checking host…"
 msgstr "Verifica dell'host…"
 
@@ -3180,6 +3231,9 @@ msgstr "Scegli come aprire i percorsi dei file con Cmd+clic nel terminale"
 msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
 msgstr "Scegli i valori predefiniti per le nuove chat e personalizza le scorciatoie dei modelli. Le chat esistenti mantengono le proprie selezioni."
 
+msgid "Choose the device and project that will implement this Azure work item."
+msgstr "Choose the device and project that will implement this Azure work item."
+
 msgid "Choose what to clear from the in-app browser."
 msgstr "Scegli cosa cancellare dal browser interno."
 
@@ -3194,6 +3248,9 @@ msgstr "Abbandono"
 
 msgid "CI failed"
 msgstr "CI fallita"
+
+msgid "Claimed in Azure DevOps"
+msgstr "Claimed in Azure DevOps"
 
 msgid "Clarify this"
 msgstr "Chiarisci questo"
@@ -3797,6 +3854,15 @@ msgstr "Collega un microfono per usare la dettatura"
 msgid "Connect any AI agent to Superset."
 msgstr "Collega qualsiasi agente AI a Superset."
 
+msgid "Connect Azure DevOps"
+msgstr "Connect Azure DevOps"
+
+msgid "Connect Azure DevOps board"
+msgstr "Connect Azure DevOps board"
+
+msgid "Connect board"
+msgstr "Connect board"
+
 msgid "Connect Claude, Codex, Cursor, or any <0>MCP</0> client and let your agent create tasks, spin up workspaces, launch agents, and run automations on your behalf."
 msgstr "Collega Claude, Codex, Cursor o qualsiasi client <0>MCP</0> e lascia che il tuo agente crei task, avvii workspace, lanci agenti ed esegua automazioni al posto tuo."
 
@@ -3835,6 +3901,9 @@ msgstr "Collega Slack"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "Collega Slack per gestire i task dalle conversazioni. Menziona il bot in un canale o mandagli un messaggio diretto per creare e aggiornare i task."
+
+msgid "Connect your Azure DevOps board"
+msgstr "Connect your Azure DevOps board"
 
 msgid "Connect your GitHub repositories and sync pull requests. Track CI status and reviews across your team."
 msgstr "Collega i tuoi repository GitHub e sincronizza le pull request. Tieni traccia dello stato della CI e delle revisioni in tutto il team."
@@ -4621,6 +4690,12 @@ msgstr "Crea di nuovo"
 msgid "Create an account"
 msgstr "Crea un account"
 
+msgid "Create as draft"
+msgstr "Create as draft"
+
+msgid "Create Azure DevOps pull request"
+msgstr "Create Azure DevOps pull request"
+
 msgid "Create failed: {message}"
 msgstr "Creazione non riuscita: {message}"
 
@@ -4684,6 +4759,9 @@ msgstr "Crea il workspace"
 
 msgid "Create workspaces, launch agents, and read their output from any terminal or script. macOS and Linux."
 msgstr "Crea workspace, avvia agenti e leggi il loro output da qualsiasi terminale o script. macOS e Linux."
+
+msgid "Create worktree"
+msgstr "Create worktree"
 
 msgid "Create your first workspace"
 msgstr "Crea il tuo primo workspace"
@@ -4749,6 +4827,9 @@ msgstr "Creazione del worktree git"
 msgid "Creating PR..."
 msgstr "Creazione della PR…"
 
+msgid "Creating pull request…"
+msgstr "Creating pull request…"
+
 msgid "Creating sandbox"
 msgstr "Creazione della sandbox"
 
@@ -4803,6 +4884,9 @@ msgstr "Ritmo attuale"
 
 msgid "Current plan"
 msgstr "Piano attuale"
+
+msgid "Current sprint"
+msgstr "Current sprint"
 
 msgid "Current tab"
 msgstr "Scheda corrente"
@@ -5252,6 +5336,9 @@ msgstr "Sviluppatori"
 msgid "Development build"
 msgstr "Build di sviluppo"
 
+msgid "Device"
+msgstr "Device"
+
 msgid "Device: {selectedLabel}"
 msgstr "Dispositivo: {selectedLabel}"
 
@@ -5569,6 +5656,9 @@ msgstr "Guidalo dal terminale"
 msgid "Drive workspaces, agents, and sessions programmatically from scripts, CI, or your own tools."
 msgstr "Guida workspace, agenti e sessioni in modo programmatico da script, CI o dai tuoi strumenti."
 
+msgid "Drop a work item here"
+msgstr "Drop a work item here"
+
 msgid "Drop files to attach"
 msgstr "Rilascia i file per allegarli"
 
@@ -5644,6 +5734,9 @@ msgstr "Ognuno in una nuova scheda"
 
 msgid "Each morning at 8am, look at yesterday's failed CI runs, diagnose the most common failure, and open a fix PR."
 msgstr "Ogni mattina alle 8, guarda le esecuzioni CI fallite di ieri, diagnostica l'errore più comune e apri una PR di correzione."
+
+msgid "Each project keeps its own branch and pull request."
+msgstr "Each project keeps its own branch and pull request."
 
 msgid "Each session resumes where it left off."
 msgstr "Ogni sessione riprende da dove si era interrotta."
@@ -6026,6 +6119,10 @@ msgstr "In esplorazione"
 msgid "Extended thinking: {activeLabel}"
 msgstr "Ragionamento esteso: {activeLabel}"
 
+#. placeholder {0}: diagnostic.extensionVersion
+msgid "Extension {0}"
+msgstr "Estensione {0}"
+
 msgid "external"
 msgstr "esterno"
 
@@ -6126,6 +6223,9 @@ msgstr "Chiusura della porta {0} non riuscita"
 msgid "Failed to close terminal session"
 msgstr "Chiusura della sessione del terminale non riuscita"
 
+msgid "Failed to connect Azure DevOps"
+msgstr "Failed to connect Azure DevOps"
+
 msgid "Failed to connect to Google. Please try again."
 msgstr "Connessione a Google non riuscita. Riprova."
 
@@ -6180,6 +6280,9 @@ msgstr "Creazione dell'organizzazione non riuscita"
 msgid "Failed to create page"
 msgstr "Creazione della pagina non riuscita"
 
+msgid "Failed to create pull request"
+msgstr "Failed to create pull request"
+
 #. placeholder {0}: errorMessage( error, t({ message: "Unknown error", }), )
 msgid "Failed to create section: {0}"
 msgstr "Creazione della sezione non riuscita: {0}"
@@ -6198,6 +6301,9 @@ msgstr "Creazione del workspace non riuscita"
 
 msgid "Failed to create workspace from PR"
 msgstr "Creazione del workspace dalla PR non riuscita"
+
+msgid "Failed to create worktree"
+msgstr "Failed to create worktree"
 
 msgid "Failed to delete"
 msgstr "Eliminazione non riuscita"
@@ -6279,11 +6385,17 @@ msgstr "Caricamento dei dati del funnel non riuscito"
 msgid "Failed to load image"
 msgstr "Caricamento dell'immagine non riuscito"
 
+msgid "Failed to load pull requests"
+msgstr "Failed to load pull requests"
+
 msgid "Failed to load repositories. Please try again."
 msgstr "Caricamento dei repository non riuscito. Riprova."
 
 msgid "Failed to log out. Please try again."
 msgstr "Uscita non riuscita. Riprova."
+
+msgid "Failed to move work item"
+msgstr "Failed to move work item"
 
 #. placeholder {0}: error.message
 msgid "Failed to move workspace: {0}"
@@ -6350,6 +6462,9 @@ msgstr "Registrazione della versione della pagina non riuscita"
 
 msgid "Failed to remove"
 msgstr "Rimozione non riuscita"
+
+msgid "Failed to remove Azure DevOps configuration"
+msgstr "Impossibile rimuovere la configurazione di Azure DevOps"
 
 msgid "Failed to remove member"
 msgstr "Rimozione del membro non riuscita"
@@ -6434,6 +6549,9 @@ msgstr "Esecuzione del comando del workspace non riuscita"
 
 msgid "Failed to save"
 msgstr "Salvataggio non riuscito"
+
+msgid "Failed to save Azure DevOps configuration"
+msgstr "Impossibile salvare la configurazione di Azure DevOps"
 
 msgid "Failed to save installation. Please try again."
 msgstr "Salvataggio dell'installazione non riuscito. Riprova."
@@ -6992,6 +7110,9 @@ msgstr "Generali"
 msgid "General access"
 msgstr "Accesso generale"
 
+msgid "General comment"
+msgstr "General comment"
+
 msgid "Generate a key to use with MCP servers."
 msgstr "Genera una chiave da usare con i server MCP."
 
@@ -7337,6 +7458,9 @@ msgctxt "directory"
 msgid "Home"
 msgstr "Home"
 
+msgid "Homologation"
+msgstr "Homologation"
+
 msgid "Host"
 msgstr "Host"
 
@@ -7546,6 +7670,9 @@ msgstr "Immagini"
 
 msgid "Implement plan"
 msgstr "Esegui il piano"
+
+msgid "Implementation"
+msgstr "Implementation"
 
 msgid "Implementation plan"
 msgstr "Piano di implementazione"
@@ -7841,6 +7968,9 @@ msgstr "Richiesta non valida"
 
 msgid "Invalid state parameter. Please try again."
 msgstr "Parametro di stato non valido. Riprova."
+
+msgid "Invalid work item"
+msgstr "Invalid work item"
 
 msgid "Invitation canceled"
 msgstr "Invito annullato"
@@ -8234,6 +8364,9 @@ msgstr "Esci ed elimina"
 msgid "Leave comment mode"
 msgstr "Esci dalla modalità commento"
 
+msgid "Leave empty to use the identity reported by az account show."
+msgstr "Leave empty to use the identity reported by az account show."
+
 msgid "Leave it empty to go back to the name the terminal reports."
 msgstr "Lascialo vuoto per tornare al nome indicato dal terminale."
 
@@ -8535,6 +8668,9 @@ msgstr "Caricamento dei repository"
 msgid "Loading repositories..."
 msgstr "Caricamento dei repository..."
 
+msgid "Loading review threads…"
+msgstr "Loading review threads…"
+
 msgid "Loading review..."
 msgstr "Caricamento della revisione..."
 
@@ -8549,6 +8685,9 @@ msgstr "Caricamento degli script del terminale..."
 
 msgid "Loading usage history…"
 msgstr "Caricamento della cronologia di utilizzo…"
+
+msgid "Loading work item…"
+msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "Caricamento workspace…"
@@ -8615,6 +8754,9 @@ msgstr "L'affidabilità sul lungo periodo supera una soglia. Il lavoro assegnato
 
 msgid "Long-hover shortcut-only tooltip; its chip style is now the TooltipContent default"
 msgstr "Tooltip con sola scorciatoia su hover prolungato; il suo stile chip è ora il predefinito di TooltipContent"
+
+msgid "Looking for an Azure DevOps board…"
+msgstr "Looking for an Azure DevOps board…"
 
 msgid "Looking for installed browsers…"
 msgstr "Ricerca dei browser installati…"
@@ -9108,6 +9250,12 @@ msgstr "Sposta giù"
 msgid "Move to group"
 msgstr "Sposta in un gruppo"
 
+msgid "Move to homologation"
+msgstr "Move to homologation"
+
+msgid "Move to review"
+msgstr "Move to review"
+
 msgid "Move to Tab"
 msgstr "Sposta in una scheda"
 
@@ -9489,6 +9637,9 @@ msgstr "Nessun autore trovato."
 msgid "No automations match"
 msgstr "Nessuna automazione corrisponde"
 
+msgid "No Azure pull requests found."
+msgstr "No Azure pull requests found."
+
 msgid "No background terminal sessions"
 msgstr "Nessuna sessione del terminale in background"
 
@@ -9500,6 +9651,9 @@ msgstr "Nessun file modificato."
 
 msgid "No changes"
 msgstr "Nessuna modifica"
+
+msgid "No changes found."
+msgstr "No changes found."
 
 msgid "No changes on this branch yet."
 msgstr "Ancora nessuna modifica su questo branch."
@@ -9948,6 +10102,9 @@ msgstr "Ancora nessun workspace su questo host"
 
 msgid "No workspaces yet"
 msgstr "Ancora nessun workspace"
+
+msgid "No worktrees yet."
+msgstr "No worktrees yet."
 
 msgid "No-Prompt Launch"
 msgstr "Avvio senza prompt"
@@ -10439,6 +10596,9 @@ msgstr "Apri nell’app"
 msgid "Open in App"
 msgstr "Apri nell'app"
 
+msgid "Open in Azure"
+msgstr "Open in Azure"
+
 msgid "Open in browser"
 msgstr "Apri nel browser"
 
@@ -10741,6 +10901,9 @@ msgstr "Facoltativo"
 msgid "Optional context shown in the terminal scripts list."
 msgstr "Contesto facoltativo mostrato nell'elenco degli script del terminale."
 
+msgid "Optional email for PAT logins"
+msgstr "Optional email for PAT logins"
+
 msgid "Optional flags appended after the prompt payload"
 msgstr "Flag facoltativi aggiunti dopo il contenuto del prompt"
 
@@ -10812,6 +10975,9 @@ msgstr "Organizzazione non trovata."
 
 msgid "Organization slug"
 msgstr "Slug dell'organizzazione"
+
+msgid "Organization URL"
+msgstr "URL dell’organizzazione"
 
 msgid "Organization URL updated!"
 msgstr "URL dell'organizzazione aggiornato!"
@@ -11273,6 +11439,9 @@ msgstr "Marketplace dei plugin"
 msgid "Plugins"
 msgstr "Plugin"
 
+msgid "Policies"
+msgstr "Policies"
+
 msgid "Popover"
 msgstr "Popover"
 
@@ -11582,6 +11751,9 @@ msgstr "L'host del progetto non è raggiungibile — non è possibile importare 
 msgid "Project's host is unreachable — cannot rename right now"
 msgstr "L'host del progetto non è raggiungibile — non è possibile rinominare ora"
 
+msgid "Project\\Team\\Area"
+msgstr "Project\\Team\\Area"
+
 msgid "Projects"
 msgstr "Progetti"
 
@@ -11712,6 +11884,9 @@ msgstr "Push effettuato"
 
 msgid "Pushed and opened a draft PR."
 msgstr "Push effettuato e PR in bozza aperta."
+
+msgid "Pushing branch…"
+msgstr "Pushing branch…"
 
 msgid "Pushing..."
 msgstr "Push in corso…"
@@ -11972,6 +12147,9 @@ msgstr "Referral"
 msgid "Refresh"
 msgstr "Aggiorna"
 
+msgid "Refresh Azure DevOps board"
+msgstr "Refresh Azure DevOps board"
+
 msgid "Refresh GitHub issues"
 msgstr "Aggiorna le issue GitHub"
 
@@ -12004,6 +12182,9 @@ msgstr "Rifiutato"
 
 msgid "Related Posts"
 msgstr "Post correlati"
+
+msgid "Related work"
+msgstr "Related work"
 
 msgid "Relative path copied"
 msgstr "Percorso relativo copiato"
@@ -12258,6 +12439,9 @@ msgstr "Rispondi"
 msgid "Reply to thread…"
 msgstr "Rispondi al thread…"
 
+msgid "Reply…"
+msgstr "Reply…"
+
 msgid "repo"
 msgstr "repo"
 
@@ -12287,6 +12471,9 @@ msgstr "Repository: {label}"
 
 msgid "Repository"
 msgstr "Repository"
+
+msgid "Repository name"
+msgstr "Nome del repository"
 
 msgid "Repository reach and desktop release downloads. Installs are dmg and AppImage downloads; updates are the zip the auto-updater pulls, so they count existing users."
 msgstr "Portata del repository e download delle release desktop. Le installazioni sono download di dmg e AppImage; gli aggiornamenti sono lo zip scaricato dall'auto-updater, quindi contano utenti esistenti."
@@ -12624,11 +12811,17 @@ msgstr "Richiesta di revisione"
 msgid "Review required"
 msgstr "Revisione richiesta"
 
+msgid "Review the generated draft before pushing the branch and opening the pull request."
+msgstr "Review the generated draft before pushing the branch and opening the pull request."
+
 msgid "Review the result."
 msgstr "Rivedi il risultato."
 
 msgid "Review thread…"
 msgstr "Thread di revisione…"
+
+msgid "Review threads"
+msgstr "Review threads"
 
 msgid "Reviewed by you"
 msgstr "Revisionate da te"
@@ -12847,6 +13040,9 @@ msgstr "Risparmia il 25%"
 msgid "Save All"
 msgstr "Salva tutto"
 
+msgid "Save and test"
+msgstr "Salva e verifica"
+
 msgid "Save as environment"
 msgstr "Salva come ambiente"
 
@@ -12984,6 +13180,12 @@ msgstr "Cerca autori…"
 
 msgid "Search automations"
 msgstr "Cerca automazioni"
+
+msgid "Search Azure work items"
+msgstr "Search Azure work items"
+
+msgid "Search Azure work items…"
+msgstr "Search Azure work items…"
 
 msgid "Search branches..."
 msgstr "Cerca nei branch..."
@@ -13192,6 +13394,9 @@ msgstr "Seleziona un progetto"
 msgid "Select a project first"
 msgstr "Seleziona prima un progetto"
 
+msgid "Select a project to load this pull request."
+msgstr "Select a project to load this pull request."
+
 msgid "Select a project to see GitHub issues."
 msgstr "Seleziona un progetto per vedere le issue GitHub."
 
@@ -13215,6 +13420,9 @@ msgstr "Seleziona tutto"
 
 msgid "Select an agent"
 msgstr "Seleziona un agente"
+
+msgid "Select an Azure-enabled project to see pull requests."
+msgstr "Select an Azure-enabled project to see pull requests."
 
 msgid "Select an editor from the dropdown"
 msgstr "Seleziona un editor dal menu a discesa"
@@ -14119,6 +14327,9 @@ msgstr "Dividi con desktop"
 msgid "Split with New Browser"
 msgstr "Dividi con un nuovo browser"
 
+msgid "Sprint"
+msgstr "Sprint"
+
 msgid "Squash & Merge"
 msgstr "Squash e merge"
 
@@ -14136,6 +14347,9 @@ msgstr "Miglioramenti di stabilità"
 
 msgid "Stacked"
 msgstr "Impilato"
+
+msgid "Stage"
+msgstr "Stage"
 
 msgid "Stage all"
 msgstr "Aggiungi tutto allo stage"
@@ -14226,6 +14440,9 @@ msgstr "Inizia gratis. Passa a un piano superiore quando il tuo team cresce. Pia
 
 msgid "Start from a template"
 msgstr "Parti da un modello"
+
+msgid "Start implementation"
+msgstr "Start implementation"
 
 #. placeholder {0}: datum.customers
 msgid "Start MRR ({0} customers)"
@@ -14828,6 +15045,9 @@ msgstr "Membri del team"
 msgid "Team Members"
 msgstr "Membri del team"
 
+msgid "Team name"
+msgstr "Team name"
+
 msgid "Team not found in this organization"
 msgstr "Team non trovato in questa organizzazione"
 
@@ -14944,6 +15164,12 @@ msgstr "Termini"
 
 msgid "Terms of Service"
 msgstr "Termini di servizio"
+
+msgid "Test again"
+msgstr "Verifica di nuovo"
+
+msgid "Testing connection…"
+msgstr "Verifica della connessione…"
 
 msgid "Text"
 msgstr "Testo"
@@ -16319,6 +16545,9 @@ msgstr "Utilizzo non disponibile."
 msgid "Use “{0}”"
 msgstr "Usa “{0}”"
 
+msgid "Use a URL like https://dev.azure.com/organization."
+msgstr "Usa un URL come https://dev.azure.com/organization."
+
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "Usa un percorso relativo al workspace o una cartella assoluta."
 
@@ -16342,6 +16571,9 @@ msgstr "Usa per i nuovi agenti"
 
 msgid "Use global default"
 msgstr "Usa il valore predefinito globale"
+
+msgid "Use the Azure CLI session on this host for repositories, work items, and pipelines."
+msgstr "Usa la sessione Azure CLI su questo host per repository, elementi di lavoro e pipeline."
 
 msgid "Use the desktop app to start running parallel coding agents."
 msgstr "Usa l'app desktop per iniziare a eseguire agenti di programmazione in parallelo."
@@ -16871,11 +17103,26 @@ msgstr "Con etichetta"
 msgid "with or without attachments"
 msgstr "con o senza allegati"
 
+msgid "Work"
+msgstr "Work"
+
 msgid "Work email"
 msgstr "Email di lavoro"
 
 msgid "Work from tickets"
 msgstr "Lavora dai ticket"
+
+msgid "Work item"
+msgstr "Work item"
+
+msgid "Work item not found"
+msgstr "Work item not found"
+
+msgid "Work item project"
+msgstr "Work item project"
+
+msgid "Work items stay in Azure DevOps. Superset only stores the extra workflow stages and workspace links on this host."
+msgstr "Work items stay in Azure DevOps. Superset only stores the extra workflow stages and workspace links on this host."
 
 msgid "Work with your agents across your favorite tools"
 msgstr "Lavora con i tuoi agenti nei tuoi strumenti preferiti"
@@ -16991,6 +17238,9 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
+
+msgid "Worktree created"
+msgstr "Worktree created"
 
 msgid "Worktree location"
 msgstr "Posizione dei worktree"
@@ -17118,6 +17368,9 @@ msgstr "Stai visualizzando la versione {version}, in sola lettura"
 
 msgid "You can attach up to {MAX_ATTACHMENTS} files"
 msgstr "Puoi allegare fino a {MAX_ATTACHMENTS} file"
+
+msgid "You can edit the suggested branch before creating it."
+msgstr "You can edit the suggested branch before creating it."
 
 #. placeholder {0}: COMPANY.DOMAIN
 msgid "You can't change this subscription in the app. Your organization's plan is managed by its owner at {0}."

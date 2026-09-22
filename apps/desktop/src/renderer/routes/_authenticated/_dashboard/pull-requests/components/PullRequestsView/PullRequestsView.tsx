@@ -11,6 +11,7 @@ import {
 	pullRequestsSearchFromFilters,
 	usePullRequestsFilterStore,
 } from "../../stores/pullRequestsFilterStore";
+import { AzurePullRequestsContent } from "./components/AzurePullRequestsContent";
 import { PullRequestsContent } from "./components/PullRequestsContent";
 import { PullRequestsTopBar } from "./components/PullRequestsTopBar";
 
@@ -26,6 +27,7 @@ interface PullRequestsViewProps {
 	/** The open PR's own project id — distinct from the list's `projects`
 	 *  filter, and must survive filter-driven re-navigations. */
 	selectedPrProjectId?: string | null;
+	initialProvider?: "github" | "azure-devops";
 }
 
 export function PullRequestsView({
@@ -36,6 +38,7 @@ export function PullRequestsView({
 	initialState,
 	selectedPrNumber = null,
 	selectedPrProjectId = null,
+	initialProvider = "github",
 }: PullRequestsViewProps) {
 	const navigate = useNavigate();
 	const {
@@ -53,6 +56,7 @@ export function PullRequestsView({
 		setMergedOnly: storeSetMergedOnly,
 	} = usePullRequestsFilterStore();
 	const [searchQuery, setSearchQuery] = useState(initialSearch ?? storedSearch);
+	const provider = initialProvider;
 	const projectFilters = initialProjects ?? storedProjectFilters;
 	const authorFilter =
 		initialAuthor === undefined
@@ -70,18 +74,27 @@ export function PullRequestsView({
 		initialState === undefined ? storedMergedOnly : initialState === "merged";
 	// Filter/search changes must not collapse an open detail pane.
 	const navigateTo = useCallback(
-		(search: Record<string, string>) =>
-			selectedPrNumber != null
+		(search: Record<string, string>) => {
+			const providerSearch =
+				provider === "azure-devops"
+					? { ...search, provider: "azure-devops" }
+					: search;
+			return selectedPrNumber != null
 				? navigate({
 						to: "/pull-requests/$prNumber",
 						params: { prNumber: String(selectedPrNumber) },
 						search: selectedPrProjectId
-							? { ...search, project: selectedPrProjectId }
-							: search,
+							? { ...providerSearch, project: selectedPrProjectId }
+							: providerSearch,
 						replace: true,
 					})
-				: navigate({ to: "/pull-requests", search, replace: true }),
-		[navigate, selectedPrNumber, selectedPrProjectId],
+				: navigate({
+						to: "/pull-requests",
+						search: providerSearch,
+						replace: true,
+					});
+		},
+		[navigate, selectedPrNumber, selectedPrProjectId, provider],
 	);
 	const {
 		isReady: areProjectsReady,
@@ -255,6 +268,18 @@ export function PullRequestsView({
 			className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden"
 		>
 			<PullRequestsTopBar
+				provider={provider}
+				onProviderChange={(nextProvider) =>
+					navigate({
+						to: "/pull-requests",
+						search: {
+							...buildSearch({}),
+							...(nextProvider === "azure-devops"
+								? { provider: "azure-devops" as const }
+								: {}),
+						},
+					})
+				}
 				searchQuery={searchQuery}
 				onSearchChange={handleSearchChange}
 				projectFilters={projectFilters}
@@ -268,20 +293,28 @@ export function PullRequestsView({
 				onStateFilterChange={handleStateFilterChange}
 			/>
 			<div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-				<PullRequestsContent
-					projectFilters={projectFilters}
-					projectTargets={projectTargets}
-					areProjectsReady={areProjectsReady}
-					hasProjects={projects.length > 0}
-					searchQuery={searchQuery}
-					authorFilter={authorFilter}
-					reviewFilter={reviewFilter}
-					includeClosed={includeClosed}
-					mergedOnly={mergedOnly}
-					selectedPrNumber={selectedPrNumber}
-					selectedPrProjectId={selectedPrProjectId}
-					repoSlugByProjectId={repoSlugByProjectId}
-				/>
+				{provider === "azure-devops" ? (
+					<AzurePullRequestsContent
+						projectTargets={projectTargets}
+						searchQuery={searchQuery}
+						includeClosed={includeClosed}
+					/>
+				) : (
+					<PullRequestsContent
+						projectFilters={projectFilters}
+						projectTargets={projectTargets}
+						areProjectsReady={areProjectsReady}
+						hasProjects={projects.length > 0}
+						searchQuery={searchQuery}
+						authorFilter={authorFilter}
+						reviewFilter={reviewFilter}
+						includeClosed={includeClosed}
+						mergedOnly={mergedOnly}
+						selectedPrNumber={selectedPrNumber}
+						selectedPrProjectId={selectedPrProjectId}
+						repoSlugByProjectId={repoSlugByProjectId}
+					/>
+				)}
 			</div>
 		</div>
 	);

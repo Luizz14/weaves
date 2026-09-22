@@ -1533,6 +1533,9 @@ msgstr "İsteme ekle"
 msgid "Add to workspace"
 msgstr "Çalışma alanına ekle"
 
+msgid "Add worktree"
+msgstr "Add worktree"
+
 msgid "Add your own terminal agent to this device."
 msgstr "Bu cihaza kendi terminal ajanınızı ekleyin."
 
@@ -2152,6 +2155,9 @@ msgstr "{memberName} ({memberEmail}) kişisini kuruluştan kaldırmak istediğin
 msgid "Are you sure you want to revoke \"{keyName}\"? This action cannot be undone."
 msgstr "\"{keyName}\" anahtarını iptal etmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
 
+msgid "Area path"
+msgstr "Area path"
+
 msgid "Arguments"
 msgstr "Argümanlar"
 
@@ -2202,6 +2208,12 @@ msgstr "En boy oranı"
 
 msgid "Assigned"
 msgstr "Atandı"
+
+msgid "Assigned to"
+msgstr "Assigned to"
+
+msgid "Assigned-to fallback"
+msgstr "Assigned-to fallback"
 
 msgid "Assignee"
 msgstr "Atanan"
@@ -2438,6 +2450,30 @@ msgstr "Sizden inceleme bekliyor"
 msgid "Awaiting review from you or your team"
 msgstr "Sizden veya takımınızdan inceleme bekliyor"
 
+msgid "Azure CLI on {targetName}"
+msgstr "Azure CLI on {targetName}"
+
+msgid "Azure DevOps"
+msgstr "Azure DevOps"
+
+msgid "Azure DevOps board connected"
+msgstr "Azure DevOps board connected"
+
+msgid "Azure DevOps configuration removed"
+msgstr "Azure DevOps yapılandırması kaldırıldı"
+
+msgid "Azure DevOps configuration saved"
+msgstr "Azure DevOps yapılandırması kaydedildi"
+
+msgid "Azure host"
+msgstr "Azure host"
+
+msgid "Azure project"
+msgstr "Azure projesi"
+
+msgid "Azure pull requests"
+msgstr "Azure pull requests"
+
 msgctxt "file size unit, bytes"
 msgid "B"
 msgstr "B"
@@ -2454,6 +2490,9 @@ msgstr "Faturalandırmaya dön"
 msgid "Back to Blog"
 msgstr "Blog'a dön"
 
+msgid "Back to board"
+msgstr "Back to board"
+
 msgid "Back to Changelog"
 msgstr "Değişiklik günlüğüne dön"
 
@@ -2468,6 +2507,12 @@ msgstr "GitHub issue'larına dön"
 
 msgid "Back to Home"
 msgstr "Ana sayfaya dön"
+
+msgid "Back to homologation"
+msgstr "Back to homologation"
+
+msgid "Back to implementation"
+msgstr "Back to implementation"
 
 msgid "Back to Integrations"
 msgstr "Entegrasyonlara dön"
@@ -2710,6 +2755,9 @@ msgstr "Terminal betiklerinizi aktarın"
 
 msgid "Bring over your workspaces"
 msgstr "Çalışma alanlarınızı aktarın"
+
+msgid "Bring the current sprint into Superset, claim work items, and keep worktrees and pull requests together."
+msgstr "Bring the current sprint into Superset, claim work items, and keep worktrees and pull requests together."
 
 msgid "Bring v1 projects, workspaces, and terminal scripts over to v2. Each item is imported individually and can be retried."
 msgstr "v1 projelerini, çalışma alanlarını ve terminal betiklerini v2'ye taşıyın. Her öğe ayrı ayrı aktarılır ve yeniden denenebilir."
@@ -3105,6 +3153,9 @@ msgstr "Vadesiz + birikim + Treasury zaman içinde; yatırım dilimleri basamakl
 msgid "Checking agents…"
 msgstr "Ajanlar denetleniyor…"
 
+msgid "Checking Azure CLI, the Azure DevOps extension, and repository access."
+msgstr "Azure CLI, Azure DevOps uzantısı ve depo erişimi denetleniyor."
+
 msgid "Checking host…"
 msgstr "Host denetleniyor…"
 
@@ -3180,6 +3231,9 @@ msgstr "Terminalde Cmd+tıkladığınızda dosya yollarının nasıl açılacağ
 msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
 msgstr "Yeni sohbetlerin varsayılanını seçin ve model kısayollarını özelleştirin. Mevcut sohbetler seçimlerini korur."
 
+msgid "Choose the device and project that will implement this Azure work item."
+msgstr "Choose the device and project that will implement this Azure work item."
+
 msgid "Choose what to clear from the in-app browser."
 msgstr "Uygulama içi tarayıcıdan neyin temizleneceğini seçin."
 
@@ -3194,6 +3248,9 @@ msgstr "Kayıp"
 
 msgid "CI failed"
 msgstr "CI başarısız"
+
+msgid "Claimed in Azure DevOps"
+msgstr "Claimed in Azure DevOps"
 
 msgid "Clarify this"
 msgstr "Bunu netleştir"
@@ -3797,6 +3854,15 @@ msgstr "Sesle yazmak için bir mikrofon bağlayın"
 msgid "Connect any AI agent to Superset."
 msgstr "Herhangi bir AI ajanını Superset'e bağlayın."
 
+msgid "Connect Azure DevOps"
+msgstr "Connect Azure DevOps"
+
+msgid "Connect Azure DevOps board"
+msgstr "Connect Azure DevOps board"
+
+msgid "Connect board"
+msgstr "Connect board"
+
 msgid "Connect Claude, Codex, Cursor, or any <0>MCP</0> client and let your agent create tasks, spin up workspaces, launch agents, and run automations on your behalf."
 msgstr "Claude, Codex, Cursor veya herhangi bir <0>MCP</0> istemcisini bağlayın; ajanınız sizin adınıza görev oluştursun, çalışma alanı açsın, ajan başlatsın ve otomasyon çalıştırsın."
 
@@ -3835,6 +3901,9 @@ msgstr "Slack'i bağla"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "Görevleri konuşmalardan yönetmek için Slack'i bağlayın. Görev oluşturmak ve güncellemek için herhangi bir kanalda bottan bahsedin veya ona doğrudan mesaj gönderin."
+
+msgid "Connect your Azure DevOps board"
+msgstr "Connect your Azure DevOps board"
 
 msgid "Connect your GitHub repositories and sync pull requests. Track CI status and reviews across your team."
 msgstr "GitHub depolarınızı bağlayın ve pull request'leri eşitleyin. CI durumunu ve incelemeleri takımınız genelinde izleyin."
@@ -4621,6 +4690,12 @@ msgstr "Yeniden oluştur"
 msgid "Create an account"
 msgstr "Hesap oluşturun"
 
+msgid "Create as draft"
+msgstr "Create as draft"
+
+msgid "Create Azure DevOps pull request"
+msgstr "Create Azure DevOps pull request"
+
 msgid "Create failed: {message}"
 msgstr "Oluşturulamadı: {message}"
 
@@ -4684,6 +4759,9 @@ msgstr "Çalışma alanı oluştur"
 
 msgid "Create workspaces, launch agents, and read their output from any terminal or script. macOS and Linux."
 msgstr "Herhangi bir terminal veya betikten çalışma alanları oluşturun, ajanlar başlatın ve çıktılarını okuyun. macOS ve Linux."
+
+msgid "Create worktree"
+msgstr "Create worktree"
 
 msgid "Create your first workspace"
 msgstr "İlk çalışma alanınızı oluşturun"
@@ -4749,6 +4827,9 @@ msgstr "Git worktree'si oluşturuluyor"
 msgid "Creating PR..."
 msgstr "PR oluşturuluyor…"
 
+msgid "Creating pull request…"
+msgstr "Creating pull request…"
+
 msgid "Creating sandbox"
 msgstr "Sandbox oluşturuluyor"
 
@@ -4803,6 +4884,9 @@ msgstr "Mevcut hız"
 
 msgid "Current plan"
 msgstr "Mevcut plan"
+
+msgid "Current sprint"
+msgstr "Current sprint"
 
 msgid "Current tab"
 msgstr "Geçerli sekme"
@@ -5252,6 +5336,9 @@ msgstr "Geliştiriciler"
 msgid "Development build"
 msgstr "Geliştirme derlemesi"
 
+msgid "Device"
+msgstr "Device"
+
 msgid "Device: {selectedLabel}"
 msgstr "Cihaz: {selectedLabel}"
 
@@ -5569,6 +5656,9 @@ msgstr "Terminalden yönetin"
 msgid "Drive workspaces, agents, and sessions programmatically from scripts, CI, or your own tools."
 msgstr "Çalışma alanlarını, ajanları ve oturumları betiklerden, CI'den veya kendi araçlarınızdan programatik olarak yönetin."
 
+msgid "Drop a work item here"
+msgstr "Drop a work item here"
+
 msgid "Drop files to attach"
 msgstr "Eklemek için dosyaları bırakın"
 
@@ -5644,6 +5734,9 @@ msgstr "Her biri kendi yeni sekmesinde"
 
 msgid "Each morning at 8am, look at yesterday's failed CI runs, diagnose the most common failure, and open a fix PR."
 msgstr "Her sabah 08.00'de dünkü başarısız CI çalıştırmalarına bak, en sık görülen hatayı teşhis et ve düzeltme PR'ı aç."
+
+msgid "Each project keeps its own branch and pull request."
+msgstr "Each project keeps its own branch and pull request."
 
 msgid "Each session resumes where it left off."
 msgstr "Her oturum kaldığı yerden devam eder."
@@ -6026,6 +6119,10 @@ msgstr "Araştırılıyor"
 msgid "Extended thinking: {activeLabel}"
 msgstr "Genişletilmiş düşünme: {activeLabel}"
 
+#. placeholder {0}: diagnostic.extensionVersion
+msgid "Extension {0}"
+msgstr "Uzantı {0}"
+
 msgid "external"
 msgstr "dış"
 
@@ -6126,6 +6223,9 @@ msgstr "{0} portu kapatılamadı"
 msgid "Failed to close terminal session"
 msgstr "Terminal oturumu kapatılamadı"
 
+msgid "Failed to connect Azure DevOps"
+msgstr "Failed to connect Azure DevOps"
+
 msgid "Failed to connect to Google. Please try again."
 msgstr "Google'a bağlanılamadı. Lütfen yeniden deneyin."
 
@@ -6180,6 +6280,9 @@ msgstr "Kuruluş oluşturulamadı"
 msgid "Failed to create page"
 msgstr "Sayfa oluşturulamadı"
 
+msgid "Failed to create pull request"
+msgstr "Failed to create pull request"
+
 #. placeholder {0}: errorMessage( error, t({ message: "Unknown error", }), )
 msgid "Failed to create section: {0}"
 msgstr "Bölüm oluşturulamadı: {0}"
@@ -6198,6 +6301,9 @@ msgstr "Çalışma alanı oluşturulamadı"
 
 msgid "Failed to create workspace from PR"
 msgstr "PR'dan çalışma alanı oluşturulamadı"
+
+msgid "Failed to create worktree"
+msgstr "Failed to create worktree"
 
 msgid "Failed to delete"
 msgstr "Silinemedi"
@@ -6279,11 +6385,17 @@ msgstr "Huni verisi yüklenemedi"
 msgid "Failed to load image"
 msgstr "Görsel yüklenemedi"
 
+msgid "Failed to load pull requests"
+msgstr "Failed to load pull requests"
+
 msgid "Failed to load repositories. Please try again."
 msgstr "Depolar yüklenemedi. Lütfen yeniden deneyin."
 
 msgid "Failed to log out. Please try again."
 msgstr "Oturum kapatılamadı. Lütfen yeniden deneyin."
+
+msgid "Failed to move work item"
+msgstr "Failed to move work item"
 
 #. placeholder {0}: error.message
 msgid "Failed to move workspace: {0}"
@@ -6350,6 +6462,9 @@ msgstr "Sayfa sürümü kaydedilemedi"
 
 msgid "Failed to remove"
 msgstr "Kaldırılamadı"
+
+msgid "Failed to remove Azure DevOps configuration"
+msgstr "Azure DevOps yapılandırması kaldırılamadı"
 
 msgid "Failed to remove member"
 msgstr "Üye kaldırılamadı"
@@ -6434,6 +6549,9 @@ msgstr "Çalışma alanı komutu çalıştırılamadı"
 
 msgid "Failed to save"
 msgstr "Kaydedilemedi"
+
+msgid "Failed to save Azure DevOps configuration"
+msgstr "Azure DevOps yapılandırması kaydedilemedi"
 
 msgid "Failed to save installation. Please try again."
 msgstr "Kurulum kaydedilemedi. Lütfen yeniden deneyin."
@@ -6992,6 +7110,9 @@ msgstr "Genel"
 msgid "General access"
 msgstr "Genel erişim"
 
+msgid "General comment"
+msgstr "General comment"
+
 msgid "Generate a key to use with MCP servers."
 msgstr "MCP sunucularıyla kullanmak için bir anahtar oluşturun."
 
@@ -7337,6 +7458,9 @@ msgctxt "directory"
 msgid "Home"
 msgstr "Ana dizin"
 
+msgid "Homologation"
+msgstr "Homologation"
+
 msgid "Host"
 msgstr "Host"
 
@@ -7546,6 +7670,9 @@ msgstr "Görseller"
 
 msgid "Implement plan"
 msgstr "Planı uygula"
+
+msgid "Implementation"
+msgstr "Implementation"
 
 msgid "Implementation plan"
 msgstr "Uygulama planı"
@@ -7841,6 +7968,9 @@ msgstr "Geçersiz istek"
 
 msgid "Invalid state parameter. Please try again."
 msgstr "Geçersiz state parametresi. Lütfen yeniden deneyin."
+
+msgid "Invalid work item"
+msgstr "Invalid work item"
 
 msgid "Invitation canceled"
 msgstr "Davet iptal edildi"
@@ -8234,6 +8364,9 @@ msgstr "Ayrıl ve sil"
 msgid "Leave comment mode"
 msgstr "Yorum modundan çık"
 
+msgid "Leave empty to use the identity reported by az account show."
+msgstr "Leave empty to use the identity reported by az account show."
+
 msgid "Leave it empty to go back to the name the terminal reports."
 msgstr "Terminalin bildirdiği ada dönmek için boş bırakın."
 
@@ -8535,6 +8668,9 @@ msgstr "Depolar yükleniyor"
 msgid "Loading repositories..."
 msgstr "Depolar yükleniyor..."
 
+msgid "Loading review threads…"
+msgstr "Loading review threads…"
+
 msgid "Loading review..."
 msgstr "İnceleme yükleniyor..."
 
@@ -8549,6 +8685,9 @@ msgstr "Terminal betikleri yükleniyor..."
 
 msgid "Loading usage history…"
 msgstr "Kullanım geçmişi yükleniyor…"
+
+msgid "Loading work item…"
+msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "Çalışma alanları yükleniyor…"
@@ -8615,6 +8754,9 @@ msgstr "Uzun vadeli güvenilirlik bir eşiği aşar. Akşam 18.00'de verilen iş
 
 msgid "Long-hover shortcut-only tooltip; its chip style is now the TooltipContent default"
 msgstr "Uzun bekletmede yalnızca kısayol gösteren tooltip; çip stili artık TooltipContent varsayılanı"
+
+msgid "Looking for an Azure DevOps board…"
+msgstr "Looking for an Azure DevOps board…"
 
 msgid "Looking for installed browsers…"
 msgstr "Kurulu tarayıcılar aranıyor…"
@@ -9108,6 +9250,12 @@ msgstr "Aşağı taşı"
 msgid "Move to group"
 msgstr "Gruba taşı"
 
+msgid "Move to homologation"
+msgstr "Move to homologation"
+
+msgid "Move to review"
+msgstr "Move to review"
+
 msgid "Move to Tab"
 msgstr "Sekmeye taşı"
 
@@ -9489,6 +9637,9 @@ msgstr "Yazar bulunamadı."
 msgid "No automations match"
 msgstr "Eşleşen otomasyon yok"
 
+msgid "No Azure pull requests found."
+msgstr "No Azure pull requests found."
+
 msgid "No background terminal sessions"
 msgstr "Arka plan terminal oturumu yok"
 
@@ -9500,6 +9651,9 @@ msgstr "Değişen dosya yok."
 
 msgid "No changes"
 msgstr "Değişiklik yok"
+
+msgid "No changes found."
+msgstr "No changes found."
 
 msgid "No changes on this branch yet."
 msgstr "Bu dalda henüz değişiklik yok."
@@ -9948,6 +10102,9 @@ msgstr "Bu host'ta henüz çalışma alanı yok"
 
 msgid "No workspaces yet"
 msgstr "Henüz çalışma alanı yok"
+
+msgid "No worktrees yet."
+msgstr "No worktrees yet."
 
 msgid "No-Prompt Launch"
 msgstr "İstemsiz başlatma"
@@ -10439,6 +10596,9 @@ msgstr "Uygulamada aç"
 msgid "Open in App"
 msgstr "Uygulamada aç"
 
+msgid "Open in Azure"
+msgstr "Open in Azure"
+
 msgid "Open in browser"
 msgstr "Tarayıcıda aç"
 
@@ -10741,6 +10901,9 @@ msgstr "İsteğe bağlı"
 msgid "Optional context shown in the terminal scripts list."
 msgstr "Terminal betikleri listesinde gösterilen isteğe bağlı açıklama."
 
+msgid "Optional email for PAT logins"
+msgstr "Optional email for PAT logins"
+
 msgid "Optional flags appended after the prompt payload"
 msgstr "İstem yükünden sonra eklenen isteğe bağlı bayraklar"
 
@@ -10812,6 +10975,9 @@ msgstr "Kuruluş bulunamadı."
 
 msgid "Organization slug"
 msgstr "Kuruluş slug'ı"
+
+msgid "Organization URL"
+msgstr "Kuruluş URL'si"
 
 msgid "Organization URL updated!"
 msgstr "Kuruluş URL'si güncellendi!"
@@ -11273,6 +11439,9 @@ msgstr "Eklenti pazar yeri"
 msgid "Plugins"
 msgstr "Eklentiler"
 
+msgid "Policies"
+msgstr "Policies"
+
 msgid "Popover"
 msgstr "Açılır kutu"
 
@@ -11582,6 +11751,9 @@ msgstr "Projenin host'una erişilemiyor — worktree'ler şu anda içe aktarıla
 msgid "Project's host is unreachable — cannot rename right now"
 msgstr "Projenin host'una erişilemiyor — şu anda yeniden adlandırılamaz"
 
+msgid "Project\\Team\\Area"
+msgstr "Project\\Team\\Area"
+
 msgid "Projects"
 msgstr "Projeler"
 
@@ -11712,6 +11884,9 @@ msgstr "Push edildi"
 
 msgid "Pushed and opened a draft PR."
 msgstr "Push etti ve taslak PR açtı."
+
+msgid "Pushing branch…"
+msgstr "Pushing branch…"
 
 msgid "Pushing..."
 msgstr "Push ediliyor…"
@@ -11972,6 +12147,9 @@ msgstr "Yönlendirme"
 msgid "Refresh"
 msgstr "Yenile"
 
+msgid "Refresh Azure DevOps board"
+msgstr "Refresh Azure DevOps board"
+
 msgid "Refresh GitHub issues"
 msgstr "GitHub issue'larını yenile"
 
@@ -12004,6 +12182,9 @@ msgstr "Reddedildi"
 
 msgid "Related Posts"
 msgstr "İlgili yazılar"
+
+msgid "Related work"
+msgstr "Related work"
 
 msgid "Relative path copied"
 msgstr "Göreli yol kopyalandı"
@@ -12258,6 +12439,9 @@ msgstr "Yanıtla"
 msgid "Reply to thread…"
 msgstr "Konuya yanıt verin…"
 
+msgid "Reply…"
+msgstr "Reply…"
+
 msgid "repo"
 msgstr "depo"
 
@@ -12287,6 +12471,9 @@ msgstr "Depolar: {label}"
 
 msgid "Repository"
 msgstr "Depo"
+
+msgid "Repository name"
+msgstr "Depo adı"
 
 msgid "Repository reach and desktop release downloads. Installs are dmg and AppImage downloads; updates are the zip the auto-updater pulls, so they count existing users."
 msgstr "Depo erişimi ve masaüstü sürüm indirmeleri. Kurulumlar dmg ve AppImage indirmeleridir; güncellemeler otomatik güncelleyicinin çektiği zip'tir, yani mevcut kullanıcıları sayar."
@@ -12624,11 +12811,17 @@ msgstr "İnceleme istendi"
 msgid "Review required"
 msgstr "İnceleme gerekli"
 
+msgid "Review the generated draft before pushing the branch and opening the pull request."
+msgstr "Review the generated draft before pushing the branch and opening the pull request."
+
 msgid "Review the result."
 msgstr "Sonucu inceleyin."
 
 msgid "Review thread…"
 msgstr "İnceleme konusu…"
+
+msgid "Review threads"
+msgstr "Review threads"
 
 msgid "Reviewed by you"
 msgstr "Sizin incelediğiniz"
@@ -12847,6 +13040,9 @@ msgstr "%25 tasarruf"
 msgid "Save All"
 msgstr "Tümünü kaydet"
 
+msgid "Save and test"
+msgstr "Kaydet ve test et"
+
 msgid "Save as environment"
 msgstr "Ortam olarak kaydet"
 
@@ -12984,6 +13180,12 @@ msgstr "Yazar ara…"
 
 msgid "Search automations"
 msgstr "Otomasyonlarda ara"
+
+msgid "Search Azure work items"
+msgstr "Search Azure work items"
+
+msgid "Search Azure work items…"
+msgstr "Search Azure work items…"
 
 msgid "Search branches..."
 msgstr "Dal ara..."
@@ -13192,6 +13394,9 @@ msgstr "Bir proje seçin"
 msgid "Select a project first"
 msgstr "Önce bir proje seçin"
 
+msgid "Select a project to load this pull request."
+msgstr "Select a project to load this pull request."
+
 msgid "Select a project to see GitHub issues."
 msgstr "GitHub issue'larını görmek için bir proje seçin."
 
@@ -13215,6 +13420,9 @@ msgstr "Tümünü seç"
 
 msgid "Select an agent"
 msgstr "Bir ajan seçin"
+
+msgid "Select an Azure-enabled project to see pull requests."
+msgstr "Select an Azure-enabled project to see pull requests."
 
 msgid "Select an editor from the dropdown"
 msgstr "Açılır menüden bir düzenleyici seçin"
@@ -14119,6 +14327,9 @@ msgstr "Masaüstüyle böl"
 msgid "Split with New Browser"
 msgstr "Yeni tarayıcıyla böl"
 
+msgid "Sprint"
+msgstr "Sprint"
+
 msgid "Squash & Merge"
 msgstr "Squash ve birleştir"
 
@@ -14136,6 +14347,9 @@ msgstr "Kararlılık iyileştirmeleri"
 
 msgid "Stacked"
 msgstr "Üst üste"
+
+msgid "Stage"
+msgstr "Stage"
 
 msgid "Stage all"
 msgstr "Tümünü hazırla"
@@ -14226,6 +14440,9 @@ msgstr "Ücretsiz başlayın. Takımınız büyüdüğünde yükseltin. Gelişmi
 
 msgid "Start from a template"
 msgstr "Şablondan başla"
+
+msgid "Start implementation"
+msgstr "Start implementation"
 
 #. placeholder {0}: datum.customers
 msgid "Start MRR ({0} customers)"
@@ -14828,6 +15045,9 @@ msgstr "Takım üyeleri"
 msgid "Team Members"
 msgstr "Takım üyeleri"
 
+msgid "Team name"
+msgstr "Team name"
+
 msgid "Team not found in this organization"
 msgstr "Bu kuruluşta takım bulunamadı"
 
@@ -14944,6 +15164,12 @@ msgstr "Koşullar"
 
 msgid "Terms of Service"
 msgstr "Hizmet Şartları"
+
+msgid "Test again"
+msgstr "Yeniden test et"
+
+msgid "Testing connection…"
+msgstr "Bağlantı test ediliyor…"
 
 msgid "Text"
 msgstr "Metin"
@@ -16319,6 +16545,9 @@ msgstr "Kullanım bilgisi yok."
 msgid "Use “{0}”"
 msgstr "“{0}” kullan"
 
+msgid "Use a URL like https://dev.azure.com/organization."
+msgstr "https://dev.azure.com/organization biçiminde bir URL kullanın."
+
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "Çalışma alanına göreli bir yol ya da mutlak bir klasör kullanın."
 
@@ -16342,6 +16571,9 @@ msgstr "Yeni ajanlar için kullan"
 
 msgid "Use global default"
 msgstr "Genel varsayılanı kullan"
+
+msgid "Use the Azure CLI session on this host for repositories, work items, and pipelines."
+msgstr "Depolar, iş öğeleri ve işlem hatları için bu ana bilgisayardaki Azure CLI oturumunu kullanın."
 
 msgid "Use the desktop app to start running parallel coding agents."
 msgstr "Paralel kodlama ajanları çalıştırmaya başlamak için masaüstü uygulamasını kullanın."
@@ -16871,11 +17103,26 @@ msgstr "Etiketli"
 msgid "with or without attachments"
 msgstr "ekli veya eksiz"
 
+msgid "Work"
+msgstr "Work"
+
 msgid "Work email"
 msgstr "İş e-postası"
 
 msgid "Work from tickets"
 msgstr "Biletlerden çalışma"
+
+msgid "Work item"
+msgstr "Work item"
+
+msgid "Work item not found"
+msgstr "Work item not found"
+
+msgid "Work item project"
+msgstr "Work item project"
+
+msgid "Work items stay in Azure DevOps. Superset only stores the extra workflow stages and workspace links on this host."
+msgstr "Work items stay in Azure DevOps. Superset only stores the extra workflow stages and workspace links on this host."
 
 msgid "Work with your agents across your favorite tools"
 msgstr "Ajanlarınızla en sevdiğiniz araçlar üzerinden çalışın"
@@ -16991,6 +17238,9 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
+
+msgid "Worktree created"
+msgstr "Worktree created"
 
 msgid "Worktree location"
 msgstr "Worktree konumu"
@@ -17118,6 +17368,9 @@ msgstr "Sürüm {version} görüntüleniyor, salt okunur"
 
 msgid "You can attach up to {MAX_ATTACHMENTS} files"
 msgstr "En fazla {MAX_ATTACHMENTS} dosya ekleyebilirsiniz"
+
+msgid "You can edit the suggested branch before creating it."
+msgstr "You can edit the suggested branch before creating it."
 
 #. placeholder {0}: COMPANY.DOMAIN
 msgid "You can't change this subscription in the app. Your organization's plan is managed by its owner at {0}."

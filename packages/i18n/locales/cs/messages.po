@@ -1533,6 +1533,9 @@ msgstr "Přidat do promptu"
 msgid "Add to workspace"
 msgstr "Přidat do pracovního prostoru"
 
+msgid "Add worktree"
+msgstr "Add worktree"
+
 msgid "Add your own terminal agent to this device."
 msgstr "Přidejte na toto zařízení vlastního terminálového agenta."
 
@@ -2152,6 +2155,9 @@ msgstr "Opravdu chcete odebrat {memberName} ({memberEmail}) z organizace? Přís
 msgid "Are you sure you want to revoke \"{keyName}\"? This action cannot be undone."
 msgstr "Opravdu chcete zneplatnit „{keyName}“? Tuto akci nelze vrátit zpět."
 
+msgid "Area path"
+msgstr "Area path"
+
 msgid "Arguments"
 msgstr "Argumenty"
 
@@ -2202,6 +2208,12 @@ msgstr "Poměr stran"
 
 msgid "Assigned"
 msgstr "Přiřazeno"
+
+msgid "Assigned to"
+msgstr "Assigned to"
+
+msgid "Assigned-to fallback"
+msgstr "Assigned-to fallback"
 
 msgid "Assignee"
 msgstr "Řešitel"
@@ -2438,6 +2450,30 @@ msgstr "Čeká na vaši revizi"
 msgid "Awaiting review from you or your team"
 msgstr "Čeká na revizi od vás nebo vašeho týmu"
 
+msgid "Azure CLI on {targetName}"
+msgstr "Azure CLI on {targetName}"
+
+msgid "Azure DevOps"
+msgstr "Azure DevOps"
+
+msgid "Azure DevOps board connected"
+msgstr "Azure DevOps board connected"
+
+msgid "Azure DevOps configuration removed"
+msgstr "Konfigurace Azure DevOps byla odebrána"
+
+msgid "Azure DevOps configuration saved"
+msgstr "Konfigurace Azure DevOps byla uložena"
+
+msgid "Azure host"
+msgstr "Azure host"
+
+msgid "Azure project"
+msgstr "Projekt Azure"
+
+msgid "Azure pull requests"
+msgstr "Azure pull requests"
+
 msgctxt "file size unit, bytes"
 msgid "B"
 msgstr "B"
@@ -2454,6 +2490,9 @@ msgstr "Zpět na fakturaci"
 msgid "Back to Blog"
 msgstr "Zpět na blog"
 
+msgid "Back to board"
+msgstr "Back to board"
+
 msgid "Back to Changelog"
 msgstr "Zpět na changelog"
 
@@ -2468,6 +2507,12 @@ msgstr "Zpět na GitHub issues"
 
 msgid "Back to Home"
 msgstr "Zpět na úvod"
+
+msgid "Back to homologation"
+msgstr "Back to homologation"
+
+msgid "Back to implementation"
+msgstr "Back to implementation"
 
 msgid "Back to Integrations"
 msgstr "Zpět na Integrace"
@@ -2710,6 +2755,9 @@ msgstr "Převeďte své terminálové skripty"
 
 msgid "Bring over your workspaces"
 msgstr "Převeďte své pracovní prostory"
+
+msgid "Bring the current sprint into Superset, claim work items, and keep worktrees and pull requests together."
+msgstr "Bring the current sprint into Superset, claim work items, and keep worktrees and pull requests together."
 
 msgid "Bring v1 projects, workspaces, and terminal scripts over to v2. Each item is imported individually and can be retried."
 msgstr "Přeneste projekty, pracovní prostory a terminálové skripty z v1 do v2. Každá položka se importuje zvlášť a jde ji zkusit znovu."
@@ -3105,6 +3153,9 @@ msgstr "Běžný účet + spoření + Treasury v čase; schodky jsou tranše z i
 msgid "Checking agents…"
 msgstr "Kontroluji agenty…"
 
+msgid "Checking Azure CLI, the Azure DevOps extension, and repository access."
+msgstr "Kontrola Azure CLI, rozšíření Azure DevOps a přístupu k repozitáři."
+
 msgid "Checking host…"
 msgstr "Kontroluji hosta…"
 
@@ -3180,6 +3231,9 @@ msgstr "Zvolte, jak se otevírají cesty k souborům při Cmd+kliknutí v termin
 msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
 msgstr "Vyberte výchozí nastavení nových chatů a upravte zkratky modelů. Stávající chaty si ponechají své volby."
 
+msgid "Choose the device and project that will implement this Azure work item."
+msgstr "Choose the device and project that will implement this Azure work item."
+
 msgid "Choose what to clear from the in-app browser."
 msgstr "Vyberte, co se má z vestavěného prohlížeče vymazat."
 
@@ -3194,6 +3248,9 @@ msgstr "Odchody"
 
 msgid "CI failed"
 msgstr "CI selhalo"
+
+msgid "Claimed in Azure DevOps"
+msgstr "Claimed in Azure DevOps"
 
 msgid "Clarify this"
 msgstr "Vyjasni to"
@@ -3797,6 +3854,15 @@ msgstr "Pro diktování připojte mikrofon"
 msgid "Connect any AI agent to Superset."
 msgstr "Připojte k Superset libovolného AI agenta."
 
+msgid "Connect Azure DevOps"
+msgstr "Connect Azure DevOps"
+
+msgid "Connect Azure DevOps board"
+msgstr "Connect Azure DevOps board"
+
+msgid "Connect board"
+msgstr "Connect board"
+
 msgid "Connect Claude, Codex, Cursor, or any <0>MCP</0> client and let your agent create tasks, spin up workspaces, launch agents, and run automations on your behalf."
 msgstr "Připojte Claude, Codex, Cursor nebo libovolného <0>MCP</0> klienta a nechte svého agenta vytvářet úkoly, zakládat pracovní prostory, spouštět agenty a běhy automatizací za vás."
 
@@ -3835,6 +3901,9 @@ msgstr "Připojit Slack"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "Připojte Slack a spravujte úkoly přímo z konverzací. Zmiňte bota v libovolném kanálu nebo mu pošlete přímou zprávu a úkoly vytvářejte i aktualizujte."
+
+msgid "Connect your Azure DevOps board"
+msgstr "Connect your Azure DevOps board"
 
 msgid "Connect your GitHub repositories and sync pull requests. Track CI status and reviews across your team."
 msgstr "Připojte své GitHub repozitáře a synchronizujte pull requesty. Sledujte stav CI a revize napříč týmem."
@@ -4621,6 +4690,12 @@ msgstr "Vytvořit znovu"
 msgid "Create an account"
 msgstr "Vytvořit účet"
 
+msgid "Create as draft"
+msgstr "Create as draft"
+
+msgid "Create Azure DevOps pull request"
+msgstr "Create Azure DevOps pull request"
+
 msgid "Create failed: {message}"
 msgstr "Vytvoření selhalo: {message}"
 
@@ -4684,6 +4759,9 @@ msgstr "Vytvořit pracovní prostor"
 
 msgid "Create workspaces, launch agents, and read their output from any terminal or script. macOS and Linux."
 msgstr "Vytvářejte pracovní prostory, spouštějte agenty a čtěte jejich výstup z libovolného terminálu nebo skriptu. macOS a Linux."
+
+msgid "Create worktree"
+msgstr "Create worktree"
 
 msgid "Create your first workspace"
 msgstr "Vytvořte svůj první pracovní prostor"
@@ -4749,6 +4827,9 @@ msgstr "Vytvářím git worktree"
 msgid "Creating PR..."
 msgstr "Vytváření PR…"
 
+msgid "Creating pull request…"
+msgstr "Creating pull request…"
+
 msgid "Creating sandbox"
 msgstr "Vytvářím sandbox"
 
@@ -4803,6 +4884,9 @@ msgstr "Aktuální tempo"
 
 msgid "Current plan"
 msgstr "Aktuální tarif"
+
+msgid "Current sprint"
+msgstr "Current sprint"
 
 msgid "Current tab"
 msgstr "Aktuální karta"
@@ -5252,6 +5336,9 @@ msgstr "Vývojáři"
 msgid "Development build"
 msgstr "Vývojové sestavení"
 
+msgid "Device"
+msgstr "Device"
+
 msgid "Device: {selectedLabel}"
 msgstr "Zařízení: {selectedLabel}"
 
@@ -5569,6 +5656,9 @@ msgstr "Řiďte to z terminálu"
 msgid "Drive workspaces, agents, and sessions programmatically from scripts, CI, or your own tools."
 msgstr "Řiďte pracovní prostory, agenty a relace programově ze skriptů, CI nebo vlastních nástrojů."
 
+msgid "Drop a work item here"
+msgstr "Drop a work item here"
+
 msgid "Drop files to attach"
 msgstr "Přetažením přiložte soubory"
 
@@ -5644,6 +5734,9 @@ msgstr "Každý ve vlastní nové kartě"
 
 msgid "Each morning at 8am, look at yesterday's failed CI runs, diagnose the most common failure, and open a fix PR."
 msgstr "Každé ráno v 8:00 se podívej na včerejší neúspěšné běhy CI, urči nejčastější příčinu selhání a otevři PR s opravou."
+
+msgid "Each project keeps its own branch and pull request."
+msgstr "Each project keeps its own branch and pull request."
 
 msgid "Each session resumes where it left off."
 msgstr "Každá relace naváže tam, kde skončila."
@@ -6026,6 +6119,10 @@ msgstr "Zvažujeme"
 msgid "Extended thinking: {activeLabel}"
 msgstr "Rozšířené přemýšlení: {activeLabel}"
 
+#. placeholder {0}: diagnostic.extensionVersion
+msgid "Extension {0}"
+msgstr "Rozšíření {0}"
+
 msgid "external"
 msgstr "externí"
 
@@ -6126,6 +6223,9 @@ msgstr "Nepodařilo se zavřít port {0}"
 msgid "Failed to close terminal session"
 msgstr "Nepodařilo se zavřít relaci terminálu"
 
+msgid "Failed to connect Azure DevOps"
+msgstr "Failed to connect Azure DevOps"
+
 msgid "Failed to connect to Google. Please try again."
 msgstr "Nepodařilo se připojit ke Google. Zkuste to prosím znovu."
 
@@ -6180,6 +6280,9 @@ msgstr "Nepodařilo se vytvořit organizaci"
 msgid "Failed to create page"
 msgstr "Nepodařilo se vytvořit stránku"
 
+msgid "Failed to create pull request"
+msgstr "Failed to create pull request"
+
 #. placeholder {0}: errorMessage( error, t({ message: "Unknown error", }), )
 msgid "Failed to create section: {0}"
 msgstr "Nepodařilo se vytvořit sekci: {0}"
@@ -6198,6 +6301,9 @@ msgstr "Nepodařilo se vytvořit pracovní prostor"
 
 msgid "Failed to create workspace from PR"
 msgstr "Nepodařilo se vytvořit pracovní prostor z PR"
+
+msgid "Failed to create worktree"
+msgstr "Failed to create worktree"
 
 msgid "Failed to delete"
 msgstr "Nepodařilo se smazat"
@@ -6279,11 +6385,17 @@ msgstr "Nepodařilo se načíst data trychtýře"
 msgid "Failed to load image"
 msgstr "Nepodařilo se načíst obrázek"
 
+msgid "Failed to load pull requests"
+msgstr "Failed to load pull requests"
+
 msgid "Failed to load repositories. Please try again."
 msgstr "Nepodařilo se načíst repozitáře. Zkuste to prosím znovu."
 
 msgid "Failed to log out. Please try again."
 msgstr "Nepodařilo se odhlásit. Zkuste to prosím znovu."
+
+msgid "Failed to move work item"
+msgstr "Failed to move work item"
 
 #. placeholder {0}: error.message
 msgid "Failed to move workspace: {0}"
@@ -6350,6 +6462,9 @@ msgstr "Nepodařilo se zaznamenat verzi stránky"
 
 msgid "Failed to remove"
 msgstr "Nepodařilo se odebrat"
+
+msgid "Failed to remove Azure DevOps configuration"
+msgstr "Konfiguraci Azure DevOps se nepodařilo odebrat"
 
 msgid "Failed to remove member"
 msgstr "Nepodařilo se odebrat člena"
@@ -6434,6 +6549,9 @@ msgstr "Nepodařilo se spustit příkaz pracovního prostoru"
 
 msgid "Failed to save"
 msgstr "Nepodařilo se uložit"
+
+msgid "Failed to save Azure DevOps configuration"
+msgstr "Konfiguraci Azure DevOps se nepodařilo uložit"
 
 msgid "Failed to save installation. Please try again."
 msgstr "Nepodařilo se uložit instalaci. Zkuste to prosím znovu."
@@ -6992,6 +7110,9 @@ msgstr "Obecné"
 msgid "General access"
 msgstr "Obecný přístup"
 
+msgid "General comment"
+msgstr "General comment"
+
 msgid "Generate a key to use with MCP servers."
 msgstr "Vygenerujte klíč pro použití s MCP servery."
 
@@ -7337,6 +7458,9 @@ msgctxt "directory"
 msgid "Home"
 msgstr "Domů"
 
+msgid "Homologation"
+msgstr "Homologation"
+
 msgid "Host"
 msgstr "Host"
 
@@ -7546,6 +7670,9 @@ msgstr "Obrázky"
 
 msgid "Implement plan"
 msgstr "Provést plán"
+
+msgid "Implementation"
+msgstr "Implementation"
 
 msgid "Implementation plan"
 msgstr "Plán implementace"
@@ -7841,6 +7968,9 @@ msgstr "Neplatný požadavek"
 
 msgid "Invalid state parameter. Please try again."
 msgstr "Neplatný parametr state. Zkuste to prosím znovu."
+
+msgid "Invalid work item"
+msgstr "Invalid work item"
 
 msgid "Invitation canceled"
 msgstr "Pozvánka zrušena"
@@ -8234,6 +8364,9 @@ msgstr "Odejít a smazat"
 msgid "Leave comment mode"
 msgstr "Opustit režim komentářů"
 
+msgid "Leave empty to use the identity reported by az account show."
+msgstr "Leave empty to use the identity reported by az account show."
+
 msgid "Leave it empty to go back to the name the terminal reports."
 msgstr "Nechte prázdné pro návrat k názvu, který hlásí terminál."
 
@@ -8535,6 +8668,9 @@ msgstr "Načítám repozitáře"
 msgid "Loading repositories..."
 msgstr "Načítám repozitáře..."
 
+msgid "Loading review threads…"
+msgstr "Loading review threads…"
+
 msgid "Loading review..."
 msgstr "Načítám revizi..."
 
@@ -8549,6 +8685,9 @@ msgstr "Načítám terminálové skripty..."
 
 msgid "Loading usage history…"
 msgstr "Načítám historii využití…"
+
+msgid "Loading work item…"
+msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "Načítání pracovních prostorů…"
@@ -8615,6 +8754,9 @@ msgstr "Spolehlivost na dlouhém horizontu překročí práh. Práce zadaná v 1
 
 msgid "Long-hover shortcut-only tooltip; its chip style is now the TooltipContent default"
 msgstr "Tooltip jen se zkratkou při dlouhém najetí; jeho styl čipu je nyní výchozí pro TooltipContent"
+
+msgid "Looking for an Azure DevOps board…"
+msgstr "Looking for an Azure DevOps board…"
 
 msgid "Looking for installed browsers…"
 msgstr "Hledám nainstalované prohlížeče…"
@@ -9108,6 +9250,12 @@ msgstr "Posunout dolů"
 msgid "Move to group"
 msgstr "Přesunout do skupiny"
 
+msgid "Move to homologation"
+msgstr "Move to homologation"
+
+msgid "Move to review"
+msgstr "Move to review"
+
 msgid "Move to Tab"
 msgstr "Přesunout na kartu"
 
@@ -9489,6 +9637,9 @@ msgstr "Nenalezeni žádní autoři."
 msgid "No automations match"
 msgstr "Žádná automatizace neodpovídá"
 
+msgid "No Azure pull requests found."
+msgstr "No Azure pull requests found."
+
 msgid "No background terminal sessions"
 msgstr "Žádné relace terminálu na pozadí"
 
@@ -9500,6 +9651,9 @@ msgstr "Žádné změněné soubory."
 
 msgid "No changes"
 msgstr "Žádné změny"
+
+msgid "No changes found."
+msgstr "No changes found."
 
 msgid "No changes on this branch yet."
 msgstr "V této větvi zatím nejsou žádné změny."
@@ -9948,6 +10102,9 @@ msgstr "Na tomto hostu zatím nejsou žádné pracovní prostory"
 
 msgid "No workspaces yet"
 msgstr "Zatím žádné pracovní prostory"
+
+msgid "No worktrees yet."
+msgstr "No worktrees yet."
 
 msgid "No-Prompt Launch"
 msgstr "Spuštění bez promptu"
@@ -10439,6 +10596,9 @@ msgstr "Otevřít v aplikaci"
 msgid "Open in App"
 msgstr "Otevřít v aplikaci"
 
+msgid "Open in Azure"
+msgstr "Open in Azure"
+
 msgid "Open in browser"
 msgstr "Otevřít v prohlížeči"
 
@@ -10741,6 +10901,9 @@ msgstr "Volitelné"
 msgid "Optional context shown in the terminal scripts list."
 msgstr "Volitelný popis zobrazený v seznamu terminálových skriptů."
 
+msgid "Optional email for PAT logins"
+msgstr "Optional email for PAT logins"
+
 msgid "Optional flags appended after the prompt payload"
 msgstr "Volitelné přepínače připojené za obsah promptu"
 
@@ -10812,6 +10975,9 @@ msgstr "Organizace nenalezena."
 
 msgid "Organization slug"
 msgstr "Slug organizace"
+
+msgid "Organization URL"
+msgstr "Adresa URL organizace"
 
 msgid "Organization URL updated!"
 msgstr "URL organizace změněna!"
@@ -11273,6 +11439,9 @@ msgstr "Marketplace pluginů"
 msgid "Plugins"
 msgstr "Pluginy"
 
+msgid "Policies"
+msgstr "Policies"
+
 msgid "Popover"
 msgstr "Popover"
 
@@ -11582,6 +11751,9 @@ msgstr "Host projektu není dostupný — worktree teď nelze importovat"
 msgid "Project's host is unreachable — cannot rename right now"
 msgstr "Host projektu není dostupný — teď nelze přejmenovat"
 
+msgid "Project\\Team\\Area"
+msgstr "Project\\Team\\Area"
+
 msgid "Projects"
 msgstr "Projekty"
 
@@ -11712,6 +11884,9 @@ msgstr "Nový push"
 
 msgid "Pushed and opened a draft PR."
 msgstr "Odeslal push a otevřel koncept PR."
+
+msgid "Pushing branch…"
+msgstr "Pushing branch…"
 
 msgid "Pushing..."
 msgstr "Pushování…"
@@ -11972,6 +12147,9 @@ msgstr "Odkaz"
 msgid "Refresh"
 msgstr "Obnovit"
 
+msgid "Refresh Azure DevOps board"
+msgstr "Refresh Azure DevOps board"
+
 msgid "Refresh GitHub issues"
 msgstr "Obnovit GitHub issues"
 
@@ -12004,6 +12182,9 @@ msgstr "Odmítnuto"
 
 msgid "Related Posts"
 msgstr "Související články"
+
+msgid "Related work"
+msgstr "Related work"
 
 msgid "Relative path copied"
 msgstr "Relativní cesta zkopírována"
@@ -12258,6 +12439,9 @@ msgstr "Odpovědět"
 msgid "Reply to thread…"
 msgstr "Odpovědět do vlákna…"
 
+msgid "Reply…"
+msgstr "Reply…"
+
 msgid "repo"
 msgstr "repo"
 
@@ -12287,6 +12471,9 @@ msgstr "Repozitáře: {label}"
 
 msgid "Repository"
 msgstr "Repozitář"
+
+msgid "Repository name"
+msgstr "Název repozitáře"
 
 msgid "Repository reach and desktop release downloads. Installs are dmg and AppImage downloads; updates are the zip the auto-updater pulls, so they count existing users."
 msgstr "Dosah repozitáře a stažení desktopových vydání. Instalace jsou stažení dmg a AppImage; aktualizace jsou zip, který stahuje automatická aktualizace, takže počítají stávající uživatele."
@@ -12624,11 +12811,17 @@ msgstr "Vyžádána revize"
 msgid "Review required"
 msgstr "Vyžadována revize"
 
+msgid "Review the generated draft before pushing the branch and opening the pull request."
+msgstr "Review the generated draft before pushing the branch and opening the pull request."
+
 msgid "Review the result."
 msgstr "Zrevidujte výsledek."
 
 msgid "Review thread…"
 msgstr "Vlákno revize…"
+
+msgid "Review threads"
+msgstr "Review threads"
 
 msgid "Reviewed by you"
 msgstr "S vaší revizí"
@@ -12847,6 +13040,9 @@ msgstr "Ušetřete 25 %"
 msgid "Save All"
 msgstr "Uložit vše"
 
+msgid "Save and test"
+msgstr "Uložit a otestovat"
+
 msgid "Save as environment"
 msgstr "Uložit jako prostředí"
 
@@ -12984,6 +13180,12 @@ msgstr "Hledat autory…"
 
 msgid "Search automations"
 msgstr "Hledat automatizace"
+
+msgid "Search Azure work items"
+msgstr "Search Azure work items"
+
+msgid "Search Azure work items…"
+msgstr "Search Azure work items…"
 
 msgid "Search branches..."
 msgstr "Hledat větve..."
@@ -13192,6 +13394,9 @@ msgstr "Vyberte projekt"
 msgid "Select a project first"
 msgstr "Nejprve vyberte projekt"
 
+msgid "Select a project to load this pull request."
+msgstr "Select a project to load this pull request."
+
 msgid "Select a project to see GitHub issues."
 msgstr "Vyberte projekt a uvidíte GitHub issues."
 
@@ -13215,6 +13420,9 @@ msgstr "Vybrat vše"
 
 msgid "Select an agent"
 msgstr "Vyberte agenta"
+
+msgid "Select an Azure-enabled project to see pull requests."
+msgstr "Select an Azure-enabled project to see pull requests."
 
 msgid "Select an editor from the dropdown"
 msgstr "Vyberte editor z nabídky"
@@ -14119,6 +14327,9 @@ msgstr "Rozdělit s plochou"
 msgid "Split with New Browser"
 msgstr "Rozdělit s novým prohlížečem"
 
+msgid "Sprint"
+msgstr "Sprint"
+
 msgid "Squash & Merge"
 msgstr "Squash a sloučit"
 
@@ -14136,6 +14347,9 @@ msgstr "Vylepšení stability"
 
 msgid "Stacked"
 msgstr "Nad sebou"
+
+msgid "Stage"
+msgstr "Stage"
 
 msgid "Stage all"
 msgstr "Připravit vše"
@@ -14226,6 +14440,9 @@ msgstr "Začněte zdarma. Až vám to jako týmu přestane stačit, přejděte v
 
 msgid "Start from a template"
 msgstr "Začít ze šablony"
+
+msgid "Start implementation"
+msgstr "Start implementation"
 
 #. placeholder {0}: datum.customers
 msgid "Start MRR ({0} customers)"
@@ -14828,6 +15045,9 @@ msgstr "Členové týmu"
 msgid "Team Members"
 msgstr "Členové týmu"
 
+msgid "Team name"
+msgstr "Team name"
+
 msgid "Team not found in this organization"
 msgstr "Tým v této organizaci nenalezen"
 
@@ -14944,6 +15164,12 @@ msgstr "Podmínky"
 
 msgid "Terms of Service"
 msgstr "Podmínky služby"
+
+msgid "Test again"
+msgstr "Otestovat znovu"
+
+msgid "Testing connection…"
+msgstr "Testování připojení…"
 
 msgid "Text"
 msgstr "Text"
@@ -16319,6 +16545,9 @@ msgstr "Využití není dostupné."
 msgid "Use “{0}”"
 msgstr "Použít „{0}“"
 
+msgid "Use a URL like https://dev.azure.com/organization."
+msgstr "Použijte adresu URL ve tvaru https://dev.azure.com/organization."
+
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "Použijte cestu relativní k pracovnímu prostoru nebo absolutní složku."
 
@@ -16342,6 +16571,9 @@ msgstr "Použít pro nové agenty"
 
 msgid "Use global default"
 msgstr "Použít globální výchozí"
+
+msgid "Use the Azure CLI session on this host for repositories, work items, and pipelines."
+msgstr "Používejte relaci Azure CLI na tomto hostiteli pro repozitáře, pracovní položky a kanály."
 
 msgid "Use the desktop app to start running parallel coding agents."
 msgstr "Pro spouštění paralelních kódovacích agentů použijte desktopovou aplikaci."
@@ -16871,11 +17103,26 @@ msgstr "S popiskem"
 msgid "with or without attachments"
 msgstr "s přílohou i bez ní"
 
+msgid "Work"
+msgstr "Work"
+
 msgid "Work email"
 msgstr "Pracovní e-mail"
 
 msgid "Work from tickets"
 msgstr "Práce z ticketů"
+
+msgid "Work item"
+msgstr "Work item"
+
+msgid "Work item not found"
+msgstr "Work item not found"
+
+msgid "Work item project"
+msgstr "Work item project"
+
+msgid "Work items stay in Azure DevOps. Superset only stores the extra workflow stages and workspace links on this host."
+msgstr "Work items stay in Azure DevOps. Superset only stores the extra workflow stages and workspace links on this host."
 
 msgid "Work with your agents across your favorite tools"
 msgstr "Pracujte s agenty napříč svými oblíbenými nástroji"
@@ -16991,6 +17238,9 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
+
+msgid "Worktree created"
+msgstr "Worktree created"
 
 msgid "Worktree location"
 msgstr "Umístění worktree"
@@ -17118,6 +17368,9 @@ msgstr "Prohlížíte si verzi {version}, jen pro čtení"
 
 msgid "You can attach up to {MAX_ATTACHMENTS} files"
 msgstr "Můžete přiložit nejvýše {MAX_ATTACHMENTS} souborů"
+
+msgid "You can edit the suggested branch before creating it."
+msgstr "You can edit the suggested branch before creating it."
 
 #. placeholder {0}: COMPANY.DOMAIN
 msgid "You can't change this subscription in the app. Your organization's plan is managed by its owner at {0}."

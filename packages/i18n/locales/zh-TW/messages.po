@@ -1533,6 +1533,9 @@ msgstr "新增到提示詞"
 msgid "Add to workspace"
 msgstr "新增到工作區"
 
+msgid "Add worktree"
+msgstr "Add worktree"
+
 msgid "Add your own terminal agent to this device."
 msgstr "向此裝置新增你自己的終端代理程式。"
 
@@ -2152,6 +2155,9 @@ msgstr "確定要將{memberName}（{memberEmail}）從組織中移除嗎？他�
 msgid "Are you sure you want to revoke \"{keyName}\"? This action cannot be undone."
 msgstr "確定要吊銷「{keyName}」嗎？此操作無法復原。"
 
+msgid "Area path"
+msgstr "Area path"
+
 msgid "Arguments"
 msgstr "引數"
 
@@ -2202,6 +2208,12 @@ msgstr "寬高比"
 
 msgid "Assigned"
 msgstr "已指派"
+
+msgid "Assigned to"
+msgstr "Assigned to"
+
+msgid "Assigned-to fallback"
+msgstr "Assigned-to fallback"
 
 msgid "Assignee"
 msgstr "負責人"
@@ -2438,6 +2450,30 @@ msgstr "等待你的審查"
 msgid "Awaiting review from you or your team"
 msgstr "等待你或你團隊的審查"
 
+msgid "Azure CLI on {targetName}"
+msgstr "Azure CLI on {targetName}"
+
+msgid "Azure DevOps"
+msgstr "Azure DevOps"
+
+msgid "Azure DevOps board connected"
+msgstr "Azure DevOps board connected"
+
+msgid "Azure DevOps configuration removed"
+msgstr "已移除 Azure DevOps 設定"
+
+msgid "Azure DevOps configuration saved"
+msgstr "已儲存 Azure DevOps 設定"
+
+msgid "Azure host"
+msgstr "Azure host"
+
+msgid "Azure project"
+msgstr "Azure 專案"
+
+msgid "Azure pull requests"
+msgstr "Azure pull requests"
+
 msgctxt "file size unit, bytes"
 msgid "B"
 msgstr "B"
@@ -2454,6 +2490,9 @@ msgstr "返回帳單"
 msgid "Back to Blog"
 msgstr "返回部落格"
 
+msgid "Back to board"
+msgstr "Back to board"
+
 msgid "Back to Changelog"
 msgstr "返回更新日誌"
 
@@ -2468,6 +2507,12 @@ msgstr "返回GitHub議題"
 
 msgid "Back to Home"
 msgstr "返回首頁"
+
+msgid "Back to homologation"
+msgstr "Back to homologation"
+
+msgid "Back to implementation"
+msgstr "Back to implementation"
 
 msgid "Back to Integrations"
 msgstr "返回整合"
@@ -2710,6 +2755,9 @@ msgstr "遷入終端機指令碼"
 
 msgid "Bring over your workspaces"
 msgstr "遷入工作區"
+
+msgid "Bring the current sprint into Superset, claim work items, and keep worktrees and pull requests together."
+msgstr "Bring the current sprint into Superset, claim work items, and keep worktrees and pull requests together."
 
 msgid "Bring v1 projects, workspaces, and terminal scripts over to v2. Each item is imported individually and can be retried."
 msgstr "將v1的專案、工作區和終端指令碼遷移到v2。每一項單獨匯入，可以重試。"
@@ -3105,6 +3153,9 @@ msgstr "活期+儲蓄+國庫帳戶隨時間變化；臺階處為融資到帳"
 msgid "Checking agents…"
 msgstr "正在檢查代理程式…"
 
+msgid "Checking Azure CLI, the Azure DevOps extension, and repository access."
+msgstr "正在檢查 Azure CLI、Azure DevOps 擴充功能和存放庫存取權。"
+
 msgid "Checking host…"
 msgstr "正在檢查主機…"
 
@@ -3180,6 +3231,9 @@ msgstr "選擇在終端中Cmd+點選檔案路徑時的開啟方式"
 msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
 msgstr "選擇新聊天的預設值並自訂模型快捷選項。現有聊天保留其選擇。"
 
+msgid "Choose the device and project that will implement this Azure work item."
+msgstr "Choose the device and project that will implement this Azure work item."
+
 msgid "Choose what to clear from the in-app browser."
 msgstr "選擇要從應用程式內瀏覽器清除的內容。"
 
@@ -3194,6 +3248,9 @@ msgstr "流失"
 
 msgid "CI failed"
 msgstr "CI失敗"
+
+msgid "Claimed in Azure DevOps"
+msgstr "Claimed in Azure DevOps"
 
 msgid "Clarify this"
 msgstr "闡明這裡"
@@ -3797,6 +3854,15 @@ msgstr "請連線麥克風以使用語音輸入"
 msgid "Connect any AI agent to Superset."
 msgstr "把任意AI代理程式接入Superset。"
 
+msgid "Connect Azure DevOps"
+msgstr "Connect Azure DevOps"
+
+msgid "Connect Azure DevOps board"
+msgstr "Connect Azure DevOps board"
+
+msgid "Connect board"
+msgstr "Connect board"
+
 msgid "Connect Claude, Codex, Cursor, or any <0>MCP</0> client and let your agent create tasks, spin up workspaces, launch agents, and run automations on your behalf."
 msgstr "連線Claude、Codex、Cursor或任意<0>MCP</0>客戶端，讓你的代理程式替你建立任務、啟動工作區、拉起代理程式並執行自動化。"
 
@@ -3835,6 +3901,9 @@ msgstr "連線Slack"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "連線Slack，直接在對話中管理任務。在任意頻道提及機器人或給它發私訊，即可建立和更新任務。"
+
+msgid "Connect your Azure DevOps board"
+msgstr "Connect your Azure DevOps board"
 
 msgid "Connect your GitHub repositories and sync pull requests. Track CI status and reviews across your team."
 msgstr "連線你的GitHub儲存庫並同步拉取請求。追蹤整個團隊的CI狀態和程式碼審查。"
@@ -4621,6 +4690,12 @@ msgstr "再次建立"
 msgid "Create an account"
 msgstr "建立帳戶"
 
+msgid "Create as draft"
+msgstr "Create as draft"
+
+msgid "Create Azure DevOps pull request"
+msgstr "Create Azure DevOps pull request"
+
 msgid "Create failed: {message}"
 msgstr "建立失敗：{message}"
 
@@ -4684,6 +4759,9 @@ msgstr "建立工作區"
 
 msgid "Create workspaces, launch agents, and read their output from any terminal or script. macOS and Linux."
 msgstr "在任何終端機或指令碼中建立工作區、啟動 agent 並讀取其輸出。支援 macOS 與 Linux。"
+
+msgid "Create worktree"
+msgstr "Create worktree"
 
 msgid "Create your first workspace"
 msgstr "建立你的第一個工作區"
@@ -4749,6 +4827,9 @@ msgstr "正在建立git worktree"
 msgid "Creating PR..."
 msgstr "正在建立PR…"
 
+msgid "Creating pull request…"
+msgstr "Creating pull request…"
+
 msgid "Creating sandbox"
 msgstr "正在建立沙箱"
 
@@ -4803,6 +4884,9 @@ msgstr "目前速度"
 
 msgid "Current plan"
 msgstr "目前方案"
+
+msgid "Current sprint"
+msgstr "Current sprint"
 
 msgid "Current tab"
 msgstr "目前分頁"
@@ -5252,6 +5336,9 @@ msgstr "開發者"
 msgid "Development build"
 msgstr "開發版本"
 
+msgid "Device"
+msgstr "Device"
+
 msgid "Device: {selectedLabel}"
 msgstr "裝置：{selectedLabel}"
 
@@ -5569,6 +5656,9 @@ msgstr "在終端裡驅動它"
 msgid "Drive workspaces, agents, and sessions programmatically from scripts, CI, or your own tools."
 msgstr "從指令碼、CI或你自己的工具以程式設計方式驅動工作區、代理程式和會話。"
 
+msgid "Drop a work item here"
+msgstr "Drop a work item here"
+
 msgid "Drop files to attach"
 msgstr "拖放檔案以新增附件"
 
@@ -5644,6 +5734,9 @@ msgstr "每條各佔一個新分頁"
 
 msgid "Each morning at 8am, look at yesterday's failed CI runs, diagnose the most common failure, and open a fix PR."
 msgstr "每天早上8點，檢視昨天失敗的CI執行，診斷最常見的失敗原因，並提一個修復PR。"
+
+msgid "Each project keeps its own branch and pull request."
+msgstr "Each project keeps its own branch and pull request."
 
 msgid "Each session resumes where it left off."
 msgstr "每個會話都會從中斷處繼續。"
@@ -6026,6 +6119,10 @@ msgstr "探索中"
 msgid "Extended thinking: {activeLabel}"
 msgstr "擴充套件思考：{activeLabel}"
 
+#. placeholder {0}: diagnostic.extensionVersion
+msgid "Extension {0}"
+msgstr "擴充功能 {0}"
+
 msgid "external"
 msgstr "外部"
 
@@ -6126,6 +6223,9 @@ msgstr "關閉埠{0}失敗"
 msgid "Failed to close terminal session"
 msgstr "關閉終端會話失敗"
 
+msgid "Failed to connect Azure DevOps"
+msgstr "Failed to connect Azure DevOps"
+
 msgid "Failed to connect to Google. Please try again."
 msgstr "連線Google失敗。請重試。"
 
@@ -6180,6 +6280,9 @@ msgstr "建立組織失敗"
 msgid "Failed to create page"
 msgstr "建立頁面失敗"
 
+msgid "Failed to create pull request"
+msgstr "Failed to create pull request"
+
 #. placeholder {0}: errorMessage( error, t({ message: "Unknown error", }), )
 msgid "Failed to create section: {0}"
 msgstr "建立分區失敗：{0}"
@@ -6198,6 +6301,9 @@ msgstr "建立工作區失敗"
 
 msgid "Failed to create workspace from PR"
 msgstr "從PR建立工作區失敗"
+
+msgid "Failed to create worktree"
+msgstr "Failed to create worktree"
 
 msgid "Failed to delete"
 msgstr "刪除失敗"
@@ -6279,11 +6385,17 @@ msgstr "載入漏斗資料失敗"
 msgid "Failed to load image"
 msgstr "載入圖片失敗"
 
+msgid "Failed to load pull requests"
+msgstr "Failed to load pull requests"
+
 msgid "Failed to load repositories. Please try again."
 msgstr "載入儲存庫失敗。請重試。"
 
 msgid "Failed to log out. Please try again."
 msgstr "登出失敗。請重試。"
+
+msgid "Failed to move work item"
+msgstr "Failed to move work item"
 
 #. placeholder {0}: error.message
 msgid "Failed to move workspace: {0}"
@@ -6350,6 +6462,9 @@ msgstr "記錄頁面版本失敗"
 
 msgid "Failed to remove"
 msgstr "移除失敗"
+
+msgid "Failed to remove Azure DevOps configuration"
+msgstr "無法移除 Azure DevOps 設定"
 
 msgid "Failed to remove member"
 msgstr "移除成員失敗"
@@ -6434,6 +6549,9 @@ msgstr "執行工作區命令失敗"
 
 msgid "Failed to save"
 msgstr "儲存失敗"
+
+msgid "Failed to save Azure DevOps configuration"
+msgstr "無法儲存 Azure DevOps 設定"
 
 msgid "Failed to save installation. Please try again."
 msgstr "儲存安裝資訊失敗。請重試。"
@@ -6992,6 +7110,9 @@ msgstr "通用"
 msgid "General access"
 msgstr "通用存取權限"
 
+msgid "General comment"
+msgstr "General comment"
+
 msgid "Generate a key to use with MCP servers."
 msgstr "生成一個金鑰，用於MCP伺服器。"
 
@@ -7337,6 +7458,9 @@ msgctxt "directory"
 msgid "Home"
 msgstr "主目錄"
 
+msgid "Homologation"
+msgstr "Homologation"
+
 msgid "Host"
 msgstr "主機"
 
@@ -7546,6 +7670,9 @@ msgstr "圖片"
 
 msgid "Implement plan"
 msgstr "執行計畫"
+
+msgid "Implementation"
+msgstr "Implementation"
 
 msgid "Implementation plan"
 msgstr "實作計畫"
@@ -7841,6 +7968,9 @@ msgstr "無效請求"
 
 msgid "Invalid state parameter. Please try again."
 msgstr "state引數無效。請重試。"
+
+msgid "Invalid work item"
+msgstr "Invalid work item"
 
 msgid "Invitation canceled"
 msgstr "邀請已取消"
@@ -8234,6 +8364,9 @@ msgstr "退出並刪除"
 msgid "Leave comment mode"
 msgstr "退出評論模式"
 
+msgid "Leave empty to use the identity reported by az account show."
+msgstr "Leave empty to use the identity reported by az account show."
+
 msgid "Leave it empty to go back to the name the terminal reports."
 msgstr "留空即可恢復終端回報的名稱。"
 
@@ -8535,6 +8668,9 @@ msgstr "正在載入儲存庫"
 msgid "Loading repositories..."
 msgstr "正在載入儲存庫..."
 
+msgid "Loading review threads…"
+msgstr "Loading review threads…"
+
 msgid "Loading review..."
 msgstr "正在載入評審..."
 
@@ -8549,6 +8685,9 @@ msgstr "正在載入終端指令碼..."
 
 msgid "Loading usage history…"
 msgstr "正在載入用量歷史…"
+
+msgid "Loading work item…"
+msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "正在載入工作區…"
@@ -8615,6 +8754,9 @@ msgstr "長週期可靠性越過了一個門檻。傍晚6點派出去的活兒�
 
 msgid "Long-hover shortcut-only tooltip; its chip style is now the TooltipContent default"
 msgstr "長時間懸停才出現、只顯示快速鍵的tooltip；它的chip樣式現在是TooltipContent的預設樣式"
+
+msgid "Looking for an Azure DevOps board…"
+msgstr "Looking for an Azure DevOps board…"
 
 msgid "Looking for installed browsers…"
 msgstr "正在查詢已安裝的瀏覽器…"
@@ -9108,6 +9250,12 @@ msgstr "下移"
 msgid "Move to group"
 msgstr "移動到群組"
 
+msgid "Move to homologation"
+msgstr "Move to homologation"
+
+msgid "Move to review"
+msgstr "Move to review"
+
 msgid "Move to Tab"
 msgstr "移動到分頁"
 
@@ -9489,6 +9637,9 @@ msgstr "未找到作者。"
 msgid "No automations match"
 msgstr "沒有匹配的自動化"
 
+msgid "No Azure pull requests found."
+msgstr "No Azure pull requests found."
+
 msgid "No background terminal sessions"
 msgstr "沒有背景終端會話"
 
@@ -9500,6 +9651,9 @@ msgstr "沒有更改的檔案。"
 
 msgid "No changes"
 msgstr "沒有更改"
+
+msgid "No changes found."
+msgstr "No changes found."
 
 msgid "No changes on this branch yet."
 msgstr "此分支上還沒有改動。"
@@ -9948,6 +10102,9 @@ msgstr "此主機上還沒有工作區"
 
 msgid "No workspaces yet"
 msgstr "暫無工作區"
+
+msgid "No worktrees yet."
+msgstr "No worktrees yet."
 
 msgid "No-Prompt Launch"
 msgstr "無提示詞啟動"
@@ -10439,6 +10596,9 @@ msgstr "在應用程式中開啟"
 msgid "Open in App"
 msgstr "在應用中開啟"
 
+msgid "Open in Azure"
+msgstr "Open in Azure"
+
 msgid "Open in browser"
 msgstr "在瀏覽器中開啟"
 
@@ -10741,6 +10901,9 @@ msgstr "可選"
 msgid "Optional context shown in the terminal scripts list."
 msgstr "可選說明，顯示在終端指令碼列表中。"
 
+msgid "Optional email for PAT logins"
+msgstr "Optional email for PAT logins"
+
 msgid "Optional flags appended after the prompt payload"
 msgstr "追加在提示詞內容之後的可選標誌"
 
@@ -10812,6 +10975,9 @@ msgstr "找不到該組織。"
 
 msgid "Organization slug"
 msgstr "組織slug"
+
+msgid "Organization URL"
+msgstr "組織 URL"
 
 msgid "Organization URL updated!"
 msgstr "組織URL已更新！"
@@ -11273,6 +11439,9 @@ msgstr "外掛市場"
 msgid "Plugins"
 msgstr "外掛"
 
+msgid "Policies"
+msgstr "Policies"
+
 msgid "Popover"
 msgstr "氣泡卡片"
 
@@ -11582,6 +11751,9 @@ msgstr "專案所在主機不可達，暫時無法匯入worktree"
 msgid "Project's host is unreachable — cannot rename right now"
 msgstr "專案所在主機不可達，暫時無法重新命名"
 
+msgid "Project\\Team\\Area"
+msgstr "Project\\Team\\Area"
+
 msgid "Projects"
 msgstr "專案"
 
@@ -11712,6 +11884,9 @@ msgstr "已推送"
 
 msgid "Pushed and opened a draft PR."
 msgstr "已推送並開了一個草稿PR。"
+
+msgid "Pushing branch…"
+msgstr "Pushing branch…"
 
 msgid "Pushing..."
 msgstr "正在推送…"
@@ -11972,6 +12147,9 @@ msgstr "引薦"
 msgid "Refresh"
 msgstr "重新整理"
 
+msgid "Refresh Azure DevOps board"
+msgstr "Refresh Azure DevOps board"
+
 msgid "Refresh GitHub issues"
 msgstr "重新整理GitHub議題"
 
@@ -12004,6 +12182,9 @@ msgstr "已拒絕"
 
 msgid "Related Posts"
 msgstr "相關文章"
+
+msgid "Related work"
+msgstr "Related work"
 
 msgid "Relative path copied"
 msgstr "已複製相對路徑"
@@ -12258,6 +12439,9 @@ msgstr "回覆"
 msgid "Reply to thread…"
 msgstr "回覆討論串…"
 
+msgid "Reply…"
+msgstr "Reply…"
+
 msgid "repo"
 msgstr "儲存庫"
 
@@ -12287,6 +12471,9 @@ msgstr "儲存庫：{label}"
 
 msgid "Repository"
 msgstr "儲存庫"
+
+msgid "Repository name"
+msgstr "存放庫名稱"
 
 msgid "Repository reach and desktop release downloads. Installs are dmg and AppImage downloads; updates are the zip the auto-updater pulls, so they count existing users."
 msgstr "儲存庫影響力與桌面版下載。安裝為 dmg 與 AppImage 下載；更新為自動更新程式拉取的 zip，代表現有使用者。"
@@ -12624,11 +12811,17 @@ msgstr "已請求審查"
 msgid "Review required"
 msgstr "需要審查"
 
+msgid "Review the generated draft before pushing the branch and opening the pull request."
+msgstr "Review the generated draft before pushing the branch and opening the pull request."
+
 msgid "Review the result."
 msgstr "審查結果。"
 
 msgid "Review thread…"
 msgstr "審查討論…"
+
+msgid "Review threads"
+msgstr "Review threads"
 
 msgid "Reviewed by you"
 msgstr "你已審查"
@@ -12847,6 +13040,9 @@ msgstr "省25%"
 msgid "Save All"
 msgstr "全部儲存"
 
+msgid "Save and test"
+msgstr "儲存並測試"
+
 msgid "Save as environment"
 msgstr "儲存為環境"
 
@@ -12984,6 +13180,12 @@ msgstr "搜尋作者…"
 
 msgid "Search automations"
 msgstr "搜尋自動化"
+
+msgid "Search Azure work items"
+msgstr "Search Azure work items"
+
+msgid "Search Azure work items…"
+msgstr "Search Azure work items…"
 
 msgid "Search branches..."
 msgstr "搜尋分支..."
@@ -13192,6 +13394,9 @@ msgstr "請選擇專案"
 msgid "Select a project first"
 msgstr "請先選擇專案"
 
+msgid "Select a project to load this pull request."
+msgstr "Select a project to load this pull request."
+
 msgid "Select a project to see GitHub issues."
 msgstr "選擇專案以檢視GitHub議題。"
 
@@ -13215,6 +13420,9 @@ msgstr "全選"
 
 msgid "Select an agent"
 msgstr "選擇代理程式"
+
+msgid "Select an Azure-enabled project to see pull requests."
+msgstr "Select an Azure-enabled project to see pull requests."
 
 msgid "Select an editor from the dropdown"
 msgstr "從下拉選單中選擇編輯器"
@@ -14119,6 +14327,9 @@ msgstr "分割並開啟桌面"
 msgid "Split with New Browser"
 msgstr "拆分並新建瀏覽器"
 
+msgid "Sprint"
+msgstr "Sprint"
+
 msgid "Squash & Merge"
 msgstr "壓縮併合併"
 
@@ -14136,6 +14347,9 @@ msgstr "穩定性改進"
 
 msgid "Stacked"
 msgstr "堆疊"
+
+msgid "Stage"
+msgstr "Stage"
 
 msgid "Stage all"
 msgstr "全部暫存"
@@ -14226,6 +14440,9 @@ msgstr "免費開始。團隊用不夠時再升級。企業方案面向有進階
 
 msgid "Start from a template"
 msgstr "從模板開始"
+
+msgid "Start implementation"
+msgstr "Start implementation"
 
 #. placeholder {0}: datum.customers
 msgid "Start MRR ({0} customers)"
@@ -14828,6 +15045,9 @@ msgstr "團隊成員"
 msgid "Team Members"
 msgstr "團隊成員"
 
+msgid "Team name"
+msgstr "Team name"
+
 msgid "Team not found in this organization"
 msgstr "在此組織中未找到該團隊"
 
@@ -14944,6 +15164,12 @@ msgstr "條款"
 
 msgid "Terms of Service"
 msgstr "服務條款"
+
+msgid "Test again"
+msgstr "再次測試"
+
+msgid "Testing connection…"
+msgstr "正在測試連線…"
 
 msgid "Text"
 msgstr "正文"
@@ -16319,6 +16545,9 @@ msgstr "無法獲取用量。"
 msgid "Use “{0}”"
 msgstr "使用「{0}」"
 
+msgid "Use a URL like https://dev.azure.com/organization."
+msgstr "請使用類似 https://dev.azure.com/organization 的 URL。"
+
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "使用相對於工作區的路徑或絕對路徑資料夾。"
 
@@ -16342,6 +16571,9 @@ msgstr "用於新代理程式"
 
 msgid "Use global default"
 msgstr "使用全域性預設值"
+
+msgid "Use the Azure CLI session on this host for repositories, work items, and pipelines."
+msgstr "使用此主機上的 Azure CLI 工作階段存取存放庫、工作項目和管線。"
 
 msgid "Use the desktop app to start running parallel coding agents."
 msgstr "使用桌面應用程式開始並行執行編碼代理程式。"
@@ -16871,11 +17103,26 @@ msgstr "帶標籤"
 msgid "with or without attachments"
 msgstr "有無附件均可"
 
+msgid "Work"
+msgstr "Work"
+
 msgid "Work email"
 msgstr "工作電子郵件"
 
 msgid "Work from tickets"
 msgstr "從工單開始工作"
+
+msgid "Work item"
+msgstr "Work item"
+
+msgid "Work item not found"
+msgstr "Work item not found"
+
+msgid "Work item project"
+msgstr "Work item project"
+
+msgid "Work items stay in Azure DevOps. Superset only stores the extra workflow stages and workspace links on this host."
+msgstr "Work items stay in Azure DevOps. Superset only stores the extra workflow stages and workspace links on this host."
 
 msgid "Work with your agents across your favorite tools"
 msgstr "在你常用的工具裡與代理程式協作"
@@ -16991,6 +17238,9 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "worktree"
+
+msgid "Worktree created"
+msgstr "Worktree created"
 
 msgid "Worktree location"
 msgstr "worktree位置"
@@ -17118,6 +17368,9 @@ msgstr "您正在檢視版本 {version}，唯讀"
 
 msgid "You can attach up to {MAX_ATTACHMENTS} files"
 msgstr "最多可附加{MAX_ATTACHMENTS}個檔案"
+
+msgid "You can edit the suggested branch before creating it."
+msgstr "You can edit the suggested branch before creating it."
 
 #. placeholder {0}: COMPANY.DOMAIN
 msgid "You can't change this subscription in the app. Your organization's plan is managed by its owner at {0}."

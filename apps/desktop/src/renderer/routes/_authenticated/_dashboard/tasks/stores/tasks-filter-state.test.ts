@@ -79,6 +79,9 @@ describe("tasksSearchFromFilters", () => {
 });
 
 describe("migrateTasksFilterState", () => {
+	test("preserves Azure DevOps as a task source", () => {
+		expect(migrateTasksFilterState({ typeTab: "azure" }).typeTab).toBe("azure");
+	});
 	test("moves legacy PR tabs back to Tasks and defaults issue state safely", () => {
 		expect(
 			migrateTasksFilterState({

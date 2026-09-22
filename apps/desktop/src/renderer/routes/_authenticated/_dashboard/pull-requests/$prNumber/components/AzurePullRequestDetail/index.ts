@@ -1,0 +1,1 @@
+export { AzurePullRequestDetail } from "./AzurePullRequestDetail";

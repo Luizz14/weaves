@@ -1533,6 +1533,9 @@ msgstr "Tambahkan ke prompt"
 msgid "Add to workspace"
 msgstr "Tambahkan ke workspace"
 
+msgid "Add worktree"
+msgstr "Add worktree"
+
 msgid "Add your own terminal agent to this device."
 msgstr "Tambahkan agen terminal Anda sendiri ke perangkat ini."
 
@@ -2152,6 +2155,9 @@ msgstr "Yakin ingin menghapus {memberName} ({memberEmail}) dari organisasi? Mere
 msgid "Are you sure you want to revoke \"{keyName}\"? This action cannot be undone."
 msgstr "Yakin ingin mencabut \"{keyName}\"? Tindakan ini tidak bisa dibatalkan."
 
+msgid "Area path"
+msgstr "Area path"
+
 msgid "Arguments"
 msgstr "Argumen"
 
@@ -2202,6 +2208,12 @@ msgstr "Aspect Ratio"
 
 msgid "Assigned"
 msgstr "Ditugaskan"
+
+msgid "Assigned to"
+msgstr "Assigned to"
+
+msgid "Assigned-to fallback"
+msgstr "Assigned-to fallback"
 
 msgid "Assignee"
 msgstr "Penerima tugas"
@@ -2438,6 +2450,30 @@ msgstr "Menunggu review dari Anda"
 msgid "Awaiting review from you or your team"
 msgstr "Menunggu review dari Anda atau tim Anda"
 
+msgid "Azure CLI on {targetName}"
+msgstr "Azure CLI on {targetName}"
+
+msgid "Azure DevOps"
+msgstr "Azure DevOps"
+
+msgid "Azure DevOps board connected"
+msgstr "Azure DevOps board connected"
+
+msgid "Azure DevOps configuration removed"
+msgstr "Konfigurasi Azure DevOps dihapus"
+
+msgid "Azure DevOps configuration saved"
+msgstr "Konfigurasi Azure DevOps disimpan"
+
+msgid "Azure host"
+msgstr "Azure host"
+
+msgid "Azure project"
+msgstr "Proyek Azure"
+
+msgid "Azure pull requests"
+msgstr "Azure pull requests"
+
 msgctxt "file size unit, bytes"
 msgid "B"
 msgstr "B"
@@ -2454,6 +2490,9 @@ msgstr "Kembali ke penagihan"
 msgid "Back to Blog"
 msgstr "Kembali ke Blog"
 
+msgid "Back to board"
+msgstr "Back to board"
+
 msgid "Back to Changelog"
 msgstr "Kembali ke Changelog"
 
@@ -2468,6 +2507,12 @@ msgstr "Kembali ke issue GitHub"
 
 msgid "Back to Home"
 msgstr "Kembali ke Beranda"
+
+msgid "Back to homologation"
+msgstr "Back to homologation"
+
+msgid "Back to implementation"
+msgstr "Back to implementation"
 
 msgid "Back to Integrations"
 msgstr "Kembali ke Integrasi"
@@ -2710,6 +2755,9 @@ msgstr "Impor skrip terminal Anda"
 
 msgid "Bring over your workspaces"
 msgstr "Impor ruang kerja Anda"
+
+msgid "Bring the current sprint into Superset, claim work items, and keep worktrees and pull requests together."
+msgstr "Bring the current sprint into Superset, claim work items, and keep worktrees and pull requests together."
 
 msgid "Bring v1 projects, workspaces, and terminal scripts over to v2. Each item is imported individually and can be retried."
 msgstr "Bawa proyek, workspace, dan skrip terminal v1 ke v2. Tiap item diimpor satu per satu dan bisa dicoba ulang."
@@ -3105,6 +3153,9 @@ msgstr "Giro + tabungan + Treasury dari waktu ke waktu; tranche penggalangan dan
 msgid "Checking agents…"
 msgstr "Memeriksa agen…"
 
+msgid "Checking Azure CLI, the Azure DevOps extension, and repository access."
+msgstr "Memeriksa Azure CLI, ekstensi Azure DevOps, dan akses repositori."
+
 msgid "Checking host…"
 msgstr "Memeriksa host…"
 
@@ -3180,6 +3231,9 @@ msgstr "Pilih cara membuka path file saat Cmd+klik di terminal"
 msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
 msgstr "Pilih default untuk chat baru dan sesuaikan pintasan model. Chat yang sudah ada mempertahankan pilihannya."
 
+msgid "Choose the device and project that will implement this Azure work item."
+msgstr "Choose the device and project that will implement this Azure work item."
+
 msgid "Choose what to clear from the in-app browser."
 msgstr "Pilih apa yang ingin dibersihkan dari browser dalam aplikasi."
 
@@ -3194,6 +3248,9 @@ msgstr "Churn"
 
 msgid "CI failed"
 msgstr "CI gagal"
+
+msgid "Claimed in Azure DevOps"
+msgstr "Claimed in Azure DevOps"
 
 msgid "Clarify this"
 msgstr "Perjelas ini"
@@ -3797,6 +3854,15 @@ msgstr "Hubungkan mikrofon untuk memakai dikte"
 msgid "Connect any AI agent to Superset."
 msgstr "Hubungkan agen AI mana pun ke Superset."
 
+msgid "Connect Azure DevOps"
+msgstr "Connect Azure DevOps"
+
+msgid "Connect Azure DevOps board"
+msgstr "Connect Azure DevOps board"
+
+msgid "Connect board"
+msgstr "Connect board"
+
 msgid "Connect Claude, Codex, Cursor, or any <0>MCP</0> client and let your agent create tasks, spin up workspaces, launch agents, and run automations on your behalf."
 msgstr "Hubungkan Claude, Codex, Cursor, atau klien <0>MCP</0> apa pun dan biarkan agen Anda membuat tugas, menjalankan workspace, meluncurkan agen, dan menjalankan otomatisasi atas nama Anda."
 
@@ -3835,6 +3901,9 @@ msgstr "Hubungkan Slack"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "Hubungkan Slack untuk mengelola tugas dari percakapan. Sebut bot-nya di channel mana pun atau kirim pesan langsung untuk membuat dan memperbarui tugas."
+
+msgid "Connect your Azure DevOps board"
+msgstr "Connect your Azure DevOps board"
 
 msgid "Connect your GitHub repositories and sync pull requests. Track CI status and reviews across your team."
 msgstr "Hubungkan repositori GitHub Anda dan sinkronkan pull request. Lacak status CI dan review di seluruh tim Anda."
@@ -4621,6 +4690,12 @@ msgstr "Buat lagi"
 msgid "Create an account"
 msgstr "Buat akun"
 
+msgid "Create as draft"
+msgstr "Create as draft"
+
+msgid "Create Azure DevOps pull request"
+msgstr "Create Azure DevOps pull request"
+
 msgid "Create failed: {message}"
 msgstr "Gagal membuat: {message}"
 
@@ -4684,6 +4759,9 @@ msgstr "Buat workspace"
 
 msgid "Create workspaces, launch agents, and read their output from any terminal or script. macOS and Linux."
 msgstr "Buat workspace, jalankan agen, dan baca outputnya dari terminal atau skrip mana pun. macOS dan Linux."
+
+msgid "Create worktree"
+msgstr "Create worktree"
 
 msgid "Create your first workspace"
 msgstr "Buat workspace pertama Anda"
@@ -4749,6 +4827,9 @@ msgstr "Membuat worktree git"
 msgid "Creating PR..."
 msgstr "Membuat PR…"
 
+msgid "Creating pull request…"
+msgstr "Creating pull request…"
+
 msgid "Creating sandbox"
 msgstr "Membuat sandbox"
 
@@ -4803,6 +4884,9 @@ msgstr "Laju saat ini"
 
 msgid "Current plan"
 msgstr "Paket saat ini"
+
+msgid "Current sprint"
+msgstr "Current sprint"
 
 msgid "Current tab"
 msgstr "Tab saat ini"
@@ -5252,6 +5336,9 @@ msgstr "Developer"
 msgid "Development build"
 msgstr "Build pengembangan"
 
+msgid "Device"
+msgstr "Device"
+
 msgid "Device: {selectedLabel}"
 msgstr "Perangkat: {selectedLabel}"
 
@@ -5569,6 +5656,9 @@ msgstr "Kendalikan dari terminal"
 msgid "Drive workspaces, agents, and sessions programmatically from scripts, CI, or your own tools."
 msgstr "Kendalikan workspace, agen, dan sesi secara terprogram dari skrip, CI, atau alat Anda sendiri."
 
+msgid "Drop a work item here"
+msgstr "Drop a work item here"
+
 msgid "Drop files to attach"
 msgstr "Lepas file untuk melampirkan"
 
@@ -5644,6 +5734,9 @@ msgstr "Masing-masing di tab barunya sendiri"
 
 msgid "Each morning at 8am, look at yesterday's failed CI runs, diagnose the most common failure, and open a fix PR."
 msgstr "Tiap pagi jam 8, lihat run CI yang gagal kemarin, diagnosis kegagalan paling umum, dan buka PR perbaikan."
+
+msgid "Each project keeps its own branch and pull request."
+msgstr "Each project keeps its own branch and pull request."
 
 msgid "Each session resumes where it left off."
 msgstr "Setiap sesi melanjutkan dari titik terakhir."
@@ -6026,6 +6119,10 @@ msgstr "Sedang dijajaki"
 msgid "Extended thinking: {activeLabel}"
 msgstr "Extended thinking: {activeLabel}"
 
+#. placeholder {0}: diagnostic.extensionVersion
+msgid "Extension {0}"
+msgstr "Ekstensi {0}"
+
 msgid "external"
 msgstr "eksternal"
 
@@ -6126,6 +6223,9 @@ msgstr "Gagal menutup port {0}"
 msgid "Failed to close terminal session"
 msgstr "Gagal menutup sesi terminal"
 
+msgid "Failed to connect Azure DevOps"
+msgstr "Failed to connect Azure DevOps"
+
 msgid "Failed to connect to Google. Please try again."
 msgstr "Gagal terhubung ke Google. Silakan coba lagi."
 
@@ -6180,6 +6280,9 @@ msgstr "Gagal membuat organisasi"
 msgid "Failed to create page"
 msgstr "Gagal membuat halaman"
 
+msgid "Failed to create pull request"
+msgstr "Failed to create pull request"
+
 #. placeholder {0}: errorMessage( error, t({ message: "Unknown error", }), )
 msgid "Failed to create section: {0}"
 msgstr "Gagal membuat bagian: {0}"
@@ -6198,6 +6301,9 @@ msgstr "Gagal membuat workspace"
 
 msgid "Failed to create workspace from PR"
 msgstr "Gagal membuat workspace dari PR"
+
+msgid "Failed to create worktree"
+msgstr "Failed to create worktree"
 
 msgid "Failed to delete"
 msgstr "Gagal menghapus"
@@ -6279,11 +6385,17 @@ msgstr "Gagal memuat data funnel"
 msgid "Failed to load image"
 msgstr "Gagal memuat gambar"
 
+msgid "Failed to load pull requests"
+msgstr "Failed to load pull requests"
+
 msgid "Failed to load repositories. Please try again."
 msgstr "Gagal memuat repositori. Silakan coba lagi."
 
 msgid "Failed to log out. Please try again."
 msgstr "Gagal keluar. Silakan coba lagi."
+
+msgid "Failed to move work item"
+msgstr "Failed to move work item"
 
 #. placeholder {0}: error.message
 msgid "Failed to move workspace: {0}"
@@ -6350,6 +6462,9 @@ msgstr "Gagal mencatat versi halaman"
 
 msgid "Failed to remove"
 msgstr "Gagal menghapus"
+
+msgid "Failed to remove Azure DevOps configuration"
+msgstr "Gagal menghapus konfigurasi Azure DevOps"
 
 msgid "Failed to remove member"
 msgstr "Gagal menghapus anggota"
@@ -6434,6 +6549,9 @@ msgstr "Gagal menjalankan perintah workspace"
 
 msgid "Failed to save"
 msgstr "Gagal menyimpan"
+
+msgid "Failed to save Azure DevOps configuration"
+msgstr "Gagal menyimpan konfigurasi Azure DevOps"
 
 msgid "Failed to save installation. Please try again."
 msgstr "Gagal menyimpan instalasi. Silakan coba lagi."
@@ -6992,6 +7110,9 @@ msgstr "Umum"
 msgid "General access"
 msgstr "Akses umum"
 
+msgid "General comment"
+msgstr "General comment"
+
 msgid "Generate a key to use with MCP servers."
 msgstr "Buat kunci untuk dipakai dengan server MCP."
 
@@ -7337,6 +7458,9 @@ msgctxt "directory"
 msgid "Home"
 msgstr "Home"
 
+msgid "Homologation"
+msgstr "Homologation"
+
 msgid "Host"
 msgstr "Host"
 
@@ -7546,6 +7670,9 @@ msgstr "Gambar"
 
 msgid "Implement plan"
 msgstr "Jalankan rencana"
+
+msgid "Implementation"
+msgstr "Implementation"
 
 msgid "Implementation plan"
 msgstr "Rencana implementasi"
@@ -7841,6 +7968,9 @@ msgstr "Permintaan Tidak Valid"
 
 msgid "Invalid state parameter. Please try again."
 msgstr "Parameter state tidak valid. Silakan coba lagi."
+
+msgid "Invalid work item"
+msgstr "Invalid work item"
 
 msgid "Invitation canceled"
 msgstr "Undangan dibatalkan"
@@ -8234,6 +8364,9 @@ msgstr "Keluar dan hapus"
 msgid "Leave comment mode"
 msgstr "Keluar dari mode komentar"
 
+msgid "Leave empty to use the identity reported by az account show."
+msgstr "Leave empty to use the identity reported by az account show."
+
 msgid "Leave it empty to go back to the name the terminal reports."
 msgstr "Kosongkan untuk kembali ke nama yang dilaporkan terminal."
 
@@ -8535,6 +8668,9 @@ msgstr "Memuat repositori"
 msgid "Loading repositories..."
 msgstr "Memuat repositori..."
 
+msgid "Loading review threads…"
+msgstr "Loading review threads…"
+
 msgid "Loading review..."
 msgstr "Memuat review..."
 
@@ -8549,6 +8685,9 @@ msgstr "Memuat skrip terminal..."
 
 msgid "Loading usage history…"
 msgstr "Memuat riwayat penggunaan…"
+
+msgid "Loading work item…"
+msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "Memuat workspace…"
@@ -8615,6 +8754,9 @@ msgstr "Keandalan jangka panjang melewati ambang batas. Pekerjaan yang diberikan
 
 msgid "Long-hover shortcut-only tooltip; its chip style is now the TooltipContent default"
 msgstr "Tooltip khusus pintasan saat hover lama; gaya chip-nya kini menjadi bawaan TooltipContent"
+
+msgid "Looking for an Azure DevOps board…"
+msgstr "Looking for an Azure DevOps board…"
 
 msgid "Looking for installed browsers…"
 msgstr "Mencari browser yang terpasang…"
@@ -9108,6 +9250,12 @@ msgstr "Pindah ke bawah"
 msgid "Move to group"
 msgstr "Pindahkan ke grup"
 
+msgid "Move to homologation"
+msgstr "Move to homologation"
+
+msgid "Move to review"
+msgstr "Move to review"
+
 msgid "Move to Tab"
 msgstr "Pindahkan ke Tab"
 
@@ -9489,6 +9637,9 @@ msgstr "Tidak ada penulis ditemukan."
 msgid "No automations match"
 msgstr "Tidak ada otomatisasi yang cocok"
 
+msgid "No Azure pull requests found."
+msgstr "No Azure pull requests found."
+
 msgid "No background terminal sessions"
 msgstr "Tidak ada sesi terminal latar belakang"
 
@@ -9500,6 +9651,9 @@ msgstr "Tidak ada file yang berubah."
 
 msgid "No changes"
 msgstr "Tidak ada perubahan"
+
+msgid "No changes found."
+msgstr "No changes found."
 
 msgid "No changes on this branch yet."
 msgstr "Belum ada perubahan di branch ini."
@@ -9948,6 +10102,9 @@ msgstr "Belum ada workspace di host ini"
 
 msgid "No workspaces yet"
 msgstr "Belum ada workspace"
+
+msgid "No worktrees yet."
+msgstr "No worktrees yet."
 
 msgid "No-Prompt Launch"
 msgstr "Peluncuran Tanpa Prompt"
@@ -10439,6 +10596,9 @@ msgstr "Buka di aplikasi"
 msgid "Open in App"
 msgstr "Buka di Aplikasi"
 
+msgid "Open in Azure"
+msgstr "Open in Azure"
+
 msgid "Open in browser"
 msgstr "Buka di browser"
 
@@ -10741,6 +10901,9 @@ msgstr "Opsional"
 msgid "Optional context shown in the terminal scripts list."
 msgstr "Konteks opsional yang ditampilkan di daftar skrip terminal."
 
+msgid "Optional email for PAT logins"
+msgstr "Optional email for PAT logins"
+
 msgid "Optional flags appended after the prompt payload"
 msgstr "Flag opsional yang ditambahkan setelah muatan prompt"
 
@@ -10812,6 +10975,9 @@ msgstr "Organisasi tidak ditemukan."
 
 msgid "Organization slug"
 msgstr "Slug organisasi"
+
+msgid "Organization URL"
+msgstr "URL organisasi"
 
 msgid "Organization URL updated!"
 msgstr "URL organisasi diperbarui!"
@@ -11273,6 +11439,9 @@ msgstr "Marketplace plugin"
 msgid "Plugins"
 msgstr "Plugin"
 
+msgid "Policies"
+msgstr "Policies"
+
 msgid "Popover"
 msgstr "Popover"
 
@@ -11582,6 +11751,9 @@ msgstr "Host proyek tidak bisa dijangkau — worktree tidak bisa diimpor sekaran
 msgid "Project's host is unreachable — cannot rename right now"
 msgstr "Host proyek tidak bisa dijangkau — tidak bisa ganti nama sekarang"
 
+msgid "Project\\Team\\Area"
+msgstr "Project\\Team\\Area"
+
 msgid "Projects"
 msgstr "Proyek"
 
@@ -11712,6 +11884,9 @@ msgstr "Di-push"
 
 msgid "Pushed and opened a draft PR."
 msgstr "Sudah di-push dan membuka draf PR."
+
+msgid "Pushing branch…"
+msgstr "Pushing branch…"
 
 msgid "Pushing..."
 msgstr "Melakukan push…"
@@ -11972,6 +12147,9 @@ msgstr "Rujukan"
 msgid "Refresh"
 msgstr "Segarkan"
 
+msgid "Refresh Azure DevOps board"
+msgstr "Refresh Azure DevOps board"
+
 msgid "Refresh GitHub issues"
 msgstr "Segarkan issue GitHub"
 
@@ -12004,6 +12182,9 @@ msgstr "Ditolak"
 
 msgid "Related Posts"
 msgstr "Tulisan Terkait"
+
+msgid "Related work"
+msgstr "Related work"
 
 msgid "Relative path copied"
 msgstr "Path relatif disalin"
@@ -12258,6 +12439,9 @@ msgstr "Balas"
 msgid "Reply to thread…"
 msgstr "Balas thread…"
 
+msgid "Reply…"
+msgstr "Reply…"
+
 msgid "repo"
 msgstr "repo"
 
@@ -12287,6 +12471,9 @@ msgstr "Repositori: {label}"
 
 msgid "Repository"
 msgstr "Repositori"
+
+msgid "Repository name"
+msgstr "Nama repositori"
 
 msgid "Repository reach and desktop release downloads. Installs are dmg and AppImage downloads; updates are the zip the auto-updater pulls, so they count existing users."
 msgstr "Jangkauan repositori dan unduhan rilis desktop. Instalasi adalah unduhan dmg dan AppImage; pembaruan adalah zip yang diambil pembaru otomatis, jadi menghitung pengguna yang sudah ada."
@@ -12624,11 +12811,17 @@ msgstr "Review diminta"
 msgid "Review required"
 msgstr "Review diperlukan"
 
+msgid "Review the generated draft before pushing the branch and opening the pull request."
+msgstr "Review the generated draft before pushing the branch and opening the pull request."
+
 msgid "Review the result."
 msgstr "Review hasilnya."
 
 msgid "Review thread…"
 msgstr "Thread review…"
+
+msgid "Review threads"
+msgstr "Review threads"
 
 msgid "Reviewed by you"
 msgstr "Sudah Anda review"
@@ -12847,6 +13040,9 @@ msgstr "Hemat 25%"
 msgid "Save All"
 msgstr "Simpan Semua"
 
+msgid "Save and test"
+msgstr "Simpan dan uji"
+
 msgid "Save as environment"
 msgstr "Simpan sebagai environment"
 
@@ -12984,6 +13180,12 @@ msgstr "Cari penulis…"
 
 msgid "Search automations"
 msgstr "Cari otomatisasi"
+
+msgid "Search Azure work items"
+msgstr "Search Azure work items"
+
+msgid "Search Azure work items…"
+msgstr "Search Azure work items…"
 
 msgid "Search branches..."
 msgstr "Cari branch..."
@@ -13192,6 +13394,9 @@ msgstr "Pilih sebuah proyek"
 msgid "Select a project first"
 msgstr "Pilih proyek dulu"
 
+msgid "Select a project to load this pull request."
+msgstr "Select a project to load this pull request."
+
 msgid "Select a project to see GitHub issues."
 msgstr "Pilih proyek untuk melihat issue GitHub."
 
@@ -13215,6 +13420,9 @@ msgstr "Pilih Semua"
 
 msgid "Select an agent"
 msgstr "Pilih agen"
+
+msgid "Select an Azure-enabled project to see pull requests."
+msgstr "Select an Azure-enabled project to see pull requests."
 
 msgid "Select an editor from the dropdown"
 msgstr "Pilih editor dari dropdown"
@@ -14119,6 +14327,9 @@ msgstr "Bagi dengan Desktop"
 msgid "Split with New Browser"
 msgstr "Bagi dengan Browser Baru"
 
+msgid "Sprint"
+msgstr "Sprint"
+
 msgid "Squash & Merge"
 msgstr "Squash & Merge"
 
@@ -14136,6 +14347,9 @@ msgstr "Peningkatan stabilitas"
 
 msgid "Stacked"
 msgstr "Bertumpuk"
+
+msgid "Stage"
+msgstr "Stage"
 
 msgid "Stage all"
 msgstr "Stage semua"
@@ -14226,6 +14440,9 @@ msgstr "Mulai gratis. Upgrade saat tim Anda membutuhkan lebih. Paket enterprise 
 
 msgid "Start from a template"
 msgstr "Mulai dari templat"
+
+msgid "Start implementation"
+msgstr "Start implementation"
 
 #. placeholder {0}: datum.customers
 msgid "Start MRR ({0} customers)"
@@ -14828,6 +15045,9 @@ msgstr "Anggota tim"
 msgid "Team Members"
 msgstr "Anggota Tim"
 
+msgid "Team name"
+msgstr "Team name"
+
 msgid "Team not found in this organization"
 msgstr "Tim tidak ditemukan di organisasi ini"
 
@@ -14944,6 +15164,12 @@ msgstr "Ketentuan"
 
 msgid "Terms of Service"
 msgstr "Ketentuan Layanan"
+
+msgid "Test again"
+msgstr "Uji lagi"
+
+msgid "Testing connection…"
+msgstr "Menguji koneksi…"
 
 msgid "Text"
 msgstr "Teks"
@@ -16319,6 +16545,9 @@ msgstr "Penggunaan tidak tersedia."
 msgid "Use “{0}”"
 msgstr "Pakai “{0}”"
 
+msgid "Use a URL like https://dev.azure.com/organization."
+msgstr "Gunakan URL seperti https://dev.azure.com/organization."
+
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "Pakai path relatif terhadap workspace atau folder absolut."
 
@@ -16342,6 +16571,9 @@ msgstr "Pakai untuk agen baru"
 
 msgid "Use global default"
 msgstr "Pakai bawaan global"
+
+msgid "Use the Azure CLI session on this host for repositories, work items, and pipelines."
+msgstr "Gunakan sesi Azure CLI di host ini untuk repositori, item kerja, dan alur."
 
 msgid "Use the desktop app to start running parallel coding agents."
 msgstr "Pakai aplikasi desktop untuk mulai menjalankan agen coding paralel."
@@ -16871,11 +17103,26 @@ msgstr "Dengan label"
 msgid "with or without attachments"
 msgstr "dengan atau tanpa lampiran"
 
+msgid "Work"
+msgstr "Work"
+
 msgid "Work email"
 msgstr "Email kerja"
 
 msgid "Work from tickets"
 msgstr "Bekerja dari tiket"
+
+msgid "Work item"
+msgstr "Work item"
+
+msgid "Work item not found"
+msgstr "Work item not found"
+
+msgid "Work item project"
+msgstr "Work item project"
+
+msgid "Work items stay in Azure DevOps. Superset only stores the extra workflow stages and workspace links on this host."
+msgstr "Work items stay in Azure DevOps. Superset only stores the extra workflow stages and workspace links on this host."
 
 msgid "Work with your agents across your favorite tools"
 msgstr "Bekerja dengan agen Anda lintas alat favorit Anda"
@@ -16991,6 +17238,9 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
+
+msgid "Worktree created"
+msgstr "Worktree created"
 
 msgid "Worktree location"
 msgstr "Lokasi worktree"
@@ -17118,6 +17368,9 @@ msgstr "Anda melihat versi {version}, hanya-baca"
 
 msgid "You can attach up to {MAX_ATTACHMENTS} files"
 msgstr "Anda dapat melampirkan hingga {MAX_ATTACHMENTS} file"
+
+msgid "You can edit the suggested branch before creating it."
+msgstr "You can edit the suggested branch before creating it."
 
 #. placeholder {0}: COMPANY.DOMAIN
 msgid "You can't change this subscription in the app. Your organization's plan is managed by its owner at {0}."

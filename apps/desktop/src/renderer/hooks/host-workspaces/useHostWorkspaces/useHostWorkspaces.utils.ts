@@ -32,6 +32,9 @@ export type HostShapedWorkspace = Omit<
 	 * items (`HostWorkspaceItem`) always carry it, normalized to null.
 	 */
 	lastActivityAt?: number | null;
+	externalWorkItemProvider?: string | null;
+	externalWorkItemId?: string | null;
+	externalWorkItemUrl?: string | null;
 };
 
 /**

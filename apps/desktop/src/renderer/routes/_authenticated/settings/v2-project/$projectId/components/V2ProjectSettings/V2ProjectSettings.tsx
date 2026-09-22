@@ -19,6 +19,7 @@ import {
 } from "../../../../components/HostSelect";
 import { SettingsRow } from "../../../../components/SettingsRow";
 import { SettingsSection } from "../../../../components/SettingsSection";
+import { AzureDevOpsSection } from "./components/AzureDevOpsSection";
 import { BranchPrefixSection } from "./components/BranchPrefixSection";
 import { DeleteProjectSection } from "./components/DeleteProjectSection";
 import { IconUploadField } from "./components/IconUploadField";
@@ -236,6 +237,15 @@ export function V2ProjectSettings({
 						/>
 					</SettingsRow>
 				</SettingsSection>
+
+				{targetHostUrl && hostProject && (
+					<AzureDevOpsSection
+						key={`${projectId}:${targetHostId}`}
+						projectId={projectId}
+						hostUrl={targetHostUrl}
+						isHostOnline={selectedHost?.isOnline ?? false}
+					/>
+				)}
 
 				<SettingsSection
 					title={t({

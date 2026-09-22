@@ -25,6 +25,7 @@ import {
 	type HostWorkspaceRow,
 	insertLocalWorkspace,
 	toCloudShape,
+	updateLocalWorkspace,
 } from "../../../workspaces/local-workspace-store";
 import {
 	createCallerFactory,
@@ -118,6 +119,13 @@ const createInputSchema = z
 		pr: z.number().int().positive().optional(),
 		baseBranch: z.string().min(1).optional(),
 		taskId: z.string().uuid().optional(),
+		externalWorkItem: z
+			.object({
+				provider: z.literal("azure-devops"),
+				id: z.string().regex(/^\d+$/),
+				url: z.url(),
+			})
+			.optional(),
 		agents: z.array(agentLaunchSchema).optional(),
 		// Desktop "Wait for workspace setup before starting agents" setting,
 		// sent per-request. When true and setup commands resolve, a single
@@ -558,6 +566,9 @@ async function registerLocalWorkspace(args: {
 	branch: string;
 	worktreePath: string;
 	taskId: string | undefined;
+	externalWorkItem:
+		| { provider: "azure-devops"; id: string; url: string }
+		| undefined;
 	tags: string[] | undefined;
 	rollbackWorktree: () => Promise<void>;
 }): Promise<CloudWorkspace> {
@@ -572,6 +583,9 @@ async function registerLocalWorkspace(args: {
 			branch: args.branch,
 			name: args.name,
 			taskId: args.taskId ?? null,
+			externalWorkItemProvider: args.externalWorkItem?.provider ?? null,
+			externalWorkItemId: args.externalWorkItem?.id ?? null,
+			externalWorkItemUrl: args.externalWorkItem?.url ?? null,
 			createdByUserId: ctx.userId ?? null,
 			tags: args.tags,
 		});
@@ -709,6 +723,7 @@ export const workspacesRouter = router({
 							repoPath,
 							name: input.name ?? nextLocalWorkspaceName(ctx, input.projectId),
 							taskId: input.taskId,
+							externalWorkItem: input.externalWorkItem,
 							tags: input.tags,
 							createdByUserId: ctx.userId ?? null,
 						});
@@ -935,6 +950,7 @@ export const workspacesRouter = router({
 								branch: resolvedBranch,
 								worktreePath,
 								taskId: input.taskId,
+								externalWorkItem: input.externalWorkItem,
 								tags: input.tags,
 								rollbackWorktree: rollbackCreatedWorktree,
 							});
@@ -1100,6 +1116,7 @@ export const workspacesRouter = router({
 							baseBranch: baseShortName,
 							idempotencyId: input.id,
 							taskId: input.taskId,
+							externalWorkItem: input.externalWorkItem,
 							tags: input.tags,
 						});
 						workspaceRow = result.workspace;
@@ -1215,6 +1232,7 @@ export const workspacesRouter = router({
 								branch: resolvedBranch,
 								worktreePath,
 								taskId: input.taskId,
+								externalWorkItem: input.externalWorkItem,
 								tags: input.tags,
 								rollbackWorktree,
 							});
@@ -1222,6 +1240,15 @@ export const workspacesRouter = router({
 						}
 					}
 				}
+			}
+
+			if (input.externalWorkItem) {
+				const linked = updateLocalWorkspace(ctx, workspaceRow.id, {
+					externalWorkItemProvider: input.externalWorkItem.provider,
+					externalWorkItemId: input.externalWorkItem.id,
+					externalWorkItemUrl: input.externalWorkItem.url,
+				});
+				if (linked) workspaceRow = toCloudShape(linked, ctx.organizationId);
 			}
 
 			// Apply AI names before terminals/agents start, so setup scripts

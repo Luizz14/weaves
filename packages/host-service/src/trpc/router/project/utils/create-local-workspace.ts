@@ -81,6 +81,11 @@ export interface CreateLocalWorkspaceValues {
 	name: string;
 	id?: string;
 	taskId?: string | null;
+	externalWorkItem?: {
+		provider: "azure-devops";
+		id: string;
+		url: string;
+	};
 	tags?: string[];
 	createdByUserId?: string | null;
 }
@@ -115,6 +120,9 @@ export async function createLocalWorkspace(
 			name: values.name,
 			type: "local",
 			taskId: values.taskId ?? null,
+			externalWorkItemProvider: values.externalWorkItem?.provider ?? null,
+			externalWorkItemId: values.externalWorkItem?.id ?? null,
+			externalWorkItemUrl: values.externalWorkItem?.url ?? null,
 			createdByUserId: values.createdByUserId ?? null,
 			tags: values.tags,
 		},

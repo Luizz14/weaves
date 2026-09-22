@@ -15,6 +15,7 @@ import {
 	tasksSearchFromFilters,
 	useTasksFilterStore,
 } from "../../stores/tasks-filter-state";
+import { AzureDevOpsContent } from "./components/AzureDevOpsContent";
 import { BoardContent } from "./components/BoardContent";
 import {
 	GitHubIssuesContent,
@@ -33,7 +34,7 @@ interface TasksViewProps {
 	initialTab?: TabValue;
 	initialAssignee?: string;
 	initialSearch?: string;
-	initialType?: "tasks" | "issues";
+	initialType?: "tasks" | "issues" | "azure";
 	initialProjects?: string[];
 	initialLinearProject?: string;
 	initialState?: "open" | "all";
@@ -92,7 +93,7 @@ export function TasksView({
 			tab?: TabValue;
 			assignee?: string | null;
 			search?: string;
-			type?: "tasks" | "issues";
+			type?: "tasks" | "issues" | "azure";
 			projects?: string[];
 			linearProject?: string | null;
 			includeClosedIssues?: boolean;
@@ -333,7 +334,12 @@ export function TasksView({
 
 	const showTasks = typeTab === "tasks";
 	const showIssues = typeTab === "issues";
-	const taskSource: TaskSource = showIssues ? "issues" : "tasks";
+	const showAzure = typeTab === "azure";
+	const taskSource: TaskSource = showAzure
+		? "azure"
+		: showIssues
+			? "issues"
+			: "tasks";
 
 	return (
 		<div className="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden">
@@ -394,6 +400,7 @@ export function TasksView({
 							onSelectionChange={handleIssueSelectionChange}
 						/>
 					)}
+					{showAzure && <AzureDevOpsContent searchQuery={searchQuery} />}
 				</div>
 			)}
 		</div>

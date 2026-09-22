@@ -2,7 +2,9 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { Button } from "@superset/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@superset/ui/popover";
 import { cn } from "@superset/ui/utils";
+import { FaGithub } from "react-icons/fa";
 import { LuListFilter } from "react-icons/lu";
+import { VscAzureDevops } from "react-icons/vsc";
 import { ProjectFilter } from "renderer/routes/_authenticated/_dashboard/components/ProjectFilter";
 import { WindowControlsInset } from "renderer/routes/_authenticated/_dashboard/components/WindowControlsInset";
 import { WorkItemsSearch } from "renderer/routes/_authenticated/_dashboard/components/WorkItemsSearch";
@@ -15,6 +17,8 @@ import { ReviewFilter } from "./components/ReviewFilter";
 type PullRequestsStateFilter = "open" | "all" | "merged";
 
 interface PullRequestsTopBarProps {
+	provider: "github" | "azure-devops";
+	onProviderChange: (provider: "github" | "azure-devops") => void;
 	searchQuery: string;
 	onSearchChange: (query: string) => void;
 	projectFilters: string[];
@@ -29,6 +33,8 @@ interface PullRequestsTopBarProps {
 }
 
 export function PullRequestsTopBar({
+	provider,
+	onProviderChange,
 	searchQuery,
 	onSearchChange,
 	projectFilters,
@@ -84,6 +90,20 @@ export function PullRequestsTopBar({
 				})}
 				className="flex items-center gap-1"
 			>
+				<button
+					type="button"
+					onClick={() =>
+						onProviderChange(provider === "github" ? "azure-devops" : "github")
+					}
+					className="mr-1 flex h-7 items-center gap-1.5 rounded-md bg-muted px-2 text-xs font-medium text-muted-foreground transition-[background-color,color,transform] hover:text-foreground active:scale-[0.96]"
+				>
+					{provider === "github" ? (
+						<FaGithub className="size-3.5" />
+					) : (
+						<VscAzureDevops className="size-3.5 text-[#0078d4]" />
+					)}
+					{provider === "github" ? "GitHub" : "Azure DevOps"}
+				</button>
 				{stateTabs.map((tab) => (
 					// biome-ignore lint/a11y/useSemanticElements: styled as a pill button, not a native radio input
 					<button

@@ -1533,6 +1533,9 @@ msgstr "프롬프트에 추가"
 msgid "Add to workspace"
 msgstr "워크스페이스에 추가"
 
+msgid "Add worktree"
+msgstr "Add worktree"
+
 msgid "Add your own terminal agent to this device."
 msgstr "이 기기에 직접 만든 터미널 에이전트를 추가합니다."
 
@@ -2152,6 +2155,9 @@ msgstr "{memberName}({memberEmail})을(를) 조직에서 제거할까요? 즉시
 msgid "Are you sure you want to revoke \"{keyName}\"? This action cannot be undone."
 msgstr "\"{keyName}\"을(를) 해지할까요? 이 작업은 되돌릴 수 없습니다."
 
+msgid "Area path"
+msgstr "Area path"
+
 msgid "Arguments"
 msgstr "인수"
 
@@ -2202,6 +2208,12 @@ msgstr "종횡비"
 
 msgid "Assigned"
 msgstr "할당됨"
+
+msgid "Assigned to"
+msgstr "Assigned to"
+
+msgid "Assigned-to fallback"
+msgstr "Assigned-to fallback"
 
 msgid "Assignee"
 msgstr "담당자"
@@ -2438,6 +2450,30 @@ msgstr "내 리뷰 대기 중"
 msgid "Awaiting review from you or your team"
 msgstr "나 또는 팀의 리뷰 대기 중"
 
+msgid "Azure CLI on {targetName}"
+msgstr "Azure CLI on {targetName}"
+
+msgid "Azure DevOps"
+msgstr "Azure DevOps"
+
+msgid "Azure DevOps board connected"
+msgstr "Azure DevOps board connected"
+
+msgid "Azure DevOps configuration removed"
+msgstr "Azure DevOps 구성이 제거되었습니다"
+
+msgid "Azure DevOps configuration saved"
+msgstr "Azure DevOps 구성이 저장되었습니다"
+
+msgid "Azure host"
+msgstr "Azure host"
+
+msgid "Azure project"
+msgstr "Azure 프로젝트"
+
+msgid "Azure pull requests"
+msgstr "Azure pull requests"
+
 msgctxt "file size unit, bytes"
 msgid "B"
 msgstr "B"
@@ -2454,6 +2490,9 @@ msgstr "결제로 돌아가기"
 msgid "Back to Blog"
 msgstr "블로그로 돌아가기"
 
+msgid "Back to board"
+msgstr "Back to board"
+
 msgid "Back to Changelog"
 msgstr "변경 로그로 돌아가기"
 
@@ -2468,6 +2507,12 @@ msgstr "GitHub 이슈로 돌아가기"
 
 msgid "Back to Home"
 msgstr "홈으로 돌아가기"
+
+msgid "Back to homologation"
+msgstr "Back to homologation"
+
+msgid "Back to implementation"
+msgstr "Back to implementation"
 
 msgid "Back to Integrations"
 msgstr "연동으로 돌아가기"
@@ -2710,6 +2755,9 @@ msgstr "터미널 스크립트 가져오기"
 
 msgid "Bring over your workspaces"
 msgstr "작업 공간 가져오기"
+
+msgid "Bring the current sprint into Superset, claim work items, and keep worktrees and pull requests together."
+msgstr "Bring the current sprint into Superset, claim work items, and keep worktrees and pull requests together."
 
 msgid "Bring v1 projects, workspaces, and terminal scripts over to v2. Each item is imported individually and can be retried."
 msgstr "v1의 프로젝트, 워크스페이스, 터미널 스크립트를 v2로 가져옵니다. 항목별로 개별 가져오며 다시 시도할 수 있습니다."
@@ -3105,6 +3153,9 @@ msgstr "입출금 + 예금 + Treasury 추이. 계단 구간은 투자 유치 트
 msgid "Checking agents…"
 msgstr "에이전트 확인하는 중…"
 
+msgid "Checking Azure CLI, the Azure DevOps extension, and repository access."
+msgstr "Azure CLI, Azure DevOps 확장 및 리포지토리 액세스를 확인하는 중입니다."
+
 msgid "Checking host…"
 msgstr "호스트 확인하는 중…"
 
@@ -3180,6 +3231,9 @@ msgstr "터미널에서 Cmd+클릭할 때 파일 경로를 여는 방식을 선�
 msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
 msgstr "새 채팅의 기본값과 모델 바로가기를 설정하세요. 기존 채팅은 선택 사항을 유지합니다."
 
+msgid "Choose the device and project that will implement this Azure work item."
+msgstr "Choose the device and project that will implement this Azure work item."
+
 msgid "Choose what to clear from the in-app browser."
 msgstr "인앱 브라우저에서 삭제할 항목을 선택하세요."
 
@@ -3194,6 +3248,9 @@ msgstr "이탈"
 
 msgid "CI failed"
 msgstr "CI 실패"
+
+msgid "Claimed in Azure DevOps"
+msgstr "Claimed in Azure DevOps"
 
 msgid "Clarify this"
 msgstr "이것을 명확히 해 주세요"
@@ -3797,6 +3854,15 @@ msgstr "받아쓰기를 사용하려면 마이크를 연결하세요"
 msgid "Connect any AI agent to Superset."
 msgstr "어떤 AI 에이전트든 Superset에 연결하세요."
 
+msgid "Connect Azure DevOps"
+msgstr "Connect Azure DevOps"
+
+msgid "Connect Azure DevOps board"
+msgstr "Connect Azure DevOps board"
+
+msgid "Connect board"
+msgstr "Connect board"
+
 msgid "Connect Claude, Codex, Cursor, or any <0>MCP</0> client and let your agent create tasks, spin up workspaces, launch agents, and run automations on your behalf."
 msgstr "Claude, Codex, Cursor 등 어떤 <0>MCP</0> 클라이언트든 연결해, 에이전트가 대신 작업을 만들고, 워크스페이스를 띄우고, 에이전트를 실행하고, 자동화를 돌리게 하세요."
 
@@ -3835,6 +3901,9 @@ msgstr "Slack 연결"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "Slack을 연결해 대화에서 바로 작업을 관리하세요. 아무 채널에서나 봇을 멘션하거나 다이렉트 메시지를 보내 작업을 만들고 업데이트할 수 있습니다."
+
+msgid "Connect your Azure DevOps board"
+msgstr "Connect your Azure DevOps board"
 
 msgid "Connect your GitHub repositories and sync pull requests. Track CI status and reviews across your team."
 msgstr "GitHub 리포지토리를 연결하고 풀 리퀘스트를 동기화하세요. 팀 전체의 CI 상태와 리뷰를 추적할 수 있습니다."
@@ -4621,6 +4690,12 @@ msgstr "다시 생성"
 msgid "Create an account"
 msgstr "계정 만들기"
 
+msgid "Create as draft"
+msgstr "Create as draft"
+
+msgid "Create Azure DevOps pull request"
+msgstr "Create Azure DevOps pull request"
+
 msgid "Create failed: {message}"
 msgstr "생성 실패: {message}"
 
@@ -4684,6 +4759,9 @@ msgstr "워크스페이스 만들기"
 
 msgid "Create workspaces, launch agents, and read their output from any terminal or script. macOS and Linux."
 msgstr "어떤 터미널이나 스크립트에서든 워크스페이스를 만들고, 에이전트를 실행하고, 출력을 확인하세요. macOS와 Linux를 지원합니다."
+
+msgid "Create worktree"
+msgstr "Create worktree"
 
 msgid "Create your first workspace"
 msgstr "첫 워크스페이스 만들기"
@@ -4749,6 +4827,9 @@ msgstr "git worktree 만드는 중"
 msgid "Creating PR..."
 msgstr "PR 생성 중…"
 
+msgid "Creating pull request…"
+msgstr "Creating pull request…"
+
 msgid "Creating sandbox"
 msgstr "샌드박스 만드는 중"
 
@@ -4803,6 +4884,9 @@ msgstr "현재 속도"
 
 msgid "Current plan"
 msgstr "현재 플랜"
+
+msgid "Current sprint"
+msgstr "Current sprint"
 
 msgid "Current tab"
 msgstr "현재 탭"
@@ -5252,6 +5336,9 @@ msgstr "개발자"
 msgid "Development build"
 msgstr "개발 빌드"
 
+msgid "Device"
+msgstr "Device"
+
 msgid "Device: {selectedLabel}"
 msgstr "기기: {selectedLabel}"
 
@@ -5569,6 +5656,9 @@ msgstr "터미널에서 조작하세요"
 msgid "Drive workspaces, agents, and sessions programmatically from scripts, CI, or your own tools."
 msgstr "스크립트, CI, 자체 도구에서 워크스페이스, 에이전트, 세션을 프로그래밍 방식으로 다루세요."
 
+msgid "Drop a work item here"
+msgstr "Drop a work item here"
+
 msgid "Drop files to attach"
 msgstr "파일을 놓으면 첨부됩니다"
 
@@ -5644,6 +5734,9 @@ msgstr "각각 새 탭에서"
 
 msgid "Each morning at 8am, look at yesterday's failed CI runs, diagnose the most common failure, and open a fix PR."
 msgstr "매일 오전 8시에 어제 실패한 CI 실행을 살펴보고, 가장 흔한 실패 원인을 진단해 수정 PR을 엽니다."
+
+msgid "Each project keeps its own branch and pull request."
+msgstr "Each project keeps its own branch and pull request."
 
 msgid "Each session resumes where it left off."
 msgstr "각 세션은 중단된 지점부터 이어집니다."
@@ -6026,6 +6119,10 @@ msgstr "검토 중"
 msgid "Extended thinking: {activeLabel}"
 msgstr "확장 사고: {activeLabel}"
 
+#. placeholder {0}: diagnostic.extensionVersion
+msgid "Extension {0}"
+msgstr "확장 {0}"
+
 msgid "external"
 msgstr "외부"
 
@@ -6126,6 +6223,9 @@ msgstr "포트 {0}을(를) 닫지 못했습니다"
 msgid "Failed to close terminal session"
 msgstr "터미널 세션을 닫지 못했습니다"
 
+msgid "Failed to connect Azure DevOps"
+msgstr "Failed to connect Azure DevOps"
+
 msgid "Failed to connect to Google. Please try again."
 msgstr "Google에 연결하지 못했습니다. 다시 시도해 주세요."
 
@@ -6180,6 +6280,9 @@ msgstr "조직을 만들지 못했습니다"
 msgid "Failed to create page"
 msgstr "페이지를 만들지 못했습니다"
 
+msgid "Failed to create pull request"
+msgstr "Failed to create pull request"
+
 #. placeholder {0}: errorMessage( error, t({ message: "Unknown error", }), )
 msgid "Failed to create section: {0}"
 msgstr "섹션을 만들지 못했습니다: {0}"
@@ -6198,6 +6301,9 @@ msgstr "워크스페이스를 만들지 못했습니다"
 
 msgid "Failed to create workspace from PR"
 msgstr "PR에서 워크스페이스를 만들지 못했습니다"
+
+msgid "Failed to create worktree"
+msgstr "Failed to create worktree"
 
 msgid "Failed to delete"
 msgstr "삭제하지 못했습니다"
@@ -6279,11 +6385,17 @@ msgstr "퍼널 데이터를 불러오지 못했습니다"
 msgid "Failed to load image"
 msgstr "이미지를 불러오지 못했습니다"
 
+msgid "Failed to load pull requests"
+msgstr "Failed to load pull requests"
+
 msgid "Failed to load repositories. Please try again."
 msgstr "리포지토리를 불러오지 못했습니다. 다시 시도해 주세요."
 
 msgid "Failed to log out. Please try again."
 msgstr "로그아웃하지 못했습니다. 다시 시도해 주세요."
+
+msgid "Failed to move work item"
+msgstr "Failed to move work item"
 
 #. placeholder {0}: error.message
 msgid "Failed to move workspace: {0}"
@@ -6350,6 +6462,9 @@ msgstr "페이지 버전을 기록하지 못했습니다"
 
 msgid "Failed to remove"
 msgstr "제거하지 못했습니다"
+
+msgid "Failed to remove Azure DevOps configuration"
+msgstr "Azure DevOps 구성을 제거하지 못했습니다"
 
 msgid "Failed to remove member"
 msgstr "멤버를 제거하지 못했습니다"
@@ -6434,6 +6549,9 @@ msgstr "워크스페이스 명령을 실행하지 못했습니다"
 
 msgid "Failed to save"
 msgstr "저장하지 못했습니다"
+
+msgid "Failed to save Azure DevOps configuration"
+msgstr "Azure DevOps 구성을 저장하지 못했습니다"
 
 msgid "Failed to save installation. Please try again."
 msgstr "설치를 저장하지 못했습니다. 다시 시도해 주세요."
@@ -6992,6 +7110,9 @@ msgstr "일반"
 msgid "General access"
 msgstr "일반 접근 권한"
 
+msgid "General comment"
+msgstr "General comment"
+
 msgid "Generate a key to use with MCP servers."
 msgstr "MCP 서버에서 사용할 키를 생성하세요."
 
@@ -7337,6 +7458,9 @@ msgctxt "directory"
 msgid "Home"
 msgstr "홈"
 
+msgid "Homologation"
+msgstr "Homologation"
+
 msgid "Host"
 msgstr "호스트"
 
@@ -7546,6 +7670,9 @@ msgstr "이미지"
 
 msgid "Implement plan"
 msgstr "계획 실행"
+
+msgid "Implementation"
+msgstr "Implementation"
 
 msgid "Implementation plan"
 msgstr "구현 계획"
@@ -7841,6 +7968,9 @@ msgstr "잘못된 요청"
 
 msgid "Invalid state parameter. Please try again."
 msgstr "state 매개변수가 올바르지 않습니다. 다시 시도해 주세요."
+
+msgid "Invalid work item"
+msgstr "Invalid work item"
 
 msgid "Invitation canceled"
 msgstr "초대를 취소했습니다"
@@ -8234,6 +8364,9 @@ msgstr "나가고 삭제"
 msgid "Leave comment mode"
 msgstr "댓글 모드 나가기"
 
+msgid "Leave empty to use the identity reported by az account show."
+msgstr "Leave empty to use the identity reported by az account show."
+
 msgid "Leave it empty to go back to the name the terminal reports."
 msgstr "비워 두면 터미널이 보고하는 이름으로 돌아갑니다."
 
@@ -8535,6 +8668,9 @@ msgstr "리포지토리 불러오는 중"
 msgid "Loading repositories..."
 msgstr "리포지토리를 불러오는 중..."
 
+msgid "Loading review threads…"
+msgstr "Loading review threads…"
+
 msgid "Loading review..."
 msgstr "리뷰를 불러오는 중..."
 
@@ -8549,6 +8685,9 @@ msgstr "터미널 스크립트를 불러오는 중..."
 
 msgid "Loading usage history…"
 msgstr "사용량 기록을 불러오는 중…"
+
+msgid "Loading work item…"
+msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "워크스페이스 불러오는 중…"
@@ -8615,6 +8754,9 @@ msgstr "장시간 작업의 신뢰성이 임계점을 넘습니다. 오후 6시�
 
 msgid "Long-hover shortcut-only tooltip; its chip style is now the TooltipContent default"
 msgstr "오래 호버하면 단축키만 보여 주는 툴팁이며, 그 칩 스타일이 이제 TooltipContent 기본값입니다"
+
+msgid "Looking for an Azure DevOps board…"
+msgstr "Looking for an Azure DevOps board…"
 
 msgid "Looking for installed browsers…"
 msgstr "설치된 브라우저를 찾는 중…"
@@ -9108,6 +9250,12 @@ msgstr "아래로 이동"
 msgid "Move to group"
 msgstr "그룹으로 이동"
 
+msgid "Move to homologation"
+msgstr "Move to homologation"
+
+msgid "Move to review"
+msgstr "Move to review"
+
 msgid "Move to Tab"
 msgstr "탭으로 이동"
 
@@ -9489,6 +9637,9 @@ msgstr "작성자를 찾을 수 없습니다."
 msgid "No automations match"
 msgstr "일치하는 자동화가 없습니다"
 
+msgid "No Azure pull requests found."
+msgstr "No Azure pull requests found."
+
 msgid "No background terminal sessions"
 msgstr "백그라운드 터미널 세션 없음"
 
@@ -9500,6 +9651,9 @@ msgstr "변경된 파일이 없습니다."
 
 msgid "No changes"
 msgstr "변경 사항 없음"
+
+msgid "No changes found."
+msgstr "No changes found."
 
 msgid "No changes on this branch yet."
 msgstr "아직 이 브랜치에 변경 사항이 없습니다."
@@ -9948,6 +10102,9 @@ msgstr "아직 이 호스트에 워크스페이스가 없습니다"
 
 msgid "No workspaces yet"
 msgstr "아직 워크스페이스가 없습니다"
+
+msgid "No worktrees yet."
+msgstr "No worktrees yet."
 
 msgid "No-Prompt Launch"
 msgstr "프롬프트 없는 실행"
@@ -10439,6 +10596,9 @@ msgstr "앱에서 열기"
 msgid "Open in App"
 msgstr "앱에서 열기"
 
+msgid "Open in Azure"
+msgstr "Open in Azure"
+
 msgid "Open in browser"
 msgstr "브라우저에서 열기"
 
@@ -10741,6 +10901,9 @@ msgstr "선택 사항"
 msgid "Optional context shown in the terminal scripts list."
 msgstr "터미널 스크립트 목록에 표시되는 선택 설명입니다."
 
+msgid "Optional email for PAT logins"
+msgstr "Optional email for PAT logins"
+
 msgid "Optional flags appended after the prompt payload"
 msgstr "프롬프트 페이로드 뒤에 붙일 선택 플래그"
 
@@ -10812,6 +10975,9 @@ msgstr "조직을 찾을 수 없습니다."
 
 msgid "Organization slug"
 msgstr "조직 슬러그"
+
+msgid "Organization URL"
+msgstr "조직 URL"
 
 msgid "Organization URL updated!"
 msgstr "조직 URL을 업데이트했습니다!"
@@ -11273,6 +11439,9 @@ msgstr "플러그인 마켓플레이스"
 msgid "Plugins"
 msgstr "플러그인"
 
+msgid "Policies"
+msgstr "Policies"
+
 msgid "Popover"
 msgstr "팝오버"
 
@@ -11582,6 +11751,9 @@ msgstr "프로젝트 호스트에 연결할 수 없습니다 — 지금은 workt
 msgid "Project's host is unreachable — cannot rename right now"
 msgstr "프로젝트 호스트에 연결할 수 없습니다 — 지금은 이름을 변경할 수 없습니다"
 
+msgid "Project\\Team\\Area"
+msgstr "Project\\Team\\Area"
+
 msgid "Projects"
 msgstr "프로젝트"
 
@@ -11712,6 +11884,9 @@ msgstr "푸시됨"
 
 msgid "Pushed and opened a draft PR."
 msgstr "푸시하고 초안 PR을 열었습니다."
+
+msgid "Pushing branch…"
+msgstr "Pushing branch…"
 
 msgid "Pushing..."
 msgstr "푸시 중…"
@@ -11972,6 +12147,9 @@ msgstr "유입"
 msgid "Refresh"
 msgstr "새로 고침"
 
+msgid "Refresh Azure DevOps board"
+msgstr "Refresh Azure DevOps board"
+
 msgid "Refresh GitHub issues"
 msgstr "GitHub 이슈 새로 고침"
 
@@ -12004,6 +12182,9 @@ msgstr "거부됨"
 
 msgid "Related Posts"
 msgstr "관련 게시물"
+
+msgid "Related work"
+msgstr "Related work"
 
 msgid "Relative path copied"
 msgstr "상대 경로 복사됨"
@@ -12258,6 +12439,9 @@ msgstr "답글"
 msgid "Reply to thread…"
 msgstr "스레드에 답글…"
 
+msgid "Reply…"
+msgstr "Reply…"
+
 msgid "repo"
 msgstr "리포"
 
@@ -12287,6 +12471,9 @@ msgstr "리포지토리: {label}"
 
 msgid "Repository"
 msgstr "리포지토리"
+
+msgid "Repository name"
+msgstr "리포지토리 이름"
 
 msgid "Repository reach and desktop release downloads. Installs are dmg and AppImage downloads; updates are the zip the auto-updater pulls, so they count existing users."
 msgstr "저장소 도달 범위와 데스크톱 릴리스 다운로드. 설치는 dmg와 AppImage 다운로드, 업데이트는 자동 업데이터가 받는 zip으로 기존 사용자를 집계합니다."
@@ -12624,11 +12811,17 @@ msgstr "리뷰 요청됨"
 msgid "Review required"
 msgstr "리뷰 필요"
 
+msgid "Review the generated draft before pushing the branch and opening the pull request."
+msgstr "Review the generated draft before pushing the branch and opening the pull request."
+
 msgid "Review the result."
 msgstr "결과를 리뷰하세요."
 
 msgid "Review thread…"
 msgstr "리뷰 스레드…"
+
+msgid "Review threads"
+msgstr "Review threads"
 
 msgid "Reviewed by you"
 msgstr "내가 리뷰함"
@@ -12847,6 +13040,9 @@ msgstr "25% 절약"
 msgid "Save All"
 msgstr "모두 저장"
 
+msgid "Save and test"
+msgstr "저장 및 테스트"
+
 msgid "Save as environment"
 msgstr "환경으로 저장"
 
@@ -12984,6 +13180,12 @@ msgstr "작성자 검색…"
 
 msgid "Search automations"
 msgstr "자동화 검색"
+
+msgid "Search Azure work items"
+msgstr "Search Azure work items"
+
+msgid "Search Azure work items…"
+msgstr "Search Azure work items…"
 
 msgid "Search branches..."
 msgstr "브랜치 검색..."
@@ -13192,6 +13394,9 @@ msgstr "프로젝트를 선택하세요"
 msgid "Select a project first"
 msgstr "프로젝트를 먼저 선택하세요"
 
+msgid "Select a project to load this pull request."
+msgstr "Select a project to load this pull request."
+
 msgid "Select a project to see GitHub issues."
 msgstr "GitHub 이슈를 보려면 프로젝트를 선택하세요."
 
@@ -13215,6 +13420,9 @@ msgstr "모두 선택"
 
 msgid "Select an agent"
 msgstr "에이전트 선택"
+
+msgid "Select an Azure-enabled project to see pull requests."
+msgstr "Select an Azure-enabled project to see pull requests."
 
 msgid "Select an editor from the dropdown"
 msgstr "드롭다운에서 편집기를 선택하세요"
@@ -14119,6 +14327,9 @@ msgstr "데스크톱으로 분할"
 msgid "Split with New Browser"
 msgstr "새 브라우저로 분할"
 
+msgid "Sprint"
+msgstr "Sprint"
+
 msgid "Squash & Merge"
 msgstr "스쿼시 후 머지"
 
@@ -14136,6 +14347,9 @@ msgstr "안정성 개선"
 
 msgid "Stacked"
 msgstr "스택"
+
+msgid "Stage"
+msgstr "Stage"
 
 msgid "Stage all"
 msgstr "모두 스테이징"
@@ -14226,6 +14440,9 @@ msgstr "무료로 시작하세요. 팀이 커지면 업그레이드하세요. �
 
 msgid "Start from a template"
 msgstr "템플릿으로 시작"
+
+msgid "Start implementation"
+msgstr "Start implementation"
 
 #. placeholder {0}: datum.customers
 msgid "Start MRR ({0} customers)"
@@ -14828,6 +15045,9 @@ msgstr "팀 멤버"
 msgid "Team Members"
 msgstr "팀 멤버"
 
+msgid "Team name"
+msgstr "Team name"
+
 msgid "Team not found in this organization"
 msgstr "이 조직에서 팀을 찾을 수 없습니다"
 
@@ -14944,6 +15164,12 @@ msgstr "약관"
 
 msgid "Terms of Service"
 msgstr "서비스 약관"
+
+msgid "Test again"
+msgstr "다시 테스트"
+
+msgid "Testing connection…"
+msgstr "연결 테스트 중…"
 
 msgid "Text"
 msgstr "텍스트"
@@ -16319,6 +16545,9 @@ msgstr "사용량을 볼 수 없습니다."
 msgid "Use “{0}”"
 msgstr "“{0}” 사용"
 
+msgid "Use a URL like https://dev.azure.com/organization."
+msgstr "https://dev.azure.com/organization 형식의 URL을 사용하세요."
+
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "워크스페이스 기준 상대 경로나 절대 경로 폴더를 사용하세요."
 
@@ -16342,6 +16571,9 @@ msgstr "새 에이전트에 사용"
 
 msgid "Use global default"
 msgstr "전역 기본값 사용"
+
+msgid "Use the Azure CLI session on this host for repositories, work items, and pipelines."
+msgstr "이 호스트의 Azure CLI 세션을 사용하여 리포지토리, 작업 항목 및 파이프라인에 액세스합니다."
 
 msgid "Use the desktop app to start running parallel coding agents."
 msgstr "데스크톱 앱에서 병렬 코딩 에이전트를 실행하세요."
@@ -16871,11 +17103,26 @@ msgstr "레이블 포함"
 msgid "with or without attachments"
 msgstr "첨부 파일 유무 무관"
 
+msgid "Work"
+msgstr "Work"
+
 msgid "Work email"
 msgstr "업무용 이메일"
 
 msgid "Work from tickets"
 msgstr "티켓에서 바로 작업"
+
+msgid "Work item"
+msgstr "Work item"
+
+msgid "Work item not found"
+msgstr "Work item not found"
+
+msgid "Work item project"
+msgstr "Work item project"
+
+msgid "Work items stay in Azure DevOps. Superset only stores the extra workflow stages and workspace links on this host."
+msgstr "Work items stay in Azure DevOps. Superset only stores the extra workflow stages and workspace links on this host."
 
 msgid "Work with your agents across your favorite tools"
 msgstr "즐겨 쓰는 도구 전반에서 에이전트와 함께 작업하세요"
@@ -16991,6 +17238,9 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "worktree"
+
+msgid "Worktree created"
+msgstr "Worktree created"
 
 msgid "Worktree location"
 msgstr "worktree 위치"
@@ -17118,6 +17368,9 @@ msgstr "버전 {version}을 읽기 전용으로 보고 있습니다"
 
 msgid "You can attach up to {MAX_ATTACHMENTS} files"
 msgstr "파일은 최대 {MAX_ATTACHMENTS}개까지 첨부할 수 있습니다"
+
+msgid "You can edit the suggested branch before creating it."
+msgstr "You can edit the suggested branch before creating it."
 
 #. placeholder {0}: COMPANY.DOMAIN
 msgid "You can't change this subscription in the app. Your organization's plan is managed by its owner at {0}."

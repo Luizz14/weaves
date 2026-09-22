@@ -100,6 +100,9 @@ export interface WorkspaceSnapshot {
 	type: "local" | "worktree" | "session";
 	worktreePath: string;
 	taskId: string | null;
+	externalWorkItemProvider?: string | null;
+	externalWorkItemId?: string | null;
+	externalWorkItemUrl?: string | null;
 	createdByUserId: string | null;
 	createdAt: number;
 	updatedAt: number;

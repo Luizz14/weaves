@@ -36,6 +36,11 @@ export interface AdoptExistingWorktreeArgs {
 	idempotencyId?: string;
 	/** Task link recorded on the row; ignored on relink. */
 	taskId?: string;
+	externalWorkItem?: {
+		provider: "azure-devops";
+		id: string;
+		url: string;
+	};
 	/** Applied only when a NEW row is inserted; adopted rows keep their tags. */
 	tags?: string[];
 }
@@ -75,6 +80,7 @@ export async function adoptExistingWorktree(
 		existingWorkspaceId,
 		idempotencyId,
 		taskId,
+		externalWorkItem,
 		tags,
 	} = args;
 	const project = requireLocalProject(ctx, projectId);
@@ -131,6 +137,9 @@ export async function adoptExistingWorktree(
 			branch,
 			name: workspaceName,
 			taskId: taskId ?? null,
+			externalWorkItemProvider: externalWorkItem?.provider ?? null,
+			externalWorkItemId: externalWorkItem?.id ?? null,
+			externalWorkItemUrl: externalWorkItem?.url ?? null,
 			tags,
 		});
 		return {
@@ -209,6 +218,9 @@ export async function adoptExistingWorktree(
 			branch,
 			name: workspaceName,
 			taskId: taskId ?? null,
+			externalWorkItemProvider: externalWorkItem?.provider ?? null,
+			externalWorkItemId: externalWorkItem?.id ?? null,
+			externalWorkItemUrl: externalWorkItem?.url ?? null,
 			tags,
 		});
 	} catch (err) {

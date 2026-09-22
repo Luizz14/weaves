@@ -1533,6 +1533,9 @@ msgstr "プロンプトに追加"
 msgid "Add to workspace"
 msgstr "ワークスペースに追加"
 
+msgid "Add worktree"
+msgstr "Add worktree"
+
 msgid "Add your own terminal agent to this device."
 msgstr "このデバイスに独自のターミナルエージェントを追加します。"
 
@@ -2152,6 +2155,9 @@ msgstr "{memberName}({memberEmail})を組織から削除しますか?すぐに�
 msgid "Are you sure you want to revoke \"{keyName}\"? This action cannot be undone."
 msgstr "「{keyName}」を取り消しますか?この操作は元に戻せません。"
 
+msgid "Area path"
+msgstr "Area path"
+
 msgid "Arguments"
 msgstr "引数"
 
@@ -2202,6 +2208,12 @@ msgstr "Aspect Ratio"
 
 msgid "Assigned"
 msgstr "割り当て"
+
+msgid "Assigned to"
+msgstr "Assigned to"
+
+msgid "Assigned-to fallback"
+msgstr "Assigned-to fallback"
 
 msgid "Assignee"
 msgstr "担当者"
@@ -2438,6 +2450,30 @@ msgstr "自分のレビュー待ち"
 msgid "Awaiting review from you or your team"
 msgstr "自分またはチームのレビュー待ち"
 
+msgid "Azure CLI on {targetName}"
+msgstr "Azure CLI on {targetName}"
+
+msgid "Azure DevOps"
+msgstr "Azure DevOps"
+
+msgid "Azure DevOps board connected"
+msgstr "Azure DevOps board connected"
+
+msgid "Azure DevOps configuration removed"
+msgstr "Azure DevOps の構成を削除しました"
+
+msgid "Azure DevOps configuration saved"
+msgstr "Azure DevOps の構成を保存しました"
+
+msgid "Azure host"
+msgstr "Azure host"
+
+msgid "Azure project"
+msgstr "Azure プロジェクト"
+
+msgid "Azure pull requests"
+msgstr "Azure pull requests"
+
 msgctxt "file size unit, bytes"
 msgid "B"
 msgstr "B"
@@ -2454,6 +2490,9 @@ msgstr "請求に戻る"
 msgid "Back to Blog"
 msgstr "ブログに戻る"
 
+msgid "Back to board"
+msgstr "Back to board"
+
 msgid "Back to Changelog"
 msgstr "Changelogに戻る"
 
@@ -2468,6 +2507,12 @@ msgstr "GitHub issueに戻る"
 
 msgid "Back to Home"
 msgstr "ホームに戻る"
+
+msgid "Back to homologation"
+msgstr "Back to homologation"
+
+msgid "Back to implementation"
+msgstr "Back to implementation"
 
 msgid "Back to Integrations"
 msgstr "連携に戻る"
@@ -2710,6 +2755,9 @@ msgstr "ターミナルスクリプトを引き継ぐ"
 
 msgid "Bring over your workspaces"
 msgstr "ワークスペースを引き継ぐ"
+
+msgid "Bring the current sprint into Superset, claim work items, and keep worktrees and pull requests together."
+msgstr "Bring the current sprint into Superset, claim work items, and keep worktrees and pull requests together."
 
 msgid "Bring v1 projects, workspaces, and terminal scripts over to v2. Each item is imported individually and can be retried."
 msgstr "v1のプロジェクト、ワークスペース、ターミナルスクリプトをv2に取り込みます。項目ごとに個別にインポートされ、再試行できます。"
@@ -3105,6 +3153,9 @@ msgstr "当座+普通+Treasuryの推移。段差は資金調達のトランシ�
 msgid "Checking agents…"
 msgstr "エージェントを確認中…"
 
+msgid "Checking Azure CLI, the Azure DevOps extension, and repository access."
+msgstr "Azure CLI、Azure DevOps 拡張機能、リポジトリへのアクセスを確認しています。"
+
 msgid "Checking host…"
 msgstr "ホストを確認中…"
 
@@ -3180,6 +3231,9 @@ msgstr "ターミナルでCmd+クリックしたときのファイルパスの�
 msgid "Choose the default for new chats and customize your model shortcuts. Existing chats keep their selections."
 msgstr "新しいチャットのデフォルトとモデルのショートカットを設定します。既存のチャットの選択は変わりません。"
 
+msgid "Choose the device and project that will implement this Azure work item."
+msgstr "Choose the device and project that will implement this Azure work item."
+
 msgid "Choose what to clear from the in-app browser."
 msgstr "アプリ内ブラウザから消去する項目を選択してください。"
 
@@ -3194,6 +3248,9 @@ msgstr "解約"
 
 msgid "CI failed"
 msgstr "CIが失敗しました"
+
+msgid "Claimed in Azure DevOps"
+msgstr "Claimed in Azure DevOps"
 
 msgid "Clarify this"
 msgstr "これを明確にして"
@@ -3797,6 +3854,15 @@ msgstr "音声入力を使うにはマイクを接続してください"
 msgid "Connect any AI agent to Superset."
 msgstr "どのAIエージェントでもSupersetに接続。"
 
+msgid "Connect Azure DevOps"
+msgstr "Connect Azure DevOps"
+
+msgid "Connect Azure DevOps board"
+msgstr "Connect Azure DevOps board"
+
+msgid "Connect board"
+msgstr "Connect board"
+
 msgid "Connect Claude, Codex, Cursor, or any <0>MCP</0> client and let your agent create tasks, spin up workspaces, launch agents, and run automations on your behalf."
 msgstr "Claude、Codex、Cursorなど任意の<0>MCP</0>クライアントを接続すれば、エージェントが代わりにタスクを作り、ワークスペースを立ち上げ、エージェントを起動し、オートメーションを実行します。"
 
@@ -3835,6 +3901,9 @@ msgstr "Slackを接続"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "Slackを接続して会話からタスクを管理します。任意のチャンネルでボットにメンションするか、ダイレクトメッセージを送ると、タスクの作成と更新ができます。"
+
+msgid "Connect your Azure DevOps board"
+msgstr "Connect your Azure DevOps board"
 
 msgid "Connect your GitHub repositories and sync pull requests. Track CI status and reviews across your team."
 msgstr "GitHubリポジトリを接続してプルリクエストを同期します。チーム全体のCIステータスとレビューを追跡できます。"
@@ -4621,6 +4690,12 @@ msgstr "もう一度作成"
 msgid "Create an account"
 msgstr "アカウントを作成"
 
+msgid "Create as draft"
+msgstr "Create as draft"
+
+msgid "Create Azure DevOps pull request"
+msgstr "Create Azure DevOps pull request"
+
 msgid "Create failed: {message}"
 msgstr "作成に失敗しました: {message}"
 
@@ -4684,6 +4759,9 @@ msgstr "ワークスペースを作成"
 
 msgid "Create workspaces, launch agents, and read their output from any terminal or script. macOS and Linux."
 msgstr "任意のターミナルやスクリプトから、ワークスペースを作成し、エージェントを起動し、その出力を読み取れます。macOS と Linux 対応。"
+
+msgid "Create worktree"
+msgstr "Create worktree"
 
 msgid "Create your first workspace"
 msgstr "最初のワークスペースを作成"
@@ -4749,6 +4827,9 @@ msgstr "git worktreeを作成中"
 msgid "Creating PR..."
 msgstr "PRを作成中…"
 
+msgid "Creating pull request…"
+msgstr "Creating pull request…"
+
 msgid "Creating sandbox"
 msgstr "サンドボックスを作成中"
 
@@ -4803,6 +4884,9 @@ msgstr "現在のペース"
 
 msgid "Current plan"
 msgstr "現在のプラン"
+
+msgid "Current sprint"
+msgstr "Current sprint"
 
 msgid "Current tab"
 msgstr "現在のタブ"
@@ -5252,6 +5336,9 @@ msgstr "開発者"
 msgid "Development build"
 msgstr "開発ビルド"
 
+msgid "Device"
+msgstr "Device"
+
 msgid "Device: {selectedLabel}"
 msgstr "デバイス: {selectedLabel}"
 
@@ -5569,6 +5656,9 @@ msgstr "ターミナルから操作する"
 msgid "Drive workspaces, agents, and sessions programmatically from scripts, CI, or your own tools."
 msgstr "スクリプト、CI、自作ツールから、ワークスペース、エージェント、セッションをプログラムで操作できます。"
 
+msgid "Drop a work item here"
+msgstr "Drop a work item here"
+
 msgid "Drop files to attach"
 msgstr "ファイルをドロップして添付"
 
@@ -5644,6 +5734,9 @@ msgstr "それぞれ新しいタブで"
 
 msgid "Each morning at 8am, look at yesterday's failed CI runs, diagnose the most common failure, and open a fix PR."
 msgstr "毎朝午前8時に、前日の失敗したCI実行を確認し、最も多い失敗原因を診断して修正PRを作成する。"
+
+msgid "Each project keeps its own branch and pull request."
+msgstr "Each project keeps its own branch and pull request."
 
 msgid "Each session resumes where it left off."
 msgstr "各セッションは中断したところから再開します。"
@@ -6026,6 +6119,10 @@ msgstr "検討中"
 msgid "Extended thinking: {activeLabel}"
 msgstr "拡張思考: {activeLabel}"
 
+#. placeholder {0}: diagnostic.extensionVersion
+msgid "Extension {0}"
+msgstr "拡張機能 {0}"
+
 msgid "external"
 msgstr "外部"
 
@@ -6126,6 +6223,9 @@ msgstr "ポート{0}を閉じられませんでした"
 msgid "Failed to close terminal session"
 msgstr "ターミナルセッションを閉じられませんでした"
 
+msgid "Failed to connect Azure DevOps"
+msgstr "Failed to connect Azure DevOps"
+
 msgid "Failed to connect to Google. Please try again."
 msgstr "Googleに接続できませんでした。もう一度お試しください。"
 
@@ -6180,6 +6280,9 @@ msgstr "組織を作成できませんでした"
 msgid "Failed to create page"
 msgstr "ページの作成に失敗しました"
 
+msgid "Failed to create pull request"
+msgstr "Failed to create pull request"
+
 #. placeholder {0}: errorMessage( error, t({ message: "Unknown error", }), )
 msgid "Failed to create section: {0}"
 msgstr "セクションの作成に失敗しました: {0}"
@@ -6198,6 +6301,9 @@ msgstr "ワークスペースを作成できませんでした"
 
 msgid "Failed to create workspace from PR"
 msgstr "PRからワークスペースを作成できませんでした"
+
+msgid "Failed to create worktree"
+msgstr "Failed to create worktree"
 
 msgid "Failed to delete"
 msgstr "削除に失敗しました"
@@ -6279,11 +6385,17 @@ msgstr "ファネルデータを読み込めませんでした"
 msgid "Failed to load image"
 msgstr "画像の読み込みに失敗しました"
 
+msgid "Failed to load pull requests"
+msgstr "Failed to load pull requests"
+
 msgid "Failed to load repositories. Please try again."
 msgstr "リポジトリを読み込めませんでした。もう一度お試しください。"
 
 msgid "Failed to log out. Please try again."
 msgstr "ログアウトに失敗しました。もう一度お試しください。"
+
+msgid "Failed to move work item"
+msgstr "Failed to move work item"
 
 #. placeholder {0}: error.message
 msgid "Failed to move workspace: {0}"
@@ -6350,6 +6462,9 @@ msgstr "ページバージョンの記録に失敗しました"
 
 msgid "Failed to remove"
 msgstr "削除に失敗しました"
+
+msgid "Failed to remove Azure DevOps configuration"
+msgstr "Azure DevOps の構成を削除できませんでした"
 
 msgid "Failed to remove member"
 msgstr "メンバーの削除に失敗しました"
@@ -6434,6 +6549,9 @@ msgstr "ワークスペースコマンドの実行に失敗しました"
 
 msgid "Failed to save"
 msgstr "保存に失敗しました"
+
+msgid "Failed to save Azure DevOps configuration"
+msgstr "Azure DevOps の構成を保存できませんでした"
 
 msgid "Failed to save installation. Please try again."
 msgstr "インストール情報を保存できませんでした。もう一度お試しください。"
@@ -6992,6 +7110,9 @@ msgstr "全般"
 msgid "General access"
 msgstr "一般的なアクセス"
 
+msgid "General comment"
+msgstr "General comment"
+
 msgid "Generate a key to use with MCP servers."
 msgstr "MCPサーバーで使用するキーを生成します。"
 
@@ -7337,6 +7458,9 @@ msgctxt "directory"
 msgid "Home"
 msgstr "ホーム"
 
+msgid "Homologation"
+msgstr "Homologation"
+
 msgid "Host"
 msgstr "ホスト"
 
@@ -7546,6 +7670,9 @@ msgstr "画像"
 
 msgid "Implement plan"
 msgstr "プランを実行"
+
+msgid "Implementation"
+msgstr "Implementation"
 
 msgid "Implementation plan"
 msgstr "実装プラン"
@@ -7841,6 +7968,9 @@ msgstr "無効なリクエスト"
 
 msgid "Invalid state parameter. Please try again."
 msgstr "stateパラメーターが無効です。もう一度お試しください。"
+
+msgid "Invalid work item"
+msgstr "Invalid work item"
 
 msgid "Invitation canceled"
 msgstr "招待をキャンセルしました"
@@ -8234,6 +8364,9 @@ msgstr "退出して削除"
 msgid "Leave comment mode"
 msgstr "コメントモードを終了"
 
+msgid "Leave empty to use the identity reported by az account show."
+msgstr "Leave empty to use the identity reported by az account show."
+
 msgid "Leave it empty to go back to the name the terminal reports."
 msgstr "空欄にすると、ターミナルが報告する名前に戻ります。"
 
@@ -8535,6 +8668,9 @@ msgstr "リポジトリを読み込み中"
 msgid "Loading repositories..."
 msgstr "リポジトリを読み込み中..."
 
+msgid "Loading review threads…"
+msgstr "Loading review threads…"
+
 msgid "Loading review..."
 msgstr "レビューを読み込み中..."
 
@@ -8549,6 +8685,9 @@ msgstr "ターミナルスクリプトを読み込み中..."
 
 msgid "Loading usage history…"
 msgstr "使用履歴を読み込み中…"
+
+msgid "Loading work item…"
+msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "ワークスペースを読み込み中…"
@@ -8615,6 +8754,9 @@ msgstr "長時間にわたる信頼性がしきい値を超えます。18時に�
 
 msgid "Long-hover shortcut-only tooltip; its chip style is now the TooltipContent default"
 msgstr "長めのホバーでショートカットだけを出すtooltip。そのチップスタイルが現在のTooltipContentのデフォルトです"
+
+msgid "Looking for an Azure DevOps board…"
+msgstr "Looking for an Azure DevOps board…"
 
 msgid "Looking for installed browsers…"
 msgstr "インストール済みブラウザを検索中…"
@@ -9108,6 +9250,12 @@ msgstr "下に移動"
 msgid "Move to group"
 msgstr "グループへ移動"
 
+msgid "Move to homologation"
+msgstr "Move to homologation"
+
+msgid "Move to review"
+msgstr "Move to review"
+
 msgid "Move to Tab"
 msgstr "タブに移動"
 
@@ -9489,6 +9637,9 @@ msgstr "作成者が見つかりません。"
 msgid "No automations match"
 msgstr "一致するオートメーションがありません"
 
+msgid "No Azure pull requests found."
+msgstr "No Azure pull requests found."
+
 msgid "No background terminal sessions"
 msgstr "バックグラウンドのターミナルセッションはありません"
 
@@ -9500,6 +9651,9 @@ msgstr "変更されたファイルはありません。"
 
 msgid "No changes"
 msgstr "変更なし"
+
+msgid "No changes found."
+msgstr "No changes found."
 
 msgid "No changes on this branch yet."
 msgstr "このブランチにはまだ変更がありません。"
@@ -9948,6 +10102,9 @@ msgstr "このホストにはまだワークスペースがありません"
 
 msgid "No workspaces yet"
 msgstr "ワークスペースはまだありません"
+
+msgid "No worktrees yet."
+msgstr "No worktrees yet."
 
 msgid "No-Prompt Launch"
 msgstr "プロンプトなし起動"
@@ -10439,6 +10596,9 @@ msgstr "アプリで開く"
 msgid "Open in App"
 msgstr "アプリで開く"
 
+msgid "Open in Azure"
+msgstr "Open in Azure"
+
 msgid "Open in browser"
 msgstr "ブラウザで開く"
 
@@ -10741,6 +10901,9 @@ msgstr "任意"
 msgid "Optional context shown in the terminal scripts list."
 msgstr "ターミナルスクリプト一覧に表示される任意の説明。"
 
+msgid "Optional email for PAT logins"
+msgstr "Optional email for PAT logins"
+
 msgid "Optional flags appended after the prompt payload"
 msgstr "プロンプトの後に付加する任意のフラグ"
 
@@ -10812,6 +10975,9 @@ msgstr "組織が見つかりません。"
 
 msgid "Organization slug"
 msgstr "組織スラッグ"
+
+msgid "Organization URL"
+msgstr "組織の URL"
 
 msgid "Organization URL updated!"
 msgstr "組織のURLを更新しました!"
@@ -11273,6 +11439,9 @@ msgstr "プラグインマーケットプレイス"
 msgid "Plugins"
 msgstr "プラグイン"
 
+msgid "Policies"
+msgstr "Policies"
+
 msgid "Popover"
 msgstr "Popover"
 
@@ -11582,6 +11751,9 @@ msgstr "プロジェクトのホストに到達できません — 今はワー�
 msgid "Project's host is unreachable — cannot rename right now"
 msgstr "プロジェクトのホストに到達できません — 今は名前を変更できません"
 
+msgid "Project\\Team\\Area"
+msgstr "Project\\Team\\Area"
+
 msgid "Projects"
 msgstr "プロジェクト"
 
@@ -11712,6 +11884,9 @@ msgstr "プッシュ"
 
 msgid "Pushed and opened a draft PR."
 msgstr "プッシュしてドラフトPRを作成しました。"
+
+msgid "Pushing branch…"
+msgstr "Pushing branch…"
 
 msgid "Pushing..."
 msgstr "プッシュ中…"
@@ -11972,6 +12147,9 @@ msgstr "リファラル"
 msgid "Refresh"
 msgstr "更新"
 
+msgid "Refresh Azure DevOps board"
+msgstr "Refresh Azure DevOps board"
+
 msgid "Refresh GitHub issues"
 msgstr "GitHub issueを更新"
 
@@ -12004,6 +12182,9 @@ msgstr "拒否済み"
 
 msgid "Related Posts"
 msgstr "関連記事"
+
+msgid "Related work"
+msgstr "Related work"
 
 msgid "Relative path copied"
 msgstr "相対パスをコピーしました"
@@ -12258,6 +12439,9 @@ msgstr "返信"
 msgid "Reply to thread…"
 msgstr "スレッドに返信…"
 
+msgid "Reply…"
+msgstr "Reply…"
+
 msgid "repo"
 msgstr "リポジトリ"
 
@@ -12287,6 +12471,9 @@ msgstr "リポジトリ: {label}"
 
 msgid "Repository"
 msgstr "リポジトリ"
+
+msgid "Repository name"
+msgstr "リポジトリ名"
 
 msgid "Repository reach and desktop release downloads. Installs are dmg and AppImage downloads; updates are the zip the auto-updater pulls, so they count existing users."
 msgstr "リポジトリの広がりとデスクトップリリースのダウンロード。インストールは dmg と AppImage のダウンロード、アップデートは自動更新が取得する zip で、既存ユーザーを数えます。"
@@ -12624,11 +12811,17 @@ msgstr "レビューリクエスト"
 msgid "Review required"
 msgstr "レビュー必須"
 
+msgid "Review the generated draft before pushing the branch and opening the pull request."
+msgstr "Review the generated draft before pushing the branch and opening the pull request."
+
 msgid "Review the result."
 msgstr "結果をレビューする。"
 
 msgid "Review thread…"
 msgstr "レビュースレッド…"
+
+msgid "Review threads"
+msgstr "Review threads"
 
 msgid "Reviewed by you"
 msgstr "自分がレビュー済み"
@@ -12847,6 +13040,9 @@ msgstr "25%お得"
 msgid "Save All"
 msgstr "すべて保存"
 
+msgid "Save and test"
+msgstr "保存してテスト"
+
 msgid "Save as environment"
 msgstr "環境として保存"
 
@@ -12984,6 +13180,12 @@ msgstr "作成者を検索…"
 
 msgid "Search automations"
 msgstr "オートメーションを検索"
+
+msgid "Search Azure work items"
+msgstr "Search Azure work items"
+
+msgid "Search Azure work items…"
+msgstr "Search Azure work items…"
 
 msgid "Search branches..."
 msgstr "ブランチを検索..."
@@ -13192,6 +13394,9 @@ msgstr "プロジェクトを選択してください"
 msgid "Select a project first"
 msgstr "先にプロジェクトを選択してください"
 
+msgid "Select a project to load this pull request."
+msgstr "Select a project to load this pull request."
+
 msgid "Select a project to see GitHub issues."
 msgstr "プロジェクトを選択するとGitHub issueが表示されます。"
 
@@ -13215,6 +13420,9 @@ msgstr "すべて選択"
 
 msgid "Select an agent"
 msgstr "エージェントを選択"
+
+msgid "Select an Azure-enabled project to see pull requests."
+msgstr "Select an Azure-enabled project to see pull requests."
 
 msgid "Select an editor from the dropdown"
 msgstr "ドロップダウンからエディタを選択してください"
@@ -14119,6 +14327,9 @@ msgstr "デスクトップで分割"
 msgid "Split with New Browser"
 msgstr "新規ブラウザで分割"
 
+msgid "Sprint"
+msgstr "Sprint"
+
 msgid "Squash & Merge"
 msgstr "スカッシュしてマージ"
 
@@ -14136,6 +14347,9 @@ msgstr "安定性の改善"
 
 msgid "Stacked"
 msgstr "積み重ね"
+
+msgid "Stage"
+msgstr "Stage"
 
 msgid "Stage all"
 msgstr "すべてステージ"
@@ -14226,6 +14440,9 @@ msgstr "無料で始められます。チームの規模に合わなくなった
 
 msgid "Start from a template"
 msgstr "テンプレートから開始"
+
+msgid "Start implementation"
+msgstr "Start implementation"
 
 #. placeholder {0}: datum.customers
 msgid "Start MRR ({0} customers)"
@@ -14828,6 +15045,9 @@ msgstr "チームメンバー"
 msgid "Team Members"
 msgstr "チームメンバー"
 
+msgid "Team name"
+msgstr "Team name"
+
 msgid "Team not found in this organization"
 msgstr "この組織にチームが見つかりません"
 
@@ -14944,6 +15164,12 @@ msgstr "利用規約"
 
 msgid "Terms of Service"
 msgstr "利用規約"
+
+msgid "Test again"
+msgstr "再テスト"
+
+msgid "Testing connection…"
+msgstr "接続をテストしています…"
 
 msgid "Text"
 msgstr "テキスト"
@@ -16319,6 +16545,9 @@ msgstr "使用量を取得できません。"
 msgid "Use “{0}”"
 msgstr "「{0}」を使用"
 
+msgid "Use a URL like https://dev.azure.com/organization."
+msgstr "https://dev.azure.com/organization のような URL を使用してください。"
+
 msgid "Use a workspace-relative path or an absolute folder."
 msgstr "ワークスペースからの相対パスか絶対パスのフォルダを指定します。"
 
@@ -16342,6 +16571,9 @@ msgstr "新規エージェントに使用"
 
 msgid "Use global default"
 msgstr "グローバルのデフォルトを使用"
+
+msgid "Use the Azure CLI session on this host for repositories, work items, and pipelines."
+msgstr "このホストの Azure CLI セッションを使用して、リポジトリ、作業項目、パイプラインにアクセスします。"
 
 msgid "Use the desktop app to start running parallel coding agents."
 msgstr "デスクトップアプリで並列コーディングエージェントの実行を始めましょう。"
@@ -16871,11 +17103,26 @@ msgstr "ラベルあり"
 msgid "with or without attachments"
 msgstr "添付の有無を問わず"
 
+msgid "Work"
+msgstr "Work"
+
 msgid "Work email"
 msgstr "勤務先のメールアドレス"
 
 msgid "Work from tickets"
 msgstr "チケットから作業を始める"
+
+msgid "Work item"
+msgstr "Work item"
+
+msgid "Work item not found"
+msgstr "Work item not found"
+
+msgid "Work item project"
+msgstr "Work item project"
+
+msgid "Work items stay in Azure DevOps. Superset only stores the extra workflow stages and workspace links on this host."
+msgstr "Work items stay in Azure DevOps. Superset only stores the extra workflow stages and workspace links on this host."
 
 msgid "Work with your agents across your favorite tools"
 msgstr "お気に入りのツールでエージェントと連携"
@@ -16991,6 +17238,9 @@ msgstr "ワークツリー"
 
 msgid "Worktree"
 msgstr "ワークツリー"
+
+msgid "Worktree created"
+msgstr "Worktree created"
 
 msgid "Worktree location"
 msgstr "ワークツリーの場所"
@@ -17118,6 +17368,9 @@ msgstr "バージョン {version} を閲覧中です（読み取り専用）"
 
 msgid "You can attach up to {MAX_ATTACHMENTS} files"
 msgstr "添付できるファイルは最大{MAX_ATTACHMENTS}件です"
+
+msgid "You can edit the suggested branch before creating it."
+msgstr "You can edit the suggested branch before creating it."
 
 #. placeholder {0}: COMPANY.DOMAIN
 msgid "You can't change this subscription in the app. Your organization's plan is managed by its owner at {0}."

@@ -13,6 +13,7 @@ import { usePullRequestDetail } from "renderer/routes/_authenticated/_dashboard/
 import { resolvePullRequestDetail } from "renderer/routes/_authenticated/_dashboard/pull-requests/utils/resolvePullRequestDetail";
 import { parsePositiveIntegerParam } from "renderer/routes/_authenticated/_dashboard/utils/parsePositiveIntegerParam";
 import { Route as PullRequestsLayoutRoute } from "../layout";
+import { AzurePullRequestDetail } from "./components/AzurePullRequestDetail";
 import { PullRequestCodeTab } from "./components/PullRequestCodeTab";
 
 export const Route = createFileRoute(
@@ -55,8 +56,18 @@ function PullRequestDetailPage() {
 		projectId,
 		hostUrl,
 		prNumber,
-		enabled: !!project,
+		enabled: !!project && search.provider !== "azure-devops",
 	});
+
+	if (search.provider === "azure-devops") {
+		return (
+			<AzurePullRequestDetail
+				projectId={projectId}
+				hostUrl={hostUrl}
+				pullRequestId={prNumber}
+			/>
+		);
+	}
 
 	// The list pane is always visible in the split view (or reachable via the
 	// list-collapse toggle in the shared layout), so there's no "back"

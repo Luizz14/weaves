@@ -68,7 +68,15 @@ describe("Tasks and pull requests navigation", () => {
 
 		expect(source).toContain('message: "Linear"');
 		expect(source).toContain('message: "GitHub issues"');
+		expect(source).toContain('message: "Azure DevOps"');
 		expect(source).not.toContain('"PRs"');
+	});
+
+	test("renders Azure DevOps as a contextual Tasks source", () => {
+		const source = readComponent("TasksView.tsx");
+
+		expect(source).toContain("<AzureDevOpsContent");
+		expect(source).toContain('typeTab === "azure"');
 	});
 
 	test("keeps pull request UI out of TasksView", () => {
@@ -88,6 +96,7 @@ describe("Tasks and pull requests navigation", () => {
 		expect(layoutSource).toContain("<PullRequestsView");
 		expect(viewSource).toContain("<PullRequestsTopBar");
 		expect(viewSource).toContain("<PullRequestsContent");
+		expect(viewSource).toContain("<AzurePullRequestsContent");
 	});
 
 	test("renders Tasks and Pull requests as separate left-rail destinations", () => {

@@ -98,6 +98,9 @@ export interface CloudShapedWorkspace {
 	type: "local" | "worktree" | "session";
 	createdByUserId: string | null;
 	taskId: string | null;
+	externalWorkItemProvider: string | null;
+	externalWorkItemId: string | null;
+	externalWorkItemUrl: string | null;
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -114,6 +117,9 @@ export function toWorkspaceSnapshot(
 		type: row.type,
 		worktreePath: row.worktreePath,
 		taskId: row.taskId,
+		externalWorkItemProvider: row.externalWorkItemProvider,
+		externalWorkItemId: row.externalWorkItemId,
+		externalWorkItemUrl: row.externalWorkItemUrl,
 		createdByUserId: row.createdByUserId,
 		createdAt: row.createdAt,
 		updatedAt: row.updatedAt || row.createdAt,
@@ -216,6 +222,9 @@ export function toCloudShape(
 		type: row.type,
 		createdByUserId: row.createdByUserId,
 		taskId: row.taskId,
+		externalWorkItemProvider: row.externalWorkItemProvider,
+		externalWorkItemId: row.externalWorkItemId,
+		externalWorkItemUrl: row.externalWorkItemUrl,
 		createdAt: new Date(row.createdAt),
 		updatedAt: new Date(row.updatedAt || row.createdAt),
 	};
@@ -237,6 +246,9 @@ export interface InsertLocalWorkspaceValues {
 	name: string;
 	type?: "local" | "worktree" | "session";
 	taskId?: string | null;
+	externalWorkItemProvider?: string | null;
+	externalWorkItemId?: string | null;
+	externalWorkItemUrl?: string | null;
 	createdByUserId?: string | null;
 	tags?: string[];
 }
@@ -262,6 +274,9 @@ export function insertLocalWorkspace(
 				name: values.name,
 				type: values.type ?? "worktree",
 				taskId: values.taskId ?? null,
+				externalWorkItemProvider: values.externalWorkItemProvider ?? null,
+				externalWorkItemId: values.externalWorkItemId ?? null,
+				externalWorkItemUrl: values.externalWorkItemUrl ?? null,
 				createdByUserId: values.createdByUserId ?? null,
 				createdAt: now,
 				updatedAt: now,
@@ -297,6 +312,9 @@ export interface UpdateLocalWorkspacePatch {
 	branch?: string;
 	worktreePath?: string;
 	taskId?: string | null;
+	externalWorkItemProvider?: string | null;
+	externalWorkItemId?: string | null;
+	externalWorkItemUrl?: string | null;
 	projectId?: string;
 	/**
 	 * Full replacement of the acting user's tag set (`ctx.userId`); already-

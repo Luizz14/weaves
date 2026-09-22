@@ -11,11 +11,13 @@ export type TasksSearch = {
 		| "canceled";
 	assignee?: string;
 	search?: string;
-	type?: "tasks" | "prs" | "issues";
+	type?: "tasks" | "prs" | "issues" | "azure";
 	project?: string;
 	projects?: string;
 	linearProject?: string;
 	state?: "open" | "all";
+	azureHost?: string;
+	iteration?: string;
 };
 
 export const Route = createFileRoute("/_authenticated/_dashboard/tasks")({
@@ -34,7 +36,7 @@ export const Route = createFileRoute("/_authenticated/_dashboard/tasks")({
 			: undefined,
 		assignee: typeof search.assignee === "string" ? search.assignee : undefined,
 		search: typeof search.search === "string" ? search.search : undefined,
-		type: ["tasks", "prs", "issues"].includes(search.type as string)
+		type: ["tasks", "prs", "issues", "azure"].includes(search.type as string)
 			? (search.type as TasksSearch["type"])
 			: undefined,
 		project: typeof search.project === "string" ? search.project : undefined,
@@ -46,6 +48,10 @@ export const Route = createFileRoute("/_authenticated/_dashboard/tasks")({
 		state: ["open", "all"].includes(search.state as string)
 			? (search.state as TasksSearch["state"])
 			: undefined,
+		azureHost:
+			typeof search.azureHost === "string" ? search.azureHost : undefined,
+		iteration:
+			typeof search.iteration === "string" ? search.iteration : undefined,
 	}),
 });
 

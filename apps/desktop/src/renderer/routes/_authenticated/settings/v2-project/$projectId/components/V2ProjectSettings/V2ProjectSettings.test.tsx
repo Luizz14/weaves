@@ -98,6 +98,26 @@ mock.module("../../../../components/HostSelect", () => ({
 mock.module("./components/BranchPrefixSection", () => ({
 	BranchPrefixSection: () => null,
 }));
+mock.module("./components/AzureDevOpsSection", () => ({
+	AzureDevOpsSection: ({
+		projectId,
+		hostUrl,
+		isHostOnline,
+	}: {
+		projectId: string;
+		hostUrl: string;
+		isHostOnline: boolean;
+	}) => (
+		<div
+			data-testid="azure-devops-section"
+			data-project-id={projectId}
+			data-host-url={hostUrl}
+			data-host-online={String(isHostOnline)}
+		>
+			azure-devops
+		</div>
+	),
+}));
 mock.module("./components/DeleteProjectSection", () => ({
 	DeleteProjectSection: () => null,
 }));
@@ -184,5 +204,16 @@ describe("V2ProjectSettings", () => {
 
 		expect(markup).toContain('data-testid="project-sparse-checkout"');
 		expect(markup).toContain('data-paths="apps/desktop"');
+	});
+
+	test("renders Azure DevOps configuration against the targeted host", () => {
+		const markup = renderToStaticMarkup(
+			<V2ProjectSettings projectId="project-1" hostId="host-1" />,
+		);
+
+		expect(markup).toContain('data-testid="azure-devops-section"');
+		expect(markup).toContain('data-project-id="project-1"');
+		expect(markup).toContain('data-host-url="http://127.0.0.1:7777"');
+		expect(markup).toContain('data-host-online="true"');
 	});
 });
