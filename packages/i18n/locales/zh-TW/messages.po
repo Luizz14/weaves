@@ -375,10 +375,6 @@ msgstr "{0}已離線"
 msgid "{0} is offline."
 msgstr "{0}已離線。"
 
-#. placeholder {0}: activeOrganization.name
-msgid "{0} is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "{0}使用的是免費版。Superset Mobile面向使用專業版的組織開放。"
-
 #. placeholder {0}: host?.name ?? t({ message: "This host" })
 #. placeholder {1}: hostCompatibility.hostVersion
 #. placeholder {2}: hostCompatibility.minVersion
@@ -1294,6 +1290,12 @@ msgstr "共享你的技能、外掛、MCP伺服器和設定的獨立配置檔案
 msgid "a teammate"
 msgstr "某位隊友"
 
+msgid "A token is already stored securely"
+msgstr "權杖已安全儲存"
+
+msgid "A token is stored in this host's secure credential store."
+msgstr "權杖已儲存在此主機的安全憑證存放區。"
+
 msgid "A unique identifier for your organization (auto-generated from name)"
 msgstr "組織的唯一識別符號（根據名稱自動生成）"
 
@@ -1418,6 +1420,9 @@ msgstr "新增"
 msgid "Add {0} account"
 msgstr "新增{0}帳戶"
 
+msgid "Add a developer name"
+msgstr "新增開發者名稱"
+
 msgid "Add a lifecycle run script in Project Settings or mark a terminal script as the workspace run."
 msgstr "在專案設定中新增生命週期執行指令碼，或將某個終端指令碼標記為工作區執行命令。"
 
@@ -1450,6 +1455,9 @@ msgstr "建立雲端工作區前，請先在設定中新增環境"
 
 msgid "Add any machine as a host. Workspaces keep running when your laptop sleeps, and you can check in from wherever you are."
 msgstr "把任意機器新增為主機。筆記本休眠時工作區照常執行，你在哪兒都能檢視進展。"
+
+msgid "Add at least one name before generating a build."
+msgstr "產生組建前請至少新增一個名稱。"
 
 msgid "Add attachment"
 msgstr "新增附件"
@@ -1526,6 +1534,12 @@ msgstr "給風險最高又沒測試的程式碼補上測試…"
 
 msgid "Add tests where they're missing"
 msgstr "給缺測試的地方補測試"
+
+msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
+msgstr "產生組建前，請在此專案的 Azure DevOps 設定中新增 Bitrise 權杖。"
+
+msgid "Add this build to mocks"
+msgstr "將此組建新增至 mocks"
 
 msgid "Add to Dictionary"
 msgstr "新增到詞典"
@@ -1745,6 +1759,9 @@ msgstr "全部負責人"
 msgid "All authors"
 msgstr "所有作者"
 
+msgid "All branches"
+msgstr "所有分支"
+
 msgid "All changes saved"
 msgstr "所有更改已儲存"
 
@@ -1886,6 +1903,12 @@ msgstr "已允許"
 
 msgid "Allowed for session"
 msgstr "本次會話內已允許"
+
+msgid "Alpha uses the configured version value for this project."
+msgstr "Alpha 使用此專案設定的版本值。"
+
+msgid "Alpha version value"
+msgstr "Alpha 版本值"
 
 msgid "Already have an account? <0>Sign in</0>"
 msgstr "已有帳戶？<0>登入</0>"
@@ -2483,6 +2506,9 @@ msgstr "Azure CLI on {targetName}"
 msgid "Azure DevOps"
 msgstr "Azure DevOps"
 
+msgid "Azure DevOps board configuration updated"
+msgstr "Azure DevOps 看板設定已更新"
+
 msgid "Azure DevOps board connected"
 msgstr "Azure DevOps board connected"
 
@@ -2661,6 +2687,12 @@ msgstr "二進位、大型或特殊檔案。請選擇一個版本來解決衝突
 
 msgid "Bio"
 msgstr "簡介"
+
+msgid "Bitrise build trigger token"
+msgstr "Bitrise 組建觸發權杖"
+
+msgid "Bitrise token removed"
+msgstr "已移除 Bitrise 權杖"
 
 msgid "Block"
 msgstr "方塊"
@@ -2843,8 +2875,20 @@ msgstr "已達預算上限"
 msgid "Bug"
 msgstr "蟲子"
 
+msgid "Build number"
+msgstr "組建編號"
+
+msgid "Build settings saved"
+msgstr "已儲存組建設定"
+
+msgid "Build started"
+msgstr "已啟動組建"
+
 msgid "Build the future of Superset in the cloud"
 msgstr "共創 Superset 的雲端未來"
+
+msgid "Build type"
+msgstr "組建類型"
 
 msgid "Building the last piece of software"
 msgstr "打造最後一款軟體"
@@ -3818,6 +3862,9 @@ msgstr "將 Superset 與 Cursor、Claude Code、Codex、Windsurf、Devin、GitHu
 msgid "Compared against the default style"
 msgstr "與預設樣式做了對比"
 
+msgid "Compared with first parent"
+msgstr "與第一個父提交比較"
+
 msgid "complete"
 msgstr "已結束"
 
@@ -3857,11 +3904,17 @@ msgstr "配置git分支和worktree行為"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "配置任務在Superset和Linear之間的同步方式。"
 
+msgid "Configure mobile build generation in this project's Azure DevOps settings."
+msgstr "請在此專案的 Azure DevOps 設定中設定行動組建產生功能。"
+
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "配置終端行為和可複用的終端指令碼"
 
 msgid "Configure the automation yourself"
 msgstr "自行設定自動化"
+
+msgid "Configure the Bitrise app and the developer names available for this project."
+msgstr "設定此專案可用的 Bitrise 應用程式與開發者名稱。"
 
 msgid "Configure the in-app browser"
 msgstr "配置應用程式內瀏覽器"
@@ -3955,6 +4008,9 @@ msgstr "連線Slack"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "連線Slack，直接在對話中管理任務。在任意頻道提及機器人或給它發私訊，即可建立和更新任務。"
+
+msgid "Connect to this host to configure mobile builds."
+msgstr "連線至此主機以設定行動組建。"
 
 msgid "Connect your Azure DevOps board"
 msgstr "Connect your Azure DevOps board"
@@ -4359,9 +4415,6 @@ msgstr "無法更改分享的版本"
 
 msgid "Could not change who can see this page"
 msgstr "無法更改誰可以檢視這個頁面"
-
-msgid "Could not check your plan. Check your connection and try again."
-msgstr "無法檢查您的方案。請檢查網路連線後再試一次。"
 
 msgid "Could not clear browsing data"
 msgstr "無法清除瀏覽資料"
@@ -4941,6 +4994,9 @@ msgstr "Ctrl+Shift+點選"
 msgid "Current"
 msgstr "目前"
 
+msgid "Current branch"
+msgstr "目前分支"
+
 msgid "Current level"
 msgstr "目前等級"
 
@@ -5059,6 +5115,9 @@ msgstr "控制台"
 
 msgid "Data display"
 msgstr "資料展示"
+
+msgid "Date"
+msgstr "日期"
 
 msgid "Date created"
 msgstr "建立日期"
@@ -5394,6 +5453,12 @@ msgstr "開發者：{author}"
 
 msgid "Developer"
 msgstr "開發者"
+
+msgid "Developer name"
+msgstr "開發者名稱"
+
+msgid "Developer names"
+msgstr "開發者名稱"
 
 msgid "Developers"
 msgstr "開發者"
@@ -5837,6 +5902,9 @@ msgstr "已獲得「{name}」×{tier}"
 msgid "Edit"
 msgstr "編輯"
 
+msgid "Edit Azure DevOps board configuration"
+msgstr "編輯 Azure DevOps 看板設定"
+
 msgid "Edit comment"
 msgstr "編輯評論"
 
@@ -5976,6 +6044,9 @@ msgstr "請輸入有效的重複規則。"
 
 msgid "Enter a value."
 msgstr "請輸入一個值。"
+
+msgid "Enter the Bitrise token"
+msgstr "輸入 Bitrise 權杖"
 
 msgid "Enter URL or search..."
 msgstr "輸入URL或搜尋..."
@@ -6531,6 +6602,9 @@ msgstr "移除失敗"
 msgid "Failed to remove Azure DevOps configuration"
 msgstr "無法移除 Azure DevOps 設定"
 
+msgid "Failed to remove Bitrise token"
+msgstr "無法移除 Bitrise 權杖"
+
 msgid "Failed to remove member"
 msgstr "移除成員失敗"
 
@@ -6618,6 +6692,9 @@ msgstr "儲存失敗"
 msgid "Failed to save Azure DevOps configuration"
 msgstr "無法儲存 Azure DevOps 設定"
 
+msgid "Failed to save build settings"
+msgstr "無法儲存組建設定"
+
 msgid "Failed to save installation. Please try again."
 msgstr "儲存安裝資訊失敗。請重試。"
 
@@ -6669,6 +6746,9 @@ msgstr "啟動代理程式失敗"
 
 msgid "Failed to start agent session."
 msgstr "啟動代理程式會話失敗。"
+
+msgid "Failed to start build"
+msgstr "無法啟動組建"
 
 msgid "Failed to stop workspace run command"
 msgstr "停止工作區執行命令失敗"
@@ -7199,8 +7279,14 @@ msgstr "生成一個金鑰，用於MCP伺服器。"
 msgid "Generate API key"
 msgstr "生成API金鑰"
 
+msgid "Generate build"
+msgstr "產生組建"
+
 msgid "Generate key"
 msgstr "生成金鑰"
+
+msgid "Generate mobile build"
+msgstr "產生行動組建"
 
 msgid "Generated file hidden"
 msgstr "已隱藏產生的檔案"
@@ -7258,6 +7344,9 @@ msgstr "Git與worktree"
 
 msgid "Git author name"
 msgstr "Git作者名"
+
+msgid "Git History"
+msgstr "Git 歷史"
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Git 整合失敗。請檢查儲存庫並重試，或取消本次嘗試。"
@@ -8737,6 +8826,9 @@ msgstr "正在載入更多..."
 msgid "Loading more…"
 msgstr "正在載入更多…"
 
+msgid "Loading project build settings…"
+msgstr "正在載入專案組建設定…"
+
 msgid "Loading project…"
 msgstr "正在載入專案…"
 
@@ -8775,9 +8867,6 @@ msgstr "正在載入終端指令碼..."
 
 msgid "Loading usage history…"
 msgstr "正在載入用量歷史…"
-
-msgid "Loading work item…"
-msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "正在載入工作區…"
@@ -9224,6 +9313,9 @@ msgstr "行動應用程式"
 
 msgid "Mobile App"
 msgstr "行動應用程式"
+
+msgid "Mobile build generation"
+msgstr "行動組建產生"
 
 msgid "model"
 msgstr "模型"
@@ -9745,6 +9837,9 @@ msgstr "沒有背景終端會話"
 msgid "No branches found"
 msgstr "未找到分支"
 
+msgid "No changed files"
+msgstr "沒有變更的檔案"
+
 msgid "No changed files."
 msgstr "沒有更改的檔案。"
 
@@ -9798,6 +9893,9 @@ msgstr "暫無評論。"
 
 msgid "No comments yet. Turn on comment mode and click anything on the page to start one."
 msgstr "還沒有評論。開啟評論模式，點擊頁面上的任何元素即可開始。"
+
+msgid "No commits found"
+msgstr "找不到提交"
 
 msgid "No commits on this branch yet."
 msgstr "此分支上還沒有提交。"
@@ -9915,6 +10013,9 @@ msgstr "沒有已知的建立者"
 
 msgid "No labels"
 msgstr "無標籤"
+
+msgid "No linked worktree"
+msgstr "沒有連結的 worktree"
 
 msgid "No live sessions"
 msgstr "沒有活動會話"
@@ -12385,6 +12486,12 @@ msgstr "移除{label}？"
 msgid "Remove attachment"
 msgstr "移除附件"
 
+msgid "Remove Bitrise token"
+msgstr "移除 Bitrise 權杖"
+
+msgid "Remove developer name"
+msgstr "移除開發者名稱"
+
 msgid "Remove from Queue"
 msgstr "移出佇列"
 
@@ -13181,6 +13288,12 @@ msgstr "儲存並測試"
 msgid "Save as environment"
 msgstr "儲存為環境"
 
+msgid "Save build settings"
+msgstr "儲存組建設定"
+
+msgid "Save changes"
+msgstr "儲存變更"
+
 msgid "Save edits"
 msgstr "儲存編輯"
 
@@ -13376,6 +13489,9 @@ msgstr "在{frameTitle}中搜尋…"
 msgid "Search issues..."
 msgstr "搜尋議題..."
 
+msgid "Search message or hash"
+msgstr "搜尋訊息或雜湊"
+
 msgid "Search pages"
 msgstr "搜尋頁面"
 
@@ -13526,6 +13642,9 @@ msgstr "選擇分支"
 msgid "Select a default preset"
 msgstr "選擇預設組合"
 
+msgid "Select a name"
+msgstr "選取名稱"
+
 msgid "Select a project"
 msgstr "請選擇專案"
 
@@ -13663,6 +13782,9 @@ msgstr "選擇團隊"
 
 msgid "Select terminal script directory"
 msgstr "選擇終端指令碼目錄"
+
+msgid "Select worktree"
+msgstr "選取 worktree"
 
 msgid "Select worktree location"
 msgstr "選擇worktree位置"
@@ -13862,6 +13984,9 @@ msgstr "初始化"
 
 msgid "Setup script"
 msgstr "設定指令碼"
+
+msgid "SHA"
+msgstr "SHA"
 
 msgid "shadcn/ui tooltip recipe"
 msgstr "shadcn/ui的tooltip方案"
@@ -14552,6 +14677,9 @@ msgstr "每週新增星標"
 msgid "Start a {harness} session"
 msgstr "開始一個{harness}會話"
 
+msgid "Start a Bitrise build from a worktree linked to this Azure work item."
+msgstr "從連結至此 Azure 工作項目的 worktree 啟動 Bitrise 組建。"
+
 msgid "Start a conversation to see messages here"
 msgstr "開始一段對話，訊息會顯示在這裡"
 
@@ -14575,6 +14703,9 @@ msgstr "啟動一個代理程式或終端，開始在此工作區中工作。"
 
 msgid "Start browsing"
 msgstr "開始瀏覽"
+
+msgid "Start build"
+msgstr "啟動組建"
 
 msgid "Start free. Upgrade when your team outgrows it. Enterprise plans for organizations with advanced security and compliance needs."
 msgstr "免費開始。團隊用不夠時再升級。企業方案面向有進階安全與合規需求的組織。"
@@ -14896,9 +15027,6 @@ msgstr "Superset記憶體"
 
 msgid "Superset memory · last 5 min"
 msgstr "Superset記憶體 · 最近5分鐘"
-
-msgid "Superset Mobile is part of Pro"
-msgstr "Superset Mobile屬於專業版"
 
 msgid "Superset Mobile runs agents on the computers you connect."
 msgstr "Superset Mobile在你連線的電腦上執行代理程式。"
@@ -15663,6 +15791,9 @@ msgstr "該團隊邀請已過期或不存在。請向團隊擁有者索取新連
 msgid "The title shows everywhere this page is listed and in its link preview."
 msgstr "標題會顯示在此頁面列出的所有位置以及連結預覽中。"
 
+msgid "The token is stored securely and is never displayed again."
+msgstr "權杖會安全儲存，之後不會再次顯示。"
+
 msgid "The web agents UI is a read-only preview for now."
 msgstr "網頁版代理程式介面目前是隻讀預覽。"
 
@@ -15856,9 +15987,6 @@ msgstr "此專案已停用該操作。"
 msgid "this organization"
 msgstr "此組織"
 
-msgid "This organization is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "此組織使用的是免費版。Superset Mobile面向使用專業版的組織開放。"
-
 msgid "This page could not be loaded"
 msgstr "無法載入這個頁面"
 
@@ -16022,6 +16150,9 @@ msgstr "此工作區的主機已離線"
 
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "此工作區的主機執行的主機服務版本低於此應用程式支援的版本。更新後即可重新連線；工作區及其檔案不受影響。"
+
+msgid "This worktree's host is unavailable."
+msgstr "此 worktree 的主機無法使用。"
 
 msgid "Thorough reasoning effort"
 msgstr "深入的推理投入"
@@ -16659,10 +16790,6 @@ msgstr "升級"
 msgid "Upgrade a dependency and fix what breaks…"
 msgstr "升級一個相依性，並修好被它弄壞的地方…"
 
-#. placeholder {0}: COMPANY.DOMAIN
-msgid "Upgrade on {0}"
-msgstr "在 {0} 升級"
-
 #. placeholder {0}: i18n._(plan.name)
 msgid "Upgrade to {0}"
 msgstr "升級到{0}"
@@ -16782,6 +16909,9 @@ msgstr "使用語音轉寫和按住說話功能。"
 msgid "Use your existing agent subscriptions and API keys. Superset never proxies model calls or locks your workflow to one provider."
 msgstr "使用你已有的代理程式訂閱和API金鑰。Superset從不代理模型呼叫，也不會把你的工作流鎖死在某一家提供商上。"
 
+msgid "Used as the version name for alpha builds. Leave blank when the workflow generates it automatically."
+msgstr "作為 Alpha 組建的版本名稱。若 workflow 會自動產生，請留空。"
+
 msgid "Used in URLs and APIs."
 msgstr "用於URL和API。"
 
@@ -16876,8 +17006,14 @@ msgstr "版本控制"
 msgid "Version history"
 msgstr "版本歷史"
 
+msgid "Version name"
+msgstr "版本名稱"
+
 msgid "Version not found"
 msgstr "未找到版本"
+
+msgid "Version number"
+msgstr "版本號碼"
 
 msgid "Version unknown"
 msgstr "版本未知"
@@ -17301,6 +17437,9 @@ msgstr "Work item"
 msgid "Work item not found"
 msgstr "Work item not found"
 
+msgid "Work item number from branch:"
+msgstr "分支中的工作項目編號："
+
 msgid "Work item project"
 msgstr "Work item project"
 
@@ -17424,6 +17563,12 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "worktree"
+
+msgid "Worktree and branch"
+msgstr "Worktree 與分支"
+
+msgid "Worktree branch"
+msgstr "Worktree 分支"
 
 msgid "Worktree created"
 msgstr "Worktree created"

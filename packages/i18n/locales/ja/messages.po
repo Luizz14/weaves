@@ -375,10 +375,6 @@ msgstr "{0}はオフラインです"
 msgid "{0} is offline."
 msgstr "{0}はオフラインです。"
 
-#. placeholder {0}: activeOrganization.name
-msgid "{0} is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "{0}はFreeプランです。Superset MobileはProプランの組織でご利用いただけます。"
-
 #. placeholder {0}: host?.name ?? t({ message: "This host" })
 #. placeholder {1}: hostCompatibility.hostVersion
 #. placeholder {2}: hostCompatibility.minVersion
@@ -1294,6 +1290,12 @@ msgstr "スキル、プラグイン、MCPサーバー、設定を共有する別
 msgid "a teammate"
 msgstr "チームメンバー"
 
+msgid "A token is already stored securely"
+msgstr "トークンはすでに安全に保存されています"
+
+msgid "A token is stored in this host's secure credential store."
+msgstr "トークンはこのホストの安全な認証情報ストアに保存されています。"
+
 msgid "A unique identifier for your organization (auto-generated from name)"
 msgstr "組織の一意の識別子(名前から自動生成)"
 
@@ -1418,6 +1420,9 @@ msgstr "追加"
 msgid "Add {0} account"
 msgstr "{0}アカウントを追加"
 
+msgid "Add a developer name"
+msgstr "開発者名を追加"
+
 msgid "Add a lifecycle run script in Project Settings or mark a terminal script as the workspace run."
 msgstr "プロジェクト設定でライフサイクルの実行スクリプトを追加するか、ターミナルスクリプトをワークスペース実行に指定してください。"
 
@@ -1450,6 +1455,9 @@ msgstr "クラウドワークスペースを作成する前に、設定で環境
 
 msgid "Add any machine as a host. Workspaces keep running when your laptop sleeps, and you can check in from wherever you are."
 msgstr "どんなマシンでもホストとして追加できます。ノートPCがスリープしてもワークスペースは動き続け、どこからでも様子を確認できます。"
+
+msgid "Add at least one name before generating a build."
+msgstr "ビルドを生成する前に名前を1つ以上追加してください。"
 
 msgid "Add attachment"
 msgstr "添付ファイルを追加"
@@ -1526,6 +1534,12 @@ msgstr "テストのない危険なコードにテストを追加…"
 
 msgid "Add tests where they're missing"
 msgstr "テストが不足している箇所に追加"
+
+msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
+msgstr "ビルドを生成する前に、このプロジェクトの Azure DevOps 設定に Bitrise トークンを追加してください。"
+
+msgid "Add this build to mocks"
+msgstr "このビルドをモックに追加"
 
 msgid "Add to Dictionary"
 msgstr "辞書に追加"
@@ -1745,6 +1759,9 @@ msgstr "すべての担当者"
 msgid "All authors"
 msgstr "すべての作成者"
 
+msgid "All branches"
+msgstr "すべてのブランチ"
+
 msgid "All changes saved"
 msgstr "すべての変更を保存しました"
 
@@ -1886,6 +1903,12 @@ msgstr "許可済み"
 
 msgid "Allowed for session"
 msgstr "セッション中は許可"
+
+msgid "Alpha uses the configured version value for this project."
+msgstr "Alpha はこのプロジェクトに設定されたバージョン値を使用します。"
+
+msgid "Alpha version value"
+msgstr "Alpha バージョン値"
 
 msgid "Already have an account? <0>Sign in</0>"
 msgstr "すでにアカウントをお持ちですか?<0>サインイン</0>"
@@ -2483,6 +2506,9 @@ msgstr "Azure CLI on {targetName}"
 msgid "Azure DevOps"
 msgstr "Azure DevOps"
 
+msgid "Azure DevOps board configuration updated"
+msgstr "Azure DevOps ボードの構成を更新しました"
+
 msgid "Azure DevOps board connected"
 msgstr "Azure DevOps board connected"
 
@@ -2661,6 +2687,12 @@ msgstr "バイナリ、大容量、または特殊ファイルです。解決に
 
 msgid "Bio"
 msgstr "自己紹介"
+
+msgid "Bitrise build trigger token"
+msgstr "Bitrise ビルドトリガートークン"
+
+msgid "Bitrise token removed"
+msgstr "Bitrise トークンを削除しました"
 
 msgid "Block"
 msgstr "ブロック"
@@ -2843,8 +2875,20 @@ msgstr "予算の上限に達しました"
 msgid "Bug"
 msgstr "バグ"
 
+msgid "Build number"
+msgstr "ビルド番号"
+
+msgid "Build settings saved"
+msgstr "ビルド設定を保存しました"
+
+msgid "Build started"
+msgstr "ビルドを開始しました"
+
 msgid "Build the future of Superset in the cloud"
 msgstr "クラウドでSupersetの未来を築く"
+
+msgid "Build type"
+msgstr "ビルド種別"
 
 msgid "Building the last piece of software"
 msgstr "最後のソフトウェアを作る"
@@ -3818,6 +3862,9 @@ msgstr "SupersetをCursor、Claude Code、Codex、Windsurf、Devin、GitHub Copi
 msgid "Compared against the default style"
 msgstr "デフォルトスタイルと比較"
 
+msgid "Compared with first parent"
+msgstr "最初の親と比較"
+
 msgid "complete"
 msgstr "終了"
 
@@ -3857,11 +3904,17 @@ msgstr "gitブランチとワークツリーの動作を設定"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "SupersetとLinearの間でタスクをどう同期するかを設定します。"
 
+msgid "Configure mobile build generation in this project's Azure DevOps settings."
+msgstr "このプロジェクトの Azure DevOps 設定でモバイルビルド生成を設定してください。"
+
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "ターミナルの動作と再利用可能なターミナルスクリプトを設定"
 
 msgid "Configure the automation yourself"
 msgstr "自分でオートメーションを設定する"
+
+msgid "Configure the Bitrise app and the developer names available for this project."
+msgstr "このプロジェクトで使用する Bitrise アプリと開発者名を設定してください。"
 
 msgid "Configure the in-app browser"
 msgstr "アプリ内ブラウザを設定"
@@ -3955,6 +4008,9 @@ msgstr "Slackを接続"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "Slackを接続して会話からタスクを管理します。任意のチャンネルでボットにメンションするか、ダイレクトメッセージを送ると、タスクの作成と更新ができます。"
+
+msgid "Connect to this host to configure mobile builds."
+msgstr "このホストに接続してモバイルビルドを設定してください。"
 
 msgid "Connect your Azure DevOps board"
 msgstr "Connect your Azure DevOps board"
@@ -4359,9 +4415,6 @@ msgstr "共有バージョンを変更できませんでした"
 
 msgid "Could not change who can see this page"
 msgstr "このページを見られる人を変更できませんでした"
-
-msgid "Could not check your plan. Check your connection and try again."
-msgstr "プランを確認できませんでした。接続を確認してもう一度お試しください。"
 
 msgid "Could not clear browsing data"
 msgstr "閲覧データを消去できませんでした"
@@ -4941,6 +4994,9 @@ msgstr "Ctrl+Shift+クリック"
 msgid "Current"
 msgstr "現在"
 
+msgid "Current branch"
+msgstr "現在のブランチ"
+
 msgid "Current level"
 msgstr "現在のレベル"
 
@@ -5059,6 +5115,9 @@ msgstr "ダッシュボード"
 
 msgid "Data display"
 msgstr "データ表示"
+
+msgid "Date"
+msgstr "日付"
 
 msgid "Date created"
 msgstr "作成日"
@@ -5394,6 +5453,12 @@ msgstr "開発元: {author}"
 
 msgid "Developer"
 msgstr "開発者"
+
+msgid "Developer name"
+msgstr "開発者名"
+
+msgid "Developer names"
+msgstr "開発者名"
 
 msgid "Developers"
 msgstr "開発者"
@@ -5837,6 +5902,9 @@ msgstr "「{name}」×{tier} を獲得"
 msgid "Edit"
 msgstr "編集"
 
+msgid "Edit Azure DevOps board configuration"
+msgstr "Azure DevOps ボードの構成を編集"
+
 msgid "Edit comment"
 msgstr "コメントを編集"
 
@@ -5976,6 +6044,9 @@ msgstr "有効な繰り返しルールを入力してください。"
 
 msgid "Enter a value."
 msgstr "値を入力してください。"
+
+msgid "Enter the Bitrise token"
+msgstr "Bitrise トークンを入力"
 
 msgid "Enter URL or search..."
 msgstr "URLを入力または検索..."
@@ -6531,6 +6602,9 @@ msgstr "削除に失敗しました"
 msgid "Failed to remove Azure DevOps configuration"
 msgstr "Azure DevOps の構成を削除できませんでした"
 
+msgid "Failed to remove Bitrise token"
+msgstr "Bitrise トークンを削除できませんでした"
+
 msgid "Failed to remove member"
 msgstr "メンバーの削除に失敗しました"
 
@@ -6618,6 +6692,9 @@ msgstr "保存に失敗しました"
 msgid "Failed to save Azure DevOps configuration"
 msgstr "Azure DevOps の構成を保存できませんでした"
 
+msgid "Failed to save build settings"
+msgstr "ビルド設定を保存できませんでした"
+
 msgid "Failed to save installation. Please try again."
 msgstr "インストール情報を保存できませんでした。もう一度お試しください。"
 
@@ -6669,6 +6746,9 @@ msgstr "エージェントの起動に失敗しました"
 
 msgid "Failed to start agent session."
 msgstr "エージェントセッションの開始に失敗しました。"
+
+msgid "Failed to start build"
+msgstr "ビルドを開始できませんでした"
 
 msgid "Failed to stop workspace run command"
 msgstr "ワークスペース実行コマンドの停止に失敗しました"
@@ -7199,8 +7279,14 @@ msgstr "MCPサーバーで使用するキーを生成します。"
 msgid "Generate API key"
 msgstr "APIキーを生成"
 
+msgid "Generate build"
+msgstr "ビルドを生成"
+
 msgid "Generate key"
 msgstr "キーを生成"
+
+msgid "Generate mobile build"
+msgstr "モバイルビルドを生成"
 
 msgid "Generated file hidden"
 msgstr "生成されたファイルは非表示です"
@@ -7258,6 +7344,9 @@ msgstr "Gitとワークツリー"
 
 msgid "Git author name"
 msgstr "Gitの作成者名"
+
+msgid "Git History"
+msgstr "Git 履歴"
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Git統合に失敗しました。リポジトリを確認して再試行するか、キャンセルしてください。"
@@ -8737,6 +8826,9 @@ msgstr "さらに読み込み中..."
 msgid "Loading more…"
 msgstr "さらに読み込み中…"
 
+msgid "Loading project build settings…"
+msgstr "プロジェクトのビルド設定を読み込み中…"
+
 msgid "Loading project…"
 msgstr "プロジェクトを読み込み中…"
 
@@ -8775,9 +8867,6 @@ msgstr "ターミナルスクリプトを読み込み中..."
 
 msgid "Loading usage history…"
 msgstr "使用履歴を読み込み中…"
-
-msgid "Loading work item…"
-msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "ワークスペースを読み込み中…"
@@ -9224,6 +9313,9 @@ msgstr "モバイルアプリ"
 
 msgid "Mobile App"
 msgstr "モバイルアプリ"
+
+msgid "Mobile build generation"
+msgstr "モバイルビルド生成"
 
 msgid "model"
 msgstr "モデル"
@@ -9745,6 +9837,9 @@ msgstr "バックグラウンドのターミナルセッションはありませ
 msgid "No branches found"
 msgstr "ブランチが見つかりません"
 
+msgid "No changed files"
+msgstr "変更されたファイルはありません"
+
 msgid "No changed files."
 msgstr "変更されたファイルはありません。"
 
@@ -9798,6 +9893,9 @@ msgstr "コメントはまだありません。"
 
 msgid "No comments yet. Turn on comment mode and click anything on the page to start one."
 msgstr "まだコメントはありません。コメントモードをオンにして、ページ上の要素をクリックすると開始できます。"
+
+msgid "No commits found"
+msgstr "コミットが見つかりません"
 
 msgid "No commits on this branch yet."
 msgstr "このブランチにはまだコミットがありません。"
@@ -9915,6 +10013,9 @@ msgstr "既知の作成者はいません"
 
 msgid "No labels"
 msgstr "ラベルなし"
+
+msgid "No linked worktree"
+msgstr "リンクされた worktree がありません"
 
 msgid "No live sessions"
 msgstr "ライブセッションはありません"
@@ -12385,6 +12486,12 @@ msgstr "{label}を削除しますか?"
 msgid "Remove attachment"
 msgstr "添付ファイルを削除"
 
+msgid "Remove Bitrise token"
+msgstr "Bitrise トークンを削除"
+
+msgid "Remove developer name"
+msgstr "開発者名を削除"
+
 msgid "Remove from Queue"
 msgstr "キューから削除"
 
@@ -13181,6 +13288,12 @@ msgstr "保存してテスト"
 msgid "Save as environment"
 msgstr "環境として保存"
 
+msgid "Save build settings"
+msgstr "ビルド設定を保存"
+
+msgid "Save changes"
+msgstr "変更を保存"
+
 msgid "Save edits"
 msgstr "編集を保存"
 
@@ -13376,6 +13489,9 @@ msgstr "{frameTitle}内を検索…"
 msgid "Search issues..."
 msgstr "Issueを検索..."
 
+msgid "Search message or hash"
+msgstr "メッセージまたはハッシュを検索"
+
 msgid "Search pages"
 msgstr "ページを検索"
 
@@ -13526,6 +13642,9 @@ msgstr "ブランチを選択"
 msgid "Select a default preset"
 msgstr "デフォルトのプリセットを選択"
 
+msgid "Select a name"
+msgstr "名前を選択"
+
 msgid "Select a project"
 msgstr "プロジェクトを選択してください"
 
@@ -13663,6 +13782,9 @@ msgstr "チームを選択"
 
 msgid "Select terminal script directory"
 msgstr "ターミナルスクリプトのディレクトリを選択"
+
+msgid "Select worktree"
+msgstr "worktree を選択"
 
 msgid "Select worktree location"
 msgstr "ワークツリーの場所を選択"
@@ -13862,6 +13984,9 @@ msgstr "セットアップ"
 
 msgid "Setup script"
 msgstr "セットアップスクリプト"
+
+msgid "SHA"
+msgstr "SHA"
 
 msgid "shadcn/ui tooltip recipe"
 msgstr "shadcn/uiのtooltipレシピ"
@@ -14552,6 +14677,9 @@ msgstr "1週間あたりの獲得スター"
 msgid "Start a {harness} session"
 msgstr "{harness}セッションを開始"
 
+msgid "Start a Bitrise build from a worktree linked to this Azure work item."
+msgstr "この Azure 作業項目にリンクされた worktree から Bitrise ビルドを開始します。"
+
 msgid "Start a conversation to see messages here"
 msgstr "会話を始めるとここにメッセージが表示されます"
 
@@ -14575,6 +14703,9 @@ msgstr "エージェントかターミナルを開始して、このワークス
 
 msgid "Start browsing"
 msgstr "ブラウジングを開始"
+
+msgid "Start build"
+msgstr "ビルドを開始"
 
 msgid "Start free. Upgrade when your team outgrows it. Enterprise plans for organizations with advanced security and compliance needs."
 msgstr "無料で始められます。チームの規模に合わなくなったらアップグレードを。高度なセキュリティとコンプライアンスが必要な組織にはEnterpriseプランがあります。"
@@ -14896,9 +15027,6 @@ msgstr "Supersetメモリ"
 
 msgid "Superset memory · last 5 min"
 msgstr "Supersetメモリ · 直近5分"
-
-msgid "Superset Mobile is part of Pro"
-msgstr "Superset MobileはProの一部です"
 
 msgid "Superset Mobile runs agents on the computers you connect."
 msgstr "Superset Mobileは、接続したコンピュータ上でエージェントを実行します。"
@@ -15663,6 +15791,9 @@ msgstr "チームの招待は期限切れか、存在しません。チームの
 msgid "The title shows everywhere this page is listed and in its link preview."
 msgstr "タイトルはこのページが一覧表示される場所すべてと、リンクのプレビューに表示されます。"
 
+msgid "The token is stored securely and is never displayed again."
+msgstr "トークンは安全に保存され、再表示されません。"
+
 msgid "The web agents UI is a read-only preview for now."
 msgstr "Web版のエージェントUIは現時点では読み取り専用のプレビューです。"
 
@@ -15856,9 +15987,6 @@ msgstr "このプロジェクトではこの操作が無効です。"
 msgid "this organization"
 msgstr "この組織"
 
-msgid "This organization is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "この組織はFreeプランです。Superset MobileはProプランの組織でご利用いただけます。"
-
 msgid "This page could not be loaded"
 msgstr "このページを読み込めませんでした"
 
@@ -16022,6 +16150,9 @@ msgstr "このワークスペースのホストはオフラインです"
 
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "このワークスペースのホストは、このアプリが対応するより古いホストサービスを実行しています。更新して再接続してください。ワークスペースとファイルはそのまま残ります。"
+
+msgid "This worktree's host is unavailable."
+msgstr "この worktree のホストは利用できません。"
 
 msgid "Thorough reasoning effort"
 msgstr "徹底的な推論"
@@ -16659,10 +16790,6 @@ msgstr "アップグレード"
 msgid "Upgrade a dependency and fix what breaks…"
 msgstr "依存関係を更新して壊れた箇所を直す…"
 
-#. placeholder {0}: COMPANY.DOMAIN
-msgid "Upgrade on {0}"
-msgstr "{0} でアップグレード"
-
 #. placeholder {0}: i18n._(plan.name)
 msgid "Upgrade to {0}"
 msgstr "{0}にアップグレード"
@@ -16782,6 +16909,9 @@ msgstr "音声文字起こしとプッシュトゥトーク機能を使用しま
 msgid "Use your existing agent subscriptions and API keys. Superset never proxies model calls or locks your workflow to one provider."
 msgstr "既存のエージェントの契約とAPIキーをそのまま使えます。Supersetがモデルの呼び出しを中継したり、ワークフローを特定のプロバイダーに縛ったりすることはありません。"
 
+msgid "Used as the version name for alpha builds. Leave blank when the workflow generates it automatically."
+msgstr "Alpha ビルドのバージョン名として使います。workflow が自動生成する場合は空欄にしてください。"
+
 msgid "Used in URLs and APIs."
 msgstr "URLとAPIで使用されます。"
 
@@ -16876,8 +17006,14 @@ msgstr "バージョン管理"
 msgid "Version history"
 msgstr "バージョン履歴"
 
+msgid "Version name"
+msgstr "バージョン名"
+
 msgid "Version not found"
 msgstr "バージョンが見つかりません"
+
+msgid "Version number"
+msgstr "バージョン番号"
 
 msgid "Version unknown"
 msgstr "バージョン不明"
@@ -17301,6 +17437,9 @@ msgstr "Work item"
 msgid "Work item not found"
 msgstr "Work item not found"
 
+msgid "Work item number from branch:"
+msgstr "ブランチ内の作業項目番号："
+
 msgid "Work item project"
 msgstr "Work item project"
 
@@ -17424,6 +17563,12 @@ msgstr "ワークツリー"
 
 msgid "Worktree"
 msgstr "ワークツリー"
+
+msgid "Worktree and branch"
+msgstr "worktree とブランチ"
+
+msgid "Worktree branch"
+msgstr "worktree ブランチ"
 
 msgid "Worktree created"
 msgstr "Worktree created"

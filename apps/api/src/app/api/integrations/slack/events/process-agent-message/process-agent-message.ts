@@ -1,11 +1,8 @@
-import { db } from "@superset/db/client";
-import { subscriptions } from "@superset/db/schema";
 import {
 	accountConnection,
 	connectionBotToken,
 } from "@superset/trpc/connectors";
 import { Client as QStash } from "@upstash/qstash";
-import { and, eq } from "drizzle-orm";
 import { env } from "@/env";
 import { posthog } from "@/lib/analytics";
 import { findSlackUserLink } from "../../lib/find-slack-user-link";
@@ -126,60 +123,13 @@ export async function processAgentMessage({
 	const botToken = await connectionBotToken(connection);
 	const slack = createSlackClient(botToken);
 
-	const [slackUserLink, activeSubscription] = await Promise.all([
-		event.user
-			? findSlackUserLink({
-					organizationId: connection.organizationId,
-					slackUserId: event.user,
-					teamId,
-				})
-			: undefined,
-		db.query.subscriptions.findFirst({
-			where: and(
-				eq(subscriptions.referenceId, connection.organizationId),
-				eq(subscriptions.status, "active"),
-			),
-			columns: { id: true },
-		}),
-	]);
-
-	if (!activeSubscription) {
-		posthog.capture({
-			distinctId: event.user,
-			event: "slack_gated",
-			properties: {
-				reason: "no_subscription",
-				team_id: teamId,
-				$process_person_profile: false,
-			},
-		});
-		await slack.chat.postMessage({
-			channel: event.channel,
-			thread_ts: event.thread_ts ?? event.ts,
-			text: "The Superset Slack integration requires a Pro plan.",
-			blocks: [
-				{
-					type: "section",
-					text: {
-						type: "mrkdwn",
-						text: "The Superset Slack integration requires a Pro plan.",
-					},
-				},
-				{
-					type: "actions",
-					elements: [
-						{
-							type: "button",
-							text: { type: "plain_text", text: "Upgrade to Pro", emoji: true },
-							url: "https://app.superset.sh/settings/billing",
-							style: "primary",
-						},
-					],
-				},
-			],
-		});
-		return;
-	}
+	const slackUserLink = event.user
+		? await findSlackUserLink({
+				organizationId: connection.organizationId,
+				slackUserId: event.user,
+				teamId,
+			})
+		: undefined;
 
 	if (!slackUserLink) {
 		if (!event.user) return;

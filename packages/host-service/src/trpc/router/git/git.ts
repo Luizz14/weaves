@@ -23,6 +23,7 @@ import {
 import { protectedProcedure, queryProcedure, router } from "../../index";
 import { rethrowWorkerTaskAbort } from "../../worker-abort";
 import { resolveGithubRepo } from "../workspace-creation/shared/project-helpers";
+import { historyRouter } from "./history";
 import type {
 	ChangedFile,
 	CheckConclusionState,
@@ -244,6 +245,7 @@ function resolveStagingTargetPaths(
 }
 
 export const gitRouter = router({
+	history: historyRouter,
 	listBranches: queryProcedure
 		.input(z.object({ workspaceId: z.string() }))
 		.query(async ({ ctx, input }) => {

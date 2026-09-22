@@ -15,6 +15,7 @@ import {
 	Circle,
 	FileText,
 	GitCompareArrows,
+	GitGraph,
 	GitPullRequest,
 	Globe,
 	MessageSquare,
@@ -58,6 +59,7 @@ import {
 	type CommentPaneData,
 	type DevtoolsPaneData,
 	type FilePaneData,
+	type GitFilePaneData,
 	type PagePaneData,
 	type PaneViewerData,
 	type PullRequestPaneData,
@@ -69,6 +71,7 @@ import {
 	findTerminalPaneLocation,
 	focusOrAddTerminalPane,
 } from "../../utils/focusTerminalPane";
+import { openGitFilePaneInStore } from "../../utils/openGitFilePaneInStore";
 import { openSubagentPaneInStore } from "../../utils/openSubagentPaneInStore";
 import type { OpenReviewDiff } from "../useReviewCommentNavigation";
 import type { TerminalLauncher } from "../useV2TerminalLauncher";
@@ -83,6 +86,8 @@ import { DiffPane } from "./components/DiffPane";
 import { DiffPaneHeaderExtras } from "./components/DiffPane/components/DiffPaneHeaderExtras";
 import { FilePane } from "./components/FilePane";
 import { FilePaneHeaderExtras } from "./components/FilePane/components/FilePaneHeaderExtras";
+import { GitFilePane } from "./components/GitFilePane";
+import { GitHistoryPane } from "./components/GitHistoryPane";
 import { PagePane } from "./components/PagePane";
 import { PagePaneHeaderExtras } from "./components/PagePaneHeaderExtras";
 import { PagePaneTitle } from "./components/PagePaneTitle";
@@ -378,6 +383,32 @@ export function usePaneRegistry({
 								}
 							: d,
 					),
+			},
+			"git-history": {
+				getIcon: () => <GitGraph className="size-3.5" />,
+				getTitle: () => t({ message: "Git History" }),
+				renderPane: (ctx) => (
+					<GitHistoryPane
+						workspaceId={workspaceId}
+						onOpenFile={(file) => openGitFilePaneInStore(ctx.store, file)}
+					/>
+				),
+			},
+			"git-file": {
+				getIcon: (ctx) => (
+					<FileIcon
+						fileName={getFileName((ctx.pane.data as GitFilePaneData).filePath)}
+						className="size-4"
+					/>
+				),
+				getTitle: (pane) => {
+					const data = pane.data as GitFilePaneData;
+					return `${getFileName(data.filePath)} · ${(data.side === "old" ? data.fromHash : data.commitHash).slice(0, 7)}`;
+				},
+				renderPane: (ctx) => (
+					<GitFilePane context={ctx} workspaceId={workspaceId} />
+				),
+				onHeaderClick: (ctx) => ctx.actions.pin(),
 			},
 			diff: {
 				getIcon: () => <GitCompareArrows className="size-3.5" />,

@@ -11,6 +11,7 @@ import { LuLoaderCircle, LuRefreshCw, LuSave, LuTrash2 } from "react-icons/lu";
 import { VscAzureDevops } from "react-icons/vsc";
 import { getHostServiceClientByUrl } from "renderer/lib/host-service-client";
 import { SettingsSection } from "renderer/routes/_authenticated/settings/components/SettingsSection";
+import { AzureBuildConfiguration } from "./components/AzureBuildConfiguration";
 import { AzureDevOpsStatusIcon } from "./components/AzureDevOpsStatusIcon";
 import type { AzureDevOpsDiagnosticStatus } from "./types";
 
@@ -411,6 +412,11 @@ export function AzureDevOpsSection({
 					</div>
 				</div>
 			</div>
+			<AzureBuildConfiguration
+				projectId={projectId}
+				hostUrl={hostUrl}
+				isHostOnline={isHostOnline}
+			/>
 		</SettingsSection>
 	);
 }

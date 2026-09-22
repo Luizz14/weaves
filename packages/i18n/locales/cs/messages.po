@@ -375,10 +375,6 @@ msgstr "{0} je offline"
 msgid "{0} is offline."
 msgstr "{0} je offline."
 
-#. placeholder {0}: activeOrganization.name
-msgid "{0} is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "{0} má tarif Free. Superset Mobile je dostupný pro organizace s tarifem Pro."
-
 #. placeholder {0}: host?.name ?? t({ message: "This host" })
 #. placeholder {1}: hostCompatibility.hostVersion
 #. placeholder {2}: hostCompatibility.minVersion
@@ -1294,6 +1290,12 @@ msgstr "Samostatný profil, který sdílí vaše skills, pluginy, MCP servery i 
 msgid "a teammate"
 msgstr "kolega"
 
+msgid "A token is already stored securely"
+msgstr "Token je již bezpečně uložen"
+
+msgid "A token is stored in this host's secure credential store."
+msgstr "Token je uložen v zabezpečeném úložišti přihlašovacích údajů tohoto hostitele."
+
 msgid "A unique identifier for your organization (auto-generated from name)"
 msgstr "Jedinečný identifikátor vaší organizace (vygenerovaný z názvu)"
 
@@ -1418,6 +1420,9 @@ msgstr "Přidat"
 msgid "Add {0} account"
 msgstr "Přidat účet {0}"
 
+msgid "Add a developer name"
+msgstr "Přidat jméno vývojáře"
+
 msgid "Add a lifecycle run script in Project Settings or mark a terminal script as the workspace run."
 msgstr "Přidejte lifecycle run skript v nastavení projektu, nebo označte terminálový skript jako spuštění pracovního prostoru."
 
@@ -1450,6 +1455,9 @@ msgstr "Před vytvořením cloudového pracovního prostoru přidejte prostřed�
 
 msgid "Add any machine as a host. Workspaces keep running when your laptop sleeps, and you can check in from wherever you are."
 msgstr "Přidejte jako hosta libovolný počítač. Pracovní prostory běží dál, i když váš laptop usne, a vy se můžete kdykoli podívat, jak si vedou."
+
+msgid "Add at least one name before generating a build."
+msgstr "Před vytvořením sestavení přidejte alespoň jedno jméno."
 
 msgid "Add attachment"
 msgstr "Přidat přílohu"
@@ -1526,6 +1534,12 @@ msgstr "Doplň testy pro nejrizikovější netestovaný kód…"
 
 msgid "Add tests where they're missing"
 msgstr "Doplnit testy tam, kde chybí"
+
+msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
+msgstr "Před vytvořením sestavení přidejte token Bitrise v nastavení Azure DevOps tohoto projektu."
+
+msgid "Add this build to mocks"
+msgstr "Přidat toto sestavení do mocků"
 
 msgid "Add to Dictionary"
 msgstr "Přidat do slovníku"
@@ -1745,6 +1759,9 @@ msgstr "Všichni řešitelé"
 msgid "All authors"
 msgstr "Všichni autoři"
 
+msgid "All branches"
+msgstr "Všechny větve"
+
 msgid "All changes saved"
 msgstr "Všechny změny uloženy"
 
@@ -1886,6 +1903,12 @@ msgstr "Povoleno"
 
 msgid "Allowed for session"
 msgstr "Povoleno pro relaci"
+
+msgid "Alpha uses the configured version value for this project."
+msgstr "Alpha používá nakonfigurovanou hodnotu verze tohoto projektu."
+
+msgid "Alpha version value"
+msgstr "Hodnota verze Alpha"
 
 msgid "Already have an account? <0>Sign in</0>"
 msgstr "Už máte účet? <0>Přihlaste se</0>"
@@ -2483,6 +2506,9 @@ msgstr "Azure CLI on {targetName}"
 msgid "Azure DevOps"
 msgstr "Azure DevOps"
 
+msgid "Azure DevOps board configuration updated"
+msgstr "Konfigurace nástěnky Azure DevOps byla aktualizována"
+
 msgid "Azure DevOps board connected"
 msgstr "Azure DevOps board connected"
 
@@ -2661,6 +2687,12 @@ msgstr "Binární, velký nebo speciální soubor. Vyberte verzi pro vyřešení
 
 msgid "Bio"
 msgstr "O mně"
+
+msgid "Bitrise build trigger token"
+msgstr "Token pro spuštění sestavení Bitrise"
+
+msgid "Bitrise token removed"
+msgstr "Token Bitrise byl odebrán"
 
 msgid "Block"
 msgstr "Blok"
@@ -2843,8 +2875,20 @@ msgstr "Dosažen limit rozpočtu"
 msgid "Bug"
 msgstr "Brouk"
 
+msgid "Build number"
+msgstr "Číslo sestavení"
+
+msgid "Build settings saved"
+msgstr "Nastavení sestavení bylo uloženo"
+
+msgid "Build started"
+msgstr "Sestavení bylo spuštěno"
+
 msgid "Build the future of Superset in the cloud"
 msgstr "Tvořte budoucnost Superset v cloudu"
+
+msgid "Build type"
+msgstr "Typ sestavení"
 
 msgid "Building the last piece of software"
 msgstr "Stavíme poslední kus softwaru"
@@ -3818,6 +3862,9 @@ msgstr "Porovnejte Superset s Cursor, Claude Code, Codex, Windsurf, Devin, GitHu
 msgid "Compared against the default style"
 msgstr "Porovnáno s výchozím stylem"
 
+msgid "Compared with first parent"
+msgstr "Porovnáno s prvním rodičem"
+
 msgid "complete"
 msgstr "dokončeno"
 
@@ -3857,11 +3904,17 @@ msgstr "Nastavte chování git větví a worktree"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Nastavte, jak se úkoly synchronizují mezi Superset a Linearem."
 
+msgid "Configure mobile build generation in this project's Azure DevOps settings."
+msgstr "Nakonfigurujte generování mobilních sestavení v nastavení Azure DevOps tohoto projektu."
+
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "Nastavte chování terminálu a znovupoužitelné terminálové skripty"
 
 msgid "Configure the automation yourself"
 msgstr "Nastavte automatizaci sami"
+
+msgid "Configure the Bitrise app and the developer names available for this project."
+msgstr "Nakonfigurujte aplikaci Bitrise a dostupná jména vývojářů pro tento projekt."
 
 msgid "Configure the in-app browser"
 msgstr "Nastavte vestavěný prohlížeč"
@@ -3955,6 +4008,9 @@ msgstr "Připojit Slack"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "Připojte Slack a spravujte úkoly přímo z konverzací. Zmiňte bota v libovolném kanálu nebo mu pošlete přímou zprávu a úkoly vytvářejte i aktualizujte."
+
+msgid "Connect to this host to configure mobile builds."
+msgstr "Připojte se k tomuto hostiteli a nakonfigurujte mobilní sestavení."
 
 msgid "Connect your Azure DevOps board"
 msgstr "Connect your Azure DevOps board"
@@ -4359,9 +4415,6 @@ msgstr "Sdílenou verzi se nepodařilo změnit"
 
 msgid "Could not change who can see this page"
 msgstr "Nepodařilo se změnit, kdo tuto stránku vidí"
-
-msgid "Could not check your plan. Check your connection and try again."
-msgstr "Nepodařilo se ověřit váš plán. Zkontrolujte připojení a zkuste to znovu."
 
 msgid "Could not clear browsing data"
 msgstr "Data prohlížení se nepodařilo vymazat"
@@ -4941,6 +4994,9 @@ msgstr "Ctrl+Shift+kliknutí"
 msgid "Current"
 msgstr "Aktuální"
 
+msgid "Current branch"
+msgstr "Aktuální větev"
+
 msgid "Current level"
 msgstr "Aktuální úroveň"
 
@@ -5059,6 +5115,9 @@ msgstr "Dashboard"
 
 msgid "Data display"
 msgstr "Zobrazení dat"
+
+msgid "Date"
+msgstr "Datum"
 
 msgid "Date created"
 msgstr "Datum vytvoření"
@@ -5394,6 +5453,12 @@ msgstr "Vyvinul {author}"
 
 msgid "Developer"
 msgstr "Vývojář"
+
+msgid "Developer name"
+msgstr "Jméno vývojáře"
+
+msgid "Developer names"
+msgstr "Jména vývojářů"
 
 msgid "Developers"
 msgstr "Vývojáři"
@@ -5837,6 +5902,9 @@ msgstr "Získáno: {name} ×{tier}"
 msgid "Edit"
 msgstr "Upravit"
 
+msgid "Edit Azure DevOps board configuration"
+msgstr "Upravit konfiguraci nástěnky Azure DevOps"
+
 msgid "Edit comment"
 msgstr "Upravit komentář"
 
@@ -5976,6 +6044,9 @@ msgstr "Zadejte platné pravidlo opakování."
 
 msgid "Enter a value."
 msgstr "Zadejte hodnotu."
+
+msgid "Enter the Bitrise token"
+msgstr "Zadejte token Bitrise"
 
 msgid "Enter URL or search..."
 msgstr "Zadejte URL nebo hledejte..."
@@ -6531,6 +6602,9 @@ msgstr "Nepodařilo se odebrat"
 msgid "Failed to remove Azure DevOps configuration"
 msgstr "Konfiguraci Azure DevOps se nepodařilo odebrat"
 
+msgid "Failed to remove Bitrise token"
+msgstr "Token Bitrise se nepodařilo odebrat"
+
 msgid "Failed to remove member"
 msgstr "Nepodařilo se odebrat člena"
 
@@ -6618,6 +6692,9 @@ msgstr "Nepodařilo se uložit"
 msgid "Failed to save Azure DevOps configuration"
 msgstr "Konfiguraci Azure DevOps se nepodařilo uložit"
 
+msgid "Failed to save build settings"
+msgstr "Nastavení sestavení se nepodařilo uložit"
+
 msgid "Failed to save installation. Please try again."
 msgstr "Nepodařilo se uložit instalaci. Zkuste to prosím znovu."
 
@@ -6669,6 +6746,9 @@ msgstr "Nepodařilo se spustit agenta"
 
 msgid "Failed to start agent session."
 msgstr "Nepodařilo se spustit relaci agenta."
+
+msgid "Failed to start build"
+msgstr "Sestavení se nepodařilo spustit"
 
 msgid "Failed to stop workspace run command"
 msgstr "Nepodařilo se zastavit spouštěcí příkaz pracovního prostoru"
@@ -7199,8 +7279,14 @@ msgstr "Vygenerujte klíč pro použití s MCP servery."
 msgid "Generate API key"
 msgstr "Vygenerovat API klíč"
 
+msgid "Generate build"
+msgstr "Generovat sestavení"
+
 msgid "Generate key"
 msgstr "Vygenerovat klíč"
+
+msgid "Generate mobile build"
+msgstr "Generovat mobilní sestavení"
 
 msgid "Generated file hidden"
 msgstr "Vygenerovaný soubor je skrytý"
@@ -7258,6 +7344,9 @@ msgstr "Git a worktree"
 
 msgid "Git author name"
 msgstr "Jméno autora v Gitu"
+
+msgid "Git History"
+msgstr "Historie Gitu"
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Integrace Git selhala. Zkontrolujte repozitář a zkuste to znovu nebo pokus zrušte."
@@ -8737,6 +8826,9 @@ msgstr "Načítám další..."
 msgid "Loading more…"
 msgstr "Načítám další…"
 
+msgid "Loading project build settings…"
+msgstr "Načítání nastavení sestavení projektu…"
+
 msgid "Loading project…"
 msgstr "Načítám projekt…"
 
@@ -8775,9 +8867,6 @@ msgstr "Načítám terminálové skripty..."
 
 msgid "Loading usage history…"
 msgstr "Načítám historii využití…"
-
-msgid "Loading work item…"
-msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "Načítání pracovních prostorů…"
@@ -9224,6 +9313,9 @@ msgstr "Mobilní aplikace"
 
 msgid "Mobile App"
 msgstr "Mobilní aplikace"
+
+msgid "Mobile build generation"
+msgstr "Generování mobilních sestavení"
 
 msgid "model"
 msgstr "model"
@@ -9745,6 +9837,9 @@ msgstr "Žádné relace terminálu na pozadí"
 msgid "No branches found"
 msgstr "Nenalezeny žádné větve"
 
+msgid "No changed files"
+msgstr "Žádné změněné soubory"
+
 msgid "No changed files."
 msgstr "Žádné změněné soubory."
 
@@ -9798,6 +9893,9 @@ msgstr "Zatím žádné komentáře."
 
 msgid "No comments yet. Turn on comment mode and click anything on the page to start one."
 msgstr "Zatím žádné komentáře. Zapněte režim komentářů a kliknutím na cokoli na stránce začněte."
+
+msgid "No commits found"
+msgstr "Nenalezeny žádné commity"
 
 msgid "No commits on this branch yet."
 msgstr "V této větvi zatím nejsou žádné commity."
@@ -9915,6 +10013,9 @@ msgstr "Žádní známí autoři"
 
 msgid "No labels"
 msgstr "Žádné štítky"
+
+msgid "No linked worktree"
+msgstr "Žádný propojený worktree"
 
 msgid "No live sessions"
 msgstr "Žádné živé relace"
@@ -12385,6 +12486,12 @@ msgstr "Odebrat {label}?"
 msgid "Remove attachment"
 msgstr "Odebrat přílohu"
 
+msgid "Remove Bitrise token"
+msgstr "Odebrat token Bitrise"
+
+msgid "Remove developer name"
+msgstr "Odebrat jméno vývojáře"
+
 msgid "Remove from Queue"
 msgstr "Odebrat z fronty"
 
@@ -13181,6 +13288,12 @@ msgstr "Uložit a otestovat"
 msgid "Save as environment"
 msgstr "Uložit jako prostředí"
 
+msgid "Save build settings"
+msgstr "Uložit nastavení sestavení"
+
+msgid "Save changes"
+msgstr "Uložit změny"
+
 msgid "Save edits"
 msgstr "Uložit úpravy"
 
@@ -13376,6 +13489,9 @@ msgstr "Hledat v {frameTitle}…"
 msgid "Search issues..."
 msgstr "Hledat issues..."
 
+msgid "Search message or hash"
+msgstr "Hledat zprávu nebo hash"
+
 msgid "Search pages"
 msgstr "Hledat stránky"
 
@@ -13526,6 +13642,9 @@ msgstr "Vyberte větev"
 msgid "Select a default preset"
 msgstr "Vyberte výchozí předvolbu"
 
+msgid "Select a name"
+msgstr "Vyberte jméno"
+
 msgid "Select a project"
 msgstr "Vyberte projekt"
 
@@ -13663,6 +13782,9 @@ msgstr "Vyberte týmy"
 
 msgid "Select terminal script directory"
 msgstr "Vyberte adresář terminálového skriptu"
+
+msgid "Select worktree"
+msgstr "Vyberte worktree"
 
 msgid "Select worktree location"
 msgstr "Vyberte umístění worktree"
@@ -13862,6 +13984,9 @@ msgstr "Setup"
 
 msgid "Setup script"
 msgstr "Setup skript"
+
+msgid "SHA"
+msgstr "SHA"
 
 msgid "shadcn/ui tooltip recipe"
 msgstr "recept na tooltip v shadcn/ui"
@@ -14552,6 +14677,9 @@ msgstr "Získané hvězdy za týden"
 msgid "Start a {harness} session"
 msgstr "Spustit relaci {harness}"
 
+msgid "Start a Bitrise build from a worktree linked to this Azure work item."
+msgstr "Spustit sestavení Bitrise z worktree propojeného s touto pracovní položkou Azure."
+
 msgid "Start a conversation to see messages here"
 msgstr "Začněte konverzaci a zprávy se objeví tady"
 
@@ -14575,6 +14703,9 @@ msgstr "Spusťte agenta nebo terminál a začněte v tomto pracovním prostoru p
 
 msgid "Start browsing"
 msgstr "Začněte prohlížet"
+
+msgid "Start build"
+msgstr "Spustit sestavení"
 
 msgid "Start free. Upgrade when your team outgrows it. Enterprise plans for organizations with advanced security and compliance needs."
 msgstr "Začněte zdarma. Až vám to jako týmu přestane stačit, přejděte výš. Pro organizace s náročnými požadavky na bezpečnost a compliance máme tarify Enterprise."
@@ -14896,9 +15027,6 @@ msgstr "Paměť Superset"
 
 msgid "Superset memory · last 5 min"
 msgstr "Paměť Superset · posledních 5 min"
-
-msgid "Superset Mobile is part of Pro"
-msgstr "Superset Mobile je součástí tarifu Pro"
 
 msgid "Superset Mobile runs agents on the computers you connect."
 msgstr "Superset Mobile spouští agenty na počítačích, které připojíte."
@@ -15663,6 +15791,9 @@ msgstr "Pozvánka do týmu buď vypršela, nebo neexistuje. Vyžádejte si od vl
 msgid "The title shows everywhere this page is listed and in its link preview."
 msgstr "Název se zobrazuje všude, kde je tato stránka uvedena, a v náhledu odkazu."
 
+msgid "The token is stored securely and is never displayed again."
+msgstr "Token je bezpečně uložen a už se znovu nezobrazí."
+
 msgid "The web agents UI is a read-only preview for now."
 msgstr "Webové rozhraní agentů je zatím náhled jen pro čtení."
 
@@ -15856,9 +15987,6 @@ msgstr "Tato operace je pro tento projekt vypnuta."
 msgid "this organization"
 msgstr "této organizace"
 
-msgid "This organization is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "Tato organizace má tarif Free. Superset Mobile je dostupný pro organizace s tarifem Pro."
-
 msgid "This page could not be loaded"
 msgstr "Tuto stránku se nepodařilo načíst"
 
@@ -16022,6 +16150,9 @@ msgstr "Host tohoto pracovního prostoru je offline"
 
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "Hostitel tohoto pracovního prostoru používá starší službu hostitele, než tato aplikace podporuje. Aktualizujte ji pro opětovné připojení; pracovní prostor a jeho soubory zůstanou nedotčené."
+
+msgid "This worktree's host is unavailable."
+msgstr "Hostitel tohoto worktree není dostupný."
 
 msgid "Thorough reasoning effort"
 msgstr "Důkladné uvažování"
@@ -16659,10 +16790,6 @@ msgstr "Přejít výš"
 msgid "Upgrade a dependency and fix what breaks…"
 msgstr "Aktualizuj závislost a oprav, co se rozbije…"
 
-#. placeholder {0}: COMPANY.DOMAIN
-msgid "Upgrade on {0}"
-msgstr "Přejít na Pro na {0}"
-
 #. placeholder {0}: i18n._(plan.name)
 msgid "Upgrade to {0}"
 msgstr "Přejít na {0}"
@@ -16782,6 +16909,9 @@ msgstr "Používat přepis řeči a funkce push-to-talk."
 msgid "Use your existing agent subscriptions and API keys. Superset never proxies model calls or locks your workflow to one provider."
 msgstr "Používejte svá stávající předplatná agentů a API klíče. Superset nikdy nepřeposílá volání modelů ani neváže vaše workflow na jednoho poskytovatele."
 
+msgid "Used as the version name for alpha builds. Leave blank when the workflow generates it automatically."
+msgstr "Použije se jako název verze pro sestavení Alpha. Pokud jej workflow generuje automaticky, nechte pole prázdné."
+
 msgid "Used in URLs and APIs."
 msgstr "Používá se v URL a API."
 
@@ -16876,8 +17006,14 @@ msgstr "Správa verzí"
 msgid "Version history"
 msgstr "Historie verzí"
 
+msgid "Version name"
+msgstr "Název verze"
+
 msgid "Version not found"
 msgstr "Verze nenalezena"
+
+msgid "Version number"
+msgstr "Číslo verze"
 
 msgid "Version unknown"
 msgstr "Neznámá verze"
@@ -17301,6 +17437,9 @@ msgstr "Work item"
 msgid "Work item not found"
 msgstr "Work item not found"
 
+msgid "Work item number from branch:"
+msgstr "Číslo pracovní položky z větve:"
+
 msgid "Work item project"
 msgstr "Work item project"
 
@@ -17424,6 +17563,12 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
+
+msgid "Worktree and branch"
+msgstr "Worktree a větev"
+
+msgid "Worktree branch"
+msgstr "Větev worktree"
 
 msgid "Worktree created"
 msgstr "Worktree created"

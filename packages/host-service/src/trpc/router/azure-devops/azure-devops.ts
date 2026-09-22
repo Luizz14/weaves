@@ -5,6 +5,7 @@ import { z } from "zod";
 import {
 	type AzureDevOpsWorkItemStage,
 	azureDevOpsBoardConfigs,
+	azureDevOpsBuildConfigs,
 	azureDevOpsProjectConfigs,
 	azureDevOpsWorkItemStates,
 	projects,
@@ -12,10 +13,13 @@ import {
 	workspacePullRequests,
 	workspaces,
 } from "../../../db/schema";
+import { triggerBitriseBuild } from "../../../runtime/azure-devops/bitrise";
 import {
 	type AzureDevOpsBoardConfig,
+	type AzureDevOpsWorkItemClaim,
 	createAzureDevOpsImplementationChild,
 	getAzureDevOpsWorkItem,
+	getAzureDevOpsWorkItemClaim,
 	listAzureDevOpsBoardItems,
 	listAzureDevOpsIterations,
 } from "../../../runtime/azure-devops/board";
@@ -92,11 +96,36 @@ const setProjectConfigSchema = projectIdSchema.extend({
 	repository: azureIdentifierSchema,
 });
 
+const buildPlatformSchema = z.enum(["android", "ios"]);
+const buildLaneSchema = z.enum(["alpha", "beta", "release"]);
+const buildDeveloperNamesSchema = z
+	.array(z.string().trim().min(1).max(120))
+	.max(100)
+	.refine(
+		(names) =>
+			new Set(names.map((name) => name.toLocaleLowerCase("en-US"))).size ===
+			names.length,
+		{ message: "Developer names must be unique" },
+	);
+
+const setBuildConfigSchema = projectIdSchema.extend({
+	platform: buildPlatformSchema,
+	developerNames: buildDeveloperNamesSchema,
+	alphaVersionValue: z.string().trim().max(80),
+	bitriseToken: z.string().trim().min(1).max(4096).optional(),
+});
+
+const buildVersionSchema = z.string().trim().min(1).max(80);
+
 const setBoardConfigSchema = z.object({
 	organizationUrl: organizationUrlSchema,
 	workItemProject: azureIdentifierSchema,
 	team: azureIdentifierSchema,
-	areaPath: z.string().trim().min(1).max(512),
+	areaPath: z
+		.string()
+		.trim()
+		.transform((areaPath) => areaPath.replace(/^\\+/, "").replaceAll("/", "\\"))
+		.pipe(z.string().min(1).max(512)),
 	assignedTo: z.string().trim().min(1).max(320).nullable().optional(),
 	workItemTypes: z
 		.array(azureIdentifierSchema)
@@ -124,6 +153,70 @@ function getProjectConfig(ctx: HostServiceContext, projectId: string) {
 			where: eq(azureDevOpsProjectConfigs.projectId, projectId),
 		})
 		.sync();
+}
+
+function getBuildConfig(ctx: HostServiceContext, projectId: string) {
+	return ctx.db.query.azureDevOpsBuildConfigs
+		.findFirst({
+			where: eq(azureDevOpsBuildConfigs.projectId, projectId),
+		})
+		.sync();
+}
+
+function bitriseCredentialKey(
+	organizationId: string,
+	projectId: string,
+	platform: "android" | "ios",
+): string {
+	return `${organizationId}:${projectId}:${platform}`;
+}
+
+function requireBitriseCredentialStore(ctx: HostServiceContext) {
+	if (!ctx.bitriseCredentialStore) {
+		throw new TRPCError({
+			code: "PRECONDITION_FAILED",
+			message: "The host credential store is unavailable",
+		});
+	}
+	return ctx.bitriseCredentialStore;
+}
+
+function toBuildConfig(
+	row: NonNullable<ReturnType<typeof getBuildConfig>>,
+	tokenConfigured: boolean,
+) {
+	return {
+		projectId: row.projectId,
+		platform: row.platform,
+		developerNames: parseDeveloperNames(row.developerNamesJson),
+		alphaVersionValue: row.alphaVersionValue,
+		bitriseTokenConfigured: tokenConfigured,
+	};
+}
+
+function parseDeveloperNames(value: string): string[] {
+	try {
+		return buildDeveloperNamesSchema.parse(JSON.parse(value));
+	} catch {
+		return [];
+	}
+}
+
+async function readBitriseToken(
+	ctx: HostServiceContext,
+	projectId: string,
+	platform: "android" | "ios",
+): Promise<string | undefined> {
+	try {
+		return await requireBitriseCredentialStore(ctx).get(
+			bitriseCredentialKey(ctx.organizationId, projectId, platform),
+		);
+	} catch {
+		throw new TRPCError({
+			code: "PRECONDITION_FAILED",
+			message: "The host credential store is unavailable",
+		});
+	}
 }
 
 function toProjectConfig(row: typeof azureDevOpsProjectConfigs.$inferSelect) {
@@ -224,6 +317,71 @@ const ALLOWED_STAGE_MOVES = new Set([
 	"review:homologation",
 ]);
 
+type ReadWorkItemClaim = (
+	workItemId: number,
+) => Promise<AzureDevOpsWorkItemClaim>;
+
+export async function applyWorkItemStage(
+	ctx: HostServiceContext,
+	input: { workItemId: number; stage: AzureDevOpsWorkItemStage },
+	readRemoteClaim?: ReadWorkItemClaim,
+) {
+	const storedState = ctx.db.query.azureDevOpsWorkItemStates
+		.findFirst({
+			where: eq(azureDevOpsWorkItemStates.workItemId, input.workItemId),
+		})
+		.sync();
+	let current: {
+		stage: AzureDevOpsWorkItemStage;
+		childWorkItemId: number | null;
+	} | null = storedState
+		? {
+				stage: storedState.stage,
+				childWorkItemId: storedState.childWorkItemId,
+			}
+		: null;
+
+	if (!current) {
+		const remoteState = await (
+			readRemoteClaim ??
+			((workItemId) =>
+				getAzureDevOpsWorkItemClaim(
+					execAz,
+					requireBoardConfig(ctx),
+					workItemId,
+				))
+		)(input.workItemId);
+		if (!remoteState.claim?.isCurrentUser) {
+			throw new TRPCError({
+				code: "PRECONDITION_FAILED",
+				message: "Claim the work item before changing its stage",
+			});
+		}
+		current = {
+			stage: "implementation",
+			childWorkItemId: remoteState.claim.childId,
+		};
+	}
+
+	if (
+		current.stage !== input.stage &&
+		!ALLOWED_STAGE_MOVES.has(`${current.stage}:${input.stage}`)
+	) {
+		throw new TRPCError({
+			code: "BAD_REQUEST",
+			message: "Work items can only move between adjacent stages",
+		});
+	}
+
+	upsertWorkItemStage(
+		ctx,
+		input.workItemId,
+		input.stage,
+		current.childWorkItemId,
+	);
+	return { stage: input.stage };
+}
+
 const notConfiguredDiagnostic: AzureDevOpsDiagnostic = {
 	status: "not_configured",
 	cliVersion: null,
@@ -279,13 +437,13 @@ export const azureDevOpsRouter = router({
 	}),
 
 	listIterations: queryProcedure
-		.meta({ timeoutMs: 30_000 })
+		.meta({ timeoutMs: 60_000 })
 		.query(({ ctx }) =>
 			listAzureDevOpsIterations(execAz, requireBoardConfig(ctx)),
 		),
 
 	listBoard: queryProcedure
-		.meta({ timeoutMs: 45_000 })
+		.meta({ timeoutMs: 60_000 })
 		.input(
 			z.object({
 				iterationPath: z.string().min(1).max(512).optional(),
@@ -344,7 +502,7 @@ export const azureDevOpsRouter = router({
 		}),
 
 	getWorkItem: queryProcedure
-		.meta({ timeoutMs: 30_000 })
+		.meta({ timeoutMs: 60_000 })
 		.input(z.object({ workItemId: z.number().int().positive() }))
 		.query(async ({ ctx, input }) => {
 			const config = requireBoardConfig(ctx);
@@ -358,26 +516,36 @@ export const azureDevOpsRouter = router({
 					where: eq(azureDevOpsWorkItemStates.workItemId, input.workItemId),
 				})
 				.sync();
-			const iterationPath = item.fields["System.IterationPath"];
-			const boardItem =
-				!localState && typeof iterationPath === "string"
-					? await listAzureDevOpsBoardItems(execAz, config, iterationPath)
-							.then((board) =>
-								board.items.find(
-									(candidate) => candidate.id === input.workItemId,
-								),
-							)
-							.catch(() => undefined)
-					: undefined;
 			return {
 				item,
+				stage: localState?.stage ?? null,
+				childWorkItemId: localState?.childWorkItemId ?? null,
+				webUrl: `${config.organizationUrl}/${encodeURIComponent(config.workItemProject)}/_workitems/edit/${input.workItemId}`,
+			};
+		}),
+
+	getWorkItemClaim: queryProcedure
+		.meta({ timeoutMs: 60_000 })
+		.input(z.object({ workItemId: z.number().int().positive() }))
+		.query(async ({ ctx, input }) => {
+			const config = requireBoardConfig(ctx);
+			const localState = ctx.db.query.azureDevOpsWorkItemStates
+				.findFirst({
+					where: eq(azureDevOpsWorkItemStates.workItemId, input.workItemId),
+				})
+				.sync();
+			const remoteState = await getAzureDevOpsWorkItemClaim(
+				execAz,
+				config,
+				input.workItemId,
+			);
+			return {
 				stage:
 					localState?.stage ??
-					(boardItem?.claim ? "implementation" : "backlog"),
+					(localState?.childWorkItemId ? "implementation" : remoteState.stage),
 				childWorkItemId:
-					localState?.childWorkItemId ?? boardItem?.claim?.childId ?? null,
-				claim: boardItem?.claim ?? null,
-				webUrl: `${config.organizationUrl}/${encodeURIComponent(config.workItemProject)}/_workitems/edit/${input.workItemId}`,
+					localState?.childWorkItemId ?? remoteState.claim?.childId ?? null,
+				claim: remoteState.claim,
 			};
 		}),
 
@@ -453,35 +621,7 @@ export const azureDevOpsRouter = router({
 				stage: workItemStageSchema,
 			}),
 		)
-		.mutation(({ ctx, input }) => {
-			const current = ctx.db.query.azureDevOpsWorkItemStates
-				.findFirst({
-					where: eq(azureDevOpsWorkItemStates.workItemId, input.workItemId),
-				})
-				.sync();
-			if (!current) {
-				throw new TRPCError({
-					code: "PRECONDITION_FAILED",
-					message: "Claim the work item before changing its stage",
-				});
-			}
-			if (
-				current.stage !== input.stage &&
-				!ALLOWED_STAGE_MOVES.has(`${current.stage}:${input.stage}`)
-			) {
-				throw new TRPCError({
-					code: "BAD_REQUEST",
-					message: "Work items can only move between adjacent stages",
-				});
-			}
-			upsertWorkItemStage(
-				ctx,
-				input.workItemId,
-				input.stage,
-				current.childWorkItemId,
-			);
-			return { stage: input.stage };
-		}),
+		.mutation(({ ctx, input }) => applyWorkItemStage(ctx, input)),
 
 	listPullRequests: queryProcedure
 		.meta({ timeoutMs: 45_000 })
@@ -760,6 +900,201 @@ export const azureDevOpsRouter = router({
 				.where(eq(azureDevOpsProjectConfigs.projectId, input.projectId))
 				.run();
 			return { ok: true as const };
+		}),
+
+	getBuildConfig: protectedProcedure
+		.input(projectIdSchema)
+		.query(async ({ ctx, input }) => {
+			requireProject(ctx, input.projectId);
+			const row = getBuildConfig(ctx, input.projectId);
+			if (!row) return null;
+			const token = await readBitriseToken(ctx, input.projectId, row.platform);
+			return toBuildConfig(row, Boolean(token));
+		}),
+
+	setBuildConfig: protectedProcedure
+		.input(setBuildConfigSchema)
+		.mutation(async ({ ctx, input }) => {
+			requireProject(ctx, input.projectId);
+			if (input.bitriseToken) {
+				try {
+					await requireBitriseCredentialStore(ctx).set(
+						bitriseCredentialKey(
+							ctx.organizationId,
+							input.projectId,
+							input.platform,
+						),
+						input.bitriseToken,
+					);
+				} catch {
+					throw new TRPCError({
+						code: "PRECONDITION_FAILED",
+						message: "The host credential store is unavailable",
+					});
+				}
+			}
+
+			const now = Date.now();
+			ctx.db
+				.insert(azureDevOpsBuildConfigs)
+				.values({
+					projectId: input.projectId,
+					platform: input.platform,
+					developerNamesJson: JSON.stringify(input.developerNames),
+					alphaVersionValue: input.alphaVersionValue,
+					createdAt: now,
+					updatedAt: now,
+				})
+				.onConflictDoUpdate({
+					target: azureDevOpsBuildConfigs.projectId,
+					set: {
+						platform: input.platform,
+						developerNamesJson: JSON.stringify(input.developerNames),
+						alphaVersionValue: input.alphaVersionValue,
+						updatedAt: now,
+					},
+				})
+				.run();
+			const row = getBuildConfig(ctx, input.projectId);
+			if (!row) {
+				throw new TRPCError({
+					code: "INTERNAL_SERVER_ERROR",
+					message: "Build configuration could not be saved",
+				});
+			}
+			const token = await readBitriseToken(
+				ctx,
+				input.projectId,
+				input.platform,
+			);
+			return toBuildConfig(row, Boolean(token));
+		}),
+
+	removeBitriseToken: protectedProcedure
+		.input(projectIdSchema.extend({ platform: buildPlatformSchema }))
+		.mutation(async ({ ctx, input }) => {
+			requireProject(ctx, input.projectId);
+			try {
+				await requireBitriseCredentialStore(ctx).delete(
+					bitriseCredentialKey(
+						ctx.organizationId,
+						input.projectId,
+						input.platform,
+					),
+				);
+			} catch {
+				throw new TRPCError({
+					code: "PRECONDITION_FAILED",
+					message: "The host credential store is unavailable",
+				});
+			}
+			return { ok: true as const };
+		}),
+
+	generateBuild: protectedProcedure
+		.input(
+			z.object({
+				workItemId: z.number().int().positive(),
+				workspaceId: z.string().uuid(),
+				lane: buildLaneSchema,
+				developerName: z.string().trim().min(1).max(120),
+				versionName: buildVersionSchema.optional(),
+				versionNumber: buildVersionSchema.optional(),
+				addToMocks: z.boolean().default(false),
+			}),
+		)
+		.meta({ timeoutMs: 35_000 })
+		.mutation(async ({ ctx, input }) => {
+			const workspace = ctx.db.query.workspaces
+				.findFirst({ where: eq(workspaces.id, input.workspaceId) })
+				.sync();
+			if (!workspace?.projectId) {
+				throw new TRPCError({
+					code: "NOT_FOUND",
+					message: "Workspace not found",
+				});
+			}
+			if (
+				workspace.externalWorkItemProvider !== "azure-devops" ||
+				workspace.externalWorkItemId !== String(input.workItemId)
+			) {
+				throw new TRPCError({
+					code: "BAD_REQUEST",
+					message: "Workspace is not linked to this Azure work item",
+				});
+			}
+			const config = getBuildConfig(ctx, workspace.projectId);
+			if (!config) {
+				throw new TRPCError({
+					code: "PRECONDITION_FAILED",
+					message: "Build generation is not configured for this project",
+				});
+			}
+			if (
+				!parseDeveloperNames(config.developerNamesJson).includes(
+					input.developerName,
+				)
+			) {
+				throw new TRPCError({
+					code: "BAD_REQUEST",
+					message: "Select a developer name configured for this project",
+				});
+			}
+			const osNumber = /\d{4,}/.exec(workspace.branch)?.[0];
+			if (!osNumber) {
+				throw new TRPCError({
+					code: "PRECONDITION_FAILED",
+					message:
+						"The workspace branch does not contain a valid work item number",
+				});
+			}
+			if (input.lane !== "alpha" && !input.versionName) {
+				throw new TRPCError({
+					code: "BAD_REQUEST",
+					message: "Enter the version name for beta or release builds",
+				});
+			}
+			if (
+				config.platform === "android" &&
+				input.lane !== "alpha" &&
+				!input.versionNumber
+			) {
+				throw new TRPCError({
+					code: "BAD_REQUEST",
+					message: "Enter the version number for Android builds",
+				});
+			}
+			const token = await readBitriseToken(
+				ctx,
+				workspace.projectId,
+				config.platform,
+			);
+			if (!token) {
+				throw new TRPCError({
+					code: "PRECONDITION_FAILED",
+					message:
+						"Add the Bitrise token in the project settings before building",
+				});
+			}
+			const result = await triggerBitriseBuild({
+				platform: config.platform,
+				lane: input.lane,
+				token,
+				branch: workspace.branch,
+				workItemNumber: osNumber,
+				developerName: input.developerName,
+				alphaVersionValue: config.alphaVersionValue,
+				versionName: input.versionName,
+				versionNumber: input.versionNumber,
+				addToMocks: input.addToMocks,
+			});
+			return {
+				platform: config.platform,
+				lane: input.lane,
+				branch: workspace.branch,
+				workItemNumber: osNumber,
+				...result,
+			};
 		}),
 
 	diagnoseProject: queryProcedure

@@ -2,18 +2,11 @@ import { db } from "@superset/db/client";
 import {
 	automations,
 	automationTriggers,
-	subscriptions,
 	type TriggerConfig,
 } from "@superset/db/schema";
-import {
-	ACTIVE_SUBSCRIPTION_STATUSES,
-	type PlanTier,
-	planAllowsTriggerKind,
-	planTierFromSubscription,
-} from "@superset/shared/billing";
 import { nextOccurrenceAfter } from "@superset/shared/rrule";
 import { Client } from "@upstash/qstash";
-import { and, desc, eq, inArray, lte } from "drizzle-orm";
+import { and, eq, lte } from "drizzle-orm";
 import { env } from "@/env";
 import { redispatchUndispatched } from "@/lib/automations/redispatchUndispatched";
 import { singleFlight } from "@/lib/singleFlight";
@@ -45,38 +38,6 @@ function scheduleFromConfig(
 	const dtstart = new Date(config.dtstart);
 	if (Number.isNaN(dtstart.getTime())) return null;
 	return { rrule: config.rrule, dtstart, timezone: config.timezone };
-}
-
-/**
- * The plan of each organization, for the tier gate. One query for the whole
- * batch rather than one per row; the newest paying subscription wins, as it
- * does everywhere else the plan is read.
- */
-async function organizationPlans(
-	organizationIds: string[],
-): Promise<Map<string, PlanTier>> {
-	const plans = new Map<string, PlanTier>();
-	if (organizationIds.length === 0) return plans;
-	const rows = await db
-		.select({
-			organizationId: subscriptions.referenceId,
-			plan: subscriptions.plan,
-			status: subscriptions.status,
-		})
-		.from(subscriptions)
-		.where(
-			and(
-				inArray(subscriptions.referenceId, organizationIds),
-				inArray(subscriptions.status, [...ACTIVE_SUBSCRIPTION_STATUSES]),
-			),
-		)
-		.orderBy(desc(subscriptions.createdAt));
-	for (const row of rows) {
-		if (!plans.has(row.organizationId)) {
-			plans.set(row.organizationId, planTierFromSubscription(row));
-		}
-	}
-	return plans;
 }
 
 /**
@@ -127,16 +88,6 @@ export async function POST(request: Request): Promise<Response> {
 			row.nextRunAt !== null,
 	);
 
-	// Tier gate, same map the editor badges from: a downgraded org's schedules
-	// stay configured and keep advancing, they just never fire. Advancing keeps
-	// the row current, so an upgrade resumes at the next occurrence instead of
-	// replaying a backlog of missed ones.
-	const plans = await organizationPlans([
-		...new Set(due.map((row) => row.organizationId)),
-	]);
-	const belowPlan = (organizationId: string) =>
-		!planAllowsTriggerKind(plans.get(organizationId) ?? "free", "schedule");
-
 	// Work out the next occurrence before dispatching anything: a trigger we
 	// can't advance must not be enqueued, or it would fire on every tick forever
 	// while its next_run_at stayed put.
@@ -145,7 +96,6 @@ export async function POST(request: Request): Promise<Response> {
 		triggerId: string;
 		scheduledFor: Date;
 		next: Date | null;
-		enqueue: boolean;
 	}> = [];
 	const unusable: Array<{ automationId: string; reason: string }> = [];
 
@@ -164,14 +114,11 @@ export async function POST(request: Request): Promise<Response> {
 				triggerId: row.triggerId,
 				scheduledFor: bucketToMinute(row.nextRunAt),
 				next: nextOccurrenceAfter({ ...schedule, after: row.nextRunAt }),
-				enqueue: !belowPlan(row.organizationId),
 			});
 		} catch (error) {
 			unusable.push({ automationId: row.automationId, reason: String(error) });
 		}
 	}
-	const toEnqueue = planned.filter((entry) => entry.enqueue);
-	const skippedByPlan = planned.length - toEnqueue.length;
 
 	// Should be empty. These automations are stalled until someone fixes the
 	// config, so they need to be loud rather than silently skipped.
@@ -192,9 +139,9 @@ export async function POST(request: Request): Promise<Response> {
 		});
 	}
 
-	if (toEnqueue.length > 0) {
+	if (planned.length > 0) {
 		await qstash.batchJSON(
-			toEnqueue.map(({ automationId, triggerId, scheduledFor }) => ({
+			planned.map(({ automationId, triggerId, scheduledFor }) => ({
 				url: `${env.NEXT_PUBLIC_API_URL}/api/automations/dispatch/${automationId}`,
 				body: {
 					automationId,
@@ -244,8 +191,7 @@ export async function POST(request: Request): Promise<Response> {
 	const redispatched = await sweepUndispatched();
 
 	return Response.json({
-		enqueued: toEnqueue.length,
-		skippedByPlan,
+		enqueued: planned.length,
 		advanceFailed: advanceFailures.length,
 		unusable: unusable.length,
 		redispatched,

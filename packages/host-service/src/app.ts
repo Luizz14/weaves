@@ -22,6 +22,10 @@ import { portManager } from "./ports/port-manager";
 import type { ApiAuthProvider } from "./providers/auth";
 import type { HostAuthProvider } from "./providers/host-auth";
 import { runArchivedWorkspaceReconcile } from "./runtime/archived-workspace-reconcile";
+import {
+	type BitriseCredentialStore,
+	SystemBitriseCredentialStore,
+} from "./runtime/azure-devops/bitrise-credentials";
 import { registerBrowserCdpRoute } from "./runtime/browser-bridge/browser-cdp-route";
 import { WorkspaceFilesystemManager } from "./runtime/filesystem";
 import type { GitCredentialProvider } from "./runtime/git";
@@ -81,6 +85,7 @@ export interface CreateAppOptions {
 		auth: ApiAuthProvider;
 		hostAuth: HostAuthProvider;
 		credentials: GitCredentialProvider;
+		bitriseCredentialStore?: BitriseCredentialStore;
 	};
 	/**
 	 * Test-harness override hooks. Production never sets these — `createApp`
@@ -113,6 +118,8 @@ export interface CreateAppResult {
 
 export function createApp(options: CreateAppOptions): CreateAppResult {
 	const { config, providers } = options;
+	const bitriseCredentialStore =
+		providers.bitriseCredentialStore ?? new SystemBitriseCredentialStore();
 
 	const api =
 		options.api ??
@@ -413,6 +420,7 @@ export function createApp(options: CreateAppOptions): CreateAppResult {
 					runtime,
 					eventBus,
 					terminalAgentStore,
+					bitriseCredentialStore,
 					organizationId: config.organizationId,
 					isAuthenticated,
 					clientMachineId:

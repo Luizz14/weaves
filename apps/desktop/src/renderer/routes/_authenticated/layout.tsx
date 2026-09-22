@@ -12,7 +12,6 @@ import { useEffect, useRef, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HiOutlineWifi } from "react-icons/hi2";
 import { NewWorkspaceModal } from "renderer/components/NewWorkspaceModal";
-import { Paywall } from "renderer/components/Paywall";
 import { Redirect } from "renderer/components/Redirect";
 import { env } from "renderer/env.renderer";
 import { useDelayElapsed } from "renderer/hooks/useDelayElapsed";
@@ -338,7 +337,6 @@ function AuthenticatedLayout() {
 								<InitGitDialog />
 								<GitInitConfirmDialog />
 								<TeardownLogsDialog />
-								<Paywall />
 								<OrdemPokemonCardReveal />
 							</WorkerPoolContextProvider>
 						</HostWorkspacesProvider>

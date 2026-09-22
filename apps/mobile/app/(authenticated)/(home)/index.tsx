@@ -1,20 +1,13 @@
 import { useOrgHosts } from "@/hooks/useOrgHosts";
-import { useSession } from "@/lib/auth/client";
 import { HomeScreen } from "@/screens/(authenticated)/(home)/home";
 import { useWorkspacesFilterStore } from "@/screens/(authenticated)/(home)/home/stores/workspacesFilterStore";
 import { HomeConnectHostScreen } from "@/screens/(authenticated)/(home)/home-connect-host";
-import { HomePaywallScreen } from "@/screens/(authenticated)/(home)/home-paywall";
 import { useWorkspaceScope } from "@/screens/(authenticated)/(home)/hooks/useWorkspaceScope";
 
 export default function HomeIndex() {
-	const { data: session } = useSession();
 	const { query: hosts } = useOrgHosts();
 	const scope = useWorkspaceScope();
 	const hasHydrated = useWorkspacesFilterStore((store) => store.hasHydrated);
-
-	if (session && !session.session.plan) {
-		return <HomePaywallScreen />;
-	}
 
 	// An organization with no device of yours has no workspaces to list and
 	// nowhere for the composer to send: the home screen renders as an empty

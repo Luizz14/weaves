@@ -462,12 +462,7 @@ function AutomationsPage() {
 	const { machineId, activeHostUrl } = useLocalHostService();
 	const { agents: agentChoices } = useV2AgentChoices(activeHostUrl);
 	const { submit: submitWorkspaceCreate } = useWorkspaceCreates();
-	// Automations are Pro. Creating, running, and resuming go through the
-	// paywall; the server refuses the same three, so this is the friendly
-	// front of one gate. Pausing, editing, and deleting stay open so a
-	// downgraded org keeps control of what it has.
-	const { gateFeature, hasAccess, isReady: planReady } = usePaywall();
-	const showProBadge = planReady && !hasAccess(GATED_FEATURES.AUTOMATIONS);
+	const { gateFeature } = usePaywall();
 
 	// Cursor-style creation: no dialog. "New automation" writes an untitled
 	// automation with no triggers and opens its detail page, which is the
@@ -829,7 +824,6 @@ function AutomationsPage() {
 									isCreating={creatingWithAgent}
 									onCreateManually={handleCreateManually}
 									isCreatingManually={createMutation.isPending}
-									showProBadge={showProBadge}
 								/>
 							</div>
 						) : showTeamEmptyState ? (

@@ -58,6 +58,30 @@ describe("Azure DevOps pull requests", () => {
 		expect(calls[0]).not.toContain("--skip");
 	});
 
+	test.each([
+		["omitted", undefined],
+		["null", null],
+	] as const)("builds the PR URL when repository.webUrl is %s", async (_label, webUrl) => {
+		const item = pullRequest({
+			repository: {
+				id: "repo-id",
+				name: "app name",
+				...(webUrl === undefined ? {} : { webUrl }),
+				project: { id: "project-id", name: "Mobile App" },
+			},
+		});
+		const run: ExecAz = async () => [item];
+
+		const rows = await listAzureDevOpsPullRequests(run, config, {
+			includeClosed: false,
+			top: 30,
+		});
+
+		expect(rows[0]?.url).toBe(
+			"https://dev.azure.com/acme/Mobile%20App/_git/app%20name/pullrequest/42",
+		);
+	});
+
 	test("maps Azure policies into check status", async () => {
 		let call = 0;
 		const run: ExecAz = async () => {

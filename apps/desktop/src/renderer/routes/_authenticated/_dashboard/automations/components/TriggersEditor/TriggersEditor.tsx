@@ -20,14 +20,13 @@ import { useFeatureFlagPayload } from "posthog-js/react";
 import { type ReactNode, useMemo, useState } from "react";
 import { LuPlus } from "react-icons/lu";
 import { ConnectConnectorDialog } from "renderer/components/ConnectorSection";
-import { useCurrentPlan } from "renderer/hooks/useCurrentPlan";
 import { cloudTrpc } from "renderer/lib/cloud-trpc";
 import { connectorFor, providerFor, TRIGGER_PROVIDERS } from "../providers";
 import type { OptionGroupState, ProviderOptions } from "../providers/types";
 import { useProviderConnections } from "../providers/useProviderConnections";
 import { TriggerSentence } from "../TriggerSentence";
 import { RuntimeWarnings } from "./components/RuntimeWarnings";
-import { collectRuntimeWarnings, lockedTierFor } from "./runtimeWarnings";
+import { collectRuntimeWarnings } from "./runtimeWarnings";
 import { TriggerMenuItems } from "./TriggerMenuItems";
 import { flattenTriggerMenu, matchesQuery } from "./triggerMenu";
 
@@ -64,7 +63,6 @@ export function TriggersEditor({
 	const add = (config: DraftTrigger["config"]) =>
 		onEdit([...drafts, { config }]);
 
-	const { plan } = useCurrentPlan();
 	const {
 		connected,
 		needsReauth,
@@ -86,8 +84,8 @@ export function TriggersEditor({
 	};
 
 	const runtimeWarnings = useMemo(
-		() => collectRuntimeWarnings(drafts, options, plan),
-		[drafts, options, plan],
+		() => collectRuntimeWarnings(drafts, options),
+		[drafts, options],
 	);
 
 	const enabledKinds = useFeatureFlagPayload(
@@ -101,14 +99,7 @@ export function TriggersEditor({
 	}, [enabledKinds]);
 
 	const [query, setQuery] = useState("");
-	// Locked providers stay in the menu but can't be added, so aren't indexed.
-	const leaves = useMemo(
-		() =>
-			flattenTriggerMenu(
-				providers.filter((provider) => !lockedTierFor(provider, plan)),
-			),
-		[providers, plan],
-	);
+	const leaves = useMemo(() => flattenTriggerMenu(providers), [providers]);
 	const results = query
 		? leaves.filter((leaf) => matchesQuery(leaf, query))
 		: [];
@@ -206,11 +197,7 @@ export function TriggersEditor({
 								)}
 							</>
 						) : (
-							<TriggerMenuItems
-								providers={providers}
-								onPick={add}
-								lockedLabel={(provider) => lockedTierFor(provider, plan)}
-							/>
+							<TriggerMenuItems providers={providers} onPick={add} />
 						)}
 					</DropdownMenuContent>
 				</DropdownMenu>

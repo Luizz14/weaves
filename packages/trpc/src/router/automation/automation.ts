@@ -9,11 +9,6 @@ import {
 } from "@superset/db/schema";
 import type { DraftTrigger } from "@superset/shared/automation-triggers";
 import {
-	AUTOMATIONS_REQUIRED_PLAN,
-	planAllowsAutomations,
-	planTierFromSubscription,
-} from "@superset/shared/billing";
-import {
 	describeSchedule,
 	nextOccurrenceAfter,
 	nextOccurrences,
@@ -23,12 +18,9 @@ import { TRPCError, type TRPCRouterRecord } from "@trpc/server";
 import { and, asc, desc, eq, ilike } from "drizzle-orm";
 import { z } from "zod";
 import { env } from "../../env";
-import { planRequiredError, protectedProcedure, userError } from "../../trpc";
+import { protectedProcedure, userError } from "../../trpc";
 import { joinSlackTriggerChannels } from "../integration/slack/joinChannels";
-import {
-	requireActiveOrgMembership,
-	requireActiveOrgMembershipWithSubscription,
-} from "../utils/active-org";
+import { requireActiveOrgMembership } from "../utils/active-org";
 import { dispatchAutomation } from "./dispatch";
 import {
 	automationBaseColumns,
@@ -52,27 +44,6 @@ import {
 import { saveTriggerSet } from "./triggerSet";
 import { automationVersionsRouter } from "./versions";
 import { generateWebhookToken, hashWebhookToken } from "./webhookSecret";
-
-/**
- * Membership plus the Pro gate. Automations are a Pro feature: creating,
- * running, and resuming one needs a paying org. Reading, editing, pausing,
- * and deleting stay open so a downgraded org keeps control of what it has —
- * those rows simply stop firing (the dispatchers apply the same tier map).
- */
-async function requireAutomationsPlan(
-	ctx: Parameters<typeof requireActiveOrgMembershipWithSubscription>[0],
-): Promise<string> {
-	const { organizationId, subscription } =
-		await requireActiveOrgMembershipWithSubscription(ctx);
-	if (!planAllowsAutomations(planTierFromSubscription(subscription))) {
-		throw planRequiredError({
-			message: "Automations require the Pro plan.",
-			i18nKey: "serverError.automation.automationsRequireThePro",
-			requiredPlan: AUTOMATIONS_REQUIRED_PLAN,
-		});
-	}
-	return organizationId;
-}
 
 function escapeLikePattern(value: string): string {
 	return value.replace(/[\\%_]/g, (match) => `\\${match}`);
@@ -315,7 +286,7 @@ export const automationRouter = {
 	create: protectedProcedure
 		.input(createAutomationSchema)
 		.mutation(async ({ ctx, input }) => {
-			const organizationId = await requireAutomationsPlan(ctx);
+			const organizationId = await requireActiveOrgMembership(ctx);
 
 			if (input.targetHostId) {
 				await verifyHostAccess(
@@ -765,7 +736,7 @@ export const automationRouter = {
 		.mutation(async ({ ctx, input }) => {
 			// Pausing is always allowed; resuming is what needs the plan.
 			const organizationId = input.enabled
-				? await requireAutomationsPlan(ctx)
+				? await requireActiveOrgMembership(ctx)
 				: await requireActiveOrgMembership(ctx);
 			const existing = await getAutomationForUser(
 				ctx.session.user.id,
@@ -812,7 +783,7 @@ export const automationRouter = {
 	runNow: protectedProcedure
 		.input(z.object({ id: z.string().uuid() }))
 		.mutation(async ({ ctx, input }) => {
-			const organizationId = await requireAutomationsPlan(ctx);
+			const organizationId = await requireActiveOrgMembership(ctx);
 			const automation = await getAutomationForUser(
 				ctx.session.user.id,
 				organizationId,

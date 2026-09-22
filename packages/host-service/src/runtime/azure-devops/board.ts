@@ -93,6 +93,11 @@ export type AzureDevOpsBoardItem = {
 	url: string;
 };
 
+export type AzureDevOpsWorkItemClaim = {
+	claim: AzureDevOpsBoardItem["claim"];
+	stage: "backlog" | "implementation";
+};
+
 function field<T>(
 	item: z.infer<typeof queryWorkItemSchema>,
 	name: string,
@@ -139,20 +144,23 @@ export async function listAzureDevOpsIterations(
 	config: AzureDevOpsBoardConfig,
 ): Promise<AzureDevOpsIteration[]> {
 	const data = iterationsSchema.parse(
-		await execAz([
-			"boards",
-			"iteration",
-			"team",
-			"list",
-			"--team",
-			config.team,
-			"--organization",
-			config.organizationUrl,
-			"--project",
-			config.workItemProject,
-			"--detect",
-			"false",
-		]),
+		await execAz(
+			[
+				"boards",
+				"iteration",
+				"team",
+				"list",
+				"--team",
+				config.team,
+				"--organization",
+				config.organizationUrl,
+				"--project",
+				config.workItemProject,
+				"--detect",
+				"false",
+			],
+			{ timeout: 45_000 },
+		),
 	);
 	return data
 		.map((iteration) => ({
@@ -198,7 +206,8 @@ export async function listAzureDevOpsBoardItems(
 		execAz,
 		config.assignedTo,
 	);
-	const commonWhere = `[System.TeamProject] = '${escapeWiql(config.workItemProject)}' AND [System.AreaPath] UNDER '${escapeWiql(config.areaPath)}' AND [System.IterationPath] = '${escapeWiql(iterationPath)}'`;
+	const areaPath = config.areaPath.replace(/^\\+/, "").replaceAll("/", "\\");
+	const commonWhere = `[System.TeamProject] = '${escapeWiql(config.workItemProject)}' AND [System.AreaPath] UNDER '${escapeWiql(areaPath)}' AND [System.IterationPath] = '${escapeWiql(iterationPath)}'`;
 	const parentQuery = `SELECT [System.Id], [System.Title], [System.State], [System.WorkItemType], [System.AssignedTo], [System.Tags], [System.IterationPath], [System.AreaPath], [Microsoft.VSTS.Scheduling.StoryPoints] FROM WorkItems WHERE ${commonWhere} AND [System.WorkItemType] IN (${quotedList(config.workItemTypes)}) AND [System.State] NOT IN ('Completed', 'Closed', 'Removed') ORDER BY [Microsoft.VSTS.Common.StackRank]`;
 	const childQuery = `SELECT [System.Id], [System.Title], [System.State], [System.AssignedTo], [System.Parent] FROM WorkItems WHERE ${commonWhere} AND [System.WorkItemType] = 'Task' AND [System.Title] = 'Em implementação' AND [System.State] NOT IN ('Closed', 'Removed')`;
 	const [parents, children] = await Promise.all([
@@ -266,20 +275,56 @@ export async function getAzureDevOpsWorkItem(
 	workItemId: number,
 ) {
 	return queryWorkItemSchema.parse(
-		await execAz([
-			"boards",
-			"work-item",
-			"show",
-			"--id",
-			String(workItemId),
-			"--organization",
-			config.organizationUrl,
-			"--expand",
-			"all",
-			"--detect",
-			"false",
-		]),
+		await execAz(
+			[
+				"boards",
+				"work-item",
+				"show",
+				"--id",
+				String(workItemId),
+				"--organization",
+				config.organizationUrl,
+				"--expand",
+				"relations",
+				"--detect",
+				"false",
+			],
+			{ timeout: 45_000 },
+		),
 	);
+}
+
+export async function getAzureDevOpsWorkItemClaim(
+	execAz: ExecAz,
+	config: AzureDevOpsBoardConfig,
+	workItemId: number,
+): Promise<AzureDevOpsWorkItemClaim> {
+	const wiql = `SELECT [System.Id], [System.Title], [System.State], [System.AssignedTo], [System.Parent] FROM WorkItems WHERE [System.TeamProject] = '${escapeWiql(config.workItemProject)}' AND [System.Parent] = ${workItemId} AND [System.Title] = 'Em implementação' AND [System.WorkItemType] = 'Task' AND [System.State] NOT IN ('Closed', 'Removed')`;
+	const [currentUser, children] = await Promise.all([
+		resolveAzureDevOpsAccount(execAz, config.assignedTo),
+		runWiql(execAz, config, wiql),
+	]);
+	let claim: AzureDevOpsBoardItem["claim"] = null;
+	for (const child of children) {
+		if (field<number>(child, "System.Parent") !== workItemId) continue;
+		const assignedTo = parseIdentity(field(child, "System.AssignedTo"));
+		const isCurrentUser =
+			currentUser !== null &&
+			assignedTo?.uniqueName?.toLowerCase() === currentUser.toLowerCase();
+		const candidate = {
+			childId: child.id,
+			assignedTo,
+			state: field<string>(child, "System.State") ?? "Unknown",
+			isCurrentUser,
+		};
+		if (!claim || isCurrentUser) claim = candidate;
+		if (isCurrentUser) break;
+	}
+
+	return {
+		claim,
+		stage: claim ? "implementation" : "backlog",
+	};
 }
 
 export async function createAzureDevOpsImplementationChild(

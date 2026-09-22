@@ -139,7 +139,8 @@ function isAllowedBareRequire(specifier: string): boolean {
 		return true;
 	}
 
-	return allowedBareRequirePackages.has(getPackageName(specifier));
+	const packageName = getPackageName(specifier);
+	return allowedBareRequirePackages.has(packageName);
 }
 
 function collectBareRequireSpecifiers(filePath: string): string[] {
@@ -261,6 +262,31 @@ function getPlatformAstGrepCandidates(): string[] {
 	return [];
 }
 
+function getPlatformKeyringCandidates(): string[] {
+	const targetArch = process.env.TARGET_ARCH || process.arch;
+	const targetPlatform = process.env.TARGET_PLATFORM || process.platform;
+
+	if (targetPlatform === "darwin") {
+		return [`@napi-rs/keyring-darwin-${targetArch}`];
+	}
+	if (targetPlatform === "win32") {
+		return [`@napi-rs/keyring-win32-${targetArch}-msvc`];
+	}
+	if (targetPlatform === "freebsd") {
+		return [`@napi-rs/keyring-freebsd-${targetArch}`];
+	}
+	if (targetPlatform !== "linux") return [];
+	if (targetArch === "arm") return ["@napi-rs/keyring-linux-arm-gnueabihf"];
+	if (targetArch === "arm64" || targetArch === "x64") {
+		return [
+			`@napi-rs/keyring-linux-${targetArch}-gnu`,
+			`@napi-rs/keyring-linux-${targetArch}-musl`,
+		];
+	}
+	if (targetArch === "riscv64") return ["@napi-rs/keyring-linux-riscv64-gnu"];
+	return [];
+}
+
 function validateNativeModulesPrepared(): void {
 	const nodeModulesDir = join(projectRoot, "node_modules");
 	assertExists(
@@ -270,6 +296,7 @@ function validateNativeModulesPrepared(): void {
 
 	const requiredModules = [
 		"@parcel/watcher/package.json",
+		"@napi-rs/keyring/package.json",
 		"detect-libc/package.json",
 		"is-glob/package.json",
 		"is-extglob/package.json",
@@ -399,12 +426,42 @@ function validateParcelWatcherPrepared(): void {
 	);
 }
 
+function validateKeyringPlatformPackagesPrepared(): void {
+	const nodeModulesDir = join(projectRoot, "node_modules");
+	const platformCandidates = getPlatformKeyringCandidates();
+	if (platformCandidates.length === 0) {
+		console.warn(
+			`[validate:native-runtime] Skipping platform-specific keyring check for ${process.env.TARGET_PLATFORM || process.platform}/${process.env.TARGET_ARCH || process.arch}`,
+		);
+		return;
+	}
+
+	const missingCandidates = platformCandidates.filter(
+		(packageName) =>
+			!existsSync(join(nodeModulesDir, packageName, "package.json")),
+	);
+	if (missingCandidates.length > 0) {
+		fail(
+			[
+				"Missing platform-specific @napi-rs/keyring package(s).",
+				`Missing: ${missingCandidates.join(", ")}`,
+				"Run `bun run copy:native-modules` and ensure optional dependencies are materialized.",
+			].join("\n"),
+		);
+	}
+
+	console.log(
+		`[validate:native-runtime] OK: platform keyring package(s) present (${platformCandidates.join(" | ")})`,
+	);
+}
+
 function main(): void {
 	validateWorkspacePackagesBundled();
 	validateOnlyExpectedExternalRequires();
 	validateParcelWatcherNotBundled();
 	validateNativeModulesPrepared();
 	validateParcelWatcherPrepared();
+	validateKeyringPlatformPackagesPrepared();
 	console.log("[validate:native-runtime] All checks passed");
 }
 

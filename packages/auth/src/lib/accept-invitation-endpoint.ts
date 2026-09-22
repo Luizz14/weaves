@@ -33,16 +33,6 @@ function getInvitationAcceptError(error: unknown) {
 		};
 	}
 
-	if (
-		error.message ===
-		"Free plan is limited to 1 user. Upgrade to add more members."
-	) {
-		return {
-			error: error.message,
-			status: 409,
-		};
-	}
-
 	return {
 		error: "Failed to accept invitation.",
 		status: 500,

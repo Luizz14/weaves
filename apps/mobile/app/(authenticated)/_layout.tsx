@@ -1,8 +1,7 @@
 import { useLingui } from "@lingui/react/macro";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
-import { Redirect, Stack, usePathname } from "expo-router";
+import { Stack } from "expo-router";
 import { usePrimeRelayUrl } from "@/hooks/usePrimeRelayUrl";
-import { useSession } from "@/lib/auth/client";
 
 const pageScreenOptions = {
 	headerShown: true,
@@ -31,19 +30,6 @@ export default function AuthenticatedLayout() {
 	usePrimeRelayUrl();
 
 	const { t } = useLingui();
-	const { data: session } = useSession();
-	const pathname = usePathname();
-
-	// Unpaid sessions may only see home (which renders the paywall) and
-	// settings — App Review requires sign-out, org switching, and account
-	// deletion to stay reachable behind a gate, and settings is the only route
-	// to all three. Leaving it out sealed unpaid accounts in: it mounted and
-	// was redirected away in the same frame.
-	const unpaid = !!session && !session.session.plan;
-	if (unpaid && pathname !== "/" && !pathname.startsWith("/settings")) {
-		return <Redirect href="/(authenticated)/(home)" />;
-	}
-
 	return (
 		<Stack screenOptions={{ headerShown: false }}>
 			{/* Root headers are hidden — `title` here only names routes in

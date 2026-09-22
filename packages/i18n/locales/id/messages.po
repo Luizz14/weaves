@@ -375,10 +375,6 @@ msgstr "{0} sedang offline"
 msgid "{0} is offline."
 msgstr "{0} sedang offline."
 
-#. placeholder {0}: activeOrganization.name
-msgid "{0} is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "{0} memakai paket Gratis. Superset Mobile tersedia untuk organisasi dengan paket Pro."
-
 #. placeholder {0}: host?.name ?? t({ message: "This host" })
 #. placeholder {1}: hostCompatibility.hostVersion
 #. placeholder {2}: hostCompatibility.minVersion
@@ -1294,6 +1290,12 @@ msgstr "Profil terpisah yang berbagi skill, plugin, server MCP, dan pengaturan A
 msgid "a teammate"
 msgstr "rekan tim"
 
+msgid "A token is already stored securely"
+msgstr "Token sudah tersimpan dengan aman"
+
+msgid "A token is stored in this host's secure credential store."
+msgstr "Token disimpan di penyimpanan kredensial aman host ini."
+
 msgid "A unique identifier for your organization (auto-generated from name)"
 msgstr "Pengenal unik untuk organisasi Anda (dibuat otomatis dari nama)"
 
@@ -1418,6 +1420,9 @@ msgstr "Tambah"
 msgid "Add {0} account"
 msgstr "Tambah akun {0}"
 
+msgid "Add a developer name"
+msgstr "Tambahkan nama pengembang"
+
 msgid "Add a lifecycle run script in Project Settings or mark a terminal script as the workspace run."
 msgstr "Tambahkan skrip run lifecycle di Pengaturan Proyek atau tandai sebuah skrip terminal sebagai run workspace."
 
@@ -1450,6 +1455,9 @@ msgstr "Tambahkan environment di Pengaturan sebelum membuat workspace cloud"
 
 msgid "Add any machine as a host. Workspaces keep running when your laptop sleeps, and you can check in from wherever you are."
 msgstr "Tambahkan mesin apa pun sebagai host. Workspace tetap berjalan saat laptop Anda tidur, dan Anda bisa memeriksanya dari mana pun."
+
+msgid "Add at least one name before generating a build."
+msgstr "Tambahkan setidaknya satu nama sebelum membuat build."
 
 msgid "Add attachment"
 msgstr "Tambah lampiran"
@@ -1526,6 +1534,12 @@ msgstr "Tambahkan tes untuk kode paling berisiko yang belum diuji…"
 
 msgid "Add tests where they're missing"
 msgstr "Tambahkan tes yang belum ada"
+
+msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
+msgstr "Tambahkan token Bitrise di pengaturan Azure DevOps proyek ini sebelum membuat build."
+
+msgid "Add this build to mocks"
+msgstr "Tambahkan build ini ke mocks"
 
 msgid "Add to Dictionary"
 msgstr "Tambahkan ke Kamus"
@@ -1745,6 +1759,9 @@ msgstr "Semua penerima tugas"
 msgid "All authors"
 msgstr "Semua penulis"
 
+msgid "All branches"
+msgstr "Semua branch"
+
 msgid "All changes saved"
 msgstr "Semua perubahan tersimpan"
 
@@ -1886,6 +1903,12 @@ msgstr "Diizinkan"
 
 msgid "Allowed for session"
 msgstr "Diizinkan untuk sesi ini"
+
+msgid "Alpha uses the configured version value for this project."
+msgstr "Alpha menggunakan nilai versi yang dikonfigurasi untuk proyek ini."
+
+msgid "Alpha version value"
+msgstr "Nilai versi Alpha"
 
 msgid "Already have an account? <0>Sign in</0>"
 msgstr "Sudah punya akun? <0>Masuk</0>"
@@ -2483,6 +2506,9 @@ msgstr "Azure CLI on {targetName}"
 msgid "Azure DevOps"
 msgstr "Azure DevOps"
 
+msgid "Azure DevOps board configuration updated"
+msgstr "Konfigurasi papan Azure DevOps diperbarui"
+
 msgid "Azure DevOps board connected"
 msgstr "Azure DevOps board connected"
 
@@ -2661,6 +2687,12 @@ msgstr "Berkas biner, besar, atau khusus. Pilih versi untuk menyelesaikannya."
 
 msgid "Bio"
 msgstr "Bio"
+
+msgid "Bitrise build trigger token"
+msgstr "Token pemicu build Bitrise"
+
+msgid "Bitrise token removed"
+msgstr "Token Bitrise dihapus"
 
 msgid "Block"
 msgstr "Blok"
@@ -2843,8 +2875,20 @@ msgstr "Batas anggaran tercapai"
 msgid "Bug"
 msgstr "Bug"
 
+msgid "Build number"
+msgstr "Nomor build"
+
+msgid "Build settings saved"
+msgstr "Pengaturan build disimpan"
+
+msgid "Build started"
+msgstr "Build dimulai"
+
 msgid "Build the future of Superset in the cloud"
 msgstr "Bangun masa depan Superset di komputasi awan"
+
+msgid "Build type"
+msgstr "Jenis build"
 
 msgid "Building the last piece of software"
 msgstr "Membangun perangkat lunak yang terakhir"
@@ -3818,6 +3862,9 @@ msgstr "Bandingkan Superset dengan Cursor, Claude Code, Codex, Windsurf, Devin, 
 msgid "Compared against the default style"
 msgstr "Dibandingkan dengan gaya bawaan"
 
+msgid "Compared with first parent"
+msgstr "Dibandingkan dengan induk pertama"
+
 msgid "complete"
 msgstr "selesai"
 
@@ -3857,11 +3904,17 @@ msgstr "Atur perilaku branch git dan worktree"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Atur cara tugas disinkronkan antara Superset dan Linear."
 
+msgid "Configure mobile build generation in this project's Azure DevOps settings."
+msgstr "Konfigurasikan pembuatan build seluler di pengaturan Azure DevOps proyek ini."
+
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "Atur perilaku terminal dan skrip terminal pakai ulang"
 
 msgid "Configure the automation yourself"
 msgstr "Konfigurasikan otomatisasi sendiri"
+
+msgid "Configure the Bitrise app and the developer names available for this project."
+msgstr "Konfigurasikan aplikasi Bitrise dan nama pengembang yang tersedia untuk proyek ini."
 
 msgid "Configure the in-app browser"
 msgstr "Atur browser dalam aplikasi"
@@ -3955,6 +4008,9 @@ msgstr "Hubungkan Slack"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "Hubungkan Slack untuk mengelola tugas dari percakapan. Sebut bot-nya di channel mana pun atau kirim pesan langsung untuk membuat dan memperbarui tugas."
+
+msgid "Connect to this host to configure mobile builds."
+msgstr "Hubungkan ke host ini untuk mengonfigurasi build seluler."
 
 msgid "Connect your Azure DevOps board"
 msgstr "Connect your Azure DevOps board"
@@ -4359,9 +4415,6 @@ msgstr "Tidak bisa mengubah versi yang dibagikan"
 
 msgid "Could not change who can see this page"
 msgstr "Tidak bisa mengubah siapa yang bisa melihat halaman ini"
-
-msgid "Could not check your plan. Check your connection and try again."
-msgstr "Tidak dapat memeriksa paket Anda. Periksa koneksi Anda dan coba lagi."
 
 msgid "Could not clear browsing data"
 msgstr "Tidak bisa membersihkan data penjelajahan"
@@ -4941,6 +4994,9 @@ msgstr "Ctrl+Shift+klik"
 msgid "Current"
 msgstr "Saat ini"
 
+msgid "Current branch"
+msgstr "Branch saat ini"
+
 msgid "Current level"
 msgstr "Level saat ini"
 
@@ -5059,6 +5115,9 @@ msgstr "Dasbor"
 
 msgid "Data display"
 msgstr "Tampilan data"
+
+msgid "Date"
+msgstr "Tanggal"
 
 msgid "Date created"
 msgstr "Tanggal dibuat"
@@ -5394,6 +5453,12 @@ msgstr "Dikembangkan oleh {author}"
 
 msgid "Developer"
 msgstr "Developer"
+
+msgid "Developer name"
+msgstr "Nama pengembang"
+
+msgid "Developer names"
+msgstr "Nama pengembang"
 
 msgid "Developers"
 msgstr "Developer"
@@ -5837,6 +5902,9 @@ msgstr "{name} ×{tier} diraih"
 msgid "Edit"
 msgstr "Edit"
 
+msgid "Edit Azure DevOps board configuration"
+msgstr "Edit konfigurasi papan Azure DevOps"
+
 msgid "Edit comment"
 msgstr "Edit komentar"
 
@@ -5976,6 +6044,9 @@ msgstr "Masukkan aturan pengulangan yang valid."
 
 msgid "Enter a value."
 msgstr "Masukkan sebuah nilai."
+
+msgid "Enter the Bitrise token"
+msgstr "Masukkan token Bitrise"
 
 msgid "Enter URL or search..."
 msgstr "Masukkan URL atau cari..."
@@ -6531,6 +6602,9 @@ msgstr "Gagal menghapus"
 msgid "Failed to remove Azure DevOps configuration"
 msgstr "Gagal menghapus konfigurasi Azure DevOps"
 
+msgid "Failed to remove Bitrise token"
+msgstr "Gagal menghapus token Bitrise"
+
 msgid "Failed to remove member"
 msgstr "Gagal menghapus anggota"
 
@@ -6618,6 +6692,9 @@ msgstr "Gagal menyimpan"
 msgid "Failed to save Azure DevOps configuration"
 msgstr "Gagal menyimpan konfigurasi Azure DevOps"
 
+msgid "Failed to save build settings"
+msgstr "Gagal menyimpan pengaturan build"
+
 msgid "Failed to save installation. Please try again."
 msgstr "Gagal menyimpan instalasi. Silakan coba lagi."
 
@@ -6669,6 +6746,9 @@ msgstr "Gagal memulai agen"
 
 msgid "Failed to start agent session."
 msgstr "Gagal memulai sesi agen."
+
+msgid "Failed to start build"
+msgstr "Gagal memulai build"
 
 msgid "Failed to stop workspace run command"
 msgstr "Gagal menghentikan perintah run workspace"
@@ -7199,8 +7279,14 @@ msgstr "Buat kunci untuk dipakai dengan server MCP."
 msgid "Generate API key"
 msgstr "Buat kunci API"
 
+msgid "Generate build"
+msgstr "Buat build"
+
 msgid "Generate key"
 msgstr "Buat kunci"
+
+msgid "Generate mobile build"
+msgstr "Buat build seluler"
 
 msgid "Generated file hidden"
 msgstr "File hasil generate disembunyikan"
@@ -7258,6 +7344,9 @@ msgstr "Git & Worktree"
 
 msgid "Git author name"
 msgstr "Nama author Git"
+
+msgid "Git History"
+msgstr "Riwayat Git"
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Integrasi Git gagal. Periksa repositori dan coba lagi, atau batalkan percobaan."
@@ -8737,6 +8826,9 @@ msgstr "Memuat lagi..."
 msgid "Loading more…"
 msgstr "Memuat lagi…"
 
+msgid "Loading project build settings…"
+msgstr "Memuat pengaturan build proyek…"
+
 msgid "Loading project…"
 msgstr "Memuat proyek…"
 
@@ -8775,9 +8867,6 @@ msgstr "Memuat skrip terminal..."
 
 msgid "Loading usage history…"
 msgstr "Memuat riwayat penggunaan…"
-
-msgid "Loading work item…"
-msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "Memuat workspace…"
@@ -9224,6 +9313,9 @@ msgstr "Aplikasi mobile"
 
 msgid "Mobile App"
 msgstr "Aplikasi Mobile"
+
+msgid "Mobile build generation"
+msgstr "Pembuatan build seluler"
 
 msgid "model"
 msgstr "model"
@@ -9745,6 +9837,9 @@ msgstr "Tidak ada sesi terminal latar belakang"
 msgid "No branches found"
 msgstr "Tidak ada branch ditemukan"
 
+msgid "No changed files"
+msgstr "Tidak ada file yang diubah"
+
 msgid "No changed files."
 msgstr "Tidak ada file yang berubah."
 
@@ -9798,6 +9893,9 @@ msgstr "Belum ada komentar."
 
 msgid "No comments yet. Turn on comment mode and click anything on the page to start one."
 msgstr "Belum ada komentar. Aktifkan mode komentar lalu klik apa pun di halaman untuk memulai."
+
+msgid "No commits found"
+msgstr "Tidak ada commit ditemukan"
 
 msgid "No commits on this branch yet."
 msgstr "Belum ada commit di branch ini."
@@ -9915,6 +10013,9 @@ msgstr "Tidak ada pembuat yang diketahui"
 
 msgid "No labels"
 msgstr "Tanpa label"
+
+msgid "No linked worktree"
+msgstr "Tidak ada worktree tertaut"
 
 msgid "No live sessions"
 msgstr "Tidak ada sesi aktif"
@@ -12385,6 +12486,12 @@ msgstr "Hapus {label}?"
 msgid "Remove attachment"
 msgstr "Hapus lampiran"
 
+msgid "Remove Bitrise token"
+msgstr "Hapus token Bitrise"
+
+msgid "Remove developer name"
+msgstr "Hapus nama pengembang"
+
 msgid "Remove from Queue"
 msgstr "Keluarkan dari Antrean"
 
@@ -13181,6 +13288,12 @@ msgstr "Simpan dan uji"
 msgid "Save as environment"
 msgstr "Simpan sebagai environment"
 
+msgid "Save build settings"
+msgstr "Simpan pengaturan build"
+
+msgid "Save changes"
+msgstr "Simpan perubahan"
+
 msgid "Save edits"
 msgstr "Simpan suntingan"
 
@@ -13376,6 +13489,9 @@ msgstr "Cari di {frameTitle}…"
 msgid "Search issues..."
 msgstr "Cari issue..."
 
+msgid "Search message or hash"
+msgstr "Cari pesan atau hash"
+
 msgid "Search pages"
 msgstr "Cari halaman"
 
@@ -13526,6 +13642,9 @@ msgstr "Pilih cabang"
 msgid "Select a default preset"
 msgstr "Pilih preset default"
 
+msgid "Select a name"
+msgstr "Pilih nama"
+
 msgid "Select a project"
 msgstr "Pilih sebuah proyek"
 
@@ -13663,6 +13782,9 @@ msgstr "Pilih tim"
 
 msgid "Select terminal script directory"
 msgstr "Pilih direktori skrip terminal"
+
+msgid "Select worktree"
+msgstr "Pilih worktree"
 
 msgid "Select worktree location"
 msgstr "Pilih lokasi worktree"
@@ -13862,6 +13984,9 @@ msgstr "Setup"
 
 msgid "Setup script"
 msgstr "Skrip setup"
+
+msgid "SHA"
+msgstr "SHA"
 
 msgid "shadcn/ui tooltip recipe"
 msgstr "Resep tooltip shadcn/ui"
@@ -14552,6 +14677,9 @@ msgstr "Star yang didapat per minggu"
 msgid "Start a {harness} session"
 msgstr "Mulai sesi {harness}"
 
+msgid "Start a Bitrise build from a worktree linked to this Azure work item."
+msgstr "Mulai build Bitrise dari worktree yang ditautkan ke item kerja Azure ini."
+
 msgid "Start a conversation to see messages here"
 msgstr "Mulai percakapan untuk melihat pesan di sini"
 
@@ -14575,6 +14703,9 @@ msgstr "Mulai sebuah agen atau terminal untuk mulai bekerja di workspace ini."
 
 msgid "Start browsing"
 msgstr "Mulai menjelajah"
+
+msgid "Start build"
+msgstr "Mulai build"
 
 msgid "Start free. Upgrade when your team outgrows it. Enterprise plans for organizations with advanced security and compliance needs."
 msgstr "Mulai gratis. Upgrade saat tim Anda membutuhkan lebih. Paket enterprise untuk organisasi dengan kebutuhan keamanan dan kepatuhan tingkat lanjut."
@@ -14896,9 +15027,6 @@ msgstr "Memori Superset"
 
 msgid "Superset memory · last 5 min"
 msgstr "Memori Superset · 5 menit terakhir"
-
-msgid "Superset Mobile is part of Pro"
-msgstr "Superset Mobile termasuk dalam Pro"
 
 msgid "Superset Mobile runs agents on the computers you connect."
 msgstr "Superset Mobile menjalankan agen di komputer yang Anda hubungkan."
@@ -15663,6 +15791,9 @@ msgstr "Undangan tim ini sudah kedaluwarsa atau tidak ada. Minta tautan baru dar
 msgid "The title shows everywhere this page is listed and in its link preview."
 msgstr "Judul muncul di semua tempat halaman ini terdaftar dan di pratinjau tautannya."
 
+msgid "The token is stored securely and is never displayed again."
+msgstr "Token disimpan dengan aman dan tidak akan ditampilkan lagi."
+
 msgid "The web agents UI is a read-only preview for now."
 msgstr "UI agen di web masih pratinjau baca-saja untuk saat ini."
 
@@ -15856,9 +15987,6 @@ msgstr "Operasi ini dinonaktifkan untuk proyek ini."
 msgid "this organization"
 msgstr "organisasi ini"
 
-msgid "This organization is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "Organisasi ini memakai paket Gratis. Superset Mobile tersedia untuk organisasi dengan paket Pro."
-
 msgid "This page could not be loaded"
 msgstr "Halaman ini tidak bisa dimuat"
 
@@ -16022,6 +16150,9 @@ msgstr "Host workspace ini sedang offline"
 
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "Host workspace ini menjalankan layanan host yang lebih lama dari yang didukung aplikasi ini. Perbarui untuk tersambung kembali; workspace dan berkasnya tidak tersentuh."
+
+msgid "This worktree's host is unavailable."
+msgstr "Host worktree ini tidak tersedia."
 
 msgid "Thorough reasoning effort"
 msgstr "Upaya penalaran menyeluruh"
@@ -16659,10 +16790,6 @@ msgstr "Upgrade"
 msgid "Upgrade a dependency and fix what breaks…"
 msgstr "Upgrade satu dependensi dan perbaiki yang rusak…"
 
-#. placeholder {0}: COMPANY.DOMAIN
-msgid "Upgrade on {0}"
-msgstr "Upgrade di {0}"
-
 #. placeholder {0}: i18n._(plan.name)
 msgid "Upgrade to {0}"
 msgstr "Upgrade ke {0}"
@@ -16782,6 +16909,9 @@ msgstr "Memakai transkripsi suara dan fitur push-to-talk."
 msgid "Use your existing agent subscriptions and API keys. Superset never proxies model calls or locks your workflow to one provider."
 msgstr "Pakai langganan agen dan kunci API Anda yang sudah ada. Superset tidak pernah mem-proxy panggilan model atau mengunci alur kerja Anda ke satu penyedia."
 
+msgid "Used as the version name for alpha builds. Leave blank when the workflow generates it automatically."
+msgstr "Digunakan sebagai nama versi untuk build Alpha. Biarkan kosong jika workflow membuatnya otomatis."
+
 msgid "Used in URLs and APIs."
 msgstr "Dipakai di URL dan API."
 
@@ -16876,8 +17006,14 @@ msgstr "Version Control"
 msgid "Version history"
 msgstr "Riwayat versi"
 
+msgid "Version name"
+msgstr "Nama versi"
+
 msgid "Version not found"
 msgstr "Versi tidak ditemukan"
+
+msgid "Version number"
+msgstr "Nomor versi"
 
 msgid "Version unknown"
 msgstr "Versi tidak diketahui"
@@ -17301,6 +17437,9 @@ msgstr "Work item"
 msgid "Work item not found"
 msgstr "Work item not found"
 
+msgid "Work item number from branch:"
+msgstr "Nomor item kerja dari branch:"
+
 msgid "Work item project"
 msgstr "Work item project"
 
@@ -17424,6 +17563,12 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
+
+msgid "Worktree and branch"
+msgstr "Worktree dan branch"
+
+msgid "Worktree branch"
+msgstr "Branch worktree"
 
 msgid "Worktree created"
 msgstr "Worktree created"

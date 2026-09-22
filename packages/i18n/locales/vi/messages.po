@@ -375,10 +375,6 @@ msgstr "{0} đang ngoại tuyến"
 msgid "{0} is offline."
 msgstr "{0} đang ngoại tuyến."
 
-#. placeholder {0}: activeOrganization.name
-msgid "{0} is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "{0} đang dùng gói Free. Superset Mobile chỉ dành cho tổ chức dùng gói Pro."
-
 #. placeholder {0}: host?.name ?? t({ message: "This host" })
 #. placeholder {1}: hostCompatibility.hostVersion
 #. placeholder {2}: hostCompatibility.minVersion
@@ -1294,6 +1290,12 @@ msgstr "Một hồ sơ riêng dùng chung skill, plugin, server MCP và cài đ�
 msgid "a teammate"
 msgstr "một đồng đội"
 
+msgid "A token is already stored securely"
+msgstr "Mã thông báo đã được lưu an toàn"
+
+msgid "A token is stored in this host's secure credential store."
+msgstr "Mã thông báo được lưu trong kho thông tin xác thực an toàn của máy chủ này."
+
 msgid "A unique identifier for your organization (auto-generated from name)"
 msgstr "Định danh duy nhất cho tổ chức của bạn (tự tạo từ tên)"
 
@@ -1418,6 +1420,9 @@ msgstr "Thêm"
 msgid "Add {0} account"
 msgstr "Thêm tài khoản {0}"
 
+msgid "Add a developer name"
+msgstr "Thêm tên nhà phát triển"
+
 msgid "Add a lifecycle run script in Project Settings or mark a terminal script as the workspace run."
 msgstr "Hãy thêm một script chạy vòng đời trong Cài đặt dự án hoặc đánh dấu một script terminal làm lệnh chạy của workspace."
 
@@ -1450,6 +1455,9 @@ msgstr "Thêm một environment trong Settings trước khi tạo workspace clou
 
 msgid "Add any machine as a host. Workspaces keep running when your laptop sleeps, and you can check in from wherever you are."
 msgstr "Thêm bất kỳ máy nào làm host. Workspace vẫn chạy khi laptop của bạn ngủ, và bạn có thể kiểm tra từ bất cứ đâu."
+
+msgid "Add at least one name before generating a build."
+msgstr "Thêm ít nhất một tên trước khi tạo bản dựng."
 
 msgid "Add attachment"
 msgstr "Thêm tệp đính kèm"
@@ -1526,6 +1534,12 @@ msgstr "Thêm test cho phần code rủi ro nhất chưa được test…"
 
 msgid "Add tests where they're missing"
 msgstr "Thêm test ở những chỗ còn thiếu"
+
+msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
+msgstr "Thêm mã thông báo Bitrise trong cài đặt Azure DevOps của dự án này trước khi tạo bản dựng."
+
+msgid "Add this build to mocks"
+msgstr "Thêm bản dựng này vào mocks"
 
 msgid "Add to Dictionary"
 msgstr "Thêm vào từ điển"
@@ -1745,6 +1759,9 @@ msgstr "Tất cả người phụ trách"
 msgid "All authors"
 msgstr "Tất cả tác giả"
 
+msgid "All branches"
+msgstr "Tất cả nhánh"
+
 msgid "All changes saved"
 msgstr "Đã lưu mọi thay đổi"
 
@@ -1886,6 +1903,12 @@ msgstr "Đã cho phép"
 
 msgid "Allowed for session"
 msgstr "Đã cho phép trong phiên này"
+
+msgid "Alpha uses the configured version value for this project."
+msgstr "Alpha sử dụng giá trị phiên bản đã cấu hình cho dự án này."
+
+msgid "Alpha version value"
+msgstr "Giá trị phiên bản Alpha"
 
 msgid "Already have an account? <0>Sign in</0>"
 msgstr "Đã có tài khoản? <0>Đăng nhập</0>"
@@ -2483,6 +2506,9 @@ msgstr "Azure CLI on {targetName}"
 msgid "Azure DevOps"
 msgstr "Azure DevOps"
 
+msgid "Azure DevOps board configuration updated"
+msgstr "Đã cập nhật cấu hình bảng Azure DevOps"
+
 msgid "Azure DevOps board connected"
 msgstr "Azure DevOps board connected"
 
@@ -2661,6 +2687,12 @@ msgstr "Tệp nhị phân, lớn hoặc đặc biệt. Chọn một phiên bản
 
 msgid "Bio"
 msgstr "Giới thiệu"
+
+msgid "Bitrise build trigger token"
+msgstr "Mã thông báo kích hoạt bản dựng Bitrise"
+
+msgid "Bitrise token removed"
+msgstr "Đã xóa mã thông báo Bitrise"
 
 msgid "Block"
 msgstr "Khối"
@@ -2843,8 +2875,20 @@ msgstr "Đã đạt giới hạn ngân sách"
 msgid "Bug"
 msgstr "Bug"
 
+msgid "Build number"
+msgstr "Số bản dựng"
+
+msgid "Build settings saved"
+msgstr "Đã lưu cài đặt bản dựng"
+
+msgid "Build started"
+msgstr "Đã bắt đầu bản dựng"
+
 msgid "Build the future of Superset in the cloud"
 msgstr "Xây dựng tương lai của Superset trên đám mây"
+
+msgid "Build type"
+msgstr "Loại bản dựng"
 
 msgid "Building the last piece of software"
 msgstr "Xây phần mềm cuối cùng"
@@ -3818,6 +3862,9 @@ msgstr "So sánh Superset với Cursor, Claude Code, Codex, Windsurf, Devin, Git
 msgid "Compared against the default style"
 msgstr "So sánh với kiểu mặc định"
 
+msgid "Compared with first parent"
+msgstr "So sánh với commit cha đầu tiên"
+
 msgid "complete"
 msgstr "đã kết thúc"
 
@@ -3857,11 +3904,17 @@ msgstr "Cấu hình hành vi của nhánh git và worktree"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Cấu hình cách tác vụ đồng bộ giữa Superset và Linear."
 
+msgid "Configure mobile build generation in this project's Azure DevOps settings."
+msgstr "Cấu hình tạo bản dựng di động trong cài đặt Azure DevOps của dự án này."
+
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "Cấu hình hành vi terminal và các script terminal dùng lại được"
 
 msgid "Configure the automation yourself"
 msgstr "Tự cấu hình quy trình tự động hóa"
+
+msgid "Configure the Bitrise app and the developer names available for this project."
+msgstr "Cấu hình ứng dụng Bitrise và tên nhà phát triển có sẵn cho dự án này."
 
 msgid "Configure the in-app browser"
 msgstr "Cấu hình trình duyệt trong ứng dụng"
@@ -3955,6 +4008,9 @@ msgstr "Kết nối Slack"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "Kết nối Slack để quản lý tác vụ ngay trong hội thoại. Nhắc bot ở bất kỳ kênh nào hoặc nhắn tin trực tiếp cho nó để tạo và cập nhật tác vụ."
+
+msgid "Connect to this host to configure mobile builds."
+msgstr "Kết nối với máy chủ này để cấu hình bản dựng di động."
 
 msgid "Connect your Azure DevOps board"
 msgstr "Connect your Azure DevOps board"
@@ -4359,9 +4415,6 @@ msgstr "Không thể đổi phiên bản được chia sẻ"
 
 msgid "Could not change who can see this page"
 msgstr "Không thể đổi ai được xem trang này"
-
-msgid "Could not check your plan. Check your connection and try again."
-msgstr "Không thể kiểm tra gói của bạn. Hãy kiểm tra kết nối và thử lại."
 
 msgid "Could not clear browsing data"
 msgstr "Không thể xóa dữ liệu duyệt web"
@@ -4941,6 +4994,9 @@ msgstr "Ctrl+Shift+nhấp"
 msgid "Current"
 msgstr "Hiện tại"
 
+msgid "Current branch"
+msgstr "Nhánh hiện tại"
+
 msgid "Current level"
 msgstr "Mức hiện tại"
 
@@ -5059,6 +5115,9 @@ msgstr "Dashboard"
 
 msgid "Data display"
 msgstr "Hiển thị dữ liệu"
+
+msgid "Date"
+msgstr "Ngày"
 
 msgid "Date created"
 msgstr "Ngày tạo"
@@ -5394,6 +5453,12 @@ msgstr "Phát triển bởi {author}"
 
 msgid "Developer"
 msgstr "Lập trình viên"
+
+msgid "Developer name"
+msgstr "Tên nhà phát triển"
+
+msgid "Developer names"
+msgstr "Tên nhà phát triển"
 
 msgid "Developers"
 msgstr "Lập trình viên"
@@ -5837,6 +5902,9 @@ msgstr "Đã đạt {name} ×{tier}"
 msgid "Edit"
 msgstr "Sửa"
 
+msgid "Edit Azure DevOps board configuration"
+msgstr "Chỉnh sửa cấu hình bảng Azure DevOps"
+
 msgid "Edit comment"
 msgstr "Sửa bình luận"
 
@@ -5976,6 +6044,9 @@ msgstr "Hãy nhập một quy tắc lặp hợp lệ."
 
 msgid "Enter a value."
 msgstr "Hãy nhập một giá trị."
+
+msgid "Enter the Bitrise token"
+msgstr "Nhập mã thông báo Bitrise"
 
 msgid "Enter URL or search..."
 msgstr "Nhập URL hoặc tìm kiếm..."
@@ -6531,6 +6602,9 @@ msgstr "Không thể gỡ"
 msgid "Failed to remove Azure DevOps configuration"
 msgstr "Không thể xóa cấu hình Azure DevOps"
 
+msgid "Failed to remove Bitrise token"
+msgstr "Không thể xóa mã thông báo Bitrise"
+
 msgid "Failed to remove member"
 msgstr "Không thể gỡ thành viên"
 
@@ -6618,6 +6692,9 @@ msgstr "Không thể lưu"
 msgid "Failed to save Azure DevOps configuration"
 msgstr "Không thể lưu cấu hình Azure DevOps"
 
+msgid "Failed to save build settings"
+msgstr "Không thể lưu cài đặt bản dựng"
+
 msgid "Failed to save installation. Please try again."
 msgstr "Không thể lưu bản cài đặt. Vui lòng thử lại."
 
@@ -6669,6 +6746,9 @@ msgstr "Không thể khởi động agent"
 
 msgid "Failed to start agent session."
 msgstr "Không thể khởi động phiên agent."
+
+msgid "Failed to start build"
+msgstr "Không thể bắt đầu bản dựng"
 
 msgid "Failed to stop workspace run command"
 msgstr "Không thể dừng lệnh chạy của workspace"
@@ -7199,8 +7279,14 @@ msgstr "Tạo một khóa để dùng với các server MCP."
 msgid "Generate API key"
 msgstr "Tạo khóa API"
 
+msgid "Generate build"
+msgstr "Tạo bản dựng"
+
 msgid "Generate key"
 msgstr "Tạo khóa"
+
+msgid "Generate mobile build"
+msgstr "Tạo bản dựng di động"
 
 msgid "Generated file hidden"
 msgstr "Đã ẩn tệp được tạo tự động"
@@ -7258,6 +7344,9 @@ msgstr "Git & Worktree"
 
 msgid "Git author name"
 msgstr "Tên tác giả Git"
+
+msgid "Git History"
+msgstr "Lịch sử Git"
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Tích hợp Git thất bại. Kiểm tra kho và thử lại hoặc hủy lần thử."
@@ -8737,6 +8826,9 @@ msgstr "Đang tải thêm..."
 msgid "Loading more…"
 msgstr "Đang tải thêm…"
 
+msgid "Loading project build settings…"
+msgstr "Đang tải cài đặt bản dựng của dự án…"
+
 msgid "Loading project…"
 msgstr "Đang tải dự án…"
 
@@ -8775,9 +8867,6 @@ msgstr "Đang tải script terminal..."
 
 msgid "Loading usage history…"
 msgstr "Đang tải lịch sử sử dụng…"
-
-msgid "Loading work item…"
-msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "Đang tải không gian làm việc…"
@@ -9224,6 +9313,9 @@ msgstr "Ứng dụng di động"
 
 msgid "Mobile App"
 msgstr "Ứng dụng di động"
+
+msgid "Mobile build generation"
+msgstr "Tạo bản dựng di động"
 
 msgid "model"
 msgstr "mô hình"
@@ -9745,6 +9837,9 @@ msgstr "Không có phiên terminal nào chạy nền"
 msgid "No branches found"
 msgstr "Không tìm thấy nhánh nào"
 
+msgid "No changed files"
+msgstr "Không có tệp thay đổi"
+
 msgid "No changed files."
 msgstr "Không có tệp nào thay đổi."
 
@@ -9798,6 +9893,9 @@ msgstr "Chưa có bình luận nào."
 
 msgid "No comments yet. Turn on comment mode and click anything on the page to start one."
 msgstr "Chưa có bình luận nào. Bật chế độ bình luận rồi nhấp vào bất kỳ phần nào của trang để bắt đầu."
+
+msgid "No commits found"
+msgstr "Không tìm thấy commit"
 
 msgid "No commits on this branch yet."
 msgstr "Chưa có commit nào trên nhánh này."
@@ -9915,6 +10013,9 @@ msgstr "Không có người tạo nào được biết"
 
 msgid "No labels"
 msgstr "Không có nhãn"
+
+msgid "No linked worktree"
+msgstr "Không có worktree được liên kết"
 
 msgid "No live sessions"
 msgstr "Không có phiên nào đang chạy"
@@ -12385,6 +12486,12 @@ msgstr "Gỡ {label}?"
 msgid "Remove attachment"
 msgstr "Xóa tệp đính kèm"
 
+msgid "Remove Bitrise token"
+msgstr "Xóa mã thông báo Bitrise"
+
+msgid "Remove developer name"
+msgstr "Xóa tên nhà phát triển"
+
 msgid "Remove from Queue"
 msgstr "Bỏ khỏi hàng đợi"
 
@@ -13181,6 +13288,12 @@ msgstr "Lưu và kiểm tra"
 msgid "Save as environment"
 msgstr "Lưu thành environment"
 
+msgid "Save build settings"
+msgstr "Lưu cài đặt bản dựng"
+
+msgid "Save changes"
+msgstr "Lưu thay đổi"
+
 msgid "Save edits"
 msgstr "Lưu chỉnh sửa"
 
@@ -13376,6 +13489,9 @@ msgstr "Tìm trong {frameTitle}…"
 msgid "Search issues..."
 msgstr "Tìm issue..."
 
+msgid "Search message or hash"
+msgstr "Tìm thông điệp hoặc mã băm"
+
 msgid "Search pages"
 msgstr "Tìm trang"
 
@@ -13526,6 +13642,9 @@ msgstr "Chọn nhánh"
 msgid "Select a default preset"
 msgstr "Chọn cấu hình mặc định"
 
+msgid "Select a name"
+msgstr "Chọn tên"
+
 msgid "Select a project"
 msgstr "Chọn một dự án"
 
@@ -13663,6 +13782,9 @@ msgstr "Chọn nhóm"
 
 msgid "Select terminal script directory"
 msgstr "Chọn thư mục cho script terminal"
+
+msgid "Select worktree"
+msgstr "Chọn worktree"
 
 msgid "Select worktree location"
 msgstr "Chọn vị trí worktree"
@@ -13862,6 +13984,9 @@ msgstr "Thiết lập"
 
 msgid "Setup script"
 msgstr "Script thiết lập"
+
+msgid "SHA"
+msgstr "SHA"
 
 msgid "shadcn/ui tooltip recipe"
 msgstr "Công thức tooltip của shadcn/ui"
@@ -14552,6 +14677,9 @@ msgstr "Số star tăng mỗi tuần"
 msgid "Start a {harness} session"
 msgstr "Bắt đầu một phiên {harness}"
 
+msgid "Start a Bitrise build from a worktree linked to this Azure work item."
+msgstr "Bắt đầu bản dựng Bitrise từ worktree được liên kết với mục công việc Azure này."
+
 msgid "Start a conversation to see messages here"
 msgstr "Bắt đầu một cuộc trò chuyện để thấy tin nhắn ở đây"
 
@@ -14575,6 +14703,9 @@ msgstr "Hãy khởi động một agent hoặc terminal để bắt đầu làm 
 
 msgid "Start browsing"
 msgstr "Bắt đầu duyệt web"
+
+msgid "Start build"
+msgstr "Bắt đầu bản dựng"
 
 msgid "Start free. Upgrade when your team outgrows it. Enterprise plans for organizations with advanced security and compliance needs."
 msgstr "Bắt đầu miễn phí. Nâng cấp khi đội của bạn lớn hơn. Gói Enterprise dành cho tổ chức có nhu cầu bảo mật và tuân thủ nâng cao."
@@ -14896,9 +15027,6 @@ msgstr "Bộ nhớ của Superset"
 
 msgid "Superset memory · last 5 min"
 msgstr "Bộ nhớ của Superset · 5 phút gần nhất"
-
-msgid "Superset Mobile is part of Pro"
-msgstr "Superset Mobile thuộc gói Pro"
 
 msgid "Superset Mobile runs agents on the computers you connect."
 msgstr "Superset Mobile chạy agent trên những máy tính bạn kết nối."
@@ -15663,6 +15791,9 @@ msgstr "Lời mời vào nhóm đã hết hạn hoặc không tồn tại. Hãy 
 msgid "The title shows everywhere this page is listed and in its link preview."
 msgstr "Tiêu đề hiển thị ở mọi nơi trang này được liệt kê và trong bản xem trước liên kết."
 
+msgid "The token is stored securely and is never displayed again."
+msgstr "Mã thông báo được lưu an toàn và sẽ không hiển thị lại."
+
 msgid "The web agents UI is a read-only preview for now."
 msgstr "Giao diện agent trên web hiện chỉ là bản xem trước chỉ đọc."
 
@@ -15856,9 +15987,6 @@ msgstr "Thao tác này đã bị tắt cho dự án."
 msgid "this organization"
 msgstr "tổ chức này"
 
-msgid "This organization is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "Tổ chức này đang dùng gói Free. Superset Mobile chỉ dành cho tổ chức dùng gói Pro."
-
 msgid "This page could not be loaded"
 msgstr "Không thể tải trang này"
 
@@ -16022,6 +16150,9 @@ msgstr "Host của workspace này đang ngoại tuyến"
 
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "Máy chủ của workspace này chạy dịch vụ máy chủ cũ hơn mức ứng dụng hỗ trợ. Hãy cập nhật để kết nối lại; workspace và các tệp không bị ảnh hưởng."
+
+msgid "This worktree's host is unavailable."
+msgstr "Không thể truy cập máy chủ của worktree này."
 
 msgid "Thorough reasoning effort"
 msgstr "Mức suy luận kỹ lưỡng"
@@ -16659,10 +16790,6 @@ msgstr "Nâng cấp"
 msgid "Upgrade a dependency and fix what breaks…"
 msgstr "Nâng cấp một dependency và sửa những gì hỏng…"
 
-#. placeholder {0}: COMPANY.DOMAIN
-msgid "Upgrade on {0}"
-msgstr "Nâng cấp trên {0}"
-
 #. placeholder {0}: i18n._(plan.name)
 msgid "Upgrade to {0}"
 msgstr "Nâng cấp lên {0}"
@@ -16782,6 +16909,9 @@ msgstr "Dùng tính năng chuyển giọng nói thành văn bản và nhấn đ�
 msgid "Use your existing agent subscriptions and API keys. Superset never proxies model calls or locks your workflow to one provider."
 msgstr "Dùng gói đăng ký agent và khóa API sẵn có của bạn. Superset không bao giờ proxy lệnh gọi mô hình hay trói quy trình của bạn vào một nhà cung cấp."
 
+msgid "Used as the version name for alpha builds. Leave blank when the workflow generates it automatically."
+msgstr "Dùng làm tên phiên bản cho bản dựng Alpha. Để trống nếu workflow tự tạo."
+
 msgid "Used in URLs and APIs."
 msgstr "Dùng trong URL và API."
 
@@ -16876,8 +17006,14 @@ msgstr "Quản lý phiên bản"
 msgid "Version history"
 msgstr "Lịch sử phiên bản"
 
+msgid "Version name"
+msgstr "Tên phiên bản"
+
 msgid "Version not found"
 msgstr "Không tìm thấy phiên bản"
+
+msgid "Version number"
+msgstr "Số phiên bản"
 
 msgid "Version unknown"
 msgstr "Không rõ phiên bản"
@@ -17301,6 +17437,9 @@ msgstr "Work item"
 msgid "Work item not found"
 msgstr "Work item not found"
 
+msgid "Work item number from branch:"
+msgstr "Số mục công việc từ branch:"
+
 msgid "Work item project"
 msgstr "Work item project"
 
@@ -17424,6 +17563,12 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
+
+msgid "Worktree and branch"
+msgstr "Worktree và branch"
+
+msgid "Worktree branch"
+msgstr "Branch của worktree"
 
 msgid "Worktree created"
 msgstr "Worktree created"

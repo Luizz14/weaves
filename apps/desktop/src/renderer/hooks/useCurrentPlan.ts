@@ -22,7 +22,6 @@ type ActivePlan = RouterOutputs["billing"]["activePlan"];
  */
 export function useCurrentPlan() {
 	const organizationId = useActiveOrganizationId();
-	const utils = cloudTrpc.useUtils();
 	const { data } = cloudTrpc.billing.activePlan.useQuery(undefined);
 
 	const activePlan = isPlanFor(data, organizationId) ? data : undefined;
@@ -31,27 +30,7 @@ export function useCurrentPlan() {
 		? planTierFromSubscription(activePlan)
 		: "free";
 
-	// The gate must never resolve on an unknown answer: fail-open leaks every
-	// gated action to free users during the cold-start window, fail-closed
-	// paywalls entitled trial orgs. Defer instead — ensureData awaits the
-	// already-in-flight fetch, so a click during the window resolves correctly
-	// a beat later. A fetch failure propagates: the caller says so rather than
-	// guess.
-	async function resolvePlanWhenKnown(): Promise<PlanTier> {
-		if (isReady) return plan;
-		const cached = await utils.billing.activePlan.ensureData();
-		const fetched = isPlanFor(cached, organizationId)
-			? cached
-			: await utils.billing.activePlan.fetch(undefined, { staleTime: 0 });
-		if (fetched.organizationId !== organizationId) {
-			throw new Error(
-				`Active plan answered for ${fetched.organizationId}, not ${organizationId}`,
-			);
-		}
-		return planTierFromSubscription(fetched);
-	}
-
-	return { plan, isReady, activePlan, resolvePlanWhenKnown };
+	return { plan, isReady, activePlan };
 }
 
 function isPlanFor(

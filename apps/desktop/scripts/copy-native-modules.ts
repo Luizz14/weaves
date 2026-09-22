@@ -90,6 +90,23 @@ function copyModuleIfSymlink(
 
 	const stats = lstatSync(modulePath);
 
+	if (
+		!stats.isSymbolicLink() &&
+		!existsSync(join(modulePath, "package.json"))
+	) {
+		console.warn(
+			`  ${moduleName}: incomplete package directory found; removing it`,
+		);
+		rmSync(modulePath, { recursive: true, force: true });
+		if (required) {
+			console.error(
+				`  [ERROR] ${moduleName} has no package.json at ${modulePath}`,
+			);
+			process.exit(1);
+		}
+		return false;
+	}
+
 	if (stats.isSymbolicLink()) {
 		// Resolve symlink to get real path
 		const realPath = realpathSync(modulePath);
@@ -121,21 +138,29 @@ function fetchNpmPackage(
 		: packageName;
 	const url = `https://registry.npmjs.org/${packageName}/-/${barePackageName}-${version}.tgz`;
 	console.log(`  ${packageName}: fetching from npm (${version})`);
+	const archivePath = `${destPath}.tgz`;
 	try {
 		mkdirSync(destPath, { recursive: true });
+		execSync(`curl -fLsS "${url}" -o "${archivePath}"`, {
+			stdio: "pipe",
+		});
 		execSync(
-			`curl -sL "${url}" | tar xz -C "${destPath}" --strip-components=1`,
-			{
-				stdio: "pipe",
-			},
+			`tar xz -f "${archivePath}" -C "${destPath}" --strip-components=1`,
+			{ stdio: "pipe" },
 		);
+		if (!existsSync(join(destPath, "package.json"))) {
+			throw new Error("downloaded archive did not contain package.json");
+		}
 		console.log(`    Extracted to: ${destPath}`);
 		return true;
 	} catch (err) {
+		rmSync(destPath, { recursive: true, force: true });
 		console.error(
 			`  [ERROR] Failed to fetch ${packageName}@${version}: ${err}`,
 		);
 		return false;
+	} finally {
+		rmSync(archivePath, { force: true });
 	}
 }
 
@@ -178,8 +203,10 @@ function copyAstGrepPlatformPackages(nodeModulesDir: string): void {
 				platformPkg.name,
 				false,
 			);
-			if (isTargetPkg && copied) resolvedTargetPackage = true;
-			continue;
+			if (copied) {
+				if (isTargetPkg) resolvedTargetPackage = true;
+				continue;
+			}
 		}
 
 		const bunStoreFolderName = findBunStoreFolderName(
@@ -295,6 +322,65 @@ function copyParcelWatcherPlatformPackages(nodeModulesDir: string): void {
 	}
 }
 
+function keyringTargetSuffixes(): string[] {
+	if (TARGET_PLATFORM === "darwin") return [`darwin-${TARGET_ARCH}`];
+	if (TARGET_PLATFORM === "win32") return [`win32-${TARGET_ARCH}-msvc`];
+	if (TARGET_PLATFORM === "freebsd") return [`freebsd-${TARGET_ARCH}`];
+	if (TARGET_PLATFORM !== "linux") return [];
+	if (TARGET_ARCH === "arm") return ["linux-arm-gnueabihf"];
+	if (TARGET_ARCH === "arm64" || TARGET_ARCH === "x64") {
+		return [`linux-${TARGET_ARCH}-gnu`, `linux-${TARGET_ARCH}-musl`];
+	}
+	if (TARGET_ARCH === "riscv64") return ["linux-riscv64-gnu"];
+	return [];
+}
+
+function copyKeyringPlatformPackages(nodeModulesDir: string): void {
+	const keyringPath = join(nodeModulesDir, "@napi-rs", "keyring");
+	const keyringPackageJsonPath = join(keyringPath, "package.json");
+	if (!existsSync(keyringPackageJsonPath)) return;
+
+	type KeyringPackageJson = {
+		optionalDependencies?: Record<string, string>;
+	};
+	const keyringPackage = JSON.parse(
+		readFileSync(keyringPackageJsonPath, "utf8"),
+	) as KeyringPackageJson;
+	const optionalDependencies = keyringPackage.optionalDependencies ?? {};
+	const suffixes = keyringTargetSuffixes();
+	const targetPackages = Object.entries(optionalDependencies).filter(([name]) =>
+		suffixes.some((suffix) => name.endsWith(suffix)),
+	);
+	if (targetPackages.length === 0) {
+		throw new Error(
+			`No @napi-rs/keyring binary is available for ${TARGET_PLATFORM}/${TARGET_ARCH}`,
+		);
+	}
+
+	const bunStoreDir = getBunStoreDir(nodeModulesDir);
+	for (const [packageName, version] of targetPackages) {
+		if (copyModuleIfSymlink(nodeModulesDir, packageName, false)) continue;
+
+		const storeFolderName = findBunStoreFolderName(
+			bunStoreDir,
+			packageName,
+			version,
+		);
+		const storePackagePath = storeFolderName
+			? join(bunStoreDir, storeFolderName, "node_modules", packageName)
+			: null;
+		const targetPath = join(nodeModulesDir, packageName);
+		if (storePackagePath && existsSync(storePackagePath)) {
+			mkdirSync(dirname(targetPath), { recursive: true });
+			cpSync(realpathSync(storePackagePath), targetPath, { recursive: true });
+			continue;
+		}
+		if (!fetchNpmPackage(packageName, version, targetPath)) {
+			throw new Error(`Could not prepare ${packageName}@${version}`);
+		}
+	}
+}
+
 function prepareNativeModules() {
 	console.log("Preparing external runtime modules for electron-builder...");
 	console.log(
@@ -312,6 +398,7 @@ function prepareNativeModules() {
 	console.log("\nPreparing ast-grep platform package...");
 	copyAstGrepPlatformPackages(nodeModulesDir);
 	copyParcelWatcherPlatformPackages(nodeModulesDir);
+	copyKeyringPlatformPackages(nodeModulesDir);
 
 	console.log("\nDone!");
 }

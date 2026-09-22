@@ -375,10 +375,6 @@ msgstr "{0} is offline"
 msgid "{0} is offline."
 msgstr "{0} is offline."
 
-#. placeholder {0}: activeOrganization.name
-msgid "{0} is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "{0} is on the Free plan. Superset Mobile is available for organizations on Pro."
-
 #. placeholder {0}: host?.name ?? t({ message: "This host" })
 #. placeholder {1}: hostCompatibility.hostVersion
 #. placeholder {2}: hostCompatibility.minVersion
@@ -1294,6 +1290,12 @@ msgstr "A separate profile that shares your skills, plugins, MCP servers, and se
 msgid "a teammate"
 msgstr "a teammate"
 
+msgid "A token is already stored securely"
+msgstr "A token is already stored securely"
+
+msgid "A token is stored in this host's secure credential store."
+msgstr "A token is stored in this host's secure credential store."
+
 msgid "A unique identifier for your organization (auto-generated from name)"
 msgstr "A unique identifier for your organization (auto-generated from name)"
 
@@ -1418,6 +1420,9 @@ msgstr "Add"
 msgid "Add {0} account"
 msgstr "Add {0} account"
 
+msgid "Add a developer name"
+msgstr "Add a developer name"
+
 msgid "Add a lifecycle run script in Project Settings or mark a terminal script as the workspace run."
 msgstr "Add a lifecycle run script in Project Settings or mark a terminal script as the workspace run."
 
@@ -1450,6 +1455,9 @@ msgstr "Add an environment in Settings before creating a cloud workspace"
 
 msgid "Add any machine as a host. Workspaces keep running when your laptop sleeps, and you can check in from wherever you are."
 msgstr "Add any machine as a host. Workspaces keep running when your laptop sleeps, and you can check in from wherever you are."
+
+msgid "Add at least one name before generating a build."
+msgstr "Add at least one name before generating a build."
 
 msgid "Add attachment"
 msgstr "Add attachment"
@@ -1526,6 +1534,12 @@ msgstr "Add tests for the riskiest untested code…"
 
 msgid "Add tests where they're missing"
 msgstr "Add tests where they're missing"
+
+msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
+msgstr "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
+
+msgid "Add this build to mocks"
+msgstr "Add this build to mocks"
 
 msgid "Add to Dictionary"
 msgstr "Add to Dictionary"
@@ -1745,6 +1759,9 @@ msgstr "All assignees"
 msgid "All authors"
 msgstr "All authors"
 
+msgid "All branches"
+msgstr "All branches"
+
 msgid "All changes saved"
 msgstr "All changes saved"
 
@@ -1886,6 +1903,12 @@ msgstr "Allowed"
 
 msgid "Allowed for session"
 msgstr "Allowed for session"
+
+msgid "Alpha uses the configured version value for this project."
+msgstr "Alpha uses the configured version value for this project."
+
+msgid "Alpha version value"
+msgstr "Alpha version value"
 
 msgid "Already have an account? <0>Sign in</0>"
 msgstr "Already have an account? <0>Sign in</0>"
@@ -2483,6 +2506,9 @@ msgstr "Azure CLI on {targetName}"
 msgid "Azure DevOps"
 msgstr "Azure DevOps"
 
+msgid "Azure DevOps board configuration updated"
+msgstr "Azure DevOps board configuration updated"
+
 msgid "Azure DevOps board connected"
 msgstr "Azure DevOps board connected"
 
@@ -2661,6 +2687,12 @@ msgstr "Binary, large, or special file. Choose a version to resolve."
 
 msgid "Bio"
 msgstr "Bio"
+
+msgid "Bitrise build trigger token"
+msgstr "Bitrise build trigger token"
+
+msgid "Bitrise token removed"
+msgstr "Bitrise token removed"
 
 msgid "Block"
 msgstr "Block"
@@ -2843,8 +2875,20 @@ msgstr "Budget limit reached"
 msgid "Bug"
 msgstr "Bug"
 
+msgid "Build number"
+msgstr "Build number"
+
+msgid "Build settings saved"
+msgstr "Build settings saved"
+
+msgid "Build started"
+msgstr "Build started"
+
 msgid "Build the future of Superset in the cloud"
 msgstr "Build the future of Superset in the cloud"
+
+msgid "Build type"
+msgstr "Build type"
 
 msgid "Building the last piece of software"
 msgstr "Building the last piece of software"
@@ -3818,6 +3862,9 @@ msgstr "Compare Superset with Cursor, Claude Code, Codex, Windsurf, Devin, GitHu
 msgid "Compared against the default style"
 msgstr "Compared against the default style"
 
+msgid "Compared with first parent"
+msgstr "Compared with first parent"
+
 msgid "complete"
 msgstr "complete"
 
@@ -3857,11 +3904,17 @@ msgstr "Configure git branch and worktree behavior"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Configure how tasks sync between Superset and Linear."
 
+msgid "Configure mobile build generation in this project's Azure DevOps settings."
+msgstr "Configure mobile build generation in this project's Azure DevOps settings."
+
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "Configure terminal behavior and reusable terminal scripts"
 
 msgid "Configure the automation yourself"
 msgstr "Configure the automation yourself"
+
+msgid "Configure the Bitrise app and the developer names available for this project."
+msgstr "Configure the Bitrise app and the developer names available for this project."
 
 msgid "Configure the in-app browser"
 msgstr "Configure the in-app browser"
@@ -3955,6 +4008,9 @@ msgstr "Connect Slack"
 
 msgid "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
 msgstr "Connect Slack to manage tasks from conversations. Mention the bot in any channel or send it a direct message to create and update tasks."
+
+msgid "Connect to this host to configure mobile builds."
+msgstr "Connect to this host to configure mobile builds."
 
 msgid "Connect your Azure DevOps board"
 msgstr "Connect your Azure DevOps board"
@@ -4359,9 +4415,6 @@ msgstr "Could not change the shared version"
 
 msgid "Could not change who can see this page"
 msgstr "Could not change who can see this page"
-
-msgid "Could not check your plan. Check your connection and try again."
-msgstr "Could not check your plan. Check your connection and try again."
 
 msgid "Could not clear browsing data"
 msgstr "Could not clear browsing data"
@@ -4941,6 +4994,9 @@ msgstr "Ctrl+Shift+click"
 msgid "Current"
 msgstr "Current"
 
+msgid "Current branch"
+msgstr "Current branch"
+
 msgid "Current level"
 msgstr "Current level"
 
@@ -5059,6 +5115,9 @@ msgstr "Dashboard"
 
 msgid "Data display"
 msgstr "Data display"
+
+msgid "Date"
+msgstr "Date"
 
 msgid "Date created"
 msgstr "Date created"
@@ -5394,6 +5453,12 @@ msgstr "Developed by {author}"
 
 msgid "Developer"
 msgstr "Developer"
+
+msgid "Developer name"
+msgstr "Developer name"
+
+msgid "Developer names"
+msgstr "Developer names"
 
 msgid "Developers"
 msgstr "Developers"
@@ -5837,6 +5902,9 @@ msgstr "Earned {name} ×{tier}"
 msgid "Edit"
 msgstr "Edit"
 
+msgid "Edit Azure DevOps board configuration"
+msgstr "Edit Azure DevOps board configuration"
+
 msgid "Edit comment"
 msgstr "Edit comment"
 
@@ -5976,6 +6044,9 @@ msgstr "Enter a valid recurrence rule."
 
 msgid "Enter a value."
 msgstr "Enter a value."
+
+msgid "Enter the Bitrise token"
+msgstr "Enter the Bitrise token"
 
 msgid "Enter URL or search..."
 msgstr "Enter URL or search..."
@@ -6531,6 +6602,9 @@ msgstr "Failed to remove"
 msgid "Failed to remove Azure DevOps configuration"
 msgstr "Failed to remove Azure DevOps configuration"
 
+msgid "Failed to remove Bitrise token"
+msgstr "Failed to remove Bitrise token"
+
 msgid "Failed to remove member"
 msgstr "Failed to remove member"
 
@@ -6618,6 +6692,9 @@ msgstr "Failed to save"
 msgid "Failed to save Azure DevOps configuration"
 msgstr "Failed to save Azure DevOps configuration"
 
+msgid "Failed to save build settings"
+msgstr "Failed to save build settings"
+
 msgid "Failed to save installation. Please try again."
 msgstr "Failed to save installation. Please try again."
 
@@ -6669,6 +6746,9 @@ msgstr "Failed to start agent"
 
 msgid "Failed to start agent session."
 msgstr "Failed to start agent session."
+
+msgid "Failed to start build"
+msgstr "Failed to start build"
 
 msgid "Failed to stop workspace run command"
 msgstr "Failed to stop workspace run command"
@@ -7199,8 +7279,14 @@ msgstr "Generate a key to use with MCP servers."
 msgid "Generate API key"
 msgstr "Generate API key"
 
+msgid "Generate build"
+msgstr "Generate build"
+
 msgid "Generate key"
 msgstr "Generate key"
+
+msgid "Generate mobile build"
+msgstr "Generate mobile build"
 
 msgid "Generated file hidden"
 msgstr "Generated file hidden"
@@ -7258,6 +7344,9 @@ msgstr "Git & Worktrees"
 
 msgid "Git author name"
 msgstr "Git author name"
+
+msgid "Git History"
+msgstr "Git History"
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Git integration failed. Check the repository and retry, or cancel the attempt."
@@ -8737,6 +8826,9 @@ msgstr "Loading more..."
 msgid "Loading more…"
 msgstr "Loading more…"
 
+msgid "Loading project build settings…"
+msgstr "Loading project build settings…"
+
 msgid "Loading project…"
 msgstr "Loading project…"
 
@@ -8775,9 +8867,6 @@ msgstr "Loading terminal scripts..."
 
 msgid "Loading usage history…"
 msgstr "Loading usage history…"
-
-msgid "Loading work item…"
-msgstr "Loading work item…"
 
 msgid "Loading workspaces…"
 msgstr "Loading workspaces…"
@@ -9224,6 +9313,9 @@ msgstr "Mobile app"
 
 msgid "Mobile App"
 msgstr "Mobile App"
+
+msgid "Mobile build generation"
+msgstr "Mobile build generation"
 
 msgid "model"
 msgstr "model"
@@ -9745,6 +9837,9 @@ msgstr "No background terminal sessions"
 msgid "No branches found"
 msgstr "No branches found"
 
+msgid "No changed files"
+msgstr "No changed files"
+
 msgid "No changed files."
 msgstr "No changed files."
 
@@ -9798,6 +9893,9 @@ msgstr "No comments yet."
 
 msgid "No comments yet. Turn on comment mode and click anything on the page to start one."
 msgstr "No comments yet. Turn on comment mode and click anything on the page to start one."
+
+msgid "No commits found"
+msgstr "No commits found"
 
 msgid "No commits on this branch yet."
 msgstr "No commits on this branch yet."
@@ -9915,6 +10013,9 @@ msgstr "No known creators"
 
 msgid "No labels"
 msgstr "No labels"
+
+msgid "No linked worktree"
+msgstr "No linked worktree"
 
 msgid "No live sessions"
 msgstr "No live sessions"
@@ -12385,6 +12486,12 @@ msgstr "Remove {label}?"
 msgid "Remove attachment"
 msgstr "Remove attachment"
 
+msgid "Remove Bitrise token"
+msgstr "Remove Bitrise token"
+
+msgid "Remove developer name"
+msgstr "Remove developer name"
+
 msgid "Remove from Queue"
 msgstr "Remove from Queue"
 
@@ -13181,6 +13288,12 @@ msgstr "Save and test"
 msgid "Save as environment"
 msgstr "Save as environment"
 
+msgid "Save build settings"
+msgstr "Save build settings"
+
+msgid "Save changes"
+msgstr "Save changes"
+
 msgid "Save edits"
 msgstr "Save edits"
 
@@ -13376,6 +13489,9 @@ msgstr "Search in {frameTitle}…"
 msgid "Search issues..."
 msgstr "Search issues..."
 
+msgid "Search message or hash"
+msgstr "Search message or hash"
+
 msgid "Search pages"
 msgstr "Search pages"
 
@@ -13526,6 +13642,9 @@ msgstr "Select a branch"
 msgid "Select a default preset"
 msgstr "Select a default preset"
 
+msgid "Select a name"
+msgstr "Select a name"
+
 msgid "Select a project"
 msgstr "Select a project"
 
@@ -13663,6 +13782,9 @@ msgstr "Select teams"
 
 msgid "Select terminal script directory"
 msgstr "Select terminal script directory"
+
+msgid "Select worktree"
+msgstr "Select worktree"
 
 msgid "Select worktree location"
 msgstr "Select worktree location"
@@ -13862,6 +13984,9 @@ msgstr "Setup"
 
 msgid "Setup script"
 msgstr "Setup script"
+
+msgid "SHA"
+msgstr "SHA"
 
 msgid "shadcn/ui tooltip recipe"
 msgstr "shadcn/ui tooltip recipe"
@@ -14552,6 +14677,9 @@ msgstr "Stars gained per week"
 msgid "Start a {harness} session"
 msgstr "Start a {harness} session"
 
+msgid "Start a Bitrise build from a worktree linked to this Azure work item."
+msgstr "Start a Bitrise build from a worktree linked to this Azure work item."
+
 msgid "Start a conversation to see messages here"
 msgstr "Start a conversation to see messages here"
 
@@ -14575,6 +14703,9 @@ msgstr "Start an agent or a terminal to begin working in this workspace."
 
 msgid "Start browsing"
 msgstr "Start browsing"
+
+msgid "Start build"
+msgstr "Start build"
 
 msgid "Start free. Upgrade when your team outgrows it. Enterprise plans for organizations with advanced security and compliance needs."
 msgstr "Start free. Upgrade when your team outgrows it. Enterprise plans for organizations with advanced security and compliance needs."
@@ -14896,9 +15027,6 @@ msgstr "Superset memory"
 
 msgid "Superset memory · last 5 min"
 msgstr "Superset memory · last 5 min"
-
-msgid "Superset Mobile is part of Pro"
-msgstr "Superset Mobile is part of Pro"
 
 msgid "Superset Mobile runs agents on the computers you connect."
 msgstr "Superset Mobile runs agents on the computers you connect."
@@ -15663,6 +15791,9 @@ msgstr "The team invitation has either expired or doesn't exist. Request a new l
 msgid "The title shows everywhere this page is listed and in its link preview."
 msgstr "The title shows everywhere this page is listed and in its link preview."
 
+msgid "The token is stored securely and is never displayed again."
+msgstr "The token is stored securely and is never displayed again."
+
 msgid "The web agents UI is a read-only preview for now."
 msgstr "The web agents UI is a read-only preview for now."
 
@@ -15856,9 +15987,6 @@ msgstr "This operation is disabled for this project."
 msgid "this organization"
 msgstr "this organization"
 
-msgid "This organization is on the Free plan. Superset Mobile is available for organizations on Pro."
-msgstr "This organization is on the Free plan. Superset Mobile is available for organizations on Pro."
-
 msgid "This page could not be loaded"
 msgstr "This page could not be loaded"
 
@@ -16022,6 +16150,9 @@ msgstr "This workspace's host is offline"
 
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
+
+msgid "This worktree's host is unavailable."
+msgstr "This worktree's host is unavailable."
 
 msgid "Thorough reasoning effort"
 msgstr "Thorough reasoning effort"
@@ -16659,10 +16790,6 @@ msgstr "Upgrade"
 msgid "Upgrade a dependency and fix what breaks…"
 msgstr "Upgrade a dependency and fix what breaks…"
 
-#. placeholder {0}: COMPANY.DOMAIN
-msgid "Upgrade on {0}"
-msgstr "Upgrade on {0}"
-
 #. placeholder {0}: i18n._(plan.name)
 msgid "Upgrade to {0}"
 msgstr "Upgrade to {0}"
@@ -16782,6 +16909,9 @@ msgstr "Use voice transcription and push-to-talk features."
 msgid "Use your existing agent subscriptions and API keys. Superset never proxies model calls or locks your workflow to one provider."
 msgstr "Use your existing agent subscriptions and API keys. Superset never proxies model calls or locks your workflow to one provider."
 
+msgid "Used as the version name for alpha builds. Leave blank when the workflow generates it automatically."
+msgstr "Used as the version name for alpha builds. Leave blank when the workflow generates it automatically."
+
 msgid "Used in URLs and APIs."
 msgstr "Used in URLs and APIs."
 
@@ -16876,8 +17006,14 @@ msgstr "Version Control"
 msgid "Version history"
 msgstr "Version history"
 
+msgid "Version name"
+msgstr "Version name"
+
 msgid "Version not found"
 msgstr "Version not found"
+
+msgid "Version number"
+msgstr "Version number"
 
 msgid "Version unknown"
 msgstr "Version unknown"
@@ -17301,6 +17437,9 @@ msgstr "Work item"
 msgid "Work item not found"
 msgstr "Work item not found"
 
+msgid "Work item number from branch:"
+msgstr "Work item number from branch:"
+
 msgid "Work item project"
 msgstr "Work item project"
 
@@ -17424,6 +17563,12 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
+
+msgid "Worktree and branch"
+msgstr "Worktree and branch"
+
+msgid "Worktree branch"
+msgstr "Worktree branch"
 
 msgid "Worktree created"
 msgstr "Worktree created"

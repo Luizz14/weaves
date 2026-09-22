@@ -35,6 +35,7 @@ export interface FileView {
 }
 
 export interface ViewProps {
+	readOnly?: boolean;
 	document: SharedFileDocument;
 	filePath: string;
 	workspaceId: string;

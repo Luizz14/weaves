@@ -73,6 +73,7 @@
 		"@lezer/highlight": "1.2.3",
 		"@lingui/core": "6.6.0",
 		"@lingui/react": "6.6.0",
+		"@napi-rs/keyring": "2.1.0",
 		"@novnc/novnc": "1.7.0",
 		"@paper-design/shaders-react": "0.0.77",
 		"@parcel/watcher": "2.5.6",
