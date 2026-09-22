@@ -1,5 +1,10 @@
-import { useNavigate } from "@tanstack/react-router";
+import { Trans } from "@lingui/react/macro";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+	resolvePullRequestProvider,
+	useDashboardIntegrationAvailability,
+} from "renderer/routes/_authenticated/_dashboard/hooks/useDashboardIntegrationAvailability";
 import { useDebouncedSearchNavigation } from "renderer/routes/_authenticated/_dashboard/hooks/useDebouncedSearchNavigation";
 import { useProjectQueryTargets } from "renderer/routes/_authenticated/_dashboard/hooks/useProjectQueryTargets";
 import { normalizeAuthorFilters } from "renderer/routes/_authenticated/_dashboard/pull-requests/utils/normalizeAuthorFilter";
@@ -42,6 +47,15 @@ export function PullRequestsView({
 }: PullRequestsViewProps) {
 	const navigate = useNavigate();
 	const {
+		isReady: areIntegrationsReady,
+		pullRequestProviders,
+		azureProjectIds,
+		githubProjectIds,
+	} = useDashboardIntegrationAvailability();
+	const availableProvider = areIntegrationsReady
+		? resolvePullRequestProvider(initialProvider, pullRequestProviders)
+		: initialProvider;
+	const {
 		search: storedSearch,
 		projectFilters: storedProjectFilters,
 		authorFilter: storedAuthorFilter,
@@ -56,7 +70,7 @@ export function PullRequestsView({
 		setMergedOnly: storeSetMergedOnly,
 	} = usePullRequestsFilterStore();
 	const [searchQuery, setSearchQuery] = useState(initialSearch ?? storedSearch);
-	const provider = initialProvider;
+	const provider = availableProvider ?? initialProvider;
 	const projectFilters = initialProjects ?? storedProjectFilters;
 	const authorFilter =
 		initialAuthor === undefined
@@ -101,6 +115,19 @@ export function PullRequestsView({
 		projects: hostProjects,
 		targets: projectTargets,
 	} = useProjectQueryTargets(projectFilters);
+	const providerProjectIds =
+		provider === "azure-devops" ? azureProjectIds : githubProjectIds;
+	const allowedProjectIds = useMemo(
+		() => Array.from(providerProjectIds),
+		[providerProjectIds],
+	);
+	const providerTargets = useMemo(
+		() =>
+			projectTargets.filter((target) =>
+				providerProjectIds.has(target.projectId),
+			),
+		[projectTargets, providerProjectIds],
+	);
 
 	// Sync only from the URL: depending on storedSearch would snap the input
 	// back to the stale URL value on every keystroke until the debounced
@@ -154,6 +181,31 @@ export function PullRequestsView({
 	} = useDebouncedSearchNavigation(navigateSearch);
 
 	useEffect(() => {
+		if (!areIntegrationsReady || pullRequestProviders.length === 0) return;
+		if (availableProvider === null || availableProvider === initialProvider)
+			return;
+		cancelPendingSearchNavigation();
+		void navigate({
+			to: "/pull-requests",
+			search: {
+				...buildSearch({}),
+				...(availableProvider === "azure-devops"
+					? { provider: "azure-devops" as const }
+					: {}),
+			},
+			replace: true,
+		});
+	}, [
+		areIntegrationsReady,
+		pullRequestProviders,
+		availableProvider,
+		initialProvider,
+		cancelPendingSearchNavigation,
+		navigate,
+		buildSearch,
+	]);
+
+	useEffect(() => {
 		storeSetProjectFilters(projectFilters);
 	}, [projectFilters, storeSetProjectFilters]);
 
@@ -175,11 +227,13 @@ export function PullRequestsView({
 
 	const projects = useMemo(
 		() =>
-			hostProjects.map((project) => ({
-				id: project.projectKey,
-				name: project.name,
-			})),
-		[hostProjects],
+			hostProjects
+				.filter((project) => providerProjectIds.has(project.projectKey))
+				.map((project) => ({
+					id: project.projectKey,
+					name: project.name,
+				})),
+		[hostProjects, providerProjectIds],
 	);
 	const repoSlugByProjectId = useMemo(
 		() =>
@@ -195,8 +249,9 @@ export function PullRequestsView({
 	);
 
 	useEffect(() => {
-		if (!areProjectsReady) return;
-		const availableIds = new Set(projects.map((project) => project.id));
+		if (!areIntegrationsReady || !areProjectsReady) return;
+		if (availableProvider !== initialProvider) return;
+		const availableIds = providerProjectIds;
 		const availableFilters = projectFilters.filter((projectId) =>
 			availableIds.has(projectId),
 		);
@@ -204,12 +259,15 @@ export function PullRequestsView({
 		cancelPendingSearchNavigation();
 		navigateTo(buildSearch({ projects: availableFilters }));
 	}, [
+		areIntegrationsReady,
 		areProjectsReady,
+		availableProvider,
+		initialProvider,
+		providerProjectIds,
 		buildSearch,
 		cancelPendingSearchNavigation,
 		navigateTo,
 		projectFilters,
-		projects,
 	]);
 
 	const handleSearchChange = useCallback(
@@ -262,6 +320,28 @@ export function PullRequestsView({
 			? "all"
 			: "open";
 
+	if (areIntegrationsReady && pullRequestProviders.length === 0) {
+		return (
+			<div className="flex flex-1 flex-col items-center justify-center gap-3 p-8 text-center">
+				<h2 className="text-base font-medium">
+					<Trans>Connect a repository to see pull requests</Trans>
+				</h2>
+				<p className="max-w-md text-sm text-muted-foreground">
+					<Trans>
+						Connect a GitHub repository or configure an Azure DevOps project for
+						one of your workspaces.
+					</Trans>
+				</p>
+				<Link
+					to="/settings/integrations"
+					className="rounded-md px-3 py-2 text-sm font-medium text-primary hover:bg-accent"
+				>
+					<Trans>Open Integrations settings</Trans>
+				</Link>
+			</div>
+		);
+	}
+
 	return (
 		<div
 			data-pull-requests-view
@@ -269,6 +349,7 @@ export function PullRequestsView({
 		>
 			<PullRequestsTopBar
 				provider={provider}
+				availableProviders={pullRequestProviders}
 				onProviderChange={(nextProvider) =>
 					navigate({
 						to: "/pull-requests",
@@ -284,7 +365,8 @@ export function PullRequestsView({
 				onSearchChange={handleSearchChange}
 				projectFilters={projectFilters}
 				onProjectFiltersChange={handleProjectFiltersChange}
-				projectTargets={projectTargets}
+				projectTargets={providerTargets}
+				allowedProjectIds={allowedProjectIds}
 				authorFilter={authorFilter}
 				onAuthorFilterChange={handleAuthorFilterChange}
 				reviewFilter={reviewFilter}
@@ -295,14 +377,14 @@ export function PullRequestsView({
 			<div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
 				{provider === "azure-devops" ? (
 					<AzurePullRequestsContent
-						projectTargets={projectTargets}
+						projectTargets={providerTargets}
 						searchQuery={searchQuery}
 						includeClosed={includeClosed}
 					/>
 				) : (
 					<PullRequestsContent
 						projectFilters={projectFilters}
-						projectTargets={projectTargets}
+						projectTargets={providerTargets}
 						areProjectsReady={areProjectsReady}
 						hasProjects={projects.length > 0}
 						searchQuery={searchQuery}

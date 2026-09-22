@@ -150,12 +150,13 @@ export function AutomationRow({
 
 	const openDetail = () =>
 		navigate({
-			to: "/automations/$automationId",
+			to: "/settings/automations/$automationId",
 			params: { automationId: automation.id },
+			search: { history: false },
 		});
 	const openHistory = () =>
 		navigate({
-			to: "/automations/$automationId",
+			to: "/settings/automations/$automationId",
 			params: { automationId: automation.id },
 			search: { history: true },
 		});

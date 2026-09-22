@@ -776,9 +776,6 @@ msgstr "{months}mo"
 msgid "{months}mo ago"
 msgstr "{months}mo ago"
 
-msgid "{myFailedCount} of your automations failed their last run"
-msgstr "{myFailedCount} of your automations failed their last run"
-
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceBuiltinRemove"
 msgstr "{name} is built in and cannot be removed"
@@ -2449,17 +2446,11 @@ msgstr "Automation title"
 msgid "Automations"
 msgstr "Automations"
 
-msgid "Automations ({myFailedCount} failing)"
-msgstr "Automations ({myFailedCount} failing)"
-
 msgid "Automations & event triggers"
 msgstr "Automations & event triggers"
 
 msgid "Automations require the Pro plan."
 msgstr "Automations require the Pro plan."
-
-msgid "Automations, {myFailedCount} failing"
-msgstr "Automations, {myFailedCount} failing"
 
 msgid "Autonomous"
 msgstr "Autonomous"
@@ -3246,6 +3237,9 @@ msgstr "Checking agents…"
 msgid "Checking Azure CLI, the Azure DevOps extension, and repository access."
 msgstr "Checking Azure CLI, the Azure DevOps extension, and repository access."
 
+msgid "Checking board configuration…"
+msgstr "Checking board configuration…"
+
 msgid "Checking host…"
 msgstr "Checking host…"
 
@@ -3953,14 +3947,26 @@ msgstr "Connect {name}"
 msgid "Connect a device"
 msgstr "Connect a device"
 
+msgid "Connect a GitHub repository or configure an Azure DevOps project for one of your workspaces."
+msgstr "Connect a GitHub repository or configure an Azure DevOps project for one of your workspaces."
+
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
+
+msgid "Connect a host before configuring Azure DevOps."
+msgstr "Connect a host before configuring Azure DevOps."
 
 msgid "Connect a host to load Codex models."
 msgstr "Connect a host to load Codex models."
 
 msgid "Connect a microphone to use dictation"
 msgstr "Connect a microphone to use dictation"
+
+msgid "Connect a repository to see pull requests"
+msgstr "Connect a repository to see pull requests"
+
+msgid "Connect an integration to use Tasks"
+msgstr "Connect an integration to use Tasks"
 
 msgid "Connect any AI agent to Superset."
 msgstr "Connect any AI agent to Superset."
@@ -3991,6 +3997,9 @@ msgstr "Connect Google"
 
 msgid "Connect Linear"
 msgstr "Connect Linear"
+
+msgid "Connect Linear or GitHub, or configure an Azure DevOps board for an available host in Integrations settings."
+msgstr "Connect Linear or GitHub, or configure an Azure DevOps board for an available host in Integrations settings."
 
 msgid "Connect Microsoft Teams"
 msgstr "Connect Microsoft Teams"
@@ -9238,9 +9247,6 @@ msgstr "Merged, but couldn't refresh PR state — try again in a moment"
 msgid "Merging PR..."
 msgstr "Merging PR..."
 
-msgid "Merging pull request"
-msgstr "Merging pull request"
-
 msgid "Mesh Gradient"
 msgstr "Mesh Gradient"
 
@@ -10908,6 +10914,9 @@ msgstr "Open in workspace"
 msgid "Open in…"
 msgstr "Open in…"
 
+msgid "Open Integrations settings"
+msgstr "Open Integrations settings"
+
 #. placeholder {0}: issue.issueNumber
 msgid "Open issue #{0} in browser"
 msgstr "Open issue #{0} in browser"
@@ -10981,9 +10990,6 @@ msgstr "Open pull request #{0}"
 
 msgid "Open pull request in GitHub"
 msgstr "Open pull request in GitHub"
-
-msgid "Open pull request options"
-msgstr "Open pull request options"
 
 msgid "Open pull requests"
 msgstr "Open pull requests"
@@ -14085,6 +14091,9 @@ msgstr "Show a confirmation dialog when quitting the app"
 msgid "Show a Usage button in the home sidebar, under Pull requests"
 msgstr "Show a Usage button in the home sidebar, under Pull requests"
 
+msgid "Show a Workspaces button in the home sidebar"
+msgstr "Show a Workspaces button in the home sidebar"
+
 msgid "Show all {count}"
 msgstr "Show all {count}"
 
@@ -14207,6 +14216,9 @@ msgstr "Show translation"
 
 msgid "Show usage tab on sidebar"
 msgstr "Show usage tab on sidebar"
+
+msgid "Show Workspaces in sidebar"
+msgstr "Show Workspaces in sidebar"
 
 msgid "showArrow opt-in"
 msgstr "showArrow opt-in"
@@ -16897,6 +16909,9 @@ msgstr "Use Any Agents"
 
 msgid "Use as workspace run"
 msgstr "Use as workspace run"
+
+msgid "Use Azure CLI authentication on each host to configure work item boards."
+msgstr "Use Azure CLI authentication on each host to configure work item boards."
 
 msgid "Use Claude Code, Codex, OpenCode, or any coding agent for each task. Your workspaces, branches, and review flow stay the same."
 msgstr "Use Claude Code, Codex, OpenCode, or any coding agent for each task. Your workspaces, branches, and review flow stay the same."

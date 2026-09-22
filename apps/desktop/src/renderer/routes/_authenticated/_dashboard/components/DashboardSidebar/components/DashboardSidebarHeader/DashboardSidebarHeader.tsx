@@ -15,12 +15,10 @@ import { useRef } from "react";
 import { GoGitPullRequest } from "react-icons/go";
 import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import {
-	LuClock,
 	LuFileText,
 	LuGauge,
 	LuLayers,
 	LuPlus,
-	LuPuzzle,
 	LuSearch,
 } from "react-icons/lu";
 import {
@@ -34,7 +32,6 @@ import { GATED_FEATURES, usePaywall } from "renderer/components/Paywall";
 import { SidebarKbdHint } from "renderer/components/SidebarKbdHint";
 import { UpdatesPill } from "renderer/components/UpdatesPill";
 import { ZoomStable } from "renderer/components/ZoomStable";
-import { env } from "renderer/env.renderer";
 import {
 	useOpenNewWorkspace,
 	useOpenNewWorkspaceForLocalProject,
@@ -48,7 +45,7 @@ import { NavigationControls } from "renderer/routes/_authenticated/_dashboard/co
 import { SidebarToggle } from "renderer/routes/_authenticated/_dashboard/components/SidebarToggle";
 import { OrganizationDropdown } from "renderer/routes/_authenticated/_dashboard/components/TopBar/components/OrganizationDropdown";
 import { TopBarPortsDropdown } from "renderer/routes/_authenticated/_dashboard/components/TopBar/components/TopBarPortsDropdown";
-import { useFailedAutomations } from "renderer/routes/_authenticated/_dashboard/hooks/useFailedAutomations";
+import { useDashboardIntegrationAvailability } from "renderer/routes/_authenticated/_dashboard/hooks/useDashboardIntegrationAvailability";
 import {
 	pullRequestsSearchFromFilters,
 	usePullRequestsFilterStore,
@@ -162,17 +159,14 @@ export function DashboardSidebarHeader({
 		to: "/pull-requests",
 		fuzzy: true,
 	});
-	const isAutomationsOpen = !!matchRoute({ to: "/automations", fuzzy: true });
-	const isPluginsOpen = !!matchRoute({ to: "/plugins", fuzzy: true });
 	const isPagesOpen = !!matchRoute({ to: "/pages", fuzzy: true });
-	// `?? false`: the hook returns undefined until PostHog flags resolve.
-	// Dev builds bypass the flag — the local dev account isn't in the
-	// @superset.sh release condition.
-	const isPluginsEnabled =
-		(useFeatureFlagEnabled(FEATURE_FLAGS.PLUGINS) ?? false) ||
-		env.NODE_ENV === "development";
-	const { myFailedCount, hasAutomations, automationsPending } =
-		useFailedAutomations();
+	const {
+		taskSources,
+		pullRequestProviders,
+		isReady: areIntegrationsReady,
+	} = useDashboardIntegrationAvailability();
+	const { data: isWorkspacesInSidebarEnabled } =
+		electronTrpc.settings.getShowWorkspacesInSidebar.useQuery();
 
 	const {
 		tab: lastTab,
@@ -194,16 +188,6 @@ export function DashboardSidebarHeader({
 
 	const handleWorkspacesClick = () => {
 		navigate({ to: "/v2-workspaces" });
-	};
-
-	const handleAutomationsClick = () => {
-		if (hasAutomations || automationsPending) {
-			navigate({ to: "/automations" });
-			return;
-		}
-		gateFeature(GATED_FEATURES.AUTOMATIONS, () => {
-			navigate({ to: "/automations" });
-		});
 	};
 
 	const handleTasksClick = () => {
@@ -229,10 +213,6 @@ export function DashboardSidebarHeader({
 
 	const handlePagesClick = () => {
 		navigate({ to: "/pages" });
-	};
-
-	const handlePluginsClick = () => {
-		navigate({ to: "/plugins" });
 	};
 
 	const handlePullRequestsClick = () => {
@@ -313,112 +293,79 @@ export function DashboardSidebarHeader({
 						</TooltipContent>
 					</Tooltip>
 
-					<Tooltip delayDuration={300}>
-						<TooltipTrigger asChild>
-							<button
-								type="button"
-								onClick={handleWorkspacesClick}
-								className={cn(
-									"flex size-7 items-center justify-center rounded-md transition-colors",
-									isWorkspacesListOpen
-										? "bg-fill-selected text-muted-foreground"
-										: "text-muted-foreground hover:bg-fill-hover",
-								)}
-							>
-								<LuLayers className="size-3.5" strokeWidth={1.5} />
-							</button>
-						</TooltipTrigger>
-						<TooltipContent side="right">
-							<Trans>Workspaces</Trans>
-						</TooltipContent>
-					</Tooltip>
+					{isWorkspacesInSidebarEnabled !== false && (
+						<Tooltip delayDuration={300}>
+							<TooltipTrigger asChild>
+								<button
+									type="button"
+									onClick={handleWorkspacesClick}
+									className={cn(
+										"flex size-7 items-center justify-center rounded-md transition-colors",
+										isWorkspacesListOpen
+											? "bg-fill-selected text-muted-foreground"
+											: "text-muted-foreground hover:bg-fill-hover",
+									)}
+								>
+									<LuLayers className="size-3.5" strokeWidth={1.5} />
+								</button>
+							</TooltipTrigger>
+							<TooltipContent side="right">
+								<Trans>Workspaces</Trans>
+							</TooltipContent>
+						</Tooltip>
+					)}
 
-					<Tooltip delayDuration={300}>
-						<TooltipTrigger asChild>
-							<button
-								type="button"
-								onClick={handleAutomationsClick}
-								aria-label={
-									myFailedCount > 0
-										? t({
-												message: `Automations, ${myFailedCount} failing`,
-											})
-										: t({
-												message: "Automations",
-											})
-								}
-								className={cn(
-									"relative flex size-7 items-center justify-center rounded-md transition-colors",
-									isAutomationsOpen
-										? "bg-fill-selected text-muted-foreground"
-										: "text-muted-foreground hover:bg-fill-hover",
-								)}
-							>
-								<LuClock className="size-3.5" strokeWidth={1.5} />
-								{myFailedCount > 0 && (
-									<span
-										aria-hidden="true"
-										className="absolute right-1 top-1 size-1.5 rounded-full bg-red-500"
-									/>
-								)}
-							</button>
-						</TooltipTrigger>
-						<TooltipContent side="right">
-							{myFailedCount > 0 ? (
-								<Trans>Automations ({myFailedCount} failing)</Trans>
-							) : (
-								<Trans>Automations</Trans>
-							)}
-						</TooltipContent>
-					</Tooltip>
+					{areIntegrationsReady && taskSources.length > 0 && (
+						<Tooltip delayDuration={300}>
+							<TooltipTrigger asChild>
+								<button
+									type="button"
+									onClick={handleTasksClick}
+									aria-label={t({
+										message: "Tasks",
+									})}
+									aria-current={isTasksOpen ? "page" : undefined}
+									className={cn(
+										"flex size-7 items-center justify-center rounded-md transition-colors",
+										isTasksOpen
+											? "bg-fill-selected text-muted-foreground"
+											: "text-muted-foreground hover:bg-fill-hover",
+									)}
+								>
+									<HiOutlineClipboardDocumentList className="size-3.5" />
+								</button>
+							</TooltipTrigger>
+							<TooltipContent side="right">
+								<Trans>Tasks</Trans>
+							</TooltipContent>
+						</Tooltip>
+					)}
 
-					<Tooltip delayDuration={300}>
-						<TooltipTrigger asChild>
-							<button
-								type="button"
-								onClick={handleTasksClick}
-								aria-label={t({
-									message: "Tasks",
-								})}
-								aria-current={isTasksOpen ? "page" : undefined}
-								className={cn(
-									"flex size-7 items-center justify-center rounded-md transition-colors",
-									isTasksOpen
-										? "bg-fill-selected text-muted-foreground"
-										: "text-muted-foreground hover:bg-fill-hover",
-								)}
-							>
-								<HiOutlineClipboardDocumentList className="size-3.5" />
-							</button>
-						</TooltipTrigger>
-						<TooltipContent side="right">
-							<Trans>Tasks</Trans>
-						</TooltipContent>
-					</Tooltip>
-
-					<Tooltip delayDuration={300}>
-						<TooltipTrigger asChild>
-							<button
-								type="button"
-								onClick={handlePullRequestsClick}
-								aria-label={t({
-									message: "Pull requests",
-								})}
-								aria-current={isPullRequestsOpen ? "page" : undefined}
-								className={cn(
-									"flex size-7 items-center justify-center rounded-md transition-colors",
-									isPullRequestsOpen
-										? "bg-fill-selected text-muted-foreground"
-										: "text-muted-foreground hover:bg-fill-hover",
-								)}
-							>
-								<GoGitPullRequest className="size-3.5" />
-							</button>
-						</TooltipTrigger>
-						<TooltipContent side="right">
-							<Trans>Pull requests</Trans>
-						</TooltipContent>
-					</Tooltip>
+					{areIntegrationsReady && pullRequestProviders.length > 0 && (
+						<Tooltip delayDuration={300}>
+							<TooltipTrigger asChild>
+								<button
+									type="button"
+									onClick={handlePullRequestsClick}
+									aria-label={t({
+										message: "Pull requests",
+									})}
+									aria-current={isPullRequestsOpen ? "page" : undefined}
+									className={cn(
+										"flex size-7 items-center justify-center rounded-md transition-colors",
+										isPullRequestsOpen
+											? "bg-fill-selected text-muted-foreground"
+											: "text-muted-foreground hover:bg-fill-hover",
+									)}
+								>
+									<GoGitPullRequest className="size-3.5" />
+								</button>
+							</TooltipTrigger>
+							<TooltipContent side="right">
+								<Trans>Pull requests</Trans>
+							</TooltipContent>
+						</Tooltip>
+					)}
 
 					{isUsageInSidebarEnabled && (
 						<Tooltip delayDuration={300}>
@@ -462,32 +409,6 @@ export function DashboardSidebarHeader({
 							</TooltipTrigger>
 							<TooltipContent side="right">
 								<Trans>Pages</Trans>
-							</TooltipContent>
-						</Tooltip>
-					)}
-
-					{isPluginsEnabled && (
-						<Tooltip delayDuration={300}>
-							<TooltipTrigger asChild>
-								<button
-									type="button"
-									onClick={handlePluginsClick}
-									aria-label={t({
-										message: "Plugins",
-									})}
-									aria-current={isPluginsOpen ? "page" : undefined}
-									className={cn(
-										"flex size-7 items-center justify-center rounded-md transition-colors",
-										isPluginsOpen
-											? "bg-fill-selected text-muted-foreground"
-											: "text-muted-foreground hover:bg-fill-hover",
-									)}
-								>
-									<LuPuzzle className="size-3.5" strokeWidth={1.5} />
-								</button>
-							</TooltipTrigger>
-							<TooltipContent side="right">
-								<Trans>Plugins</Trans>
 							</TooltipContent>
 						</Tooltip>
 					)}
@@ -612,93 +533,70 @@ export function DashboardSidebarHeader({
 				)}
 			</button>
 
-			<button
-				type="button"
-				onClick={handleWorkspacesClick}
-				className={cn(
-					"flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium transition-colors",
-					isWorkspacesListOpen
-						? "bg-fill-selected text-foreground"
-						: "text-muted-foreground hover:bg-fill-hover hover:text-foreground",
-				)}
-			>
-				<LuLayers
-					className="size-4 shrink-0 text-muted-foreground"
-					strokeWidth={1.5}
-				/>
-				<span className="flex-1 text-left">
-					<Trans>Workspaces</Trans>
-				</span>
-			</button>
-
-			<button
-				type="button"
-				onClick={handleAutomationsClick}
-				className={cn(
-					"flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium transition-colors",
-					isAutomationsOpen
-						? "bg-fill-selected text-foreground"
-						: "text-muted-foreground hover:bg-fill-hover hover:text-foreground",
-				)}
-			>
-				<LuClock
-					className="size-4 shrink-0 text-muted-foreground"
-					strokeWidth={1.5}
-				/>
-				<span className="flex-1 text-left">
-					<Trans>Automations</Trans>
-				</span>
-				{myFailedCount > 0 && (
-					<span
-						title={t({
-							message: `${myFailedCount} of your automations failed their last run`,
-						})}
-						className="flex h-4 min-w-4 shrink-0 items-center justify-center rounded-full bg-red-500/15 px-1 text-[10px] font-medium tabular-nums text-red-600 dark:text-red-400"
-					>
-						{myFailedCount > 9 ? "9+" : myFailedCount}
+			{isWorkspacesInSidebarEnabled !== false && (
+				<button
+					type="button"
+					onClick={handleWorkspacesClick}
+					className={cn(
+						"flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium transition-colors",
+						isWorkspacesListOpen
+							? "bg-fill-selected text-foreground"
+							: "text-muted-foreground hover:bg-fill-hover hover:text-foreground",
+					)}
+				>
+					<LuLayers
+						className="size-4 shrink-0 text-muted-foreground"
+						strokeWidth={1.5}
+					/>
+					<span className="flex-1 text-left">
+						<Trans>Workspaces</Trans>
 					</span>
-				)}
-			</button>
+				</button>
+			)}
 
-			<button
-				type="button"
-				onClick={handleTasksClick}
-				aria-label={t({
-					message: "Tasks",
-				})}
-				aria-current={isTasksOpen ? "page" : undefined}
-				className={cn(
-					"flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium transition-colors",
-					isTasksOpen
-						? "bg-fill-selected text-foreground"
-						: "text-muted-foreground hover:bg-fill-hover hover:text-foreground",
-				)}
-			>
-				<HiOutlineClipboardDocumentList className="size-4 shrink-0 text-muted-foreground" />
-				<span className="flex-1 text-left">
-					<Trans>Tasks</Trans>
-				</span>
-			</button>
+			{areIntegrationsReady && taskSources.length > 0 && (
+				<button
+					type="button"
+					onClick={handleTasksClick}
+					aria-label={t({
+						message: "Tasks",
+					})}
+					aria-current={isTasksOpen ? "page" : undefined}
+					className={cn(
+						"flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium transition-colors",
+						isTasksOpen
+							? "bg-fill-selected text-foreground"
+							: "text-muted-foreground hover:bg-fill-hover hover:text-foreground",
+					)}
+				>
+					<HiOutlineClipboardDocumentList className="size-4 shrink-0 text-muted-foreground" />
+					<span className="flex-1 text-left">
+						<Trans>Tasks</Trans>
+					</span>
+				</button>
+			)}
 
-			<button
-				type="button"
-				onClick={handlePullRequestsClick}
-				aria-label={t({
-					message: "Pull requests",
-				})}
-				aria-current={isPullRequestsOpen ? "page" : undefined}
-				className={cn(
-					"flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium transition-colors",
-					isPullRequestsOpen
-						? "bg-fill-selected text-foreground"
-						: "text-muted-foreground hover:bg-fill-hover hover:text-foreground",
-				)}
-			>
-				<GoGitPullRequest className="size-4 shrink-0 text-muted-foreground" />
-				<span className="flex-1 text-left">
-					<Trans>Pull requests</Trans>
-				</span>
-			</button>
+			{areIntegrationsReady && pullRequestProviders.length > 0 && (
+				<button
+					type="button"
+					onClick={handlePullRequestsClick}
+					aria-label={t({
+						message: "Pull requests",
+					})}
+					aria-current={isPullRequestsOpen ? "page" : undefined}
+					className={cn(
+						"flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium transition-colors",
+						isPullRequestsOpen
+							? "bg-fill-selected text-foreground"
+							: "text-muted-foreground hover:bg-fill-hover hover:text-foreground",
+					)}
+				>
+					<GoGitPullRequest className="size-4 shrink-0 text-muted-foreground" />
+					<span className="flex-1 text-left">
+						<Trans>Pull requests</Trans>
+					</span>
+				</button>
+			)}
 
 			{isUsageInSidebarEnabled && (
 				<button
@@ -740,31 +638,6 @@ export function DashboardSidebarHeader({
 					/>
 					<span className="flex-1 text-left">
 						<Trans>Pages</Trans>
-					</span>
-				</button>
-			)}
-
-			{isPluginsEnabled && (
-				<button
-					type="button"
-					onClick={handlePluginsClick}
-					aria-label={t({
-						message: "Plugins",
-					})}
-					aria-current={isPluginsOpen ? "page" : undefined}
-					className={cn(
-						"flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium transition-colors",
-						isPluginsOpen
-							? "bg-fill-selected text-foreground"
-							: "text-muted-foreground hover:bg-fill-hover hover:text-foreground",
-					)}
-				>
-					<LuPuzzle
-						className="size-4 shrink-0 text-muted-foreground"
-						strokeWidth={1.5}
-					/>
-					<span className="flex-1 text-left">
-						<Trans>Plugins</Trans>
 					</span>
 				</button>
 			)}

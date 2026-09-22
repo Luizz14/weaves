@@ -3,7 +3,7 @@ import { msg } from "@lingui/core/macro";
 import { i18n } from "@superset/i18n";
 import { FEATURE_FLAGS } from "@superset/shared/constants";
 import { cn } from "@superset/ui/utils";
-import { Link, useMatchRoute } from "@tanstack/react-router";
+import { Link, useMatchRoute, useNavigate } from "@tanstack/react-router";
 import { useFeatureFlagEnabled } from "posthog-js/react";
 import { useMemo } from "react";
 import {
@@ -28,10 +28,20 @@ import {
 	HiOutlineUser,
 	HiOutlineUserGroup,
 } from "react-icons/hi2";
-import { LuGitBranch, LuKeyboard, LuKeyRound, LuLink } from "react-icons/lu";
+import {
+	LuClock,
+	LuGitBranch,
+	LuKeyboard,
+	LuKeyRound,
+	LuLink,
+	LuPuzzle,
+} from "react-icons/lu";
+import { GATED_FEATURES, usePaywall } from "renderer/components/Paywall";
+import { env } from "renderer/env.renderer";
 import { useHostsNeedingUpdateCount } from "renderer/hooks/host-version/useHostsNeedingUpdate";
 import { useIsV2CloudEnabled } from "renderer/hooks/useIsV2CloudEnabled";
 import { electronTrpc } from "renderer/lib/electron-trpc";
+import { useFailedAutomations } from "renderer/routes/_authenticated/_dashboard/hooks/useFailedAutomations";
 import type { SettingsSection } from "renderer/stores/settings-state";
 import { getAllowedSectionsForVariant } from "../../utils/settings-search";
 import { settingsListItemClass } from "../SettingsListSidebar";
@@ -67,7 +77,9 @@ type SettingsRoute =
 	| "/settings/permissions"
 	| "/settings/projects"
 	| "/settings/hosts"
-	| "/settings/environments";
+	| "/settings/environments"
+	| "/settings/plugins"
+	| "/settings/automations";
 
 interface SectionItem {
 	id: SettingsRoute;
@@ -242,6 +254,23 @@ const SECTION_GROUPS: SectionGroup[] = [
 		],
 	},
 	{
+		label: msg({ message: "Tools" }),
+		items: [
+			{
+				id: "/settings/automations",
+				section: "automations",
+				label: msg({ message: "Automations" }),
+				icon: <LuClock className="h-4 w-4" />,
+			},
+			{
+				id: "/settings/plugins",
+				section: "plugins",
+				label: msg({ message: "Plugins" }),
+				icon: <LuPuzzle className="h-4 w-4" />,
+			},
+		],
+	},
+	{
 		label: msg({
 			message: "Organization",
 		}),
@@ -353,12 +382,19 @@ export const FULL_WIDTH_SECTION_PATHS: readonly string[] =
 
 export function GeneralSettings({ matchCounts }: GeneralSettingsProps) {
 	const matchRoute = useMatchRoute();
+	const navigate = useNavigate();
+	const { gateFeature } = usePaywall();
+	const { myFailedCount, hasAutomations, automationsPending } =
+		useFailedAutomations();
 	const hostsNeedingUpdate = useHostsNeedingUpdateCount();
 	const { data: platform } = electronTrpc.window.getPlatform.useQuery();
 	const isMac = platform === "darwin";
 	const isV2CloudEnabled = useIsV2CloudEnabled();
 	const cloudWorkspacesEnabled =
 		useFeatureFlagEnabled(FEATURE_FLAGS.CLOUD_WORKSPACES) === true;
+	const pluginsEnabled =
+		(useFeatureFlagEnabled(FEATURE_FLAGS.PLUGINS) ?? false) ||
+		env.NODE_ENV === "development";
 	const allowedSections = useMemo(
 		() =>
 			getAllowedSectionsForVariant(isV2CloudEnabled, cloudWorkspacesEnabled),
@@ -370,7 +406,9 @@ export function GeneralSettings({ matchCounts }: GeneralSettingsProps) {
 			{SECTION_GROUPS.map((group, groupIndex) => {
 				const platformItems = group.items.filter(
 					(item) =>
-						(!item.macOnly || isMac) && allowedSections.has(item.section),
+						(!item.macOnly || isMac) &&
+						allowedSections.has(item.section) &&
+						(item.section !== "plugins" || pluginsEnabled),
 				);
 				const filteredItems = matchCounts
 					? platformItems.filter((item) => (matchCounts[item.section] ?? 0) > 0)
@@ -395,6 +433,19 @@ export function GeneralSettings({ matchCounts }: GeneralSettingsProps) {
 									<Link
 										key={section.id}
 										to={section.id}
+										onClick={(event) => {
+											if (
+												section.section !== "automations" ||
+												hasAutomations ||
+												automationsPending
+											) {
+												return;
+											}
+											event.preventDefault();
+											gateFeature(GATED_FEATURES.AUTOMATIONS, () => {
+												navigate({ to: section.id });
+											});
+										}}
 										className={settingsListItemClass(
 											isActive,
 											"gap-2 px-3 text-left",
@@ -402,6 +453,11 @@ export function GeneralSettings({ matchCounts }: GeneralSettingsProps) {
 									>
 										{section.icon}
 										<span className="flex-1">{i18n._(section.label)}</span>
+										{section.section === "automations" && myFailedCount > 0 && (
+											<span className="rounded-full bg-red-500/15 px-1.5 py-0.5 text-[10px] font-medium tabular-nums text-red-600 dark:text-red-400">
+												{myFailedCount > 9 ? "9+" : myFailedCount}
+											</span>
+										)}
 										{count !== undefined && count > 0 && (
 											<span className="text-xs text-muted-foreground bg-accent/50 px-1.5 py-0.5 rounded">
 												{count}

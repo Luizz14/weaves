@@ -776,9 +776,6 @@ msgstr "{months}ay"
 msgid "{months}mo ago"
 msgstr "{months}ay önce"
 
-msgid "{myFailedCount} of your automations failed their last run"
-msgstr "Otomasyonlarınızdan {myFailedCount} tanesi son çalıştırmasında başarısız oldu"
-
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceBuiltinRemove"
 msgstr "{name} yerleşiktir ve kaldırılamaz"
@@ -838,7 +835,7 @@ msgid "{plugin} has no OAuth client configured on this deployment yet."
 msgstr "{plugin} için bu dağıtımda henüz bir OAuth istemcisi yapılandırılmadı."
 
 msgid "{plugin} is no longer installed."
-msgstr "{plugin} artık yüklü değil."
+msgstr "Eklenti artık yüklü değil."
 
 msgid "{presetLabel} reset to defaults"
 msgstr "{presetLabel} varsayılanlara sıfırlandı"
@@ -2449,17 +2446,11 @@ msgstr "Otomasyon başlığı"
 msgid "Automations"
 msgstr "Otomasyonlar"
 
-msgid "Automations ({myFailedCount} failing)"
-msgstr "Otomasyonlar ({myFailedCount} başarısız)"
-
 msgid "Automations & event triggers"
 msgstr "Otomasyonlar ve olay tetikleyicileri"
 
 msgid "Automations require the Pro plan."
 msgstr "Otomasyonlar Pro planı gerektirir."
-
-msgid "Automations, {myFailedCount} failing"
-msgstr "Otomasyonlar, {myFailedCount} başarısız"
 
 msgid "Autonomous"
 msgstr "Otonom"
@@ -3246,6 +3237,9 @@ msgstr "Ajanlar denetleniyor…"
 msgid "Checking Azure CLI, the Azure DevOps extension, and repository access."
 msgstr "Azure CLI, Azure DevOps uzantısı ve depo erişimi denetleniyor."
 
+msgid "Checking board configuration…"
+msgstr "Pano yapılandırması denetleniyor…"
+
 msgid "Checking host…"
 msgstr "Host denetleniyor…"
 
@@ -3953,14 +3947,26 @@ msgstr "{name} bağla"
 msgid "Connect a device"
 msgstr "Cihaz bağla"
 
+msgid "Connect a GitHub repository or configure an Azure DevOps project for one of your workspaces."
+msgstr "Bir GitHub deposu bağlayın veya çalışma alanlarınızdan biri için Azure DevOps projesi yapılandırın."
+
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "Bir Google hesabı bağlayın. Takvimleri ve posta kutusu salt okunurdur ve tetikleyiciler hesabı bağlayan kişi adına çalışır."
+
+msgid "Connect a host before configuring Azure DevOps."
+msgstr "Azure DevOps'u yapılandırmadan önce bir ana makine bağlayın."
 
 msgid "Connect a host to load Codex models."
 msgstr "Codex modellerini yüklemek için bir ana makineye bağlanın."
 
 msgid "Connect a microphone to use dictation"
 msgstr "Sesle yazmak için bir mikrofon bağlayın"
+
+msgid "Connect a repository to see pull requests"
+msgstr "Çekme isteklerini görmek için bir depo bağlayın"
+
+msgid "Connect an integration to use Tasks"
+msgstr "Görevleri kullanmak için bir entegrasyon bağlayın"
 
 msgid "Connect any AI agent to Superset."
 msgstr "Herhangi bir AI ajanını Superset'e bağlayın."
@@ -3991,6 +3997,9 @@ msgstr "Google'ı bağla"
 
 msgid "Connect Linear"
 msgstr "Linear'ı bağla"
+
+msgid "Connect Linear or GitHub, or configure an Azure DevOps board for an available host in Integrations settings."
+msgstr "Linear veya GitHub'ı bağlayın ya da Entegrasyonlar ayarlarında kullanılabilir bir ana makine için Azure DevOps panosu yapılandırın."
 
 msgid "Connect Microsoft Teams"
 msgstr "Microsoft Teams'i bağla"
@@ -9238,9 +9247,6 @@ msgstr "Birleştirildi, ancak PR durumu yenilenemedi — birazdan yeniden deneyi
 msgid "Merging PR..."
 msgstr "PR birleştiriliyor..."
 
-msgid "Merging pull request"
-msgstr "Pull request birleştiriliyor"
-
 msgid "Mesh Gradient"
 msgstr "Mesh gradyanı"
 
@@ -10908,6 +10914,9 @@ msgstr "Çalışma alanında aç"
 msgid "Open in…"
 msgstr "Şununla aç…"
 
+msgid "Open Integrations settings"
+msgstr "Entegrasyon ayarlarını aç"
+
 #. placeholder {0}: issue.issueNumber
 msgid "Open issue #{0} in browser"
 msgstr "#{0} issue'sunu tarayıcıda aç"
@@ -10981,9 +10990,6 @@ msgstr "#{0} pull request'ini aç"
 
 msgid "Open pull request in GitHub"
 msgstr "Pull request'i GitHub'da aç"
-
-msgid "Open pull request options"
-msgstr "Pull request seçeneklerini aç"
 
 msgid "Open pull requests"
 msgstr "Açık pull request'ler"
@@ -14085,6 +14091,9 @@ msgstr "Uygulamadan çıkarken onay penceresi göster"
 msgid "Show a Usage button in the home sidebar, under Pull requests"
 msgstr "Ana sayfa kenar çubuğunda, pull request'lerin altında bir Kullanım düğmesi göster"
 
+msgid "Show a Workspaces button in the home sidebar"
+msgstr "Ana kenar çubuğunda Çalışma Alanları düğmesini göster"
+
 msgid "Show all {count}"
 msgstr "Tümünü göster ({count})"
 
@@ -14207,6 +14216,9 @@ msgstr "Çeviriyi göster"
 
 msgid "Show usage tab on sidebar"
 msgstr "Kenar çubuğunda kullanım sekmesini göster"
+
+msgid "Show Workspaces in sidebar"
+msgstr "Kenar çubuğunda Çalışma Alanlarını göster"
 
 msgid "showArrow opt-in"
 msgstr "showArrow açık"
@@ -16897,6 +16909,9 @@ msgstr "Herhangi bir ajanı kullanın"
 
 msgid "Use as workspace run"
 msgstr "Çalışma alanı çalıştırması olarak kullan"
+
+msgid "Use Azure CLI authentication on each host to configure work item boards."
+msgstr "İş öğesi panolarını yapılandırmak için her ana makinede Azure CLI kimlik doğrulamasını kullanın."
 
 msgid "Use Claude Code, Codex, OpenCode, or any coding agent for each task. Your workspaces, branches, and review flow stay the same."
 msgstr "Her görev için Claude Code, Codex, OpenCode veya herhangi bir kodlama ajanını kullanın. Çalışma alanlarınız, dallarınız ve inceleme akışınız aynı kalır."

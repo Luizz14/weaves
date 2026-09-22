@@ -33,6 +33,8 @@ export const Route = createFileRoute("/_authenticated/settings")({
 const SECTION_ORDER: SettingsSection[] = [
 	"account",
 	"connections",
+	"automations",
+	"plugins",
 	"appearance",
 	"ringtones",
 	"usage",
@@ -91,6 +93,8 @@ const SECTION_PATHS: Partial<Record<SettingsSection, string>> = {
 	permissions: "/settings/permissions",
 	hosts: "/settings/hosts",
 	project: "/settings/projects",
+	automations: "/settings/automations",
+	plugins: "/settings/plugins",
 };
 
 function getSectionFromPath(pathname: string): SettingsSection | null {

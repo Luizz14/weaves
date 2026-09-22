@@ -43,6 +43,10 @@ export function BehaviorSettings({ visibleItems }: BehaviorSettingsProps) {
 		SETTING_ITEM_ID.BEHAVIOR_RESOURCE_MONITOR,
 		visibleItems,
 	);
+	const showWorkspacesInSidebar = isItemVisible(
+		SETTING_ITEM_ID.WORKSPACES_IN_SIDEBAR,
+		visibleItems,
+	);
 	const showOpenLinksInApp = isItemVisible(
 		SETTING_ITEM_ID.BEHAVIOR_OPEN_LINKS_IN_APP,
 		visibleItems,
@@ -118,6 +122,30 @@ export function BehaviorSettings({ visibleItems }: BehaviorSettingsProps) {
 			},
 			onSettled: () => {
 				utils.settings.getShowResourceMonitor.invalidate();
+			},
+		});
+	const {
+		data: workspacesInSidebarEnabled,
+		isLoading: isWorkspacesInSidebarLoading,
+	} = electronTrpc.settings.getShowWorkspacesInSidebar.useQuery();
+	const setShowWorkspacesInSidebar =
+		electronTrpc.settings.setShowWorkspacesInSidebar.useMutation({
+			onMutate: async ({ enabled }) => {
+				await utils.settings.getShowWorkspacesInSidebar.cancel();
+				const previous = utils.settings.getShowWorkspacesInSidebar.getData();
+				utils.settings.getShowWorkspacesInSidebar.setData(undefined, enabled);
+				return { previous };
+			},
+			onError: (_err, _vars, context) => {
+				if (context?.previous !== undefined) {
+					utils.settings.getShowWorkspacesInSidebar.setData(
+						undefined,
+						context.previous,
+					);
+				}
+			},
+			onSettled: () => {
+				utils.settings.getShowWorkspacesInSidebar.invalidate();
 			},
 		});
 
@@ -279,6 +307,36 @@ export function BehaviorSettings({ visibleItems }: BehaviorSettingsProps) {
 							}
 							disabled={
 								isResourceMonitorLoading || setShowResourceMonitor.isPending
+							}
+						/>
+					</div>
+				)}
+
+				{showWorkspacesInSidebar && (
+					<div className="flex items-center justify-between">
+						<div className="space-y-0.5">
+							<Label
+								htmlFor="workspaces-in-sidebar"
+								className="text-sm font-medium"
+							>
+								<HighlightText
+									text={t({ message: "Show Workspaces in sidebar" })}
+									query={searchQuery}
+								/>
+							</Label>
+							<p className="text-xs text-muted-foreground">
+								<Trans>Show a Workspaces button in the home sidebar</Trans>
+							</p>
+						</div>
+						<Switch
+							id="workspaces-in-sidebar"
+							checked={workspacesInSidebarEnabled ?? true}
+							onCheckedChange={(enabled) =>
+								setShowWorkspacesInSidebar.mutate({ enabled })
+							}
+							disabled={
+								isWorkspacesInSidebarLoading ||
+								setShowWorkspacesInSidebar.isPending
 							}
 						/>
 					</div>

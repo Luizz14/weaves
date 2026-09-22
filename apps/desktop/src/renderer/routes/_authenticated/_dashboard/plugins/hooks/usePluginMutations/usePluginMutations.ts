@@ -163,7 +163,10 @@ export function usePluginMutations() {
 	});
 
 	const add = async (name: string): Promise<boolean> => {
-		navigate({ to: "/plugins/$pluginName", params: { pluginName: name } });
+		navigate({
+			to: "/settings/plugins/$pluginName",
+			params: { pluginName: name },
+		});
 		await installMutation.mutateAsync({ name });
 		return await syncAccount(name, "install");
 	};

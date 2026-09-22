@@ -17,6 +17,7 @@ import { OpenClosedFilter } from "renderer/routes/_authenticated/_dashboard/comp
 import { ProjectFilter } from "renderer/routes/_authenticated/_dashboard/components/ProjectFilter";
 import { WindowControlsInset } from "renderer/routes/_authenticated/_dashboard/components/WindowControlsInset";
 import { WorkItemsSearch } from "renderer/routes/_authenticated/_dashboard/components/WorkItemsSearch";
+import { shouldShowTaskSourceSwitcher } from "renderer/routes/_authenticated/_dashboard/hooks/useDashboardIntegrationAvailability/availability";
 import type { ViewMode } from "../../../../stores/tasks-filter-state";
 import type { TaskWithStatus } from "../../hooks/useTasksData";
 import type { SelectedIssue } from "../GitHubIssuesContent";
@@ -52,9 +53,11 @@ interface TasksTopBarProps {
 	viewMode: ViewMode;
 	onViewModeChange: (mode: ViewMode) => void;
 	taskSource: TaskSource;
+	availableTaskSources: TaskSource[];
 	onTaskSourceChange: (taskSource: TaskSource) => void;
 	projectFilters: string[];
 	onProjectFiltersChange: (projectIds: string[]) => void;
+	githubProjectIds: string[];
 	linearProjectFilter: string | null;
 	onLinearProjectFilterChange: (projectId: string | null) => void;
 	includeClosedIssues: boolean;
@@ -81,9 +84,11 @@ export function TasksTopBar({
 	viewMode,
 	onViewModeChange,
 	taskSource,
+	availableTaskSources,
 	onTaskSourceChange,
 	projectFilters,
 	onProjectFiltersChange,
+	githubProjectIds,
 	linearProjectFilter,
 	onLinearProjectFilterChange,
 	includeClosedIssues,
@@ -168,31 +173,36 @@ export function TasksTopBar({
 							</>
 						) : (
 							<>
-								<Tabs
-									value={taskSource}
-									onValueChange={(value) =>
-										onTaskSourceChange(value as TaskSource)
-									}
-									className="flex-row gap-0"
-								>
-									<TabsList className="h-8 gap-0.5 rounded-md bg-muted/50 p-0.5">
-										{TASK_SOURCES.map((source) => {
-											const Icon = source.Icon;
-											return (
-												<TabsTrigger
-													key={source.value}
-													value={source.value}
-													className="h-7 rounded-sm px-2 text-xs shadow-none data-[state=active]:shadow-none"
-												>
-													<Icon className="size-3.5" />
-													<span>{taskSourceLabels[source.value]}</span>
-												</TabsTrigger>
-											);
-										})}
-									</TabsList>
-								</Tabs>
-
-								<div className="h-4 w-px shrink-0 bg-border" />
+								{shouldShowTaskSourceSwitcher(availableTaskSources) && (
+									<>
+										<Tabs
+											value={taskSource}
+											onValueChange={(value) =>
+												onTaskSourceChange(value as TaskSource)
+											}
+											className="flex-row gap-0"
+										>
+											<TabsList className="h-8 gap-0.5 rounded-md bg-muted/50 p-0.5">
+												{TASK_SOURCES.filter((source) =>
+													availableTaskSources.includes(source.value),
+												).map((source) => {
+													const Icon = source.Icon;
+													return (
+														<TabsTrigger
+															key={source.value}
+															value={source.value}
+															className="h-7 rounded-sm px-2 text-xs shadow-none data-[state=active]:shadow-none"
+														>
+															<Icon className="size-3.5" />
+															<span>{taskSourceLabels[source.value]}</span>
+														</TabsTrigger>
+													);
+												})}
+											</TabsList>
+										</Tabs>
+										<div className="h-4 w-px shrink-0 bg-border" />
+									</>
+								)}
 
 								{showTaskOnlyControls ? (
 									<>
@@ -217,6 +227,7 @@ export function TasksTopBar({
 											<ProjectFilter
 												value={projectFilters}
 												onChange={onProjectFiltersChange}
+												allowedProjectIds={githubProjectIds}
 											/>
 										</div>
 										<div className="h-4 w-px shrink-0 bg-border" />

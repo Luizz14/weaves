@@ -776,9 +776,6 @@ msgstr "{months} мес."
 msgid "{months}mo ago"
 msgstr "{months} мес. назад"
 
-msgid "{myFailedCount} of your automations failed their last run"
-msgstr "Последний запуск завершился ошибкой у {myFailedCount} ваших автоматизаций"
-
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceBuiltinRemove"
 msgstr "{name} встроен и не может быть удалён"
@@ -838,7 +835,7 @@ msgid "{plugin} has no OAuth client configured on this deployment yet."
 msgstr "Для {plugin} в этом развёртывании ещё не настроен клиент OAuth."
 
 msgid "{plugin} is no longer installed."
-msgstr "{plugin} больше не установлен."
+msgstr "Плагин больше не установлен."
 
 msgid "{presetLabel} reset to defaults"
 msgstr "{presetLabel} сброшен к значениям по умолчанию"
@@ -2449,17 +2446,11 @@ msgstr "Название автоматизации"
 msgid "Automations"
 msgstr "Автоматизации"
 
-msgid "Automations ({myFailedCount} failing)"
-msgstr "Автоматизации (с ошибкой: {myFailedCount})"
-
 msgid "Automations & event triggers"
 msgstr "Автоматизации и триггеры по событиям"
 
 msgid "Automations require the Pro plan."
 msgstr "Для автоматизаций нужен план Pro."
-
-msgid "Automations, {myFailedCount} failing"
-msgstr "Автоматизации, с ошибкой: {myFailedCount}"
 
 msgid "Autonomous"
 msgstr "Автономно"
@@ -3246,6 +3237,9 @@ msgstr "Проверка агентов…"
 msgid "Checking Azure CLI, the Azure DevOps extension, and repository access."
 msgstr "Проверка Azure CLI, расширения Azure DevOps и доступа к репозиторию."
 
+msgid "Checking board configuration…"
+msgstr "Проверка конфигурации доски…"
+
 msgid "Checking host…"
 msgstr "Проверка хоста…"
 
@@ -3953,14 +3947,26 @@ msgstr "Подключить {name}"
 msgid "Connect a device"
 msgstr "Подключите устройство"
 
+msgid "Connect a GitHub repository or configure an Azure DevOps project for one of your workspaces."
+msgstr "Подключите репозиторий GitHub или настройте проект Azure DevOps для одной из рабочих областей."
+
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "Подключите аккаунт Google. Его календари и почтовый ящик доступны только для чтения, а триггеры работают от имени подключившего."
+
+msgid "Connect a host before configuring Azure DevOps."
+msgstr "Подключите хост перед настройкой Azure DevOps."
 
 msgid "Connect a host to load Codex models."
 msgstr "Подключите хост, чтобы загрузить модели Codex."
 
 msgid "Connect a microphone to use dictation"
 msgstr "Подключите микрофон, чтобы использовать диктовку"
+
+msgid "Connect a repository to see pull requests"
+msgstr "Подключите репозиторий, чтобы видеть запросы на слияние"
+
+msgid "Connect an integration to use Tasks"
+msgstr "Подключите интеграцию, чтобы использовать задачи"
 
 msgid "Connect any AI agent to Superset."
 msgstr "Подключите любого AI-агента к Superset."
@@ -3991,6 +3997,9 @@ msgstr "Подключить Google"
 
 msgid "Connect Linear"
 msgstr "Подключить Linear"
+
+msgid "Connect Linear or GitHub, or configure an Azure DevOps board for an available host in Integrations settings."
+msgstr "Подключите Linear или GitHub либо настройте доску Azure DevOps для доступного хоста в параметрах интеграций."
 
 msgid "Connect Microsoft Teams"
 msgstr "Подключить Microsoft Teams"
@@ -9238,9 +9247,6 @@ msgstr "Объединено, но не удалось обновить сост
 msgid "Merging PR..."
 msgstr "Объединение PR..."
 
-msgid "Merging pull request"
-msgstr "Объединение пул-реквеста"
-
 msgid "Mesh Gradient"
 msgstr "Mesh-градиент"
 
@@ -10908,6 +10914,9 @@ msgstr "Открыть в рабочей области"
 msgid "Open in…"
 msgstr "Открыть в…"
 
+msgid "Open Integrations settings"
+msgstr "Открыть настройки интеграций"
+
 #. placeholder {0}: issue.issueNumber
 msgid "Open issue #{0} in browser"
 msgstr "Открыть задачу #{0} в браузере"
@@ -10981,9 +10990,6 @@ msgstr "Открыть пул-реквест #{0}"
 
 msgid "Open pull request in GitHub"
 msgstr "Открыть пул-реквест на GitHub"
-
-msgid "Open pull request options"
-msgstr "Открыть параметры пул-реквеста"
 
 msgid "Open pull requests"
 msgstr "Открытые пул-реквесты"
@@ -14085,6 +14091,9 @@ msgstr "Показывать подтверждение при выходе из
 msgid "Show a Usage button in the home sidebar, under Pull requests"
 msgstr "Показывать кнопку «Использование» в боковой панели главного экрана под пул-реквестами"
 
+msgid "Show a Workspaces button in the home sidebar"
+msgstr "Показывать кнопку Рабочие области на главной боковой панели"
+
 msgid "Show all {count}"
 msgstr "Показать все {count}"
 
@@ -14207,6 +14216,9 @@ msgstr "Показать перевод"
 
 msgid "Show usage tab on sidebar"
 msgstr "Показывать вкладку использования на боковой панели"
+
+msgid "Show Workspaces in sidebar"
+msgstr "Показывать Рабочие области на боковой панели"
 
 msgid "showArrow opt-in"
 msgstr "showArrow по желанию"
@@ -16897,6 +16909,9 @@ msgstr "Используйте любых агентов"
 
 msgid "Use as workspace run"
 msgstr "Использовать как запуск рабочей области"
+
+msgid "Use Azure CLI authentication on each host to configure work item boards."
+msgstr "Используйте аутентификацию Azure CLI на каждом хосте для настройки досок рабочих элементов."
 
 msgid "Use Claude Code, Codex, OpenCode, or any coding agent for each task. Your workspaces, branches, and review flow stay the same."
 msgstr "Используйте Claude Code, Codex, OpenCode или любого кодового агента под каждую задачу. Ваши рабочие области, ветки и процесс ревью остаются прежними."

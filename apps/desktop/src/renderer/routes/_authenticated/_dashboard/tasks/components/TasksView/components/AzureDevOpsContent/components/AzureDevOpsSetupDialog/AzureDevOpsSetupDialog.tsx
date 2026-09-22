@@ -29,6 +29,7 @@ type AzureDevOpsSetupDialogProps = {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 	onConfigured: () => void;
+	hostName?: string;
 };
 
 export function AzureDevOpsSetupDialog({
@@ -37,6 +38,7 @@ export function AzureDevOpsSetupDialog({
 	open,
 	onOpenChange,
 	onConfigured,
+	hostName,
 }: AzureDevOpsSetupDialogProps) {
 	const { t } = useLingui();
 	const [organizationUrl, setOrganizationUrl] = useState(
@@ -109,6 +111,11 @@ export function AzureDevOpsSetupDialog({
 							workflow stages and workspace links on this host.
 						</Trans>
 					</DialogDescription>
+					{hostName && (
+						<p className="text-xs text-muted-foreground">
+							<Trans>Host</Trans>: {hostName}
+						</p>
+					)}
 				</DialogHeader>
 				<div className="grid gap-4 py-2">
 					<div className="grid gap-1.5">

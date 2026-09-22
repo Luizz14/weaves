@@ -76,7 +76,8 @@ describe("Tasks and pull requests navigation", () => {
 		const source = readComponent("TasksView.tsx");
 
 		expect(source).toContain("<AzureDevOpsContent");
-		expect(source).toContain('typeTab === "azure"');
+		expect(source).toContain('activeTaskSource === "azure"');
+		expect(source).toContain("taskSources.includes(source)");
 	});
 
 	test("keeps pull request UI out of TasksView", () => {

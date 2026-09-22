@@ -776,9 +776,6 @@ msgstr "{months}个月"
 msgid "{months}mo ago"
 msgstr "{months}个月前"
 
-msgid "{myFailedCount} of your automations failed their last run"
-msgstr "你有{myFailedCount}个自动化上次运行失败"
-
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceBuiltinRemove"
 msgstr "{name} 是内置的，无法移除"
@@ -838,7 +835,7 @@ msgid "{plugin} has no OAuth client configured on this deployment yet."
 msgstr "此部署尚未为 {plugin} 配置 OAuth 客户端。"
 
 msgid "{plugin} is no longer installed."
-msgstr "{plugin} 已不再安装。"
+msgstr "插件已不再安装。"
 
 msgid "{presetLabel} reset to defaults"
 msgstr "{presetLabel}已重置为默认值"
@@ -2449,17 +2446,11 @@ msgstr "自动化标题"
 msgid "Automations"
 msgstr "自动化"
 
-msgid "Automations ({myFailedCount} failing)"
-msgstr "自动化（{myFailedCount}个失败）"
-
 msgid "Automations & event triggers"
 msgstr "自动化与事件触发"
 
 msgid "Automations require the Pro plan."
 msgstr "自动化需要Pro套餐。"
-
-msgid "Automations, {myFailedCount} failing"
-msgstr "自动化，{myFailedCount}个失败"
 
 msgid "Autonomous"
 msgstr "自主"
@@ -3246,6 +3237,9 @@ msgstr "正在检查智能体…"
 msgid "Checking Azure CLI, the Azure DevOps extension, and repository access."
 msgstr "正在检查 Azure CLI、Azure DevOps 扩展和存储库访问权限。"
 
+msgid "Checking board configuration…"
+msgstr "正在检查看板配置…"
+
 msgid "Checking host…"
 msgstr "正在检查主机…"
 
@@ -3953,14 +3947,26 @@ msgstr "连接 {name}"
 msgid "Connect a device"
 msgstr "连接设备"
 
+msgid "Connect a GitHub repository or configure an Azure DevOps project for one of your workspaces."
+msgstr "连接 GitHub 存储库，或为某个工作区配置 Azure DevOps 项目。"
+
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "连接一个Google账户。它的日历和邮箱均为只读，触发器以连接者的身份运行。"
+
+msgid "Connect a host before configuring Azure DevOps."
+msgstr "配置 Azure DevOps 前请先连接主机。"
 
 msgid "Connect a host to load Codex models."
 msgstr "连接主机以加载 Codex 模型。"
 
 msgid "Connect a microphone to use dictation"
 msgstr "请连接麦克风以使用语音输入"
+
+msgid "Connect a repository to see pull requests"
+msgstr "连接存储库以查看拉取请求"
+
+msgid "Connect an integration to use Tasks"
+msgstr "连接集成以使用任务"
 
 msgid "Connect any AI agent to Superset."
 msgstr "把任意AI智能体接入Superset。"
@@ -3991,6 +3997,9 @@ msgstr "连接Google"
 
 msgid "Connect Linear"
 msgstr "连接Linear"
+
+msgid "Connect Linear or GitHub, or configure an Azure DevOps board for an available host in Integrations settings."
+msgstr "连接 Linear 或 GitHub，或在集成设置中为可用主机配置 Azure DevOps 看板。"
 
 msgid "Connect Microsoft Teams"
 msgstr "连接Microsoft Teams"
@@ -9238,9 +9247,6 @@ msgstr "已合并，但无法刷新PR状态 — 请稍后重试"
 msgid "Merging PR..."
 msgstr "正在合并PR..."
 
-msgid "Merging pull request"
-msgstr "正在合并拉取请求"
-
 msgid "Mesh Gradient"
 msgstr "网格渐变"
 
@@ -10908,6 +10914,9 @@ msgstr "在工作区中打开"
 msgid "Open in…"
 msgstr "打开方式…"
 
+msgid "Open Integrations settings"
+msgstr "打开集成设置"
+
 #. placeholder {0}: issue.issueNumber
 msgid "Open issue #{0} in browser"
 msgstr "在浏览器中打开议题#{0}"
@@ -10981,9 +10990,6 @@ msgstr "打开拉取请求#{0}"
 
 msgid "Open pull request in GitHub"
 msgstr "在GitHub中打开拉取请求"
-
-msgid "Open pull request options"
-msgstr "打开拉取请求选项"
 
 msgid "Open pull requests"
 msgstr "打开的拉取请求"
@@ -14085,6 +14091,9 @@ msgstr "退出应用时显示确认对话框"
 msgid "Show a Usage button in the home sidebar, under Pull requests"
 msgstr "在主页侧边栏的“拉取请求”下方显示“用量”按钮"
 
+msgid "Show a Workspaces button in the home sidebar"
+msgstr "在主侧边栏显示工作区按钮"
+
 msgid "Show all {count}"
 msgstr "显示全部{count}条"
 
@@ -14207,6 +14216,9 @@ msgstr "显示译文"
 
 msgid "Show usage tab on sidebar"
 msgstr "在侧边栏显示用量选项卡"
+
+msgid "Show Workspaces in sidebar"
+msgstr "在侧边栏显示工作区"
 
 msgid "showArrow opt-in"
 msgstr "showArrow按需开启"
@@ -16897,6 +16909,9 @@ msgstr "使用任意智能体"
 
 msgid "Use as workspace run"
 msgstr "用作工作区运行脚本"
+
+msgid "Use Azure CLI authentication on each host to configure work item boards."
+msgstr "在每台主机上使用 Azure CLI 身份验证来配置工作项看板。"
 
 msgid "Use Claude Code, Codex, OpenCode, or any coding agent for each task. Your workspaces, branches, and review flow stay the same."
 msgstr "每个任务都可以用Claude Code、Codex、OpenCode或任何编码智能体。工作区、分支和审查流程保持不变。"

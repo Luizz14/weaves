@@ -776,9 +776,6 @@ msgstr "{months}bln"
 msgid "{months}mo ago"
 msgstr "{months}bln lalu"
 
-msgid "{myFailedCount} of your automations failed their last run"
-msgstr "{myFailedCount} otomatisasi Anda gagal pada run terakhirnya"
-
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceBuiltinRemove"
 msgstr "{name} bawaan dan tidak dapat dihapus"
@@ -838,7 +835,7 @@ msgid "{plugin} has no OAuth client configured on this deployment yet."
 msgstr "{plugin} belum memiliki klien OAuth yang dikonfigurasi di deployment ini."
 
 msgid "{plugin} is no longer installed."
-msgstr "{plugin} sudah tidak terpasang."
+msgstr "Plugin ini tidak lagi terpasang."
 
 msgid "{presetLabel} reset to defaults"
 msgstr "{presetLabel} direset ke setelan bawaan"
@@ -2449,17 +2446,11 @@ msgstr "Judul otomatisasi"
 msgid "Automations"
 msgstr "Otomatisasi"
 
-msgid "Automations ({myFailedCount} failing)"
-msgstr "Otomatisasi ({myFailedCount} gagal)"
-
 msgid "Automations & event triggers"
 msgstr "Otomatisasi & pemicu event"
 
 msgid "Automations require the Pro plan."
 msgstr "Otomatisasi memerlukan paket Pro."
-
-msgid "Automations, {myFailedCount} failing"
-msgstr "Otomatisasi, {myFailedCount} gagal"
 
 msgid "Autonomous"
 msgstr "Otonom"
@@ -3246,6 +3237,9 @@ msgstr "Memeriksa agen…"
 msgid "Checking Azure CLI, the Azure DevOps extension, and repository access."
 msgstr "Memeriksa Azure CLI, ekstensi Azure DevOps, dan akses repositori."
 
+msgid "Checking board configuration…"
+msgstr "Memeriksa konfigurasi papan…"
+
 msgid "Checking host…"
 msgstr "Memeriksa host…"
 
@@ -3953,14 +3947,26 @@ msgstr "Hubungkan {name}"
 msgid "Connect a device"
 msgstr "Hubungkan perangkat"
 
+msgid "Connect a GitHub repository or configure an Azure DevOps project for one of your workspaces."
+msgstr "Hubungkan repositori GitHub atau konfigurasi proyek Azure DevOps untuk salah satu ruang kerja Anda."
+
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "Hubungkan sebuah akun Google. Kalender dan kotak suratnya bersifat baca-saja, dan pemicunya berjalan atas nama orang yang menghubungkannya."
+
+msgid "Connect a host before configuring Azure DevOps."
+msgstr "Hubungkan host sebelum mengonfigurasi Azure DevOps."
 
 msgid "Connect a host to load Codex models."
 msgstr "Hubungkan host untuk memuat model Codex."
 
 msgid "Connect a microphone to use dictation"
 msgstr "Hubungkan mikrofon untuk memakai dikte"
+
+msgid "Connect a repository to see pull requests"
+msgstr "Hubungkan repositori untuk melihat pull request"
+
+msgid "Connect an integration to use Tasks"
+msgstr "Hubungkan integrasi untuk menggunakan Tugas"
 
 msgid "Connect any AI agent to Superset."
 msgstr "Hubungkan agen AI mana pun ke Superset."
@@ -3991,6 +3997,9 @@ msgstr "Hubungkan Google"
 
 msgid "Connect Linear"
 msgstr "Hubungkan Linear"
+
+msgid "Connect Linear or GitHub, or configure an Azure DevOps board for an available host in Integrations settings."
+msgstr "Hubungkan Linear atau GitHub, atau konfigurasi papan Azure DevOps untuk host yang tersedia di pengaturan Integrasi."
 
 msgid "Connect Microsoft Teams"
 msgstr "Hubungkan Microsoft Teams"
@@ -9238,9 +9247,6 @@ msgstr "Sudah di-merge, tapi status PR tidak bisa disegarkan — coba lagi seben
 msgid "Merging PR..."
 msgstr "Me-merge PR..."
 
-msgid "Merging pull request"
-msgstr "Me-merge pull request"
-
 msgid "Mesh Gradient"
 msgstr "Mesh Gradient"
 
@@ -10908,6 +10914,9 @@ msgstr "Buka di workspace"
 msgid "Open in…"
 msgstr "Buka di…"
 
+msgid "Open Integrations settings"
+msgstr "Buka pengaturan Integrasi"
+
 #. placeholder {0}: issue.issueNumber
 msgid "Open issue #{0} in browser"
 msgstr "Buka issue #{0} di browser"
@@ -10981,9 +10990,6 @@ msgstr "Buka pull request #{0}"
 
 msgid "Open pull request in GitHub"
 msgstr "Buka pull request di GitHub"
-
-msgid "Open pull request options"
-msgstr "Buka opsi pull request"
 
 msgid "Open pull requests"
 msgstr "Pull request terbuka"
@@ -14085,6 +14091,9 @@ msgstr "Tampilkan dialog konfirmasi saat keluar dari aplikasi"
 msgid "Show a Usage button in the home sidebar, under Pull requests"
 msgstr "Tampilkan tombol Penggunaan di sidebar beranda, di bawah Pull request"
 
+msgid "Show a Workspaces button in the home sidebar"
+msgstr "Tampilkan tombol Ruang kerja di sidebar utama"
+
 msgid "Show all {count}"
 msgstr "Tampilkan semua {count}"
 
@@ -14207,6 +14216,9 @@ msgstr "Tampilkan terjemahan"
 
 msgid "Show usage tab on sidebar"
 msgstr "Tampilkan tab penggunaan di bilah samping"
+
+msgid "Show Workspaces in sidebar"
+msgstr "Tampilkan Ruang kerja di sidebar"
 
 msgid "showArrow opt-in"
 msgstr "showArrow opsional"
@@ -16897,6 +16909,9 @@ msgstr "Pakai Agen Apa Pun"
 
 msgid "Use as workspace run"
 msgstr "Pakai sebagai run workspace"
+
+msgid "Use Azure CLI authentication on each host to configure work item boards."
+msgstr "Gunakan autentikasi Azure CLI di setiap host untuk mengonfigurasi papan item kerja."
 
 msgid "Use Claude Code, Codex, OpenCode, or any coding agent for each task. Your workspaces, branches, and review flow stay the same."
 msgstr "Pakai Claude Code, Codex, OpenCode, atau agen coding apa pun untuk tiap tugas. Workspace, branch, dan alur review Anda tetap sama."

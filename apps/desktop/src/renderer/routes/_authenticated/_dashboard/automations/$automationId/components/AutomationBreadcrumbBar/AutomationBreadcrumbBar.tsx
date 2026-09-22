@@ -31,7 +31,7 @@ export function AutomationBreadcrumbBar({
 				<BreadcrumbList className="text-sm">
 					<BreadcrumbItem>
 						<BreadcrumbLink asChild>
-							<Link to="/automations">
+							<Link to="/settings/automations">
 								<Trans>Automations</Trans>
 							</Link>
 						</BreadcrumbLink>

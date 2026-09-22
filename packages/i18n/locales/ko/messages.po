@@ -776,9 +776,6 @@ msgstr "{months}개월"
 msgid "{months}mo ago"
 msgstr "{months}개월 전"
 
-msgid "{myFailedCount} of your automations failed their last run"
-msgstr "내 자동화 {myFailedCount}개가 마지막 실행에 실패했습니다"
-
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceBuiltinRemove"
 msgstr "{name}은(는) 기본 제공이라 제거할 수 없습니다"
@@ -838,7 +835,7 @@ msgid "{plugin} has no OAuth client configured on this deployment yet."
 msgstr "이 배포에는 {plugin}의 OAuth 클라이언트가 아직 구성되지 않았습니다."
 
 msgid "{plugin} is no longer installed."
-msgstr "{plugin}이(가) 더 이상 설치되어 있지 않습니다."
+msgstr "플러그인이 더 이상 설치되어 있지 않습니다."
 
 msgid "{presetLabel} reset to defaults"
 msgstr "{presetLabel}이(가) 기본값으로 초기화되었습니다"
@@ -2449,17 +2446,11 @@ msgstr "자동화 제목"
 msgid "Automations"
 msgstr "자동화"
 
-msgid "Automations ({myFailedCount} failing)"
-msgstr "자동화 ({myFailedCount}개 실패)"
-
 msgid "Automations & event triggers"
 msgstr "자동화 및 이벤트 트리거"
 
 msgid "Automations require the Pro plan."
 msgstr "자동화에는 Pro 플랜이 필요합니다."
-
-msgid "Automations, {myFailedCount} failing"
-msgstr "자동화, {myFailedCount}개 실패"
 
 msgid "Autonomous"
 msgstr "자율"
@@ -3246,6 +3237,9 @@ msgstr "에이전트 확인하는 중…"
 msgid "Checking Azure CLI, the Azure DevOps extension, and repository access."
 msgstr "Azure CLI, Azure DevOps 확장 및 리포지토리 액세스를 확인하는 중입니다."
 
+msgid "Checking board configuration…"
+msgstr "보드 구성을 확인하는 중…"
+
 msgid "Checking host…"
 msgstr "호스트 확인하는 중…"
 
@@ -3953,14 +3947,26 @@ msgstr "{name} 연결"
 msgid "Connect a device"
 msgstr "기기 연결"
 
+msgid "Connect a GitHub repository or configure an Azure DevOps project for one of your workspaces."
+msgstr "GitHub 저장소를 연결하거나 워크스페이스 중 하나에 Azure DevOps 프로젝트를 구성하세요."
+
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "Google 계정을 연결하세요. 캘린더와 메일함은 읽기 전용이며, 트리거는 계정을 연결한 사람의 권한으로 실행됩니다."
+
+msgid "Connect a host before configuring Azure DevOps."
+msgstr "Azure DevOps를 구성하기 전에 호스트를 연결하세요."
 
 msgid "Connect a host to load Codex models."
 msgstr "호스트에 연결하여 Codex 모델을 불러오세요."
 
 msgid "Connect a microphone to use dictation"
 msgstr "받아쓰기를 사용하려면 마이크를 연결하세요"
+
+msgid "Connect a repository to see pull requests"
+msgstr "풀 리퀘스트를 보려면 저장소를 연결하세요"
+
+msgid "Connect an integration to use Tasks"
+msgstr "작업을 사용하려면 연동을 연결하세요"
 
 msgid "Connect any AI agent to Superset."
 msgstr "어떤 AI 에이전트든 Superset에 연결하세요."
@@ -3991,6 +3997,9 @@ msgstr "Google 연결"
 
 msgid "Connect Linear"
 msgstr "Linear 연결"
+
+msgid "Connect Linear or GitHub, or configure an Azure DevOps board for an available host in Integrations settings."
+msgstr "Linear 또는 GitHub를 연결하거나 연동 설정에서 사용 가능한 호스트에 Azure DevOps 보드를 구성하세요."
 
 msgid "Connect Microsoft Teams"
 msgstr "Microsoft Teams 연결"
@@ -9238,9 +9247,6 @@ msgstr "머지했지만 PR 상태를 새로 고치지 못했습니다 — 잠시
 msgid "Merging PR..."
 msgstr "PR을 머지하는 중..."
 
-msgid "Merging pull request"
-msgstr "풀 리퀘스트 머지 중"
-
 msgid "Mesh Gradient"
 msgstr "메시 그라데이션"
 
@@ -10908,6 +10914,9 @@ msgstr "워크스페이스에서 열기"
 msgid "Open in…"
 msgstr "다음으로 열기…"
 
+msgid "Open Integrations settings"
+msgstr "연동 설정 열기"
+
 #. placeholder {0}: issue.issueNumber
 msgid "Open issue #{0} in browser"
 msgstr "브라우저에서 이슈 #{0} 열기"
@@ -10981,9 +10990,6 @@ msgstr "풀 리퀘스트 #{0} 열기"
 
 msgid "Open pull request in GitHub"
 msgstr "GitHub에서 풀 리퀘스트 열기"
-
-msgid "Open pull request options"
-msgstr "풀 리퀘스트 옵션 열기"
 
 msgid "Open pull requests"
 msgstr "열린 풀 리퀘스트"
@@ -14085,6 +14091,9 @@ msgstr "앱을 종료할 때 확인 대화 상자를 표시합니다"
 msgid "Show a Usage button in the home sidebar, under Pull requests"
 msgstr "홈 사이드바의 풀 리퀘스트 아래에 사용량 버튼을 표시합니다"
 
+msgid "Show a Workspaces button in the home sidebar"
+msgstr "홈 사이드바에 워크스페이스 버튼 표시"
+
 msgid "Show all {count}"
 msgstr "{count}개 모두 보기"
 
@@ -14207,6 +14216,9 @@ msgstr "번역 보기"
 
 msgid "Show usage tab on sidebar"
 msgstr "사이드바에 사용량 탭 표시"
+
+msgid "Show Workspaces in sidebar"
+msgstr "사이드바에 워크스페이스 표시"
 
 msgid "showArrow opt-in"
 msgstr "showArrow 선택 사용"
@@ -16897,6 +16909,9 @@ msgstr "어떤 에이전트든 사용"
 
 msgid "Use as workspace run"
 msgstr "워크스페이스 실행으로 사용"
+
+msgid "Use Azure CLI authentication on each host to configure work item boards."
+msgstr "각 호스트에서 Azure CLI 인증을 사용해 작업 항목 보드를 구성하세요."
 
 msgid "Use Claude Code, Codex, OpenCode, or any coding agent for each task. Your workspaces, branches, and review flow stay the same."
 msgstr "작업마다 Claude Code, Codex, OpenCode 등 어떤 코딩 에이전트든 사용하세요. 워크스페이스, 브랜치, 리뷰 흐름은 그대로입니다."

@@ -776,9 +776,6 @@ msgstr "{months} tháng"
 msgid "{months}mo ago"
 msgstr "{months} tháng trước"
 
-msgid "{myFailedCount} of your automations failed their last run"
-msgstr "{myFailedCount} tự động hóa của bạn thất bại ở lần chạy gần nhất"
-
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceBuiltinRemove"
 msgstr "{name} là tích hợp sẵn nên không thể gỡ"
@@ -838,7 +835,7 @@ msgid "{plugin} has no OAuth client configured on this deployment yet."
 msgstr "{plugin} chưa được cấu hình ứng dụng khách OAuth trên bản triển khai này."
 
 msgid "{plugin} is no longer installed."
-msgstr "{plugin} không còn được cài đặt."
+msgstr "Plugin không còn được cài đặt."
 
 msgid "{presetLabel} reset to defaults"
 msgstr "Đã đặt lại {presetLabel} về mặc định"
@@ -2449,17 +2446,11 @@ msgstr "Tiêu đề tự động hóa"
 msgid "Automations"
 msgstr "Tự động hóa"
 
-msgid "Automations ({myFailedCount} failing)"
-msgstr "Tự động hóa ({myFailedCount} đang lỗi)"
-
 msgid "Automations & event triggers"
 msgstr "Tự động hóa & trigger sự kiện"
 
 msgid "Automations require the Pro plan."
 msgstr "Tự động hóa yêu cầu gói Pro."
-
-msgid "Automations, {myFailedCount} failing"
-msgstr "Tự động hóa, {myFailedCount} đang lỗi"
 
 msgid "Autonomous"
 msgstr "Tự chủ"
@@ -3246,6 +3237,9 @@ msgstr "Đang kiểm tra agent…"
 msgid "Checking Azure CLI, the Azure DevOps extension, and repository access."
 msgstr "Đang kiểm tra Azure CLI, tiện ích Azure DevOps và quyền truy cập kho lưu trữ."
 
+msgid "Checking board configuration…"
+msgstr "Đang kiểm tra cấu hình bảng…"
+
 msgid "Checking host…"
 msgstr "Đang kiểm tra host…"
 
@@ -3953,14 +3947,26 @@ msgstr "Kết nối {name}"
 msgid "Connect a device"
 msgstr "Kết nối một thiết bị"
 
+msgid "Connect a GitHub repository or configure an Azure DevOps project for one of your workspaces."
+msgstr "Kết nối kho GitHub hoặc cấu hình dự án Azure DevOps cho một trong các không gian làm việc của bạn."
+
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "Kết nối một tài khoản Google. Lịch và hộp thư của tài khoản chỉ được đọc, và các trigger chạy dưới danh nghĩa người đã kết nối."
+
+msgid "Connect a host before configuring Azure DevOps."
+msgstr "Kết nối máy chủ trước khi cấu hình Azure DevOps."
 
 msgid "Connect a host to load Codex models."
 msgstr "Kết nối máy chủ để tải các mô hình Codex."
 
 msgid "Connect a microphone to use dictation"
 msgstr "Kết nối micro để dùng đọc chính tả"
+
+msgid "Connect a repository to see pull requests"
+msgstr "Kết nối kho để xem yêu cầu kéo"
+
+msgid "Connect an integration to use Tasks"
+msgstr "Kết nối tích hợp để sử dụng Tác vụ"
 
 msgid "Connect any AI agent to Superset."
 msgstr "Kết nối mọi agent AI với Superset."
@@ -3991,6 +3997,9 @@ msgstr "Kết nối Google"
 
 msgid "Connect Linear"
 msgstr "Kết nối Linear"
+
+msgid "Connect Linear or GitHub, or configure an Azure DevOps board for an available host in Integrations settings."
+msgstr "Kết nối Linear hoặc GitHub, hoặc cấu hình bảng Azure DevOps cho máy chủ khả dụng trong phần cài đặt Tích hợp."
 
 msgid "Connect Microsoft Teams"
 msgstr "Kết nối Microsoft Teams"
@@ -9238,9 +9247,6 @@ msgstr "Đã merge, nhưng không làm mới được trạng thái PR — hãy 
 msgid "Merging PR..."
 msgstr "Đang merge PR..."
 
-msgid "Merging pull request"
-msgstr "Đang merge pull request"
-
 msgid "Mesh Gradient"
 msgstr "Mesh Gradient"
 
@@ -10908,6 +10914,9 @@ msgstr "Mở trong workspace"
 msgid "Open in…"
 msgstr "Mở trong…"
 
+msgid "Open Integrations settings"
+msgstr "Mở cài đặt Tích hợp"
+
 #. placeholder {0}: issue.issueNumber
 msgid "Open issue #{0} in browser"
 msgstr "Mở issue #{0} trong trình duyệt"
@@ -10981,9 +10990,6 @@ msgstr "Mở pull request #{0}"
 
 msgid "Open pull request in GitHub"
 msgstr "Mở pull request trong GitHub"
-
-msgid "Open pull request options"
-msgstr "Mở tùy chọn pull request"
 
 msgid "Open pull requests"
 msgstr "Pull request đang mở"
@@ -14085,6 +14091,9 @@ msgstr "Hiện hộp thoại xác nhận khi thoát ứng dụng"
 msgid "Show a Usage button in the home sidebar, under Pull requests"
 msgstr "Hiện nút Mức sử dụng trong thanh bên trang chủ, bên dưới Pull request"
 
+msgid "Show a Workspaces button in the home sidebar"
+msgstr "Hiển thị nút Không gian làm việc trên thanh bên chính"
+
 msgid "Show all {count}"
 msgstr "Hiện tất cả {count}"
 
@@ -14207,6 +14216,9 @@ msgstr "Xem bản dịch"
 
 msgid "Show usage tab on sidebar"
 msgstr "Hiển thị thẻ mức sử dụng trên thanh bên"
+
+msgid "Show Workspaces in sidebar"
+msgstr "Hiển thị Không gian làm việc trên thanh bên"
 
 msgid "showArrow opt-in"
 msgstr "bật showArrow"
@@ -16897,6 +16909,9 @@ msgstr "Dùng agent bất kỳ"
 
 msgid "Use as workspace run"
 msgstr "Dùng làm lệnh chạy của workspace"
+
+msgid "Use Azure CLI authentication on each host to configure work item boards."
+msgstr "Dùng xác thực Azure CLI trên từng máy chủ để cấu hình bảng mục công việc."
 
 msgid "Use Claude Code, Codex, OpenCode, or any coding agent for each task. Your workspaces, branches, and review flow stay the same."
 msgstr "Dùng Claude Code, Codex, OpenCode hay bất kỳ coding agent nào cho từng tác vụ. Workspace, nhánh và quy trình review của bạn vẫn giữ nguyên."

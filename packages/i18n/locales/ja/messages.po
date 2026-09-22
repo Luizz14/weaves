@@ -776,9 +776,6 @@ msgstr "{months}か月"
 msgid "{months}mo ago"
 msgstr "{months}か月前"
 
-msgid "{myFailedCount} of your automations failed their last run"
-msgstr "自分のオートメーションのうち{myFailedCount}件が前回の実行に失敗しました"
-
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceBuiltinRemove"
 msgstr "{name} は組み込みのため削除できません"
@@ -838,7 +835,7 @@ msgid "{plugin} has no OAuth client configured on this deployment yet."
 msgstr "{plugin} の OAuth クライアントはこのデプロイにまだ設定されていません。"
 
 msgid "{plugin} is no longer installed."
-msgstr "{plugin} はインストールされていません。"
+msgstr "プラグインはインストールされていません。"
 
 msgid "{presetLabel} reset to defaults"
 msgstr "{presetLabel}をデフォルトに戻しました"
@@ -2449,17 +2446,11 @@ msgstr "オートメーションのタイトル"
 msgid "Automations"
 msgstr "オートメーション"
 
-msgid "Automations ({myFailedCount} failing)"
-msgstr "オートメーション({myFailedCount}件失敗中)"
-
 msgid "Automations & event triggers"
 msgstr "オートメーションとイベントトリガー"
 
 msgid "Automations require the Pro plan."
 msgstr "オートメーションにはProプランが必要です。"
-
-msgid "Automations, {myFailedCount} failing"
-msgstr "オートメーション、{myFailedCount}件が失敗中"
 
 msgid "Autonomous"
 msgstr "自律"
@@ -3246,6 +3237,9 @@ msgstr "エージェントを確認中…"
 msgid "Checking Azure CLI, the Azure DevOps extension, and repository access."
 msgstr "Azure CLI、Azure DevOps 拡張機能、リポジトリへのアクセスを確認しています。"
 
+msgid "Checking board configuration…"
+msgstr "ボードの設定を確認しています…"
+
 msgid "Checking host…"
 msgstr "ホストを確認中…"
 
@@ -3953,14 +3947,26 @@ msgstr "{name} を接続"
 msgid "Connect a device"
 msgstr "デバイスを接続"
 
+msgid "Connect a GitHub repository or configure an Azure DevOps project for one of your workspaces."
+msgstr "GitHub リポジトリを接続するか、いずれかのワークスペース用に Azure DevOps プロジェクトを設定してください。"
+
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "Googleアカウントを接続します。カレンダーとメールボックスは読み取り専用で、トリガーは接続した本人として実行されます。"
+
+msgid "Connect a host before configuring Azure DevOps."
+msgstr "Azure DevOps を設定する前にホストを接続してください。"
 
 msgid "Connect a host to load Codex models."
 msgstr "ホストに接続して Codex のモデルを読み込んでください。"
 
 msgid "Connect a microphone to use dictation"
 msgstr "音声入力を使うにはマイクを接続してください"
+
+msgid "Connect a repository to see pull requests"
+msgstr "プルリクエストを表示するにはリポジトリを接続してください"
+
+msgid "Connect an integration to use Tasks"
+msgstr "タスクを使うには連携を接続してください"
 
 msgid "Connect any AI agent to Superset."
 msgstr "どのAIエージェントでもSupersetに接続。"
@@ -3991,6 +3997,9 @@ msgstr "Googleを接続"
 
 msgid "Connect Linear"
 msgstr "Linearを接続"
+
+msgid "Connect Linear or GitHub, or configure an Azure DevOps board for an available host in Integrations settings."
+msgstr "Linear または GitHub を接続するか、連携設定で利用可能なホストに Azure DevOps ボードを設定してください。"
 
 msgid "Connect Microsoft Teams"
 msgstr "Microsoft Teamsを接続"
@@ -9238,9 +9247,6 @@ msgstr "マージしましたが、PRの状態を更新できませんでした 
 msgid "Merging PR..."
 msgstr "PRをマージ中..."
 
-msgid "Merging pull request"
-msgstr "プルリクエストをマージ中"
-
 msgid "Mesh Gradient"
 msgstr "Mesh Gradient"
 
@@ -10908,6 +10914,9 @@ msgstr "ワークスペースで開く"
 msgid "Open in…"
 msgstr "アプリで開く…"
 
+msgid "Open Integrations settings"
+msgstr "連携設定を開く"
+
 #. placeholder {0}: issue.issueNumber
 msgid "Open issue #{0} in browser"
 msgstr "issue #{0}をブラウザで開く"
@@ -10981,9 +10990,6 @@ msgstr "プルリクエスト#{0}を開く"
 
 msgid "Open pull request in GitHub"
 msgstr "GitHubでプルリクエストを開く"
-
-msgid "Open pull request options"
-msgstr "プルリクエストのオプションを開く"
 
 msgid "Open pull requests"
 msgstr "オープンなプルリクエスト"
@@ -14085,6 +14091,9 @@ msgstr "アプリ終了時に確認ダイアログを表示"
 msgid "Show a Usage button in the home sidebar, under Pull requests"
 msgstr "ホームのサイドバーの「プルリクエスト」の下に「使用量」ボタンを表示"
 
+msgid "Show a Workspaces button in the home sidebar"
+msgstr "ホームサイドバーにワークスペースボタンを表示"
+
 msgid "Show all {count}"
 msgstr "{count}件すべて表示"
 
@@ -14207,6 +14216,9 @@ msgstr "翻訳を表示"
 
 msgid "Show usage tab on sidebar"
 msgstr "サイドバーに使用状況タブを表示"
+
+msgid "Show Workspaces in sidebar"
+msgstr "サイドバーにワークスペースを表示"
 
 msgid "showArrow opt-in"
 msgstr "showArrowで有効化"
@@ -16897,6 +16909,9 @@ msgstr "好きなエージェントを使う"
 
 msgid "Use as workspace run"
 msgstr "ワークスペースの実行に使用"
+
+msgid "Use Azure CLI authentication on each host to configure work item boards."
+msgstr "各ホストで Azure CLI 認証を使い、作業項目ボードを設定します。"
 
 msgid "Use Claude Code, Codex, OpenCode, or any coding agent for each task. Your workspaces, branches, and review flow stay the same."
 msgstr "タスクごとにClaude Code、Codex、OpenCode、その他どのコーディングエージェントでも使えます。ワークスペース、ブランチ、レビューの流れはそのままです。"

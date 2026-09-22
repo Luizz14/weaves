@@ -1,4 +1,5 @@
-import { useNavigate } from "@tanstack/react-router";
+import { Trans } from "@lingui/react/macro";
+import { Link, useNavigate } from "@tanstack/react-router";
 import {
 	useCallback,
 	useDeferredValue,
@@ -7,8 +8,10 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { useActiveOrganizationId } from "renderer/hooks/useActiveOrganizationId";
-import { cloudTrpc } from "renderer/lib/cloud-trpc";
+import {
+	resolveTaskSource,
+	useDashboardIntegrationAvailability,
+} from "renderer/routes/_authenticated/_dashboard/hooks/useDashboardIntegrationAvailability";
 import { useDebouncedSearchNavigation } from "renderer/routes/_authenticated/_dashboard/hooks/useDebouncedSearchNavigation";
 import { useProjectQueryTargets } from "renderer/routes/_authenticated/_dashboard/hooks/useProjectQueryTargets";
 import {
@@ -21,7 +24,6 @@ import {
 	GitHubIssuesContent,
 	type SelectedIssue,
 } from "./components/GitHubIssuesContent";
-import { LinearCTA } from "./components/LinearCTA";
 import { TableContent } from "./components/TableContent";
 import {
 	type TabValue,
@@ -50,7 +52,11 @@ export function TasksView({
 	initialState,
 }: TasksViewProps) {
 	const navigate = useNavigate();
-	const activeOrganizationId = useActiveOrganizationId();
+	const {
+		taskSources,
+		githubProjectIds,
+		isReady: areIntegrationsReady,
+	} = useDashboardIntegrationAvailability();
 	const {
 		tab: storedTab,
 		assignee: storedAssignee,
@@ -168,6 +174,27 @@ export function TasksView({
 	}, [typeTab, storeSetTypeTab]);
 
 	useEffect(() => {
+		if (!areIntegrationsReady) return;
+		const availableType = resolveTaskSource(typeTab, taskSources);
+		if (!availableType || availableType === typeTab) return;
+		cancelPendingSearchNavigation();
+		storeSetTypeTab(availableType);
+		navigate({
+			to: "/tasks",
+			search: buildSearch({ type: availableType }),
+			replace: true,
+		});
+	}, [
+		areIntegrationsReady,
+		taskSources,
+		typeTab,
+		cancelPendingSearchNavigation,
+		storeSetTypeTab,
+		navigate,
+		buildSearch,
+	]);
+
+	useEffect(() => {
 		storeSetProjectFilters(projectFilters);
 	}, [projectFilters, storeSetProjectFilters]);
 
@@ -178,11 +205,6 @@ export function TasksView({
 	useEffect(() => {
 		storeSetIncludeClosedIssues(includeClosedIssues);
 	}, [includeClosedIssues, storeSetIncludeClosedIssues]);
-
-	const { data: integrations } = cloudTrpc.integration.list.useQuery(
-		{ organizationId: activeOrganizationId ?? "" },
-		{ enabled: !!activeOrganizationId },
-	);
 
 	// Projects are fully local — identity comes from the host fan-out.
 	const {
@@ -221,9 +243,6 @@ export function TasksView({
 		buildSearch,
 	]);
 
-	const isLinearConnected =
-		integrations?.some((i) => i.provider === "linear") ?? false;
-
 	// Defaults ("all"/null) are omitted from the URL, so write the store too —
 	// otherwise the render falls back to the stale stored value (no-op select).
 	const handleTabChange = (tab: TabValue) => {
@@ -258,6 +277,7 @@ export function TasksView({
 	};
 
 	const handleTaskSourceChange = (source: TaskSource) => {
+		if (!taskSources.includes(source)) return;
 		navigateToType(source, true);
 	};
 
@@ -329,17 +349,68 @@ export function TasksView({
 		});
 	};
 
-	const showLinearCTA =
-		integrations !== undefined && !isLinearConnected && typeTab === "tasks";
+	const activeTaskSource = areIntegrationsReady
+		? (resolveTaskSource(typeTab, taskSources) ?? typeTab)
+		: typeTab;
+	const githubProjectTargets = useMemo(
+		() =>
+			projectTargets.filter((target) => githubProjectIds.has(target.projectId)),
+		[githubProjectIds, projectTargets],
+	);
 
-	const showTasks = typeTab === "tasks";
-	const showIssues = typeTab === "issues";
-	const showAzure = typeTab === "azure";
+	useEffect(() => {
+		if (!areIntegrationsReady || activeTaskSource !== "issues") return;
+		const availableFilters = projectFilters.filter((projectId) =>
+			githubProjectIds.has(projectId),
+		);
+		if (availableFilters.length === projectFilters.length) return;
+		cancelPendingSearchNavigation();
+		storeSetProjectFilters(availableFilters);
+		navigate({
+			to: "/tasks",
+			search: buildSearch({ type: "issues", projects: availableFilters }),
+			replace: true,
+		});
+	}, [
+		areIntegrationsReady,
+		activeTaskSource,
+		githubProjectIds,
+		projectFilters,
+		cancelPendingSearchNavigation,
+		storeSetProjectFilters,
+		navigate,
+		buildSearch,
+	]);
+	const showTasks = activeTaskSource === "tasks";
+	const showIssues = activeTaskSource === "issues";
+	const showAzure = activeTaskSource === "azure";
 	const taskSource: TaskSource = showAzure
 		? "azure"
 		: showIssues
 			? "issues"
 			: "tasks";
+
+	if (areIntegrationsReady && taskSources.length === 0) {
+		return (
+			<div className="flex flex-1 flex-col items-center justify-center gap-3 p-8 text-center">
+				<h2 className="text-base font-medium">
+					<Trans>Connect an integration to use Tasks</Trans>
+				</h2>
+				<p className="max-w-md text-sm text-muted-foreground">
+					<Trans>
+						Connect Linear or GitHub, or configure an Azure DevOps board for an
+						available host in Integrations settings.
+					</Trans>
+				</p>
+				<Link
+					to="/settings/integrations"
+					className="rounded-md px-3 py-2 text-sm font-medium text-primary hover:bg-accent"
+				>
+					<Trans>Open Integrations settings</Trans>
+				</Link>
+			</div>
+		);
+	}
 
 	return (
 		<div className="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden">
@@ -357,52 +428,50 @@ export function TasksView({
 				viewMode={viewMode}
 				onViewModeChange={setViewMode}
 				taskSource={taskSource}
+				availableTaskSources={taskSources}
 				onTaskSourceChange={handleTaskSourceChange}
 				projectFilters={projectFilters}
 				onProjectFiltersChange={handleProjectFiltersChange}
+				githubProjectIds={Array.from(githubProjectIds)}
 				linearProjectFilter={linearProjectFilter}
 				onLinearProjectFilterChange={handleLinearProjectFilterChange}
 				includeClosedIssues={includeClosedIssues}
 				onIncludeClosedIssuesChange={handleIncludeClosedIssuesChange}
 			/>
 
-			{showLinearCTA ? (
-				<LinearCTA />
-			) : (
-				<div className="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden">
-					{showTasks &&
-						(viewMode === "board" ? (
-							<BoardContent
-								filterTab={currentTab}
-								searchQuery={deferredSearchQuery}
-								assigneeFilter={assigneeFilter}
-								linearProjectFilter={linearProjectFilter}
-								onTaskClick={handleTaskClick}
-							/>
-						) : (
-							<TableContent
-								filterTab={currentTab}
-								searchQuery={deferredSearchQuery}
-								assigneeFilter={assigneeFilter}
-								linearProjectFilter={linearProjectFilter}
-								onTaskClick={handleTaskClick}
-								onSelectionChange={handleSelectionChange}
-							/>
-						))}
-					{showIssues && (
-						<GitHubIssuesContent
-							projectFilters={projectFilters}
-							projectTargets={projectTargets}
-							areProjectsReady={areProjectsReady}
-							hasProjects={v2Projects.length > 0}
-							searchQuery={searchQuery}
-							includeClosed={includeClosedIssues}
-							onSelectionChange={handleIssueSelectionChange}
+			<div className="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden">
+				{showTasks &&
+					(viewMode === "board" ? (
+						<BoardContent
+							filterTab={currentTab}
+							searchQuery={deferredSearchQuery}
+							assigneeFilter={assigneeFilter}
+							linearProjectFilter={linearProjectFilter}
+							onTaskClick={handleTaskClick}
 						/>
-					)}
-					{showAzure && <AzureDevOpsContent searchQuery={searchQuery} />}
-				</div>
-			)}
+					) : (
+						<TableContent
+							filterTab={currentTab}
+							searchQuery={deferredSearchQuery}
+							assigneeFilter={assigneeFilter}
+							linearProjectFilter={linearProjectFilter}
+							onTaskClick={handleTaskClick}
+							onSelectionChange={handleSelectionChange}
+						/>
+					))}
+				{showIssues && (
+					<GitHubIssuesContent
+						projectFilters={projectFilters}
+						projectTargets={githubProjectTargets}
+						areProjectsReady={areProjectsReady}
+						hasProjects={githubProjectTargets.length > 0}
+						searchQuery={searchQuery}
+						includeClosed={includeClosedIssues}
+						onSelectionChange={handleIssueSelectionChange}
+					/>
+				)}
+				{showAzure && <AzureDevOpsContent searchQuery={searchQuery} />}
+			</div>
 		</div>
 	);
 }

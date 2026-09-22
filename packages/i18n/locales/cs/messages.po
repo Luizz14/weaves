@@ -776,9 +776,6 @@ msgstr "{months} měs."
 msgid "{months}mo ago"
 msgstr "před {months} měs."
 
-msgid "{myFailedCount} of your automations failed their last run"
-msgstr "U {myFailedCount} vašich automatizací selhal poslední běh"
-
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceBuiltinRemove"
 msgstr "{name} je vestavěný a nelze jej odebrat"
@@ -838,7 +835,7 @@ msgid "{plugin} has no OAuth client configured on this deployment yet."
 msgstr "{plugin} zatím nemá v tomto nasazení nakonfigurovaného klienta OAuth."
 
 msgid "{plugin} is no longer installed."
-msgstr "{plugin} už není nainstalován."
+msgstr "Plugin už není nainstalovaný."
 
 msgid "{presetLabel} reset to defaults"
 msgstr "{presetLabel} obnoveno na výchozí"
@@ -2449,17 +2446,11 @@ msgstr "Název automatizace"
 msgid "Automations"
 msgstr "Automatizace"
 
-msgid "Automations ({myFailedCount} failing)"
-msgstr "Automatizace (selhává: {myFailedCount})"
-
 msgid "Automations & event triggers"
 msgstr "Automatizace a spouštěče událostí"
 
 msgid "Automations require the Pro plan."
 msgstr "Automatizace vyžadují tarif Pro."
-
-msgid "Automations, {myFailedCount} failing"
-msgstr "Automatizace, selhává: {myFailedCount}"
 
 msgid "Autonomous"
 msgstr "Autonomní"
@@ -3246,6 +3237,9 @@ msgstr "Kontroluji agenty…"
 msgid "Checking Azure CLI, the Azure DevOps extension, and repository access."
 msgstr "Kontrola Azure CLI, rozšíření Azure DevOps a přístupu k repozitáři."
 
+msgid "Checking board configuration…"
+msgstr "Kontroluje se konfigurace nástěnky…"
+
 msgid "Checking host…"
 msgstr "Kontroluji hosta…"
 
@@ -3953,14 +3947,26 @@ msgstr "Připojit {name}"
 msgid "Connect a device"
 msgstr "Připojit zařízení"
 
+msgid "Connect a GitHub repository or configure an Azure DevOps project for one of your workspaces."
+msgstr "Připojte repozitář GitHub nebo nakonfigurujte projekt Azure DevOps pro některý ze svých pracovních prostorů."
+
 msgid "Connect a Google account. Its calendars and mailbox are read-only, and triggers run for the person who connected it."
 msgstr "Připojte účet Google. Jeho kalendáře a schránka jsou jen ke čtení a spouštěče běží pod tím, kdo účet připojil."
+
+msgid "Connect a host before configuring Azure DevOps."
+msgstr "Před konfigurací Azure DevOps připojte hostitele."
 
 msgid "Connect a host to load Codex models."
 msgstr "Připojte hostitele pro načtení modelů Codex."
 
 msgid "Connect a microphone to use dictation"
 msgstr "Pro diktování připojte mikrofon"
+
+msgid "Connect a repository to see pull requests"
+msgstr "Připojte repozitář a zobrazte žádosti o začlenění"
+
+msgid "Connect an integration to use Tasks"
+msgstr "Pro používání Úkolů připojte integraci"
 
 msgid "Connect any AI agent to Superset."
 msgstr "Připojte k Superset libovolného AI agenta."
@@ -3991,6 +3997,9 @@ msgstr "Připojit Google"
 
 msgid "Connect Linear"
 msgstr "Připojit Linear"
+
+msgid "Connect Linear or GitHub, or configure an Azure DevOps board for an available host in Integrations settings."
+msgstr "Připojte Linear nebo GitHub, případně nakonfigurujte nástěnku Azure DevOps pro dostupného hostitele v nastavení integrací."
 
 msgid "Connect Microsoft Teams"
 msgstr "Připojit Microsoft Teams"
@@ -9238,9 +9247,6 @@ msgstr "Sloučeno, ale nepodařilo se obnovit stav PR — zkuste to za chvíli z
 msgid "Merging PR..."
 msgstr "Slučuji PR..."
 
-msgid "Merging pull request"
-msgstr "Slučuji pull request"
-
 msgid "Mesh Gradient"
 msgstr "Mesh Gradient"
 
@@ -10908,6 +10914,9 @@ msgstr "Otevřít v pracovním prostoru"
 msgid "Open in…"
 msgstr "Otevřít v…"
 
+msgid "Open Integrations settings"
+msgstr "Otevřít nastavení integrací"
+
 #. placeholder {0}: issue.issueNumber
 msgid "Open issue #{0} in browser"
 msgstr "Otevřít issue #{0} v prohlížeči"
@@ -10981,9 +10990,6 @@ msgstr "Otevřít pull request #{0}"
 
 msgid "Open pull request in GitHub"
 msgstr "Otevřít pull request na GitHubu"
-
-msgid "Open pull request options"
-msgstr "Otevřít možnosti pull requestu"
 
 msgid "Open pull requests"
 msgstr "Otevřené pull requesty"
@@ -14085,6 +14091,9 @@ msgstr "Zobrazit před ukončením aplikace potvrzovací dialog"
 msgid "Show a Usage button in the home sidebar, under Pull requests"
 msgstr "Zobrazovat tlačítko Využití v postranním panelu domovské obrazovky pod pull requesty"
 
+msgid "Show a Workspaces button in the home sidebar"
+msgstr "Zobrazit tlačítko Pracovní prostory na hlavním postranním panelu"
+
 msgid "Show all {count}"
 msgstr "Zobrazit všech {count}"
 
@@ -14207,6 +14216,9 @@ msgstr "Zobrazit překlad"
 
 msgid "Show usage tab on sidebar"
 msgstr "Zobrazit kartu využití v postranním panelu"
+
+msgid "Show Workspaces in sidebar"
+msgstr "Zobrazit Pracovní prostory na postranním panelu"
 
 msgid "showArrow opt-in"
 msgstr "showArrow zapnuto"
@@ -16897,6 +16909,9 @@ msgstr "Používejte libovolné agenty"
 
 msgid "Use as workspace run"
 msgstr "Použít jako spuštění pracovního prostoru"
+
+msgid "Use Azure CLI authentication on each host to configure work item boards."
+msgstr "Ke konfiguraci nástěnek pracovních položek použijte Azure CLI na každém hostiteli."
 
 msgid "Use Claude Code, Codex, OpenCode, or any coding agent for each task. Your workspaces, branches, and review flow stay the same."
 msgstr "Pro každý úkol použijte Claude Code, Codex, OpenCode nebo libovolného kódovacího agenta. Vaše pracovní prostory, větve i způsob revize zůstanou stejné."

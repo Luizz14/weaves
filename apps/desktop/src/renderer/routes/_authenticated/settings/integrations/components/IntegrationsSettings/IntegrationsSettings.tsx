@@ -1,4 +1,4 @@
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { FEATURE_FLAGS } from "@superset/shared/constants";
 import {
 	type IntegrationProvider,
@@ -6,6 +6,7 @@ import {
 } from "@superset/shared/integrations";
 import { Button } from "@superset/ui/button";
 import { Skeleton } from "@superset/ui/skeleton";
+import { useQueries, useQueryClient } from "@tanstack/react-query";
 import { useFeatureFlagPayload } from "posthog-js/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { BsMicrosoftTeams } from "react-icons/bs";
@@ -13,14 +14,19 @@ import { FaGithub, FaGoogle, FaSlack } from "react-icons/fa";
 import { HiOutlineArrowTopRightOnSquare } from "react-icons/hi2";
 import { SiLinear, SiNotion, SiSentry } from "react-icons/si";
 import { env } from "renderer/env.renderer";
+import { useHostUrls } from "renderer/hooks/host-service/useHostTargetUrl";
 import { useActiveOrganizationId } from "renderer/hooks/useActiveOrganizationId";
 import { apiTrpcClient } from "renderer/lib/api-trpc-client";
 import { cloudTrpc } from "renderer/lib/cloud-trpc";
+import { getHostServiceClientByUrl } from "renderer/lib/host-service-client";
+import { AzureDevOpsSetupDialog } from "renderer/routes/_authenticated/_dashboard/tasks/components/TasksView/components/AzureDevOpsContent/components/AzureDevOpsSetupDialog";
+import { useWorkspaceHostOptions } from "renderer/routes/_authenticated/components/DashboardNewWorkspaceModal/components/DashboardNewWorkspaceForm/components/DevicePicker/hooks/useWorkspaceHostOptions";
 import { HighlightText } from "renderer/routes/_authenticated/settings/components/HighlightText";
 import { useSettingsSearchQuery } from "renderer/stores/settings-state";
 import {
 	integrationSettingItemId,
 	isItemVisible,
+	SETTING_ITEM_ID,
 	type SettingItemId,
 } from "../../../utils/settings-search";
 
@@ -234,6 +240,138 @@ export function IntegrationsSettings({
 					Manage integrations in the web app to connect and configure services.
 				</Trans>
 			</p>
+
+			{isItemVisible(
+				SETTING_ITEM_ID.INTEGRATIONS_AZURE_DEVOPS,
+				visibleItems,
+			) && <AzureDevOpsHostConnections searchQuery={searchQuery} />}
+		</div>
+	);
+}
+
+function AzureDevOpsHostConnections({ searchQuery }: { searchQuery: string }) {
+	const { t } = useLingui();
+	const queryClient = useQueryClient();
+	const { currentDeviceName, localHostId, otherHosts } =
+		useWorkspaceHostOptions();
+	const hostChoices = useMemo(
+		() => [
+			...(localHostId
+				? [{ id: localHostId, name: currentDeviceName ?? "This device" }]
+				: []),
+			...otherHosts
+				.filter((host) => host.isOnline)
+				.map((host) => ({ id: host.id, name: host.name })),
+		],
+		[localHostId, currentDeviceName, otherHosts],
+	);
+	const hostTargets = useHostUrls(hostChoices.map((host) => host.id));
+	const boardQueries = useQueries({
+		queries: hostTargets.map((target) => ({
+			queryKey: ["azure-devops", "board-config", target.hostId, target.url],
+			enabled: target.url !== null,
+			queryFn: () =>
+				target.url
+					? getHostServiceClientByUrl(
+							target.url,
+						).azureDevOps.getBoardConfig.query()
+					: null,
+			retry: false,
+		})),
+	});
+	const [setupTarget, setSetupTarget] = useState<{
+		hostUrl: string;
+		hostName: string;
+		initialConfig: {
+			organizationUrl: string;
+			workItemProject: string;
+			team: string;
+			areaPath: string;
+			assignedTo: string | null;
+		} | null;
+	} | null>(null);
+	return (
+		<div className="mt-8">
+			<div className="mb-3">
+				<h3 className="text-sm font-semibold">
+					<HighlightText text="Azure DevOps" query={searchQuery} />
+				</h3>
+				<p className="mt-1 text-xs text-muted-foreground">
+					<Trans>
+						Use Azure CLI authentication on each host to configure work item
+						boards.
+					</Trans>
+				</p>
+			</div>
+			{hostChoices.length === 0 ? (
+				<p className="text-sm text-muted-foreground">
+					<Trans>Connect a host before configuring Azure DevOps.</Trans>
+				</p>
+			) : (
+				<div className="space-y-1">
+					{hostTargets.map((target, index) => {
+						const host = hostChoices.find(
+							(entry) => entry.id === target.hostId,
+						);
+						const query = boardQueries[index];
+						const config = query?.data ?? null;
+						const hostName = host?.name ?? t({ message: "Host" });
+						return (
+							<div
+								key={target.hostId}
+								className="flex items-center justify-between gap-3 rounded-md border border-border px-3 py-2.5"
+							>
+								<div className="min-w-0">
+									<div className="truncate text-sm font-medium">{hostName}</div>
+									<div className="text-xs text-muted-foreground">
+										{!target.url ? (
+											<Trans>Host unavailable</Trans>
+										) : query?.isPending ? (
+											<Trans>Checking board configuration…</Trans>
+										) : config ? (
+											<>
+												<Trans>Connected</Trans> · {config.workItemProject}
+											</>
+										) : (
+											<Trans>Not connected</Trans>
+										)}
+									</div>
+								</div>
+								<Button
+									variant="outline"
+									size="sm"
+									disabled={!target.url}
+									onClick={() =>
+										target.url &&
+										setSetupTarget({
+											hostUrl: target.url,
+											hostName,
+											initialConfig: config,
+										})
+									}
+								>
+									{config ? <Trans>Edit</Trans> : <Trans>Connect</Trans>}
+								</Button>
+							</div>
+						);
+					})}
+				</div>
+			)}
+			<AzureDevOpsSetupDialog
+				hostUrl={setupTarget?.hostUrl ?? null}
+				initialConfig={setupTarget?.initialConfig}
+				open={setupTarget !== null}
+				hostName={setupTarget?.hostName}
+				onOpenChange={(open) => {
+					if (!open) setSetupTarget(null);
+				}}
+				onConfigured={() => {
+					setSetupTarget(null);
+					void queryClient.invalidateQueries({
+						queryKey: ["azure-devops", "board-config"],
+					});
+				}}
+			/>
 		</div>
 	);
 }

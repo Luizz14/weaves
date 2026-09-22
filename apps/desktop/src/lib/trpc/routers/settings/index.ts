@@ -62,6 +62,7 @@ import {
 	DEFAULT_SHOW_PRESETS_BAR,
 	DEFAULT_SHOW_RESOURCE_MONITOR,
 	DEFAULT_SHOW_USAGE_IN_SIDEBAR,
+	DEFAULT_SHOW_WORKSPACES_IN_SIDEBAR,
 	DEFAULT_TERMINAL_COPY_ON_SELECT,
 	DEFAULT_TERMINAL_LINK_BEHAVIOR,
 	DEFAULT_TERMINAL_PARKED_RUNTIME_CAP,
@@ -1165,6 +1166,27 @@ export const createSettingsRouter = () => {
 					.onConflictDoUpdate({
 						target: settings.id,
 						set: { showUsageInSidebar: input.enabled },
+					})
+					.run();
+
+				return { success: true };
+			}),
+
+		getShowWorkspacesInSidebar: publicProcedure.query(() => {
+			const row = getSettings();
+			return row.showWorkspacesInSidebar ?? DEFAULT_SHOW_WORKSPACES_IN_SIDEBAR;
+		}),
+
+		setShowWorkspacesInSidebar: publicProcedure
+			.input(z.object({ enabled: z.boolean() }))
+			.mutation(({ input }) => {
+				const { id } = getSettings();
+				localDb
+					.insert(settings)
+					.values({ id, showWorkspacesInSidebar: input.enabled })
+					.onConflictDoUpdate({
+						target: settings.id,
+						set: { showWorkspacesInSidebar: input.enabled },
 					})
 					.run();
 

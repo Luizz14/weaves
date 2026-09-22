@@ -25,6 +25,7 @@ import { ProjectThumbnail } from "renderer/routes/_authenticated/components/Proj
 interface ProjectFilterProps {
 	value: string[];
 	onChange: (value: string[]) => void;
+	allowedProjectIds?: string[];
 	/** Shows the label text regardless of container width — the default
 	 *  `@4xl:inline` gating assumes a wide inline toolbar row, which doesn't
 	 *  apply inside a narrow popover. */
@@ -34,6 +35,7 @@ interface ProjectFilterProps {
 export function ProjectFilter({
 	value,
 	onChange,
+	allowedProjectIds,
 	alwaysShowLabel,
 }: ProjectFilterProps) {
 	const { t } = useLingui();
@@ -44,12 +46,18 @@ export function ProjectFilter({
 	const { projects: hostProjects, isReady } = useHostProjects();
 	const projects = useMemo(
 		() =>
-			hostProjects.map((project) => ({
-				id: project.projectKey,
-				name: project.name,
-				iconUrl: resolveProjectIconUrl(project),
-			})),
-		[hostProjects],
+			hostProjects
+				.filter(
+					(project) =>
+						!allowedProjectIds ||
+						allowedProjectIds.includes(project.projectKey),
+				)
+				.map((project) => ({
+					id: project.projectKey,
+					name: project.name,
+					iconUrl: resolveProjectIconUrl(project),
+				})),
+		[allowedProjectIds, hostProjects],
 	);
 
 	const selectedProjects = useMemo(

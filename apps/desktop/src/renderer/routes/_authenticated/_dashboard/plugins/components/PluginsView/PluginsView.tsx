@@ -38,7 +38,7 @@ export function PluginsView() {
 
 	const handleOpen = (plugin: CatalogPlugin) => {
 		navigate({
-			to: "/plugins/$pluginName",
+			to: "/settings/plugins/$pluginName",
 			params: { pluginName: plugin.name },
 		});
 	};

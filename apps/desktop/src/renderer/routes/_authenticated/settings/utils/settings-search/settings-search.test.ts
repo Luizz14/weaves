@@ -112,3 +112,41 @@ describe("settings search - usage in sidebar", () => {
 		expect(ids).toContain(SETTING_ITEM_ID.USAGE_IN_SIDEBAR);
 	});
 });
+
+describe("settings search - sidebar and tools", () => {
+	it("shows the Workspaces sidebar preference only for v2 users", () => {
+		const visible = getVisibleItemsForSection({
+			section: "behavior",
+			searchQuery: "Workspaces sidebar",
+			isV2: true,
+		});
+		const hiddenForV1 = getVisibleItemsForSection({
+			section: "behavior",
+			searchQuery: "Workspaces sidebar",
+			isV2: false,
+		});
+
+		expect(visible).toContain(SETTING_ITEM_ID.WORKSPACES_IN_SIDEBAR);
+		expect(hiddenForV1).not.toContain(SETTING_ITEM_ID.WORKSPACES_IN_SIDEBAR);
+	});
+
+	it("finds Azure DevOps and the Settings tool pages", () => {
+		expect(getIds(searchSettings("Azure DevOps board"))).toContain(
+			SETTING_ITEM_ID.INTEGRATIONS_AZURE_DEVOPS,
+		);
+		expect(
+			getVisibleItemsForSection({
+				section: "automations",
+				searchQuery: "",
+				isV2: true,
+			}),
+		).toContain(SETTING_ITEM_ID.TOOLS_AUTOMATIONS);
+		expect(
+			getVisibleItemsForSection({
+				section: "plugins",
+				searchQuery: "",
+				isV2: true,
+			}),
+		).toContain(SETTING_ITEM_ID.TOOLS_PLUGINS);
+	});
+});

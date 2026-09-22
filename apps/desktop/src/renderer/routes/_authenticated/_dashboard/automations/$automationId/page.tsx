@@ -8,6 +8,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { TRPCClientError } from "@trpc/client";
 import { useMemo, useState } from "react";
 import { GATED_FEATURES, usePaywall } from "renderer/components/Paywall";
+import { Redirect } from "renderer/components/Redirect";
 import { apiTrpcClient } from "renderer/lib/api-trpc-client";
 import { authClient } from "renderer/lib/auth-client";
 import { cloudTrpc } from "renderer/lib/cloud-trpc";
@@ -28,13 +29,26 @@ type AutomationDetailSearch = {
 export const Route = createFileRoute(
 	"/_authenticated/_dashboard/automations/$automationId/",
 )({
-	component: AutomationDetailPage,
+	component: LegacyAutomationDetailRedirect,
 	validateSearch: (
 		search: Record<string, unknown>,
 	): AutomationDetailSearch => ({
 		history: search.history === true,
 	}),
 });
+
+function LegacyAutomationDetailRedirect() {
+	const { automationId } = Route.useParams();
+	const search = Route.useSearch();
+	return (
+		<Redirect
+			to="/settings/automations/$automationId"
+			params={{ automationId }}
+			search={search}
+			replace
+		/>
+	);
+}
 
 /** Reads the organization the server named on a wrong-active-org FORBIDDEN. */
 function organizationFromError(params: unknown): { id: string | null } | null {
@@ -51,10 +65,14 @@ function organizationFromError(params: unknown): { id: string | null } | null {
 
 const RECENT_RUNS_LIMIT = 10;
 
-function AutomationDetailPage() {
+export function AutomationDetailPageContent({
+	automationId,
+	history,
+}: {
+	automationId: string;
+	history?: boolean;
+}) {
 	const { t } = useLingui();
-	const { automationId } = Route.useParams();
-	const { history } = Route.useSearch();
 	const navigate = useNavigate();
 	const { data: session } = authClient.useSession();
 	const currentUserId = session?.user?.id;
@@ -149,7 +167,7 @@ function AutomationDetailPage() {
 			apiTrpcClient.automation.delete.mutate({ id: automationId }),
 		onSuccess: () => {
 			void utils.automation.list.invalidate();
-			navigate({ to: "/automations" });
+			navigate({ to: "/settings/automations" });
 		},
 	});
 

@@ -8,6 +8,8 @@ import { VscAzureDevops } from "react-icons/vsc";
 import { ProjectFilter } from "renderer/routes/_authenticated/_dashboard/components/ProjectFilter";
 import { WindowControlsInset } from "renderer/routes/_authenticated/_dashboard/components/WindowControlsInset";
 import { WorkItemsSearch } from "renderer/routes/_authenticated/_dashboard/components/WorkItemsSearch";
+import type { PullRequestProvider } from "renderer/routes/_authenticated/_dashboard/hooks/useDashboardIntegrationAvailability";
+import { shouldShowPullRequestProviderSwitcher } from "renderer/routes/_authenticated/_dashboard/hooks/useDashboardIntegrationAvailability/availability";
 import type { ProjectQueryTarget } from "renderer/routes/_authenticated/_dashboard/hooks/useProjectQueryTargets";
 import { PullRequestDetailToggle } from "renderer/routes/_authenticated/_dashboard/pull-requests/components/PullRequestDetailToggle";
 import type { PullRequestReviewFilter } from "renderer/routes/_authenticated/_dashboard/pull-requests/utils/pullRequestReviewFilter";
@@ -18,12 +20,14 @@ type PullRequestsStateFilter = "open" | "all" | "merged";
 
 interface PullRequestsTopBarProps {
 	provider: "github" | "azure-devops";
+	availableProviders: PullRequestProvider[];
 	onProviderChange: (provider: "github" | "azure-devops") => void;
 	searchQuery: string;
 	onSearchChange: (query: string) => void;
 	projectFilters: string[];
 	onProjectFiltersChange: (projectIds: string[]) => void;
 	projectTargets: ProjectQueryTarget[];
+	allowedProjectIds: string[];
 	authorFilter: string | null;
 	onAuthorFilterChange: (author: string | null) => void;
 	reviewFilter: PullRequestReviewFilter | null;
@@ -34,12 +38,14 @@ interface PullRequestsTopBarProps {
 
 export function PullRequestsTopBar({
 	provider,
+	availableProviders,
 	onProviderChange,
 	searchQuery,
 	onSearchChange,
 	projectFilters,
 	onProjectFiltersChange,
 	projectTargets,
+	allowedProjectIds,
 	authorFilter,
 	onAuthorFilterChange,
 	reviewFilter,
@@ -90,20 +96,24 @@ export function PullRequestsTopBar({
 				})}
 				className="flex items-center gap-1"
 			>
-				<button
-					type="button"
-					onClick={() =>
-						onProviderChange(provider === "github" ? "azure-devops" : "github")
-					}
-					className="mr-1 flex h-7 items-center gap-1.5 rounded-md bg-muted px-2 text-xs font-medium text-muted-foreground transition-[background-color,color,transform] hover:text-foreground active:scale-[0.96]"
-				>
-					{provider === "github" ? (
-						<FaGithub className="size-3.5" />
-					) : (
-						<VscAzureDevops className="size-3.5 text-[#0078d4]" />
-					)}
-					{provider === "github" ? "GitHub" : "Azure DevOps"}
-				</button>
+				{shouldShowPullRequestProviderSwitcher(availableProviders) && (
+					<button
+						type="button"
+						onClick={() =>
+							onProviderChange(
+								provider === "github" ? "azure-devops" : "github",
+							)
+						}
+						className="mr-1 flex h-7 items-center gap-1.5 rounded-md bg-muted px-2 text-xs font-medium text-muted-foreground transition-[background-color,color,transform] hover:text-foreground active:scale-[0.96]"
+					>
+						{provider === "github" ? (
+							<FaGithub className="size-3.5" />
+						) : (
+							<VscAzureDevops className="size-3.5 text-[#0078d4]" />
+						)}
+						{provider === "github" ? "GitHub" : "Azure DevOps"}
+					</button>
+				)}
 				{stateTabs.map((tab) => (
 					// biome-ignore lint/a11y/useSemanticElements: styled as a pill button, not a native radio input
 					<button
@@ -181,6 +191,7 @@ export function PullRequestsTopBar({
 							<ProjectFilter
 								value={projectFilters}
 								onChange={onProjectFiltersChange}
+								allowedProjectIds={allowedProjectIds}
 								alwaysShowLabel
 							/>
 						</div>

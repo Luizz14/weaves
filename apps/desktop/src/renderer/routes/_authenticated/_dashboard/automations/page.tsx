@@ -49,6 +49,7 @@ import {
 	LuX,
 } from "react-icons/lu";
 import { GATED_FEATURES, usePaywall } from "renderer/components/Paywall";
+import { Redirect } from "renderer/components/Redirect";
 import { useRecentProjects } from "renderer/hooks/host-projects/useRecentProjects";
 import { useNow } from "renderer/hooks/useNow";
 import { useV2AgentChoices } from "renderer/hooks/useV2AgentChoices";
@@ -75,7 +76,7 @@ import { dispatchErrorCode, runErrorHelp } from "./utils/runErrorHelp";
 
 export const Route = createFileRoute("/_authenticated/_dashboard/automations/")(
 	{
-		component: AutomationsPage,
+		component: () => <Redirect to="/settings/automations" replace />,
 	},
 );
 
@@ -104,7 +105,7 @@ function settledErrorCode(result: PromiseSettledResult<unknown>) {
 	return result.status === "rejected" ? dispatchErrorCode(result.reason) : null;
 }
 
-function AutomationsPage() {
+export function AutomationsPageContent() {
 	const { t } = useLingui();
 	const { data: session } = authClient.useSession();
 	const currentUserId = session?.user?.id;
@@ -500,8 +501,9 @@ function AutomationsPage() {
 		onSuccess: (result) => {
 			void utils.automation.list.invalidate();
 			void navigate({
-				to: "/automations/$automationId",
+				to: "/settings/automations/$automationId",
 				params: { automationId: result.id },
+				search: { history: false },
 			});
 		},
 		onError: (error) => {

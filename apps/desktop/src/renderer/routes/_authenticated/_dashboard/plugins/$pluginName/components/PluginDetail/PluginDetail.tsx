@@ -47,7 +47,7 @@ export function PluginDetail({ plugin }: { plugin: CatalogPlugin }) {
 				variant="ghost"
 				size="sm"
 				className="mb-6 -ml-2 text-muted-foreground"
-				onClick={() => navigate({ to: "/plugins" })}
+				onClick={() => navigate({ to: "/settings/plugins" })}
 			>
 				<LuArrowLeft className="size-4" />
 				<Trans>Plugins</Trans>

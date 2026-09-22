@@ -42,8 +42,12 @@ export const SETTING_ITEM_ID = {
 	BEHAVIOR_CHANGES_OPEN_TARGET: "behavior-changes-open-target",
 	BEHAVIOR_RESOURCE_MONITOR: "behavior-resource-monitor",
 	USAGE_IN_SIDEBAR: "usage-in-sidebar",
+	WORKSPACES_IN_SIDEBAR: "workspaces-in-sidebar",
 	BEHAVIOR_OPEN_LINKS_IN_APP: "behavior-open-links-in-app",
 	BEHAVIOR_STAR_GITHUB: "behavior-star-github",
+	INTEGRATIONS_AZURE_DEVOPS: "integrations-azure-devops",
+	TOOLS_AUTOMATIONS: "tools-automations",
+	TOOLS_PLUGINS: "tools-plugins",
 
 	BROWSER_HOMEPAGE: "browser-homepage",
 	BROWSER_IMPORT_HISTORY: "browser-import-history",
@@ -156,6 +160,9 @@ const INTEGRATION_ITEM_VARIANTS = Object.fromEntries(
 export const SETTING_ITEM_VARIANT: Record<SettingItemId, SettingVariant> = {
 	[SETTING_ITEM_ID.ORDEM_POKEDEX]: "shared",
 	[SETTING_ITEM_ID.CODEX_CHAT]: "v2",
+	[SETTING_ITEM_ID.INTEGRATIONS_AZURE_DEVOPS]: "v2",
+	[SETTING_ITEM_ID.TOOLS_AUTOMATIONS]: "v2",
+	[SETTING_ITEM_ID.TOOLS_PLUGINS]: "v2",
 	...INTEGRATION_ITEM_VARIANTS,
 
 	[SETTING_ITEM_ID.ACCOUNT_PROFILE]: "shared",
@@ -195,6 +202,7 @@ export const SETTING_ITEM_VARIANT: Record<SettingItemId, SettingVariant> = {
 	[SETTING_ITEM_ID.BEHAVIOR_RESOURCE_MONITOR]: "shared",
 	// The home sidebar (DashboardSidebar) only renders for v2 users.
 	[SETTING_ITEM_ID.USAGE_IN_SIDEBAR]: "v2",
+	[SETTING_ITEM_ID.WORKSPACES_IN_SIDEBAR]: "v2",
 	[SETTING_ITEM_ID.BEHAVIOR_OPEN_LINKS_IN_APP]: "v1",
 	[SETTING_ITEM_ID.BEHAVIOR_STAR_GITHUB]: "shared",
 
@@ -924,6 +932,13 @@ export const SETTINGS_ITEMS: SettingsItem[] = [
 		],
 	},
 	{
+		id: SETTING_ITEM_ID.WORKSPACES_IN_SIDEBAR,
+		section: "behavior",
+		title: "Show Workspaces in sidebar",
+		description: "Show a Workspaces button in the home sidebar",
+		keywords: ["sidebar", "navigation", "workspaces", "home", "show", "hide"],
+	},
+	{
 		id: SETTING_ITEM_ID.GIT_WORKTREE_LOCATION,
 		section: "git",
 		title: "Worktree location",
@@ -1465,6 +1480,36 @@ export const SETTINGS_ITEMS: SettingsItem[] = [
 		],
 	},
 	...INTEGRATION_SEARCH_ITEMS,
+	{
+		id: SETTING_ITEM_ID.TOOLS_AUTOMATIONS,
+		section: "automations",
+		title: "Automations",
+		description: "Create and manage automations for your organization",
+		keywords: ["automation", "workflow", "schedule", "trigger", "runs"],
+	},
+	{
+		id: SETTING_ITEM_ID.TOOLS_PLUGINS,
+		section: "plugins",
+		title: "Plugins",
+		description: "Browse, configure, and manage plugins and skills",
+		keywords: ["plugin", "plugins", "skill", "skills", "install", "tools"],
+	},
+	{
+		id: SETTING_ITEM_ID.INTEGRATIONS_AZURE_DEVOPS,
+		section: "integrations",
+		title: "Azure DevOps",
+		description: "Configure Azure DevOps work item boards on available hosts",
+		keywords: [
+			"azure",
+			"devops",
+			"board",
+			"work items",
+			"host",
+			"device",
+			"connect",
+			"connected",
+		],
+	},
 	{
 		id: SETTING_ITEM_ID.BILLING_OVERVIEW,
 		section: "billing",
