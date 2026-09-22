@@ -23,6 +23,7 @@ interface V2WorkspaceRunButtonProps {
 	canForceStop: boolean;
 	onToggle: () => void | Promise<void>;
 	onForceStop: () => void | Promise<void>;
+	appearance?: "toolbar" | "dock";
 }
 
 export function V2WorkspaceRunButton({
@@ -33,6 +34,7 @@ export function V2WorkspaceRunButton({
 	canForceStop,
 	onToggle,
 	onForceStop,
+	appearance = "toolbar",
 }: V2WorkspaceRunButtonProps) {
 	const { t } = useLingui();
 	const navigate = useNavigate();
@@ -68,9 +70,10 @@ export function V2WorkspaceRunButton({
 			? t({ message: "Run" })
 			: t({ message: "Set Run" });
 	const Icon = isRunning ? Square : hasRunCommand ? Play : Settings;
+	const inDock = appearance === "dock";
 
 	return (
-		<div className="flex shrink-0 items-center no-drag">
+		<div className={`flex shrink-0 items-center no-drag ${inDock ? "w-full" : ""}`}>
 			<button
 				type="button"
 				onClick={() => {
@@ -82,7 +85,9 @@ export function V2WorkspaceRunButton({
 				}}
 				disabled={isPending}
 				className={cn(
-					"group flex h-6 items-center gap-1.5 rounded-l-md border border-r-0 border-border/50 bg-transparent px-2 text-xs font-medium text-foreground transition-colors",
+				inDock
+					? "group flex h-10 min-w-0 flex-1 items-center gap-3 rounded-l-xl border border-r-0 border-border/60 bg-transparent px-3 text-left text-sm font-medium text-foreground transition-[background-color,color,transform] active:scale-[0.96]"
+					: "group flex h-6 items-center gap-1.5 rounded-l-md border border-r-0 border-border/50 bg-transparent px-2 text-xs font-medium text-foreground transition-colors",
 					"hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
 					isPending && "pointer-events-none opacity-50",
 					isRunning
@@ -105,8 +110,8 @@ export function V2WorkspaceRunButton({
 								})
 				}
 			>
-				<Icon className="size-3 shrink-0" />
-				<span>{label}</span>
+				<Icon className={cn(inDock ? "size-4" : "size-3", "shrink-0")} />
+					<span className="truncate">{label}</span>
 				{hotkeyText && hotkeyText !== "Unassigned" && (
 					<span className="hidden text-[10px] tracking-wide text-muted-foreground/60 sm:inline">
 						{hotkeyText}
@@ -120,7 +125,9 @@ export function V2WorkspaceRunButton({
 						type="button"
 						disabled={isPending}
 						className={cn(
-							"flex size-6 items-center justify-center rounded-r-md border border-border/50 bg-transparent text-muted-foreground transition-colors",
+							inDock
+								? "flex h-10 w-10 shrink-0 items-center justify-center rounded-r-xl border border-border/60 bg-transparent text-muted-foreground transition-[background-color,color,transform] active:scale-[0.96]"
+								: "flex size-6 items-center justify-center rounded-r-md border border-border/50 bg-transparent text-muted-foreground transition-colors",
 							"hover:bg-muted/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
 							isPending && "pointer-events-none opacity-50",
 							isRunning &&
@@ -130,10 +137,14 @@ export function V2WorkspaceRunButton({
 							message: "Workspace run options",
 						})}
 					>
-						<ChevronDown className="size-3" />
+						<ChevronDown className={cn(inDock ? "size-4" : "size-3")} />
 					</button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent align="start" className="w-44">
+				<DropdownMenuContent
+					align="start"
+					className="w-44"
+					data-workspace-action-dock-portal={inDock ? "true" : undefined}
+				>
 					{canForceStop && (
 						<>
 							<DropdownMenuItem

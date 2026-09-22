@@ -26,12 +26,18 @@ interface V2OpenInMenuButtonProps {
 	branch: string;
 	/** Null for project-less "session" workspaces (no per-project default app). */
 	projectId: string | null;
+	appearance?: "toolbar" | "dock";
+	registerHotkey?: boolean;
+	hidden?: boolean;
 }
 
 export function V2OpenInMenuButton({
 	worktreePath,
 	branch,
 	projectId,
+	appearance = "toolbar",
+	registerHotkey = true,
+	hidden = false,
 }: V2OpenInMenuButtonProps) {
 	const { t } = useLingui();
 	const activeTheme = useThemeStore((state) => state.activeTheme);
@@ -76,6 +82,7 @@ export function V2OpenInMenuButton({
 	const showCopyPathShortcut = copyPathDisplay.text !== "Unassigned";
 	const isLoading = openInApp.isPending || copyPath.isPending;
 	const isDark = activeTheme?.type === "dark";
+	const inDock = appearance === "dock";
 
 	const handleOpenInEditor = useCallback(() => {
 		if (openInApp.isPending || copyPath.isPending) return;
@@ -95,10 +102,14 @@ export function V2OpenInMenuButton({
 		copyPath.mutate(worktreePath);
 	}, [worktreePath, copyPath, openInApp.isPending]);
 
-	useHotkey("OPEN_IN_APP", handleOpenInEditor);
+	useHotkey("OPEN_IN_APP", handleOpenInEditor, { enabled: registerHotkey });
 
 	return (
-		<div className="flex items-center no-drag">
+		<div
+			className={cn("flex items-center no-drag", inDock && "w-full", hidden && "hidden")}
+			aria-hidden={hidden}
+			inert={hidden || undefined}
+		>
 			<Tooltip delayDuration={1000}>
 				<TooltipTrigger asChild>
 					<button
@@ -121,11 +132,13 @@ export function V2OpenInMenuButton({
 							// higher than the PR badge's so the badge (with its merge
 							// chevron) keeps space priority and never clips in the 240-320px
 							// dead zone (#6385).
-							"group flex h-6 items-center justify-center gap-1.5 rounded-l border border-r-0 border-border/60 bg-secondary/50 px-1.5 text-xs font-medium @[320px]:pr-2",
-							"transition-all duration-150 ease-out",
+							inDock
+								? "group flex h-10 min-w-0 flex-1 items-center justify-start gap-3 rounded-l-xl border border-r-0 border-border/60 bg-secondary/50 px-3 text-left text-sm font-medium"
+								: "group flex h-6 items-center justify-center gap-1.5 rounded-l border border-r-0 border-border/60 bg-secondary/50 px-1.5 text-xs font-medium @[320px]:pr-2",
+							"transition-[background-color,border-color,color] duration-150 ease-out",
 							"hover:bg-secondary hover:border-border",
 							"focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-							"active:scale-[0.98]",
+							"active:scale-[0.96]",
 							isLoading && "opacity-50 pointer-events-none",
 						)}
 					>
@@ -136,14 +149,22 @@ export function V2OpenInMenuButton({
 								className="size-3.5 object-contain shrink-0"
 							/>
 						)}
-						{branch && (
+						{inDock ? (
+							<span className="truncate">
+								{currentApp
+									? t({
+											message: `Open in ${currentApp.displayLabel ?? currentApp.label}`,
+										})
+									: t({ message: "Open in editor" })}
+							</span>
+						) : branch ? (
 							<OverflowFadeText
 								className="hidden max-w-[140px] text-muted-foreground tabular-nums @[320px]:inline-block"
 								title={branch}
 							>
 								/{branch}
 							</OverflowFadeText>
-						)}
+						) : null}
 					</button>
 				</TooltipTrigger>
 				<TooltipContent side="bottom" sideOffset={6}>
@@ -166,11 +187,13 @@ export function V2OpenInMenuButton({
 						type="button"
 						disabled={isLoading}
 						className={cn(
-							"flex items-center justify-center h-6 w-6 rounded-r border border-border/60 bg-secondary/50 text-muted-foreground",
-							"transition-all duration-150 ease-out",
+							inDock
+								? "flex h-10 w-10 shrink-0 items-center justify-center rounded-r-xl border border-border/60 bg-secondary/50 text-muted-foreground"
+								: "flex h-6 w-6 items-center justify-center rounded-r border border-border/60 bg-secondary/50 text-muted-foreground",
+							"transition-[background-color,border-color,color] duration-150 ease-out",
 							"hover:bg-secondary hover:border-border hover:text-foreground",
 							"focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-							"active:scale-[0.98]",
+							"active:scale-[0.96]",
 							isLoading && "opacity-50 pointer-events-none",
 						)}
 					>
@@ -178,7 +201,11 @@ export function V2OpenInMenuButton({
 					</button>
 				</DropdownMenuTrigger>
 
-				<DropdownMenuContent align="end" className="w-48">
+				<DropdownMenuContent
+					align="end"
+					className="w-48"
+					data-workspace-action-dock-portal={inDock ? "true" : undefined}
+				>
 					<OpenInExternalDropdownItems
 						isDark={isDark}
 						activeApp={resolvedApp}

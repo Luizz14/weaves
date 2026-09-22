@@ -11,6 +11,7 @@ import { Label } from "@superset/ui/label";
 import { Popover, PopoverAnchor, PopoverContent } from "@superset/ui/popover";
 import { toast } from "@superset/ui/sonner";
 import { Textarea } from "@superset/ui/textarea";
+import { cn } from "@superset/ui/utils";
 import { workspaceTrpc } from "@superset/workspace-client";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -37,23 +38,17 @@ interface ShipControlProps {
 	 * actions collapse into the chevron menu so the control keeps one face.
 	 */
 	compact?: boolean;
+	/** Renders the menu trigger as a full-width row inside the Git action dock. */
+	dockMenu?: boolean;
 }
 
-/**
- * The no-PR half of the top-bar Changes control: walks the branch to a pull
- * request. Full mode shows one progressive face — Commit (message popover)
- * while the tree is dirty, then Create PR (title/description popover; pushes
- * first when the branch is unpublished or ahead), then Push. Compact mode
- * (diff stats own the face) folds the same actions into the chevron menu.
- *
- * Session workspaces (null projectId) can't create PRs — the PR route and
- * repo resolution are project-scoped — so they only ever see Commit/Push.
- */
+/** Commit, push, and PR creation controls for a branch without a pull request. */
 export function ShipControl({
 	workspaceId,
 	sync,
 	onRefresh,
 	compact = false,
+	dockMenu = false,
 }: ShipControlProps) {
 	const { t } = useLingui();
 	const navigate = useNavigate();
@@ -316,6 +311,13 @@ export function ShipControl({
 	const noCommitsTooltip = t({
 		message: "No commits to open a pull request from",
 	});
+	const dockActionClass =
+		"flex min-h-10 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-medium text-foreground outline-none transition-[background-color,transform] hover:bg-muted focus-visible:bg-muted active:scale-[0.96] disabled:pointer-events-none disabled:opacity-50";
+	const dockActions = [
+		needsCommit ? t({ message: "Commit" }) : null,
+		needsPush ? t({ message: "Push" }) : null,
+		canCreatePr ? t({ message: "Create PR" }) : null,
+	].filter((label): label is string => label !== null);
 
 	// enabled: on the hover so a disabled button stays hoverable (pointer
 	// events are kept alive for the native title tooltip) without lighting up.
@@ -324,17 +326,89 @@ export function ShipControl({
 	const chevronButton = (
 		<button
 			type="button"
-			className="flex h-full items-center px-1 outline-none transition-colors hover:bg-accent/60"
+			className={
+				dockMenu
+					? "flex min-h-10 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-medium text-foreground outline-none transition-colors hover:bg-muted focus-visible:bg-muted"
+					: "flex h-full items-center px-1 outline-none transition-colors hover:bg-accent/60"
+			}
 			aria-label={t({
 				message: "Open ship options",
 			})}
 		>
+			{dockMenu && (
+				<span className="flex flex-1 items-center gap-1">
+					{dockActions.map((label, index) => (
+						<span key={label} className="flex items-center gap-1">
+							{index > 0 && <span className="text-muted-foreground">·</span>}
+							{label}
+						</span>
+					))}
+				</span>
+			)}
 			{isShipping || commitMutation.isPending ? (
-				<VscLoading className="size-3 animate-spin text-muted-foreground" />
+				<VscLoading className="size-4 animate-spin text-muted-foreground" />
 			) : (
-				<VscChevronDown className="size-3 text-muted-foreground" />
+				<VscChevronDown className="size-3.5 text-muted-foreground" />
 			)}
 		</button>
+	);
+	const directActionRows = (
+		<div className="flex flex-col gap-0.5">
+			{needsCommit && (
+				<button
+					type="button"
+					className={dockActionClass}
+					disabled={commitMutation.isPending}
+					onClick={() => setView("commit")}
+				>
+					{commitMutation.isPending ? (
+						<VscLoading className="size-4 animate-spin text-muted-foreground" />
+					) : (
+						<VscGitCommit className="size-4 text-muted-foreground" />
+					)}
+					<Trans>Commit</Trans>
+				</button>
+			)}
+			{needsPush && (
+				<button
+					type="button"
+					className={dockActionClass}
+					disabled={pushMutation.isPending}
+					onClick={() => pushMutation.mutate({ workspaceId })}
+				>
+					{pushMutation.isPending ? (
+						<VscLoading className="size-4 animate-spin text-muted-foreground" />
+					) : (
+						<VscRepoPush className="size-4 text-muted-foreground" />
+					)}
+					<Trans>Push</Trans>
+				</button>
+			)}
+			{canCreatePr && (
+				<button
+					type="button"
+					className={cn(
+						dockActionClass,
+						!hasCommitsAhead && "text-muted-foreground",
+					)}
+					disabled={isShipping}
+					onClick={() => {
+						if (!hasCommitsAhead) {
+							toast.info(noCommitsTooltip);
+							return;
+						}
+						openPrView();
+					}}
+				>
+					{isShipping ? (
+						<VscLoading className="size-4 animate-spin text-muted-foreground" />
+					) : (
+						<VscGitPullRequestCreate className="size-4 text-muted-foreground" />
+					)}
+					<Trans>Create PR</Trans>
+				</button>
+			)}
+		</div>
 	);
 
 	return (
@@ -345,10 +419,9 @@ export function ShipControl({
 			}}
 		>
 			<PopoverAnchor asChild>
-				{/* A segment of ChangesControl's split button — the parent owns
-				    the border, rounding, and fill. */}
-				<div className="flex items-center">
-					{compact ? (
+				{/* Keep the commit and PR forms anchored to their Git action rows. */}
+				<div className={dockMenu ? "w-full" : "flex items-center"}>
+					{dockMenu ? directActionRows : compact ? (
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>{chevronButton}</DropdownMenuTrigger>
 							<DropdownMenuContent
@@ -483,7 +556,9 @@ export function ShipControl({
 			</PopoverAnchor>
 			<PopoverContent
 				align="end"
+				side={dockMenu ? "top" : "bottom"}
 				sideOffset={8}
+				data-workspace-action-dock-portal={dockMenu ? "true" : undefined}
 				className={view === "pr" ? "w-96 p-3" : "w-80 p-3"}
 			>
 				{view === "commit" ? (

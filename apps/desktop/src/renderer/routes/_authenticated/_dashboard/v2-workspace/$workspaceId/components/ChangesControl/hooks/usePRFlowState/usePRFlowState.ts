@@ -1,5 +1,5 @@
 import { workspaceTrpc } from "@superset/workspace-client";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import {
 	type PullRequest as FlowPullRequest,
 	getPRFlowState,
@@ -53,12 +53,13 @@ export function usePRFlowState(workspaceId: string): UsePRFlowStateResult {
 			syncQuery.isLoading,
 		],
 	);
+	const onRetry = useCallback(() => {
+		void prQuery.refetch();
+		void syncQuery.refetch();
+	}, [prQuery.refetch, syncQuery.refetch]);
 
 	return {
 		flowState,
-		onRetry: () => {
-			void prQuery.refetch();
-			void syncQuery.refetch();
-		},
+		onRetry,
 	};
 }

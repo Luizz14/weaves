@@ -6,6 +6,8 @@
  * Override the fade size per element with `[--fade-edge-size:2rem]`.
  */
 
+@layer theme, base, components, utilities;
+
 @layer utilities {
 	.fade-edge-t,
 	.fade-edge-r,

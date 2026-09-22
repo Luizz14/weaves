@@ -1,0 +1,1 @@
+export { WorkspaceActionDock } from "./WorkspaceActionDock";

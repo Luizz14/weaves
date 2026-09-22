@@ -36,7 +36,6 @@ import { StateScreenShell } from "../components/StateScreenShell";
 import { useWorkspace } from "../providers/WorkspaceProvider";
 import { AddTabMenu } from "./components/AddTabMenu";
 import { BackgroundTerminalsButton } from "./components/BackgroundTerminalsButton";
-import { BranchIntegrationControl } from "./components/BranchIntegrationControl";
 import { ChangesControl } from "./components/ChangesControl";
 import { V2NotificationStatusIndicator } from "./components/V2NotificationStatusIndicator";
 import { V2PresetsBar } from "./components/V2PresetsBar";
@@ -364,21 +363,35 @@ function V2WorkspaceContent() {
 	// traffic-light overhang past the rail plus the sidebar/nav controls.
 	const tabBarHostsChrome = isSidebarPanelOpen && isSidebarPanelCollapsed;
 
-	const workspaceRunButton = (
-		<V2WorkspaceRunButton
-			projectId={workspace.projectId}
-			definition={workspaceRun.definition}
-			isRunning={workspaceRun.isRunning}
-			isPending={workspaceRun.isPending}
-			canForceStop={workspaceRun.canForceStop}
-			onToggle={workspaceRun.toggleWorkspaceRun}
-			onForceStop={workspaceRun.forceStopWorkspaceRun}
-		/>
+	const workspaceRunButton = useMemo(
+		() => (
+			<V2WorkspaceRunButton
+				projectId={workspace.projectId}
+				definition={workspaceRun.definition}
+				isRunning={workspaceRun.isRunning}
+				isPending={workspaceRun.isPending}
+				canForceStop={workspaceRun.canForceStop}
+				onToggle={workspaceRun.toggleWorkspaceRun}
+				onForceStop={workspaceRun.forceStopWorkspaceRun}
+				appearance="dock"
+			/>
+		),
+		[
+			workspaceId,
+			workspace.projectId,
+			workspaceRun.canForceStop,
+			workspaceRun.definition,
+			workspaceRun.forceStopWorkspaceRun,
+			workspaceRun.isPending,
+			workspaceRun.isRunning,
+			workspaceRun.toggleWorkspaceRun,
+		],
 	);
 
 	return (
 		<FileDocumentStoreProvider>
 			<WorkspaceGitStatusProvider workspaceId={workspaceId}>
+				<V2WorkspaceOpenInButton workspaceId={workspaceId} hidden />
 				<div className="flex min-h-0 min-w-0 flex-1">
 					<div
 						className="flex min-h-0 min-w-[320px] flex-1 flex-col overflow-hidden"
@@ -464,24 +477,12 @@ function V2WorkspaceContent() {
 										/>
 									)}
 									{isLayoutReady && (
-										<BranchIntegrationControl
-											key={workspaceId}
-											workspaceId={workspaceId}
-										/>
-									)}
-									{isLayoutReady && (
 										<ChangesControl
 											workspaceId={workspaceId}
 											isChangesOpen={isChangesPaneOpen}
 											onToggleChanges={toggleChangesPane}
-											onOpenPullRequest={openPullRequestPane}
 										/>
 									)}
-									{/* Open-in must not depend on the right sidebar being open,
-									    so it lives here rather than in the sidebar's top strip
-									    (#7167). Without an @container ancestor its branch label
-									    stays hidden, which keeps it compact for the tab bar. */}
-									<V2WorkspaceOpenInButton workspaceId={workspaceId} />
 									<RightSidebarToggle />
 									{!isMac && !sidebarOpen && <WindowControlsInset />}
 								</div>

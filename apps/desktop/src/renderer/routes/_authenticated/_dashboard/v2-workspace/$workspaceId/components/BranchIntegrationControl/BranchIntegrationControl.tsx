@@ -19,8 +19,10 @@ import { ConflictEditor } from "./components/ConflictEditor";
 
 export function BranchIntegrationControl({
 	workspaceId,
+	mode = "toolbar",
 }: {
 	workspaceId: string;
+	mode?: "toolbar" | "dock";
 }) {
 	const { t } = useLingui();
 	const { workspace } = useWorkspace();
@@ -85,6 +87,10 @@ export function BranchIntegrationControl({
 	const path = data.pendingPaths.includes(selectedPath ?? "")
 		? selectedPath
 		: data.pendingPaths[0];
+	const dockMode = mode === "dock";
+	const actionButtonClass = dockMode
+		? "h-10 w-full justify-start gap-3 rounded-xl border-0 bg-transparent px-3 text-sm font-medium text-foreground shadow-none hover:bg-muted focus-visible:bg-muted"
+		: "h-7 gap-1 px-2 text-xs";
 	const dirty = !!(
 		gitStatus.data?.staged.length || gitStatus.data?.unstaged.length
 	);
@@ -107,12 +113,16 @@ export function BranchIntegrationControl({
 	};
 	return (
 		<>
-			<div className="flex h-7 shrink-0 items-center gap-1">
+			<div
+				className={
+					dockMode ? "flex shrink-0 flex-col gap-0.5" : "flex h-7 shrink-0 items-center gap-1"
+				}
+			>
 				{active ? (
 					<Button
 						size="sm"
-						variant="outline"
-						className="h-7 text-xs"
+						variant={dockMode ? "ghost" : "outline"}
+						className={actionButtonClass}
 						onClick={() => setOpen(true)}
 					>
 						<Trans>Resume integration</Trans>
@@ -122,8 +132,8 @@ export function BranchIntegrationControl({
 						{data.mergeToMainEnabled && (
 							<Button
 								size="sm"
-								variant="outline"
-								className="h-7 gap-1 px-2 text-xs"
+								variant={dockMode ? "ghost" : "outline"}
+								className={actionButtonClass}
 								disabled={busy || !!blockedReason}
 								title={blockedReason ?? mergeLabel}
 								onClick={() => begin("merge")}
@@ -139,13 +149,17 @@ export function BranchIntegrationControl({
 						{data.updateFromMainEnabled && (
 							<Button
 								size="sm"
-								variant="outline"
-								className="h-7 gap-1 px-2 text-xs"
+								variant={dockMode ? "ghost" : "outline"}
+								className={actionButtonClass}
 								disabled={busy || !!blockedReason}
 								title={blockedReason ?? updateLabel}
 								onClick={() => begin("update")}
 							>
-								<ArrowDownToLine className="size-3.5" />
+								{start.isPending ? (
+									<Loader2 className="size-3.5 animate-spin" />
+								) : (
+									<ArrowDownToLine className="size-3.5" />
+								)}
 								<span className="max-w-48 truncate">{updateLabel}</span>
 							</Button>
 						)}
@@ -153,7 +167,7 @@ export function BranchIntegrationControl({
 				)}
 			</div>
 			<Dialog open={configurationOpen} onOpenChange={setConfigurationOpen}>
-				<DialogContent>
+				<DialogContent data-workspace-action-dock-portal={dockMode ? "true" : undefined}>
 					<DialogHeader>
 						<DialogTitle>
 							<Trans>Branch integration</Trans>
@@ -176,7 +190,10 @@ export function BranchIntegrationControl({
 				</DialogContent>
 			</Dialog>
 			<Dialog open={open && active} onOpenChange={setOpen}>
-				<DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-4xl">
+				<DialogContent
+					className="max-h-[85vh] overflow-y-auto sm:max-w-4xl"
+					data-workspace-action-dock-portal={dockMode ? "true" : undefined}
+				>
 					<DialogHeader>
 						<DialogTitle>
 							<Trans>Branch integration</Trans>

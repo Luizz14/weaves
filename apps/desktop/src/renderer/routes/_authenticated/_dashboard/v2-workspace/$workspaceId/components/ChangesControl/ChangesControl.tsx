@@ -6,7 +6,6 @@ import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { useWorkspaceGitStatus } from "../../providers/WorkspaceGitStatusProvider";
 import { changesPillStats } from "./changesPillStats";
 import { PRStatusGroup } from "./components/PRStatusGroup";
-import { ShipControl } from "./components/ShipControl";
 import { usePRFlowState } from "./hooks/usePRFlowState";
 
 interface ChangesControlProps {
@@ -15,34 +14,17 @@ interface ChangesControlProps {
 	isChangesOpen: boolean;
 	/** Close the visible Changes pane, or open/focus one when none shows. */
 	onToggleChanges: () => void;
-	/** Open or focus the pane showing the linked PR's summary. */
-	onOpenPullRequest: (prNumber: number) => void;
 }
 
-/**
- * Top-bar Changes control: one bordered button with a single face covering
- * the branch's whole lifecycle. Before a PR exists the face is the diff
- * stats with the ship actions (commit → push → create PR) in the chevron —
- * or the ship action itself once the tree is clean; once a PR exists the
- * face is the PR badge alone. Either face toggles the Changes pane: it
- * closes the one in view and opens or focuses one otherwise, reading as
- * pressed while one shows.
- *
- * Segments hide on their own: stats while status is unknown, the tree is
- * clean, or a PR owns the face; the right side while the flow state is
- * loading or unavailable — no dead placeholder affordances. `divide-x` puts
- * a hairline between whichever segments render, and `empty:hidden` collapses
- * the shell when none do, so the children keep their own null logic.
- */
+/** The top-bar diff count and PR status remain available outside the action dock. */
 export const ChangesControl = memo(function ChangesControl({
 	workspaceId,
 	isChangesOpen,
 	onToggleChanges,
-	onOpenPullRequest,
 }: ChangesControlProps) {
 	const { t } = useLingui();
 	const status = useWorkspaceGitStatus();
-	const { flowState, onRetry } = usePRFlowState(workspaceId);
+	const { flowState } = usePRFlowState(workspaceId);
 	const stats = useMemo(
 		() => (status.data ? changesPillStats(status.data) : null),
 		[status.data],
@@ -64,7 +46,7 @@ export const ChangesControl = memo(function ChangesControl({
 		!hasPr && stats != null && stats.fileCount > 0 ? stats : null;
 
 	return (
-		<div className="flex h-7 items-stretch divide-x divide-border/60 overflow-hidden rounded-md border border-border/60 bg-muted/30 empty:hidden">
+		<div className="flex h-7 items-stretch overflow-hidden rounded-md border border-border/60 bg-muted/30 empty:hidden">
 			{visibleStats && (
 				<button
 					type="button"
@@ -95,22 +77,12 @@ export const ChangesControl = memo(function ChangesControl({
 					)}
 				</button>
 			)}
-			{flowState.kind === "no-pr" ? (
-				<ShipControl
-					workspaceId={workspaceId}
-					sync={flowState.sync}
-					onRefresh={onRetry}
-					compact={visibleStats != null}
-				/>
-			) : (
+			{flowState.kind !== "no-pr" && (
 				<PRStatusGroup
 					state={flowState}
-					workspaceId={workspaceId}
-					onRefresh={onRetry}
 					isChangesOpen={isChangesOpen}
 					toggleLabel={label}
 					onToggleChanges={onToggleChanges}
-					onOpenPullRequest={onOpenPullRequest}
 				/>
 			)}
 		</div>

@@ -6,10 +6,16 @@ import { V2OpenInMenuButton } from "../V2OpenInMenuButton";
 
 interface V2WorkspaceOpenInButtonProps {
 	workspaceId: string;
+	appearance?: "toolbar" | "dock";
+	registerHotkey?: boolean;
+	hidden?: boolean;
 }
 
 export function V2WorkspaceOpenInButton({
 	workspaceId,
+	appearance = "toolbar",
+	registerHotkey = true,
+	hidden = false,
 }: V2WorkspaceOpenInButtonProps) {
 	const { machineId, activeHostUrl } = useLocalHostService();
 
@@ -39,6 +45,9 @@ export function V2WorkspaceOpenInButton({
 			branch={workspace.branch}
 			worktreePath={workspaceQuery.data.worktreePath}
 			projectId={workspace.projectId}
+			appearance={appearance}
+			registerHotkey={registerHotkey}
+			hidden={hidden}
 		/>
 	);
 }
