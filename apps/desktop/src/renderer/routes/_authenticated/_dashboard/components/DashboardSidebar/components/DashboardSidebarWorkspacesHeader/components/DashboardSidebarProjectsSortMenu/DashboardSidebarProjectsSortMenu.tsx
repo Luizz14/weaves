@@ -56,7 +56,7 @@ export function DashboardSidebarProjectsSortMenu({
 							onClick={(event) => event.stopPropagation()}
 							onKeyDown={(event) => event.stopPropagation()}
 							className={cn(
-								"flex size-6 shrink-0 items-center justify-center rounded-md transition-colors hover:bg-fill-hover hover:text-foreground",
+								"flex size-6 shrink-0 items-center justify-center rounded-md opacity-0 pointer-events-none transition-[opacity,color,background-color] duration-150 hover:bg-fill-hover hover:text-foreground group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto data-[state=open]:opacity-100 data-[state=open]:pointer-events-auto [@media(hover:none)]:opacity-100 [@media(hover:none)]:pointer-events-auto",
 								// Read as "on" whenever the list is not in drag order.
 								sortMode === "manual"
 									? "text-muted-foreground"

@@ -49,7 +49,7 @@ export function DashboardSidebarProjectsFilterInput({
 							onExpandedChange(true);
 						}}
 						onKeyDown={(event) => event.stopPropagation()}
-						className="flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-fill-hover hover:text-foreground"
+						className="flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground opacity-0 pointer-events-none transition-[opacity,color,background-color] duration-150 hover:bg-fill-hover hover:text-foreground group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto [@media(hover:none)]:opacity-100 [@media(hover:none)]:pointer-events-auto"
 					>
 						<HiMagnifyingGlass className="size-3.5" />
 					</button>
