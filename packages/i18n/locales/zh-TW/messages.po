@@ -3802,6 +3802,9 @@ msgstr "評論將傳送給此代理程式"
 msgid "Commit"
 msgstr "提交"
 
+msgid "Commit changes"
+msgstr ""
+
 #. placeholder {0}: error.message
 msgid "Commit failed: {0}"
 msgstr "提交失敗：{0}"
@@ -11964,6 +11967,9 @@ msgstr "專案已就緒，可從側邊欄開啟。"
 msgid "Project relocated to {0}"
 msgstr "專案已遷移到{0}"
 
+msgid "Project run script"
+msgstr ""
+
 #. placeholder {0}: result.repoPath
 msgid "Project set up at {0}"
 msgstr "專案已設定在{0}"
@@ -13413,6 +13419,9 @@ msgstr "截圖"
 
 msgid "Script editor with file drop support"
 msgstr "支援檔案拖放的指令碼編輯器"
+
+msgid "Scripts"
+msgstr "腳本"
 
 msgid "Scroll Area"
 msgstr "滾動區域"

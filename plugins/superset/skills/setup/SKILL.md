@@ -37,7 +37,7 @@ Each key is an array of shell commands run inside the worktree on workspace crea
 - Copy secrets/env from the main checkout at setup time, never commit them
 - `.superset/config.local.json` (gitignored) lets an individual user extend scripts with `before`/`after` arrays without touching the shared config
 
-Show the user the proposed files and get explicit approval before writing.
+When setup implementation was requested, prepare the local config and scripts as a reviewable change without another writing approval. Before executing them, inspect their effects and ask only for unresolved choices or effects outside the authorized scope, such as new secret access, shared resources, or destructive teardown. Verify using a disposable workspace within that scope.
 
 ## 3. Verify for real
 

@@ -20,13 +20,14 @@ import { HotkeyLabel, useHotkey, useHotkeyDisplay } from "renderer/hotkeys";
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import { useV2ProjectDefaultApp } from "renderer/routes/_authenticated/hooks/useV2ProjectDefaultApp";
 import { useThemeStore } from "renderer/stores";
+import { V2OpenInAppList } from "./components/V2OpenInAppList";
 
 interface V2OpenInMenuButtonProps {
 	worktreePath: string;
 	branch: string;
 	/** Null for project-less "session" workspaces (no per-project default app). */
 	projectId: string | null;
-	appearance?: "toolbar" | "dock";
+	appearance?: "toolbar" | "dock" | "list";
 	registerHotkey?: boolean;
 	hidden?: boolean;
 }
@@ -104,9 +105,25 @@ export function V2OpenInMenuButton({
 
 	useHotkey("OPEN_IN_APP", handleOpenInEditor, { enabled: registerHotkey });
 
+	if (appearance === "list") {
+		return (
+			<V2OpenInAppList
+				isDark={isDark}
+				activeApp={resolvedApp}
+				disabled={isLoading}
+				onOpenIn={handleOpenInOtherApp}
+				onCopyPath={handleCopyPath}
+			/>
+		);
+	}
+
 	return (
 		<div
-			className={cn("flex items-center no-drag", inDock && "w-full", hidden && "hidden")}
+			className={cn(
+				"flex items-center no-drag",
+				inDock && "w-full",
+				hidden && "hidden",
+			)}
 			aria-hidden={hidden}
 			inert={hidden || undefined}
 		>

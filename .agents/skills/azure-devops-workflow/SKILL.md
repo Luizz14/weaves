@@ -9,10 +9,10 @@ Keep Azure DevOps access in the host service and preserve the existing local-ove
 
 ## Before changing code
 
-1. Read [references/architecture.md](references/architecture.md).
+1. Use the relevant sections of [references/architecture.md](references/architecture.md) when changing ownership, persistence, or cross-process contracts, or when the affected layer is unclear.
 2. Inspect the exact runtime, router, renderer component, schema, and focused tests affected by the request. This integration crosses process and persistence boundaries; do not infer a contract from the UI alone.
 3. Check the current worktree before editing. Preserve unrelated changes, especially `bun.lock`, generated artifacts, and user work outside the Azure slice.
-4. If the request changes UI, also load `$make-interfaces-feel-better`. Preserve the existing Tasks/Pull Requests layout, component colocation, accessibility, reduced-motion behavior, and Lingui usage.
+4. For visual or interaction design work, use `$make-interfaces-feel-better` when available and relevant; copy-only or data-wiring changes do not require it. Preserve the existing Tasks/Pull Requests layout, component colocation, accessibility, reduced-motion behavior, and Lingui usage.
 5. If the request adds AI-generated PR content or another bounded suggestion, inspect `usePullRequestDraft` and use `$agy-quick-ai`; keep a deterministic, editable fallback.
 
 ## Preserve these contracts
@@ -40,13 +40,19 @@ Keep Azure DevOps access in the host service and preserve the existing local-ove
 
 ## Validate proportionally
 
-At minimum for behavior changes:
+Select the affected tests from these suites for runtime or router behavior changes. Include `migrations.test.ts` when changing schema or migrations:
 
 ```bash
-bun test packages/host-service/src/runtime/azure-devops packages/host-service/src/trpc/router/azure-devops packages/host-service/src/db/migrations.test.ts
+bun test packages/host-service/src/runtime/azure-devops packages/host-service/src/trpc/router/azure-devops
 ```
 
-Run desktop tests with the command working directory set to `apps/desktop` so its Bun preload mocks Electron and Lingui correctly:
+For schema or migration changes:
+
+```bash
+bun test packages/host-service/src/db/migrations.test.ts
+```
+
+For renderer changes, select the affected desktop tests below with the command working directory set to `apps/desktop` so its Bun preload mocks Electron and Lingui correctly:
 
 ```bash
 bun test src/renderer/routes/_authenticated/_dashboard/tasks/components/TasksView/TasksView.test.ts src/renderer/routes/_authenticated/_dashboard/tasks/stores/tasks-filter-state.test.ts src/renderer/routes/_authenticated/_dashboard/tasks/components/TasksView/components/AzureDevOpsContent/constants.test.ts

@@ -28,10 +28,11 @@ and repair auth. `apps/desktop/scripts/cdp-smoke-integrations.ts` is a working e
 
 5. **Treat a mismatch as an incomplete reproduction.** If the test passes but the user still observes
    the bug, re-check the target instance, exact steps, input method, persisted keys, and lifecycle
-   timing. Reproduce the failure before changing code; a synthetic smoke test does not disprove the
-   report.
+   timing. Try to reproduce before changing code. If the app is unavailable, sufficient code evidence
+   and focused regression tests may support implementation; report the reproduction gap.
+   A synthetic smoke test does not disprove the report or establish end-to-end verification.
 
-6. **Use an evidence gate.** For a reported bug or regression, do not claim verification until the
+6. **Use an evidence gate.** For a reported bug or regression, do not claim end-to-end verification until the
    original interaction demonstrably fails before the fix and passes after it under the same
    observations. For a new feature, record equivalent baseline evidence and demonstrate the expected
    behavior. State clearly which checks were end-to-end, which were synthetic, and whether
@@ -92,9 +93,9 @@ This credentialed local-dev sign-in creates the browser session cookie needed by
 
 For a non-local workspace, the normal desktop flow intentionally restores an encrypted bearer token into the renderer's in-memory auth client without creating a browser cookie. If the renderer is on an authenticated route but a raw cookie-only probe returns no session, use `Runtime.evaluate` to import `/lib/auth-client.ts` from the renderer dev server and call `authClient.getSession({ fetchOptions: { throw: false } })`. This still verifies `/api/auth/get-session` through the app's real authenticated request path. Return only the status and `session.activeOrganizationId`; never call or print `getAuthToken()`.
 
-Do not use setup `--force` to fix a stale connection string, a missing CDP cookie, or a corrupt generated Next.js cache. First rerun the applicable setup script without force. If every API route returns Next.js's HTML 404, stop the dev stack, move `apps/api/.next` aside, and restart. `--force` is normally only appropriate when the user explicitly intends to replace the copied local/host databases and encrypted auth token. The stale-state signature in the next paragraph is the one explicit exception.
+Do not use setup `--force` to fix a stale connection string, a missing CDP cookie, or a corrupt generated Next.js cache. First rerun the applicable setup script without force. If every API route returns Next.js's HTML 404, stop the dev stack, move `apps/api/.next` aside, and restart. `--force` is normally only appropriate when the user explicitly intends to replace the copied local/host databases and encrypted auth token. The historical signature below is diagnostic guidance, not authorization to reset data.
 
-One failure signature where `./.superset/setup.sh --force` IS the fix (verified 2026-07-28): session restore hangs at "Restoring your session", the Local Admin sign-in button returns a bodyless 500, get-session returns 200, and a raw `select 1` against `DATABASE_URL` may still succeed; the worktree's seeded dev state (Neon branch credentials in `.env`, `auth-token.enc`, copied DBs) has gone stale as a set. Rerunning with `--force` recreates the Neon branch, rewrites `.env`, and reseeds `superset-dev-data/` together, which restores sign-in. Two side effects to expect: any manual `.env` edits (e.g. a port remap) are wiped and must be re-applied, and `superset-dev-data/` is reset.
+Historical stale-state signature (observed 2026-07-28): session restore hangs at "Restoring your session", Local Admin sign-in returns a bodyless 500, and get-session returns 200 even though `select 1` may succeed. The seeded credentials and databases may be inconsistent. Diagnose the current setup first. `./.superset/setup.sh --force` recreates the Neon branch, rewrites `.env`, and resets `superset-dev-data/`, including copied databases and the encrypted auth token. Use it only after explicit authorization to replace those specific data; preserve needed configuration and user data before the reset. Symptoms alone never authorize it.
 
 **Use `Runtime.evaluate` (`awaitPromise`, `returnByValue`), not `Network.*` interception**; sniffing misses React-Query-cached responses, and `refetchInterval` is paused while the window is backgrounded. After verifying the session through the applicable cookie or bearer path above, run requests inside the renderer. `API` below is the dev backend origin (`NEXT_PUBLIC_API_URL`, e.g. `http://localhost:5881`):
 

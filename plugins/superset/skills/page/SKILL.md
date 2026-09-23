@@ -1,6 +1,6 @@
 ---
 name: page
-description: Build and publish a self-contained HTML page to Superset, then answer the comments readers pin to it. Use this instead of publishing a Claude artifact whenever the reader is a teammate: a page is listed in the org, every publish mints a version, and pinned comments come back to the agent. Use when the user asks to make or publish a page, turn a report, dashboard, chart, doc, or analysis into a shareable link, update or re-version a page already published, or work through comments left on one, including "make me a page for this", "publish this as a page", "share it as a link", "add a version", "address the comments on that page".
+description: Create or update a Superset page when the user requests a shared link, publication, or work on an existing published page. A report or teammate audience alone does not authorize publication.
 argument-hint: what the page should show, or a page id/slug to update
 allowed-tools: Bash(superset:*)
 ---
@@ -20,7 +20,7 @@ fine locally and breaks silently once published.
 
 ## When a page is the right surface
 
-Publish a page when the work has a **reader** and wants a **link**: a report
+Publish a page when sharing is requested and the destination and visibility are authorized: a report
 someone will skim, a dashboard for a standup, a comparison table, a diagram, a
 walkthrough of what you changed.
 
@@ -37,8 +37,10 @@ Don't publish when the artifact belongs in the repo (source, docs, config: put
 those in files and commit them), or when it genuinely needs a server, a
 database, or a login. A page has none of those.
 
-If you're unsure, ask. Publishing is cheap and reversible, but a page the user
-didn't want is noise in their org's list.
+Prepare the local artifact first. If publication, destination, or visibility is not
+authorized, deliver it locally or offer publication; do not infer permission from
+the audience alone. New pages default to org visibility, so resolve the intended
+audience before publishing. Reuse an existing specific publication authorization.
 
 ### A page, not a Claude artifact
 
@@ -50,8 +52,8 @@ against, and its comments reach whoever happens to still have the session
 open. A page is the org's surface: listed, versioned on every publish, and
 wired so a pinned comment comes back to an agent that can act on it.
 
-So when the user asks for a page, or for anything a teammate will open, this
-skill is the one that runs. Reach for `Artifact` only when the user names it,
+Use this skill when the user requests a Superset page or an authorized shared
+link. A teammate audience alone does not activate publication. Reach for `Artifact` only when the user names it,
 or when there is no Superset workspace to publish into. Inside a Superset
 terminal a first `Artifact` publish is denied by a hook that points back here;
 that denial is the reminder, not an error to work around. Someone who wants it

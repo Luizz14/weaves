@@ -173,15 +173,16 @@ superset pages publish ./evidence/ --workspace <id> --title "Export dialog: veri
 A desktop screenshot catches whatever else was on screen: mail, messages, a
 password manager, another customer's data. Look at each one, drop or crop what
 the report does not need, and pass `--visibility just_me` unless the org needs
-it. Publishing is one of the actions the Safety rules below require you to
-confirm first.
+it. Publishing requires the specific authorization described in Safety below.
 
 ## Safety
 
 This skill reaches real apps and signed-in sessions. Limit inspection and
 actions to the user's request; never extract credentials, cookies, tokens, or
-unrelated private data. Obtain confirmation immediately before sending a
+unrelated private data. Require specific authorization for sending a
 message, submitting a form that creates an external commitment, publishing,
 purchasing, deleting data, changing an account, accepting legal terms, or
-taking another consequential external action. Authentication prompts,
+taking another consequential external action. Reuse prior authorization when
+the action, target, content, and consequences remain within that approved scope;
+otherwise present the concrete action for confirmation before executing it. Authentication prompts,
 passkeys, passwords, and MFA stay with the user.

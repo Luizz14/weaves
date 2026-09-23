@@ -16,7 +16,11 @@ import type {
 	V2TerminalPresetRow,
 	WorkspaceRunTerminalState,
 } from "renderer/routes/_authenticated/providers/CollectionsProvider/dashboardSidebarLocal";
-import { selectWorkspaceRunDefinition } from "shared/workspace-run-definition";
+import {
+	getWorkspaceRunDefinitionId,
+	listWorkspaceRunDefinitions,
+	type WorkspaceRunDefinition,
+} from "shared/workspace-run-definition";
 import type { StoreApi } from "zustand/vanilla";
 import type { PaneViewerData, TerminalPaneData } from "../../types";
 import type { TerminalLauncher } from "../useV2TerminalLauncher";
@@ -66,15 +70,6 @@ function makeTerminalPane(
 		),
 		data: { terminalId } as TerminalPaneData,
 	};
-}
-
-function getDefinitionId(
-	definition: ReturnType<typeof selectWorkspaceRunDefinition>,
-): string | undefined {
-	if (!definition) return undefined;
-	return definition.source === "terminal-preset"
-		? definition.presetId
-		: definition.projectId;
 }
 
 interface UseV2WorkspaceRunArgs {
@@ -132,9 +127,9 @@ export function useV2WorkspaceRun({
 		[matchedPresets, resolvePresetCommands],
 	);
 
-	const definition = useMemo(
+	const definitions = useMemo(
 		() =>
-			selectWorkspaceRunDefinition({
+			listWorkspaceRunDefinitions({
 				presets: resolvedMatchedPresets,
 				configRunCommands: configRunDefinition?.commands,
 				configCwd: configRunDefinition?.cwd,
@@ -146,6 +141,24 @@ export function useV2WorkspaceRun({
 			projectId,
 			resolvedMatchedPresets,
 		],
+	);
+	const selectedWorkspaceRunId = localWorkspaceState?.selectedWorkspaceRunId;
+	const definition =
+		definitions.find(
+			(candidate) =>
+				getWorkspaceRunDefinitionId(candidate) === selectedWorkspaceRunId,
+		) ??
+		definitions[0] ??
+		null;
+
+	const selectDefinition = useCallback(
+		(definitionId: string) => {
+			if (!collections.v2WorkspaceLocalState.get(workspaceId)) return;
+			collections.v2WorkspaceLocalState.update(workspaceId, (draft) => {
+				draft.selectedWorkspaceRunId = definitionId;
+			});
+		},
+		[collections.v2WorkspaceLocalState, workspaceId],
 	);
 
 	const runningState = useMemo(
@@ -167,106 +180,110 @@ export function useV2WorkspaceRun({
 		[collections.v2WorkspaceLocalState, workspaceId],
 	);
 
-	const startWorkspaceRun = useCallback(async () => {
-		if (isStartingRef.current) return;
-		const command = buildTerminalCommand(definition?.commands);
-		if (!definition || !command) {
-			toast.error(
-				t({
-					message: "No workspace run command configured",
-				}),
-				{
-					description: t({
-						message:
-							"Add a lifecycle run script in Project Settings or mark a terminal script as the workspace run.",
+	const startWorkspaceRun = useCallback(
+		async (target: WorkspaceRunDefinition | null = definition) => {
+			if (isStartingRef.current) return;
+			const definition = target;
+			const command = buildTerminalCommand(definition?.commands);
+			if (!definition || !command) {
+				toast.error(
+					t({
+						message: "No workspace run command configured",
 					}),
-				},
-			);
-			return;
-		}
-
-		isStartingRef.current = true;
-		setIsPending(true);
-		try {
-			// A terminal pane is a "workspace run" pane iff its terminalId is in
-			// workspaceRunTerminals. Snapshot before launch so the new terminal
-			// we're about to create doesn't itself match.
-			const priorRunTerminalIds = new Set(Object.keys(workspaceRunTerminals));
-
-			const terminalId = await launcher.create({
-				command,
-				cwd: definition.cwd,
-			});
-			const startedAt = Date.now();
-			updateWorkspaceRunTerminals((states) => {
-				states[terminalId] = {
-					terminalId,
-					workspaceId,
-					state: "running",
-					command,
-					definitionSource: definition.source,
-					definitionId: getDefinitionId(definition),
-					startedAt,
-				};
-			});
-
-			const state = store.getState();
-			let reused: { tabId: string; paneId: string } | null = null;
-			for (let i = state.tabs.length - 1; i >= 0; i--) {
-				const tab = state.tabs[i];
-				if (!tab) continue;
-				for (const [paneId, pane] of Object.entries(tab.panes)) {
-					if (pane.kind !== "terminal") continue;
-					const paneTerminalId = (pane.data as TerminalPaneData).terminalId;
-					if (paneTerminalId && priorRunTerminalIds.has(paneTerminalId)) {
-						reused = { tabId: tab.id, paneId };
-						break;
-					}
-				}
-				if (reused) break;
-			}
-
-			if (reused) {
-				const nextData: TerminalPaneData = { terminalId };
-				state.setPaneData({ paneId: reused.paneId, data: nextData });
-				state.setActivePane({
-					tabId: reused.tabId,
-					paneId: reused.paneId,
-				});
-				state.setActiveTab(reused.tabId);
-			} else {
-				const tabId = crypto.randomUUID();
-				const paneId = crypto.randomUUID();
-				const pane = makeTerminalPane(terminalId, paneId);
-				state.addTab({ id: tabId, panes: [pane] });
-			}
-		} catch (error) {
-			toast.error(
-				t({
-					message: "Failed to run workspace command",
-				}),
-				{
-					description: errorMessage(
-						error,
-						t({
-							message: "Unknown error",
+					{
+						description: t({
+							message:
+								"Add a lifecycle run script in Project Settings or mark a terminal script as the workspace run.",
 						}),
-					),
-				},
-			);
-		} finally {
-			isStartingRef.current = false;
-			setIsPending(false);
-		}
-	}, [
-		definition,
-		launcher,
-		store,
-		t,
-		updateWorkspaceRunTerminals,
-		workspaceId,
-		workspaceRunTerminals,
-	]);
+					},
+				);
+				return;
+			}
+
+			isStartingRef.current = true;
+			setIsPending(true);
+			try {
+				// A terminal pane is a "workspace run" pane iff its terminalId is in
+				// workspaceRunTerminals. Snapshot before launch so the new terminal
+				// we're about to create doesn't itself match.
+				const priorRunTerminalIds = new Set(Object.keys(workspaceRunTerminals));
+
+				const terminalId = await launcher.create({
+					command,
+					cwd: definition.cwd,
+				});
+				const startedAt = Date.now();
+				updateWorkspaceRunTerminals((states) => {
+					states[terminalId] = {
+						terminalId,
+						workspaceId,
+						state: "running",
+						command,
+						definitionSource: definition.source,
+						definitionId: getWorkspaceRunDefinitionId(definition),
+						startedAt,
+					};
+				});
+
+				const state = store.getState();
+				let reused: { tabId: string; paneId: string } | null = null;
+				for (let i = state.tabs.length - 1; i >= 0; i--) {
+					const tab = state.tabs[i];
+					if (!tab) continue;
+					for (const [paneId, pane] of Object.entries(tab.panes)) {
+						if (pane.kind !== "terminal") continue;
+						const paneTerminalId = (pane.data as TerminalPaneData).terminalId;
+						if (paneTerminalId && priorRunTerminalIds.has(paneTerminalId)) {
+							reused = { tabId: tab.id, paneId };
+							break;
+						}
+					}
+					if (reused) break;
+				}
+
+				if (reused) {
+					const nextData: TerminalPaneData = { terminalId };
+					state.setPaneData({ paneId: reused.paneId, data: nextData });
+					state.setActivePane({
+						tabId: reused.tabId,
+						paneId: reused.paneId,
+					});
+					state.setActiveTab(reused.tabId);
+				} else {
+					const tabId = crypto.randomUUID();
+					const paneId = crypto.randomUUID();
+					const pane = makeTerminalPane(terminalId, paneId);
+					state.addTab({ id: tabId, panes: [pane] });
+				}
+			} catch (error) {
+				toast.error(
+					t({
+						message: "Failed to run workspace command",
+					}),
+					{
+						description: errorMessage(
+							error,
+							t({
+								message: "Unknown error",
+							}),
+						),
+					},
+				);
+			} finally {
+				isStartingRef.current = false;
+				setIsPending(false);
+			}
+		},
+		[
+			definition,
+			launcher,
+			store,
+			t,
+			updateWorkspaceRunTerminals,
+			workspaceId,
+			workspaceRunTerminals,
+		],
+	);
 
 	const stopWorkspaceRun = useCallback(async () => {
 		if (!runningState) return;
@@ -398,9 +415,21 @@ export function useV2WorkspaceRun({
 		});
 	});
 
+	const runDefinition = useCallback(
+		async (target: WorkspaceRunDefinition) => {
+			selectDefinition(getWorkspaceRunDefinitionId(target));
+			if (runningState) await stopWorkspaceRun();
+			await startWorkspaceRun(target);
+		},
+		[runningState, selectDefinition, startWorkspaceRun, stopWorkspaceRun],
+	);
+
 	return {
 		canForceStop: Boolean(runningState),
 		definition,
+		definitions,
+		runDefinition,
+		selectDefinition,
 		forceStopWorkspaceRun,
 		isPending,
 		isRunning: Boolean(runningState),

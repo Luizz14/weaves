@@ -10,7 +10,7 @@ Inspect the real component and its surrounding layout before proposing changes. 
 Respond in this order:
 
 1. Identify the component and file being redesigned.
-2. Name three concrete visual or interaction issues, such as hierarchy, spacing, contrast, alignment, responsiveness, or affordance.
+2. Name the relevant visual or interaction issues actually found, without a minimum count, such as hierarchy, spacing, contrast, alignment, responsiveness, or affordance.
 3. Propose specific layout, token, component, and Tailwind changes for each issue.
 4. Show a short before-and-after excerpt containing only the meaningful class or structure changes.
 5. If implementation was requested, make the changes and verify them using the repository's required UI workflow.

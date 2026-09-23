@@ -26,7 +26,7 @@ Diagnose first, change one thing at a time, verify after each change.
 | CLI and desktop app version mismatch, or stale CLI | `superset update` |
 | App-side misbehavior (macOS) | read the newest entries in `~/Library/Logs/Superset/main.log` for errors |
 
-Propose the matching fix and get the user's go-ahead before running anything that changes state. Never delete data as a "fix".
+Apply reversible fixes within the requested and already authorized scope. Ask before effects outside that scope, access changes, or disruption of unrelated sessions. Explain the concrete action and impact when approval is needed. Never delete data as a "fix".
 
 ## 3. Verify
 

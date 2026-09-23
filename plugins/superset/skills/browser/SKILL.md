@@ -204,8 +204,8 @@ Read every screenshot before it goes up. This browser is signed into the user's
 accounts, so a capture can hold a session token, an email address, a customer
 name, or a dashboard that was never meant to leave the tab. New pages default
 to org-wide visibility. Crop or redact what does not belong in the report, pass
-`--visibility just_me` when the org does not need it, and confirm with the user
-before publishing.
+`--visibility just_me` when the org does not need it. Publish only with specific
+authorization for the content, destination, and visibility; reuse it if already given.
 
 ## Safety
 
@@ -213,8 +213,10 @@ before publishing.
   user is logged into in any pane (GitHub, dashboards, …). Never read cookies,
   tokens, or credentials, exfiltrate session data, or act on authenticated
   sites beyond the task.
-- Confirm with the user before a step that submits a form, makes a purchase,
-  or takes another consequential action.
+- Ask before consequential external actions not already authorized with sufficient
+  scope and detail. Reuse prior authorization for the same action; ordinary search
+  forms and reversible navigation within the task need no extra confirmation.
+  Purchases, publication, deletion, and account changes require specific authorization.
 - Login walls stay with the user: never enter passwords or MFA yourself. At a
   login wall you may offer `import-login` (above) rather than only stopping.
 - Never install Browser Use, enable Chrome remote debugging, attach to the

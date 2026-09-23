@@ -3802,6 +3802,9 @@ msgstr "Yorumlar bu ajana gider"
 msgid "Commit"
 msgstr "Commit et"
 
+msgid "Commit changes"
+msgstr ""
+
 #. placeholder {0}: error.message
 msgid "Commit failed: {0}"
 msgstr "Commit başarısız: {0}"
@@ -11964,6 +11967,9 @@ msgstr "Proje hazır — kenar çubuğundan açın."
 msgid "Project relocated to {0}"
 msgstr "Proje {0} konumuna taşındı"
 
+msgid "Project run script"
+msgstr ""
+
 #. placeholder {0}: result.repoPath
 msgid "Project set up at {0}"
 msgstr "Proje {0} konumunda kuruldu"
@@ -13413,6 +13419,9 @@ msgstr "Ekran görüntüleri"
 
 msgid "Script editor with file drop support"
 msgstr "Dosya bırakmayı destekleyen betik düzenleyici"
+
+msgid "Scripts"
+msgstr "Betikler"
 
 msgid "Scroll Area"
 msgstr "Kaydırma alanı"

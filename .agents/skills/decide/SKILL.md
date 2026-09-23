@@ -1,13 +1,13 @@
 ---
 name: decide
-description: Walk the user through design or implementation decisions one at a time, or review completed code one change at a time. Use when the user says "walk me through each decision", "let's decide together", "help me work through these choices", "walk me through what you did", or "QA step by step". Present concise context, mutually exclusive options, log each answer, and finish with a summary.
+description: Guide decisions or code review one step at a time when the user explicitly requests interactive choices or approval at each step. Ordinary explanations and complete audit reports do not activate this workflow.
 ---
 
 # Decide
 
 ## Prepare
 
-Before a design walkthrough, inspect the relevant code and record concrete bugs, inconsistencies, and decision points in `plans/<YYYYMMDD>-<topic>.md` or the appropriate app-scoped `plans/` directory. Preserve existing edits; never discard speculative or user-authored work without explicit approval.
+Before a design walkthrough, inspect the relevant code and record concrete bugs, inconsistencies, and decision points in the conversation; use `plans/<YYYYMMDD>-<topic>.md` or the appropriate app-scoped `plans/` directory when a persisted plan is requested. Preserve existing edits; never discard speculative or user-authored work without explicit approval.
 
 Order decisions by dependency and leverage, not document order.
 
@@ -27,7 +27,7 @@ For each decision:
    - Do not add an `Other` option when the client adds one automatically.
 5. After the answer, write `Logged: <decision>.` and continue.
 
-If the user acknowledges an issue without choosing, log the recommended choice and say they can correct the assumption.
+If the user acknowledges an issue without choosing, record it as pending. Do not treat acknowledgment as approval. A minor, reversible assumption may be stated explicitly as an assumption, never logged as an approved choice.
 
 At the end, provide a `| # | Decision | Choice |` table and offer to turn the audit into an implementation plan. Do not write implementation code during the decision walkthrough.
 

@@ -15,7 +15,7 @@ import { cn } from "@superset/ui/utils";
 import { workspaceTrpc } from "@superset/workspace-client";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { LuSparkles } from "react-icons/lu";
+import { LuChevronLeft, LuSparkles } from "react-icons/lu";
 import {
 	VscChevronDown,
 	VscGitCommit,
@@ -411,6 +411,137 @@ export function ShipControl({
 		</div>
 	);
 
+	const commitForm = (
+		<div className="flex flex-col gap-2">
+			<Textarea
+				autoFocus
+				value={commitMessage}
+				onChange={(e) => setCommitMessage(e.target.value)}
+				placeholder={defaultCommitMessage}
+				className="min-h-20 text-xs"
+				onKeyDown={(e) => {
+					if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+						e.preventDefault();
+						handleCommit();
+					}
+				}}
+			/>
+			<div className="flex items-center justify-between gap-2">
+				<button
+					type="button"
+					onClick={() => generateCommitMessageMutation.mutate({ workspaceId })}
+					disabled={generateCommitMessageMutation.isPending}
+					className="flex h-7 items-center gap-1.5 rounded-md px-2 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-50"
+				>
+					{generateCommitMessageMutation.isPending ? (
+						<VscLoading className="size-3.5 animate-spin" />
+					) : (
+						<LuSparkles className="size-3.5" />
+					)}
+					{commitMessage ? <Trans>Regenerate</Trans> : <Trans>Generate</Trans>}
+				</button>
+				<button
+					type="button"
+					onClick={handleCommit}
+					disabled={commitMutation.isPending}
+					className="flex h-7 items-center justify-center gap-1.5 rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+				>
+					{commitMutation.isPending && (
+						<VscLoading className="size-3.5 animate-spin" />
+					)}
+					<Trans>Commit</Trans>
+				</button>
+			</div>
+		</div>
+	);
+	const prForm = (
+		<div className="flex flex-col gap-2">
+			<div className="flex justify-end">
+				<button
+					type="button"
+					onClick={() => generatePullRequestMutation.mutate({ workspaceId })}
+					disabled={generatePullRequestMutation.isPending}
+					className="flex h-7 items-center gap-1.5 rounded-md px-2 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-50"
+				>
+					{generatePullRequestMutation.isPending ? (
+						<VscLoading className="size-3.5 animate-spin" />
+					) : (
+						<LuSparkles className="size-3.5" />
+					)}
+					{prTitle || prBody ? (
+						<Trans>Regenerate</Trans>
+					) : (
+						<Trans>Generate</Trans>
+					)}
+				</button>
+			</div>
+			<Input
+				autoFocus
+				value={prTitle}
+				onChange={(e) => {
+					prTitleTouchedRef.current = true;
+					setPrTitle(e.target.value);
+				}}
+				placeholder={t({
+					message: "Pull request title",
+				})}
+				className="h-8 text-xs"
+			/>
+			<Textarea
+				value={prBody}
+				onChange={(e) => setPrBody(e.target.value)}
+				placeholder={t({
+					message: "Description (optional)",
+				})}
+				className="min-h-20 text-xs"
+			/>
+			<div className="flex items-center justify-between">
+				<Label className="flex items-center gap-1.5 text-xs text-muted-foreground">
+					<Checkbox
+						checked={prDraft}
+						onCheckedChange={(v) => setPrDraft(v === true)}
+					/>
+					<Trans>Draft</Trans>
+				</Label>
+				<button
+					type="button"
+					onClick={() => void handleCreatePr()}
+					disabled={!prTitle.trim() || !hasCommitsAhead || isShipping}
+					className="flex h-7 items-center justify-center gap-1.5 rounded-md bg-primary px-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+				>
+					{isShipping && <VscLoading className="size-3.5 animate-spin" />}
+					<Trans>Create pull request</Trans>
+				</button>
+			</div>
+		</div>
+	);
+
+	if (dockMenu) {
+		if (view === null) return directActionRows;
+		return (
+			<div className="flex flex-col gap-2">
+				<div className="flex items-center gap-1">
+					<button
+						type="button"
+						onClick={() => setView(null)}
+						aria-label={t({ message: "Back" })}
+						className="flex size-7 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:bg-muted focus-visible:outline-none"
+					>
+						<LuChevronLeft className="size-4" />
+					</button>
+					<span className="text-sm font-medium">
+						{view === "commit" ? (
+							<Trans>Commit changes</Trans>
+						) : (
+							<Trans>Create pull request</Trans>
+						)}
+					</span>
+				</div>
+				{view === "commit" ? commitForm : prForm}
+			</div>
+		);
+	}
+
 	return (
 		<Popover
 			open={view !== null}
@@ -420,8 +551,8 @@ export function ShipControl({
 		>
 			<PopoverAnchor asChild>
 				{/* Keep the commit and PR forms anchored to their Git action rows. */}
-				<div className={dockMenu ? "w-full" : "flex items-center"}>
-					{dockMenu ? directActionRows : compact ? (
+				<div className="flex items-center">
+					{compact ? (
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>{chevronButton}</DropdownMenuTrigger>
 							<DropdownMenuContent
@@ -556,122 +687,11 @@ export function ShipControl({
 			</PopoverAnchor>
 			<PopoverContent
 				align="end"
-				side={dockMenu ? "top" : "bottom"}
+				side="bottom"
 				sideOffset={8}
-				data-workspace-action-dock-portal={dockMenu ? "true" : undefined}
 				className={view === "pr" ? "w-96 p-3" : "w-80 p-3"}
 			>
-				{view === "commit" ? (
-					<div className="flex flex-col gap-2">
-						<Textarea
-							autoFocus
-							value={commitMessage}
-							onChange={(e) => setCommitMessage(e.target.value)}
-							placeholder={defaultCommitMessage}
-							className="min-h-20 text-xs"
-							onKeyDown={(e) => {
-								if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
-									e.preventDefault();
-									handleCommit();
-								}
-							}}
-						/>
-						<div className="flex items-center justify-between gap-2">
-							<button
-								type="button"
-								onClick={() =>
-									generateCommitMessageMutation.mutate({ workspaceId })
-								}
-								disabled={generateCommitMessageMutation.isPending}
-								className="flex h-7 items-center gap-1.5 rounded-md px-2 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-50"
-							>
-								{generateCommitMessageMutation.isPending ? (
-									<VscLoading className="size-3.5 animate-spin" />
-								) : (
-									<LuSparkles className="size-3.5" />
-								)}
-								{commitMessage ? (
-									<Trans>Regenerate</Trans>
-								) : (
-									<Trans>Generate</Trans>
-								)}
-							</button>
-							<button
-								type="button"
-								onClick={handleCommit}
-								disabled={commitMutation.isPending}
-								className="flex h-7 items-center justify-center gap-1.5 rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
-							>
-								{commitMutation.isPending && (
-									<VscLoading className="size-3.5 animate-spin" />
-								)}
-								<Trans>Commit</Trans>
-							</button>
-						</div>
-					</div>
-				) : (
-					<div className="flex flex-col gap-2">
-						<div className="flex justify-end">
-							<button
-								type="button"
-								onClick={() =>
-									generatePullRequestMutation.mutate({ workspaceId })
-								}
-								disabled={generatePullRequestMutation.isPending}
-								className="flex h-7 items-center gap-1.5 rounded-md px-2 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-50"
-							>
-								{generatePullRequestMutation.isPending ? (
-									<VscLoading className="size-3.5 animate-spin" />
-								) : (
-									<LuSparkles className="size-3.5" />
-								)}
-								{prTitle || prBody ? (
-									<Trans>Regenerate</Trans>
-								) : (
-									<Trans>Generate</Trans>
-								)}
-							</button>
-						</div>
-						<Input
-							autoFocus
-							value={prTitle}
-							onChange={(e) => {
-								prTitleTouchedRef.current = true;
-								setPrTitle(e.target.value);
-							}}
-							placeholder={t({
-								message: "Pull request title",
-							})}
-							className="h-8 text-xs"
-						/>
-						<Textarea
-							value={prBody}
-							onChange={(e) => setPrBody(e.target.value)}
-							placeholder={t({
-								message: "Description (optional)",
-							})}
-							className="min-h-20 text-xs"
-						/>
-						<div className="flex items-center justify-between">
-							<Label className="flex items-center gap-1.5 text-xs text-muted-foreground">
-								<Checkbox
-									checked={prDraft}
-									onCheckedChange={(v) => setPrDraft(v === true)}
-								/>
-								<Trans>Draft</Trans>
-							</Label>
-							<button
-								type="button"
-								onClick={() => void handleCreatePr()}
-								disabled={!prTitle.trim() || !hasCommitsAhead || isShipping}
-								className="flex h-7 items-center justify-center gap-1.5 rounded-md bg-primary px-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
-							>
-								{isShipping && <VscLoading className="size-3.5 animate-spin" />}
-								<Trans>Create pull request</Trans>
-							</button>
-						</div>
-					</div>
-				)}
+				{view === "commit" ? commitForm : prForm}
 			</PopoverContent>
 		</Popover>
 	);

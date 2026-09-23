@@ -1,6 +1,6 @@
 ---
 name: file-issue
-description: Turn a rough report into a Linear issue someone can pick up — reproduce the claim, check for duplicates, and fill in team, priority, and labels. Use when the user says to file, open, or create an issue, hands over a bug report or error, or asks to get something into Linear.
+description: Turn a report into a Linear issue when the user asks to file, open, or create an issue in Linear, or that destination is already established. A report or error supplied for diagnosis alone is not a filing request.
 argument-hint: the bug, request, or error to file
 allowed-tools: mcp__linear__*
 ---

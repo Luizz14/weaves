@@ -1,6 +1,6 @@
 ---
 name: find-in-notion
-description: Find what the workspace already says before you answer or write — search Notion, tell the canonical page from the stale copy, and cite what you used. Use when the user asks what's in Notion, refers to a doc, spec, or meeting note, or asks a question the workspace probably already answers.
+description: Find and cite canonical Notion pages when the user names Notion, supplies a Notion link, or the relevant source has already been established as Notion. Generic repository or workspace questions do not activate this skill.
 argument-hint: the question, doc, or topic to look up
 allowed-tools: mcp__notion__notion-search, mcp__notion__notion-fetch, mcp__notion__notion-query-data-sources
 ---

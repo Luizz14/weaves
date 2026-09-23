@@ -3802,6 +3802,9 @@ msgstr "Comments go to this agent"
 msgid "Commit"
 msgstr "Commit"
 
+msgid "Commit changes"
+msgstr "Commit changes"
+
 #. placeholder {0}: error.message
 msgid "Commit failed: {0}"
 msgstr "Commit failed: {0}"
@@ -11964,6 +11967,9 @@ msgstr "Project ready — open it from the sidebar."
 msgid "Project relocated to {0}"
 msgstr "Project relocated to {0}"
 
+msgid "Project run script"
+msgstr "Project run script"
+
 #. placeholder {0}: result.repoPath
 msgid "Project set up at {0}"
 msgstr "Project set up at {0}"
@@ -13413,6 +13419,9 @@ msgstr "Screenshots"
 
 msgid "Script editor with file drop support"
 msgstr "Script editor with file drop support"
+
+msgid "Scripts"
+msgstr "Scripts"
 
 msgid "Scroll Area"
 msgstr "Scroll Area"

@@ -6,70 +6,17 @@ You're working inside a Superset workspace, an isolated checkout of this repo �
 machine someone owns, a plain clone at `/workspace` in a cloud workspace. "Workspace" in a user
 message means that, not an editor workspace.
 
+## Task scope and completion
+
+Before editing, inspect the relevant code, dependencies, and existing patterns. Scale the investigation to the requested change; read linked documents only when their subject applies.
+
+Ask when a material decision remains unresolved by the request, earlier answers, or established patterns, especially for behavior, architecture, API contracts, data, UX, or compatibility. Pause only work that depends on that answer; continue authorized investigation and independent work. State minor, reversible assumptions before proceeding. Acknowledging a problem is not approving a solution.
+
+Prior authorization remains valid for the same action and scope. Complete the requested implementation, run applicable checks, and fix failures caused by the change before handing back the result. Reuse successful checks for unchanged code and inputs; rerun when changes or failures invalidate them. Report external blockers and verification gaps accurately. Do not infer permission to publish, send messages, discard data, change access, or mutate shared systems from a request for local implementation.
+
 ## Project Structure
 
-All projects in this repo should be structured like this:
-
-```
-app/
-├── page.tsx
-├── dashboard/
-│   ├── page.tsx
-│   ├── components/
-│   │   └── MetricsChart/
-│   │       ├── MetricsChart.tsx
-│   │       ├── MetricsChart.test.tsx      # Tests co-located
-│   │       ├── index.ts
-│   │       └── constants.ts
-│   ├── hooks/                             # Hooks used only in dashboard
-│   │   └── useMetrics/
-│   │       ├── useMetrics.ts
-│   │       ├── useMetrics.test.ts
-│   │       └── index.ts
-│   ├── utils/                             # Utils used only in dashboard
-│   │   └── formatData/
-│   │       ├── formatData.ts
-│   │       ├── formatData.test.ts
-│   │       └── index.ts
-│   ├── stores/                            # Stores used only in dashboard
-│   │   └── dashboardStore/
-│   │       ├── dashboardStore.ts
-│   │       └── index.ts
-│   └── providers/                         # Providers for dashboard context
-│       └── DashboardProvider/
-│           ├── DashboardProvider.tsx
-│           └── index.ts
-└── components/
-    ├── Sidebar/
-    │   ├── Sidebar.tsx
-    │   ├── Sidebar.test.tsx               # Tests co-located
-    │   ├── index.ts
-    │   ├── components/                    # Used 2+ times IN Sidebar
-    │   │   └── SidebarButton/             # Shared by SidebarNav + SidebarFooter
-    │   │       ├── SidebarButton.tsx
-    │   │       ├── SidebarButton.test.tsx
-    │   │       └── index.ts
-    │   ├── SidebarNav/
-    │   │   ├── SidebarNav.tsx
-    │   │   └── index.ts
-    │   └── SidebarFooter/
-    │       ├── SidebarFooter.tsx
-    │       └── index.ts
-    └── HeroSection/
-        ├── HeroSection.tsx
-        ├── HeroSection.test.tsx           # Tests co-located
-        ├── index.ts
-        └── components/                    # Used ONLY by HeroSection
-            └── HeroCanvas/
-                ├── HeroCanvas.tsx
-                ├── HeroCanvas.test.tsx
-                ├── HeroCanvas.stories.tsx
-                ├── index.ts
-                └── config.ts
-
-components/                                # Used in 2+ pages (last resort)
-└── Header/
-```
+For UI components, use `ComponentName/ComponentName.tsx` with an `index.ts` barrel.
 
 1. **One folder per component**: `ComponentName/ComponentName.tsx` + `index.ts` for barrel export
 2. **Co-locate by usage**: If used once, nest under parent's `components/`. If used 2+ times, promote to **highest shared parent's** `components/` (or `components/` as last resort)
@@ -148,9 +95,9 @@ outside React (Electron main). Identical English with different meanings gets a 
 so it translates separately. Numbers, currencies, and dates go through
 `@superset/i18n/format` helpers, never `new Intl.*("en-US")` or `toLocale*` with a hardcoded
 locale. After adding or changing strings, run `bun run check:i18n` (CI enforces it): it
-regenerates the catalogs and lists every untranslated message per locale. Write those
-translations yourself into each `locales/<locale>/messages.po` and commit the catalogs with
-the change — nothing on CI fills translations for you. Conventions: `packages/i18n/README.md`;
+regenerates the catalogs and fails on any message untranslated in `en` or `pt-BR`. Write
+those two translations yourself into `locales/<locale>/messages.po` and commit the catalogs
+with the change; leave the other locales empty — they fall back to English. Conventions: `packages/i18n/README.md`;
 terms that never translate: `packages/i18n/glossary.md`; strategy and phasing:
 `plans/20260826-i18n-strategy.md`.
 Directories listed in `packages/i18n/test/enforced-dirs.ts` must not contain hardcoded
@@ -160,9 +107,9 @@ translated and is display-only: logs, Sentry/PostHog, and error classification u
 
 **Shipping locales.** `SUPPORTED_LOCALES` in `packages/i18n/src/locales.ts` is the single
 source of truth — adding a locale there is what makes it appear in the Settings picker and
-the optional onboarding step, and what `lingui.config.ts` must list. Every enabled locale
-must be **fully translated**: `compile --strict` fails the build on a missing message, so
-finish a translation before adding its locale. Native language names live in `LOCALE_LABELS`
+the optional onboarding step, and what `lingui.config.ts` must list. Only `en` and
+`pt-BR` must be **fully translated** (`lingui.required.config.ts` compiles them with
+`--strict`); every other locale compiles leniently and shows English for missing messages. Native language names live in `LOCALE_LABELS`
 and are never translated — someone stuck in the wrong language has to recognize their own.
 Relative times use `formatRelativeTime`/`formatCompactRelativeTime`, not hand-rolled
 "3d ago" helpers; `Intl` already knows every locale's wording.

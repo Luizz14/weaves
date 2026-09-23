@@ -40,7 +40,7 @@
 	"scripts": {
 		"build": "bun run compile",
 		"extract": "bun x --bun lingui extract --clean --overwrite --workers 1",
-		"compile": "bun x --bun lingui compile --strict --verbose --workers 1",
+		"compile": "bun x --bun lingui compile --verbose --workers 1 && bun x --bun lingui compile --strict --verbose --workers 1 --config lingui.required.config.ts",
 		"check": "bun run extract && bun run compile",
 		"test": "bun test",
 		"typecheck": "tsc --noEmit --emitDeclarationOnly false",

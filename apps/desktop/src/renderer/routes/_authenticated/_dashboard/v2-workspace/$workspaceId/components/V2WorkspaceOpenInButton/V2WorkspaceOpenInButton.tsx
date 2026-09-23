@@ -6,7 +6,7 @@ import { V2OpenInMenuButton } from "../V2OpenInMenuButton";
 
 interface V2WorkspaceOpenInButtonProps {
 	workspaceId: string;
-	appearance?: "toolbar" | "dock";
+	appearance?: "toolbar" | "dock" | "list";
 	registerHotkey?: boolean;
 	hidden?: boolean;
 }

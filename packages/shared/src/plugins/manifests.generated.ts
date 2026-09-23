@@ -55,7 +55,7 @@ export const FIRST_PARTY_MANIFESTS = {
 	"linear": {
 		"$schema": "https://superset.sh/schemas/plugin/1.0.0.json",
 		"name": "linear",
-		"version": "1.5.2",
+		"version": "1.5.3",
 		"description": "Plan and build products: create, search, and update Linear issues.",
 		"author": {
 			"name": "Superset",
@@ -93,7 +93,7 @@ export const FIRST_PARTY_MANIFESTS = {
 			},
 			{
 				"name": "file-issue",
-				"description": "Turn a rough report into a Linear issue someone can pick up — reproduce the claim, check for duplicates, and fill in team, priority, and labels. Use when the user says to file, open, or create an issue, hands over a bug report or error, or asks to get something into Linear."
+				"description": "Turn a report into a Linear issue when the user asks to file, open, or create an issue in Linear, or that destination is already established. A report or error supplied for diagnosis alone is not a filing request."
 			},
 			{
 				"name": "project-status",
@@ -104,7 +104,7 @@ export const FIRST_PARTY_MANIFESTS = {
 	"notion": {
 		"$schema": "https://superset.sh/schemas/plugin/1.0.0.json",
 		"name": "notion",
-		"version": "1.0.2",
+		"version": "1.0.3",
 		"description": "Search, read, and write your Notion workspace: pages, databases, and comments.",
 		"author": {
 			"name": "Superset",
@@ -139,7 +139,7 @@ export const FIRST_PARTY_MANIFESTS = {
 		"skills": [
 			{
 				"name": "find-in-notion",
-				"description": "Find what the workspace already says before you answer or write — search Notion, tell the canonical page from the stale copy, and cite what you used. Use when the user asks what's in Notion, refers to a doc, spec, or meeting note, or asks a question the workspace probably already answers."
+				"description": "Find and cite canonical Notion pages when the user names Notion, supplies a Notion link, or the relevant source has already been established as Notion. Generic repository or workspace questions do not activate this skill."
 			},
 			{
 				"name": "write-to-notion",

@@ -3802,6 +3802,9 @@ msgstr "コメントはこのエージェントに送られます"
 msgid "Commit"
 msgstr "コミット"
 
+msgid "Commit changes"
+msgstr ""
+
 #. placeholder {0}: error.message
 msgid "Commit failed: {0}"
 msgstr "コミットに失敗しました: {0}"
@@ -11964,6 +11967,9 @@ msgstr "プロジェクトの準備ができました — サイドバーから�
 msgid "Project relocated to {0}"
 msgstr "プロジェクトを{0}に移動しました"
 
+msgid "Project run script"
+msgstr ""
+
 #. placeholder {0}: result.repoPath
 msgid "Project set up at {0}"
 msgstr "{0}にプロジェクトをセットアップしました"
@@ -13413,6 +13419,9 @@ msgstr "スクリーンショット"
 
 msgid "Script editor with file drop support"
 msgstr "ファイルドロップ対応のスクリプトエディタ"
+
+msgid "Scripts"
+msgstr "スクリプト"
 
 msgid "Scroll Area"
 msgstr "Scroll Area"

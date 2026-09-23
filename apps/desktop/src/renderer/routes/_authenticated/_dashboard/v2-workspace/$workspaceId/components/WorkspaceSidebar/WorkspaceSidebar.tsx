@@ -1,19 +1,15 @@
 import { useLingui } from "@lingui/react/macro";
 import { eq } from "@tanstack/db";
 import { useLiveQuery } from "@tanstack/react-db";
-import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { LuFile } from "react-icons/lu";
-import { BranchIntegrationControl } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/BranchIntegrationControl";
-import { PRStatusActions } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/ChangesControl/components/PRStatusActions";
-import { ShipControl } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/ChangesControl/components/ShipControl";
-import { usePRFlowState } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/ChangesControl/hooks/usePRFlowState";
 import { useWorkspaceGitStatus } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/providers/WorkspaceGitStatusProvider";
-import { V2WorkspaceOpenInButton } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/V2WorkspaceOpenInButton";
 import { useCollections } from "renderer/routes/_authenticated/providers/CollectionsProvider";
 import {
 	WORKSPACE_SIDEBAR_TABS,
 	type WorkspaceSidebarTab,
 } from "renderer/routes/_authenticated/providers/CollectionsProvider/dashboardSidebarLocal/schema";
+import { useWorkspaceSidebarStore } from "renderer/stores/workspace-sidebar-state";
 import { useReviewCommentNavigation } from "../../hooks/useReviewCommentNavigation";
 import { useRowlessSidebarTabStore } from "../../state/rowlessSidebarTabStore";
 import type { CommentPaneData, DiffFocusSide } from "../../types";
@@ -61,8 +57,10 @@ interface WorkspaceSidebarProps {
 	selectedDiffTarget?: SelectedDiffTarget;
 	pendingReveal?: PendingReveal | null;
 	workspaceId: string;
-	/** Run actions rendered by the page and hosted in the sidebar action dock. */
-	runButton: ReactNode;
+	gitActionContent: ReactNode;
+	openInActionContent: ReactNode;
+	commandsActionContent: ReactNode;
+	showActionDock: boolean;
 }
 
 export function WorkspaceSidebar({
@@ -75,11 +73,14 @@ export function WorkspaceSidebar({
 	selectedDiffTarget,
 	pendingReveal,
 	workspaceId,
-	runButton,
+	gitActionContent,
+	openInActionContent,
+	commandsActionContent,
+	showActionDock,
 }: WorkspaceSidebarProps) {
 	const { t } = useLingui();
 	const gitStatus = useWorkspaceGitStatus();
-	const { flowState, onRetry } = usePRFlowState(workspaceId);
+	const isSidebarCollapsed = useWorkspaceSidebarStore((s) => s.isCollapsed());
 	const collections = useCollections();
 	const { data: [localState] = [] } = useLiveQuery(
 		(query) =>
@@ -157,45 +158,6 @@ export function WorkspaceSidebar({
 
 	const tabs: SidebarTabDefinition[] = [filesTab, changesTab, reviewTab];
 	const activeTabDef = tabs.find((t) => t.id === activeTab) ?? tabs[0];
-	const gitActions = useMemo(
-		() => (
-			<div className="flex flex-col gap-2">
-				<BranchIntegrationControl
-					key={workspaceId}
-					workspaceId={workspaceId}
-					mode="dock"
-				/>
-				{flowState.kind === "no-pr" && (
-					<ShipControl
-						workspaceId={workspaceId}
-						sync={flowState.sync}
-						onRefresh={onRetry}
-						dockMenu
-					/>
-				)}
-				<PRStatusActions
-					state={flowState}
-					workspaceId={workspaceId}
-					onRefresh={onRetry}
-					onOpenPullRequest={onOpenPullRequest}
-				/>
-			</div>
-		),
-		[flowState, onOpenPullRequest, onRetry, workspaceId],
-	);
-	const otherActions = useMemo(
-		() => (
-			<div className="flex flex-col gap-2">
-				{runButton}
-				<V2WorkspaceOpenInButton
-					workspaceId={workspaceId}
-					appearance="dock"
-					registerHotkey={false}
-				/>
-			</div>
-		),
-		[runButton, workspaceId],
-	);
 
 	const tabCount = tabs.length;
 	useEffect(() => {
@@ -228,11 +190,15 @@ export function WorkspaceSidebar({
 			<div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
 				{activeTabDef?.content}
 			</div>
-			<WorkspaceActionDock
-				key={workspaceId}
-				gitContent={gitActions}
-				otherContent={otherActions}
-			/>
+			{showActionDock && (
+				<WorkspaceActionDock
+					key={workspaceId}
+					isCollapsed={isSidebarCollapsed}
+					gitContent={gitActionContent}
+					openInContent={openInActionContent}
+					commandsContent={commandsActionContent}
+				/>
+			)}
 		</div>
 	);
 }

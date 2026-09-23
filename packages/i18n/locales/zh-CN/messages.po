@@ -3802,6 +3802,9 @@ msgstr "评论将发送给此智能体"
 msgid "Commit"
 msgstr "提交"
 
+msgid "Commit changes"
+msgstr ""
+
 #. placeholder {0}: error.message
 msgid "Commit failed: {0}"
 msgstr "提交失败：{0}"
@@ -11964,6 +11967,9 @@ msgstr "项目已就绪，可从侧边栏打开。"
 msgid "Project relocated to {0}"
 msgstr "项目已迁移到{0}"
 
+msgid "Project run script"
+msgstr ""
+
 #. placeholder {0}: result.repoPath
 msgid "Project set up at {0}"
 msgstr "项目已设置在{0}"
@@ -13413,6 +13419,9 @@ msgstr "截图"
 
 msgid "Script editor with file drop support"
 msgstr "支持文件拖放的脚本编辑器"
+
+msgid "Scripts"
+msgstr "脚本"
 
 msgid "Scroll Area"
 msgstr "滚动区域"

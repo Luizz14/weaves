@@ -3802,6 +3802,9 @@ msgstr "Bình luận sẽ được gửi tới agent này"
 msgid "Commit"
 msgstr "Commit"
 
+msgid "Commit changes"
+msgstr ""
+
 #. placeholder {0}: error.message
 msgid "Commit failed: {0}"
 msgstr "Commit thất bại: {0}"
@@ -11964,6 +11967,9 @@ msgstr "Dự án đã sẵn sàng — mở nó từ thanh bên."
 msgid "Project relocated to {0}"
 msgstr "Đã chuyển dự án tới {0}"
 
+msgid "Project run script"
+msgstr ""
+
 #. placeholder {0}: result.repoPath
 msgid "Project set up at {0}"
 msgstr "Đã thiết lập dự án tại {0}"
@@ -13413,6 +13419,9 @@ msgstr "Ảnh chụp màn hình"
 
 msgid "Script editor with file drop support"
 msgstr "Trình soạn script có hỗ trợ thả tệp"
+
+msgid "Scripts"
+msgstr "Tập lệnh"
 
 msgid "Scroll Area"
 msgstr "Scroll Area"

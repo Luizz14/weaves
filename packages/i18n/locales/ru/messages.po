@@ -3802,6 +3802,9 @@ msgstr "Комментарии отправляются этому агенту"
 msgid "Commit"
 msgstr "Закоммитить"
 
+msgid "Commit changes"
+msgstr ""
+
 #. placeholder {0}: error.message
 msgid "Commit failed: {0}"
 msgstr "Не удалось закоммитить: {0}"
@@ -11964,6 +11967,9 @@ msgstr "Проект готов — откройте его из боковой 
 msgid "Project relocated to {0}"
 msgstr "Проект перемещён в {0}"
 
+msgid "Project run script"
+msgstr ""
+
 #. placeholder {0}: result.repoPath
 msgid "Project set up at {0}"
 msgstr "Проект настроен в {0}"
@@ -13413,6 +13419,9 @@ msgstr "Скриншоты"
 
 msgid "Script editor with file drop support"
 msgstr "Редактор скриптов с поддержкой перетаскивания файлов"
+
+msgid "Scripts"
+msgstr "Скрипты"
 
 msgid "Scroll Area"
 msgstr "Область прокрутки"

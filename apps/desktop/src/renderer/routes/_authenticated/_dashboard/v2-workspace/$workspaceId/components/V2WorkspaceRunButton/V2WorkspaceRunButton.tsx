@@ -8,16 +8,21 @@ import {
 } from "@superset/ui/dropdown-menu";
 import { cn } from "@superset/ui/utils";
 import { useNavigate } from "@tanstack/react-router";
-import { ChevronDown, Play, Settings, Square, X } from "lucide-react";
+import { Check, ChevronDown, Play, Settings, Square, X } from "lucide-react";
 import { useCallback } from "react";
 import { useHotkeyDisplay } from "renderer/hotkeys";
 import { useSetSettingsSearchQuery } from "renderer/stores/settings-state";
-import type { WorkspaceRunDefinition } from "shared/workspace-run-definition";
+import {
+	getWorkspaceRunDefinitionId,
+	type WorkspaceRunDefinition,
+} from "shared/workspace-run-definition";
 
 interface V2WorkspaceRunButtonProps {
 	/** Null for project-less "session" workspaces (no project scripts page). */
 	projectId: string | null;
 	definition: WorkspaceRunDefinition | null;
+	definitions: WorkspaceRunDefinition[];
+	onRunDefinition: (definition: WorkspaceRunDefinition) => void | Promise<void>;
 	isRunning: boolean;
 	isPending: boolean;
 	canForceStop: boolean;
@@ -29,6 +34,8 @@ interface V2WorkspaceRunButtonProps {
 export function V2WorkspaceRunButton({
 	projectId,
 	definition,
+	definitions,
+	onRunDefinition,
 	isRunning,
 	isPending,
 	canForceStop,
@@ -64,6 +71,14 @@ export function V2WorkspaceRunButton({
 		});
 	}, [definition, navigate, projectId, setSettingsSearchQuery]);
 
+	const selectedId = definition
+		? getWorkspaceRunDefinitionId(definition)
+		: null;
+	const definitionLabel = (candidate: WorkspaceRunDefinition) =>
+		candidate.source === "terminal-preset"
+			? candidate.name
+			: t({ message: "Project run script" });
+
 	const label = isRunning
 		? t({ message: "Stop" })
 		: hasRunCommand
@@ -73,7 +88,9 @@ export function V2WorkspaceRunButton({
 	const inDock = appearance === "dock";
 
 	return (
-		<div className={`flex shrink-0 items-center no-drag ${inDock ? "w-full" : ""}`}>
+		<div
+			className={`flex shrink-0 items-center no-drag ${inDock ? "w-full" : ""}`}
+		>
 			<button
 				type="button"
 				onClick={() => {
@@ -85,9 +102,9 @@ export function V2WorkspaceRunButton({
 				}}
 				disabled={isPending}
 				className={cn(
-				inDock
-					? "group flex h-10 min-w-0 flex-1 items-center gap-3 rounded-l-xl border border-r-0 border-border/60 bg-transparent px-3 text-left text-sm font-medium text-foreground transition-[background-color,color,transform] active:scale-[0.96]"
-					: "group flex h-6 items-center gap-1.5 rounded-l-md border border-r-0 border-border/50 bg-transparent px-2 text-xs font-medium text-foreground transition-colors",
+					inDock
+						? "group flex h-10 min-w-0 flex-1 items-center gap-3 rounded-l-xl border border-r-0 border-border/60 bg-transparent px-3 text-left text-sm font-medium text-foreground transition-[background-color,color,transform] active:scale-[0.96]"
+						: "group flex h-6 items-center gap-1.5 rounded-l-md border border-r-0 border-border/50 bg-transparent px-2 text-xs font-medium text-foreground transition-colors",
 					"hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
 					isPending && "pointer-events-none opacity-50",
 					isRunning
@@ -111,7 +128,7 @@ export function V2WorkspaceRunButton({
 				}
 			>
 				<Icon className={cn(inDock ? "size-4" : "size-3", "shrink-0")} />
-					<span className="truncate">{label}</span>
+				<span className="truncate">{label}</span>
 				{hotkeyText && hotkeyText !== "Unassigned" && (
 					<span className="hidden text-[10px] tracking-wide text-muted-foreground/60 sm:inline">
 						{hotkeyText}
@@ -142,9 +159,32 @@ export function V2WorkspaceRunButton({
 				</DropdownMenuTrigger>
 				<DropdownMenuContent
 					align="start"
-					className="w-44"
+					className="w-56"
 					data-workspace-action-dock-portal={inDock ? "true" : undefined}
 				>
+					{definitions.length > 1 && (
+						<>
+							{definitions.map((candidate) => {
+								const id = getWorkspaceRunDefinitionId(candidate);
+								return (
+									<DropdownMenuItem
+										key={id}
+										onClick={() => void onRunDefinition(candidate)}
+									>
+										{id === selectedId ? (
+											<Check className="mr-2 size-4" />
+										) : (
+											<Play className="mr-2 size-4 opacity-60" />
+										)}
+										<span className="truncate">
+											{definitionLabel(candidate)}
+										</span>
+									</DropdownMenuItem>
+								);
+							})}
+							<DropdownMenuSeparator />
+						</>
+					)}
 					{canForceStop && (
 						<>
 							<DropdownMenuItem

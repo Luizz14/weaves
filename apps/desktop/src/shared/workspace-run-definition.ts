@@ -70,7 +70,22 @@ export function presetToWorkspaceRun(
 	};
 }
 
-export function selectWorkspaceRunDefinition({
+export function getWorkspaceRunDefinitionId(
+	definition: WorkspaceRunDefinition,
+): string {
+	return definition.source === "terminal-preset"
+		? definition.presetId
+		: definition.projectId;
+}
+
+function isDefinition(
+	definition: WorkspaceRunDefinition | null,
+): definition is WorkspaceRunDefinition {
+	return Boolean(definition);
+}
+
+/** Every configured run, in priority order: project-targeted presets, project config, global presets. */
+export function listWorkspaceRunDefinitions({
 	presets,
 	configRunCommands,
 	projectId,
@@ -81,16 +96,8 @@ export function selectWorkspaceRunDefinition({
 	/** Null for project-less "session" workspaces — only global presets apply. */
 	projectId: string | null;
 	configCwd?: string;
-}): WorkspaceRunDefinition | null {
+}): WorkspaceRunDefinition[] {
 	const matchingPresets = filterMatchingPresetsForProject(presets, projectId);
-	const targetedPresetRun = matchingPresets
-		.filter(isProjectTargetedPreset)
-		.map(presetToWorkspaceRun)
-		.find((definition): definition is WorkspaceRunDefinition =>
-			Boolean(definition),
-		);
-	if (targetedPresetRun) return targetedPresetRun;
-
 	const configRun =
 		projectId !== null
 			? configRunToWorkspaceRun({
@@ -99,14 +106,21 @@ export function selectWorkspaceRunDefinition({
 					cwd: configCwd,
 				})
 			: null;
-	if (configRun) return configRun;
-
-	return (
-		matchingPresets
+	return [
+		...matchingPresets
+			.filter(isProjectTargetedPreset)
+			.map(presetToWorkspaceRun)
+			.filter(isDefinition),
+		...(configRun ? [configRun] : []),
+		...matchingPresets
 			.filter((preset) => !isProjectTargetedPreset(preset))
 			.map(presetToWorkspaceRun)
-			.find((definition): definition is WorkspaceRunDefinition =>
-				Boolean(definition),
-			) ?? null
-	);
+			.filter(isDefinition),
+	];
+}
+
+export function selectWorkspaceRunDefinition(
+	args: Parameters<typeof listWorkspaceRunDefinitions>[0],
+): WorkspaceRunDefinition | null {
+	return listWorkspaceRunDefinitions(args)[0] ?? null;
 }

@@ -3802,6 +3802,9 @@ msgstr "Komentáře jdou tomuto agentovi"
 msgid "Commit"
 msgstr "Commitnout"
 
+msgid "Commit changes"
+msgstr ""
+
 #. placeholder {0}: error.message
 msgid "Commit failed: {0}"
 msgstr "Commit se nezdařil: {0}"
@@ -11964,6 +11967,9 @@ msgstr "Projekt je připravený — otevřete ho v postranním panelu."
 msgid "Project relocated to {0}"
 msgstr "Projekt přesunut do {0}"
 
+msgid "Project run script"
+msgstr ""
+
 #. placeholder {0}: result.repoPath
 msgid "Project set up at {0}"
 msgstr "Projekt nastaven v {0}"
@@ -13413,6 +13419,9 @@ msgstr "Snímky obrazovky"
 
 msgid "Script editor with file drop support"
 msgstr "Editor skriptu s podporou přetažení souboru"
+
+msgid "Scripts"
+msgstr "Skripty"
 
 msgid "Scroll Area"
 msgstr "Oblast posuvu"

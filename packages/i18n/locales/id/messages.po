@@ -3802,6 +3802,9 @@ msgstr "Komentar masuk ke agen ini"
 msgid "Commit"
 msgstr "Commit"
 
+msgid "Commit changes"
+msgstr ""
+
 #. placeholder {0}: error.message
 msgid "Commit failed: {0}"
 msgstr "Commit gagal: {0}"
@@ -11964,6 +11967,9 @@ msgstr "Proyek siap — buka dari sidebar."
 msgid "Project relocated to {0}"
 msgstr "Proyek dipindahkan ke {0}"
 
+msgid "Project run script"
+msgstr ""
+
 #. placeholder {0}: result.repoPath
 msgid "Project set up at {0}"
 msgstr "Proyek disiapkan di {0}"
@@ -13413,6 +13419,9 @@ msgstr "Tangkapan layar"
 
 msgid "Script editor with file drop support"
 msgstr "Editor skrip dengan dukungan lepas file"
+
+msgid "Scripts"
+msgstr "Skrip"
 
 msgid "Scroll Area"
 msgstr "Scroll Area"

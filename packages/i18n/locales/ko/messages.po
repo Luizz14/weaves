@@ -3802,6 +3802,9 @@ msgstr "댓글은 이 에이전트에게 전달됩니다"
 msgid "Commit"
 msgstr "커밋"
 
+msgid "Commit changes"
+msgstr ""
+
 #. placeholder {0}: error.message
 msgid "Commit failed: {0}"
 msgstr "커밋 실패: {0}"
@@ -11964,6 +11967,9 @@ msgstr "프로젝트 준비 완료 — 사이드바에서 열어 보세요."
 msgid "Project relocated to {0}"
 msgstr "프로젝트를 {0}(으)로 이동했습니다"
 
+msgid "Project run script"
+msgstr ""
+
 #. placeholder {0}: result.repoPath
 msgid "Project set up at {0}"
 msgstr "{0}에 프로젝트를 설정했습니다"
@@ -13413,6 +13419,9 @@ msgstr "스크린샷"
 
 msgid "Script editor with file drop support"
 msgstr "파일 끌어다 놓기를 지원하는 스크립트 편집기"
+
+msgid "Scripts"
+msgstr "스크립트"
 
 msgid "Scroll Area"
 msgstr "스크롤 영역"

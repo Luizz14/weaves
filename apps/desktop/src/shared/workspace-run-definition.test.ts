@@ -1,5 +1,8 @@
 import { describe, expect, it } from "bun:test";
-import { selectWorkspaceRunDefinition } from "./workspace-run-definition";
+import {
+	listWorkspaceRunDefinitions,
+	selectWorkspaceRunDefinition,
+} from "./workspace-run-definition";
 
 describe("selectWorkspaceRunDefinition", () => {
 	it("prefers a project-targeted workspace-run preset over config", () => {
@@ -83,5 +86,40 @@ describe("selectWorkspaceRunDefinition", () => {
 			name: "Global dev",
 			commands: ["npm run dev"],
 		});
+	});
+
+	it("lists every configured run in priority order", () => {
+		const definitions = listWorkspaceRunDefinitions({
+			projectId: "project-a",
+			configRunCommands: ["bun dev"],
+			presets: [
+				{
+					id: "preset-global",
+					name: "Global prod",
+					commands: ["bun start"],
+					useAsWorkspaceRun: true,
+				},
+				{
+					id: "preset-dev",
+					name: "Dev",
+					commands: ["bun dev --debug"],
+					projectIds: ["project-a"],
+					useAsWorkspaceRun: true,
+				},
+				{
+					id: "preset-plain",
+					name: "Not a run",
+					commands: ["ls"],
+				},
+			],
+		});
+
+		expect(
+			definitions.map((definition) =>
+				definition.source === "terminal-preset"
+					? definition.presetId
+					: definition.source,
+			),
+		).toEqual(["preset-dev", "project-config", "preset-global"]);
 	});
 });

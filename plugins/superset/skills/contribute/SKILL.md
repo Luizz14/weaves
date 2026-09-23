@@ -1,13 +1,13 @@
 ---
 name: contribute
-description: Set up a Superset open-source contribution, from forking and cloning superset-sh/superset through local dev setup and the repo's rules to a merge-ready PR. Use when the user wants to contribute to Superset, fix a Superset bug themselves, add a feature to Superset, or prepare a PR against superset-sh/superset.
+description: Prepare an explicitly requested upstream contribution or pull request to superset-sh/superset. Local implementation and bug fixes alone do not activate the fork, setup, issue, or PR workflow.
 argument-hint: what they want to contribute
 allowed-tools: Bash(gh:*) Bash(bun:*) Bash(git:*)
 ---
 
 # Contribute to Superset
 
-Take the user from "I want to fix/build X in Superset" to a merge-ready PR that follows the repo's rules. If the checked-out repo has `CONTRIBUTING.md`, `DEVELOPMENT.md`, or `AGENTS.md`, those files are authoritative; read them and prefer them over this summary.
+Prepare the requested upstream contribution following the repo rules. Read `CONTRIBUTING.md` for contribution requirements and `DEVELOPMENT.md` when setup or execution guidance is needed; follow applicable `AGENTS.md`. Reuse documents already read for the same task. Creating issues, pushing, and opening a PR require authorization for those actions; a local code-change request alone does not grant it.
 
 ## 1. Scope first
 
@@ -16,6 +16,8 @@ Take the user from "I want to fix/build X in Superset" to a merge-ready PR that 
 - Questions: Superset Discord, not an issue
 
 ## 2. Set up
+
+Reuse the current checkout and working setup when suitable. Fork, clone, or provision only what is missing for the requested contribution.
 
 1. `gh auth status`, then fork and clone: `gh repo fork superset-sh/superset --clone` (or add a fork remote to an existing clone)
 2. Best experience: add the clone as a project in the Superset app and create a workspace per change, so contributions develop inside managed worktrees

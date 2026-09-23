@@ -41,9 +41,12 @@ import { V2NotificationStatusIndicator } from "./components/V2NotificationStatus
 import { V2PresetsBar } from "./components/V2PresetsBar";
 import { V2WorkspaceOpenInButton } from "./components/V2WorkspaceOpenInButton";
 import { V2WorkspaceRunButton } from "./components/V2WorkspaceRunButton";
+import { WorkspaceCommandsPanel } from "./components/WorkspaceCommandsPanel";
 import { WorkspaceEmptyState } from "./components/WorkspaceEmptyState";
+import { WorkspaceGitActions } from "./components/WorkspaceGitActions";
 import { WorkspaceMissingWorktreeState } from "./components/WorkspaceMissingWorktreeState";
 import { WorkspaceSidebar } from "./components/WorkspaceSidebar";
+import { WorkspaceActionDock } from "./components/WorkspaceSidebar/components/WorkspaceActionDock";
 import { useAutoAdoptBackgroundSessions } from "./hooks/useAutoAdoptBackgroundSessions";
 import { useClearActivePaneAttention } from "./hooks/useClearActivePaneAttention";
 import { useConsumeAutomationRunLink } from "./hooks/useConsumeAutomationRunLink";
@@ -368,6 +371,8 @@ function V2WorkspaceContent() {
 			<V2WorkspaceRunButton
 				projectId={workspace.projectId}
 				definition={workspaceRun.definition}
+				definitions={workspaceRun.definitions}
+				onRunDefinition={workspaceRun.runDefinition}
 				isRunning={workspaceRun.isRunning}
 				isPending={workspaceRun.isPending}
 				canForceStop={workspaceRun.canForceStop}
@@ -377,15 +382,45 @@ function V2WorkspaceContent() {
 			/>
 		),
 		[
-			workspaceId,
 			workspace.projectId,
 			workspaceRun.canForceStop,
 			workspaceRun.definition,
+			workspaceRun.definitions,
+			workspaceRun.runDefinition,
 			workspaceRun.forceStopWorkspaceRun,
 			workspaceRun.isPending,
 			workspaceRun.isRunning,
 			workspaceRun.toggleWorkspaceRun,
 		],
+	);
+	const gitActionContent = useMemo(
+		() => (
+			<WorkspaceGitActions
+				workspaceId={workspaceId}
+				onOpenPullRequest={openPullRequestPane}
+			/>
+		),
+		[openPullRequestPane, workspaceId],
+	);
+	const openInActionContent = useMemo(
+		() => (
+			<V2WorkspaceOpenInButton
+				workspaceId={workspaceId}
+				appearance="list"
+				registerHotkey={false}
+			/>
+		),
+		[workspaceId],
+	);
+	const commandsActionContent = useMemo(
+		() => (
+			<WorkspaceCommandsPanel
+				runButton={workspaceRunButton}
+				matchedPresets={matchedPresets}
+				executePreset={executePreset}
+			/>
+		),
+		[workspaceRunButton, matchedPresets, executePreset],
 	);
 
 	return (
@@ -483,6 +518,15 @@ function V2WorkspaceContent() {
 											onToggleChanges={toggleChangesPane}
 										/>
 									)}
+									{!sidebarOpen && (
+										<WorkspaceActionDock
+											isCollapsed
+											compactPlacement="tabbar"
+											gitContent={gitActionContent}
+											openInContent={openInActionContent}
+											commandsContent={commandsActionContent}
+										/>
+									)}
 									<RightSidebarToggle />
 									{!isMac && !sidebarOpen && <WindowControlsInset />}
 								</div>
@@ -541,7 +585,10 @@ function V2WorkspaceContent() {
 									>
 										<WorkspaceSidebar
 											workspaceId={workspaceId}
-											runButton={workspaceRunButton}
+											gitActionContent={gitActionContent}
+											openInActionContent={openInActionContent}
+											commandsActionContent={commandsActionContent}
+											showActionDock={sidebarOpen}
 											onSelectFile={openFilePaneFromTreeClick}
 											onSelectDiffFile={openDiffPane}
 											onOpenComment={openCommentPane}

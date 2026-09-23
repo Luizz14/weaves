@@ -1,6 +1,6 @@
 ---
 name: agy-quick-ai
-description: Implement or extend short, structured AI features in the Superset desktop app through the host-service quickAi layer backed by the Antigravity CLI (`agy`). Use for generated branch names, commit messages, PR drafts, titles, summaries, classifications, and similar bounded suggestions. Do not use for full coding-agent sessions, chat panes, or features that require the model to edit the repository.
+description: Implement bounded AI suggestions through Superset host-service quickAi. Use for suggestion features such as branch names or PR drafts, not chat sessions or features where the invoked model edits repository files.
 ---
 
 # Agy Quick AI
@@ -9,7 +9,7 @@ Use the existing host-side `quickAi` service. Do not spawn `agy` from the render
 
 ## Before changing code
 
-Inspect these sources and the closest existing consumer:
+Inspect the affected consumer and the sources relevant to the change; this is a map, not a required reading list:
 
 - `packages/host-service/src/trpc/router/quick-ai/provider.ts`: provider boundary.
 - `packages/host-service/src/trpc/router/quick-ai/agy-cli.ts`: supported models, execution isolation, timeout, concurrency, and structured-output parsing.
@@ -41,6 +41,6 @@ Prefer one model call returning one structured object over separate calls for re
 
 ## Verify
 
-- Add focused tests for output parsing, settings/defaults, context selection, sanitization, and fallback behavior. Do not call the live model from automated tests.
-- Run the relevant host-service and renderer tests, Biome on changed sources, `bun run --cwd packages/host-service build:host`, `bun run check:i18n`, and `git diff --check`.
-- When the local `agy` login is available, validate one harmless schema-constrained prompt through `runAgyJson`; never send real repository diffs merely to smoke-test the runner.
+- Cover changed behavior with focused tests: parsing, settings/defaults, context selection, sanitization, or fallback as applicable. Do not call the live model from automated tests.
+- Run affected host-service or renderer tests and Biome on changed sources, plus `git diff --check`. Run `bun run --cwd packages/host-service build:host` for host implementation or contract changes, and `bun run check:i18n` for user-facing message changes.
+- For runner or provider integration changes, when the local `agy` login is available, validate one harmless schema-constrained prompt through `runAgyJson`; never send real repository diffs merely to smoke-test the runner.

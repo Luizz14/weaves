@@ -3,6 +3,7 @@ import { formatter } from "@lingui/format-po";
 
 export default defineConfig({
 	sourceLocale: "en",
+	fallbackLocales: { default: "en" },
 	locales: [
 		"en",
 		"ja",
