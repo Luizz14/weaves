@@ -94,6 +94,10 @@ export const PERSISTED_KEY_REGISTRY: ReadonlyArray<
 		"src/renderer/stores/last-active-v2-workspace.ts",
 		["last-active-v2-workspace"],
 	],
+	[
+		"src/renderer/stores/recent-v2-workspaces/recent-v2-workspaces.ts",
+		["recent-v2-workspaces"],
+	],
 	["src/renderer/stores/v2-local-override.ts", ["v2-local-override-v2"]],
 	[
 		"src/renderer/stores/v2-workspace-create-defaults.ts",

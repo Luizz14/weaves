@@ -7651,6 +7651,9 @@ msgstr "riwayat"
 msgid "History"
 msgstr "Riwayat"
 
+msgid "Hold Control and press Tab to cycle through recently opened workspaces across organizations"
+msgstr ""
+
 msgid "Home"
 msgstr "Beranda"
 
@@ -9770,9 +9773,6 @@ msgstr "Slide berikutnya"
 msgid "Next Tab"
 msgstr "Tab Berikutnya"
 
-msgid "Next Tab (Alt)"
-msgstr "Tab Berikutnya (Alt)"
-
 msgid "Next Workspace"
 msgstr "Workspace Berikutnya"
 
@@ -10183,6 +10183,9 @@ msgstr "Belum ada konfigurasi agen publik. Rute ini siap untuk daftar konfiguras
 
 msgid "No pull requests found."
 msgstr "Tidak ada pull request ditemukan."
+
+msgid "No recent workspaces yet"
+msgstr ""
 
 msgid "No repositories found. Make sure your GitHub App has access to repositories."
 msgstr "Tidak ada repositori ditemukan. Pastikan GitHub App Anda punya akses ke repositori."
@@ -11039,33 +11042,6 @@ msgstr "Buka tugas di aplikasi luar"
 msgid "Open Terminal"
 msgstr "Buka Terminal"
 
-msgid "Open Terminal Script 1"
-msgstr "Buka Skrip Terminal 1"
-
-msgid "Open Terminal Script 2"
-msgstr "Buka Skrip Terminal 2"
-
-msgid "Open Terminal Script 3"
-msgstr "Buka Skrip Terminal 3"
-
-msgid "Open Terminal Script 4"
-msgstr "Buka Skrip Terminal 4"
-
-msgid "Open Terminal Script 5"
-msgstr "Buka Skrip Terminal 5"
-
-msgid "Open Terminal Script 6"
-msgstr "Buka Skrip Terminal 6"
-
-msgid "Open Terminal Script 7"
-msgstr "Buka Skrip Terminal 7"
-
-msgid "Open Terminal Script 8"
-msgstr "Buka Skrip Terminal 8"
-
-msgid "Open Terminal Script 9"
-msgstr "Buka Skrip Terminal 9"
-
 msgid "Open the Changes pane in a new tab, or focus the existing one"
 msgstr "Buka panel Perubahan di tab baru, atau fokuskan yang sudah ada"
 
@@ -11237,6 +11213,9 @@ msgstr "Perangkat lain"
 
 msgid "Other Hosts"
 msgstr "Host Lain"
+
+msgid "Other organization"
+msgstr ""
 
 msgid "Other Team Members"
 msgstr "Anggota Tim Lainnya"
@@ -11840,9 +11819,6 @@ msgstr "Slide sebelumnya"
 msgid "Previous Tab"
 msgstr "Tab Sebelumnya"
 
-msgid "Previous Tab (Alt)"
-msgstr "Tab Sebelumnya (Alt)"
-
 msgid "Previous Workspace"
 msgstr "Workspace Sebelumnya"
 
@@ -12338,6 +12314,9 @@ msgstr "PR terbaru"
 
 msgid "Recent pull requests"
 msgstr "Pull request terbaru"
+
+msgid "Recent workspaces"
+msgstr ""
 
 msgid "Recently Shipped"
 msgstr "Baru Dirilis"
@@ -15146,6 +15125,12 @@ msgstr "Ganti sesi masuk"
 
 msgid "Switch sign-in…"
 msgstr "Ganti sesi masuk…"
+
+msgid "Switch to Recent Workspace"
+msgstr ""
+
+msgid "Switch to Recent Workspace (Backward)"
+msgstr ""
 
 msgid "Switch to Tab 1"
 msgstr "Beralih ke Tab 1"

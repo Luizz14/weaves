@@ -2,6 +2,7 @@ import { eq } from "@tanstack/db";
 import { useLiveQuery } from "@tanstack/react-db";
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef } from "react";
+import { useHostProjects } from "renderer/hooks/host-projects/useHostProjects";
 import { useCloudWorkspaces } from "renderer/hooks/useCloudWorkspaces";
 import { useV2UserPreferences } from "renderer/hooks/useV2UserPreferences";
 import { electronTrpc } from "renderer/lib/electron-trpc";
@@ -10,6 +11,7 @@ import { useCollections } from "renderer/routes/_authenticated/providers/Collect
 import { useHostWorkspaces } from "renderer/routes/_authenticated/providers/HostWorkspacesProvider";
 import { useSandboxAccess } from "renderer/routes/_authenticated/providers/SandboxAccessProvider";
 import { useLastActiveV2Workspace } from "renderer/stores/last-active-v2-workspace";
+import { useRecentV2Workspaces } from "renderer/stores/recent-v2-workspaces";
 import { useWorkspaceTransactionsStore } from "renderer/stores/workspace-creates";
 import { CloudWorkspaceProvisioningState } from "../components/CloudWorkspaceProvisioningState";
 import { StateScreenShell } from "../components/StateScreenShell";
@@ -148,6 +150,29 @@ function V2WorkspaceLayout() {
 		switchingAwayFromCurrentWorkspace,
 		workspaceExists,
 		workspaceId,
+	]);
+
+	const recordRecentVisit = useRecentV2Workspaces((state) => state.recordVisit);
+	const { projects } = useHostProjects();
+	const projectName =
+		projects.find((project) => project.id === workspace?.projectId)?.name ??
+		null;
+	useEffect(() => {
+		if (!workspace || switchingAwayFromCurrentWorkspace) return;
+		recordRecentVisit({
+			workspaceId: workspace.id,
+			organizationId: collections.activeOrganizationId,
+			workspaceName: workspace.name,
+			projectName,
+			branch: workspace.branch,
+			lastAccessedAt: Date.now(),
+		});
+	}, [
+		collections.activeOrganizationId,
+		projectName,
+		recordRecentVisit,
+		switchingAwayFromCurrentWorkspace,
+		workspace,
 	]);
 
 	useEffect(() => {

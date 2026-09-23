@@ -7651,6 +7651,9 @@ msgstr "기록"
 msgid "History"
 msgstr "기록"
 
+msgid "Hold Control and press Tab to cycle through recently opened workspaces across organizations"
+msgstr ""
+
 msgid "Home"
 msgstr "홈"
 
@@ -9770,9 +9773,6 @@ msgstr "다음 슬라이드"
 msgid "Next Tab"
 msgstr "다음 탭"
 
-msgid "Next Tab (Alt)"
-msgstr "다음 탭(Alt)"
-
 msgid "Next Workspace"
 msgstr "다음 워크스페이스"
 
@@ -10183,6 +10183,9 @@ msgstr "아직 공개된 에이전트 설정이 없습니다. 이 경로는 앞�
 
 msgid "No pull requests found."
 msgstr "풀 리퀘스트를 찾을 수 없습니다."
+
+msgid "No recent workspaces yet"
+msgstr ""
 
 msgid "No repositories found. Make sure your GitHub App has access to repositories."
 msgstr "리포지토리를 찾을 수 없습니다. GitHub App이 리포지토리에 접근할 수 있는지 확인하세요."
@@ -11039,33 +11042,6 @@ msgstr "외부에서 작업 열기"
 msgid "Open Terminal"
 msgstr "터미널 열기"
 
-msgid "Open Terminal Script 1"
-msgstr "터미널 스크립트 1 열기"
-
-msgid "Open Terminal Script 2"
-msgstr "터미널 스크립트 2 열기"
-
-msgid "Open Terminal Script 3"
-msgstr "터미널 스크립트 3 열기"
-
-msgid "Open Terminal Script 4"
-msgstr "터미널 스크립트 4 열기"
-
-msgid "Open Terminal Script 5"
-msgstr "터미널 스크립트 5 열기"
-
-msgid "Open Terminal Script 6"
-msgstr "터미널 스크립트 6 열기"
-
-msgid "Open Terminal Script 7"
-msgstr "터미널 스크립트 7 열기"
-
-msgid "Open Terminal Script 8"
-msgstr "터미널 스크립트 8 열기"
-
-msgid "Open Terminal Script 9"
-msgstr "터미널 스크립트 9 열기"
-
 msgid "Open the Changes pane in a new tab, or focus the existing one"
 msgstr "변경 패널을 새 탭에서 열거나 기존 패널에 포커스합니다"
 
@@ -11237,6 +11213,9 @@ msgstr "다른 기기"
 
 msgid "Other Hosts"
 msgstr "다른 호스트"
+
+msgid "Other organization"
+msgstr ""
 
 msgid "Other Team Members"
 msgstr "다른 팀 멤버"
@@ -11840,9 +11819,6 @@ msgstr "이전 슬라이드"
 msgid "Previous Tab"
 msgstr "이전 탭"
 
-msgid "Previous Tab (Alt)"
-msgstr "이전 탭(Alt)"
-
 msgid "Previous Workspace"
 msgstr "이전 워크스페이스"
 
@@ -12338,6 +12314,9 @@ msgstr "최근 PR"
 
 msgid "Recent pull requests"
 msgstr "최근 풀 리퀘스트"
+
+msgid "Recent workspaces"
+msgstr ""
 
 msgid "Recently Shipped"
 msgstr "최근 출시"
@@ -15146,6 +15125,12 @@ msgstr "로그인 전환"
 
 msgid "Switch sign-in…"
 msgstr "로그인 전환…"
+
+msgid "Switch to Recent Workspace"
+msgstr ""
+
+msgid "Switch to Recent Workspace (Backward)"
+msgstr ""
 
 msgid "Switch to Tab 1"
 msgstr "탭 1로 전환"

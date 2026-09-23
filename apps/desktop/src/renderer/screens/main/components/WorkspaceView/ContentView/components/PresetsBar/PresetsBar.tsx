@@ -21,11 +21,9 @@ import {
 	getPresetIcon,
 	useIsDarkTheme,
 } from "renderer/assets/app-icons/preset-icons";
-import { HotkeyMenuShortcut } from "renderer/components/HotkeyMenuShortcut";
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import { usePresets } from "renderer/react-query/presets";
 import { WorkspaceRunButton } from "renderer/routes/_authenticated/_dashboard/components/TopBar/components/WorkspaceRunButton";
-import { PRESET_HOTKEY_IDS } from "renderer/routes/_authenticated/_dashboard/workspace/$workspaceId/hooks/usePresetHotkeys";
 import { useTabsStore } from "renderer/stores/tabs/store";
 import { useTabsWithPresets } from "renderer/stores/tabs/useTabsWithPresets";
 import { resolveActiveTabIdForWorkspace } from "renderer/stores/tabs/utils";
@@ -184,10 +182,6 @@ export function PresetsBar() {
 
 		return orderedPinnedPresets;
 	}, [matchedPresets, localPinnedPresetIds]);
-	const presetIndexById = useMemo(
-		() => new Map(matchedPresets.map((preset, index) => [preset.id, index])),
-		[matchedPresets],
-	);
 	const managedPresets = useMemo(() => {
 		const templateNames = new Set(
 			QUICK_ADD_PRESET_TEMPLATES.map((t) => t.name),
@@ -360,13 +354,6 @@ export function PresetsBar() {
 							? isPresetPinnedToBar(item.preset.pinnedToBar)
 							: false;
 						const hasPreset = !!item.preset;
-						const presetIndex = item.preset
-							? presetIndexById.get(item.preset.id)
-							: undefined;
-						const hotkeyId =
-							typeof presetIndex === "number"
-								? PRESET_HOTKEY_IDS[presetIndex]
-								: undefined;
 						return (
 							<DropdownMenuItem
 								key={item.key}
@@ -395,7 +382,6 @@ export function PresetsBar() {
 								)}
 								<span className="truncate">{item.name || "default"}</span>
 								<div className="ml-auto flex items-center gap-2">
-									{hotkeyId ? <HotkeyMenuShortcut hotkeyId={hotkeyId} /> : null}
 									{hasPreset ? (
 										<LuPin
 											className={`size-3.5 ${
@@ -432,14 +418,12 @@ export function PresetsBar() {
 				</DropdownMenuContent>
 			</DropdownMenu>
 			<div className="h-4 w-px bg-border mx-1 shrink-0" />
-			{pinnedPresets.map(({ preset, index }, pinnedIndex) => {
-				const hotkeyId = PRESET_HOTKEY_IDS[index];
+			{pinnedPresets.map(({ preset }, pinnedIndex) => {
 				return (
 					<PresetBarItem
 						key={preset.id}
 						preset={preset}
 						pinnedIndex={pinnedIndex}
-						hotkeyId={hotkeyId}
 						isDark={isDark}
 						canOpen={!!workspaceId}
 						canOpenInCurrentTerminal={canOpenInCurrentTerminal}

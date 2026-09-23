@@ -78,7 +78,7 @@ export function CodexModelSelector({
 			<PopoverContent
 				align="start"
 				side="top"
-				className="relative flex h-[112px] w-[min(390px,calc(100vw-24px))] flex-col items-center gap-3 rounded-[32px] border-none outline-[2px] outline-border/50 -outline-offset-3 bg-background px-[25px] py-[17px] shadow-[0_8px_32px_#1a1a1a14] "
+				className="relative flex h-[112px] w-[min(390px,calc(100vw-24px))] flex-col items-center gap-3 rounded-[32px] border-none surface-outline bg-background px-[25px] py-[17px] shadow-[0_8px_32px_#1a1a1a14] "
 			>
 				<div className="flex h-[26px] items-center justify-center gap-2">
 					<AnimatedModelIcon modelId={value.modelId} className="size-[26px]" />

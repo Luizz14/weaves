@@ -7651,6 +7651,9 @@ msgstr "historie"
 msgid "History"
 msgstr "Historie"
 
+msgid "Hold Control and press Tab to cycle through recently opened workspaces across organizations"
+msgstr ""
+
 msgid "Home"
 msgstr "Domů"
 
@@ -9770,9 +9773,6 @@ msgstr "Další snímek"
 msgid "Next Tab"
 msgstr "Další karta"
 
-msgid "Next Tab (Alt)"
-msgstr "Další karta (Alt)"
-
 msgid "Next Workspace"
 msgstr "Další pracovní prostor"
 
@@ -10183,6 +10183,9 @@ msgstr "Zatím žádné veřejné konfigurace agentů. Tato adresa je připraven
 
 msgid "No pull requests found."
 msgstr "Nenalezeny žádné pull requesty."
+
+msgid "No recent workspaces yet"
+msgstr ""
 
 msgid "No repositories found. Make sure your GitHub App has access to repositories."
 msgstr "Nenalezeny žádné repozitáře. Ověřte, že vaše GitHub App má k repozitářům přístup."
@@ -11039,33 +11042,6 @@ msgstr "Otevřít úkol externě"
 msgid "Open Terminal"
 msgstr "Otevřít terminál"
 
-msgid "Open Terminal Script 1"
-msgstr "Otevřít terminálový skript 1"
-
-msgid "Open Terminal Script 2"
-msgstr "Otevřít terminálový skript 2"
-
-msgid "Open Terminal Script 3"
-msgstr "Otevřít terminálový skript 3"
-
-msgid "Open Terminal Script 4"
-msgstr "Otevřít terminálový skript 4"
-
-msgid "Open Terminal Script 5"
-msgstr "Otevřít terminálový skript 5"
-
-msgid "Open Terminal Script 6"
-msgstr "Otevřít terminálový skript 6"
-
-msgid "Open Terminal Script 7"
-msgstr "Otevřít terminálový skript 7"
-
-msgid "Open Terminal Script 8"
-msgstr "Otevřít terminálový skript 8"
-
-msgid "Open Terminal Script 9"
-msgstr "Otevřít terminálový skript 9"
-
 msgid "Open the Changes pane in a new tab, or focus the existing one"
 msgstr "Otevře panel Změny na nové kartě, nebo zaměří existující"
 
@@ -11237,6 +11213,9 @@ msgstr "Ostatní zařízení"
 
 msgid "Other Hosts"
 msgstr "Ostatní hosty"
+
+msgid "Other organization"
+msgstr ""
 
 msgid "Other Team Members"
 msgstr "Další členové týmu"
@@ -11840,9 +11819,6 @@ msgstr "Předchozí snímek"
 msgid "Previous Tab"
 msgstr "Předchozí karta"
 
-msgid "Previous Tab (Alt)"
-msgstr "Předchozí karta (Alt)"
-
 msgid "Previous Workspace"
 msgstr "Předchozí pracovní prostor"
 
@@ -12338,6 +12314,9 @@ msgstr "Nedávné PR"
 
 msgid "Recent pull requests"
 msgstr "Nedávné pull requesty"
+
+msgid "Recent workspaces"
+msgstr ""
 
 msgid "Recently Shipped"
 msgstr "Nedávno vydáno"
@@ -15146,6 +15125,12 @@ msgstr "Přepnout přihlášení"
 
 msgid "Switch sign-in…"
 msgstr "Přepnout přihlášení…"
+
+msgid "Switch to Recent Workspace"
+msgstr ""
+
+msgid "Switch to Recent Workspace (Backward)"
+msgstr ""
 
 msgid "Switch to Tab 1"
 msgstr "Přepnout na kartu 1"

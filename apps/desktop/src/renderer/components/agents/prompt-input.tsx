@@ -180,7 +180,7 @@ export function PromptInput({
 		<form
 			onSubmit={submit}
 			className={cn(
-				"outline-[2px] outline-border/40 -outline-offset-3 relative w-full rounded-2xl bg-background p-2 transition-colors",
+				"surface-outline relative w-full rounded-2xl bg-background p-2 transition-colors",
 				disabled && "opacity-60",
 				className,
 			)}

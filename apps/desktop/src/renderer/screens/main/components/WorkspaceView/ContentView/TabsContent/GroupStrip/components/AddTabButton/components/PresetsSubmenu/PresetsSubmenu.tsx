@@ -11,8 +11,6 @@ import {
 	getPresetIcon,
 	useIsDarkTheme,
 } from "renderer/assets/app-icons/preset-icons";
-import { HotkeyMenuShortcut } from "renderer/components/HotkeyMenuShortcut";
-import { PRESET_HOTKEY_IDS } from "renderer/routes/_authenticated/_dashboard/workspace/$workspaceId/hooks/usePresetHotkeys";
 
 interface PresetsSubmenuProps {
 	presets: TerminalPreset[];
@@ -35,9 +33,8 @@ export function PresetsSubmenu({
 			</DropdownMenuSubTrigger>
 			<DropdownMenuSubContent className="w-56">
 				{presets.length > 0 ? (
-					presets.map((preset, index) => {
+					presets.map((preset) => {
 						const presetIcon = getPresetIcon(preset.name, isDark);
-						const hotkeyId = PRESET_HOTKEY_IDS[index];
 						return (
 							<DropdownMenuItem
 								key={preset.id}
@@ -54,7 +51,6 @@ export function PresetsSubmenu({
 									<HiMiniCommandLine className="size-4" />
 								)}
 								<span className="truncate">{preset.name || "default"}</span>
-								{hotkeyId ? <HotkeyMenuShortcut hotkeyId={hotkeyId} /> : null}
 							</DropdownMenuItem>
 						);
 					})

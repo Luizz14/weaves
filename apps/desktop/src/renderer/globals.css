@@ -164,6 +164,14 @@
 	--color-fill-selected: var(--fill-selected);
 }
 
+/* Floating surfaces (composer, model selector, switchers): an inset 2px outline instead of a border. */
+@utility surface-outline {
+	outline-style: solid;
+	outline-width: 2px;
+	outline-offset: -3px;
+	outline-color: color-mix(in oklab, var(--border) 50%, transparent);
+}
+
 @layer base {
 	* {
 		@apply border-border antialiased;

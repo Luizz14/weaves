@@ -7651,6 +7651,9 @@ msgstr "cronologia"
 msgid "History"
 msgstr "Cronologia"
 
+msgid "Hold Control and press Tab to cycle through recently opened workspaces across organizations"
+msgstr ""
+
 msgid "Home"
 msgstr "Home"
 
@@ -9770,9 +9773,6 @@ msgstr "Diapositiva successiva"
 msgid "Next Tab"
 msgstr "Scheda successiva"
 
-msgid "Next Tab (Alt)"
-msgstr "Scheda successiva (Alt)"
-
 msgid "Next Workspace"
 msgstr "Workspace successivo"
 
@@ -10183,6 +10183,9 @@ msgstr "Ancora nessuna configurazione di agente pubblica. Questa sezione è pron
 
 msgid "No pull requests found."
 msgstr "Nessuna pull request trovata."
+
+msgid "No recent workspaces yet"
+msgstr ""
 
 msgid "No repositories found. Make sure your GitHub App has access to repositories."
 msgstr "Nessun repository trovato. Assicurati che la tua GitHub App abbia accesso ai repository."
@@ -11039,33 +11042,6 @@ msgstr "Apri il task esternamente"
 msgid "Open Terminal"
 msgstr "Apri il terminale"
 
-msgid "Open Terminal Script 1"
-msgstr "Apri lo script del terminale 1"
-
-msgid "Open Terminal Script 2"
-msgstr "Apri lo script del terminale 2"
-
-msgid "Open Terminal Script 3"
-msgstr "Apri lo script del terminale 3"
-
-msgid "Open Terminal Script 4"
-msgstr "Apri lo script del terminale 4"
-
-msgid "Open Terminal Script 5"
-msgstr "Apri lo script del terminale 5"
-
-msgid "Open Terminal Script 6"
-msgstr "Apri lo script del terminale 6"
-
-msgid "Open Terminal Script 7"
-msgstr "Apri lo script del terminale 7"
-
-msgid "Open Terminal Script 8"
-msgstr "Apri lo script del terminale 8"
-
-msgid "Open Terminal Script 9"
-msgstr "Apri lo script del terminale 9"
-
 msgid "Open the Changes pane in a new tab, or focus the existing one"
 msgstr "Apre il pannello delle modifiche in una nuova scheda, o attiva quello esistente"
 
@@ -11237,6 +11213,9 @@ msgstr "Altri dispositivi"
 
 msgid "Other Hosts"
 msgstr "Altri host"
+
+msgid "Other organization"
+msgstr ""
 
 msgid "Other Team Members"
 msgstr "Altri membri del team"
@@ -11840,9 +11819,6 @@ msgstr "Diapositiva precedente"
 msgid "Previous Tab"
 msgstr "Scheda precedente"
 
-msgid "Previous Tab (Alt)"
-msgstr "Scheda precedente (Alt)"
-
 msgid "Previous Workspace"
 msgstr "Workspace precedente"
 
@@ -12338,6 +12314,9 @@ msgstr "PR recenti"
 
 msgid "Recent pull requests"
 msgstr "Pull request recenti"
+
+msgid "Recent workspaces"
+msgstr ""
 
 msgid "Recently Shipped"
 msgstr "Rilasciato di recente"
@@ -15146,6 +15125,12 @@ msgstr "Cambia accesso"
 
 msgid "Switch sign-in…"
 msgstr "Cambia accesso…"
+
+msgid "Switch to Recent Workspace"
+msgstr ""
+
+msgid "Switch to Recent Workspace (Backward)"
+msgstr ""
 
 msgid "Switch to Tab 1"
 msgstr "Passa alla scheda 1"

@@ -7651,6 +7651,9 @@ msgstr "история"
 msgid "History"
 msgstr "История"
 
+msgid "Hold Control and press Tab to cycle through recently opened workspaces across organizations"
+msgstr ""
+
 msgid "Home"
 msgstr "Главная"
 
@@ -9770,9 +9773,6 @@ msgstr "Следующий слайд"
 msgid "Next Tab"
 msgstr "Следующая вкладка"
 
-msgid "Next Tab (Alt)"
-msgstr "Следующая вкладка (Alt)"
-
 msgid "Next Workspace"
 msgstr "Следующая рабочая область"
 
@@ -10183,6 +10183,9 @@ msgstr "Публичных конфигураций агентов пока не
 
 msgid "No pull requests found."
 msgstr "Пул-реквесты не найдены."
+
+msgid "No recent workspaces yet"
+msgstr ""
 
 msgid "No repositories found. Make sure your GitHub App has access to repositories."
 msgstr "Репозитории не найдены. Убедитесь, что у вашего GitHub App есть доступ к репозиториям."
@@ -11039,33 +11042,6 @@ msgstr "Открыть задачу во внешнем приложении"
 msgid "Open Terminal"
 msgstr "Открыть терминал"
 
-msgid "Open Terminal Script 1"
-msgstr "Открыть скрипт терминала 1"
-
-msgid "Open Terminal Script 2"
-msgstr "Открыть скрипт терминала 2"
-
-msgid "Open Terminal Script 3"
-msgstr "Открыть скрипт терминала 3"
-
-msgid "Open Terminal Script 4"
-msgstr "Открыть скрипт терминала 4"
-
-msgid "Open Terminal Script 5"
-msgstr "Открыть скрипт терминала 5"
-
-msgid "Open Terminal Script 6"
-msgstr "Открыть скрипт терминала 6"
-
-msgid "Open Terminal Script 7"
-msgstr "Открыть скрипт терминала 7"
-
-msgid "Open Terminal Script 8"
-msgstr "Открыть скрипт терминала 8"
-
-msgid "Open Terminal Script 9"
-msgstr "Открыть скрипт терминала 9"
-
 msgid "Open the Changes pane in a new tab, or focus the existing one"
 msgstr "Открывает панель изменений в новой вкладке или фокусирует существующую"
 
@@ -11237,6 +11213,9 @@ msgstr "Другие устройства"
 
 msgid "Other Hosts"
 msgstr "Другие хосты"
+
+msgid "Other organization"
+msgstr ""
 
 msgid "Other Team Members"
 msgstr "Другие участники команды"
@@ -11840,9 +11819,6 @@ msgstr "Предыдущий слайд"
 msgid "Previous Tab"
 msgstr "Предыдущая вкладка"
 
-msgid "Previous Tab (Alt)"
-msgstr "Предыдущая вкладка (Alt)"
-
 msgid "Previous Workspace"
 msgstr "Предыдущая рабочая область"
 
@@ -12338,6 +12314,9 @@ msgstr "Недавние PR"
 
 msgid "Recent pull requests"
 msgstr "Недавние пул-реквесты"
+
+msgid "Recent workspaces"
+msgstr ""
 
 msgid "Recently Shipped"
 msgstr "Недавно выпущено"
@@ -15146,6 +15125,12 @@ msgstr "Сменить вход"
 
 msgid "Switch sign-in…"
 msgstr "Сменить вход…"
+
+msgid "Switch to Recent Workspace"
+msgstr ""
+
+msgid "Switch to Recent Workspace (Backward)"
+msgstr ""
 
 msgid "Switch to Tab 1"
 msgstr "Перейти на вкладку 1"

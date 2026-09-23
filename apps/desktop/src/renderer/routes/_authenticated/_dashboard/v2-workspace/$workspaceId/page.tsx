@@ -339,8 +339,6 @@ function V2WorkspaceContent() {
 
 	useWorkspaceHotkeys({
 		store,
-		matchedPresets,
-		executePreset,
 		addTerminalTab,
 		addCodexChatTab,
 		openChangesPane,

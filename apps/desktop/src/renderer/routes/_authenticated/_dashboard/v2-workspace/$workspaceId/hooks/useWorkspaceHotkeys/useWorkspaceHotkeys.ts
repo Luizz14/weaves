@@ -6,10 +6,9 @@ import {
 	type WorkspaceProps,
 	type WorkspaceStore,
 } from "@superset/panes";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useV2UserPreferences } from "renderer/hooks/useV2UserPreferences";
 import { useHotkey } from "renderer/hotkeys";
-import type { V2TerminalPresetRow } from "renderer/routes/_authenticated/providers/CollectionsProvider/dashboardSidebarLocal";
 import { useRightSidebarToggleIntent } from "renderer/stores/right-sidebar-toggle-intent";
 import type { StoreApi } from "zustand";
 import type {
@@ -23,8 +22,6 @@ import type { TerminalLauncher } from "../useV2TerminalLauncher";
 
 export function useWorkspaceHotkeys({
 	store,
-	matchedPresets,
-	executePreset,
 	addTerminalTab,
 	addCodexChatTab,
 	openChangesPane,
@@ -34,8 +31,6 @@ export function useWorkspaceHotkeys({
 	isSandbox,
 }: {
 	store: StoreApi<WorkspaceStore<PaneViewerData>>;
-	matchedPresets: V2TerminalPresetRow[];
-	executePreset: (preset: V2TerminalPresetRow) => void | Promise<void>;
 	addTerminalTab: () => Promise<void>;
 	addCodexChatTab: () => void;
 	openChangesPane: () => void;
@@ -46,10 +41,6 @@ export function useWorkspaceHotkeys({
 }) {
 	const { setRightSidebarOpen } = useV2UserPreferences();
 	const defaultBrowserUrl = useDefaultBrowserUrl();
-	const visiblePresets = useMemo(
-		() => matchedPresets.filter((preset) => preset.pinnedToBar !== false),
-		[matchedPresets],
-	);
 
 	useHotkey("TOGGLE_SIDEBAR", () => {
 		setRightSidebarOpen((prev) => !prev);
@@ -136,23 +127,6 @@ export function useWorkspaceHotkeys({
 	});
 
 	useHotkey("NEXT_TAB", () => {
-		const state = store.getState();
-		if (!state.activeTabId || state.tabs.length === 0) return;
-		const index = state.tabs.findIndex((t) => t.id === state.activeTabId);
-		const nextIndex =
-			index >= state.tabs.length - 1 || index === -1 ? 0 : index + 1;
-		state.setActiveTab(state.tabs[nextIndex].id);
-	});
-
-	useHotkey("PREV_TAB_ALT", () => {
-		const state = store.getState();
-		if (!state.activeTabId || state.tabs.length === 0) return;
-		const index = state.tabs.findIndex((t) => t.id === state.activeTabId);
-		const prevIndex = index <= 0 ? state.tabs.length - 1 : index - 1;
-		state.setActiveTab(state.tabs[prevIndex].id);
-	});
-
-	useHotkey("NEXT_TAB_ALT", () => {
 		const state = store.getState();
 		if (!state.activeTabId || state.tabs.length === 0) return;
 		const index = state.tabs.findIndex((t) => t.id === state.activeTabId);
@@ -303,24 +277,4 @@ export function useWorkspaceHotkeys({
 		if (!tab) return;
 		state.equalizeTab({ tabId: tab.id });
 	});
-
-	// --- Preset hotkeys ---
-
-	const openPresetByIndex = useCallback(
-		(index: number) => {
-			const preset = visiblePresets[index];
-			if (preset) executePreset(preset);
-		},
-		[visiblePresets, executePreset],
-	);
-
-	useHotkey("OPEN_PRESET_1", () => openPresetByIndex(0));
-	useHotkey("OPEN_PRESET_2", () => openPresetByIndex(1));
-	useHotkey("OPEN_PRESET_3", () => openPresetByIndex(2));
-	useHotkey("OPEN_PRESET_4", () => openPresetByIndex(3));
-	useHotkey("OPEN_PRESET_5", () => openPresetByIndex(4));
-	useHotkey("OPEN_PRESET_6", () => openPresetByIndex(5));
-	useHotkey("OPEN_PRESET_7", () => openPresetByIndex(6));
-	useHotkey("OPEN_PRESET_8", () => openPresetByIndex(7));
-	useHotkey("OPEN_PRESET_9", () => openPresetByIndex(8));
 }

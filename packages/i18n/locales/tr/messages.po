@@ -7651,6 +7651,9 @@ msgstr "geçmiş"
 msgid "History"
 msgstr "Geçmiş"
 
+msgid "Hold Control and press Tab to cycle through recently opened workspaces across organizations"
+msgstr ""
+
 msgid "Home"
 msgstr "Ana sayfa"
 
@@ -9770,9 +9773,6 @@ msgstr "Sonraki slayt"
 msgid "Next Tab"
 msgstr "Sonraki sekme"
 
-msgid "Next Tab (Alt)"
-msgstr "Sonraki sekme (Alt)"
-
 msgid "Next Workspace"
 msgstr "Sonraki çalışma alanı"
 
@@ -10183,6 +10183,9 @@ msgstr "Henüz herkese açık ajan yapılandırması yok. Bu bölüm gelecekteki
 
 msgid "No pull requests found."
 msgstr "Pull request bulunamadı."
+
+msgid "No recent workspaces yet"
+msgstr ""
 
 msgid "No repositories found. Make sure your GitHub App has access to repositories."
 msgstr "Depo bulunamadı. GitHub App'inizin depolara erişimi olduğundan emin olun."
@@ -11039,33 +11042,6 @@ msgstr "Görevi harici olarak aç"
 msgid "Open Terminal"
 msgstr "Terminali aç"
 
-msgid "Open Terminal Script 1"
-msgstr "1. terminal betiğini aç"
-
-msgid "Open Terminal Script 2"
-msgstr "2. terminal betiğini aç"
-
-msgid "Open Terminal Script 3"
-msgstr "3. terminal betiğini aç"
-
-msgid "Open Terminal Script 4"
-msgstr "4. terminal betiğini aç"
-
-msgid "Open Terminal Script 5"
-msgstr "5. terminal betiğini aç"
-
-msgid "Open Terminal Script 6"
-msgstr "6. terminal betiğini aç"
-
-msgid "Open Terminal Script 7"
-msgstr "7. terminal betiğini aç"
-
-msgid "Open Terminal Script 8"
-msgstr "8. terminal betiğini aç"
-
-msgid "Open Terminal Script 9"
-msgstr "9. terminal betiğini aç"
-
 msgid "Open the Changes pane in a new tab, or focus the existing one"
 msgstr "Değişiklikler panelini yeni sekmede açar veya mevcut olana odaklanır"
 
@@ -11237,6 +11213,9 @@ msgstr "Diğer cihazlar"
 
 msgid "Other Hosts"
 msgstr "Diğer host'lar"
+
+msgid "Other organization"
+msgstr ""
 
 msgid "Other Team Members"
 msgstr "Diğer takım üyeleri"
@@ -11840,9 +11819,6 @@ msgstr "Önceki slayt"
 msgid "Previous Tab"
 msgstr "Önceki sekme"
 
-msgid "Previous Tab (Alt)"
-msgstr "Önceki sekme (Alt)"
-
 msgid "Previous Workspace"
 msgstr "Önceki çalışma alanı"
 
@@ -12338,6 +12314,9 @@ msgstr "Son PR'lar"
 
 msgid "Recent pull requests"
 msgstr "Son pull request'ler"
+
+msgid "Recent workspaces"
+msgstr ""
 
 msgid "Recently Shipped"
 msgstr "Yeni yayımlananlar"
@@ -15146,6 +15125,12 @@ msgstr "Oturumu değiştir"
 
 msgid "Switch sign-in…"
 msgstr "Oturumu değiştir…"
+
+msgid "Switch to Recent Workspace"
+msgstr ""
+
+msgid "Switch to Recent Workspace (Backward)"
+msgstr ""
 
 msgid "Switch to Tab 1"
 msgstr "1. sekmeye geç"

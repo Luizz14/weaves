@@ -7651,6 +7651,9 @@ msgstr "歷史"
 msgid "History"
 msgstr "歷史"
 
+msgid "Hold Control and press Tab to cycle through recently opened workspaces across organizations"
+msgstr ""
+
 msgid "Home"
 msgstr "首頁"
 
@@ -9770,9 +9773,6 @@ msgstr "下一張"
 msgid "Next Tab"
 msgstr "下一個分頁"
 
-msgid "Next Tab (Alt)"
-msgstr "下一個分頁（Alt）"
-
 msgid "Next Workspace"
 msgstr "下一個工作區"
 
@@ -10183,6 +10183,9 @@ msgstr "暫無公開的代理程式配置。此頁面已為將來的代理程式
 
 msgid "No pull requests found."
 msgstr "未找到拉取請求。"
+
+msgid "No recent workspaces yet"
+msgstr ""
 
 msgid "No repositories found. Make sure your GitHub App has access to repositories."
 msgstr "未找到儲存庫。請確認你的GitHub App有權存取儲存庫。"
@@ -11039,33 +11042,6 @@ msgstr "在外部開啟任務"
 msgid "Open Terminal"
 msgstr "開啟終端"
 
-msgid "Open Terminal Script 1"
-msgstr "開啟終端指令碼1"
-
-msgid "Open Terminal Script 2"
-msgstr "開啟終端指令碼2"
-
-msgid "Open Terminal Script 3"
-msgstr "開啟終端指令碼3"
-
-msgid "Open Terminal Script 4"
-msgstr "開啟終端指令碼4"
-
-msgid "Open Terminal Script 5"
-msgstr "開啟終端指令碼5"
-
-msgid "Open Terminal Script 6"
-msgstr "開啟終端指令碼6"
-
-msgid "Open Terminal Script 7"
-msgstr "開啟終端指令碼7"
-
-msgid "Open Terminal Script 8"
-msgstr "開啟終端指令碼8"
-
-msgid "Open Terminal Script 9"
-msgstr "開啟終端指令碼9"
-
 msgid "Open the Changes pane in a new tab, or focus the existing one"
 msgstr "在新分頁中開啟更改面板，或聚焦現有面板"
 
@@ -11237,6 +11213,9 @@ msgstr "其他裝置"
 
 msgid "Other Hosts"
 msgstr "其他主機"
+
+msgid "Other organization"
+msgstr ""
 
 msgid "Other Team Members"
 msgstr "其他團隊成員"
@@ -11840,9 +11819,6 @@ msgstr "上一張"
 msgid "Previous Tab"
 msgstr "上一個分頁"
 
-msgid "Previous Tab (Alt)"
-msgstr "上一個分頁（Alt）"
-
 msgid "Previous Workspace"
 msgstr "上一個工作區"
 
@@ -12338,6 +12314,9 @@ msgstr "最近的PR"
 
 msgid "Recent pull requests"
 msgstr "最近的拉取請求"
+
+msgid "Recent workspaces"
+msgstr ""
 
 msgid "Recently Shipped"
 msgstr "近期已釋出"
@@ -15146,6 +15125,12 @@ msgstr "切換登入"
 
 msgid "Switch sign-in…"
 msgstr "切換登入…"
+
+msgid "Switch to Recent Workspace"
+msgstr ""
+
+msgid "Switch to Recent Workspace (Backward)"
+msgstr ""
 
 msgid "Switch to Tab 1"
 msgstr "切換到分頁1"

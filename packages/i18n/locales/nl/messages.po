@@ -7651,6 +7651,9 @@ msgstr "geschiedenis"
 msgid "History"
 msgstr "Geschiedenis"
 
+msgid "Hold Control and press Tab to cycle through recently opened workspaces across organizations"
+msgstr ""
+
 msgid "Home"
 msgstr "Home"
 
@@ -9770,9 +9773,6 @@ msgstr "Volgende slide"
 msgid "Next Tab"
 msgstr "Volgend tabblad"
 
-msgid "Next Tab (Alt)"
-msgstr "Volgend tabblad (alt)"
-
 msgid "Next Workspace"
 msgstr "Volgende werkruimte"
 
@@ -10183,6 +10183,9 @@ msgstr "Nog geen publieke agentconfiguraties. Deze route is klaar voor toekomsti
 
 msgid "No pull requests found."
 msgstr "Geen pull requests gevonden."
+
+msgid "No recent workspaces yet"
+msgstr ""
 
 msgid "No repositories found. Make sure your GitHub App has access to repositories."
 msgstr "Geen repository's gevonden. Controleer of je GitHub App toegang heeft tot repository's."
@@ -11039,33 +11042,6 @@ msgstr "Taak extern openen"
 msgid "Open Terminal"
 msgstr "Terminal openen"
 
-msgid "Open Terminal Script 1"
-msgstr "Terminalscript 1 openen"
-
-msgid "Open Terminal Script 2"
-msgstr "Terminalscript 2 openen"
-
-msgid "Open Terminal Script 3"
-msgstr "Terminalscript 3 openen"
-
-msgid "Open Terminal Script 4"
-msgstr "Terminalscript 4 openen"
-
-msgid "Open Terminal Script 5"
-msgstr "Terminalscript 5 openen"
-
-msgid "Open Terminal Script 6"
-msgstr "Terminalscript 6 openen"
-
-msgid "Open Terminal Script 7"
-msgstr "Terminalscript 7 openen"
-
-msgid "Open Terminal Script 8"
-msgstr "Terminalscript 8 openen"
-
-msgid "Open Terminal Script 9"
-msgstr "Terminalscript 9 openen"
-
 msgid "Open the Changes pane in a new tab, or focus the existing one"
 msgstr "Opent het wijzigingenpaneel in een nieuw tabblad, of focust het bestaande"
 
@@ -11237,6 +11213,9 @@ msgstr "Andere apparaten"
 
 msgid "Other Hosts"
 msgstr "Andere hosts"
+
+msgid "Other organization"
+msgstr ""
 
 msgid "Other Team Members"
 msgstr "Andere teamleden"
@@ -11840,9 +11819,6 @@ msgstr "Vorige slide"
 msgid "Previous Tab"
 msgstr "Vorig tabblad"
 
-msgid "Previous Tab (Alt)"
-msgstr "Vorig tabblad (alt)"
-
 msgid "Previous Workspace"
 msgstr "Vorige werkruimte"
 
@@ -12338,6 +12314,9 @@ msgstr "Recente PR's"
 
 msgid "Recent pull requests"
 msgstr "Recente pull requests"
+
+msgid "Recent workspaces"
+msgstr ""
 
 msgid "Recently Shipped"
 msgstr "Onlangs uitgebracht"
@@ -15146,6 +15125,12 @@ msgstr "Login wisselen"
 
 msgid "Switch sign-in…"
 msgstr "Login wisselen…"
+
+msgid "Switch to Recent Workspace"
+msgstr ""
+
+msgid "Switch to Recent Workspace (Backward)"
+msgstr ""
 
 msgid "Switch to Tab 1"
 msgstr "Naar tabblad 1"

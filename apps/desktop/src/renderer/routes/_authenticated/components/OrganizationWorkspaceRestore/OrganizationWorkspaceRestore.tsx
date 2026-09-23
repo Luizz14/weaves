@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { cloudTrpc } from "renderer/lib/cloud-trpc";
 import { useCollections } from "renderer/routes/_authenticated/providers/CollectionsProvider";
 import { useLastActiveV2Workspace } from "renderer/stores/last-active-v2-workspace";
+import { useRecentV2Workspaces } from "renderer/stores/recent-v2-workspaces";
 import { syncPersistedStoreAcrossWindows } from "renderer/stores/syncPersistedStoreAcrossWindows";
 
 export function OrganizationWorkspaceRestore() {
@@ -29,12 +30,15 @@ export function OrganizationWorkspaceRestore() {
 		() => syncPersistedStoreAcrossWindows(useLastActiveV2Workspace),
 		[],
 	);
+	useEffect(() => syncPersistedStoreAcrossWindows(useRecentV2Workspaces), []);
 
 	useEffect(() => {
 		if (!organizations) return;
-		reconcileOrganizations(
-			organizations.map((organization) => organization.id),
+		const organizationIds = organizations.map(
+			(organization) => organization.id,
 		);
+		reconcileOrganizations(organizationIds);
+		useRecentV2Workspaces.getState().reconcileOrganizations(organizationIds);
 	}, [organizations, reconcileOrganizations]);
 
 	useEffect(() => {

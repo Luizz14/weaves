@@ -669,21 +669,23 @@ export const HOTKEYS_REGISTRY = {
 			message: "Scroll the active terminal to the bottom",
 		}),
 	},
-	PREV_TAB_ALT: {
+	SWITCH_RECENT_WORKSPACE: {
+		key: { mac: "ctrl+tab", windows: "ctrl+tab", linux: "ctrl+tab" },
+		label: msg({ message: "Switch to Recent Workspace" }),
+		category: "Navigation",
+		description: msg({
+			message:
+				"Hold Control and press Tab to cycle through recently opened workspaces across organizations",
+		}),
+	},
+	SWITCH_RECENT_WORKSPACE_BACK: {
 		key: {
 			mac: "ctrl+shift+tab",
 			windows: "ctrl+shift+tab",
 			linux: "ctrl+shift+tab",
 		},
-		label: msg({
-			message: "Previous Tab (Alt)",
-		}),
-		category: "Terminal",
-	},
-	NEXT_TAB_ALT: {
-		key: { mac: "ctrl+tab", windows: "ctrl+tab", linux: "ctrl+tab" },
-		label: msg({ message: "Next Tab (Alt)" }),
-		category: "Terminal",
+		label: msg({ message: "Switch to Recent Workspace (Backward)" }),
+		category: "Navigation",
 	},
 	PREV_TAB: {
 		key: {
@@ -826,69 +828,6 @@ export const HOTKEYS_REGISTRY = {
 			linux: L("ctrl+shift+alt+9"),
 		},
 		label: msg({ message: "Switch to Tab 9" }),
-		category: "Terminal",
-	},
-	OPEN_PRESET_1: {
-		key: { mac: L("ctrl+1"), windows: L("ctrl+1"), linux: L("ctrl+1") },
-		label: msg({
-			message: "Open Terminal Script 1",
-		}),
-		category: "Terminal",
-	},
-	OPEN_PRESET_2: {
-		key: { mac: L("ctrl+2"), windows: L("ctrl+2"), linux: L("ctrl+2") },
-		label: msg({
-			message: "Open Terminal Script 2",
-		}),
-		category: "Terminal",
-	},
-	OPEN_PRESET_3: {
-		key: { mac: L("ctrl+3"), windows: L("ctrl+3"), linux: L("ctrl+3") },
-		label: msg({
-			message: "Open Terminal Script 3",
-		}),
-		category: "Terminal",
-	},
-	OPEN_PRESET_4: {
-		key: { mac: L("ctrl+4"), windows: L("ctrl+4"), linux: L("ctrl+4") },
-		label: msg({
-			message: "Open Terminal Script 4",
-		}),
-		category: "Terminal",
-	},
-	OPEN_PRESET_5: {
-		key: { mac: L("ctrl+5"), windows: L("ctrl+5"), linux: L("ctrl+5") },
-		label: msg({
-			message: "Open Terminal Script 5",
-		}),
-		category: "Terminal",
-	},
-	OPEN_PRESET_6: {
-		key: { mac: L("ctrl+6"), windows: L("ctrl+6"), linux: L("ctrl+6") },
-		label: msg({
-			message: "Open Terminal Script 6",
-		}),
-		category: "Terminal",
-	},
-	OPEN_PRESET_7: {
-		key: { mac: L("ctrl+7"), windows: L("ctrl+7"), linux: L("ctrl+7") },
-		label: msg({
-			message: "Open Terminal Script 7",
-		}),
-		category: "Terminal",
-	},
-	OPEN_PRESET_8: {
-		key: { mac: L("ctrl+8"), windows: L("ctrl+8"), linux: L("ctrl+8") },
-		label: msg({
-			message: "Open Terminal Script 8",
-		}),
-		category: "Terminal",
-	},
-	OPEN_PRESET_9: {
-		key: { mac: L("ctrl+9"), windows: L("ctrl+9"), linux: L("ctrl+9") },
-		label: msg({
-			message: "Open Terminal Script 9",
-		}),
 		category: "Terminal",
 	},
 

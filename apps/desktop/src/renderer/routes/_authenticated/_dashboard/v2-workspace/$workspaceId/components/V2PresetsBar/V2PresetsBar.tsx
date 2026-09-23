@@ -17,11 +17,9 @@ import {
 	getPresetIcon,
 	useIsDarkTheme,
 } from "renderer/assets/app-icons/preset-icons";
-import { HotkeyMenuShortcut } from "renderer/components/HotkeyMenuShortcut";
 import { useBuiltinPresets } from "renderer/hooks/useBuiltinPresets";
 import { useV2AgentConfigs } from "renderer/hooks/useV2AgentConfigs";
 import { useV2UserPreferences } from "renderer/hooks/useV2UserPreferences";
-import type { HotkeyId } from "renderer/hotkeys";
 import { posthog } from "renderer/lib/posthog";
 import { resolveV2PresetIcon } from "renderer/lib/preset-icon";
 import { useCollections } from "renderer/routes/_authenticated/providers/CollectionsProvider";
@@ -36,21 +34,6 @@ interface V2PresetsBarProps {
 	showPresetsBar: boolean;
 	onToggleShowPresetsBar: (enabled: boolean) => void;
 }
-
-// Co-located to keep v2 self-contained. Mirrors the v1 array in
-// renderer/hotkeys/registry.ts; order matches the registry OPEN_PRESET_{n}
-// definitions so PRESET_HOTKEY_IDS[i] targets the i-th visible preset.
-const PRESET_HOTKEY_IDS: HotkeyId[] = [
-	"OPEN_PRESET_1",
-	"OPEN_PRESET_2",
-	"OPEN_PRESET_3",
-	"OPEN_PRESET_4",
-	"OPEN_PRESET_5",
-	"OPEN_PRESET_6",
-	"OPEN_PRESET_7",
-	"OPEN_PRESET_8",
-	"OPEN_PRESET_9",
-];
 
 function isPresetVisibleInBar(pinnedToBar: boolean | undefined): boolean {
 	// The persisted field is legacy "pinned" wording; the v2 UI treats it as
@@ -124,17 +107,6 @@ export function V2PresetsBar({
 
 		return orderedVisiblePresets;
 	}, [matchedPresets, localVisiblePresetIds]);
-
-	const visiblePresetIndexById = useMemo(
-		() =>
-			new Map(
-				visiblePresets.map(({ preset }, visibleIndex) => [
-					preset.id,
-					visibleIndex,
-				]),
-			),
-		[visiblePresets],
-	);
 
 	const visibleBuiltinPresets = useMemo(
 		() => builtinPresets.filter((entry) => entry.isVisible),
@@ -254,11 +226,6 @@ export function V2PresetsBar({
 					{matchedPresets.map((preset) => {
 						const icon = resolveV2PresetIcon(preset, agents, isDark);
 						const isVisible = isPresetVisibleInBar(preset.pinnedToBar);
-						const visibleIndex = visiblePresetIndexById.get(preset.id);
-						const hotkeyId =
-							typeof visibleIndex === "number"
-								? PRESET_HOTKEY_IDS[visibleIndex]
-								: undefined;
 						return (
 							<DropdownMenuItem
 								key={preset.id}
@@ -277,9 +244,6 @@ export function V2PresetsBar({
 									{preset.name || "default"}
 								</span>
 								<div className="ml-auto flex items-center gap-2">
-									{isVisible && hotkeyId ? (
-										<HotkeyMenuShortcut hotkeyId={hotkeyId} />
-									) : null}
 									{isVisible ? (
 										<Eye className="size-3.5 text-foreground" />
 									) : (
@@ -343,13 +307,11 @@ export function V2PresetsBar({
 				</DropdownMenuContent>
 			</DropdownMenu>
 			{visiblePresets.map(({ preset }, visibleIndex) => {
-				const hotkeyId = PRESET_HOTKEY_IDS[visibleIndex];
 				return (
 					<V2PresetBarItem
 						key={preset.id}
 						preset={preset}
 						visibleIndex={visibleIndex}
-						hotkeyId={hotkeyId}
 						isDark={isDark}
 						agents={agents}
 						onExecutePreset={executePreset}

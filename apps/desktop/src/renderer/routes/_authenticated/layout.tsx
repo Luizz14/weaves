@@ -56,6 +56,7 @@ import { GitInitConfirmDialog } from "./components/GitInitConfirmDialog";
 import { GlobalBrowserLifecycle } from "./components/GlobalBrowserLifecycle";
 import { OrdemPokemonCardReveal } from "./components/OrdemPokemonCardReveal";
 import { OrganizationWorkspaceRestore } from "./components/OrganizationWorkspaceRestore";
+import { RecentWorkspaceSwitcher } from "./components/RecentWorkspaceSwitcher";
 import { TeardownLogsDialog } from "./components/TeardownLogsDialog";
 import { V2NotificationController } from "./components/V2NotificationController";
 import { WindowTitle } from "./components/WindowTitle";
@@ -309,6 +310,7 @@ function AuthenticatedLayout() {
 					<SandboxAccessProvider>
 						<HostWorkspacesProvider>
 							<OrganizationWorkspaceRestore />
+							<RecentWorkspaceSwitcher />
 							<WorkerPoolContextProvider
 								poolOptions={{ workerFactory: createPierreWorker, poolSize: 8 }}
 								highlighterOptions={{ preferredHighlighter: "shiki-wasm" }}

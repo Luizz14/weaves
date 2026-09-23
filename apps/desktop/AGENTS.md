@@ -13,6 +13,10 @@ Renderer localStorage has one ~10 MB quota, loads synchronously at boot, and key
 
 Guardrail: localStorage is for small singleton UI state. Anything entity-scoped with unbounded cardinality, or payloads beyond a few KB, belongs in host-side SQLite (`@superset/local-db` schema, reached over `electronTrpc`) — localStorage collections re-serialize the whole org blob on every mutation. Since #6328 removed SQLite-backed collection persistence, every TanStack DB collection in `CollectionsProvider` is localStorage-backed, so the ~10 MB quota is shared by all of them; `withQuotaGuard`, `notifyQuotaExhausted`, and `evictInactiveOrgs` exist to absorb that pressure and are not a licence to store more.
 
+## Floating surface style
+
+Floating surfaces (composer, model selector, popovers like the Ctrl+Tab workspace switcher) use the `surface-outline` utility from `src/renderer/globals.css` — an inset 2px outline at 50% `--border` — with `border-none`, `bg-background`, and `shadow-[0_8px_32px_#1a1a1a14]`. Use the utility instead of repeating `outline-[2px] outline-border/50 -outline-offset-3`; override only the color (e.g. `outline-ring/70`) for states.
+
 ## Verifying renderer changes via CDP
 
 Read `.agents/skills/cdp-verification/SKILL.md`: attaching to the right renderer, repairing auth, and what counts as end-to-end evidence.

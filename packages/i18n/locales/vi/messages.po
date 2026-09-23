@@ -7651,6 +7651,9 @@ msgstr "lịch sử"
 msgid "History"
 msgstr "Lịch sử"
 
+msgid "Hold Control and press Tab to cycle through recently opened workspaces across organizations"
+msgstr ""
+
 msgid "Home"
 msgstr "Trang chủ"
 
@@ -9770,9 +9773,6 @@ msgstr "Slide kế tiếp"
 msgid "Next Tab"
 msgstr "Tab kế tiếp"
 
-msgid "Next Tab (Alt)"
-msgstr "Tab kế tiếp (Alt)"
-
 msgid "Next Workspace"
 msgstr "Workspace kế tiếp"
 
@@ -10183,6 +10183,9 @@ msgstr "Chưa có cấu hình agent công khai nào. Đường dẫn này đã s
 
 msgid "No pull requests found."
 msgstr "Không tìm thấy pull request nào."
+
+msgid "No recent workspaces yet"
+msgstr ""
 
 msgid "No repositories found. Make sure your GitHub App has access to repositories."
 msgstr "Không tìm thấy repository nào. Hãy đảm bảo GitHub App của bạn có quyền truy cập repository."
@@ -11039,33 +11042,6 @@ msgstr "Mở tác vụ ở ứng dụng ngoài"
 msgid "Open Terminal"
 msgstr "Mở terminal"
 
-msgid "Open Terminal Script 1"
-msgstr "Mở script terminal 1"
-
-msgid "Open Terminal Script 2"
-msgstr "Mở script terminal 2"
-
-msgid "Open Terminal Script 3"
-msgstr "Mở script terminal 3"
-
-msgid "Open Terminal Script 4"
-msgstr "Mở script terminal 4"
-
-msgid "Open Terminal Script 5"
-msgstr "Mở script terminal 5"
-
-msgid "Open Terminal Script 6"
-msgstr "Mở script terminal 6"
-
-msgid "Open Terminal Script 7"
-msgstr "Mở script terminal 7"
-
-msgid "Open Terminal Script 8"
-msgstr "Mở script terminal 8"
-
-msgid "Open Terminal Script 9"
-msgstr "Mở script terminal 9"
-
 msgid "Open the Changes pane in a new tab, or focus the existing one"
 msgstr "Mở bảng thay đổi trong tab mới, hoặc chuyển tiêu điểm đến bảng hiện có"
 
@@ -11237,6 +11213,9 @@ msgstr "Thiết bị khác"
 
 msgid "Other Hosts"
 msgstr "Host khác"
+
+msgid "Other organization"
+msgstr ""
 
 msgid "Other Team Members"
 msgstr "Các thành viên khác"
@@ -11840,9 +11819,6 @@ msgstr "Slide trước"
 msgid "Previous Tab"
 msgstr "Tab trước"
 
-msgid "Previous Tab (Alt)"
-msgstr "Tab trước (Alt)"
-
 msgid "Previous Workspace"
 msgstr "Workspace trước"
 
@@ -12338,6 +12314,9 @@ msgstr "PR gần đây"
 
 msgid "Recent pull requests"
 msgstr "Pull request gần đây"
+
+msgid "Recent workspaces"
+msgstr ""
 
 msgid "Recently Shipped"
 msgstr "Vừa ra mắt"
@@ -15146,6 +15125,12 @@ msgstr "Đổi đăng nhập"
 
 msgid "Switch sign-in…"
 msgstr "Đổi đăng nhập…"
+
+msgid "Switch to Recent Workspace"
+msgstr ""
+
+msgid "Switch to Recent Workspace (Backward)"
+msgstr ""
 
 msgid "Switch to Tab 1"
 msgstr "Chuyển tới tab 1"

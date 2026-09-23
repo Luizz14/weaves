@@ -6,10 +6,8 @@ import { useFileOpenMode } from "renderer/hooks/useFileOpenMode";
 import { useHotkey } from "renderer/hotkeys";
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import { electronTrpcClient as trpcClient } from "renderer/lib/trpc-client";
-import { usePresets } from "renderer/react-query/presets";
 import type { WorkspaceSearchParams } from "renderer/routes/_authenticated/_dashboard/utils/workspace-navigation";
 import { navigateToWorkspace } from "renderer/routes/_authenticated/_dashboard/utils/workspace-navigation";
-import { usePresetHotkeys } from "renderer/routes/_authenticated/_dashboard/workspace/$workspaceId/hooks/usePresetHotkeys";
 import { useWorkspaceRunCommand } from "renderer/routes/_authenticated/_dashboard/workspace/$workspaceId/hooks/useWorkspaceRunCommand";
 import { NotFound } from "renderer/routes/not-found";
 import { CommandPalette } from "renderer/screens/main/components/CommandPalette";
@@ -149,13 +147,8 @@ function WorkspacePage() {
 	const tabHistoryStack = useTabsStore(
 		(s) => s.tabHistoryStacks[workspaceId] ?? EMPTY_HISTORY_STACK,
 	);
-	const {
-		addTab,
-		splitPaneAuto,
-		splitPaneVertical,
-		splitPaneHorizontal,
-		openPreset,
-	} = useTabsWithPresets(workspace?.projectId);
+	const { addTab, splitPaneAuto, splitPaneVertical, splitPaneHorizontal } =
+		useTabsWithPresets(workspace?.projectId);
 	const reopenClosedTab = useTabsStore((s) => s.reopenClosedTab);
 	const addBrowserTab = useTabsStore((s) => s.addBrowserTab);
 	const setActiveTab = useTabsStore((s) => s.setActiveTab);
@@ -197,20 +190,6 @@ function WorkspacePage() {
 		worktreePath: workspace?.worktreePath,
 	});
 
-	const { matchedPresets: presets } = usePresets(workspace?.projectId);
-
-	const openTabWithPreset = useCallback(
-		(presetIndex: number) => {
-			const preset = presets[presetIndex];
-			if (preset) {
-				openPreset(workspaceId, preset, { target: "active-tab" });
-			} else {
-				addTab(workspaceId);
-			}
-		},
-		[presets, workspaceId, addTab, openPreset],
-	);
-
 	useHotkey("NEW_GROUP", () => addTab(workspaceId));
 	useHotkey("REOPEN_TAB", () => {
 		if (!reopenClosedTab(workspaceId)) {
@@ -218,7 +197,6 @@ function WorkspacePage() {
 		}
 	});
 	useHotkey("NEW_BROWSER", () => addBrowserTab(workspaceId));
-	usePresetHotkeys(openTabWithPreset);
 
 	useHotkey("RUN_WORKSPACE_COMMAND", () => toggleWorkspaceRun());
 
@@ -241,20 +219,6 @@ function WorkspacePage() {
 	});
 
 	useHotkey("NEXT_TAB", () => {
-		if (!activeTabId || tabs.length === 0) return;
-		const index = tabs.findIndex((t) => t.id === activeTabId);
-		const nextIndex = index >= tabs.length - 1 || index === -1 ? 0 : index + 1;
-		setActiveTab(workspaceId, tabs[nextIndex].id);
-	});
-
-	useHotkey("PREV_TAB_ALT", () => {
-		if (!activeTabId || tabs.length === 0) return;
-		const index = tabs.findIndex((t) => t.id === activeTabId);
-		const prevIndex = index <= 0 ? tabs.length - 1 : index - 1;
-		setActiveTab(workspaceId, tabs[prevIndex].id);
-	});
-
-	useHotkey("NEXT_TAB_ALT", () => {
 		if (!activeTabId || tabs.length === 0) return;
 		const index = tabs.findIndex((t) => t.id === activeTabId);
 		const nextIndex = index >= tabs.length - 1 || index === -1 ? 0 : index + 1;

@@ -7651,6 +7651,9 @@ msgstr "履歴"
 msgid "History"
 msgstr "履歴"
 
+msgid "Hold Control and press Tab to cycle through recently opened workspaces across organizations"
+msgstr ""
+
 msgid "Home"
 msgstr "ホーム"
 
@@ -9770,9 +9773,6 @@ msgstr "次のスライド"
 msgid "Next Tab"
 msgstr "次のタブ"
 
-msgid "Next Tab (Alt)"
-msgstr "次のタブ (Alt)"
-
 msgid "Next Workspace"
 msgstr "次のワークスペース"
 
@@ -10183,6 +10183,9 @@ msgstr "公開されているエージェント設定はまだありません。
 
 msgid "No pull requests found."
 msgstr "プルリクエストが見つかりません。"
+
+msgid "No recent workspaces yet"
+msgstr ""
 
 msgid "No repositories found. Make sure your GitHub App has access to repositories."
 msgstr "リポジトリが見つかりません。GitHub Appにリポジトリへのアクセス権があるか確認してください。"
@@ -11039,33 +11042,6 @@ msgstr "タスクを外部で開く"
 msgid "Open Terminal"
 msgstr "ターミナルを開く"
 
-msgid "Open Terminal Script 1"
-msgstr "ターミナルスクリプト1を開く"
-
-msgid "Open Terminal Script 2"
-msgstr "ターミナルスクリプト2を開く"
-
-msgid "Open Terminal Script 3"
-msgstr "ターミナルスクリプト3を開く"
-
-msgid "Open Terminal Script 4"
-msgstr "ターミナルスクリプト4を開く"
-
-msgid "Open Terminal Script 5"
-msgstr "ターミナルスクリプト5を開く"
-
-msgid "Open Terminal Script 6"
-msgstr "ターミナルスクリプト6を開く"
-
-msgid "Open Terminal Script 7"
-msgstr "ターミナルスクリプト7を開く"
-
-msgid "Open Terminal Script 8"
-msgstr "ターミナルスクリプト8を開く"
-
-msgid "Open Terminal Script 9"
-msgstr "ターミナルスクリプト9を開く"
-
 msgid "Open the Changes pane in a new tab, or focus the existing one"
 msgstr "変更ペインを新しいタブで開くか、既存のペインにフォーカスします"
 
@@ -11237,6 +11213,9 @@ msgstr "その他のデバイス"
 
 msgid "Other Hosts"
 msgstr "その他のホスト"
+
+msgid "Other organization"
+msgstr ""
 
 msgid "Other Team Members"
 msgstr "他のチームメンバー"
@@ -11840,9 +11819,6 @@ msgstr "前のスライド"
 msgid "Previous Tab"
 msgstr "前のタブ"
 
-msgid "Previous Tab (Alt)"
-msgstr "前のタブ (Alt)"
-
 msgid "Previous Workspace"
 msgstr "前のワークスペース"
 
@@ -12338,6 +12314,9 @@ msgstr "最近のPR"
 
 msgid "Recent pull requests"
 msgstr "最近のプルリクエスト"
+
+msgid "Recent workspaces"
+msgstr ""
 
 msgid "Recently Shipped"
 msgstr "最近リリース"
@@ -15146,6 +15125,12 @@ msgstr "サインインを切り替え"
 
 msgid "Switch sign-in…"
 msgstr "サインインを切り替え…"
+
+msgid "Switch to Recent Workspace"
+msgstr ""
+
+msgid "Switch to Recent Workspace (Backward)"
+msgstr ""
 
 msgid "Switch to Tab 1"
 msgstr "タブ1に切り替え"
