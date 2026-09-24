@@ -14,8 +14,10 @@ import {
 	TbReload,
 	TbTrash,
 } from "react-icons/tb";
+import { useEffect, useState } from "react";
 import { useCopyToClipboard } from "renderer/hooks/useCopyToClipboard";
 import { electronTrpc } from "renderer/lib/electron-trpc";
+import { pointerPassthrough } from "renderer/lib/pointer-passthrough";
 import { useTabsStore } from "renderer/stores/tabs/store";
 
 interface BrowserOverflowMenuProps {
@@ -35,6 +37,13 @@ export function BrowserOverflowMenu({
 	const clearHistoryMutation = electronTrpc.browserHistory.clear.useMutation();
 	const openExternalMutation = electronTrpc.external.openUrl.useMutation();
 	const currentUrl = useTabsStore((s) => s.panes[paneId]?.browser?.currentUrl);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+	useEffect(() => {
+		const source = `browser-overflow-menu:${paneId}`;
+		pointerPassthrough.set(source, isMenuOpen);
+		return () => pointerPassthrough.set(source, false);
+	}, [isMenuOpen, paneId]);
 
 	const handleScreenshot = () => {
 		screenshotMutation.mutate({ paneId });
@@ -71,7 +80,7 @@ export function BrowserOverflowMenu({
 	};
 
 	return (
-		<DropdownMenu>
+		<DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
 			<DropdownMenuTrigger asChild>
 				<button
 					type="button"

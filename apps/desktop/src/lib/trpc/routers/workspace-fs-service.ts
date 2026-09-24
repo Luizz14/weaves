@@ -5,7 +5,7 @@ import {
 	FsWatcherManager,
 } from "@superset/workspace-fs/host";
 import { TRPCError } from "@trpc/server";
-import { shell } from "electron";
+import { invokeNative } from "main/native/platform";
 import { getWorkspace } from "./workspaces/utils/db-helpers";
 import { execWithShellEnv } from "./workspaces/utils/shell-env";
 import { getWorkspacePath } from "./workspaces/utils/worktree";
@@ -14,7 +14,7 @@ const filesystemWatcherManager = new FsWatcherManager();
 
 const sharedHostServiceOptions = {
 	trashItem: async (absolutePath: string) => {
-		await shell.trashItem(absolutePath);
+		await invokeNative("shell.trashItem", { path: absolutePath });
 	},
 	runRipgrep: async (
 		args: string[],

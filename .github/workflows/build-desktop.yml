@@ -12,11 +12,6 @@ on:
         required: false
         type: string
         default: ""
-      electron_builder_config:
-        description: "Electron builder config file"
-        required: false
-        type: string
-        default: "electron-builder.ts"
       artifact_prefix:
         description: "Prefix for artifact names"
         required: false
@@ -30,14 +25,20 @@ on:
 
 jobs:
   build-macos:
-    name: Build - macOS (${{ matrix.arch }})
+    name: Build Tauri CEF app - macOS (${{ matrix.arch }})
     runs-on: macos-latest
     environment: production
+    env:
+      MACOSX_DEPLOYMENT_TARGET: "13.5"
 
     strategy:
       fail-fast: false
       matrix:
-        arch: [arm64, x64]
+        include:
+          - arch: arm64
+            target: aarch64-apple-darwin
+          - arch: x64
+            target: x86_64-apple-darwin
 
     steps:
       - name: Checkout code
@@ -49,48 +50,76 @@ jobs:
         with:
           bun-version-file: .bun-version
 
+      - name: Setup Node sidecar toolchain
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 24.15.0
+          architecture: ${{ matrix.arch }}
+
+      - name: Provision Rust 1.95, CMake, Ninja, and pinned CEF cache
+        env:
+          RUST_TARGET: ${{ matrix.target }}
+        run: |
+          set -euo pipefail
+          rustup toolchain install 1.95.0 --profile minimal
+          rustup default 1.95.0
+          rustup target add "$RUST_TARGET"
+          brew list cmake >/dev/null 2>&1 || brew install cmake
+          brew list ninja >/dev/null 2>&1 || brew install ninja
+          echo "RUSTUP_TOOLCHAIN=1.95.0" >> "$GITHUB_ENV"
+          echo "CEF_PATH=$RUNNER_TOOL_CACHE/superset-cef" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TOOL_CACHE/superset-cef"
+          echo "$(brew --prefix cmake)/bin" >> "$GITHUB_PATH"
+          echo "$(brew --prefix ninja)/bin" >> "$GITHUB_PATH"
+
+      - name: Cache Cargo and pinned CEF distribution
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ${{ runner.tool_cache }}/superset-cef
+          key: ${{ runner.os }}-tauri-cef-152.3.0-${{ matrix.target }}-${{ hashFiles('apps/desktop/src-tauri/Cargo.lock', 'apps/desktop/src-tauri/runtime.json') }}
+          restore-keys: |
+            ${{ runner.os }}-tauri-cef-152.3.0-${{ matrix.target }}-
+
       - name: Cache dependencies
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: |
             ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ steps.setup-bun.outputs.bun-revision }}-${{ github.sha }}
+            apps/desktop/src-tauri/target
+          key: ${{ runner.os }}-tauri-${{ matrix.target }}-${{ steps.setup-bun.outputs.bun-revision }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-bun-${{ steps.setup-bun.outputs.bun-revision }}-
+            ${{ runner.os }}-tauri-${{ matrix.target }}-${{ steps.setup-bun.outputs.bun-revision }}-
 
       - name: Install dependencies
         run: bun install --frozen --ignore-scripts
 
-      - name: Install desktop native dependencies
-        working-directory: apps/desktop
-        run: bun run install:deps
-
       - name: Set version suffix
         if: inputs.version_suffix != ''
         working-directory: apps/desktop
+        env:
+          VERSION_SUFFIX: ${{ inputs.version_suffix }}
         run: |
-          # Read current version and append suffix
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
-          NEW_VERSION="${CURRENT_VERSION}${{ inputs.version_suffix }}"
-          echo "Setting version to: $NEW_VERSION"
-          # Update package.json version using node
-          node -e "
+          set -euo pipefail
+          VERSION=$(node -p "require('./package.json').version")
+          NEW_VERSION="${VERSION}${VERSION_SUFFIX}"
+          NEW_VERSION="$NEW_VERSION" node -e "
             const fs = require('fs');
             const pkg = require('./package.json');
-            pkg.version = '$NEW_VERSION';
-            fs.writeFileSync('./package.json', JSON.stringify(pkg, null, '\t') + '\n');
+            pkg.version = process.env.NEW_VERSION;
+            fs.writeFileSync('./package.json', JSON.stringify(pkg, null, '\\t') + '\\n');
+            const cargo = fs.readFileSync('./src-tauri/Cargo.toml', 'utf8');
+            fs.writeFileSync('./src-tauri/Cargo.toml', cargo.replace(/(\\[package\\][\\s\\S]*?^version\\s*=\\s*")([^"]+)(")/m, (_, prefix, value, suffix) => prefix + process.env.NEW_VERSION + suffix));
           "
-          echo "Updated package.json version to $NEW_VERSION"
-
-      - name: Clean dev folder
-        working-directory: apps/desktop
-        run: bun run clean:dev
+          echo "Building Superset ${NEW_VERSION} for ${{ matrix.target }}"
 
       - name: Generate file icons
         working-directory: apps/desktop
         run: bun run generate:icons
 
-      - name: Compile app with electron-vite
+      - name: Compile Node service and renderer
         working-directory: apps/desktop
         env:
           NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
@@ -108,20 +137,18 @@ jobs:
           REALTIME_URL: ${{ secrets.REALTIME_URL }}
           SUPERSET_WORKSPACE_NAME: superset
           TARGET_ARCH: ${{ matrix.arch }}
+          TARGET_PLATFORM: darwin
         run: bun run compile:app
 
-      # electron-builder manages its own signing keychain when CSC_LINK is set,
-      # and that path is broken: createKeychain makes the keychain with a random
-      # password, then importCerts calls
-      #   security set-key-partition-list ... -k <cscKeyPassword>
-      # passing the .p12 password where the *keychain* password belongs
-      # (app-builder-lib/out/codeSign/macCodeSign.js, still wrong in 26.15.3).
-      # It only works while the keychain happens to still be unlocked, so it
-      # fails intermittently with "SecKeychainUnlock: The user name or
-      # passphrase you entered is not correct" — roughly a third of macOS jobs.
-      # Owning the keychain ourselves keeps the two passwords straight, and
-      # electron-builder uses CSC_KEYCHAIN as-is when CSC_LINK is absent
-      # (app-builder-lib/out/macPackager.js).
+      - name: Stage Node 24.15.0 and native modules
+        working-directory: apps/desktop
+        env:
+          TARGET_ARCH: ${{ matrix.arch }}
+          TARGET_PLATFORM: darwin
+        run: |
+          bun run prepare:runtime
+          bun run validate:native-runtime
+
       - name: Set up signing keychain
         env:
           MAC_CERTIFICATE: ${{ secrets.MAC_CERTIFICATE }}
@@ -131,235 +158,143 @@ jobs:
           KEYCHAIN="$RUNNER_TEMP/superset-signing.keychain-db"
           CERT_PATH="$RUNNER_TEMP/certificate.p12"
           KEYCHAIN_PASSWORD="$(openssl rand -base64 24)"
-
           printf '%s' "$MAC_CERTIFICATE" | base64 --decode > "$CERT_PATH"
-          test -s "$CERT_PATH" || {
-            echo "::error::MAC_CERTIFICATE did not decode to a .p12 — expected base64"
-            exit 1
-          }
-
+          test -s "$CERT_PATH" || { echo "::error::MAC_CERTIFICATE did not decode to a .p12"; exit 1; }
           security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
-          # No -l and no -u: never lock on sleep or on a timeout. The default
-          # 300s timeout is what makes the keychain lock mid-build.
           security set-keychain-settings "$KEYCHAIN"
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
-          security import "$CERT_PATH" -k "$KEYCHAIN" -P "$MAC_CERTIFICATE_PASSWORD" \
-            -T /usr/bin/codesign -T /usr/bin/productbuild
-          # -k here is the keychain password, not the .p12 password.
-          security set-key-partition-list -S apple-tool:,apple: -s \
-            -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN" > /dev/null
-          # Keep the login keychain in the search list so everything else still resolves.
+          security import "$CERT_PATH" -k "$KEYCHAIN" -P "$MAC_CERTIFICATE_PASSWORD" -T /usr/bin/codesign -T /usr/bin/productbuild
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN" > /dev/null
           security list-keychains -d user -s "$KEYCHAIN" $(security list-keychains -d user | tr -d '"')
           rm -f "$CERT_PATH"
-
-          security find-identity -v -p codesigning "$KEYCHAIN" | grep -q "Developer ID Application" || {
-            echo "::error::No Developer ID Application identity in the signing keychain"
-            exit 1
-          }
+          SIGNING_IDENTITY=$(security find-identity -v -p codesigning "$KEYCHAIN" | sed -nE 's/.*"(Developer ID Application: [^"]+)".*/\1/p' | head -1)
+          test -n "$SIGNING_IDENTITY" || { echo "::error::No Developer ID Application identity"; exit 1; }
           echo "CSC_KEYCHAIN=$KEYCHAIN" >> "$GITHUB_ENV"
+          echo "APPLE_SIGNING_IDENTITY=$SIGNING_IDENTITY" >> "$GITHUB_ENV"
 
-      - name: Build Electron app
+      - name: Build and sign Tauri app
         working-directory: apps/desktop
         env:
-          # No CSC_LINK on purpose — see the keychain step above.
           APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          TAURI_UPDATER_PUBKEY: ${{ secrets.TAURI_UPDATER_PUBKEY }}
+          TAURI_RELEASE_CHANNEL: ${{ inputs.channel }}
           TARGET_ARCH: ${{ matrix.arch }}
-        run: bun run package -- --publish never --config ${{ inputs.electron_builder_config }} --${{ matrix.arch }}
+          TARGET_PLATFORM: darwin
+        run: |
+          set -euo pipefail
+          test -n "$TAURI_SIGNING_PRIVATE_KEY" || { echo "::error::TAURI_SIGNING_PRIVATE_KEY is required for updater artifacts"; exit 1; }
+          test -n "$TAURI_UPDATER_PUBKEY" || { echo "::error::TAURI_UPDATER_PUBKEY is required; refusing an unsigned updater"; exit 1; }
+          bun run tauri:build -- --ci --target "${{ matrix.target }}"
+
+      - name: Verify macOS native deployment targets
+        working-directory: apps/desktop
+        env:
+          TAURI_RELEASE_CHANNEL: ${{ inputs.channel }}
+          TAURI_TARGET: ${{ matrix.target }}
+        run: |
+          set -euo pipefail
+          APP_NAME="Superset"
+          if [ "$TAURI_RELEASE_CHANNEL" = "canary" ]; then
+            APP_NAME="Superset Canary"
+          fi
+          APP_DIR="src-tauri/target/${TAURI_TARGET}/release/bundle/macos/${APP_NAME}.app"
+          test -d "$APP_DIR" || { echo "::error::No ${APP_NAME}.app bundle found for ${TAURI_TARGET}"; exit 1; }
+          bun scripts/tauri/verify-macos-runtime.ts "$APP_DIR"
+
+      - name: Create legacy Electron migration artifacts
+        working-directory: apps/desktop
+        env:
+          TARGET_ARCH: ${{ matrix.arch }}
+          TAURI_RELEASE_CHANNEL: ${{ inputs.channel }}
+          TAURI_TARGET: ${{ matrix.target }}
+        run: |
+          set -euo pipefail
+          mkdir -p release
+          APP_NAME="Superset"
+          if [ "$TAURI_RELEASE_CHANNEL" = "canary" ]; then
+            APP_NAME="Superset Canary"
+          fi
+          APP_DIR="src-tauri/target/${TAURI_TARGET}/release/bundle/macos/${APP_NAME}.app"
+          test -d "$APP_DIR" || { echo "::error::No ${APP_NAME}.app bundle found for ${TAURI_TARGET}"; exit 1; }
+          VERSION=$(node -p "require('./package.json').version")
+          bun run tauri:legacy-update -- --app "$APP_DIR" --version "$VERSION" --arch "${{ matrix.arch }}" --output release
+
+      - name: Normalize signed Tauri updater artifacts
+        working-directory: apps/desktop
+        env:
+          TAURI_RELEASE_CHANNEL: ${{ inputs.channel }}
+          TAURI_TARGET: ${{ matrix.target }}
+        run: |
+          set -euo pipefail
+          mkdir -p release/tauri
+          VERSION=$(node -p "require('./package.json').version")
+          APP_NAME="Superset"
+          if [ "$TAURI_RELEASE_CHANNEL" = "canary" ]; then
+            APP_NAME="Superset Canary"
+          fi
+          APP_STEM="${APP_NAME// /_}"
+          APP_DIR="src-tauri/target/${TAURI_TARGET}/release/bundle/macos/${APP_NAME}.app"
+          ARCHIVE="${APP_DIR}.tar.gz"
+          test -n "$ARCHIVE" || { echo "::error::No Tauri updater archive generated"; exit 1; }
+          test -f "$ARCHIVE" || { echo "::error::No updater archive for ${APP_NAME}"; exit 1; }
+          test -f "$ARCHIVE.sig" || { echo "::error::No Tauri updater signature generated"; exit 1; }
+          DMG=$(find "src-tauri/target/${TAURI_TARGET}/release/bundle/dmg" -maxdepth 1 -type f -name "${APP_STEM}_${VERSION}_*.dmg" -print -quit)
+          test -n "$DMG" || { echo "::error::No Tauri DMG generated"; exit 1; }
+          cp "$ARCHIVE" "release/tauri/Superset-${VERSION}-${{ matrix.arch }}.app.tar.gz"
+          cp "$ARCHIVE.sig" "release/tauri/Superset-${VERSION}-${{ matrix.arch }}.app.tar.gz.sig"
+          cp "$DMG" "release/tauri/Superset-${VERSION}-${{ matrix.arch }}.dmg"
 
       - name: Delete signing keychain
         if: always()
         run: security delete-keychain "$RUNNER_TEMP/superset-signing.keychain-db" || true
 
-      - name: Verify app-update.yml exists
+      - name: Verify macOS artifacts
         working-directory: apps/desktop
+        env:
+          TAURI_RELEASE_CHANNEL: ${{ inputs.channel }}
+          TAURI_TARGET: ${{ matrix.target }}
         run: |
-          # electron-builder uses mac-arm64/ for arm64 and mac/ for x64 (when host is arm64)
-          APP_DIR=$(find release -maxdepth 2 -name "*.app" -type d | head -1)
-          if [ -z "$APP_DIR" ]; then
-            echo "::error::No .app bundle found in release/"
-            ls -la release/
-            exit 1
+          set -euo pipefail
+          APP_NAME="Superset"
+          if [ "$TAURI_RELEASE_CHANNEL" = "canary" ]; then
+            APP_NAME="Superset Canary"
           fi
-          echo "Found app bundle: $APP_DIR"
-          test -f "$APP_DIR/Contents/Resources/app-update.yml" || {
-            echo "::error::app-update.yml missing from $APP_DIR/Contents/Resources/ — auto-update will be broken"
-            exit 1
-          }
-          CLI_BIN="$APP_DIR/Contents/Resources/resources/bin/superset"
-          test -x "$CLI_BIN" || {
-            echo "::error::Bundled Superset CLI missing or not executable at $CLI_BIN"
-            exit 1
-          }
-          "$CLI_BIN" --version
+          APP_DIR="src-tauri/target/${TAURI_TARGET}/release/bundle/macos/${APP_NAME}.app"
+          test -d "$APP_DIR" || { echo "::error::No ${APP_NAME}.app bundle found for ${TAURI_TARGET}"; exit 1; }
+          test -f "release/tauri/Superset-$(node -p "require('./package.json').version")-${{ matrix.arch }}.app.tar.gz" || { echo "::error::No normalized Tauri updater archive"; exit 1; }
+          test -f "release/tauri/Superset-$(node -p "require('./package.json').version")-${{ matrix.arch }}.app.tar.gz.sig" || { echo "::error::No normalized Tauri updater signature"; exit 1; }
+          test -f "release/tauri/Superset-$(node -p "require('./package.json').version")-${{ matrix.arch }}.dmg" || { echo "::error::No normalized Tauri DMG"; exit 1; }
+          test -f "release/${{ matrix.arch }}-mac.yml" || { echo "::error::Legacy migration manifest missing"; exit 1; }
+          test -f "release/Superset-$(node -p "require('./package.json').version")-${{ matrix.arch }}-mac.zip" || { echo "::error::Legacy migration ZIP missing"; exit 1; }
+          echo "Tauri app: $APP_DIR"
 
-      - name: Verify native bindings packaged
-        working-directory: apps/desktop
-        run: |
-          APP_DIR=$(find release -maxdepth 2 -name "*.app" -type d | head -1)
-          UNPACKED="$APP_DIR/Contents/Resources/app.asar.unpacked/node_modules"
-          # @ast-grep/napi is the arch-specific native package copy-native-modules
-          # resolves for the *target* arch (fetching from npm and failing hard if
-          # it cannot), so its absence here means a genuine cross-arch packaging
-          # miss rather than a package we only copy opportunistically.
-          PKG_DIR="$UNPACKED/@ast-grep/napi-darwin-${{ matrix.arch }}"
-          BINDING=$(find "$PKG_DIR" -name '*.node' 2>/dev/null | head -1)
-          test -n "$BINDING" || {
-            echo "::error::@ast-grep/napi native binding missing from packaged app — Intel/arm launch will crash. Expected a .node in: $PKG_DIR"
-            ls -la "$UNPACKED/@ast-grep" 2>/dev/null || echo "  (no @ast-grep directory in app.asar.unpacked)"
-            exit 1
-          }
-          echo "OK: bundled $BINDING ($(du -h "$BINDING" | cut -f1))"
-
-      - name: Upload DMG artifact
+      - name: Upload Tauri macOS bundle artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: ${{ inputs.artifact_prefix }}-mac-${{ matrix.arch }}-dmg
-          path: apps/desktop/release/*.dmg
+          name: ${{ inputs.artifact_prefix }}-mac-${{ matrix.arch }}-tauri
+          path: |
+            apps/desktop/release/tauri/*.dmg
+            apps/desktop/release/tauri/*.app.tar.gz
+            apps/desktop/release/tauri/*.sig
           retention-days: ${{ inputs.artifact_retention_days }}
           if-no-files-found: error
 
-      - name: Upload ZIP artifact
+      - name: Upload legacy migration ZIP
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ inputs.artifact_prefix }}-mac-${{ matrix.arch }}-zip
-          path: apps/desktop/release/*.zip
+          path: apps/desktop/release/*-mac.zip
           retention-days: ${{ inputs.artifact_retention_days }}
           if-no-files-found: error
 
-      - name: Upload auto-update manifest
+      - name: Upload legacy migration manifest
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ inputs.artifact_prefix }}-mac-${{ matrix.arch }}-update-manifest
-          path: apps/desktop/release/*-mac.yml
-          retention-days: ${{ inputs.artifact_retention_days }}
-          if-no-files-found: error
-
-  build-linux:
-    name: Build - Linux (x64)
-    runs-on: ubuntu-latest
-    environment: production
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-
-      - name: Setup Bun
-        id: setup-bun
-        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
-        with:
-          bun-version-file: .bun-version
-
-      - name: Cache dependencies
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: |
-            ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ steps.setup-bun.outputs.bun-revision }}-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-bun-${{ steps.setup-bun.outputs.bun-revision }}-
-
-      - name: Install dependencies
-        run: bun install --frozen --ignore-scripts
-
-      - name: Install Linux native build deps
-        run: sudo apt-get update && sudo apt-get install -y libx11-dev libxkbfile-dev
-
-      - name: Install desktop native dependencies
-        working-directory: apps/desktop
-        run: bun run install:deps
-
-      - name: Set version suffix
-        if: inputs.version_suffix != ''
-        working-directory: apps/desktop
-        run: |
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
-          NEW_VERSION="${CURRENT_VERSION}${{ inputs.version_suffix }}"
-          echo "Setting version to: $NEW_VERSION"
-          node -e "
-            const fs = require('fs');
-            const pkg = require('./package.json');
-            pkg.version = '$NEW_VERSION';
-            fs.writeFileSync('./package.json', JSON.stringify(pkg, null, '\t') + '\n');
-          "
-          echo "Updated package.json version to $NEW_VERSION"
-
-      - name: Clean dev folder
-        working-directory: apps/desktop
-        run: bun run clean:dev
-
-      - name: Generate file icons
-        working-directory: apps/desktop
-        run: bun run generate:icons
-
-      - name: Compile app with electron-vite
-        working-directory: apps/desktop
-        env:
-          NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
-          NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GH_CLIENT_ID: ${{ secrets.GH_CLIENT_ID }}
-          NEXT_PUBLIC_WEB_URL: ${{ secrets.NEXT_PUBLIC_WEB_URL }}
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-          NEXT_PUBLIC_DOCS_URL: ${{ secrets.NEXT_PUBLIC_DOCS_URL }}
-          NEXT_PUBLIC_STREAMS_URL: ${{ secrets.NEXT_PUBLIC_STREAMS_URL }}
-          SENTRY_DSN_DESKTOP: ${{ secrets.SENTRY_DSN_DESKTOP }}
-          SENTRY_DSN_HOST_SERVICE: ${{ secrets.SENTRY_DSN_HOST_SERVICE }}
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          RELAY_URL: ${{ secrets.RELAY_URL }}
-          REALTIME_URL: ${{ secrets.REALTIME_URL }}
-          SUPERSET_WORKSPACE_NAME: superset
-          TARGET_ARCH: x64
-        run: bun run compile:app
-
-      - name: Build Electron app
-        working-directory: apps/desktop
-        run: bun run package -- --publish never --config ${{ inputs.electron_builder_config }}
-
-      - name: Verify Linux AppImage + update manifest exist
-        working-directory: apps/desktop
-        run: |
-          ls -la release
-          test -n "$(ls -1 release/*.AppImage 2>/dev/null)" || {
-            echo "::error::No AppImage artifact generated in apps/desktop/release"
-            exit 1
-          }
-          test -n "$(ls -1 release/*-linux.yml 2>/dev/null)" || {
-            echo "::error::No Linux auto-update manifest generated in apps/desktop/release"
-            exit 1
-          }
-          test -n "$(ls -1 release/*.deb 2>/dev/null)" || {
-            echo "::error::No deb artifact generated in apps/desktop/release"
-            exit 1
-          }
-          CLI_BIN=$(find release -path "*/resources/resources/bin/superset" -type f -perm -111 | head -1)
-          if [ -z "$CLI_BIN" ]; then
-            echo "::error::Bundled Superset CLI missing or not executable in packaged Linux output"
-            exit 1
-          fi
-          "$CLI_BIN" --version
-
-      - name: Upload AppImage artifact
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: ${{ inputs.artifact_prefix }}-linux-appimage
-          path: apps/desktop/release/*.AppImage
-          retention-days: ${{ inputs.artifact_retention_days }}
-          if-no-files-found: error
-
-      - name: Upload deb artifact
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: ${{ inputs.artifact_prefix }}-linux-deb
-          path: apps/desktop/release/*.deb
-          retention-days: ${{ inputs.artifact_retention_days }}
-          if-no-files-found: error
-
-      - name: Upload Linux auto-update manifest
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: ${{ inputs.artifact_prefix }}-linux-update-manifest
-          path: apps/desktop/release/*-linux.yml
+          path: apps/desktop/release/${{ matrix.arch }}-mac.yml
           retention-days: ${{ inputs.artifact_retention_days }}
           if-no-files-found: error

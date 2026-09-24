@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test } from "bun:test";
-import type { BrowserWindow } from "electron";
+import type { NativeWindowHandle } from "main/native/platform";
 import {
 	__resetForTests,
 	getAllWindows,
@@ -13,11 +13,11 @@ import {
 } from "./window-registry";
 
 /**
- * Minimal BrowserWindow stand-in. The registry only ever touches `id` and
- * `isDestroyed()`, so a plain object cast to BrowserWindow is sufficient and
+ * Minimal native window stand-in. The registry only ever touches `id` and
+ * `isDestroyed()`, so a plain object cast to NativeWindowHandle is sufficient and
  * keeps these tests free of the Electron runtime.
  */
-function makeWindow(id: number, destroyed = false): BrowserWindow {
+function makeWindow(id: number, destroyed = false): NativeWindowHandle {
 	let isDestroyed = destroyed;
 	return {
 		id,
@@ -25,7 +25,7 @@ function makeWindow(id: number, destroyed = false): BrowserWindow {
 		__destroy: () => {
 			isDestroyed = true;
 		},
-	} as unknown as BrowserWindow & { __destroy: () => void };
+	} as unknown as NativeWindowHandle & { __destroy: () => void };
 }
 
 beforeEach(() => {
@@ -65,7 +65,7 @@ describe("window registry", () => {
 
 	test("getAllWindows returns only live windows", () => {
 		const live = makeWindow(1);
-		const dead = makeWindow(2) as BrowserWindow & { __destroy: () => void };
+		const dead = makeWindow(2) as NativeWindowHandle & { __destroy: () => void };
 		registerWindow({ window: live, orgId: null, key: "key-648" });
 		registerWindow({ window: dead, orgId: null, key: "key-958" });
 		dead.__destroy();
@@ -85,7 +85,7 @@ describe("window registry", () => {
 
 	test("getFocusedOrLastWindow skips destroyed windows", () => {
 		const a = makeWindow(1);
-		const b = makeWindow(2) as BrowserWindow & { __destroy: () => void };
+		const b = makeWindow(2) as NativeWindowHandle & { __destroy: () => void };
 		registerWindow({ window: a, orgId: null, key: "key-295" });
 		registerWindow({ window: b, orgId: null, key: "key-118" });
 		b.__destroy(); // most-recent but dead

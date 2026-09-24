@@ -9,7 +9,7 @@
 //
 // Run manually:
 //   bun run scripts/check-pty-daemon-bundle.ts
-//   bun run scripts/check-pty-daemon-bundle.ts --bundle=path/to/pty-daemon.js
+//   bun run scripts/check-pty-daemon-bundle.ts --bundle=path/to/pty-daemon.cjs
 
 import * as fs from "node:fs";
 import * as path from "node:path";
@@ -53,11 +53,11 @@ const MARKERS: Marker[] = [
 			"file. Missing means the adopt path was DCE'd.",
 	},
 	{
-		pattern: /adoptFromFd/,
+		pattern: /fdIndex/,
 		description:
-			"Pty.adoptFromFd — wraps an inherited PTY master fd into a Pty " +
-			"adapter. Missing means the receiver can't actually take over " +
-			"sessions even if the rest of the protocol survives.",
+			"FD-indexed handoff path — the Vite CJS bundle may minify the " +
+			"adoptFromFd function name, but it must retain the inherited PTY " +
+			"descriptor mapping used by the receiver.",
 	},
 ];
 
@@ -65,7 +65,7 @@ function parseArgs(argv: string[]): { bundle: string } {
 	// fileURLToPath, not URL.pathname — the latter returns a URL-encoded string
 	// that doesn't round-trip on Windows (drive-letter paths break).
 	const here = path.dirname(fileURLToPath(import.meta.url));
-	let bundle = path.resolve(here, "..", "dist", "main", "pty-daemon.js");
+	let bundle = path.resolve(here, "..", "dist", "main", "pty-daemon.cjs");
 	for (const arg of argv) {
 		if (arg.startsWith("--bundle=")) {
 			bundle = path.resolve(arg.slice("--bundle=".length));

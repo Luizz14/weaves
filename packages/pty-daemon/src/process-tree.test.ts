@@ -1,7 +1,10 @@
-import { describe, expect, test } from "bun:test";
+import { describe, expect, spyOn, test } from "bun:test";
+import * as childProcess from "node:child_process";
 import {
 	collectProcessSignalTargets,
+	getProcessGroupAndTty,
 	parseProcessTable,
+	readProcessTableAsync,
 } from "./process-tree.ts";
 
 describe("parseProcessTable", () => {
@@ -39,6 +42,74 @@ describe("parseProcessTable", () => {
 			["garbage", "  0  1  1 ?? S", "  100  1  0 ?? S", ""].join("\n"),
 		);
 		expect(rows).toEqual([]);
+	});
+});
+
+describe("getProcessGroupAndTty", () => {
+	test("resolves null identity when ps cannot be spawned", async () => {
+		const execFileSpy = spyOn(childProcess, "execFile").mockImplementation(
+			() => {
+				throw new Error("spawn failed");
+			},
+		);
+
+		try {
+			await expect(getProcessGroupAndTty(123)).resolves.toEqual({
+				pgid: null,
+				tty: null,
+			});
+		} finally {
+			execFileSpy.mockRestore();
+		}
+	});
+
+	test("resolves null identity when ps exits with an error", async () => {
+		const execFileSpy = spyOn(childProcess, "execFile").mockImplementation(
+			(_command, _args, _options, callback) => {
+				callback(new Error("ps failed"), "", "");
+				return new childProcess.ChildProcess();
+			},
+		);
+
+		try {
+			await expect(getProcessGroupAndTty(123)).resolves.toEqual({
+				pgid: null,
+				tty: null,
+			});
+		} finally {
+			execFileSpy.mockRestore();
+		}
+	});
+});
+
+describe("readProcessTableAsync", () => {
+	test("resolves null when ps cannot be spawned", async () => {
+		const execFileSpy = spyOn(childProcess, "execFile").mockImplementation(
+			() => {
+				throw new Error("spawn failed");
+			},
+		);
+
+		try {
+			await expect(readProcessTableAsync()).resolves.toBeNull();
+		} finally {
+			execFileSpy.mockRestore();
+		}
+	});
+
+	test("resolves null when ps exits with an error", async () => {
+		const execFileSpy = spyOn(childProcess, "execFile").mockImplementation(
+			(_command, _args, _options, callback) => {
+				callback(new Error("ps failed"), "", "");
+				return new childProcess.ChildProcess();
+			},
+		);
+
+		try {
+			await expect(readProcessTableAsync()).resolves.toBeNull();
+		} finally {
+			execFileSpy.mockRestore();
+		}
 	});
 });
 

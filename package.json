@@ -33,6 +33,9 @@
 		"cli:dev": "bun scripts/dev-cli.ts",
 		"dev:skills": "bun scripts/sync-dev-skills.ts",
 		"build": "turbo build --filter=@superset/desktop",
+		"tauri:dev": "bun run --cwd apps/desktop tauri:dev",
+		"tauri:build": "bun run --cwd apps/desktop tauri:build",
+		"tauri:prepare-runtime": "bun run --cwd apps/desktop prepare:runtime",
 		"test": "turbo test --concurrency=2",
 		"lint": "./scripts/lint.sh",
 		"lint:fix": "bunx @biomejs/biome@2.4.2 migrate --write && bunx @biomejs/biome@2.4.2 check --write --unsafe .",
@@ -85,7 +88,6 @@
 	"trustedDependencies": [
 		"better-sqlite3",
 		"bufferutil",
-		"electron",
 		"esbuild",
 		"koffi",
 		"node-pty",
@@ -98,7 +100,6 @@
 		"metro@0.84.4": "patches/metro@0.84.4.patch",
 		"node-pty@1.2.0-beta.14": "patches/node-pty@1.2.0-beta.14.patch",
 		"@xterm/xterm@6.1.0-beta.302": "patches/@xterm%2Fxterm@6.1.0-beta.302.patch",
-		"trpc-electron@0.1.2": "patches/trpc-electron@0.1.2.patch",
 		"react-native-screens@4.26.0": "patches/react-native-screens@4.26.0.patch"
 	}
 }

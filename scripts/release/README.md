@@ -6,10 +6,22 @@ step). One entry point: **`bun run release`**. Design/rationale lives in
 
 ## Model
 
-- **desktop == host-service == cli** at each desktop release — one unified plain
+- **desktop == Tauri == host-service == cli** at each desktop release — one unified plain
   version, enforced by `bun run check:versions` (CI-gated). Publishing a desktop
   release fires `release-cli-lockstep.yml`, which tags the matching plain
   `cli-v<version>` so the standalone CLI ships in lockstep automatically.
+- **The desktop packaging workflow currently targets macOS first.** It provisions
+  the pinned CEF/Rust toolchain, sets the app minimum to macOS 13.5, and validates
+  every packaged native binary against the bundle's declared minimum before
+  generating artifacts. The migration release contains both signed Tauri
+  updater artifacts and the legacy Electron-compatible ZIP/YAML feed needed to
+  move existing installs to Tauri. Host-service and standalone CLI release
+  workflows remain independent.
+- **Stable and canary are separate macOS installations.** Canary keeps its
+  distinct bundle identity, product name, icon, deep-link scheme, and signed
+  `canary.json` updater feed. The Tauri release workflow requires the existing
+  `TAURI_SIGNING_PRIVATE_KEY` and matching `TAURI_UPDATER_PUBKEY` environment
+  secrets; it never creates production keys.
 - **CLI hotfixes lead by a patch.** Between desktop releases, a CLI-only fix bumps
   a plain patch above the current CLI (`1.14.1 → 1.14.2`), within desktop's minor
   line, until the next desktop release catches up.

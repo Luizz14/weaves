@@ -1,6 +1,7 @@
 import { SENTRY_IGNORE_ERRORS } from "@superset/shared/sentry";
 import { createSentryEventThrottle } from "@superset/shared/sentry-throttle";
 import { env } from "../env.renderer";
+import { detectDesktopRuntime } from "./native-bridge";
 
 let sentryInitialized = false;
 
@@ -16,14 +17,15 @@ export async function initSentry(): Promise<void> {
 	}
 
 	try {
-		// Dynamic import to avoid bundler issues
-		const Sentry = await import("@sentry/electron/renderer");
+		// Dynamic import keeps telemetry out of the startup path and works in the
+		// Tauri/CEF renderer without Electron's native SDK bridge.
+		const Sentry = await import("@sentry/browser");
 
 		Sentry.init({
 			dsn: env.SENTRY_DSN_DESKTOP,
 			environment: env.NODE_ENV,
 			ignoreErrors: SENTRY_IGNORE_ERRORS,
-			// tRPC failures are reported by the main-process middleware with full
+			// tRPC failures are reported by the desktop-service middleware with full
 			// server context; renderer copies (unhandled query/mutation promises)
 			// duplicate them with worse stacks.
 			beforeSend(event, hint) {
@@ -34,6 +36,7 @@ export async function initSentry(): Promise<void> {
 				return throttleRepeats(event);
 			},
 		});
+		Sentry.setTag("desktop_runtime", detectDesktopRuntime());
 
 		sentryInitialized = true;
 		console.log("[sentry] Initialized in renderer process");

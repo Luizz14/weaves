@@ -1,112 +1,33 @@
-type PackagedNodeModuleCopy = {
-	filter: string[];
-	from: string;
-	to: string;
-};
+/**
+ * Native dependencies that remain external to the Node sidecar bundle.
+ *
+ * The desktop no longer has an Electron runtime. Vite bundles the TypeScript
+ * service and the Tauri bundle carries a private Node installation plus only
+ * the native modules that service can load. Keeping this list explicit avoids
+ * accidentally resolving a module from the repository's shared node_modules at
+ * runtime.
+ */
 
-type ExternalizedRuntimeModule = {
-	asarUnpackGlobs: string[];
-	materialize: string[];
-	packagedCopies: PackagedNodeModuleCopy[];
-	specifier: string;
-};
+export const NODE_RUNTIME_VERSION = "24.15.0";
+export const NODE_RUNTIME_EXECUTABLE = "node/bin/node";
+export const RUNTIME_NODE_MODULES_DIRECTORY = "node_modules";
+export const DESKTOP_SERVICE_ENTRY = "main/desktop-service.cjs";
 
-function copyWholeModule(moduleName: string): PackagedNodeModuleCopy {
-	return {
-		from: `node_modules/${moduleName}`,
-		to: `node_modules/${moduleName}`,
-		filter: ["**/*"],
-	};
-}
+export const nativeRuntimeModules = [
+	"@anthropic-ai/claude-agent-sdk",
+	"better-sqlite3",
+	"node-pty",
+	"native-keymap",
+	"@superset/macos-process-metrics",
+	"@ast-grep/napi",
+	"@parcel/watcher",
+	"@napi-rs/keyring",
+	"sharp",
+] as const;
 
-function copyModuleSubtree(
-	moduleName: string,
-	filter: string[],
-): PackagedNodeModuleCopy {
-	return {
-		from: `node_modules/${moduleName}`,
-		to: `node_modules/${moduleName}`,
-		filter,
-	};
-}
-
-const externalizedRuntimeModules: ExternalizedRuntimeModule[] = [
-	{
-		specifier: "better-sqlite3",
-		materialize: ["better-sqlite3"],
-		packagedCopies: [copyWholeModule("better-sqlite3")],
-		asarUnpackGlobs: ["**/node_modules/better-sqlite3/**/*"],
-	},
-	{
-		specifier: "node-pty",
-		materialize: ["node-pty"],
-		packagedCopies: [copyWholeModule("node-pty")],
-		asarUnpackGlobs: ["**/node_modules/node-pty/**/*"],
-	},
-	{
-		specifier: "native-keymap",
-		materialize: ["native-keymap"],
-		packagedCopies: [copyWholeModule("native-keymap")],
-		asarUnpackGlobs: ["**/node_modules/native-keymap/**/*"],
-	},
-	{
-		specifier: "@superset/macos-process-metrics",
-		materialize: ["@superset/macos-process-metrics"],
-		packagedCopies: [copyWholeModule("@superset/macos-process-metrics")],
-		asarUnpackGlobs: ["**/node_modules/@superset/macos-process-metrics/**/*"],
-	},
-	{
-		specifier: "@ast-grep/napi",
-		materialize: ["@ast-grep/napi"],
-		packagedCopies: [copyWholeModule("@ast-grep")],
-		asarUnpackGlobs: ["**/node_modules/@ast-grep/napi*/**/*"],
-	},
-	{
-		specifier: "@parcel/watcher",
-		materialize: ["@parcel/watcher"],
-		packagedCopies: [
-			copyModuleSubtree("@parcel", ["watcher/**/*", "watcher-*/**/*"]),
-		],
-		asarUnpackGlobs: ["**/node_modules/@parcel/watcher*/**/*"],
-	},
-	{
-		specifier: "@napi-rs/keyring",
-		materialize: ["@napi-rs/keyring"],
-		packagedCopies: [
-			copyModuleSubtree("@napi-rs", ["keyring/**/*", "keyring-*/**/*"]),
-		],
-		asarUnpackGlobs: ["**/node_modules/@napi-rs/keyring*/**/*"],
-	},
-];
-
-const packagedSupportModules = [
-	copyWholeModule("bindings"),
-	copyWholeModule("file-uri-to-path"),
-	copyWholeModule("detect-libc"),
-	copyWholeModule("is-glob"),
-	copyWholeModule("is-extglob"),
-	copyWholeModule("picomatch"),
-	copyWholeModule("node-addon-api"),
-];
-
-export const mainExternalizedDependencies = [
-	...externalizedRuntimeModules.map((module) => module.specifier),
-	"pg-native",
-];
-
-export const packagedNodeModuleCopies = [
-	...externalizedRuntimeModules.flatMap((module) => module.packagedCopies),
-	...packagedSupportModules,
-];
-
-export const packagedAsarUnpackGlobs = [
-	...externalizedRuntimeModules.flatMap((module) => module.asarUnpackGlobs),
-	"**/node_modules/bindings/**/*",
-	"**/node_modules/file-uri-to-path/**/*",
-];
-
-export const requiredMaterializedNodeModules = [
-	...externalizedRuntimeModules.flatMap((module) => module.materialize),
+// Runtime support packages are copied as independent directories into the
+// sidecar's private node_modules tree.
+export const nativeRuntimeSupportModules = [
 	"bindings",
 	"file-uri-to-path",
 	"detect-libc",
@@ -114,4 +35,23 @@ export const requiredMaterializedNodeModules = [
 	"is-extglob",
 	"picomatch",
 	"node-addon-api",
+	"ws",
+] as const;
+
+export const runtimeModuleNames = [
+	...nativeRuntimeModules,
+	...nativeRuntimeSupportModules,
+] as const;
+
+// Vite must leave these modules as require() calls. The Node sidecar's
+// isolated node_modules directory is staged by prepare-runtime-dependencies.
+export const mainExternalizedDependencies = [
+	...runtimeModuleNames,
+	"pg-native",
 ];
+
+export const requiredMaterializedNodeModules = [...runtimeModuleNames];
+
+export function runtimeResourcePath(...parts: string[]): string {
+	return ["dist", ...parts].join("/");
+}

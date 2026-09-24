@@ -1,31 +1,43 @@
-import { randomUUID } from "node:crypto";
 import { EventEmitter } from "node:events";
 import { existsSync } from "node:fs";
+import { homedir } from "node:os";
 import { basename, extname, join } from "node:path";
 import { downloads } from "@superset/local-db";
 import { desc, eq, ne } from "drizzle-orm";
-import { app, session, shell } from "electron";
+import { getNativePath } from "main/native/platform";
 import { localDb } from "../local-db";
+import { browserManager } from "./browser-manager";
+import { dispatchNativeBrowser } from "./native-browser";
 
-/** The partition the in-app browser pane (and app renderer) use. */
-const BROWSER_PARTITION = "persist:superset";
 const MAX_TRACKED_DOWNLOADS = 200;
 
-/**
- * Tracks downloads started from the in-app browser pane's session. A single
- * `will-download` listener on the shared partition covers every pane (and
- * window) using it, matching a normal browser's one global downloads list.
- */
+interface NativeDownloadEvent {
+	kind?: string;
+	id?: string;
+	downloadId?: string;
+	url?: string;
+	filename?: string;
+	savePath?: string;
+	mimeType?: string | null;
+	totalBytes?: number | null;
+	receivedBytes?: number;
+	state?: "progressing" | "completed" | "cancelled" | "interrupted";
+	completedAt?: number;
+}
+
+function downloadsDir(): string {
+	try {
+		return getNativePath("downloads");
+	} catch {
+		return join(homedir(), "Downloads");
+	}
+}
+
+/** Tracks native CEF downloads without retaining a browser runtime object. */
 class DownloadManager extends EventEmitter {
-	private activeItems = new Map<string, Electron.DownloadItem>();
-	// Paths chosen for a download that's still in flight — `existsSync` alone
-	// can't see these, since Electron doesn't create the file on disk until
-	// the transfer actually starts writing, so two downloads picked close
-	// together could otherwise resolve to (and overwrite) the same path.
-	private reservedPaths = new Set<string>();
+	private readonly reservedPaths = new Set<string>();
 	private started = false;
 
-	/** Chrome-style dedupe: "report.pdf" -> "report (1).pdf" -> "report (2).pdf". */
 	private reserveSavePath(dir: string, filename: string): string {
 		const ext = extname(filename);
 		const base = basename(filename, ext);
@@ -44,71 +56,57 @@ class DownloadManager extends EventEmitter {
 	start(): void {
 		if (this.started) return;
 		this.started = true;
-
-		// A row left "progressing" from a previous run has no live DownloadItem
-		// to resume — the app doesn't persist partial-download state across
-		// restarts, so it can only ever be reported as interrupted.
 		localDb
 			.update(downloads)
 			.set({ state: "interrupted" })
 			.where(eq(downloads.state, "progressing"))
 			.run();
+		browserManager.on("download", this.handleNativeEvent);
+	}
 
-		const ses = session.fromPartition(BROWSER_PARTITION);
-		const downloadDir = app.getPath("downloads");
-		ses.setDownloadPath(downloadDir);
-
-		ses.on("will-download", (_event, item) => {
-			const id = randomUUID();
-			const savePath = this.reserveSavePath(downloadDir, item.getFilename());
-			item.setSavePath(savePath);
-
+	private readonly handleNativeEvent = (raw: NativeDownloadEvent): void => {
+		const id = raw.downloadId ?? raw.id;
+		if (!id || typeof raw.url !== "string") return;
+		const state = raw.state ?? "progressing";
+		const existing = this.getById(id);
+		const savePath =
+			raw.savePath ??
+			existing?.savePath ??
+			this.reserveSavePath(downloadsDir(), raw.filename ?? id);
+		const filename = raw.filename ?? existing?.filename ?? basename(savePath);
+		if (!existing) {
 			localDb
 				.insert(downloads)
 				.values({
 					id,
-					url: item.getURL(),
-					filename: basename(savePath),
+					url: raw.url,
+					filename,
 					savePath,
-					mimeType: item.getMimeType() || null,
-					totalBytes: item.getTotalBytes() || null,
-					receivedBytes: 0,
-					state: "progressing",
+					mimeType: raw.mimeType ?? null,
+					totalBytes: raw.totalBytes ?? null,
+					receivedBytes: raw.receivedBytes ?? 0,
+					state,
 					startedAt: Date.now(),
+					completedAt:
+						state === "progressing" ? null : (raw.completedAt ?? Date.now()),
 				})
 				.run();
-			this.activeItems.set(id, item);
-			this.emit("changed");
-
-			item.on("updated", (_e, state) => {
-				localDb
-					.update(downloads)
-					.set({
-						receivedBytes: item.getReceivedBytes(),
-						totalBytes: item.getTotalBytes() || null,
-						state: state === "progressing" ? "progressing" : "interrupted",
-					})
-					.where(eq(downloads.id, id))
-					.run();
-				this.emit("changed");
-			});
-
-			item.once("done", (_e, state) => {
-				this.activeItems.delete(id);
-				this.reservedPaths.delete(savePath);
-				localDb
-					.update(downloads)
-					.set({
-						state,
-						receivedBytes: item.getReceivedBytes(),
-						completedAt: Date.now(),
-					})
-					.where(eq(downloads.id, id))
-					.run();
-				this.emit("changed");
-			});
-		});
-	}
+		} else {
+			localDb
+				.update(downloads)
+				.set({
+					receivedBytes: raw.receivedBytes ?? existing.receivedBytes,
+					totalBytes: raw.totalBytes ?? existing.totalBytes,
+					state,
+					completedAt:
+						state === "progressing" ? null : (raw.completedAt ?? Date.now()),
+				})
+				.where(eq(downloads.id, id))
+				.run();
+		}
+		if (state !== "progressing") this.reservedPaths.delete(savePath);
+		this.emit("changed");
+	};
 
 	list() {
 		return localDb
@@ -123,26 +121,33 @@ class DownloadManager extends EventEmitter {
 		return localDb.select().from(downloads).where(eq(downloads.id, id)).get();
 	}
 
-	/** True if a live in-progress download was found and cancelled. */
-	cancel(id: string): boolean {
-		const item = this.activeItems.get(id);
-		if (!item) return false;
-		item.cancel();
-		return true;
+	async cancel(id: string, ownerLabel: string): Promise<boolean> {
+		return dispatchNativeBrowser<boolean>(
+			"browser.download.cancel",
+			{ id },
+			ownerLabel,
+		);
 	}
 
-	/** Clears finished entries; downloads still in flight are left alone. */
 	clear(): void {
 		localDb.delete(downloads).where(ne(downloads.state, "progressing")).run();
 		this.emit("changed");
 	}
 
-	showInFolder(savePath: string): void {
-		shell.showItemInFolder(savePath);
+	showInFolder(savePath: string, ownerLabel: string): Promise<void> {
+		return dispatchNativeBrowser(
+			"shell.showInFolder",
+			{ path: savePath },
+			ownerLabel,
+		);
 	}
 
-	openFile(savePath: string): Promise<string> {
-		return shell.openPath(savePath);
+	openFile(savePath: string, ownerLabel: string): Promise<string> {
+		return dispatchNativeBrowser<string>(
+			"shell.openFile",
+			{ path: savePath },
+			ownerLabel,
+		);
 	}
 }
 

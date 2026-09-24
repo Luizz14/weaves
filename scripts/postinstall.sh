@@ -1,7 +1,5 @@
 #!/bin/bash
-# Prevent infinite recursion during postinstall
-# electron-builder install-app-deps can trigger nested bun installs
-# which would re-run postinstall, spawning hundreds of processes
+# Prevent infinite recursion during postinstall.
 
 if [ -n "$SUPERSET_POSTINSTALL_RUNNING" ]; then
   exit 0
@@ -21,12 +19,7 @@ if ! bun run --filter=@superset/i18n build; then
   echo "postinstall: lingui compile failed; run 'bun run check:i18n' for details" >&2
 fi
 
-# GitHub CI runs multiple Bun install jobs that do not need desktop native rebuilds.
-# Running electron-builder here can trigger nested Bun installs while the main
-# install is still materializing packages, which has been flaky with native deps.
-if [ -n "$CI" ]; then
-  exit 0
-fi
-
-# Install native dependencies for desktop app
-bun run --filter=@superset/desktop install:deps
+# Native modules are copied into the isolated Node sidecar by the explicit
+# packaging step (`bun run --cwd apps/desktop prepare:runtime`). Never rebuild
+# them during a workspace install.
+exit 0

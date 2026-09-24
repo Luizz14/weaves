@@ -1,31 +1,37 @@
 /**
- * Build-time guard for native runtime dependencies.
+ * Validate the files Vite and the Tauri sidecar packager must provide.
  *
- * This fails early when:
- * 1) @parcel/watcher internals are accidentally bundled into dist/main
- *    (dynamic require risk)
- * 2) required native runtime packages are missing from apps/desktop/node_modules
+ * This is intentionally a packaging guard, not a substitute for launching the
+ * real signed CEF application. It catches a missing Node sidecar, an accidental
+ * Electron external, a symlink escaping the bundle, and missing native .node
+ * bindings before a release artifact is produced.
  */
 
+import { execFileSync } from "node:child_process";
 import { existsSync, lstatSync, readdirSync, readFileSync } from "node:fs";
 import { builtinModules } from "node:module";
 import { join } from "node:path";
 import ts from "typescript";
 import {
-	mainExternalizedDependencies,
-	requiredMaterializedNodeModules,
+	DESKTOP_SERVICE_ENTRY,
+	NODE_RUNTIME_VERSION,
+	RUNTIME_NODE_MODULES_DIRECTORY,
+	runtimeModuleNames,
 } from "../runtime-dependencies";
 
 const projectRoot = join(import.meta.dirname, "..");
-const allowedBareRequirePackages = new Set([
-	"electron",
-	...mainExternalizedDependencies,
-]);
-const builtinModuleSpecifiers = new Set([
+const distRoot = join(projectRoot, "dist");
+const distMain = join(distRoot, "main");
+const distNodeModules = join(distRoot, RUNTIME_NODE_MODULES_DIRECTORY);
+const runtimeNode = join(distRoot, "node", "bin", "node");
+
+const allowedBareRequires = new Set([
 	...builtinModules,
 	...builtinModules
 		.filter((specifier) => !specifier.startsWith("node:"))
 		.map((specifier) => `node:${specifier}`),
+	...runtimeModuleNames,
+	"pg-native",
 ]);
 
 function fail(message: string): never {
@@ -34,126 +40,37 @@ function fail(message: string): never {
 }
 
 function assertExists(path: string, reason: string): void {
-	if (!existsSync(path)) {
-		fail(`${reason}\nMissing path: ${path}`);
-	}
+	if (!existsSync(path)) fail(`${reason}\nMissing path: ${path}`);
 }
 
-function validateParcelWatcherNotBundled(): void {
-	const sourceMapPath = join(projectRoot, "dist", "main", "index.js.map");
-	assertExists(
-		sourceMapPath,
-		"Main bundle sourcemap not found. Run `bun run compile:app` first.",
-	);
-
-	const sourceMap = readFileSync(sourceMapPath, "utf8");
-	if (sourceMap.includes("node_modules/.bun/@parcel+watcher@")) {
-		fail(
-			[
-				"Detected bundled `@parcel/watcher` sources in dist/main/index.js.map.",
-				"This usually causes runtime dynamic require failures in packaged apps.",
-				"Ensure `@parcel/watcher` stays in `rollupOptions.external` for the main process.",
-			].join("\n"),
-		);
+function collectFiles(root: string): string[] {
+	if (!existsSync(root)) return [];
+	const files: string[] = [];
+	for (const entry of readdirSync(root, { withFileTypes: true })) {
+		const path = join(root, entry.name);
+		if (entry.isDirectory()) files.push(...collectFiles(path));
+		else files.push(path);
 	}
-
-	const distMainDir = join(projectRoot, "dist", "main");
-	assertExists(
-		distMainDir,
-		"Main bundle output not found. Run `bun run compile:app` first.",
-	);
-
-	const jsFiles = collectFiles(distMainDir).filter((filePath) =>
-		filePath.endsWith(".js"),
-	);
-
-	for (const filePath of jsFiles) {
-		const content = readFileSync(filePath, "utf8");
-		if (
-			content.includes('commonjsRequire("@parcel/watcher-') ||
-			content.includes("commonjsRequire(`@parcel/watcher-") ||
-			content.includes('Could not dynamically require "@parcel/watcher-')
-		) {
-			fail(
-				[
-					"Detected bundled dynamic `@parcel/watcher-<platform>` require logic in dist/main output.",
-					"This indicates watcher internals were bundled instead of externalized.",
-					`Offending file: ${filePath}`,
-				].join("\n"),
-			);
-		}
-	}
-
-	console.log(
-		"[validate:native-runtime] OK: @parcel/watcher is not bundled into the main output",
-	);
+	return files;
 }
 
-function validateWorkspacePackagesBundled(): void {
-	const distMainDir = join(projectRoot, "dist", "main");
-	assertExists(
-		distMainDir,
-		"Main bundle output not found. Run `bun run compile:app` first.",
-	);
-
-	const jsFiles = collectFiles(distMainDir).filter((filePath) =>
-		filePath.endsWith(".js"),
-	);
-
-	for (const filePath of jsFiles) {
-		const content = readFileSync(filePath, "utf8");
-		const matches = content.matchAll(/require\(["'](@superset\/[^"']+)["']\)/g);
-		for (const match of matches) {
-			const specifier = match[1];
-			// Native workspace packages that are explicitly externalized are allowed.
-			if (specifier && allowedBareRequirePackages.has(specifier)) {
-				continue;
-			}
-			fail(
-				[
-					"Detected externalized workspace package require in dist/main output.",
-					"Workspace packages should be bundled for the desktop main process.",
-					`Offending file: ${filePath}`,
-					`Match: ${match[0]}`,
-				].join("\n"),
-			);
-		}
-	}
-
-	console.log(
-		"[validate:native-runtime] OK: workspace packages are bundled into the main output",
-	);
-}
-
-function getPackageName(specifier: string): string {
+function packageName(specifier: string): string {
 	if (specifier.startsWith("@")) {
 		const [scope, name] = specifier.split("/");
 		return `${scope}/${name}`;
 	}
-
 	return specifier.split("/")[0] ?? specifier;
 }
 
-function isAllowedBareRequire(specifier: string): boolean {
-	if (builtinModuleSpecifiers.has(specifier)) {
-		return true;
-	}
-
-	const packageName = getPackageName(specifier);
-	return allowedBareRequirePackages.has(packageName);
-}
-
-function collectBareRequireSpecifiers(filePath: string): string[] {
-	const content = readFileSync(filePath, "utf8");
-	const sourceFile = ts.createSourceFile(
+function collectBareRequires(filePath: string): string[] {
+	const source = ts.createSourceFile(
 		filePath,
-		content,
+		readFileSync(filePath, "utf8"),
 		ts.ScriptTarget.Latest,
 		false,
 		ts.ScriptKind.JS,
 	);
 	const specifiers: string[] = [];
-
 	function visit(node: ts.Node): void {
 		if (
 			ts.isCallExpression(node) &&
@@ -162,307 +79,176 @@ function collectBareRequireSpecifiers(filePath: string): string[] {
 			node.arguments.length === 1
 		) {
 			const [argument] = node.arguments;
-			if (argument && ts.isStringLiteralLike(argument)) {
+			if (argument && ts.isStringLiteralLike(argument))
 				specifiers.push(argument.text);
-			}
 		}
-
 		ts.forEachChild(node, visit);
 	}
-
-	visit(sourceFile);
-
+	visit(source);
 	return specifiers.filter(
 		(specifier) => !specifier.startsWith(".") && !specifier.startsWith("/"),
 	);
 }
 
-function validateOnlyExpectedExternalRequires(): void {
-	const distMainDir = join(projectRoot, "dist", "main");
+function validateBundleEntries(): void {
 	assertExists(
-		distMainDir,
-		"Main bundle output not found. Run `bun run compile:app` first.",
+		join(distMain, DESKTOP_SERVICE_ENTRY.replace(/^main\//, "")),
+		"Node desktop-service entry is missing. Run `bun run compile:app` first.",
 	);
-
-	const jsFiles = collectFiles(distMainDir).filter((filePath) =>
-		filePath.endsWith(".js"),
-	);
-	const unexpectedRequires = new Map<string, Set<string>>();
-
-	for (const filePath of jsFiles) {
-		for (const specifier of collectBareRequireSpecifiers(filePath)) {
-			if (isAllowedBareRequire(specifier)) {
-				continue;
-			}
-
-			const existingFiles = unexpectedRequires.get(specifier) ?? new Set();
-			existingFiles.add(filePath);
-			unexpectedRequires.set(specifier, existingFiles);
-		}
+	for (const entry of [
+		"terminal-host.cjs",
+		"pty-subprocess.cjs",
+		"git-task-worker.cjs",
+		"host-service.cjs",
+		"pty-daemon.cjs",
+		"host-worker.cjs",
+	]) {
+		assertExists(
+			join(distMain, entry),
+			`Node worker entry ${entry} is missing.`,
+		);
 	}
 
-	if (unexpectedRequires.size > 0) {
-		const unexpectedList = [...unexpectedRequires.entries()]
-			.sort(([left], [right]) => left.localeCompare(right))
-			.map(
-				([specifier, files]) =>
-					`${specifier} (${[...files].sort().join(", ")})`,
+	const files = collectFiles(distMain).filter((path) => path.endsWith(".cjs"));
+	if (files.length === 0)
+		fail("No CommonJS Node sidecar output was generated.");
+
+	for (const file of files) {
+		const content = readFileSync(file, "utf8");
+		if (/require\(["']electron(["']|\/)/.test(content)) {
+			fail(`Electron runtime import remains in Node sidecar output: ${file}`);
+		}
+		for (const specifier of collectBareRequires(file)) {
+			if (allowedBareRequires.has(packageName(specifier))) continue;
+			if (allowedBareRequires.has(specifier)) continue;
+			fail(
+				`Unexpected external require ${specifier} in ${file}. Bundle it or add it to runtime-dependencies.ts.`,
 			);
+		}
+	}
+}
+
+function validateNodeSidecar(): void {
+	assertExists(runtimeNode, "Node sidecar executable is missing.");
+	if (lstatSync(runtimeNode).isSymbolicLink())
 		fail(
-			[
-				"Detected unexpected external package requires in dist/main output.",
-				"Only Node builtins, `electron`, and the explicit runtime/native allowlist may remain external.",
-				...unexpectedList,
-			].join("\n"),
+			`Node sidecar must be copied into the bundle, not a symlink: ${runtimeNode}`,
 		);
+	let version = "";
+	try {
+		version = execFileSync(runtimeNode, ["--version"], {
+			encoding: "utf8",
+		}).trim();
+	} catch (error) {
+		fail(`Packaged Node executable could not start: ${String(error)}`);
 	}
-
-	console.log(
-		"[validate:native-runtime] OK: main output only contains expected external requires",
-	);
+	if (version !== `v${NODE_RUNTIME_VERSION}`)
+		fail(
+			`Packaged Node version is ${version}; expected v${NODE_RUNTIME_VERSION}.`,
+		);
 }
 
-function collectFiles(rootDir: string): string[] {
-	const entries = readdirSync(rootDir, { withFileTypes: true });
-	const files: string[] = [];
-	for (const entry of entries) {
-		const fullPath = join(rootDir, entry.name);
-		if (entry.isDirectory()) {
-			files.push(...collectFiles(fullPath));
-			continue;
-		}
-		files.push(fullPath);
-	}
-	return files;
-}
-
-function getPlatformAstGrepCandidates(): string[] {
-	const targetArch = process.env.TARGET_ARCH || process.arch;
-	const targetPlatform = process.env.TARGET_PLATFORM || process.platform;
-
-	if (targetPlatform === "darwin") {
-		return [
-			targetArch === "arm64"
-				? "@ast-grep/napi-darwin-arm64"
-				: "@ast-grep/napi-darwin-x64",
-		];
-	}
-
-	if (targetPlatform === "linux") {
-		if (targetArch === "arm64") {
-			return ["@ast-grep/napi-linux-arm64-gnu"];
-		}
-		return ["@ast-grep/napi-linux-x64-gnu", "@ast-grep/napi-linux-x64-musl"];
-	}
-
-	if (targetPlatform === "win32") {
-		return ["@ast-grep/napi-win32-x64-msvc"];
-	}
-
-	return [];
-}
-
-function getPlatformKeyringCandidates(): string[] {
-	const targetArch = process.env.TARGET_ARCH || process.arch;
-	const targetPlatform = process.env.TARGET_PLATFORM || process.platform;
-
-	if (targetPlatform === "darwin") {
-		return [`@napi-rs/keyring-darwin-${targetArch}`];
-	}
-	if (targetPlatform === "win32") {
-		return [`@napi-rs/keyring-win32-${targetArch}-msvc`];
-	}
-	if (targetPlatform === "freebsd") {
-		return [`@napi-rs/keyring-freebsd-${targetArch}`];
-	}
-	if (targetPlatform !== "linux") return [];
-	if (targetArch === "arm") return ["@napi-rs/keyring-linux-arm-gnueabihf"];
-	if (targetArch === "arm64" || targetArch === "x64") {
-		return [
-			`@napi-rs/keyring-linux-${targetArch}-gnu`,
-			`@napi-rs/keyring-linux-${targetArch}-musl`,
-		];
-	}
-	if (targetArch === "riscv64") return ["@napi-rs/keyring-linux-riscv64-gnu"];
-	return [];
-}
-
-function validateNativeModulesPrepared(): void {
-	const nodeModulesDir = join(projectRoot, "node_modules");
+function validateRuntimeModules(): void {
 	assertExists(
-		nodeModulesDir,
-		"node_modules not found. Run `bun install` and `bun run copy:native-modules` first.",
+		distNodeModules,
+		"The isolated Node sidecar node_modules directory is missing.",
 	);
-
-	const requiredModules = [
-		"@parcel/watcher/package.json",
-		"@napi-rs/keyring/package.json",
-		"detect-libc/package.json",
-		"is-glob/package.json",
-		"is-extglob/package.json",
-		"picomatch/package.json",
-		"node-addon-api/package.json",
-	];
-	for (const modulePath of requiredModules) {
-		assertExists(
-			join(nodeModulesDir, modulePath),
-			"Required native runtime dependency is missing.",
-		);
-	}
-
-	for (const moduleName of requiredMaterializedNodeModules) {
-		const modulePath = join(nodeModulesDir, moduleName);
-		assertExists(
-			modulePath,
-			"Required materialized runtime dependency is missing.",
-		);
-		if (lstatSync(modulePath).isSymbolicLink()) {
+	for (const moduleName of runtimeModuleNames) {
+		const modulePath = join(distNodeModules, ...moduleName.split("/"));
+		assertExists(modulePath, `Runtime dependency ${moduleName} is missing.`);
+		if (lstatSync(modulePath).isSymbolicLink())
 			fail(
-				[
-					"Required materialized runtime dependency is still a symlink.",
-					`Dependency: ${moduleName}`,
-					`Path: ${modulePath}`,
-					"Run `bun run copy:native-modules` and ensure Bun store symlinks are replaced with real files.",
-				].join("\n"),
+				`Runtime dependency escapes the bundle through a symlink: ${modulePath}`,
 			);
-		}
 	}
-
-	// Validate @ast-grep/napi platform package
-	const astGrepCandidates = getPlatformAstGrepCandidates();
-	if (astGrepCandidates.length > 0) {
-		const hasAstGrepPlatformPackage = astGrepCandidates.some((pkg) =>
-			existsSync(join(nodeModulesDir, pkg, "package.json")),
+	for (const moduleName of ["better-sqlite3", "node-pty"]) {
+		const modulePath = join(distNodeModules, ...moduleName.split("/"));
+		const nativeFiles = collectFiles(modulePath).filter((path) =>
+			path.endsWith(".node"),
 		);
-		if (!hasAstGrepPlatformPackage) {
-			fail(
-				[
-					"Missing platform-specific @ast-grep/napi package.",
-					`Expected one of: ${astGrepCandidates.join(", ")}`,
-					"Run `bun run copy:native-modules` and ensure optional dependencies are materialized.",
-				].join("\n"),
-			);
-		}
-		console.log(
-			`[validate:native-runtime] OK: platform ast-grep package present (${astGrepCandidates.join(" | ")})`,
-		);
+		if (nativeFiles.length === 0)
+			fail(`Runtime dependency ${moduleName} has no packaged .node binding.`);
 	}
-}
-
-function getPlatformParcelWatcherCandidates(): string[] {
 	if (process.platform === "darwin") {
-		return [
-			process.arch === "arm64"
-				? "@parcel/watcher-darwin-arm64"
-				: "@parcel/watcher-darwin-x64",
-		];
+		const keyringPlatformPackage = `@napi-rs/keyring-darwin-${process.arch}`;
+		const keyringPlatformPath = join(
+			distNodeModules,
+			...keyringPlatformPackage.split("/"),
+		);
+		assertExists(
+			keyringPlatformPath,
+			`Runtime dependency ${keyringPlatformPackage} is missing.`,
+		);
+		if (
+			!collectFiles(keyringPlatformPath).some((path) => path.endsWith(".node"))
+		)
+			fail(
+				`Runtime dependency ${keyringPlatformPackage} has no packaged .node binding.`,
+			);
 	}
-
-	if (process.platform === "linux") {
-		if (process.arch === "arm64") {
-			return [
-				"@parcel/watcher-linux-arm64-glibc",
-				"@parcel/watcher-linux-arm64-musl",
-			];
-		}
-		if (process.arch === "arm") {
-			return [
-				"@parcel/watcher-linux-arm-glibc",
-				"@parcel/watcher-linux-arm-musl",
-			];
-		}
-		return [
-			"@parcel/watcher-linux-x64-glibc",
-			"@parcel/watcher-linux-x64-musl",
-		];
-	}
-
-	if (process.platform === "win32") {
-		if (process.arch === "arm64") {
-			return ["@parcel/watcher-win32-arm64"];
-		}
-		if (process.arch === "ia32") {
-			return ["@parcel/watcher-win32-ia32"];
-		}
-		return ["@parcel/watcher-win32-x64"];
-	}
-
-	if (process.platform === "android") {
-		return ["@parcel/watcher-android-arm64"];
-	}
-
-	if (process.platform === "freebsd") {
-		return ["@parcel/watcher-freebsd-x64"];
-	}
-
-	return [];
 }
 
-function validateParcelWatcherPrepared(): void {
-	const nodeModulesDir = join(projectRoot, "node_modules");
-	const platformCandidates = getPlatformParcelWatcherCandidates();
-	if (platformCandidates.length === 0) {
-		console.warn(
-			`[validate:native-runtime] Skipping platform-specific @parcel/watcher check for ${process.platform}/${process.arch}`,
+function validateNodeExecutionContract(): void {
+	const appEnvironmentChunk = collectFiles(distMain).find((path) => {
+		if (!path.endsWith(".cjs")) return false;
+		const content = readFileSync(path, "utf8");
+		return (
+			content.includes("SUPERSET_HOME_DIR") &&
+			content.includes("APP_STATE_PATH") &&
+			content.includes("homedir")
 		);
-		return;
-	}
+	});
+	if (!appEnvironmentChunk)
+		fail("The emitted Node app-environment module could not be located.");
 
-	const hasPlatformPackage = platformCandidates.some((pkg) =>
-		existsSync(join(nodeModulesDir, pkg, "package.json")),
-	);
-	if (!hasPlatformPackage) {
+	const wsPackage = join(distNodeModules, "ws");
+	const keyringPackage = join(distNodeModules, "@napi-rs", "keyring");
+	const expectedHome = join(distRoot, ".runtime-contract-home");
+	const probe = [
+		"const assert = require('node:assert/strict');",
+		"const appEnvironment = require(process.argv[1]);",
+		"assert.equal(appEnvironment.SUPERSET_HOME_DIR, process.env.SUPERSET_HOME_DIR);",
+		"const ws = require(process.argv[2]);",
+		"assert.equal(typeof ws.WebSocketServer, 'function');",
+		"const keyring = require(process.argv[3]);",
+		"assert.equal(typeof keyring.AsyncEntry, 'function');",
+	].join("\n");
+	try {
+		execFileSync(
+			runtimeNode,
+			["-e", probe, appEnvironmentChunk, wsPackage, keyringPackage],
+			{
+				encoding: "utf8",
+				env: {
+					...process.env,
+					SUPERSET_HOME_DIR: expectedHome,
+				},
+			},
+		);
+	} catch (error) {
 		fail(
-			[
-				"Missing platform-specific @parcel/watcher package.",
-				`Expected one of: ${platformCandidates.join(", ")}`,
-				"Run `bun run copy:native-modules` and ensure optional dependencies are materialized.",
-			].join("\n"),
+			`Packaged Node runtime contract failed (dynamic SUPERSET_HOME_DIR or ws.WebSocketServer): ${String(error)}`,
 		);
 	}
-
-	console.log(
-		`[validate:native-runtime] OK: platform parcel watcher package present (${platformCandidates.join(" | ")})`,
-	);
 }
 
-function validateKeyringPlatformPackagesPrepared(): void {
-	const nodeModulesDir = join(projectRoot, "node_modules");
-	const platformCandidates = getPlatformKeyringCandidates();
-	if (platformCandidates.length === 0) {
-		console.warn(
-			`[validate:native-runtime] Skipping platform-specific keyring check for ${process.env.TARGET_PLATFORM || process.platform}/${process.env.TARGET_ARCH || process.arch}`,
-		);
-		return;
-	}
-
-	const missingCandidates = platformCandidates.filter(
-		(packageName) =>
-			!existsSync(join(nodeModulesDir, packageName, "package.json")),
-	);
-	if (missingCandidates.length > 0) {
-		fail(
-			[
-				"Missing platform-specific @napi-rs/keyring package(s).",
-				`Missing: ${missingCandidates.join(", ")}`,
-				"Run `bun run copy:native-modules` and ensure optional dependencies are materialized.",
-			].join("\n"),
+function validateResources(): void {
+	for (const resource of [
+		"resources/migrations",
+		"resources/host-migrations",
+		"resources/chat-migrations",
+		"resources/bin",
+	]) {
+		assertExists(
+			join(distRoot, resource),
+			`Required resource ${resource} is missing.`,
 		);
 	}
-
-	console.log(
-		`[validate:native-runtime] OK: platform keyring package(s) present (${platformCandidates.join(" | ")})`,
-	);
 }
 
-function main(): void {
-	validateWorkspacePackagesBundled();
-	validateOnlyExpectedExternalRequires();
-	validateParcelWatcherNotBundled();
-	validateNativeModulesPrepared();
-	validateParcelWatcherPrepared();
-	validateKeyringPlatformPackagesPrepared();
-	console.log("[validate:native-runtime] All checks passed");
-}
-
-main();
+validateBundleEntries();
+validateNodeSidecar();
+validateRuntimeModules();
+validateNodeExecutionContract();
+validateResources();
+console.log("[validate:native-runtime] Node/Tauri runtime layout is valid");

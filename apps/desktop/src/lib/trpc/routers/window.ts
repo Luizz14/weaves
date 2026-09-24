@@ -2,9 +2,9 @@ import fs from "node:fs/promises";
 import { homedir } from "node:os";
 import { msg } from "@lingui/core/macro";
 import { i18n } from "@superset/i18n";
-import { dialog, Menu } from "electron";
 import { menuEmitter } from "main/lib/menu-events";
 import { getOrg, setOrg } from "main/lib/window-registry/window-registry";
+import { invokeNative, openNativeDialog } from "main/native/platform";
 import { getImageMimeType } from "shared/file-types";
 import { z } from "zod";
 import { publicProcedure, router } from "..";
@@ -18,11 +18,10 @@ export const createWindowRouter = () => {
 	return router({
 		// Windows and Linux hide the menu bar with the title bar, so the app
 		// menu opens from a button in the top strip instead.
-		popupApplicationMenu: publicProcedure.mutation(({ ctx }) => {
+		popupApplicationMenu: publicProcedure.mutation(async ({ ctx }) => {
 			const window = ctx.senderWindow;
-			const menu = Menu.getApplicationMenu();
-			if (!window || !menu) return { success: false };
-			menu.popup({ window });
+			if (!window) return { success: false };
+			await invokeNative("menu.popup", {}, 30_000, window.label);
 			return { success: true };
 		}),
 
@@ -30,10 +29,10 @@ export const createWindowRouter = () => {
 		// the app theme rather than the OS.
 		setTitleBarOverlay: publicProcedure
 			.input(z.object({ color: z.string(), symbolColor: z.string() }))
-			.mutation(({ ctx, input }) => {
+			.mutation(async ({ ctx, input }) => {
 				const window = ctx.senderWindow;
 				if (!window || process.platform === "darwin") return { success: false };
-				window.setTitleBarOverlay(input);
+				await window.setTitleBarOverlay(input);
 				return { success: true };
 			}),
 
@@ -86,7 +85,7 @@ export const createWindowRouter = () => {
 		// zoomIn/zoomOut/resetZoom menu roles (0.5 zoom levels, 0 = 100%).
 		zoom: publicProcedure
 			.input(z.object({ direction: z.enum(["in", "out", "reset"]) }))
-			.mutation(({ ctx, input }) => {
+			.mutation(async ({ ctx, input }) => {
 				const window = ctx.senderWindow;
 				if (!window) return { success: false };
 				const { webContents } = window;
@@ -95,7 +94,7 @@ export const createWindowRouter = () => {
 						? 0
 						: webContents.getZoomLevel() +
 							(input.direction === "in" ? 0.5 : -0.5);
-				webContents.setZoomLevel(
+				await webContents.setZoomLevel(
 					Math.max(MIN_ZOOM_LEVEL, Math.min(MAX_ZOOM_LEVEL, next)),
 				);
 				return { success: true };
@@ -141,23 +140,27 @@ export const createWindowRouter = () => {
 					return { canceled: true, path: null };
 				}
 
-				const result = await dialog.showOpenDialog(window, {
-					properties: ["openDirectory", "createDirectory"],
-					title:
-						input?.title ??
-						i18n._(
-							msg({
-								message: "Select Directory",
-							}),
-						),
-					defaultPath: input?.defaultPath ?? undefined,
-				});
+				const result = await openNativeDialog(
+					{
+						properties: ["openDirectory", "createDirectory"],
+						title:
+							input?.title ??
+							i18n._(
+								msg({
+									message: "Select Directory",
+								}),
+							),
+						defaultPath: input?.defaultPath ?? undefined,
+					},
+					window.label,
+				);
 
 				if (result.canceled || result.filePaths.length === 0) {
 					return { canceled: true, path: null };
 				}
-
-				return { canceled: false, path: result.filePaths[0] };
+				const [selectedPath] = result.filePaths;
+				if (!selectedPath) return { canceled: true, path: null };
+				return { canceled: false, path: selectedPath };
 			}),
 
 		selectImageFile: publicProcedure.mutation(async ({ ctx }) => {
@@ -166,30 +169,34 @@ export const createWindowRouter = () => {
 				return { canceled: true, dataUrl: null };
 			}
 
-			const result = await dialog.showOpenDialog(window, {
-				properties: ["openFile"],
-				title: i18n._(
-					msg({
-						message: "Select Organization Logo",
-					}),
-				),
-				filters: [
-					{
-						name: i18n._(
-							msg({
-								message: "Images",
-							}),
-						),
-						extensions: ["png", "jpg", "jpeg", "webp"],
-					},
-				],
-			});
+			const result = await openNativeDialog(
+				{
+					properties: ["openFile"],
+					title: i18n._(
+						msg({
+							message: "Select Organization Logo",
+						}),
+					),
+					filters: [
+						{
+							name: i18n._(
+								msg({
+									message: "Images",
+								}),
+							),
+							extensions: ["png", "jpg", "jpeg", "webp"],
+						},
+					],
+				},
+				window.label,
+			);
 
 			if (result.canceled || result.filePaths.length === 0) {
 				return { canceled: true, dataUrl: null };
 			}
 
-			const filePath = result.filePaths[0];
+			const [filePath] = result.filePaths;
+			if (!filePath) return { canceled: true, dataUrl: null };
 			const buffer = await fs.readFile(filePath);
 			const mimeType = getImageMimeType(filePath) ?? "image/png";
 			const base64 = buffer.toString("base64");

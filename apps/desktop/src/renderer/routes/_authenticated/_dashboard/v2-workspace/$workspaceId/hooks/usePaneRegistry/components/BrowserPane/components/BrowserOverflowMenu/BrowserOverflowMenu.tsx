@@ -72,16 +72,22 @@ export function BrowserOverflowMenu({
 	const [isScreenshotsOpen, setIsScreenshotsOpen] = useState(false);
 	const [isClearDataOpen, setIsClearDataOpen] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const isDialogOpen =
+		isImportOpen ||
+		isHistoryOpen ||
+		isDownloadsOpen ||
+		isScreenshotsOpen ||
+		isClearDataOpen;
 
 	// The webview swallows pointer events, so a click on the page would never
 	// reach the document listener Radix dismisses on; passing the click
 	// through to the host lets it dismiss the menu instead, as in a real
 	// browser. Keyed by pane so one pane closing can't drop another's.
 	useEffect(() => {
-		const source = `host-popover:${paneId}`;
-		pointerPassthrough.set(source, isMenuOpen);
+		const source = `host-browser-overlay:${paneId}`;
+		pointerPassthrough.set(source, isMenuOpen || isDialogOpen);
 		return () => pointerPassthrough.set(source, false);
-	}, [paneId, isMenuOpen]);
+	}, [paneId, isDialogOpen, isMenuOpen]);
 
 	const handleOpenDevTools = () => {
 		electronTrpcClient.browser.openDevTools.mutate({ paneId }).catch(() => {});

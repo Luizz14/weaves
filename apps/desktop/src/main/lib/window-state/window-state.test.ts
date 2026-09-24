@@ -1,5 +1,31 @@
 import { describe, expect, it } from "bun:test";
-import { isValidPersistedWindow, isValidWindowState } from "./window-state";
+import {
+	isValidPersistedWindow,
+	isValidWindowState,
+	toNativeWindowStateParams,
+} from "./window-state";
+
+describe("toNativeWindowStateParams", () => {
+	it("uses the native maximized field while preserving logical bounds and zoom", () => {
+		expect(
+			toNativeWindowStateParams({
+				x: -1280,
+				y: 24,
+				width: 1180,
+				height: 740,
+				isMaximized: true,
+				zoomLevel: 1.5,
+			}),
+		).toEqual({
+			x: -1280,
+			y: 24,
+			width: 1180,
+			height: 740,
+			maximized: true,
+			zoomLevel: 1.5,
+		});
+	});
+});
 
 describe("isValidWindowState", () => {
 	describe("valid window states", () => {

@@ -1,0 +1,8 @@
+{
+	"repository": "https://github.com/tauri-apps/tauri.git",
+	"revision": "9c4f482d1e04347303c1f77a92a71a26c04470fc",
+	"tag": "tauri-v3.0.0-alpha.2",
+	"cliVersion": "3.0.0-alpha.2",
+	"apiVersion": "3.0.0-alpha.1",
+	"rustVersion": "1.95.0"
+}

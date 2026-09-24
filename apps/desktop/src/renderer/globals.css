@@ -290,7 +290,7 @@
 		border: 2px solid transparent;
 	}
 
-	/* Electron drag region utilities */
+	/* Native desktop drag region utilities */
 	.drag {
 		-webkit-app-region: drag;
 	}

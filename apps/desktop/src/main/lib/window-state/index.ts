@@ -8,8 +8,10 @@ export {
 	isValidWindowState,
 	loadWindowState,
 	loadWindows,
+	type NativeWindowStateParams,
 	type PersistedWindow,
 	saveWindowState,
 	saveWindows,
+	toNativeWindowStateParams,
 	type WindowState,
 } from "./window-state";

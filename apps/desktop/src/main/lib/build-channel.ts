@@ -1,4 +1,4 @@
-import { app } from "electron";
+import { getNativeAppVersion } from "main/native/platform";
 import { prerelease } from "semver";
 
 /**
@@ -6,6 +6,6 @@ import { prerelease } from "semver";
  * auto-updater's channel pick). Stable versions have no prerelease component.
  */
 export function isPrereleaseBuild(): boolean {
-	const prereleaseComponents = prerelease(app.getVersion());
+	const prereleaseComponents = prerelease(getNativeAppVersion());
 	return prereleaseComponents !== null && prereleaseComponents.length > 0;
 }

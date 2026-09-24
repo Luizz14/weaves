@@ -5,7 +5,7 @@ import {
 	isProfileLockHeld,
 	isStrandedDevAppProfile,
 } from "@superset/shared/dev-app-profile";
-import { app } from "electron";
+import { getNativePath } from "main/native/platform";
 
 const IS_DEV = process.env.NODE_ENV === "development";
 
@@ -29,7 +29,7 @@ export function sweepDevAppProfiles(): void {
 	// profiles — and must never go looking for directories to delete.
 	if (!IS_DEV) return;
 
-	const userData = app.getPath("userData");
+	const userData = getNativePath("userData");
 	const currentProfile = path.basename(userData);
 	const profilesDir = path.dirname(userData);
 	const now = Date.now();

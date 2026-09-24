@@ -22,8 +22,8 @@ import {
 } from "renderer/lib/host-service-client";
 import { electronReactClient } from "../../lib/trpc-client";
 
-// In Electron, blurring the BrowserWindow keeps document.visibilityState
-// "visible", so React Query's default visibilitychange listener never fires.
+// Native desktop windows can remain visible while losing OS focus, so React
+// Query's default visibilitychange listener is not sufficient here.
 // Wire window focus/blur instead so refetchOnWindowFocus actually works.
 // focusManager is a module-global singleton — this covers every query client
 // in the renderer.

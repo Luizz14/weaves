@@ -124,11 +124,11 @@ export function BrowserToolbar({
 		[autocomplete],
 	);
 
-	// The page is a native <webview> hoisted over the pane, so nothing inside
+	// The page is a native CEF child view managed outside the pane, so nothing inside
 	// the toolbar can paint above it — a list hanging under the input is cut
 	// off wherever the page starts. Like the find bar and the design-mode
 	// composer, the suggestions portal into the registry's overlay layer (the
-	// host layer mirroring the page rect, painted above the webview), placed
+	// host layer mirroring the page rect, placed
 	// at the input's edges in that layer's coordinates. Measured while open;
 	// falls back to the in-place list until the pane's overlay is attached.
 	const inputWrapperRef = useRef<HTMLDivElement>(null);

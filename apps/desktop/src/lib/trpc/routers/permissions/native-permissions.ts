@@ -1,8 +1,8 @@
-import type {
-	shell as electronShell,
-	systemPreferences as electronSystemPreferences,
-} from "electron";
-import { checkFullDiskAccess } from "./full-disk-access";
+import {
+	getNativePermissionSnapshot,
+	invokeNative,
+} from "main/native/platform";
+import { z } from "zod";
 
 export const PERMISSION_SETTINGS_URLS = {
 	fullDiskAccess:
@@ -17,24 +17,38 @@ export const PERMISSION_SETTINGS_URLS = {
 		"x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_LocalNetwork",
 } as const;
 
-type ShellApi = Pick<typeof electronShell, "openExternal">;
-type SystemPreferencesApi = Pick<
-	typeof electronSystemPreferences,
-	"askForMediaAccess" | "getMediaAccessStatus" | "isTrustedAccessibilityClient"
->;
+type ShellApi = { openExternal: (url: string) => Promise<void> };
+type SystemPreferencesApi = {
+	askForMediaAccess: (mediaType: "microphone") => Promise<boolean>;
+	getMediaAccessStatus: (mediaType: "microphone") => string;
+	isTrustedAccessibilityClient: (prompt: boolean) => boolean;
+};
 
-function getElectronShell(): ShellApi {
-	return (require("electron") as Partial<typeof import("electron")>)
-		.shell as ShellApi;
-}
+const nativePermissionStatusSchema = z.object({
+	fullDiskAccess: z.boolean(),
+	accessibility: z.boolean(),
+	microphone: z.boolean(),
+});
 
-function getElectronSystemPreferences(): SystemPreferencesApi | undefined {
-	return (require("electron") as Partial<typeof import("electron")>)
-		.systemPreferences;
+function getNativeSystemPreferences(): SystemPreferencesApi {
+	return {
+		askForMediaAccess: (mediaType) =>
+			invokeNative<boolean>("permissions.requestMedia", { mediaType }, null),
+		getMediaAccessStatus: (mediaType) => {
+			const value = getNativePermissionSnapshot()[mediaType];
+			const status: string = typeof value === "string" ? value : "denied";
+			return status;
+		},
+		isTrustedAccessibilityClient: () => {
+			const value = getNativePermissionSnapshot().accessibility;
+			const trusted: boolean = typeof value === "boolean" ? value : false;
+			return trusted;
+		},
+	};
 }
 
 export function checkAccessibility({
-	systemPreferencesApi = getElectronSystemPreferences(),
+	systemPreferencesApi = getNativeSystemPreferences(),
 }: {
 	systemPreferencesApi?: Pick<
 		SystemPreferencesApi,
@@ -45,7 +59,7 @@ export function checkAccessibility({
 }
 
 export function checkMicrophone({
-	systemPreferencesApi = getElectronSystemPreferences(),
+	systemPreferencesApi = getNativeSystemPreferences(),
 }: {
 	systemPreferencesApi?: Pick<SystemPreferencesApi, "getMediaAccessStatus">;
 } = {}): boolean {
@@ -58,32 +72,43 @@ export function checkMicrophone({
 	}
 }
 
-export function getPermissionStatus() {
-	return {
-		fullDiskAccess: checkFullDiskAccess(),
-		accessibility: checkAccessibility(),
-		microphone: checkMicrophone(),
-	};
+export async function getPermissionStatus() {
+	const native = nativePermissionStatusSchema.parse(
+		await invokeNative<unknown>("permissions.status"),
+	);
+	return native;
 }
 
 export async function requestFullDiskAccess({
-	shellApi = getElectronShell(),
+	shellApi,
 }: {
 	shellApi?: ShellApi;
 } = {}): Promise<void> {
-	await shellApi.openExternal(PERMISSION_SETTINGS_URLS.fullDiskAccess);
+	if (shellApi) {
+		await shellApi.openExternal(PERMISSION_SETTINGS_URLS.fullDiskAccess);
+		return;
+	}
+	await invokeNative("permissions.openSettings", {
+		permission: "fullDiskAccess",
+	});
 }
 
 export async function requestAccessibility({
-	shellApi = getElectronShell(),
+	shellApi,
 }: {
 	shellApi?: ShellApi;
 } = {}): Promise<void> {
-	await shellApi.openExternal(PERMISSION_SETTINGS_URLS.accessibility);
+	if (shellApi) {
+		await shellApi.openExternal(PERMISSION_SETTINGS_URLS.accessibility);
+		return;
+	}
+	await invokeNative("permissions.openSettings", {
+		permission: "accessibility",
+	});
 }
 
 export async function requestMicrophone({
-	shellApi = getElectronShell(),
+	shellApi,
 	systemPreferencesApi,
 }: {
 	shellApi?: ShellApi;
@@ -92,7 +117,7 @@ export async function requestMicrophone({
 	try {
 		if (process.platform === "darwin") {
 			const preferencesApi =
-				systemPreferencesApi ?? getElectronSystemPreferences();
+				systemPreferencesApi ?? getNativeSystemPreferences();
 			const granted = await preferencesApi?.askForMediaAccess("microphone");
 			if (granted) {
 				return { granted: true };
@@ -102,22 +127,38 @@ export async function requestMicrophone({
 		// Fall through to opening System Settings.
 	}
 
-	await shellApi.openExternal(PERMISSION_SETTINGS_URLS.microphone);
+	if (shellApi) {
+		await shellApi.openExternal(PERMISSION_SETTINGS_URLS.microphone);
+	} else {
+		await invokeNative("permissions.openSettings", {
+			permission: "microphone",
+		});
+	}
 	return { granted: false };
 }
 
 export async function requestAppleEvents({
-	shellApi = getElectronShell(),
+	shellApi,
 }: {
 	shellApi?: ShellApi;
 } = {}): Promise<void> {
-	await shellApi.openExternal(PERMISSION_SETTINGS_URLS.appleEvents);
+	if (shellApi) {
+		await shellApi.openExternal(PERMISSION_SETTINGS_URLS.appleEvents);
+		return;
+	}
+	await invokeNative("permissions.openSettings", { permission: "appleEvents" });
 }
 
 export async function requestLocalNetwork({
-	shellApi = getElectronShell(),
+	shellApi,
 }: {
 	shellApi?: ShellApi;
 } = {}): Promise<void> {
-	await shellApi.openExternal(PERMISSION_SETTINGS_URLS.localNetwork);
+	if (shellApi) {
+		await shellApi.openExternal(PERMISSION_SETTINGS_URLS.localNetwork);
+		return;
+	}
+	await invokeNative("permissions.openSettings", {
+		permission: "localNetwork",
+	});
 }

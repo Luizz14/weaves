@@ -15,7 +15,7 @@ import {
 /** Returns true if versions are unified, false (after printing errors) if not. */
 export async function runCheck(): Promise<boolean> {
 	const root = await repoRoot();
-	const { desktop, entries, errors } = await assertUnified(root);
+	const { desktop, entries, tauri, errors } = await assertUnified(root);
 
 	if (errors.length > 0) {
 		for (const e of errors) console.error(`  ✗ ${e}`);
@@ -28,7 +28,10 @@ export async function runCheck(): Promise<boolean> {
 		return false;
 	}
 
-	const summary = entries.map((e) => `${e.name}=${e.version}`).join(" ");
+	const summary = [
+		...entries.map((e) => `${e.name}=${e.version}`),
+		`${tauri.name}=${tauri.version}`,
+	].join(" ");
 	console.log(
 		`✓ versions unified at ${desktop}: ${DESKTOP_PACKAGE} ${summary}`,
 	);

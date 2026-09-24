@@ -1,7 +1,11 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { app } from "electron";
 import { env } from "main/env.main";
+import {
+	getNativePath,
+	getNativeRuntimeMetadata,
+	isNativePackaged,
+} from "main/native/platform";
 
 /**
  * Gets the path to a ringtone sound file.
@@ -25,16 +29,22 @@ export function getSoundPath(filename: string): string {
  * avoiding dependency on app.getAppPath() or process.cwd() which may vary.
  */
 export function getSoundsDirectory(): string {
-	if (app.isPackaged) {
+	if (isNativePackaged()) {
 		// Production: unpacked from asar for external audio players
-		return join(process.resourcesPath, "app.asar.unpacked/resources/sounds");
+		return join(
+			getNativePath("resources"),
+			"app.asar.unpacked/resources/sounds",
+		);
 	}
 
 	const isDev = env.NODE_ENV === "development";
 
 	if (isDev) {
 		// Development: source files in project
-		return join(app.getAppPath(), "src/resources/sounds");
+		return join(
+			getNativeRuntimeMetadata()?.appPath ?? process.cwd(),
+			"src/resources/sounds",
+		);
 	}
 
 	// Preview mode: __dirname is dist/main, so go up one level to dist/resources/sounds
@@ -45,7 +55,10 @@ export function getSoundsDirectory(): string {
 	}
 
 	// Fallback: try source directory (in case sounds weren't copied to dist)
-	const srcPath = join(app.getAppPath(), "src/resources/sounds");
+	const srcPath = join(
+		getNativeRuntimeMetadata()?.appPath ?? process.cwd(),
+		"src/resources/sounds",
+	);
 	if (existsSync(srcPath)) {
 		console.warn(
 			"[sound-paths] Using src/resources/sounds as fallback - sounds may not have been copied to dist",

@@ -1,733 +1,641 @@
 import { afterEach, describe, expect, mock, test } from "bun:test";
 
-const wcById = new Map<number, FakeWebContents>();
+const nativeEvents: Array<(event: unknown) => void> = [];
+const nativeCalls: Array<{
+	method: string;
+	params: unknown;
+	windowLabel?: string;
+}> = [];
+const nativePanes = new Map<
+	string,
+	{
+		paneId: string;
+		workspaceId: string | null;
+		url: string;
+		title: string;
+		isLoading: boolean;
+		canGoBack: boolean;
+		canGoForward: boolean;
+		zoomFactor: number;
+		ownerLabel: string;
+		infoError?: Error;
+	}
+>();
+let nativeCreateHook: (() => Promise<void>) | null = null;
 
-mock.module("electron", () => ({
-	clipboard: { writeImage: mock(() => {}), writeText: mock(() => {}) },
-	Menu: { buildFromTemplate: mock(() => ({ popup: mock(() => {}) })) },
-	webContents: {
-		fromId: (id: number) => wcById.get(id) ?? null,
+mock.module("main/native/platform", () => ({
+	invokeNative: mock(
+		async (
+			method: string,
+			params: unknown,
+			_timeout: number | null,
+			windowLabel?: string,
+		) => {
+			nativeCalls.push({ method, params, windowLabel });
+			if (method === "browser.pane.create") {
+				const input = params as {
+					paneId: string;
+					workspaceId?: string | null;
+					url: string;
+				};
+				if (nativeCreateHook) await nativeCreateHook();
+				if (nativePanes.has(input.paneId))
+					throw new Error(`browser pane ${input.paneId} already exists`);
+				const pane = {
+					paneId: input.paneId,
+					workspaceId: input.workspaceId ?? null,
+					url: input.url,
+					title: "",
+					isLoading: false,
+					canGoBack: false,
+					canGoForward: false,
+					zoomFactor: 1,
+				};
+				nativePanes.set(input.paneId, {
+					...pane,
+					ownerLabel: windowLabel ?? "",
+				});
+				return pane;
+			}
+			if (method === "browser.pane.screenshot")
+				return { base64: "cG5n", url: "https://example.com" };
+			if (method === "browser.pane.evaluate") return 42;
+			if (
+				method === "browser.pane.info" ||
+				method === "browser.pane.navigate" ||
+				method === "browser.pane.destroy" ||
+				method === "browser.pane.setBounds" ||
+				method === "browser.pane.setVisibility"
+			) {
+				const paneId = (params as { paneId: string }).paneId;
+				const pane = nativePanes.get(paneId);
+				if (!pane) throw new Error(`no browser pane ${paneId}`);
+				if (pane.ownerLabel !== windowLabel)
+					throw new Error("browser pane belongs to another trusted renderer");
+				if (method === "browser.pane.info") {
+					if (pane.infoError) throw pane.infoError;
+					const {
+						ownerLabel: _ownerLabel,
+						infoError: _infoError,
+						...info
+					} = pane;
+					return { ...info };
+				}
+				if (method === "browser.pane.navigate") {
+					pane.url = (params as { url: string }).url;
+				}
+				if (method === "browser.pane.destroy") nativePanes.delete(paneId);
+			}
+			return { success: true };
+		},
+	),
+	onNativeEvent: (listener: (event: unknown) => void) => {
+		nativeEvents.push(listener);
+		return () => {
+			const index = nativeEvents.indexOf(listener);
+			if (index >= 0) nativeEvents.splice(index, 1);
+		};
 	},
+	getNativePath: () => "/tmp/superset",
 }));
 
-mock.module("main/lib/safe-url", () => ({
-	safeOpenExternal: mock(async () => {}),
+mock.module("main/lib/browser/screenshot-manager", () => ({
+	screenshotManager: {},
 }));
 
-const { browserManager } = await import("./browser-manager");
-const { PROTOCOL_SCHEME } = await import("shared/constants");
+const { browserManager, resolveGuestUrl } = await import(
+	"main/lib/browser/browser-manager"
+);
+const { createBrowserRouter } = await import(
+	"../../../lib/trpc/routers/browser/browser"
+);
 
-interface FakeImage {
-	isEmpty: () => boolean;
-	toPNG: () => Buffer;
-	toJPEG: (quality: number) => Buffer;
-}
-
-const PNG_IMAGE: FakeImage = {
-	isEmpty: () => false,
-	toPNG: () => Buffer.from("png"),
-	toJPEG: () => Buffer.from("jpeg"),
-};
-
-type WindowOpenHandler = (
-	details: Electron.HandlerDetails,
-) => Electron.WindowOpenHandlerResponse;
-
-type WcListener = (...args: unknown[]) => void;
-
-interface FakeWebContents {
-	throttlingCalls: boolean[];
-	isDestroyed: () => boolean;
-	isCrashed: () => boolean;
-	setBackgroundThrottling: (allowed: boolean) => void;
-	setWindowOpenHandler: (handler: WindowOpenHandler) => void;
-	windowOpen: WindowOpenHandler | null;
-	listeners: Map<string, WcListener[]>;
-	on: (event: string, listener: WcListener) => void;
-	off: (event: string, listener: WcListener) => void;
-	getURL: () => string;
-	getTitle: () => string;
-	isLoading: () => boolean;
-	capturePage: ReturnType<typeof mock>;
-	debugger: {
-		attach: () => void;
-		detach: () => void;
-		on: () => void;
-		off: () => void;
-		sendCommand: ReturnType<typeof mock>;
-	};
-}
-
-let nextId = 1;
-
-function makeWc(): { wc: FakeWebContents; id: number } {
-	const throttlingCalls: boolean[] = [];
-	const wc: FakeWebContents = {
-		throttlingCalls,
-		isDestroyed: () => false,
-		isCrashed: () => false,
-		setBackgroundThrottling: (allowed: boolean) => {
-			throttlingCalls.push(allowed);
-		},
-		setWindowOpenHandler: (handler: WindowOpenHandler) => {
-			wc.windowOpen = handler;
-		},
-		windowOpen: null,
-		listeners: new Map(),
-		on: (event, listener) => {
-			wc.listeners.set(event, [...(wc.listeners.get(event) ?? []), listener]);
-		},
-		off: (event, listener) => {
-			wc.listeners.set(
-				event,
-				(wc.listeners.get(event) ?? []).filter((l) => l !== listener),
-			);
-		},
-		getURL: () => "https://example.com",
-		getTitle: () => "Example",
-		isLoading: () => false,
-		capturePage: mock(async () => PNG_IMAGE),
-		debugger: {
-			attach: () => {},
-			detach: () => {},
-			on: () => {},
-			off: () => {},
-			sendCommand: mock(async () => ({})),
-		},
-	};
-	const id = nextId++;
-	wcById.set(id, wc);
-	return { wc, id };
-}
-
-const registered: string[] = [];
-
-function register(paneId: string): FakeWebContents {
-	const { wc, id } = makeWc();
-	browserManager.register(paneId, id, "ws-1");
-	registered.push(paneId);
-	return wc;
-}
-
-afterEach(() => {
-	for (const paneId of registered.splice(0)) {
-		browserManager.unregister(paneId);
-	}
-	wcById.clear();
+afterEach(async () => {
+	for (const pane of browserManager.listPanes())
+		await browserManager.unregister(pane.paneId);
+	nativePanes.clear();
+	nativeCalls.length = 0;
 });
 
-describe("agent wake throttling", () => {
-	test("register keeps background throttling enabled by default", () => {
-		const wc = register("pane-default");
-		expect(wc.throttlingCalls).toEqual([true]);
+describe("resolveGuestUrl", () => {
+	test("keeps allowed URLs and normalizes host input", () => {
+		expect(resolveGuestUrl("https://example.com")).toBe("https://example.com");
+		expect(resolveGuestUrl("localhost:3000")).toBe("http://localhost:3000");
 	});
 
-	test("attachCdp disables throttling for the session and restores on detach", () => {
-		const wc = register("pane-cdp");
-		const session = browserManager.attachCdp(
-			"pane-cdp",
-			"ws-1",
-			() => {},
-			() => {},
-		);
-		expect(wc.throttlingCalls).toEqual([true, false]);
-		session.detach();
-		expect(wc.throttlingCalls).toEqual([true, false, true]);
-	});
-
-	test("screenshot wakes the pane, retries a failed capture, then re-throttles", async () => {
-		const wc = register("pane-shot");
-		wc.capturePage
-			.mockImplementationOnce(async () => {
-				throw new Error("UnknownVizError");
-			})
-			.mockImplementationOnce(async () => PNG_IMAGE);
-
-		const base64 = await browserManager.capturePng("pane-shot", "ws-1");
-
-		expect(Buffer.from(base64, "base64").toString()).toBe("png");
-		expect(wc.capturePage).toHaveBeenCalledTimes(2);
-		expect(wc.throttlingCalls).toEqual([true, false, true]);
-	});
-
-	test("overlapping wakes are ref-counted: screenshot inside a CDP session does not re-throttle", async () => {
-		const wc = register("pane-overlap");
-		const session = browserManager.attachCdp(
-			"pane-overlap",
-			"ws-1",
-			() => {},
-			() => {},
-		);
-		await browserManager.capturePng("pane-overlap", "ws-1");
-		// Only the CDP attach toggled throttling; the screenshot rode along.
-		expect(wc.throttlingCalls).toEqual([true, false]);
-		session.detach();
-		expect(wc.throttlingCalls).toEqual([true, false, true]);
+	test("rejects privileged schemes before native dispatch", () => {
+		expect(() => resolveGuestUrl("file:///etc/passwd")).toThrow("Refusing");
 	});
 });
 
-describe("forced CDP detach", () => {
-	test("unregister with a live CDP session notifies the client", () => {
-		register("pane-force");
-		const onDetach = mock((_reason: string) => {});
-		browserManager.attachCdp("pane-force", "ws-1", () => {}, onDetach);
-		expect(browserManager.getAgentActivePaneIds()).toEqual(["pane-force"]);
-
-		browserManager.unregister("pane-force");
-
-		expect(onDetach).toHaveBeenCalledWith("pane closed");
-		expect(browserManager.getAgentActivePaneIds()).toEqual([]);
+describe("native pane coordination", () => {
+	test("creates and delegates a pane to the CEF service", async () => {
+		await browserManager.register(
+			"pane-1",
+			{ workspaceId: "ws-1", url: "https://example.com" },
+			"main",
+		);
+		await browserManager.navigate("pane-1", "https://example.com/docs", "ws-1");
+		expect(nativeCalls.map(({ method }) => method)).toEqual([
+			"browser.pane.create",
+			"browser.pane.navigate",
+			"browser.pane.navigate",
+		]);
+		expect(nativeCalls[0]?.params).toMatchObject({ url: "about:blank" });
+		expect(nativeCalls[1]?.params).toMatchObject({
+			url: "https://example.com",
+		});
 	});
 
-	test("client-initiated detach does not fire onDetach", () => {
-		register("pane-client");
-		const onDetach = mock((_reason: string) => {});
-		const session = browserManager.attachCdp(
-			"pane-client",
-			"ws-1",
-			() => {},
-			onDetach,
+	test("reattaches to a live pane without importing cookies or navigating", async () => {
+		await browserManager.register(
+			"pane-1",
+			{ workspaceId: "ws-1", url: "https://example.com/initial" },
+			"window-a",
 		);
-		session.detach();
-		expect(onDetach).not.toHaveBeenCalled();
-	});
+		const existing = nativePanes.get("pane-1");
+		if (!existing) throw new Error("expected native pane");
+		Object.assign(existing, {
+			url: "https://example.com/restored",
+			title: "Restored page",
+			canGoBack: true,
+			canGoForward: true,
+			zoomFactor: 1.25,
+		});
 
-	test("Page.captureScreenshot is served via capturePage, not the guest debugger", async () => {
-		const wc = register("pane-shim");
-		const messages: Array<{ id?: number; result?: { data?: string } }> = [];
-		const session = browserManager.attachCdp(
-			"pane-shim",
-			"ws-1",
-			(payload) => messages.push(JSON.parse(payload)),
-			() => {},
-		);
-		const sendCommand = mock(async () => ({}));
-		wc.debugger.sendCommand = sendCommand;
-
-		session.send(
-			JSON.stringify({ id: 7, method: "Page.captureScreenshot", params: {} }),
-		);
-		// capturePage resolves asynchronously through the retry loop.
-		for (let i = 0; i < 50 && messages.length === 0; i++) {
-			await new Promise((r) => setTimeout(r, 10));
-		}
-		session.detach();
-
-		expect(sendCommand).not.toHaveBeenCalled();
-		expect(messages).toHaveLength(1);
-		expect(messages[0]?.id).toBe(7);
-		expect(
-			Buffer.from(messages[0]?.result?.data ?? "", "base64").toString(),
-		).toBe("png");
-	});
-
-	test("captureScreenshot requests capturePage can't honor keep the native path", async () => {
-		const wc = register("pane-shim-passthrough");
-		const messages: unknown[] = [];
-		const session = browserManager.attachCdp(
-			"pane-shim-passthrough",
-			"ws-1",
-			(payload) => messages.push(JSON.parse(payload)),
-			() => {},
-		);
-		const sendCommand = mock(async () => ({}));
-		wc.debugger.sendCommand = sendCommand;
-
-		const passthroughCases = [
-			{ clip: { x: 0, y: 0, width: 10, height: 10, scale: 1 } },
-			{ captureBeyondViewport: true },
-			{ format: "webp" },
-			{ fromSurface: false },
-			{ optimizeForSpeed: true },
-		];
-		for (const params of passthroughCases) {
-			session.send(
-				JSON.stringify({ id: 1, method: "Page.captureScreenshot", params }),
-			);
-		}
-		for (let i = 0; i < 50 && messages.length < passthroughCases.length; i++) {
-			await new Promise((r) => setTimeout(r, 10));
-		}
-		session.detach();
-
-		expect(sendCommand).toHaveBeenCalledTimes(passthroughCases.length);
-		expect(wc.capturePage).not.toHaveBeenCalled();
-	});
-
-	test("a stale capture release cannot drop a wake acquired after re-registration", async () => {
-		const wc1 = register("pane-stale");
-		let resolveCapture!: (image: FakeImage) => void;
-		wc1.capturePage.mockImplementationOnce(
-			() => new Promise<FakeImage>((r) => (resolveCapture = r)),
-		);
-		const capture = browserManager.capturePng("pane-stale", "ws-1");
-
-		// The pane dies and comes back while the capture is still in flight,
-		// and a new CDP session acquires a fresh wake on the reincarnation.
-		browserManager.unregister("pane-stale");
-		const wc2 = register("pane-stale");
-		const session = browserManager.attachCdp(
-			"pane-stale",
-			"ws-1",
-			() => {},
-			() => {},
-		);
-
-		resolveCapture(PNG_IMAGE);
-		await capture;
-
-		// The stale release must not clear the new session's wake.
-		expect(browserManager.getAgentActivePaneIds()).toEqual(["pane-stale"]);
-		expect(wc2.throttlingCalls[wc2.throttlingCalls.length - 1]).toBe(false);
-		session.detach();
-	});
-
-	test("a live session forwards commands to the guest debugger", async () => {
-		const wc = register("pane-live");
-		const messages: Array<{ id?: number; result?: unknown }> = [];
-		const session = browserManager.attachCdp(
-			"pane-live",
-			"ws-1",
-			(payload) => messages.push(JSON.parse(payload)),
-			() => {},
-		);
-		const sendCommand = mock(async () => ({ value: 1 }));
-		wc.debugger.sendCommand = sendCommand;
-
-		session.send(
-			JSON.stringify({
-				id: 3,
-				method: "Runtime.evaluate",
-				params: { expression: "1" },
-			}),
-		);
-		for (let i = 0; i < 50 && messages.length === 0; i++) {
-			await new Promise((r) => setTimeout(r, 10));
-		}
-		session.detach();
-
-		expect(sendCommand).toHaveBeenCalledWith(
-			"Runtime.evaluate",
-			{ expression: "1" },
-			undefined,
-		);
-		expect(messages).toEqual([{ id: 3, result: { value: 1 } }]);
-	});
-
-	test("a send after the guest is destroyed detaches instead of throwing", () => {
-		const wc = register("pane-destroyed");
-		const onDetach = mock((_reason: string) => {});
-		const session = browserManager.attachCdp(
-			"pane-destroyed",
-			"ws-1",
-			() => {},
-			onDetach,
-		);
-		// Guest teardown mid-session: every wc.debugger touch now throws the way
-		// Electron's destroyed-WebContents binding does.
-		wc.isDestroyed = () => true;
-		const destroyedThrow = () => {
-			throw new TypeError("Object has been destroyed");
-		};
-		wc.debugger.off = destroyedThrow;
-		wc.debugger.detach = destroyedThrow;
-		wc.debugger.sendCommand = mock(destroyedThrow);
-
-		expect(() =>
-			session.send(JSON.stringify({ id: 1, method: "Runtime.enable" })),
-		).not.toThrow();
-		expect(onDetach).toHaveBeenCalledWith("pane closed");
-		expect(wc.debugger.sendCommand).not.toHaveBeenCalled();
-		expect(browserManager.getAgentActivePaneIds()).toEqual([]);
-
-		// The session is closed now — a second late message is a no-op.
-		expect(() =>
-			session.send(JSON.stringify({ id: 2, method: "Runtime.enable" })),
-		).not.toThrow();
-		expect(onDetach).toHaveBeenCalledTimes(1);
-	});
-
-	test("forced detach after the guest is destroyed does not throw", () => {
-		const wc = register("pane-destroyed-force");
-		const onDetach = mock((_reason: string) => {});
-		browserManager.attachCdp(
-			"pane-destroyed-force",
-			"ws-1",
-			() => {},
-			onDetach,
-		);
-		wc.isDestroyed = () => true;
-		const destroyedThrow = () => {
-			throw new TypeError("Object has been destroyed");
-		};
-		wc.debugger.off = destroyedThrow;
-		wc.debugger.detach = destroyedThrow;
-
-		expect(() =>
-			browserManager.unregister("pane-destroyed-force"),
-		).not.toThrow();
-		expect(onDetach).toHaveBeenCalledWith("pane closed");
-	});
-
-	test("agent-active events track attach and detach", () => {
-		register("pane-state");
-		const states: string[][] = [];
-		const handler = (state: { paneIds: string[] }) => {
-			states.push(state.paneIds);
-		};
-		browserManager.on("agent-active", handler);
-		const session = browserManager.attachCdp(
-			"pane-state",
-			"ws-1",
-			() => {},
-			() => {},
-		);
-		session.detach();
-		browserManager.off("agent-active", handler);
-		expect(states).toEqual([["pane-state"], []]);
-	});
-});
-
-describe("CDP session on a crashed guest renderer", () => {
-	test("viewport resizes are refused instead of forwarded", () => {
-		const wc = register("pane-crashed");
-		wc.isCrashed = () => true;
-		const messages: Array<{ id?: number; error?: unknown }> = [];
-		const session = browserManager.attachCdp(
-			"pane-crashed",
-			"ws-1",
-			(payload) => messages.push(JSON.parse(payload)),
-			() => {},
-		);
-		const sendCommand = mock(async () => ({}));
-		wc.debugger.sendCommand = sendCommand;
-
-		session.send(
-			JSON.stringify({
-				id: 1,
-				method: "Emulation.setDeviceMetricsOverride",
-				params: {
-					width: 400,
-					height: 300,
-					deviceScaleFactor: 1,
-					mobile: false,
+		const originalImport = browserManager.importLegacyCookies;
+		const importLegacyCookies = mock(async () => ({
+			imported: 0,
+			skipped: 0,
+			keyUnavailable: false,
+			snapshotAvailable: false,
+		}));
+		browserManager.importLegacyCookies = importLegacyCookies;
+		const firstReattachCall = nativeCalls.length;
+		try {
+			const result = await browserManager.register(
+				"pane-1",
+				{
+					workspaceId: "ws-1",
+					url: "https://example.com/ignored",
+					visible: false,
+					bounds: { x: 10, y: 20, width: 640, height: 480 },
 				},
-			}),
-		);
-		session.send(
-			JSON.stringify({
-				id: 2,
-				method: "Emulation.setVisibleSize",
-				params: { width: 400, height: 300 },
-			}),
-		);
-		session.detach();
+				"window-a",
+			);
 
-		expect(sendCommand).not.toHaveBeenCalled();
-		expect(messages.map((m) => [m.id, m.error !== undefined])).toEqual([
-			[1, true],
-			[2, true],
+			expect(result.pane).toMatchObject({
+				url: "https://example.com/restored",
+				title: "Restored page",
+				canGoBack: true,
+				canGoForward: true,
+				zoomFactor: 1.25,
+			});
+			expect(browserManager.getPane("pane-1")).toMatchObject(result.pane);
+			expect(
+				nativeCalls.slice(firstReattachCall).map(({ method }) => method),
+			).toEqual([
+				"browser.pane.info",
+				"browser.pane.setBounds",
+				"browser.pane.setVisibility",
+			]);
+			expect(nativeCalls.slice(firstReattachCall)).toMatchObject([
+				{ windowLabel: "window-a", params: { paneId: "pane-1" } },
+				{
+					windowLabel: "window-a",
+					params: {
+						paneId: "pane-1",
+						bounds: { x: 10, y: 20, width: 640, height: 480 },
+					},
+				},
+				{
+					windowLabel: "window-a",
+					params: { paneId: "pane-1", visible: false },
+				},
+			]);
+			expect(importLegacyCookies).not.toHaveBeenCalled();
+		} finally {
+			browserManager.importLegacyCookies = originalImport;
+		}
+	});
+
+	test("serializes concurrent registration through cookie import and initial navigation", async () => {
+		let releaseCreate!: () => void;
+		let signalCreateStarted!: () => void;
+		const createGate = new Promise<void>((resolve) => {
+			releaseCreate = resolve;
+		});
+		const createStarted = new Promise<void>((resolve) => {
+			signalCreateStarted = resolve;
+		});
+		let createAttempts = 0;
+		const originalCreateHook = nativeCreateHook;
+		nativeCreateHook = async () => {
+			if (createAttempts++ === 0) {
+				signalCreateStarted();
+				await createGate;
+			}
+		};
+
+		let releaseImport!: () => void;
+		let signalImportStarted!: () => void;
+		const importGate = new Promise<void>((resolve) => {
+			releaseImport = resolve;
+		});
+		const importStarted = new Promise<void>((resolve) => {
+			signalImportStarted = resolve;
+		});
+		const originalImport = browserManager.importLegacyCookies;
+		const importLegacyCookies = mock(async () => {
+			signalImportStarted();
+			await importGate;
+			return {
+				imported: 0,
+				skipped: 0,
+				keyUnavailable: false,
+				snapshotAvailable: false,
+			};
+		});
+		browserManager.importLegacyCookies = importLegacyCookies;
+
+		let firstRegistration:
+			| ReturnType<typeof browserManager.register>
+			| undefined;
+		let secondRegistration:
+			| ReturnType<typeof browserManager.register>
+			| undefined;
+		try {
+			firstRegistration = browserManager.register(
+				"pane-1",
+				{ workspaceId: "ws-1", url: "https://example.com/first" },
+				"window-a",
+			);
+			await createStarted;
+			secondRegistration = browserManager.register(
+				"pane-1",
+				{
+					workspaceId: "ws-1",
+					url: "https://example.com/second",
+					visible: false,
+					bounds: { x: 10, y: 20, width: 640, height: 480 },
+				},
+				"window-a",
+			);
+			await expect(
+				browserManager.register("pane-1", { workspaceId: "ws-1" }, "window-b"),
+			).rejects.toThrow("not owned by this renderer");
+			await expect(
+				browserManager.register("pane-1", { workspaceId: "ws-2" }, "window-a"),
+			).rejects.toThrow("another workspace");
+			expect(nativeCalls.map(({ method }) => method)).toEqual([
+				"browser.pane.create",
+			]);
+
+			releaseCreate();
+			await importStarted;
+			expect(nativeCalls.map(({ method }) => method)).toEqual([
+				"browser.pane.create",
+			]);
+			releaseImport();
+
+			if (!firstRegistration || !secondRegistration)
+				throw new Error("expected both registration promises");
+			const [firstResult, secondResult] = await Promise.all([
+				firstRegistration,
+				secondRegistration,
+			]);
+			expect(firstResult.pane.url).toBe("https://example.com/first");
+			expect(secondResult.pane.url).toBe("https://example.com/first");
+			expect(importLegacyCookies).toHaveBeenCalledTimes(1);
+			expect(nativeCalls.map(({ method }) => method)).toEqual([
+				"browser.pane.create",
+				"browser.pane.navigate",
+				"browser.pane.info",
+				"browser.pane.setBounds",
+				"browser.pane.setVisibility",
+			]);
+		} finally {
+			releaseCreate();
+			releaseImport();
+			nativeCreateHook = originalCreateHook;
+			browserManager.importLegacyCookies = originalImport;
+			await firstRegistration?.catch(() => {});
+			await secondRegistration?.catch(() => {});
+		}
+	});
+
+	test("rejects re-registration from a different trusted window", async () => {
+		await browserManager.register(
+			"pane-1",
+			{ workspaceId: "ws-1" },
+			"window-a",
+		);
+		const firstReattachCall = nativeCalls.length;
+
+		await expect(
+			browserManager.register("pane-1", { workspaceId: "ws-1" }, "window-b"),
+		).rejects.toThrow("not owned by this renderer");
+		expect(nativeCalls.slice(firstReattachCall)).toHaveLength(0);
+	});
+
+	test("rejects re-registration into a different workspace", async () => {
+		await browserManager.register(
+			"pane-1",
+			{ workspaceId: "ws-1" },
+			"window-a",
+		);
+		const firstReattachCall = nativeCalls.length;
+
+		await expect(
+			browserManager.register("pane-1", { workspaceId: "ws-2" }, "window-a"),
+		).rejects.toThrow("another workspace");
+		expect(nativeCalls.slice(firstReattachCall)).toHaveLength(0);
+	});
+
+	test("recreates when Node metadata is stale but the native pane is gone", async () => {
+		await browserManager.register(
+			"pane-1",
+			{ workspaceId: "ws-1", url: "https://example.com/old" },
+			"window-a",
+		);
+		nativePanes.delete("pane-1");
+		const firstReattachCall = nativeCalls.length;
+
+		const result = await browserManager.register(
+			"pane-1",
+			{ workspaceId: "ws-1", url: "https://example.com/recreated" },
+			"window-a",
+		);
+
+		expect(result.pane.url).toBe("https://example.com/recreated");
+		expect(
+			nativeCalls.slice(firstReattachCall).map(({ method }) => method),
+		).toEqual([
+			"browser.pane.info",
+			"browser.pane.create",
+			"browser.pane.navigate",
 		]);
 	});
 
-	test("navigation is still forwarded, and a live guest still gets viewport resizes", () => {
-		const crashed = register("pane-crashed-navigate");
-		crashed.isCrashed = () => true;
-		const crashedSend = mock(async (_method: string) => ({}));
-		crashed.debugger.sendCommand = crashedSend;
-		const crashedSession = browserManager.attachCdp(
-			"pane-crashed-navigate",
+	test("does not recreate after an unrelated native pane-info error", async () => {
+		await browserManager.register(
+			"pane-1",
+			{ workspaceId: "ws-1" },
+			"window-a",
+		);
+		const existing = nativePanes.get("pane-1");
+		if (!existing) throw new Error("expected native pane");
+		existing.infoError = new Error(
+			"CEF did not answer browser.pane.info in time",
+		);
+		const firstReattachCall = nativeCalls.length;
+
+		await expect(
+			browserManager.register("pane-1", { workspaceId: "ws-1" }, "window-a"),
+		).rejects.toThrow("CEF did not answer browser.pane.info in time");
+		expect(
+			nativeCalls.slice(firstReattachCall).map(({ method }) => method),
+		).toEqual(["browser.pane.info"]);
+	});
+
+	test("waits for cookie import before the first guest navigation", async () => {
+		const originalImport = browserManager.importLegacyCookies;
+		let releaseImport!: () => void;
+		let signalImportStarted!: () => void;
+		const importGate = new Promise<void>((resolve) => {
+			releaseImport = resolve;
+		});
+		const importStarted = new Promise<void>((resolve) => {
+			signalImportStarted = resolve;
+		});
+		browserManager.importLegacyCookies = async () => {
+			signalImportStarted();
+			await importGate;
+			return {
+				imported: 1,
+				skipped: 0,
+				keyUnavailable: false,
+				snapshotAvailable: true,
+			};
+		};
+		try {
+			const registration = browserManager.register(
+				"pane-1",
+				{ url: "https://example.com" },
+				"main",
+			);
+			await importStarted;
+			expect(nativeCalls.map(({ method }) => method)).toEqual([
+				"browser.pane.create",
+			]);
+			releaseImport();
+			await registration;
+			expect(nativeCalls.map(({ method }) => method)).toEqual([
+				"browser.pane.create",
+				"browser.pane.navigate",
+			]);
+		} finally {
+			releaseImport();
+			browserManager.importLegacyCookies = originalImport;
+		}
+	});
+
+	test("does not navigate after partial legacy cookie import", async () => {
+		const originalImport = browserManager.importLegacyCookies;
+		browserManager.importLegacyCookies = async () => ({
+			imported: 1,
+			skipped: 1,
+			keyUnavailable: false,
+			snapshotAvailable: true,
+		});
+		try {
+			await expect(
+				browserManager.register(
+					"pane-1",
+					{ url: "https://example.com" },
+					"main",
+				),
+			).rejects.toThrow("initial navigation was paused");
+			expect(nativeCalls.map(({ method }) => method)).toEqual([
+				"browser.pane.create",
+				"browser.pane.destroy",
+			]);
+		} finally {
+			browserManager.importLegacyCookies = originalImport;
+		}
+	});
+
+	test("does not navigate when legacy cookie import fails", async () => {
+		const originalImport = browserManager.importLegacyCookies;
+		browserManager.importLegacyCookies = async () => {
+			throw new Error("legacy cookie key is unavailable");
+		};
+		try {
+			await expect(
+				browserManager.register(
+					"pane-1",
+					{ url: "https://example.com" },
+					"main",
+				),
+			).rejects.toThrow("legacy cookie key is unavailable");
+			expect(nativeCalls.map(({ method }) => method)).toEqual([
+				"browser.pane.create",
+				"browser.pane.destroy",
+			]);
+		} finally {
+			browserManager.importLegacyCookies = originalImport;
+		}
+	});
+
+	test("updates pane state from scoped native browser events", async () => {
+		await browserManager.register("pane-1", { workspaceId: "ws-1" }, "main");
+		for (const listener of nativeEvents) {
+			listener({
+				name: "browser:event",
+				windowLabel: "main",
+				payload: {
+					kind: "paneState",
+					paneId: "pane-1",
+					url: "https://example.com/next",
+					isLoading: false,
+				},
+			});
+			listener({
+				name: "browser:event",
+				windowLabel: "window-b",
+				payload: {
+					kind: "paneState",
+					paneId: "pane-1",
+					url: "https://spoofed.example/",
+					isLoading: false,
+				},
+			});
+		}
+		expect(browserManager.getPane("pane-1")?.url).toBe(
+			"https://example.com/next",
+		);
+	});
+
+	test("keeps screenshot and evaluation on native paths", async () => {
+		await browserManager.register("pane-1", {}, "main");
+		expect(await browserManager.evaluateJS("pane-1", "1 + 1")).toBe(42);
+		expect(await browserManager.capturePng("pane-1")).toBe("cG5n");
+	});
+
+	test("rejects cross-window pane access", async () => {
+		await browserManager.register(
+			"pane-1",
+			{ workspaceId: "ws-1" },
+			"window-a",
+		);
+		expect(() => browserManager.assertPaneOwner("pane-1", "window-b")).toThrow(
+			"not owned",
+		);
+		await expect(
+			browserManager.getPageInfo("pane-1", undefined, "window-b"),
+		).rejects.toThrow("another trusted renderer");
+	});
+
+	test("returns agent-active pane ids only to their owning window", async () => {
+		await browserManager.register(
+			"pane-a",
+			{ workspaceId: "ws-1" },
+			"window-a",
+		);
+		await browserManager.register(
+			"pane-b",
+			{ workspaceId: "ws-1" },
+			"window-b",
+		);
+		const sessionA = browserManager.attachCdp(
+			"pane-a",
 			"ws-1",
 			() => {},
 			() => {},
 		);
-		crashedSession.send(
-			JSON.stringify({
-				id: 1,
-				method: "Page.navigate",
-				params: { url: "https://example.com" },
-			}),
-		);
-
-		const live = register("pane-live-emulation");
-		const liveSend = mock(async () => ({}));
-		live.debugger.sendCommand = liveSend;
-		const liveSession = browserManager.attachCdp(
-			"pane-live-emulation",
+		const sessionB = browserManager.attachCdp(
+			"pane-b",
 			"ws-1",
 			() => {},
 			() => {},
 		);
-		const metrics = {
-			width: 400,
-			height: 300,
-			deviceScaleFactor: 1,
-			mobile: false,
-		};
-		liveSession.send(
-			JSON.stringify({
-				id: 2,
-				method: "Emulation.setDeviceMetricsOverride",
-				params: metrics,
-			}),
-		);
-		crashedSession.detach();
-		liveSession.detach();
 
-		expect(crashedSend.mock.calls.map((call) => call[0])).toEqual([
-			"Page.navigate",
+		expect(browserManager.getAgentActivePaneIds("window-a")).toEqual([
+			"pane-a",
 		]);
-		expect(liveSend).toHaveBeenCalledWith(
-			"Emulation.setDeviceMetricsOverride",
-			metrics,
-			undefined,
-		);
+		expect(browserManager.getAgentActivePaneIds("window-b")).toEqual([
+			"pane-b",
+		]);
+
+		sessionA.detach();
+		sessionB.detach();
 	});
-});
 
-describe("host window key forwarding", () => {
-	type BeforeInput = (
-		event: { preventDefault: () => void },
-		input: Record<string, unknown>,
-	) => void;
-
-	function makeHostWindow(focusedFrame: { parent: object | null } | null) {
-		let handler: BeforeInput | null = null;
-		const wc = {
-			id: 4242,
-			focusedFrame,
-			on: (event: string, listener: BeforeInput) => {
-				if (event === "before-input-event") handler = listener;
+	test("queries native state before deciding that a pane is absent", async () => {
+		expect(
+			await browserManager.getPageInfo(
+				"pane-not-created",
+				undefined,
+				"window-a",
+			),
+		).toBeNull();
+		expect(nativeCalls).toMatchObject([
+			{
+				method: "browser.pane.info",
+				windowLabel: "window-a",
+				params: { paneId: "pane-not-created" },
 			},
-		};
-		browserManager.registerHostWindow(wc as unknown as Electron.WebContents);
-		const press = (input: Record<string, unknown>) => {
-			const event = { preventDefault: mock(() => {}) };
-			handler?.(event, { type: "keyDown", ...input });
-			return event.preventDefault.mock.calls.length > 0;
-		};
-		return { wc, press };
-	}
-
-	const cmdW = {
-		key: "w",
-		code: "KeyW",
-		meta: true,
-		control: false,
-		alt: false,
-		shift: false,
-	};
-
-	test("suppresses and forwards a forwardable chord while a subframe has focus", () => {
-		browserManager.setForwardableChords(["meta+w"]);
-		const { wc, press } = makeHostWindow({ parent: {} });
-		const forwarded: unknown[] = [];
-		const listener = (key: unknown) => forwarded.push(key);
-		browserManager.on(`host-key-forward:${wc.id}`, listener);
-		try {
-			expect(press(cmdW)).toBe(true);
-			expect(forwarded).toEqual([cmdW]);
-			// Not a forwardable chord: the page keeps it.
-			expect(press({ ...cmdW, key: "c", code: "KeyC" })).toBe(false);
-			expect(forwarded).toHaveLength(1);
-		} finally {
-			browserManager.off(`host-key-forward:${wc.id}`, listener);
-			browserManager.setForwardableChords([]);
-		}
+		]);
 	});
 
-	test("leaves keystrokes alone while the top frame (or nothing) has focus", () => {
-		browserManager.setForwardableChords(["meta+w"]);
-		try {
-			expect(makeHostWindow({ parent: null }).press(cmdW)).toBe(false);
-			expect(makeHostWindow(null).press(cmdW)).toBe(false);
-		} finally {
-			browserManager.setForwardableChords([]);
-		}
-	});
-});
-
-describe("window.open handling", () => {
-	function openDetails(
-		overrides: Partial<Electron.HandlerDetails>,
-	): Electron.HandlerDetails {
-		return {
-			url: "https://accounts.google.com/o/oauth2/auth",
-			frameName: "",
-			features: "",
-			disposition: "foreground-tab",
-			referrer: { url: "", policy: "default" },
-			...overrides,
-		} as Electron.HandlerDetails;
-	}
-
-	test("a real popup opens natively, so it keeps its opener and cookie jar", () => {
-		const wc = register("pane-popup");
-		const result = wc.windowOpen?.(
-			openDetails({
-				disposition: "new-window",
-				features: "width=500,height=600",
-			}),
-		);
-		expect(result?.action).toBe("allow");
-		// A sign-in popup must not outlive the page that opened it.
-		expect(result?.outlivesOpener).toBe(false);
-	});
-
-	test("geometry is left to Electron's own parse of the features string", () => {
-		const wc = register("pane-geometry");
-		const opts = wc.windowOpen?.(
-			openDetails({
-				disposition: "new-window",
-				features: "width=500,height=600",
-			}),
-		)?.overrideBrowserWindowOptions;
-		// These options outrank Electron's features parse, so re-deriving the
-		// geometry here would override Chromium rather than defer to it.
-		expect(opts).not.toHaveProperty("width");
-		expect(opts).not.toHaveProperty("height");
-	});
-
-	test("a popup pins no webPreferences, so it inherits the opener's", () => {
-		const wc = register("pane-partition");
-		const result = wc.windowOpen?.(openDetails({ disposition: "new-window" }));
-		// Inheritance already guarantees no-Node and context isolation. Pinning
-		// a value that later diverges from the guest (sandbox especially) makes
-		// Electron isolate the child in its own process, which nulls
-		// window.opener and silently breaks the sign-in handshake. Not setting
-		// a partition is part of the same rule: the popup shares the pane's jar.
-		expect(
-			result?.overrideBrowserWindowOptions?.webPreferences,
-		).toBeUndefined();
-	});
-
-	test("an about:blank popup is allowed — auth flows open one then navigate it", () => {
-		const wc = register("pane-blank-popup");
-		const emitted: string[] = [];
-		browserManager.on("new-window:pane-blank-popup", (url: string) => {
-			emitted.push(url);
+	test("binds registration to the trusted caller and rejects another window", async () => {
+		const callerA = createBrowserRouter().createCaller({
+			senderWindow: null,
+			windowLabel: "window-a",
 		});
-		const result = wc.windowOpen?.(
-			openDetails({ url: "about:blank", disposition: "new-window" }),
-		);
-		expect(result?.action).toBe("allow");
-		expect(emitted).toEqual([]);
-	});
+		await callerA.register({
+			paneId: "pane-1",
+			workspaceId: "ws-1",
+			ownerLabel: "window-b",
+		} as never);
+		expect(browserManager.getPane("pane-1")?.workspaceId).toBe("ws-1");
+		expect(nativeCalls[0]?.windowLabel).toBe("window-a");
+		expect(nativeCalls[0]?.params).not.toHaveProperty("ownerLabel");
 
-	test("a target=_blank link still opens as a split pane", () => {
-		const wc = register("pane-link");
-		const emitted: string[] = [];
-		browserManager.on("new-window:pane-link", (url: string) => {
-			emitted.push(url);
+		const callerB = createBrowserRouter().createCaller({
+			senderWindow: null,
+			windowLabel: "window-b",
 		});
-		const result = wc.windowOpen?.(
-			openDetails({ url: "https://example.com/docs", frameName: "_blank" }),
-		);
-		expect(result?.action).toBe("deny");
-		expect(emitted).toEqual(["https://example.com/docs"]);
+		await expect(
+			callerB.navigate({ paneId: "pane-1", url: "https://example.com" }),
+		).rejects.toThrow("not owned");
+		expect(nativeCalls).toHaveLength(1);
 	});
 
-	test("a bare about:blank open is allowed, not denied as an empty tab", () => {
-		// window.open("about:blank") passes no features, so Chromium reports a
-		// tab. Denying it returns null to the caller, which auth libraries that
-		// open-then-navigate read as a blocked popup.
-		const wc = register("pane-blank-tab");
-		const emitted: string[] = [];
-		browserManager.on("new-window:pane-blank-tab", (url: string) => {
-			emitted.push(url);
+	test("requires trusted caller context for global browser operations", async () => {
+		const callerWithoutWindow = createBrowserRouter().createCaller({
+			senderWindow: null,
+			windowLabel: null,
 		});
-		expect(wc.windowOpen?.(openDetails({ url: "about:blank" }))?.action).toBe(
-			"allow",
-		);
-		expect(emitted).toEqual([]);
+		await expect(
+			callerWithoutWindow.setForwardableChords({ chords: ["meta+r"] }),
+		).rejects.toThrow("trusted window label");
+		await expect(
+			callerWithoutWindow.clearBrowsingData({ type: "all" }),
+		).rejects.toThrow("trusted window label");
+		expect(nativeCalls).toHaveLength(0);
 	});
 
-	test("a disallowed scheme is denied outright, popup or not", () => {
-		const wc = register("pane-scheme");
-		const emitted: string[] = [];
-		browserManager.on("new-window:pane-scheme", (url: string) => {
-			emitted.push(url);
+	test("routes global browser operations with trusted window context", async () => {
+		const caller = createBrowserRouter().createCaller({
+			senderWindow: null,
+			windowLabel: "window-a",
 		});
-		expect(
-			wc.windowOpen?.(openDetails({ url: "file:///etc/passwd" }))?.action,
-		).toBe("deny");
-		expect(
-			wc.windowOpen?.(
-				openDetails({ url: "file:///etc/passwd", disposition: "new-window" }),
-			)?.action,
-		).toBe("deny");
-		expect(emitted).toEqual([]);
-	});
-});
-
-describe("deep links from guest pages", () => {
-	function navigate(wc: FakeWebContents, url: string): boolean {
-		const event = {
-			defaultPrevented: false,
-			preventDefault() {
-				this.defaultPrevented = true;
-			},
-		};
-		for (const listener of wc.listeners.get("will-navigate") ?? []) {
-			listener(event, url);
-		}
-		return event.defaultPrevented;
-	}
-
-	function collectDeepLinks(): { urls: string[]; stop: () => void } {
-		const urls: string[] = [];
-		const listener = (url: string) => {
-			urls.push(url);
-		};
-		browserManager.on("deep-link", listener);
-		return { urls, stop: () => browserManager.off("deep-link", listener) };
-	}
-
-	test("a superset:// link click is cancelled in the guest and handed to the app", () => {
-		const wc = register("pane-deep-link");
-		const { urls, stop } = collectDeepLinks();
-		expect(navigate(wc, "superset://pages/my-page")).toBe(true);
-		expect(urls).toEqual(["superset://pages/my-page"]);
-		stop();
-	});
-
-	test("the instance's own registered scheme is handled the same way", () => {
-		const wc = register("pane-deep-link-own");
-		const { urls, stop } = collectDeepLinks();
-		const url = `${PROTOCOL_SCHEME}://tasks/my-task`;
-		expect(navigate(wc, url)).toBe(true);
-		expect(urls).toEqual([url]);
-		stop();
-	});
-
-	test("a target=_blank superset:// link is denied as a window and handed to the app", () => {
-		const wc = register("pane-deep-link-blank");
-		const { urls, stop } = collectDeepLinks();
-		const result = wc.windowOpen?.({
-			url: "superset://pages/my-page",
-			frameName: "_blank",
-			features: "",
-			disposition: "foreground-tab",
-			referrer: { url: "", policy: "default" },
-		} as Electron.HandlerDetails);
-		expect(result?.action).toBe("deny");
-		expect(urls).toEqual(["superset://pages/my-page"]);
-		stop();
-	});
-
-	test("other disallowed schemes are still cancelled without a deep link", () => {
-		const wc = register("pane-deep-link-file");
-		const { urls, stop } = collectDeepLinks();
-		expect(navigate(wc, "file:///etc/passwd")).toBe(true);
-		expect(urls).toEqual([]);
-		stop();
-	});
-
-	test("ordinary web navigation is untouched", () => {
-		const wc = register("pane-deep-link-http");
-		const { urls, stop } = collectDeepLinks();
-		expect(navigate(wc, "https://example.com/docs")).toBe(false);
-		expect(urls).toEqual([]);
-		stop();
+		await caller.setForwardableChords({ chords: ["meta+r"] });
+		expect(nativeCalls[0]).toMatchObject({
+			method: "browser.hotkeys.setForwardableChords",
+			windowLabel: "window-a",
+			params: { chords: ["meta+r"] },
+		});
 	});
 });

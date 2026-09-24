@@ -100,6 +100,39 @@ describe("host-service smoke", () => {
 		expect(rejected.headers.get("access-control-allow-origin")).toBeNull();
 	});
 
+	test("Tauri origin is allowed without weakening bearer authentication", async () => {
+		host = await replaceHost(host, {
+			allowedOrigins: ["https://tauri.localhost"],
+		});
+
+		const preflight = await host.fetch(
+			"http://host-service.test/trpc/health.check",
+			{
+				method: "OPTIONS",
+				headers: {
+					origin: "https://tauri.localhost",
+					"access-control-request-method": "GET",
+				},
+			},
+		);
+		expect(preflight.headers.get("access-control-allow-origin")).toBe(
+			"https://tauri.localhost",
+		);
+
+		const missingToken = await host.fetch("http://host-service.test/events", {
+			headers: { origin: "https://tauri.localhost" },
+		});
+		expect(missingToken.status).toBe(401);
+
+		const invalidToken = await host.fetch("http://host-service.test/events", {
+			headers: {
+				origin: "https://tauri.localhost",
+				authorization: "Bearer invalid-token",
+			},
+		});
+		expect(invalidToken.status).toBe(401);
+	});
+
 	test("websocket routes reject unauthenticated upgrade attempts", async () => {
 		const res = await host.fetch("http://host-service.test/events");
 		expect(res.status).toBe(401);

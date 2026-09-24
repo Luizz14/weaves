@@ -1,6 +1,7 @@
 import os from "node:os";
-import { app } from "electron";
+import { invokeNative } from "main/native/platform";
 import pidusage from "pidusage";
+import { z } from "zod";
 import {
 	captureProcessSnapshot,
 	enrichWithPhysFootprint,
@@ -19,6 +20,18 @@ interface ProcessMetrics {
 	cpu: number;
 	memory: number;
 }
+
+const nativeProcessMetricsSchema = z.array(
+	z.object({
+		type: z.string(),
+		cpu: z
+			.object({ percentCPUUsage: z.number().finite().optional() })
+			.optional(),
+		memory: z
+			.object({ workingSetSize: z.number().finite().optional() })
+			.optional(),
+	}),
+);
 
 interface SessionMetrics {
 	sessionId: string;
@@ -287,7 +300,9 @@ async function collectResourceMetricsNow({
 	// match what Activity Monitor reports as "Memory".
 	enrichWithPhysFootprint(processSnapshot, allSubtreePids);
 
-	const electronMetrics = app.getAppMetrics();
+	const nativeMetrics = nativeProcessMetricsSchema.parse(
+		await invokeNative<unknown>("process.metrics"),
+	);
 	const main: ProcessMetrics = { cpu: 0, memory: 0 };
 	const renderer: ProcessMetrics = { cpu: 0, memory: 0 };
 	const other: ProcessMetrics = { cpu: 0, memory: 0 };
@@ -297,7 +312,7 @@ async function collectResourceMetricsNow({
 		return normalized === "renderer" || normalized === "tab";
 	};
 
-	for (const proc of electronMetrics) {
+	for (const proc of nativeMetrics) {
 		const cpu = normalizeFiniteNumber(proc.cpu?.percentCPUUsage);
 		// Electron returns workingSetSize in KB.
 		const memory = normalizeFiniteNumber(proc.memory?.workingSetSize) * 1024;

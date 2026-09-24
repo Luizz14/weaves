@@ -18,6 +18,17 @@ export interface WindowState {
 	zoomLevel?: number;
 }
 
+export type NativeWindowStateParams = Omit<WindowState, "isMaximized"> & {
+	maximized: boolean;
+};
+
+export function toNativeWindowStateParams(
+	state: WindowState,
+): NativeWindowStateParams {
+	const { isMaximized, ...bounds } = state;
+	return { ...bounds, maximized: isMaximized };
+}
+
 /**
  * Loads window state from disk.
  * Returns null if file doesn't exist, is corrupted, or has invalid shape.

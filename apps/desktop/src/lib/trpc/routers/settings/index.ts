@@ -46,13 +46,12 @@ import {
 import { NOTIFICATION_VOLUME_LIMITS } from "@superset/shared/settings-constraints";
 import { TRPCError } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
-import { app } from "electron";
 import { env } from "main/env.main";
-import { exitImmediately } from "main/index";
 import { hasCustomRingtone } from "main/lib/custom-ringtones";
 import { getHostServiceCoordinator } from "main/lib/host-service-coordinator";
 import { applyAppLanguage, languageEvents } from "main/lib/language";
 import { localDb } from "main/lib/local-db";
+import { invokeNative } from "main/native/platform";
 import {
 	DEFAULT_AUTO_APPLY_DEFAULT_PRESET,
 	DEFAULT_CONFIRM_ON_QUIT,
@@ -918,9 +917,8 @@ export const createSettingsRouter = () => {
 				return { success: true };
 			}),
 
-		restartApp: publicProcedure.mutation(() => {
-			app.relaunch();
-			exitImmediately();
+		restartApp: publicProcedure.mutation(async () => {
+			await invokeNative("app.restart");
 			return { success: true };
 		}),
 

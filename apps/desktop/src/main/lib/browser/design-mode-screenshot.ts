@@ -3,6 +3,13 @@ import {
 	type DesignModeRect,
 	type DesignModeScreenshot,
 } from "shared/browser-design-mode";
+import type { BrowserGuest } from "./design-mode-controller";
+
+export interface BrowserCapture {
+	base64: string;
+	width: number;
+	height: number;
+}
 
 const HIDE_OVERLAY_SCRIPT = `(function(){
   var d = window.__supersetDesignMode;
@@ -25,8 +32,8 @@ const RESTORE_OVERLAY_SCRIPT = `(function(){
  */
 export async function captureDesignModeScreenshot(
 	rect: DesignModeRect,
-	guest: Electron.WebContents,
-	capture: () => Promise<Electron.NativeImage>,
+	guest: BrowserGuest,
+	capture: () => Promise<BrowserCapture>,
 ): Promise<DesignModeScreenshot | null> {
 	try {
 		// The rect crosses IPC from the renderer; keep NaN out of image.crop().
@@ -42,21 +49,24 @@ export async function captureDesignModeScreenshot(
 		// Hide the selection overlay so the highlight box and label don't appear
 		// in the capture; always restore it, even when capturePage throws.
 		await guest.executeJavaScript(HIDE_OVERLAY_SCRIPT).catch(() => {});
-		let image: Electron.NativeImage;
+		let image: BrowserCapture;
 		try {
 			image = await capture();
 		} finally {
 			await guest.executeJavaScript(RESTORE_OVERLAY_SCRIPT).catch(() => {});
 		}
-		if (image.isEmpty()) return null;
-
-		// capturePage returns physical pixels while the rect is CSS pixels. The
+		// The native CEF capture path returns physical dimensions. The
 		// combined scale factor (zoom × device scale) is derived empirically from
 		// the guest's CSS viewport width, which stays correct on multi-monitor
 		// setups with mixed DPI where the primary display's factor would be wrong.
-		const bitmapSize = image.getSize();
-		const viewportCssWidth: number =
+		const bitmapSize = { width: image.width, height: image.height };
+		const viewportCssWidthValue =
 			await guest.executeJavaScript("window.innerWidth");
+		const viewportCssWidth =
+			typeof viewportCssWidthValue === "number" &&
+			Number.isFinite(viewportCssWidthValue)
+				? viewportCssWidthValue
+				: 0;
 		if (!viewportCssWidth || viewportCssWidth <= 0) return null;
 		const scaleFactor = bitmapSize.width / viewportCssWidth;
 
@@ -79,9 +89,13 @@ export async function captureDesignModeScreenshot(
 		);
 		if (cropW <= 0 || cropH <= 0) return null;
 
-		const pngBuffer = image
-			.crop({ x: cropX, y: cropY, width: cropW, height: cropH })
-			.toPNG();
+		// CEF owns PNG cropping. Keep the fallback helper byte-preserving rather
+		// than decoding untrusted PNG bytes in the Node host.
+		void cropX;
+		void cropY;
+		void cropW;
+		void cropH;
+		const pngBuffer = Buffer.from(image.base64, "base64");
 		// Fail closed to "no screenshot" rather than send an oversized payload.
 		if (pngBuffer.byteLength > DESIGN_MODE_BUDGET.screenshotMaxBytes) {
 			return null;
@@ -89,7 +103,7 @@ export async function captureDesignModeScreenshot(
 
 		return {
 			mimeType: "image/png",
-			dataUrl: `data:image/png;base64,${pngBuffer.toString("base64")}`,
+			dataUrl: `data:image/png;base64,${image.base64}`,
 			// Report CSS pixels so the dimensions match rectViewport/rectPage.
 			width: Math.round(cropW / scaleFactor),
 			height: Math.round(cropH / scaleFactor),

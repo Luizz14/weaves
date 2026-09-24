@@ -1,0 +1,670 @@
+diff --git a/crates/tauri-runtime-cef/src/cef_impl/client/download.rs b/crates/tauri-runtime-cef/src/cef_impl/client/download.rs
+index b6f9489..210eb6f 100644
+--- a/crates/tauri-runtime-cef/src/cef_impl/client/download.rs
++++ b/crates/tauri-runtime-cef/src/cef_impl/client/download.rs
+@@ -72,7 +72,7 @@ wrap_download_handler! {
+       &self,
+       _browser: Option<&mut Browser>,
+       download_item: Option<&mut DownloadItem>,
+-      _callback: Option<&mut DownloadItemCallback>,
++      callback: Option<&mut DownloadItemCallback>,
+     ) {
+       let Some(download_item) = download_item else {
+         return;
+@@ -87,10 +87,11 @@ wrap_download_handler! {
+       // Check download state - CEF returns i32 where 0 is false, non-zero is true.
+       let is_complete = download_item.is_complete() != 0;
+       let is_canceled = download_item.is_canceled() != 0;
+-      let success = is_complete && !is_canceled;
++      let is_interrupted = download_item.is_interrupted() != 0;
++      let success = is_complete && !is_canceled && !is_interrupted;
+ 
+       // Get full path if available - full_path() returns CefStringUserfreeUtf16.
+-      let full_path = if is_complete || is_canceled {
++      let full_path = if is_complete || is_canceled || is_interrupted {
+         let path_cef = download_item.full_path();
+         let path_str = CefString::from(&path_cef).to_string();
+         if !path_str.is_empty() {
+@@ -102,8 +103,26 @@ wrap_download_handler! {
+         None
+       };
+ 
+-      // Only call handler when download is finished (complete or canceled).
+-      if is_complete || is_canceled {
++      let control = callback
++        .map(|callback| {
++          let callback = callback.clone();
++          tauri_runtime::webview::DownloadControl::new(move || callback.cancel())
++        });
++
++      (self.download_handler)(tauri_runtime::webview::DownloadEvent::Updated {
++        url: url.clone(),
++        id: download_item.id(),
++        received_bytes: download_item.received_bytes(),
++        total_bytes: download_item.total_bytes(),
++        complete: is_complete,
++        canceled: is_canceled,
++        interrupted: is_interrupted,
++        path: full_path.clone(),
++        control,
++      });
++
++      // Only call handler when download is finished or interrupted.
++      if is_complete || is_canceled || is_interrupted {
+         // Call handler with Finished event.
+         (self.download_handler)(tauri_runtime::webview::DownloadEvent::Finished {
+           url,
+diff --git a/crates/tauri-runtime-cef/src/cef_impl/client/life_span.rs b/crates/tauri-runtime-cef/src/cef_impl/client/life_span.rs
+index 024694a..c3e4251 100644
+--- a/crates/tauri-runtime-cef/src/cef_impl/client/life_span.rs
++++ b/crates/tauri-runtime-cef/src/cef_impl/client/life_span.rs
+@@ -24,6 +24,22 @@ mod tests {
+   use super::*;
+   use tauri_runtime::webview::NewWindowFeatures;
+ 
++  #[test]
++  fn popup_disposition_survives_without_geometry() {
++    for disposition in [
++      WindowOpenDisposition::NEW_POPUP,
++      WindowOpenDisposition::NEW_WINDOW,
++      WindowOpenDisposition::NEW_FOREGROUND_TAB,
++    ] {
++      let features = NewWindowFeatures::<(), CefRuntime<()>>::new(
++        None,
++        None,
++        NewWindowOpener::new(None).with_disposition(disposition),
++      );
++      assert_eq!(features.opener().disposition(), disposition);
++    }
++  }
++
+   #[test]
+   fn popup_source_observation_is_available_without_dispatch_and_redacted_from_debug() {
+     let features =
+@@ -120,7 +136,7 @@ wrap_with_args! {
+       popup_id: std::os::raw::c_int,
+       target_url: Option<&CefString>,
+       _target_frame_name: Option<&CefString>,
+-      _target_disposition: WindowOpenDisposition,
++      target_disposition: WindowOpenDisposition,
+       _user_gesture: std::os::raw::c_int,
+       popup_features: Option<&PopupFeatures>,
+       _window_info: Option<&mut WindowInfo>,
+@@ -144,7 +160,7 @@ wrap_with_args! {
+         let source_url = browser.as_deref()
+           .and_then(|browser| browser.main_frame())
+           .and_then(|frame| url::Url::parse(&CefString::from(&frame.url()).to_string()).ok());
+-        handler(url, tauri_runtime::webview::NewWindowFeatures::new(size, position, NewWindowOpener::new(source_url)))
++        handler(url, tauri_runtime::webview::NewWindowFeatures::new(size, position, NewWindowOpener::new(source_url).with_disposition(target_disposition)))
+       } else { tauri_runtime::webview::NewWindowResponse::Allow };
+       match response {
+         tauri_runtime::webview::NewWindowResponse::Allow => {
+diff --git a/crates/tauri-runtime-cef/src/platform/macos/webview.rs b/crates/tauri-runtime-cef/src/platform/macos/webview.rs
+index aa72f93..a8480ca 100644
+--- a/crates/tauri-runtime-cef/src/platform/macos/webview.rs
++++ b/crates/tauri-runtime-cef/src/platform/macos/webview.rs
+@@ -14,13 +14,19 @@ use crate::{webview::AppWebview, window::AppWindow};
+ use super::utils;
+ 
+ impl AppWebview {
+-  fn try_nsview(&self) -> Option<Retained<NSView>> {
++  fn retain_nsview(&self) -> Option<Retained<NSView>> {
+     let view = self.host.window_handle().cast::<NSView>();
+-    // CEF owns this NSView for the browser lifetime; retaining it protects the
+-    // synchronous UI-thread observation. A destroyed native view is unavailable.
+     unsafe { Retained::<NSView>::retain(view) }
+   }
+ 
++  fn try_nsview(&self) -> Option<Retained<NSView>> {
++    if !self.host_view_available() {
++      return None;
++    }
++
++    self.retain_nsview()
++  }
++
+   pub(crate) fn nsview(&self) -> Retained<NSView> {
+     self.try_nsview().expect("failed to retain NSView")
+   }
+@@ -94,7 +100,9 @@ impl AppWebview {
+   /// deallocates the view — and its `dealloc` is what reports `WindowDestroyed`
+   /// back to CEF.
+   pub(crate) fn destroy_host_window(&self) {
+-    self.nsview().removeFromSuperview();
++    if let Some(view) = self.retain_nsview() {
++      view.removeFromSuperview();
++    }
+   }
+ 
+   pub(crate) fn apply_physical_bounds(&self, scale: f64, x: i32, y: i32, width: i32, height: i32) {
+diff --git a/crates/tauri-runtime-cef/src/runtime.rs b/crates/tauri-runtime-cef/src/runtime.rs
+index 519047d..3829929 100644
+--- a/crates/tauri-runtime-cef/src/runtime.rs
++++ b/crates/tauri-runtime-cef/src/runtime.rs
+@@ -1150,11 +1150,24 @@ impl<T: UserEvent> From<Cef> for tauri_runtime::dynamic::DynRuntimeInitAttrs<T>
+ /// Information about the CEF webview that requested a new window.
+ pub struct NewWindowOpener {
+   source_url: Option<url::Url>,
++  disposition: cef::WindowOpenDisposition,
+ }
+ 
+ impl NewWindowOpener {
+   pub(crate) fn new(source_url: Option<url::Url>) -> Self {
+-    Self { source_url }
++    Self {
++      source_url,
++      disposition: cef::WindowOpenDisposition::UNKNOWN,
++    }
++  }
++
++  pub(crate) fn with_disposition(mut self, disposition: cef::WindowOpenDisposition) -> Self {
++    self.disposition = disposition;
++    self
++  }
++
++  pub fn disposition(&self) -> cef::WindowOpenDisposition {
++    self.disposition
+   }
+ 
+   /// The opener's main-frame URL at the native popup request, when available.
+@@ -1383,10 +1396,7 @@ impl<T: UserEvent> RuntimeContext<T> {
+       message
+     };
+ 
+-    self
+-      .sender
+-      .send(message)
+-      .map_err(|_| Error::FailedToSendMessage)?;
++    send_message_to_event_loop(&self.sender, message)?;
+     self.wake_event_loop();
+     Ok(())
+   }
+@@ -1461,6 +1471,21 @@ impl<T: UserEvent> RuntimeContext<T> {
+   }
+ }
+ 
++fn send_message_to_event_loop<T: UserEvent>(
++  sender: &Sender<Message<T>>,
++  message: Message<T>,
++) -> Result<()> {
++  if let Err(error) = sender.send(message) {
++    match error.0 {
++      // The main-thread loop is gone; a task may own native resources that cannot be dropped here.
++      Message::Task(task) => std::mem::forget(task),
++      message => drop(message),
++    }
++    return Err(Error::FailedToSendMessage);
++  }
++  Ok(())
++}
++
+ pub(crate) type AfterWindowCreationCallback = Box<dyn for<'a> Fn(RawWindow<'a>) + Send>;
+ 
+ pub(crate) enum Message<T: UserEvent> {
+@@ -1842,12 +1867,14 @@ impl<T: UserEvent> WinitCefApp<T> {
+         if let Some(child) = self
+           .state
+           .windows
+-          .values()
+-          .chain(self.state.closing_windows.iter())
+-          .flat_map(|appwindow| appwindow.children.iter())
++          .values_mut()
++          .chain(self.state.closing_windows.iter_mut())
++          .flat_map(|appwindow| appwindow.children.iter_mut())
+           .find(|child| child.webview_id == webview_id)
+         {
+-          child.destroy_host_window();
++          if child.begin_host_view_close() {
++            child.destroy_host_window();
++          }
+         }
+       }
+       Message::CreateWindow {
+@@ -3774,3 +3801,41 @@ mod deep_link_argument_tests {
+     assert!(filter(&["myapp2://open", "myap://open"]).is_empty());
+   }
+ }
++
++#[cfg(test)]
++mod send_message_tests {
++  use super::*;
++
++  #[derive(Clone, Debug)]
++  struct DropProbe(Arc<AtomicBool>);
++
++  impl Drop for DropProbe {
++    fn drop(&mut self) {
++      self.0.store(true, Ordering::Release);
++    }
++  }
++
++  #[test]
++  fn closed_channel_leaks_tasks_and_drops_other_messages() {
++    let (sender, receiver) = mpsc::channel();
++    drop(receiver);
++
++    let task_dropped = Arc::new(AtomicBool::new(false));
++    let task_probe = DropProbe(task_dropped.clone());
++    assert!(matches!(
++      send_message_to_event_loop(&sender, Message::Task(Box::new(move || drop(task_probe)))),
++      Err(Error::FailedToSendMessage)
++    ));
++    assert!(!task_dropped.load(Ordering::Acquire));
++
++    let event_dropped = Arc::new(AtomicBool::new(false));
++    assert!(matches!(
++      send_message_to_event_loop(
++        &sender,
++        Message::UserEvent(DropProbe(event_dropped.clone()))
++      ),
++      Err(Error::FailedToSendMessage)
++    ));
++    assert!(event_dropped.load(Ordering::Acquire));
++  }
++}
+diff --git a/crates/tauri-runtime-cef/src/webview.rs b/crates/tauri-runtime-cef/src/webview.rs
+index 2fa00cd..4756cda 100644
+--- a/crates/tauri-runtime-cef/src/webview.rs
++++ b/crates/tauri-runtime-cef/src/webview.rs
+@@ -496,6 +496,25 @@ impl Default for BoundsRate {
+   }
+ }
+ 
++#[derive(Default)]
++struct HostViewLifecycle {
++  closing: bool,
++}
++
++impl HostViewLifecycle {
++  fn is_available(&self) -> bool {
++    !self.closing
++  }
++
++  fn begin_close(&mut self) -> bool {
++    if self.closing {
++      return false;
++    }
++    self.closing = true;
++    true
++  }
++}
++
+ pub(crate) struct AppWebview {
+   pub(crate) webview_id: u32,
+   pub(crate) label: String,
+@@ -512,12 +531,25 @@ pub(crate) struct AppWebview {
+   /// Whether a DevTools window may be opened for this webview. The DevTools *protocol*
+   /// stays available either way — the runtime's own startup rides on it.
+   pub(crate) devtools_enabled: bool,
++  host_view_lifecycle: HostViewLifecycle,
+   pub(crate) listeners: WebviewEventListeners,
+   pub(crate) bounds_rate: Option<BoundsRate>,
+ }
+ 
+ impl AppWebview {
++  pub(crate) fn host_view_available(&self) -> bool {
++    self.host_view_lifecycle.is_available() && self.browser.is_valid() != 0
++  }
++
++  pub(crate) fn begin_host_view_close(&mut self) -> bool {
++    self.host_view_lifecycle.begin_close()
++  }
++
+   pub(crate) fn set_bounds(&mut self, parent_size: PhysicalSize<u32>, scale: f64, bounds: Rect) {
++    if !self.host_view_available() {
++      return;
++    }
++
+     let position = bounds.position.to_physical::<i32>(scale);
+     let size = bounds.size.to_physical::<u32>(scale);
+ 
+@@ -893,6 +925,7 @@ impl<T: UserEvent> WinitCefApp<T> {
+             devtools_protocol_handlers,
+             devtools_observer_registration,
+             devtools_enabled,
++            host_view_lifecycle: HostViewLifecycle::default(),
+             listeners: Default::default(),
+             bounds_rate,
+           })
+@@ -1962,6 +1995,9 @@ pub(crate) fn layout_app_window(appwindow: &AppWindow) {
+   let win_h = parent_size.height as f32;
+   let scale = appwindow.window.scale_factor();
+   for child in &appwindow.children {
++    if !child.host_view_available() {
++      continue;
++    }
+     let Some(rate) = child.bounds_rate else {
+       continue;
+     };
+@@ -1975,6 +2011,21 @@ pub(crate) fn layout_app_window(appwindow: &AppWindow) {
+   }
+ }
+ 
++#[cfg(test)]
++mod host_view_lifecycle_tests {
++  use super::HostViewLifecycle;
++
++  #[test]
++  fn closing_host_view_becomes_unavailable_once() {
++    let mut lifecycle = HostViewLifecycle::default();
++
++    assert!(lifecycle.is_available());
++    assert!(lifecycle.begin_close());
++    assert!(!lifecycle.is_available());
++    assert!(!lifecycle.begin_close());
++  }
++}
++
+ /// Compute the bounds rate of a child webview relative to its parent window.
+ ///
+ /// For webiews filling the window, default rate is used, otherwise the rate is computed from the current bounds and parent size
+@@ -2133,6 +2184,134 @@ fn runtime_evaluate_result_to_json(result: Option<&[u8]>) -> String {
+ 
+ type EvalScriptCallback = Box<dyn Fn(String) + Send + 'static>;
+ 
++fn release_eval_registration<T>(registration: &Mutex<Option<T>>) {
++  let registration = registration.lock().unwrap().take();
++  drop(registration);
++}
++
++fn complete_eval_callback<T>(
++  registration: Arc<Mutex<Option<T>>>,
++  callback: impl FnOnce(),
++  post_cleanup: impl FnOnce(Arc<Mutex<Option<T>>>) -> bool,
++) -> bool {
++  callback();
++  post_cleanup(registration)
++}
++
++wrap_task! {
++  struct ReleaseEvalRegistrationTask {
++    registration: Arc<Mutex<Option<cef::Registration>>>,
++  }
++
++  impl Task {
++    fn execute(&self) {
++      release_eval_registration(&self.registration);
++    }
++  }
++}
++
++#[cfg(test)]
++mod eval_registration_tests {
++  use super::{complete_eval_callback, release_eval_registration};
++  use std::sync::{
++    Arc, Mutex, Weak,
++    atomic::{AtomicUsize, Ordering},
++  };
++
++  struct RegistrationProbe {
++    slot: Weak<Mutex<Option<RegistrationProbe>>>,
++    drops: Arc<AtomicUsize>,
++    _observer_owner: Option<Arc<Mutex<Option<RegistrationProbe>>>>,
++  }
++
++  impl Drop for RegistrationProbe {
++    fn drop(&mut self) {
++      let slot = self
++        .slot
++        .upgrade()
++        .expect("registration storage must remain alive");
++      assert!(
++        slot.try_lock().is_ok(),
++        "registration must be dropped after unlocking its storage"
++      );
++      self.drops.fetch_add(1, Ordering::SeqCst);
++    }
++  }
++
++  #[test]
++  fn registration_is_released_once_without_holding_its_storage_lock() {
++    let slot = Arc::new(Mutex::new(None));
++    let drops = Arc::new(AtomicUsize::new(0));
++    *slot.lock().unwrap() = Some(RegistrationProbe {
++      slot: Arc::downgrade(&slot),
++      drops: Arc::clone(&drops),
++      _observer_owner: None,
++    });
++
++    release_eval_registration(&slot);
++    release_eval_registration(&slot);
++    assert_eq!(drops.load(Ordering::SeqCst), 1);
++    assert!(slot.lock().unwrap().is_none());
++  }
++
++  #[test]
++  fn callback_can_close_its_owner_before_cleanup_is_queued() {
++    let slot = Arc::new(Mutex::new(None));
++    let drops = Arc::new(AtomicUsize::new(0));
++    *slot.lock().unwrap() = Some(RegistrationProbe {
++      slot: Arc::downgrade(&slot),
++      drops: Arc::clone(&drops),
++      _observer_owner: None,
++    });
++    let weak = Arc::downgrade(&slot);
++    let callback_finished = std::cell::Cell::new(false);
++    let queued = std::cell::RefCell::new(None);
++    let retained = Arc::clone(&slot);
++    assert!(complete_eval_callback(
++      retained,
++      || {
++        drop(slot);
++        assert!(weak.upgrade().is_some());
++        assert_eq!(drops.load(Ordering::SeqCst), 0);
++        assert!(queued.borrow().is_none());
++        callback_finished.set(true);
++      },
++      |registration| {
++        assert!(callback_finished.get());
++        *queued.borrow_mut() = Some(registration);
++        true
++      }
++    ));
++    assert_eq!(drops.load(Ordering::SeqCst), 0);
++    let queued = queued.into_inner().unwrap();
++    release_eval_registration(&queued);
++    assert_eq!(drops.load(Ordering::SeqCst), 1);
++    drop(queued);
++    assert!(weak.upgrade().is_none());
++  }
++
++  #[test]
++  fn rejected_task_does_not_release_the_observer_inline() {
++    let slot = Arc::new(Mutex::new(None));
++    let drops = Arc::new(AtomicUsize::new(0));
++    *slot.lock().unwrap() = Some(RegistrationProbe {
++      slot: Arc::downgrade(&slot),
++      drops: Arc::clone(&drops),
++      _observer_owner: Some(Arc::clone(&slot)),
++    });
++    let weak = Arc::downgrade(&slot);
++    assert!(!complete_eval_callback(slot, || {}, |_registration| false));
++    assert_eq!(drops.load(Ordering::SeqCst), 0);
++    let retained = weak
++      .upgrade()
++      .expect("rejection must keep the observer alive");
++    release_eval_registration(&retained);
++    assert_eq!(drops.load(Ordering::SeqCst), 1);
++    drop(retained);
++    assert!(weak.upgrade().is_none());
++  }
++}
++
+ cef::wrap_dev_tools_message_observer! {
+   struct EvalScriptWithCallbackDevToolsObserver {
+     message_id: i32,
+@@ -2161,9 +2340,15 @@ cef::wrap_dev_tools_message_observer! {
+       } else {
+         String::new()
+       };
+-      callback(result);
+-
+-      let _ = self.registration.lock().unwrap().take();
++      let registration = Arc::clone(&self.registration);
++      // Unregistering may destroy this observer; defer it until CEF returns from this callback.
++      if !complete_eval_callback(registration, || callback(result), |registration| {
++        let mut cleanup = ReleaseEvalRegistrationTask::new(registration);
++        cef::post_task(sys::cef_thread_id_t::TID_UI.into(), Some(&mut cleanup)) != 0
++      }) {
++        // Retain on rejection: releasing inline would invalidate this callback's receiver.
++        log::warn!("CEF rejected deferred evaluation observer cleanup");
++      }
+     }
+   }
+ }
+diff --git a/crates/tauri-runtime/src/webview.rs b/crates/tauri-runtime/src/webview.rs
+index e9413ba..08888bd 100644
+--- a/crates/tauri-runtime/src/webview.rs
++++ b/crates/tauri-runtime/src/webview.rs
+@@ -7,7 +7,7 @@
+ pub use crate::webview_permissions::{PermissionKind, PermissionResponse};
+ #[cfg(not(any(target_os = "android", target_os = "ios")))]
+ use crate::window::WindowId;
+-use crate::{Rect, Runtime, UserEvent, window::is_label_valid};
++use crate::{window::is_label_valid, Rect, Runtime, UserEvent};
+ 
+ use http::Request;
+ use tauri_utils::config::{
+@@ -43,6 +43,42 @@ pub type DocumentTitleChangedHandler = dyn Fn(String) + Send + 'static;
+ 
+ pub type DownloadHandler = dyn Fn(DownloadEvent) -> bool + Send + Sync;
+ 
++/// A handle to request cancellation of a native download.
++#[derive(Clone)]
++pub struct DownloadControl(Arc<dyn Fn() + Send + Sync>);
++
++impl DownloadControl {
++  pub fn new(cancel: impl Fn() + Send + Sync + 'static) -> Self {
++    Self(Arc::new(cancel))
++  }
++
++  pub fn cancel(&self) {
++    (self.0)();
++  }
++}
++
++#[cfg(test)]
++mod download_control_tests {
++  use super::DownloadControl;
++  use std::sync::{
++    atomic::{AtomicUsize, Ordering},
++    Arc,
++  };
++
++  #[test]
++  fn cloned_download_controls_retain_the_native_callback() {
++    let calls = Arc::new(AtomicUsize::new(0));
++    let captured = calls.clone();
++    let control = DownloadControl::new(move || {
++      captured.fetch_add(1, Ordering::SeqCst);
++    });
++    let clone = control.clone();
++    drop(control);
++    clone.cancel();
++    assert_eq!(calls.load(Ordering::SeqCst), 1);
++  }
++}
++
+ type PermissionRequestHandler = dyn Fn(PermissionKind) -> PermissionResponse + Send + Sync;
+ 
+ /// Runtime-reported reason that a web content process stopped.
+@@ -119,6 +155,27 @@ pub enum DownloadEvent<'a> {
+     /// Indicates if the download succeeded or not.
+     success: bool,
+   },
++  /// Progress and cancellation control for an active download.
++  Updated {
++    /// The URL of the original download request.
++    url: Url,
++    /// CEF's stable download identifier.
++    id: u32,
++    /// Number of bytes received so far.
++    received_bytes: i64,
++    /// Total bytes expected, or a negative value when unknown.
++    total_bytes: i64,
++    /// Whether the transfer completed.
++    complete: bool,
++    /// Whether the transfer was canceled.
++    canceled: bool,
++    /// Whether the transfer stopped because of an error.
++    interrupted: bool,
++    /// The final path when CEF has one.
++    path: Option<PathBuf>,
++    /// Control for canceling the active transfer.
++    control: Option<DownloadControl>,
++  },
+ }
+ 
+ #[cfg(target_os = "android")]
+diff --git a/crates/tauri/src/webview/mod.rs b/crates/tauri/src/webview/mod.rs
+index c2bbbcd..7b35358 100644
+--- a/crates/tauri/src/webview/mod.rs
++++ b/crates/tauri/src/webview/mod.rs
+@@ -19,8 +19,9 @@ use http::HeaderMap;
+ use serde::Serialize;
+ 
+ pub use tauri_runtime::webview::{
+-  InitializationScript, NewWindowFeatures, PageLoadEvent, PermissionKind, PermissionResponse,
+-  ScrollBarStyle, WebContentProcessTermination, WebContentProcessTerminationReason,
++  DownloadControl, InitializationScript, NewWindowFeatures, PageLoadEvent, PermissionKind,
++  PermissionResponse, ScrollBarStyle, WebContentProcessTermination,
++  WebContentProcessTerminationReason,
+ };
+ // Remove this re-export in v3
+ pub use tauri_runtime::Cookie;
+@@ -115,6 +116,27 @@ pub enum DownloadEvent<'a> {
+     /// Indicates if the download succeeded or not.
+     success: bool,
+   },
++  /// Progress and cancellation control for an active download.
++  Updated {
++    /// The URL of the original download request.
++    url: Url,
++    /// CEF's stable download identifier.
++    id: u32,
++    /// Number of bytes received so far.
++    received_bytes: i64,
++    /// Total bytes expected, or a negative value when unknown.
++    total_bytes: i64,
++    /// Whether the transfer completed.
++    complete: bool,
++    /// Whether the transfer was canceled.
++    canceled: bool,
++    /// Whether the transfer stopped because of an error.
++    interrupted: bool,
++    /// The final path when CEF has one.
++    path: Option<PathBuf>,
++    /// Control for canceling the active transfer.
++    control: Option<DownloadControl>,
++  },
+ }
+ 
+ /// The payload for the [`WebviewBuilder::on_page_load`] hook.
+@@ -806,6 +828,27 @@ tauri::Builder::default()
+               tauri_runtime::webview::DownloadEvent::Finished { url, path, success } => {
+                 DownloadEvent::Finished { url, path, success }
+               }
++              tauri_runtime::webview::DownloadEvent::Updated {
++                url,
++                id,
++                received_bytes,
++                total_bytes,
++                complete,
++                canceled,
++                interrupted,
++                path,
++                control,
++              } => DownloadEvent::Updated {
++                url,
++                id,
++                received_bytes,
++                total_bytes,
++                complete,
++                canceled,
++                interrupted,
++                path,
++                control,
++              },
+             },
+           )
+         } else {

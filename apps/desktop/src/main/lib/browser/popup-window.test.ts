@@ -25,7 +25,7 @@ describe("browser pane popup registry", () => {
 	// sends http(s) `will-navigate` to the system browser. It consults this
 	// registry so a pane's sign-in popup navigates in place instead of being
 	// kicked out to Chrome, which would split the session across two browsers.
-	const contents = () => ({}) as unknown as Electron.WebContents;
+	const contents = () => ({});
 
 	test("an unmarked webContents is not a pane popup", () => {
 		expect(isBrowserPanePopup(contents())).toBe(false);

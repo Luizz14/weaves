@@ -1,11 +1,8 @@
 import { useEffect, useRef } from "react";
-import { electronTrpc } from "renderer/lib/electron-trpc";
 import { destroyPersistentWebview } from "renderer/screens/main/components/WorkspaceView/ContentView/TabsContent/TabView/BrowserPane/hooks/usePersistentWebview";
 import { useTabsStore } from "renderer/stores/tabs/store";
 
 export function useBrowserLifecycle() {
-	const { mutate: unregisterBrowser } =
-		electronTrpc.browser.unregister.useMutation();
 	const previousPaneIdsRef = useRef<Set<string>>(new Set());
 
 	useEffect(() => {
@@ -26,10 +23,9 @@ export function useBrowserLifecycle() {
 			for (const prevId of previousPaneIdsRef.current) {
 				if (!currentBrowserPaneIds.has(prevId)) {
 					destroyPersistentWebview(prevId);
-					unregisterBrowser({ paneId: prevId });
 				}
 			}
 			previousPaneIdsRef.current = currentBrowserPaneIds;
 		});
-	}, [unregisterBrowser]);
+	}, []);
 }

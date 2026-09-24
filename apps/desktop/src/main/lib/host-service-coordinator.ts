@@ -10,13 +10,18 @@ import { organizations, settings } from "@superset/local-db";
 import { getHostId, getHostName } from "@superset/shared/host-info";
 import { HOST_INSTALL_SOURCE_ENV } from "@superset/shared/host-version";
 import { eq } from "drizzle-orm";
-import { app, dialog } from "electron";
-import log from "electron-log/main";
+import {
+	getNativeAppVersion,
+	getNativePath,
+	getNativeRuntimeMetadata,
+	showNativeMessageBox,
+} from "main/native/platform";
 import { env as sharedEnv } from "shared/env.shared";
 import { getProcessEnvWithShellPath } from "../../lib/trpc/routers/workspaces/utils/shell-env";
 import { env as mainEnv } from "../env.main";
 import { SUPERSET_HOME_DIR } from "./app-environment";
 import { getBrowserBridgeInfo } from "./browser/browser-bridge-info";
+import { resolveNativeDesktopEntryPath } from "./desktop-entry-path";
 import { acquireSpawnLock } from "./host-service-lock";
 import {
 	isProcessAlive,
@@ -39,6 +44,12 @@ import {
 } from "./host-service-utils";
 import { localDb } from "./local-db";
 import { HOOK_PROTOCOL_VERSION } from "./terminal/env";
+
+const log = {
+	info: (...args: unknown[]) => console.info(...args),
+	warn: (...args: unknown[]) => console.warn(...args),
+	error: (...args: unknown[]) => console.error(...args),
+};
 
 export type HostServiceStatus = "starting" | "running" | "stopped";
 
@@ -285,7 +296,7 @@ export class HostServiceCoordinator extends EventEmitter {
 	private pendingStarts = new Map<string, PendingStart>();
 	private lastKnownPorts = new Map<string, number>();
 	private stableSecrets = new Map<string, string>();
-	private scriptPath = path.join(__dirname, "host-service.js");
+	private scriptPath = resolveNativeDesktopEntryPath("host-service.cjs");
 	private machineId = getHostId();
 	private devReloadWatcher: fs.FSWatcher | null = null;
 	private respawns = new Map<string, RespawnState>();
@@ -893,8 +904,8 @@ export class HostServiceCoordinator extends EventEmitter {
 		// Output is piped rather than handing the log fd straight to the child so
 		// the coordinator can keep a tail of it for crash reports; it is written
 		// through to the same rotating log file (and, in dev, to this process's
-		// stdout/stderr) so logging is unchanged.
-		const isDev = !app.isPackaged;
+		// stderr) so the stdio framing channel stays clean.
+		const isDev = !getNativeRuntimeMetadata()?.isPackaged;
 		const logStream =
 			logFd >= 0 ? fs.createWriteStream("", { fd: logFd }) : null;
 		// An unhandled stream error would take down the main process; losing log
@@ -945,11 +956,11 @@ export class HostServiceCoordinator extends EventEmitter {
 		}
 		child.once("close", () => logStream?.end());
 
-		// In dev, fan child output through to parent stdout/stderr with a
-		// prefix so it's identifiable in `bun dev`.
+		// The Node host stdout is the Rust framing channel. In dev, fan child
+		// output through stderr so diagnostics never corrupt native frames.
 		if (isDev && child.stdout && child.stderr) {
 			const tag = `[hs:${organizationId.slice(0, 8)}]`;
-			pipeWithPrefix(child.stdout, process.stdout, tag);
+			pipeWithPrefix(child.stdout, process.stderr, tag);
 			pipeWithPrefix(child.stderr, process.stderr, tag);
 		}
 
@@ -1013,11 +1024,16 @@ export class HostServiceCoordinator extends EventEmitter {
 		const row = localDb.select().from(settings).get();
 		const exposeViaRelay = row?.exposeHostServiceViaRelay ?? false;
 		const browserBridge = getBrowserBridgeInfo();
+		const corsOrigins = resolveHostServiceCorsOrigins({
+			configuredOrigins: process.env.CORS_ORIGINS,
+			publicDesktopUrl: process.env.NEXT_PUBLIC_DESKTOP_URL,
+			isPackaged: getNativeRuntimeMetadata()?.isPackaged ?? false,
+			devPort: sharedEnv.DESKTOP_VITE_PORT,
+		});
 
 		const childEnv = await getProcessEnvWithShellPath({
 			...(process.env as Record<string, string>),
-			ELECTRON_RUN_AS_NODE: "1",
-			NODE_ENV: app.isPackaged
+			NODE_ENV: getNativeRuntimeMetadata()?.isPackaged
 				? "production"
 				: (process.env.NODE_ENV ?? "development"),
 			ORGANIZATION_ID: organizationId,
@@ -1031,16 +1047,19 @@ export class HostServiceCoordinator extends EventEmitter {
 			// remote client never offers an in-place update for it.
 			[HOST_INSTALL_SOURCE_ENV]: "desktop",
 			HOST_DB_PATH: path.join(organizationDir, "host.db"),
-			HOST_MIGRATIONS_FOLDER: app.isPackaged
-				? path.join(process.resourcesPath, "resources/host-migrations")
-				: path.join(app.getAppPath(), "../../packages/host-service/drizzle"),
+			HOST_MIGRATIONS_FOLDER: getNativeRuntimeMetadata()?.isPackaged
+				? path.join(getNativePath("resources"), "resources/host-migrations")
+				: path.join(
+						getNativeRuntimeMetadata()?.appPath ?? process.cwd(),
+						"../../packages/host-service/drizzle",
+					),
 			// chat.db's migrations ship the same way host.db's do: the bundled
 			// host-service can't resolve them from its own module path, so the
 			// folder travels as a resource and the path comes in as env.
-			SUPERSET_CHAT_V3_MIGRATIONS: app.isPackaged
-				? path.join(process.resourcesPath, "resources/chat-migrations")
+			SUPERSET_CHAT_V3_MIGRATIONS: getNativeRuntimeMetadata()?.isPackaged
+				? path.join(getNativePath("resources"), "resources/chat-migrations")
 				: path.join(
-						app.getAppPath(),
+						getNativeRuntimeMetadata()?.appPath ?? process.cwd(),
 						"../../packages/chat-runtime/src/db/drizzle",
 					),
 			// The Claude Agent SDK's bundled CLI binary is unresolvable from the
@@ -1050,6 +1069,7 @@ export class HostServiceCoordinator extends EventEmitter {
 				? { SUPERSET_CHAT_V3_CLAUDE_BIN: chatV3ClaudeBin() as string }
 				: {}),
 			DESKTOP_VITE_PORT: String(sharedEnv.DESKTOP_VITE_PORT),
+			CORS_ORIGINS: corsOrigins.join(","),
 			SUPERSET_HOME_DIR: SUPERSET_HOME_DIR,
 			SUPERSET_LEGACY_WORKTREE_BASE_DIR: row?.worktreeBaseDir ?? "",
 			SUPERSET_AGENT_HOOK_PORT: String(sharedEnv.DESKTOP_NOTIFICATIONS_PORT),
@@ -1063,10 +1083,11 @@ export class HostServiceCoordinator extends EventEmitter {
 			// Namespaced so terminals/agents spawned by the host service don't
 			// inherit a generic SENTRY_DSN — third-party tools with a Sentry SDK
 			// auto-pick it up and report into our project.
-			...(app.isPackaged && mainEnv.SENTRY_DSN_HOST_SERVICE
+			...(getNativeRuntimeMetadata()?.isPackaged &&
+			mainEnv.SENTRY_DSN_HOST_SERVICE
 				? {
 						HOST_SERVICE_SENTRY_DSN: mainEnv.SENTRY_DSN_HOST_SERVICE,
-						HOST_SERVICE_SENTRY_RELEASE: app.getVersion(),
+						HOST_SERVICE_SENTRY_RELEASE: getNativeAppVersion(),
 						HOST_SERVICE_SENTRY_ENVIRONMENT: "production",
 					}
 				: {}),
@@ -1152,11 +1173,10 @@ export class HostServiceCoordinator extends EventEmitter {
 		log.error(`[host-service:${organizationId}] crashed (${cause})`);
 		// The child cannot report its own death for hard kills (SIGSEGV, OOM),
 		// so the supervisor is the only place these are observable. Imported
-		// lazily: a static @sentry/electron import needs electron APIs the
-		// coordinator tests' stub does not provide.
+		// Lazily load Sentry so a crash report cannot delay respawn or startup.
 		const respawnAttempts = this.respawns.get(organizationId)?.attempts ?? 0;
 		const flushTimer = setTimeout(() => {
-			void import("@sentry/electron/main")
+			void import("@sentry/node")
 				.then((Sentry) =>
 					Sentry.captureMessage(`host-service crashed (${cause})`, {
 						level: "error",
@@ -1168,7 +1188,7 @@ export class HostServiceCoordinator extends EventEmitter {
 							organizationId,
 							respawnAttempts,
 							pid: childPid,
-							version: app.getVersion(),
+							version: getNativeAppVersion(),
 							uptimeMs: Date.now() - current.spawnedAt,
 							outputTail: redactCrashTail(current.outputTail, {
 								secrets: current.redactions,
@@ -1453,7 +1473,7 @@ export class HostServiceCoordinator extends EventEmitter {
 	 */
 	private alertChildCrashed(organizationId: string, cause: string): void {
 		const orgName = this.getOrganizationName(organizationId);
-		void dialog.showMessageBox({
+		void showNativeMessageBox({
 			type: "error",
 			title: i18n._(
 				msg({
@@ -1481,7 +1501,9 @@ export class HostServiceCoordinator extends EventEmitter {
 						"Its workspaces and terminals are unavailable until it restarts — use the Superset tray menu > Host Service > Restart.",
 				}),
 			),
-		});
+		}).catch((error) =>
+			log.error("[host-service] Failed to show crash dialog:", error),
+		);
 	}
 
 	private getOrganizationName(organizationId: string): string | null {
@@ -1496,6 +1518,39 @@ export class HostServiceCoordinator extends EventEmitter {
 			return null;
 		}
 	}
+}
+
+export function resolveHostServiceCorsOrigins(options: {
+	configuredOrigins?: string;
+	publicDesktopUrl?: string;
+	isPackaged: boolean;
+	devPort: number;
+}): string[] {
+	const configuredOrigins = options.configuredOrigins
+		?.split(",")
+		.map((origin) => origin.trim())
+		.filter((origin) => origin.length > 0 && origin !== "*");
+	const configuredPublicDesktopUrl = options.publicDesktopUrl?.trim();
+	const publicDesktopOrigin =
+		configuredPublicDesktopUrl && configuredPublicDesktopUrl !== "*"
+			? configuredPublicDesktopUrl
+			: undefined;
+	const nativeOrigin = options.isPackaged
+		? "https://tauri.localhost"
+		: `http://localhost:${options.devPort}`;
+	const devOrigins = options.isPackaged
+		? []
+		: [
+				`http://localhost:${options.devPort}`,
+				`http://127.0.0.1:${options.devPort}`,
+			];
+
+	return [
+		...(configuredOrigins ?? []),
+		...devOrigins,
+		...(publicDesktopOrigin ? [publicDesktopOrigin] : []),
+		nativeOrigin,
+	].filter((origin, index, origins) => origins.indexOf(origin) === index);
 }
 
 /**
@@ -1535,10 +1590,13 @@ export function getHostServiceCoordinator(): HostServiceCoordinator {
 }
 
 function chatV3ClaudeBin(): string | undefined {
-	if (app.isPackaged) return undefined;
+	if (getNativeRuntimeMetadata()?.isPackaged) return undefined;
 	const arch = process.arch;
 	const platform = process.platform;
-	const store = path.join(app.getAppPath(), "../../node_modules/.bun");
+	const store = path.join(
+		getNativeRuntimeMetadata()?.appPath ?? process.cwd(),
+		"../../node_modules/.bun",
+	);
 	const prefix = `@anthropic-ai+claude-agent-sdk-${platform}-${arch}@`;
 	try {
 		const entry = fs.readdirSync(store).find((d) => d.startsWith(prefix));

@@ -52,6 +52,7 @@ import { track } from "renderer/lib/analytics";
 import { cloudTrpc } from "renderer/lib/cloud-trpc";
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import { showHostServiceUnavailableToast } from "renderer/lib/host-service-unavailable";
+import { getNativeFilePath } from "renderer/lib/native-bridge";
 import { useHostWorkspaces } from "renderer/routes/_authenticated/providers/HostWorkspacesProvider";
 import { useLocalHostService } from "renderer/routes/_authenticated/providers/LocalHostServiceProvider";
 import { newWorkspaceAttachmentPaths } from "renderer/stores/new-workspace-attachments";
@@ -205,7 +206,7 @@ export function NewWorkspaceScreen({
 		const recordPaths = (files: FileList | null | undefined) => {
 			for (const file of Array.from(files ?? [])) {
 				try {
-					const path = window.webUtils.getPathForFile(file);
+					const path = getNativeFilePath(file);
 					if (!path) continue;
 					// Attachment items only expose the basename, so the map is
 					// name-keyed; a second same-named file from elsewhere makes the

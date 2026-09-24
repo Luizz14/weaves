@@ -13,6 +13,7 @@ import semver from "semver";
 // Desktop is the ceiling (a plain MAJOR.MINOR.PATCH release) and is NOT unified
 // below. pty-daemon is intentionally excluded (its own 0.x track).
 export const DESKTOP_PACKAGE = "apps/desktop";
+export const TAURI_PACKAGE = "apps/desktop/src-tauri";
 export const UNIFIED_PACKAGES = ["packages/host-service", "packages/cli"];
 export const DAEMON_PACKAGE = "packages/pty-daemon";
 
@@ -145,6 +146,35 @@ export async function repoRoot(): Promise<string> {
 export function readVersion(root: string, pkgDir: string): string {
 	const file = join(root, pkgDir, "package.json");
 	return JSON.parse(readFileSync(file, "utf8")).version;
+}
+
+/** Read the native Tauri package version from Cargo.toml. */
+export function readTauriVersion(root: string): string {
+	const file = join(root, TAURI_PACKAGE, "Cargo.toml");
+	const source = readFileSync(file, "utf8");
+	const packageSection = source.match(/\[package\]([\s\S]*?)(?=\n\[|$)/)?.[1];
+	const version = packageSection?.match(/^version\s*=\s*"([^"]+)"/m)?.[1];
+	if (!version)
+		throw new Error(`Could not read ${TAURI_PACKAGE}/Cargo.toml version`);
+	return version;
+}
+
+/** Keep Cargo's package version aligned with desktop on desktop releases. */
+export async function writeTauriVersion(
+	root: string,
+	version: string,
+): Promise<void> {
+	const file = join(root, TAURI_PACKAGE, "Cargo.toml");
+	const source = readFileSync(file, "utf8");
+	const packageSection = source.match(/\[package\]([\s\S]*?)(?=\n\[|$)/);
+	if (!packageSection || !/^version\s*=\s*"[^"]+"/m.test(packageSection[1])) {
+		throw new Error(`Could not write ${TAURI_PACKAGE}/Cargo.toml version`);
+	}
+	const updatedSection = packageSection[1].replace(
+		/^(version\s*=\s*")[^"]+(")/m,
+		`$1${version}$2`,
+	);
+	writeFileSync(file, source.replace(packageSection[1], updatedSection));
 }
 
 /** Write a package's version and reformat it with biome (matches repo style). */
@@ -333,6 +363,7 @@ export async function findWorkflowRun(
 export async function assertUnified(root: string): Promise<{
 	desktop: string;
 	entries: { name: string; version: string }[];
+	tauri: { name: string; version: string };
 	errors: string[];
 }> {
 	const desktop = readVersion(root, DESKTOP_PACKAGE);
@@ -340,5 +371,10 @@ export async function assertUnified(root: string): Promise<{
 		name,
 		version: readVersion(root, name),
 	}));
-	return { desktop, entries, errors: unifiedErrors(desktop, entries) };
+	const tauri = { name: TAURI_PACKAGE, version: readTauriVersion(root) };
+	const errors = unifiedErrors(desktop, entries);
+	if (tauri.version !== desktop) {
+		errors.push(`${tauri.name} '${tauri.version}' != desktop '${desktop}'`);
+	}
+	return { desktop, entries, tauri, errors };
 }

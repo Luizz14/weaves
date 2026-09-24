@@ -13,37 +13,48 @@ let supervisor: DaemonSupervisor | null = null;
 let bootstrapPromise: Promise<unknown> | null = null;
 
 /**
- * Resolve the daemon entry script path. In production, host-service.js and
- * pty-daemon.js are bundled side-by-side in the same dist directory. In
- * dev (running from source under bun), we fall back to the workspace
- * package's `dist/pty-daemon.js`. Either is fine — both are real Node
- * scripts.
+ * Resolve the daemon entry script path. In production, host-service.cjs and
+ * pty-daemon.cjs are emitted into the desktop main root. In dev, fall back to
+ * the workspace package's built entry.
  */
 export function resolveSupervisorScriptPath(): string {
 	const override = process.env.SUPERSET_PTY_DAEMON_SCRIPT_PATH;
 	if (override) return override;
 
 	const here = path.dirname(fileURLToPath(import.meta.url));
-	// Production / dev (electron-vite bundle): host-service.js and
-	// pty-daemon.js are emitted side-by-side in the same dist directory,
-	// so `here` and the daemon entry share a parent.
-	const sideBySide = path.resolve(here, "pty-daemon.js");
-	if (existsSync(sideBySide)) return sideBySide;
+	// The desktop Vite build can place this module in chunks/, while the
+	// pty-daemon entry remains in the main root.
+	for (const directory of [here, path.resolve(here, "..")]) {
+		for (const fileName of ["pty-daemon.cjs", "pty-daemon.js"]) {
+			const candidate = path.resolve(directory, fileName);
+			if (existsSync(candidate)) return candidate;
+		}
+	}
 
 	// Source-running fallback (`bun run` from packages/host-service):
 	// `here` is `packages/host-service/src/daemon/`; the daemon's bundled
-	// entry sits at `packages/pty-daemon/dist/pty-daemon.js` after
-	// `bun run build:daemon` in that package.
-	const workspaceDist = path.resolve(
+	// entry sits in `packages/pty-daemon/dist` after its build.
+	for (const fileName of ["pty-daemon.cjs", "pty-daemon.js"]) {
+		const workspaceDist = path.resolve(
+			here,
+			"..",
+			"..",
+			"..",
+			"pty-daemon",
+			"dist",
+			fileName,
+		);
+		if (existsSync(workspaceDist)) return workspaceDist;
+	}
+	return path.resolve(
 		here,
 		"..",
 		"..",
 		"..",
 		"pty-daemon",
 		"dist",
-		"pty-daemon.js",
+		"pty-daemon.cjs",
 	);
-	return workspaceDist;
 }
 
 export function getSupervisor(scriptPath?: string): DaemonSupervisor {

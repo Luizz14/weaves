@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Superset needs microphone access so voice-enabled tools like Codex transcription can capture audio input.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Superset needs access to your local network to discover and connect to development servers running on your network.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_http._tcp</string>
+		<string>_https._tcp</string>
+	</array>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>Superset needs to interact with other applications to run terminal commands and development tools.</string>
+</dict>
+</plist>

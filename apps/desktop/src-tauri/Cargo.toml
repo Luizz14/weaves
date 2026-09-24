@@ -1,0 +1,48 @@
+[package]
+name = "superset-desktop-native"
+version = "1.29.0"
+edition = "2024"
+rust-version = "1.95"
+publish = false
+
+[lib]
+name = "superset_desktop_native"
+
+[build-dependencies]
+tauri-build = { path = "../../../.cache/tauri-runtime/source/crates/tauri-build", features = [] }
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri = { path = "../../../.cache/tauri-runtime/source/crates/tauri", features = ["unstable", "tray-icon", "image-png", "devtools"] }
+tauri-runtime-cef = { path = "../../../.cache/tauri-runtime/source/crates/tauri-runtime-cef", features = ["unstable", "devtools"] }
+tauri-plugin-updater = { git = "https://github.com/tauri-apps/plugins-workspace", rev = "735ace7a5b2300b7a1dcd165467e34588d9ce03b", package = "tauri-plugin-updater", default-features = false, features = ["rustls-tls"] }
+tauri-plugin-dialog = { git = "https://github.com/tauri-apps/plugins-workspace", rev = "735ace7a5b2300b7a1dcd165467e34588d9ce03b", package = "tauri-plugin-dialog", default-features = false, features = ["xdg-portal"] }
+dirs = "7"
+base64 = "0.22"
+http = "1"
+sha2 = "0.10"
+url = "2"
+
+[patch.crates-io]
+tauri = { path = "../../../.cache/tauri-runtime/source/crates/tauri" }
+tauri-runtime = { path = "../../../.cache/tauri-runtime/source/crates/tauri-runtime" }
+tauri-runtime-cef = { path = "../../../.cache/tauri-runtime/source/crates/tauri-runtime-cef" }
+tauri-build = { path = "../../../.cache/tauri-runtime/source/crates/tauri-build" }
+tauri-codegen = { path = "../../../.cache/tauri-runtime/source/crates/tauri-codegen" }
+tauri-macros = { path = "../../../.cache/tauri-runtime/source/crates/tauri-macros" }
+tauri-plugin = { path = "../../../.cache/tauri-runtime/source/crates/tauri-plugin" }
+tauri-utils = { path = "../../../.cache/tauri-runtime/source/crates/tauri-utils" }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true
+
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2-application-services = { version = "0.3", default-features = false, features = ["HIServices", "AXUIElement", "Processes"] }
+block2 = "=0.6.2"
+objc2 = "=0.6.4"
+objc2-foundation = { version = "=0.3.2", default-features = false, features = ["NSArray", "NSError", "NSObject", "NSSet", "NSString", "std"] }
+objc2-user-notifications = { version = "=0.3.2", default-features = false, features = ["UNNotification", "UNNotificationAction", "UNNotificationCategory", "UNNotificationContent", "UNNotificationRequest", "UNNotificationResponse", "UNNotificationSound", "UNNotificationTrigger", "UNUserNotificationCenter", "bitflags", "block2", "std"] }
+libc = "0.2"

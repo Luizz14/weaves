@@ -1,5 +1,8 @@
 import { describe, expect, test } from "bun:test";
-import { DesignModeController } from "./design-mode-controller";
+import {
+	type BrowserGuest,
+	DesignModeController,
+} from "./design-mode-controller";
 
 type Handler = (...args: unknown[]) => void;
 
@@ -42,7 +45,7 @@ function makeGuest() {
 	};
 
 	return {
-		guest: guest as unknown as Electron.WebContents,
+		guest: guest as unknown as BrowserGuest,
 		injected,
 		emit: (event: string, ...args: unknown[]) => {
 			for (const handler of handlers.get(event) ?? []) handler(...args);

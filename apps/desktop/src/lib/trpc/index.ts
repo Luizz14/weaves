@@ -54,7 +54,7 @@ const sentryMiddleware = t.middleware(async ({ next, path, type }) => {
 		const originalError = error.cause instanceof Error ? error.cause : error;
 
 		try {
-			const Sentry = await import("@sentry/electron/main");
+			const Sentry = await import("@sentry/node");
 
 			Sentry.captureException(originalError, {
 				tags: {

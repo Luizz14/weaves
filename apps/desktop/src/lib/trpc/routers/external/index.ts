@@ -8,9 +8,9 @@ import {
 } from "@superset/local-db";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
-import { app, clipboard, shell } from "electron";
 import { localDb } from "main/lib/local-db";
 import { externalUrlLogLabel, isSafeExternalUrl } from "main/lib/safe-url";
+import { getNativePath, invokeNative } from "main/native/platform";
 import { z } from "zod";
 import { publicProcedure, router } from "../..";
 import { getWorkspace } from "../workspaces/utils/db-helpers";
@@ -94,7 +94,7 @@ async function openPathInApp(
 	}
 
 	if (app === "finder") {
-		shell.showItemInFolder(filePath);
+		await invokeNative("shell.showItemInFolder", { path: filePath });
 		return;
 	}
 
@@ -117,7 +117,10 @@ async function openPathInApp(
 		throw lastError;
 	}
 
-	await shell.openPath(filePath);
+	const errorMessage = await invokeNative<string>("shell.openPath", {
+		path: filePath,
+	});
+	if (errorMessage) throw new Error(errorMessage);
 }
 
 /**
@@ -138,7 +141,7 @@ export const createExternalRouter = () => {
 				});
 			}
 			try {
-				await shell.openExternal(input);
+				await invokeNative("shell.openExternal", { url: input });
 			} catch (error) {
 				const errorMessage =
 					error instanceof Error ? error.message : "Unknown error";
@@ -157,7 +160,7 @@ export const createExternalRouter = () => {
 		openInFinder: publicProcedure
 			.input(z.string())
 			.mutation(async ({ input }) => {
-				shell.showItemInFolder(input);
+				await invokeNative("shell.showItemInFolder", { path: input });
 			}),
 
 		// Opens a folder itself in Finder (like `open <path>`), rather than
@@ -171,7 +174,9 @@ export const createExternalRouter = () => {
 						message: `openFolderInFinder requires an absolute path (got ${JSON.stringify(input)}).`,
 					});
 				}
-				const errorMessage = await shell.openPath(input);
+				const errorMessage = await invokeNative<string>("shell.openPath", {
+					path: input,
+				});
 				if (errorMessage) {
 					throw new TRPCError({
 						code: "INTERNAL_SERVER_ERROR",
@@ -190,7 +195,7 @@ export const createExternalRouter = () => {
 			)
 			.mutation(async ({ input }) => {
 				const safeName = nodePath.basename(input.filename) || "download";
-				const downloadsDir = app.getPath("downloads");
+				const downloadsDir = getNativePath("downloads");
 				const { name, ext } = nodePath.parse(safeName);
 				let target = nodePath.join(downloadsDir, safeName);
 				for (let i = 1; fs.existsSync(target); i++) {
@@ -245,11 +250,11 @@ export const createExternalRouter = () => {
 			}),
 
 		copyPath: publicProcedure.input(z.string()).mutation(async ({ input }) => {
-			clipboard.writeText(input);
+			await invokeNative("clipboard.writeText", { text: input });
 		}),
 
 		copyText: publicProcedure.input(z.string()).mutation(async ({ input }) => {
-			clipboard.writeText(input);
+			await invokeNative("clipboard.writeText", { text: input });
 		}),
 
 		resolvePath: publicProcedure
@@ -326,7 +331,10 @@ export const createExternalRouter = () => {
 						// No preferred editor configured yet.
 						// Fall back to OS default file handler so Cmd/Ctrl+click still works
 						// even when Cursor (or any specific editor) isn't installed.
-						await shell.openPath(filePath);
+						const errorMessage = await invokeNative<string>("shell.openPath", {
+							path: filePath,
+						});
+						if (errorMessage) throw new Error(errorMessage);
 						return;
 					}
 

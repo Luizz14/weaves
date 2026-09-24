@@ -3,7 +3,7 @@
  *
  * The supervisor (in @superset/host-service) spawns this script as the
  * daemon process. We need a desktop-side entry so electron-vite emits
- * `apps/desktop/dist/main/pty-daemon.js` alongside `host-service.js` —
+ * `apps/desktop/dist/main/pty-daemon.cjs` alongside `host-service.cjs` —
  * the supervisor's `sideBySide` script-path resolution looks for the
  * daemon binary right next to its own bundle.
  *

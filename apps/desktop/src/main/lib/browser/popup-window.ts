@@ -7,10 +7,18 @@
  * panes and let popups stay real popups — see `resolveWindowOpen` in
  * browser-manager.
  */
+export type BrowserPopupDisposition =
+	| "new-window"
+	| "new-popup"
+	| "foreground-tab"
+	| "background-tab"
+	| "default"
+	| "other";
+
 export function isPopupDisposition(
-	disposition: Electron.HandlerDetails["disposition"],
+	disposition: BrowserPopupDisposition | string,
 ): boolean {
-	return disposition === "new-window";
+	return disposition === "new-window" || disposition === "new-popup";
 }
 
 /**
@@ -98,7 +106,10 @@ function isBlankPopupUrl(url: string): boolean {
  * handshake that cannot survive losing its opener.
  */
 export function shouldOpenAsPopup(
-	details: Pick<Electron.HandlerDetails, "disposition" | "url">,
+	details: Pick<
+		{ disposition: BrowserPopupDisposition | string; url: string },
+		"disposition" | "url"
+	>,
 ): boolean {
 	return (
 		isPopupDisposition(details.disposition) ||
@@ -121,12 +132,12 @@ export function shouldOpenAsPopup(
  * `did-create-window`, which Electron fires before the popup's first
  * `will-navigate`, so the guard always sees the mark in time.
  */
-const panePopupContents = new WeakSet<Electron.WebContents>();
+const panePopupContents = new WeakSet<object>();
 
-export function markBrowserPanePopup(contents: Electron.WebContents): void {
+export function markBrowserPanePopup(contents: object): void {
 	panePopupContents.add(contents);
 }
 
-export function isBrowserPanePopup(contents: Electron.WebContents): boolean {
+export function isBrowserPanePopup(contents: object): boolean {
 	return panePopupContents.has(contents);
 }

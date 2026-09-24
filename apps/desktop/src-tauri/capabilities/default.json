@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Trusted Superset application renderer permissions",
+  "webviews": ["main", "main-*"],
+  "permissions": ["core:default"]
+}

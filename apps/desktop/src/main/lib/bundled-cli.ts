@@ -10,7 +10,11 @@ import {
 } from "node:fs";
 import path from "node:path";
 import { getBinDir } from "@superset/agent-setup/paths";
-import { app } from "electron";
+import {
+	getNativePath,
+	getNativeRuntimeMetadata,
+	isNativePackaged,
+} from "main/native/platform";
 
 export const BUNDLED_CLI_SHIM_MARKER = "# Superset bundled CLI shim v1";
 const SHIM_HEADER_BYTES = 2048;
@@ -48,7 +52,7 @@ function quoteCmdLiteral(value: string): string {
  * the addresses travel in the shim rather than being compiled into the CLI.
  */
 function devStackAddresses(): Array<[string, string]> {
-	if (app.isPackaged) return [];
+	if (isNativePackaged()) return [];
 	const api = process.env.NEXT_PUBLIC_API_URL;
 	const web = process.env.NEXT_PUBLIC_WEB_URL;
 	return [
@@ -83,12 +87,20 @@ ${exports}exec ${quoteShellLiteral(bundledCliPath)} "$@"
 function getBundledCliCandidates(platform: NodeJS.Platform): string[] {
 	const binaryName = getBundledCliBinaryName(platform);
 	const candidates = [
-		app.isPackaged
-			? path.join(process.resourcesPath, "resources/bin", binaryName)
+		isNativePackaged()
+			? path.join(getNativePath("resources"), "resources/bin", binaryName)
 			: null,
 		path.join(__dirname, "../resources/bin", binaryName),
-		path.join(app.getAppPath(), "dist/resources/bin", binaryName),
-		path.resolve(app.getAppPath(), "../../packages/cli/dist", binaryName),
+		path.join(
+			getNativeRuntimeMetadata()?.appPath ?? process.cwd(),
+			"dist/resources/bin",
+			binaryName,
+		),
+		path.resolve(
+			getNativeRuntimeMetadata()?.appPath ?? process.cwd(),
+			"../../packages/cli/dist",
+			binaryName,
+		),
 	];
 
 	return candidates.filter((candidate): candidate is string => !!candidate);

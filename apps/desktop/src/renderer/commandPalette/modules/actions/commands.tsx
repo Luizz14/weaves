@@ -89,6 +89,7 @@ const PREVIEW_NOTICES = {
 } satisfies Record<string, DesktopNotice>;
 
 const PREVIEW_KEYWORDS = ["notice", "popup", "dev", "preview", "test"];
+const PERSONAL_INSTALL_BUILD = process.env.TAURI_PERSONAL_INSTALL === "1";
 
 function cycleTheme(): void {
 	const current = useThemeStore.getState().activeThemeId;
@@ -181,30 +182,34 @@ export const actionsProvider: CommandProvider = {
 				keywords: ["hotkeys"],
 				run: (ctx) => ctx.navigate("/settings/keyboard"),
 			},
-			{
-				id: "actions.checkUpdates",
-				title: msg({
-					message: "Check for updates",
-				}),
-				section: "actions",
-				icon: RefreshCwIcon,
-				keywords: ["update", "upgrade"],
-				run: async () => {
-					try {
-						await electronTrpcClient.autoUpdate.checkInteractive.mutate();
-					} catch (error) {
-						const message = errorMessage(error);
-						toast.error(
-							i18n._({
-								...msg({
-									message: "Failed to check for updates: {message}",
-								}),
-								values: { message },
+			...(!PERSONAL_INSTALL_BUILD
+				? [
+						{
+							id: "actions.checkUpdates",
+							title: msg({
+								message: "Check for updates",
 							}),
-						);
-					}
-				},
-			},
+							section: "actions" as const,
+							icon: RefreshCwIcon,
+							keywords: ["update", "upgrade"],
+							run: async () => {
+								try {
+									await electronTrpcClient.autoUpdate.checkInteractive.mutate();
+								} catch (error) {
+									const message = errorMessage(error);
+									toast.error(
+										i18n._({
+											...msg({
+												message: "Failed to check for updates: {message}",
+											}),
+											values: { message },
+										}),
+									);
+								}
+							},
+						},
+					]
+				: []),
 			{
 				id: "actions.newWindow",
 				title: msg({

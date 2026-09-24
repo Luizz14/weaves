@@ -1,4 +1,4 @@
-import type { BrowserWindow } from "electron";
+import type { NativeWindowHandle } from "main/native/platform";
 
 /**
  * Tracks every open platform window and the organization it currently shows.
@@ -9,12 +9,12 @@ import type { BrowserWindow } from "electron";
  * used by Milestone 2 (per-window organization context); Milestone 1 only needs
  * the open-window tracking and focus resolution.
  *
- * The module deliberately imports `BrowserWindow` as a type only (erased at
- * compile time) and never calls into Electron at runtime, so it can be unit
- * tested with plain stub objects exposing `id` and `isDestroyed()`.
+ * The registry stores native window handles and never calls into the native
+ * transport itself, so it can be unit tested with plain stub objects exposing
+ * `id` and `isDestroyed()`.
  */
 export interface WindowEntry {
-	window: BrowserWindow;
+	window: NativeWindowHandle;
 	orgId: string | null;
 	/**
 	 * Stable across relaunches, unlike `window.id`. Anything persisted per
@@ -43,7 +43,7 @@ export function registerWindow({
 	orgId,
 	key,
 }: {
-	window: BrowserWindow;
+	window: NativeWindowHandle;
 	orgId: string | null;
 	key: string;
 }): void {
@@ -98,8 +98,8 @@ export function getOrg(windowId: number): string | null {
 }
 
 /** All live (non-destroyed) windows currently registered. */
-export function getAllWindows(): BrowserWindow[] {
-	const windows: BrowserWindow[] = [];
+export function getAllWindows(): NativeWindowHandle[] {
+	const windows: NativeWindowHandle[] = [];
 	for (const entry of registry.values()) {
 		if (!entry.window.isDestroyed()) {
 			windows.push(entry.window);
@@ -113,7 +113,7 @@ export function getAllWindows(): BrowserWindow[] {
  * links) when no specific window is implied. Prefers the most-recently-focused
  * live window; returns null if no live windows remain.
  */
-export function getFocusedOrLastWindow(): BrowserWindow | null {
+export function getFocusedOrLastWindow(): NativeWindowHandle | null {
 	for (let i = focusOrder.length - 1; i >= 0; i--) {
 		const entry = registry.get(focusOrder[i]);
 		if (entry && !entry.window.isDestroyed()) {

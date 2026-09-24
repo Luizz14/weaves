@@ -5,8 +5,8 @@ export type ZoomTarget =
 
 /**
  * What a zoom shortcut acts on, from keyboard focus: xterm's hidden textarea
- * means a terminal, a `<webview>` means that browser pane's page (a guest
- * keystroke is forwarded with the webview still focused), anything else the
+ * means a terminal, a native browser child view means that browser pane's page
+ * (a guest keystroke is forwarded while the child view is focused), anything else the
  * whole app.
  */
 export function resolveZoomTarget(

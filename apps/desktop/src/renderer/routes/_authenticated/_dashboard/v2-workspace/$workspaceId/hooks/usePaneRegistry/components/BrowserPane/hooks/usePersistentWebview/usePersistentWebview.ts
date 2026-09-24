@@ -1,6 +1,7 @@
 import type { RendererContext } from "@superset/panes";
 import { useParams } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useZoomFactor } from "renderer/hooks/useZoomFactor";
 import { replayForwardedKey } from "renderer/hotkeys";
 import { electronTrpcClient } from "renderer/lib/trpc-client";
 import type {
@@ -20,7 +21,7 @@ export function usePersistentWebview({
 	ctx,
 }: UsePersistentWebviewOptions) {
 	const placeholderRef = useRef<HTMLDivElement | null>(null);
-	// The registry's host layer above this pane's webview; pane UI that must
+	// The registry's host layer above this pane's native page; pane UI that must
 	// cover the page portals into it. Null until attached.
 	const [overlayContainer, setOverlayContainer] = useState<HTMLElement | null>(
 		null,
@@ -30,6 +31,7 @@ export function usePersistentWebview({
 	// Workspace scoping for the browser bridge (CLI/agent control). Panes only
 	// render inside the $workspaceId route, so this is always present.
 	const { workspaceId } = useParams({ strict: false });
+	const appZoomFactor = useZoomFactor();
 
 	const paneData = ctx.pane.data as BrowserPaneData;
 	// Read through a ref so attach keys on paneId alone: navigation echoes
@@ -39,6 +41,10 @@ export function usePersistentWebview({
 	// at first mount.
 	const attachUrlRef = useRef(paneData.url || DEFAULT_BROWSER_URL);
 	attachUrlRef.current = paneData.url || DEFAULT_BROWSER_URL;
+
+	useEffect(() => {
+		browserRuntimeRegistry.setAppZoomFactor(appZoomFactor);
+	}, [appZoomFactor]);
 
 	useEffect(() => {
 		const placeholder = placeholderRef.current;
@@ -127,7 +133,7 @@ export function usePersistentWebview({
 			{ onData: replayForwardedKey },
 		);
 		// Clicking anywhere in a pane activates it, but a click inside the
-		// webview never reaches the pane's own mousedown handler — the guest is
+		// native child view never reaches the pane's own mousedown handler — the guest is
 		// a separate WebContents hoisted out of the pane tree. The main process
 		// reports the guest gaining focus instead, so the pane activates itself.
 		const paneFocusSub = electronTrpcClient.browser.onPaneFocus.subscribe(

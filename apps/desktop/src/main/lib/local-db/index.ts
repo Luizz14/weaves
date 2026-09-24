@@ -6,7 +6,11 @@ import { runMigrations } from "@superset/shared/sqlite-migrations";
 
 import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
-import { app } from "electron";
+import {
+	getNativePath,
+	getNativeRuntimeMetadata,
+	isNativePackaged,
+} from "main/native/platform";
 import { validate as uuidValidate, version as uuidVersion } from "uuid";
 import { env } from "../../env.main";
 import {
@@ -29,20 +33,21 @@ ensureSupersetHomeDirExists();
  * - Test environment: Use monorepo path relative to __dirname
  */
 function getMigrationsDirectory(): string {
-	// Check if running in Electron (app.getAppPath exists)
-	const isElectron =
-		typeof app?.getAppPath === "function" &&
-		typeof app?.isPackaged === "boolean";
-
-	if (isElectron && app.isPackaged) {
-		return join(process.resourcesPath, "resources/migrations");
+	if (isNativePackaged()) {
+		return join(
+			getNativeRuntimeMetadata()?.resourcePath ?? getNativePath("resources"),
+			"resources/migrations",
+		);
 	}
 
 	const isDev = env.NODE_ENV === "development";
 
-	if (isElectron && isDev) {
+	if (isDev) {
 		// Development: source files in monorepo
-		return join(app.getAppPath(), "../../packages/local-db/drizzle");
+		return join(
+			getNativeRuntimeMetadata()?.appPath ?? process.cwd(),
+			"../../packages/local-db/drizzle",
+		);
 	}
 
 	// Preview mode or test: __dirname is dist/main, so go up one level to dist/resources/migrations
@@ -61,12 +66,12 @@ function getMigrationsDirectory(): string {
 		return monorepoPath;
 	}
 
-	// Try Electron app path if available
-	if (isElectron) {
-		const srcPath = join(app.getAppPath(), "../../packages/local-db/drizzle");
-		if (existsSync(srcPath)) {
-			return srcPath;
-		}
+	const srcPath = join(
+		getNativeRuntimeMetadata()?.appPath ?? process.cwd(),
+		"../../packages/local-db/drizzle",
+	);
+	if (existsSync(srcPath)) {
+		return srcPath;
 	}
 
 	console.warn(`[local-db] Migrations directory not found at: ${previewPath}`);

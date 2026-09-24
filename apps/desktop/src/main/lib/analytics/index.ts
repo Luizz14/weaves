@@ -1,5 +1,5 @@
-import { app } from "electron";
 import { env } from "main/env.main";
+import { getNativeAppVersion } from "main/native/platform";
 import { PostHog } from "posthog-node";
 import { DEFAULT_TELEMETRY_ENABLED } from "shared/constants";
 
@@ -53,7 +53,7 @@ export function track(
 				...properties,
 				app_name: "desktop",
 				platform: process.platform,
-				desktop_version: app.getVersion(),
+				desktop_version: getNativeAppVersion(),
 			},
 		});
 	}

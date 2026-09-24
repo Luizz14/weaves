@@ -1,5 +1,25 @@
 import { describe, expect, test } from "bun:test";
-import { shouldShowGitHubAvatar } from "./ProjectThumbnail";
+import {
+	normalizeProjectIconUrl,
+	shouldShowGitHubAvatar,
+} from "./ProjectThumbnail";
+
+describe("normalizeProjectIconUrl", () => {
+	test("maps legacy and native HTTP icon URLs to the HTTPS CEF host", () => {
+		expect(normalizeProjectIconUrl("superset-icon://projects/p1?v=1")).toBe(
+			"https://superset-icon.localhost/projects/p1?v=1",
+		);
+		expect(
+			normalizeProjectIconUrl("http://superset-icon.localhost/projects/p1?v=1"),
+		).toBe("https://superset-icon.localhost/projects/p1?v=1");
+	});
+
+	test("leaves external icon URLs unchanged", () => {
+		expect(normalizeProjectIconUrl("https://example.com/icon.png")).toBe(
+			"https://example.com/icon.png",
+		);
+	});
+});
 
 describe("shouldShowGitHubAvatar", () => {
 	test("hides avatar when hideImage is true", () => {

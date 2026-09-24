@@ -9,9 +9,9 @@ import { observable } from "@trpc/server/observable";
 let globalOperationId = Date.now();
 
 /**
- * Assigns globally unique operation IDs to prevent collisions between
- * the React client and proxy client (each creates separate IPCClients
- * that both receive all IPC responses and match by ID).
+ * Assigns globally unique operation IDs to prevent collisions between the
+ * React client and proxy client. The native link converts the tRPC number to
+ * a string at the transport boundary, where sidecar IDs are strings.
  */
 export function sessionIdLink<TRouter extends AnyRouter>(): TRPCLink<TRouter> {
 	return () => {

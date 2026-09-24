@@ -9,6 +9,7 @@
  */
 
 import { type ChildProcess, spawn } from "node:child_process";
+import { existsSync } from "node:fs";
 import type { Socket } from "node:net";
 import * as path from "node:path";
 import {
@@ -279,13 +280,20 @@ export class Session {
 			? getCommandShellArgs(this.shell, this.command)
 			: getShellArgs(this.shell);
 		this.spawnArgs = shellArgs;
-		const subprocessPath = path.join(__dirname, "pty-subprocess.js");
+		const sideBySideSubprocessPath = path.join(__dirname, "pty-subprocess.cjs");
+		const mainRootSubprocessPath = path.join(
+			__dirname,
+			"..",
+			"pty-subprocess.cjs",
+		);
+		const subprocessPath = existsSync(sideBySideSubprocessPath)
+			? sideBySideSubprocessPath
+			: mainRootSubprocessPath;
 
 		// Spawn subprocess with filtered env to prevent leaking NODE_ENV etc.
-		const electronPath = process.execPath;
-		this.subprocess = this.spawnProcess(electronPath, [subprocessPath], {
+		this.subprocess = this.spawnProcess(process.execPath, [subprocessPath], {
 			stdio: ["pipe", "pipe", "inherit"],
-			env: { ...processEnv, ELECTRON_RUN_AS_NODE: "1" },
+			env: processEnv,
 		});
 
 		// Read framed messages from subprocess stdout

@@ -1,0 +1,51 @@
+{
+  "$schema": "../../../.cache/tauri-runtime/source/crates/tauri-cli/config.schema.json",
+  "productName": "Superset",
+  "version": "1.29.0",
+  "identifier": "com.superset.desktop",
+  "build": {
+    "devUrl": "http://127.0.0.1:5173",
+    "frontendDist": "../dist/renderer"
+  },
+  "app": {
+    "withGlobalTauri": false,
+    "windows": [],
+    "security": {
+      "capabilities": ["default"]
+    }
+  },
+  "bundle": {
+    "active": true,
+    "createUpdaterArtifacts": true,
+    "resources": {
+      "../dist/node": "node",
+      "../dist/node_modules": "node_modules",
+      "../dist/main": "main",
+      "../dist/resources": "resources",
+      "../src/resources/tray/iconTemplate.png": "tray/iconTemplate.png",
+      "../src/resources/build/icons": "icons"
+    },
+    "icon": [
+      "../src/resources/build/icons/icon.icns",
+      "../src/resources/build/icons/icon.png",
+      "../src/resources/build/icons/icon.ico"
+    ],
+    "category": "Utility",
+    "shortDescription": "The last developer tool you'll ever need",
+    "macOS": {
+      "minimumSystemVersion": "13.5",
+      "hardenedRuntime": true,
+      "entitlements": "../src/resources/build/entitlements.mac.plist",
+      "infoPlist": "Info.plist"
+    }
+  },
+  "plugins": {
+    "updater": {
+      "endpoints": [
+        "https://github.com/superset-sh/superset/releases/latest/download/latest.json"
+      ],
+      "pubkey": "__SUPERSET_TAURI_UPDATER_PUBKEY__",
+      "requireSignedVersion": true
+    }
+  }
+}

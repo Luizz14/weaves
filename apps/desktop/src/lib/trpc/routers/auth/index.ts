@@ -2,9 +2,9 @@ import crypto from "node:crypto";
 import { AUTH_PROVIDERS } from "@superset/shared/constants";
 import { getHostId, getHostName } from "@superset/shared/host-info";
 import { observable } from "@trpc/server/observable";
-import { shell } from "electron";
 import { env } from "main/env.main";
 import { getHostServiceCoordinator } from "main/lib/host-service-coordinator";
+import { invokeNative } from "main/native/platform";
 import { PLATFORM, PROTOCOL_SCHEME } from "shared/constants";
 import { env as sharedEnv } from "shared/env.shared";
 import { z } from "zod";
@@ -110,7 +110,9 @@ export const createAuthRouter = () => {
 							`http://127.0.0.1:${sharedEnv.DESKTOP_NOTIFICATIONS_PORT}/auth/callback`,
 						);
 					}
-					await shell.openExternal(connectUrl.toString());
+					await invokeNative("shell.openExternal", {
+						url: connectUrl.toString(),
+					});
 					return { success: true };
 				} catch (err) {
 					return {

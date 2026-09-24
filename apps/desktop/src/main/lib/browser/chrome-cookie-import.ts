@@ -6,7 +6,31 @@ import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
 import Database from "better-sqlite3";
-import type { Session } from "electron";
+
+export interface BrowserCookie {
+	domain?: string;
+	name: string;
+	value: string;
+	path?: string;
+	secure?: boolean;
+	httpOnly?: boolean;
+	/** True when the cookie is session-scoped rather than persistent. */
+	session?: boolean;
+	sameSite?: ImportedCookie["sameSite"];
+	expirationDate?: number;
+}
+
+export interface BrowserCookieSession {
+	cookies: {
+		get(details?: unknown): Promise<BrowserCookie[]>;
+		remove(url: string, name: string): Promise<void>;
+		set(cookie: BrowserCookieSetDetails | ImportedCookie): Promise<void>;
+	};
+}
+
+export interface BrowserCookieSetDetails extends BrowserCookie {
+	url: string;
+}
 
 const execFileAsync = promisify(execFile);
 
@@ -36,6 +60,18 @@ const SAFE_STORAGE_SERVICE: Record<string, string> = {
 	dia: "Dia Safe Storage",
 	comet: "Comet Safe Storage",
 };
+
+export interface CookieKeychainIdentity {
+	service: string;
+	account: string;
+}
+
+export interface CookieProfileReadResult {
+	cookies: ImportedCookie[];
+	keyUnavailable: boolean;
+	skipped: number;
+	sourceAvailable: boolean;
+}
 
 export interface ImportedCookie {
 	url: string;
@@ -80,16 +116,18 @@ export function safeStorageServiceFor(browserKey: string): string | null {
  */
 export async function readSafeStorageKey(
 	browserKey: string,
+	identity?: CookieKeychainIdentity,
 ): Promise<string | null> {
 	if (process.platform !== "darwin") return null;
-	const service = safeStorageServiceFor(browserKey);
+	const service = identity?.service ?? safeStorageServiceFor(browserKey);
 	if (!service) return null;
+	const args = ["find-generic-password", "-s", service];
+	if (identity) args.push("-a", identity.account);
+	args.push("-w");
 	try {
-		const { stdout } = await execFileAsync(
-			"security",
-			["find-generic-password", "-s", service, "-w"],
-			{ timeout: 10_000 },
-		);
+		const { stdout } = await execFileAsync("security", args, {
+			timeout: 10_000,
+		});
 		return stdout.trim() || null;
 	} catch {
 		return null;
@@ -234,11 +272,35 @@ export async function readCookiesFromProfile(
 	profileDir: string,
 	browserKey: string,
 ): Promise<ImportedCookie[]> {
-	const source = path.join(profileDir, "Cookies");
-	if (!existsSync(source)) return [];
+	return (await readCookiesFromProfileWithStatus(profileDir, browserKey))
+		.cookies;
+}
 
-	const safeStorageKey = await readSafeStorageKey(browserKey);
-	if (!safeStorageKey) return [];
+/** Reads a profile without conflating an empty database with unavailable crypto. */
+export async function readCookiesFromProfileWithStatus(
+	profileDir: string,
+	browserKey: string,
+	identity?: CookieKeychainIdentity,
+): Promise<CookieProfileReadResult> {
+	const source = path.join(profileDir, "Cookies");
+	if (!existsSync(source)) {
+		return {
+			cookies: [],
+			keyUnavailable: false,
+			skipped: 0,
+			sourceAvailable: false,
+		};
+	}
+
+	const safeStorageKey = await readSafeStorageKey(browserKey, identity);
+	if (!safeStorageKey) {
+		return {
+			cookies: [],
+			keyUnavailable: true,
+			skipped: 0,
+			sourceAvailable: true,
+		};
+	}
 	const key = deriveCookieKey(safeStorageKey);
 
 	const tempDir = mkdtempSync(
@@ -261,11 +323,18 @@ export async function readCookiesFromProfile(
 				)
 				.all() as ChromeCookieRow[];
 			const cookies: ImportedCookie[] = [];
+			let skipped = 0;
 			for (const row of rows) {
 				const cookie = mapCookieRow(row, key);
 				if (cookie) cookies.push(cookie);
+				else skipped++;
 			}
-			return cookies;
+			return {
+				cookies,
+				keyUnavailable: false,
+				skipped,
+				sourceAvailable: true,
+			};
 		} finally {
 			db.close();
 		}
@@ -308,7 +377,7 @@ function cookieKey(hostKey: string, name: string, cookiePath: string): string {
 	return `${hostKey}|${name}|${cookiePath}`;
 }
 
-function slotOf(cookie: Electron.Cookie): string {
+function slotOf(cookie: BrowserCookie): string {
 	return cookieKey(cookie.domain ?? "", cookie.name, cookie.path ?? "/");
 }
 
@@ -338,11 +407,11 @@ function removalUrl(host: string, cookiePath: string): string {
 }
 
 function cookiesRemovedBy(
-	jar: Electron.Cookie[],
+	jar: BrowserCookie[],
 	host: string,
 	cookiePath: string,
 	name: string,
-): Electron.Cookie[] {
+): BrowserCookie[] {
 	return jar.filter(
 		(cookie) =>
 			cookie.name === name &&
@@ -352,7 +421,7 @@ function cookiesRemovedBy(
 }
 
 /** The `cookies.set` call that recreates a cookie exactly as the jar holds it. */
-function toSetDetails(cookie: Electron.Cookie): Electron.CookiesSetDetails {
+function toSetDetails(cookie: BrowserCookie): BrowserCookieSetDetails {
 	const domain = cookie.domain ?? "";
 	const cookiePath = cookie.path ?? "/";
 	return {
@@ -378,8 +447,8 @@ function toSetDetails(cookie: Electron.Cookie): Electron.CookiesSetDetails {
  * slot, twin included, are put back rather than left missing.
  */
 async function dropDottedTwins(
-	targetSession: Session,
-	jar: Electron.Cookie[],
+	targetSession: BrowserCookieSession,
+	jar: BrowserCookie[],
 	slots: Array<{ host: string; name: string; path: string }>,
 ): Promise<number> {
 	const doomed = new Set(
@@ -418,7 +487,7 @@ async function dropDottedTwins(
  * importer created that state for every host-only cookie in the source
  * profile, so a re-import has to clean it up rather than assume it absent.
  */
-function dottedTwinSlots(cookies: Electron.Cookie[]): Set<string> {
+function dottedTwinSlots(cookies: BrowserCookie[]): Set<string> {
 	const slots = new Set<string>();
 	for (const cookie of cookies) {
 		if (!cookie.domain?.startsWith(".")) continue;
@@ -439,7 +508,7 @@ function dottedTwinSlots(cookies: Electron.Cookie[]): Set<string> {
  * restores from the old jar is overwritten by the source's value afterwards.
  */
 export async function importCookies(
-	targetSession: Session,
+	targetSession: BrowserCookieSession,
 	cookies: ImportedCookie[],
 ): Promise<Omit<CookieImportResult, "keyUnavailable">> {
 	const accepted = cookies.filter(
@@ -487,14 +556,18 @@ export async function importCookies(
  * (a browser pane's jar), so the user's logins carry over.
  */
 export async function importCookiesIntoSession(
-	targetSession: Session,
+	targetSession: BrowserCookieSession,
 	profileDir: string,
 	browserKey: string,
 ): Promise<CookieImportResult> {
-	const cookies = await readCookiesFromProfile(profileDir, browserKey);
-	if (cookies.length === 0) {
-		return { imported: 0, skipped: 0, keyUnavailable: true };
+	const read = await readCookiesFromProfileWithStatus(profileDir, browserKey);
+	if (read.keyUnavailable) {
+		return { imported: 0, skipped: read.skipped, keyUnavailable: true };
 	}
-	const result = await importCookies(targetSession, cookies);
-	return { ...result, keyUnavailable: false };
+	const result = await importCookies(targetSession, read.cookies);
+	return {
+		...result,
+		skipped: result.skipped + read.skipped,
+		keyUnavailable: false,
+	};
 }

@@ -23,6 +23,7 @@ import {
 	incrementPatch,
 	info,
 	readVersion,
+	readTauriVersion,
 	refreshLockfile,
 	releaseDiffReport,
 	repoRoot,
@@ -30,6 +31,7 @@ import {
 	sleep,
 	success,
 	syncUnified,
+	writeTauriVersion,
 	warn,
 	writeVersion,
 } from "./lib.ts";
@@ -206,7 +208,9 @@ async function bumpUnified(
 
 	const hostOld = readVersion(root, "packages/host-service");
 	const cliOld = readVersion(root, "packages/cli");
+	const tauriOld = readTauriVersion(root);
 	await syncUnified(root, version);
+	await writeTauriVersion(root, version);
 
 	let daemonMsg = "";
 	const daemonAdd: string[] = [];
@@ -217,7 +221,7 @@ async function bumpUnified(
 	}
 	await refreshLockfile(root);
 	return {
-		message: `host-service ${hostOld} -> ${version}, cli ${cliOld} -> ${version}${daemonMsg}`,
+		message: `host-service ${hostOld} -> ${version}, cli ${cliOld} -> ${version}, tauri ${tauriOld} -> ${version}${daemonMsg}`,
 		daemonAdd,
 	};
 }
@@ -261,7 +265,7 @@ async function releaseFromHead(
 			withDaemon,
 			"desktop",
 		);
-		await $`git add ${`${DESKTOP_DIR}/package.json`} packages/host-service/package.json packages/cli/package.json ${daemonAdd} bun.lock`;
+		await $`git add ${`${DESKTOP_DIR}/package.json`} apps/desktop/src-tauri/Cargo.toml packages/host-service/package.json packages/cli/package.json ${daemonAdd} bun.lock`;
 		await $`git commit -m ${`chore(desktop): bump version to ${version} (${message})`}`;
 		success(`Committed version bump (${message})`);
 	} else {
@@ -322,7 +326,7 @@ async function releaseFromCommit(
 				withDaemon,
 				"desktop",
 			);
-			await $`git add ${`${DESKTOP_DIR}/package.json`} packages/host-service/package.json packages/cli/package.json ${daemonAdd} bun.lock`.cwd(
+			await $`git add ${`${DESKTOP_DIR}/package.json`} apps/desktop/src-tauri/Cargo.toml packages/host-service/package.json packages/cli/package.json ${daemonAdd} bun.lock`.cwd(
 				worktree,
 			);
 			await $`git commit -m ${`chore(desktop): bump version to ${version} (${message})`}`.cwd(

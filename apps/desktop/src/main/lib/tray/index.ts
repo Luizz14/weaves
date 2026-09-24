@@ -1,17 +1,7 @@
-import { existsSync } from "node:fs";
-import { join } from "node:path";
 import { msg } from "@lingui/core/macro";
 import { i18n } from "@superset/i18n";
-import {
-	app,
-	Menu,
-	type MenuItemConstructorOptions,
-	nativeImage,
-	Tray,
-} from "electron";
 import { loadToken } from "lib/trpc/routers/auth/utils/auth-functions";
 import { env } from "main/env.main";
-import { focusMainWindow, quitApp } from "main/index";
 import { checkForUpdatesInteractive } from "main/lib/auto-updater";
 import {
 	getHostServiceCoordinator,
@@ -20,67 +10,51 @@ import {
 } from "main/lib/host-service-coordinator";
 import { menuEmitter } from "main/lib/menu-events";
 import { confirmAndQuitCompletely } from "main/lib/quit-completely";
+import {
+	getFocusedNativeWindow,
+	invokeNative,
+	onNativeEventNamed,
+} from "main/native/platform";
 
-/** Must have "Template" suffix for macOS dark/light mode support */
-const TRAY_ICON_FILENAME = "iconTemplate.png";
+type NativeTrayMenuItem = {
+	label?: string;
+	enabled?: boolean;
+	type?: "separator";
+	action?: string;
+	submenu?: NativeTrayMenuItem[];
+};
 
-function getTrayIconPath(): string | null {
-	if (app.isPackaged) {
-		const prodPath = join(
-			process.resourcesPath,
-			"app.asar.unpacked/resources/tray",
-			TRAY_ICON_FILENAME,
-		);
-		if (existsSync(prodPath)) return prodPath;
-		return null;
-	}
+const PERSONAL_INSTALL_BUILD = process.env.TAURI_PERSONAL_INSTALL === "1";
+const trayActions = new Map<string, () => void>();
+let nextTrayActionId = 0;
+let trayId: string | null = null;
 
-	const previewPath = join(__dirname, "../resources/tray", TRAY_ICON_FILENAME);
-	if (existsSync(previewPath)) {
-		return previewPath;
-	}
-
-	const devPath = join(
-		app.getAppPath(),
-		"src/resources/tray",
-		TRAY_ICON_FILENAME,
-	);
-	if (existsSync(devPath)) {
-		return devPath;
-	}
-
-	console.warn("[Tray] Icon not found at:", previewPath, "or", devPath);
-	return null;
+function registerTrayAction(callback: () => void): string {
+	const id = `tray-action-${++nextTrayActionId}`;
+	trayActions.set(id, callback);
+	return id;
 }
 
-let tray: Tray | null = null;
+onNativeEventNamed("tray:action", (event) => {
+	const payload =
+		typeof event.payload === "object" && event.payload !== null
+			? (event.payload as { action?: unknown })
+			: {};
+	if (typeof payload.action === "string") trayActions.get(payload.action)?.();
+});
 
-function createTrayIcon(): Electron.NativeImage | null {
-	const iconPath = getTrayIconPath();
-	if (!iconPath) {
-		console.warn("[Tray] Icon not found");
-		return null;
+function focusMainWindow(): void {
+	const window = getFocusedNativeWindow();
+	if (window) {
+		window.show();
+		window.focus();
+	} else {
+		void invokeNative("app.activate");
 	}
+}
 
-	try {
-		let image = nativeImage.createFromPath(iconPath);
-		const size = image.getSize();
-
-		if (image.isEmpty() || size.width === 0 || size.height === 0) {
-			console.warn("[Tray] Icon loaded with zero size from:", iconPath);
-			return null;
-		}
-
-		// 16x16 is standard menu bar size, auto-scales for Retina
-		if (size.width > 22 || size.height > 22) {
-			image = image.resize({ width: 16, height: 16 });
-		}
-		image.setTemplateImage(true);
-		return image;
-	} catch (error) {
-		console.warn("[Tray] Failed to load icon:", error);
-		return null;
-	}
+function quitApp(): void {
+	void invokeNative("app.quit");
 }
 
 function openSettings(): void {
@@ -96,19 +70,18 @@ interface HostInfo {
 async function fetchHostInfo(organizationId: string): Promise<HostInfo | null> {
 	const connection = getHostServiceCoordinator().getConnection(organizationId);
 	if (!connection) return null;
-
 	const controller = new AbortController();
 	const timeout = setTimeout(() => controller.abort(), 2000);
 	try {
-		const res = await fetch(
+		const response = await fetch(
 			`http://127.0.0.1:${connection.port}/trpc/host.info`,
 			{
 				headers: { Authorization: `Bearer ${connection.secret}` },
 				signal: controller.signal,
 			},
 		);
-		if (!res.ok) return null;
-		const data = await res.json();
+		if (!response.ok) return null;
+		const data = await response.json();
 		const info = data?.result?.data?.json;
 		if (!info?.organization?.name) return null;
 		return {
@@ -122,89 +95,57 @@ async function fetchHostInfo(organizationId: string): Promise<HostInfo | null> {
 	}
 }
 
-/** Host-service run state as the user reads it in the tray, not the wire value. */
 function statusLabel(status: HostServiceStatus): string {
 	switch (status) {
 		case "starting":
-			return i18n._(
-				msg({
-					message: "starting",
-				}),
-			);
+			return i18n._(msg({ message: "starting" }));
 		case "running":
-			return i18n._(
-				msg({
-					message: "running",
-				}),
-			);
+			return i18n._(msg({ message: "running" }));
 		case "stopped":
-			return i18n._(
-				msg({
-					message: "stopped",
-				}),
-			);
+			return i18n._(msg({ message: "stopped" }));
 	}
 }
 
 function buildHostServiceSubmenu(
 	orgIds: string[],
 	infos: Map<string, HostInfo>,
-): MenuItemConstructorOptions[] {
+): NativeTrayMenuItem[] {
 	const coordinator = getHostServiceCoordinator();
-	const menuItems: MenuItemConstructorOptions[] = [];
-
 	if (orgIds.length === 0) {
-		menuItems.push({
-			label: i18n._(
-				msg({
-					message: "No active services",
-				}),
-			),
-			enabled: false,
-		});
-		return menuItems;
+		return [
+			{ label: i18n._(msg({ message: "No active services" })), enabled: false },
+		];
 	}
-
-	let isFirst = true;
-	for (const orgId of orgIds) {
-		if (!isFirst) {
-			menuItems.push({ type: "separator" });
-		}
-		isFirst = false;
-
+	const menuItems: NativeTrayMenuItem[] = [];
+	for (const [index, orgId] of orgIds.entries()) {
+		if (index > 0) menuItems.push({ type: "separator" });
 		const status = coordinator.getProcessStatus(orgId);
 		const info = infos.get(orgId);
-		const isRunning = status === "running";
 		const label =
 			info?.organizationName ??
 			i18n._({
-				...msg({
-					message: "Organization {id}",
-				}),
+				...msg({ message: "Organization {id}" }),
 				values: { id: orgId.slice(0, 8) },
 			});
 		const versionSuffix = info?.version ? ` (v${info.version})` : "";
-
 		menuItems.push({ label, enabled: false });
 		menuItems.push({
 			label: `  ${statusLabel(status)}${versionSuffix}`,
 			enabled: false,
 		});
 		menuItems.push({
-			// Enabled in "stopped" too — that's the state where users most need
-			// restart to work (host-service crashed or never came up). Disabled
-			// only while a start is in flight, to avoid racing the pending start.
 			label: `  ${i18n._(msg({ message: "Restart" }))}`,
 			enabled: status !== "starting",
-			click: () => {
+			action: registerTrayAction(() => {
 				void (async () => {
 					try {
 						const { token } = await loadToken();
-						if (!token) return;
-						await coordinator.restart(orgId, {
-							authToken: token,
-							cloudApiUrl: env.NEXT_PUBLIC_API_URL,
-						});
+						if (token) {
+							await coordinator.restart(orgId, {
+								authToken: token,
+								cloudApiUrl: env.NEXT_PUBLIC_API_URL,
+							});
+						}
 					} catch (error) {
 						console.error(
 							`[Tray] Failed to restart host-service for ${orgId}:`,
@@ -213,142 +154,103 @@ function buildHostServiceSubmenu(
 					}
 					void updateTrayMenu();
 				})();
-			},
+			}),
 		});
 		menuItems.push({
 			label: `  ${i18n._(msg({ message: "Stop" }))}`,
-			enabled: isRunning,
-			click: () => {
+			enabled: status === "running",
+			action: registerTrayAction(() => {
 				coordinator.stop(orgId);
 				void updateTrayMenu();
-			},
+			}),
 		});
 	}
-
 	return menuItems;
 }
 
 async function updateTrayMenu(): Promise<void> {
-	if (!tray) return;
-
+	if (!trayId) return;
 	const coordinator = getHostServiceCoordinator();
 	const orgIds = coordinator.getActiveOrganizationIds();
-
 	const infoEntries = await Promise.all(
 		orgIds.map(async (orgId) => [orgId, await fetchHostInfo(orgId)] as const),
 	);
 	const infos = new Map<string, HostInfo>();
-	for (const [orgId, info] of infoEntries) {
-		if (info) infos.set(orgId, info);
-	}
+	for (const [orgId, info] of infoEntries) if (info) infos.set(orgId, info);
+	if (!trayId) return;
 
-	if (!tray) return;
-
+	trayActions.clear();
 	const hasActive = orgIds.length > 0;
 	const hostServiceLabel = hasActive
 		? i18n._({
-				...msg({
-					message: "Host Service ({count})",
-				}),
+				...msg({ message: "Host Service ({count})" }),
 				values: { count: orgIds.length },
 			})
 		: i18n._(msg({ message: "Host Service" }));
-
-	const hostServiceSubmenu = buildHostServiceSubmenu(orgIds, infos);
-
-	const menu = Menu.buildFromTemplate([
+	const items: NativeTrayMenuItem[] = [
 		{
 			label: hostServiceLabel,
-			submenu: hostServiceSubmenu,
+			submenu: buildHostServiceSubmenu(orgIds, infos),
 		},
 		{ type: "separator" },
 		{
 			label: i18n._(msg({ message: "Open Superset" })),
-			click: focusMainWindow,
+			action: registerTrayAction(focusMainWindow),
 		},
 		{
 			label: i18n._(msg({ message: "Settings" })),
-			click: openSettings,
+			action: registerTrayAction(openSettings),
 		},
-		{
-			label: i18n._(
-				msg({
-					message: "Check for Updates",
-				}),
-			),
-			click: () => {
-				checkForUpdatesInteractive();
-			},
-		},
-		{ type: "separator" },
+		...(!PERSONAL_INSTALL_BUILD
+			? ([
+					{
+						label: i18n._(msg({ message: "Check for Updates" })),
+						action: registerTrayAction(checkForUpdatesInteractive),
+					},
+					{ type: "separator" },
+				] satisfies NativeTrayMenuItem[])
+			: []),
 		{
 			label: i18n._(msg({ message: "Close Superset" })),
-			click: () => quitApp(),
+			action: registerTrayAction(quitApp),
 		},
 		{ type: "separator" },
 		{
-			label: i18n._(
-				msg({
-					message: "Quit Superset Completely",
-				}),
-			),
-			click: () => {
-				void confirmAndQuitCompletely();
-			},
+			label: i18n._(msg({ message: "Quit Superset Completely" })),
+			action: registerTrayAction(() => void confirmAndQuitCompletely()),
 		},
-	]);
-
-	tray.setContextMenu(menu);
+	];
+	void invokeNative("tray.setMenu", { trayId, items }).catch((error) => {
+		console.error("[Tray] Failed to update native tray menu:", error);
+	});
 }
 
-/** Rebuild the tray menu in place (e.g. after the display language changes). */
 export function refreshTrayMenu(): void {
-	if (!tray) return;
-	void updateTrayMenu();
+	if (trayId) void updateTrayMenu();
 }
 
-/** Call once after app.whenReady() */
 export function initTray(): void {
-	if (tray) {
+	if (trayId) {
 		console.warn("[Tray] Already initialized");
 		return;
 	}
-
-	if (process.platform !== "darwin") {
-		return;
-	}
-
-	try {
-		const icon = createTrayIcon();
-		if (!icon) {
-			console.warn("[Tray] Skipping initialization - no icon available");
-			return;
-		}
-
-		tray = new Tray(icon);
-		tray.setToolTip("Superset");
-
-		void updateTrayMenu();
-
-		const manager = getHostServiceCoordinator();
-		manager.on("status-changed", (_event: HostServiceStatusEvent) => {
-			void updateTrayMenu();
-		});
-
-		tray.on("mouse-enter", () => {
-			void updateTrayMenu();
-		});
-
-		console.log("[Tray] Initialized successfully");
-	} catch (error) {
-		console.error("[Tray] Failed to initialize:", error);
-	}
+	if (process.platform !== "darwin") return;
+	// Rust creates the one native tray during app initialization. The Node host
+	// owns its business menu, but must not create a duplicate icon.
+	trayId = "superset-tray";
+	void updateTrayMenu();
+	const manager = getHostServiceCoordinator();
+	manager.on(
+		"status-changed",
+		(_event: HostServiceStatusEvent) => void updateTrayMenu(),
+	);
+	console.log("[Tray] Initialized successfully");
 }
 
-/** Call on app quit */
 export function disposeTray(): void {
-	if (tray) {
-		tray.destroy();
-		tray = null;
-	}
+	if (!trayId) return;
+	void invokeNative("tray.destroy", { trayId }).catch((error) => {
+		console.error("[Tray] Failed to destroy native tray:", error);
+	});
+	trayId = null;
 }

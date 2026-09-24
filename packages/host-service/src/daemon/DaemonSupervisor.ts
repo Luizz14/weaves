@@ -207,7 +207,7 @@ function logEvent(event: string, props: Record<string, unknown>): void {
 }
 
 export interface DaemonSupervisorOptions {
-	/** Path to the daemon entry script (e.g. `dist/pty-daemon.js`). */
+	/** Path to the daemon entry script (e.g. `main/pty-daemon.cjs`). */
 	scriptPath: string;
 	/**
 	 * When true (default), opportunistically calls `update()` after

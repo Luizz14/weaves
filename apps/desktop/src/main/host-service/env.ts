@@ -11,6 +11,15 @@ export const env = createEnv({
 		HOST_SERVICE_PORT: z.coerce.number().int().positive(),
 		ORGANIZATION_ID: z.string().min(1),
 		DESKTOP_VITE_PORT: z.coerce.number().int().positive(),
+		CORS_ORIGINS: z
+			.string()
+			.transform((value) =>
+				value
+					.split(",")
+					.map((origin) => origin.trim())
+					.filter((origin) => origin.length > 0),
+			)
+			.optional(),
 		RELAY_URL: z.string().url().optional(),
 		BROWSER_BRIDGE_URL: z.string().url().optional(),
 		BROWSER_BRIDGE_SECRET: z.string().min(1).optional(),

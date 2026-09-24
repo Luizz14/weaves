@@ -1,31 +1,29 @@
-import { BrowserWindow, type IpcMainInvokeEvent } from "electron";
+import { getNativeWindow, type NativeWindowHandle } from "main/native/platform";
 
 /**
- * Per-call tRPC context for Electron IPC.
+ * Per-call tRPC context for the native Node service.
  *
- * `senderWindow` is the BrowserWindow that made the call, resolved from the IPC
- * event's sender WebContents. This is what lets window-scoped procedures (e.g.
+ * `senderWindow` is the trusted native window represented by the label Rust
+ * attached to the request. This is what lets window-scoped procedures (e.g.
  * the per-window active organization) act on the exact window that called them
  * rather than on a single global "current" window.
  *
- * Returns null when the sender is not a top-level window (e.g. a <webview>
- * guest); window-scoped procedures treat that as "no window".
+ * Rust never forwards requests from guest webviews or remote documents, so a
+ * non-null label always denotes a top-level app renderer.
  */
 export interface TrpcContext {
-	senderWindow: BrowserWindow | null;
+	senderWindow: NativeWindowHandle | null;
+	windowLabel: string | null;
 }
 
-export async function createTrpcContext({
-	event,
-}: {
-	event: IpcMainInvokeEvent;
-}): Promise<TrpcContext> {
-	// Only treat the sender as a window when it is that window's own top-level
-	// WebContents. `BrowserWindow.fromWebContents` returns the *host* window for a
-	// `<webview>` guest, so without this check an embedded webview could inherit
-	// the host window's organization on window-scoped procedures.
-	const window = BrowserWindow.fromWebContents(event.sender);
+export type NativeWindowContext = TrpcContext;
+
+export async function createTrpcContext(
+	windowLabel: string | null | undefined,
+): Promise<TrpcContext> {
+	const trustedLabel = windowLabel ?? null;
 	return {
-		senderWindow: window?.webContents === event.sender ? window : null,
+		senderWindow: trustedLabel ? getNativeWindow(trustedLabel) : null,
+		windowLabel: trustedLabel,
 	};
 }

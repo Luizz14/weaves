@@ -1,8 +1,7 @@
-import type { registerRoute } from "lib/window-loader";
+import type { NativeWindowOptions } from "main/native/platform";
 
-type Route = Parameters<typeof registerRoute>[0];
-
-export interface WindowProps extends Electron.BrowserWindowConstructorOptions {
-	id: Route["id"];
-	query?: Route["query"];
+/** Window options shared by the legacy factory name and the native host. */
+export interface WindowProps extends NativeWindowOptions {
+	id: string;
+	query?: Record<string, string>;
 }

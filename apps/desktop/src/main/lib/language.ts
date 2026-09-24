@@ -4,9 +4,9 @@ import {
 	resolveLocale,
 	type SupportedLocale,
 } from "@superset/i18n";
-import { app } from "electron";
 import { createApplicationMenu } from "main/lib/menu";
 import { refreshTrayMenu } from "main/lib/tray";
+import { getNativePreferredSystemLanguages } from "main/native/platform";
 
 export const languageEvents = new EventEmitter();
 let languageRequest = 0;
@@ -15,7 +15,7 @@ let languageRequest = 0;
 export function resolveAppLocale(stored: string | null): SupportedLocale {
 	return resolveLocale([
 		...(stored ? [stored] : []),
-		...app.getPreferredSystemLanguages(),
+		...getNativePreferredSystemLanguages(),
 	]);
 }
 

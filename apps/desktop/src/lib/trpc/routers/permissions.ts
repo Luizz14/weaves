@@ -10,7 +10,7 @@ import {
 
 export const createPermissionsRouter = () => {
 	return router({
-		getStatus: publicProcedure.query(() => {
+		getStatus: publicProcedure.query(async () => {
 			return getPermissionStatus();
 		}),
 

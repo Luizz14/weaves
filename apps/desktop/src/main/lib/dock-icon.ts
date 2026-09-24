@@ -1,7 +1,12 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { app, nativeImage } from "electron";
 import { env } from "main/env.main";
+import {
+	getNativeAppVersion,
+	getNativePath,
+	getNativeRuntimeMetadata,
+	invokeNative,
+} from "main/native/platform";
 import { prerelease } from "semver";
 import { getWorkspaceName } from "shared/env.shared";
 
@@ -62,7 +67,7 @@ const pickWorkspaceColor = (() => {
  * Returns true for prerelease versions like "0.0.53-canary".
  */
 function isCanaryBuild(): boolean {
-	const components = prerelease(app.getVersion());
+	const components = prerelease(getNativeAppVersion());
 	return components !== null && components.length > 0;
 }
 
@@ -70,11 +75,14 @@ function isCanaryBuild(): boolean {
  * Root directory of packaged/bundled icon assets.
  */
 function getIconsDir(): string {
-	if (app.isPackaged) {
-		return join(process.resourcesPath, "app.asar/resources/build/icons");
+	if (getNativeRuntimeMetadata()?.isPackaged) {
+		return join(getNativePath("resources"), "app.asar/resources/build/icons");
 	}
 	if (env.NODE_ENV === "development") {
-		return join(app.getAppPath(), "src/resources/build/icons");
+		return join(
+			getNativeRuntimeMetadata()?.appPath ?? process.cwd(),
+			"src/resources/build/icons",
+		);
 	}
 	return join(__dirname, "../resources/build/icons");
 }
@@ -211,45 +219,45 @@ function drawCornerFold({
  */
 export function setWorkspaceDockIcon(): void {
 	if (process.platform !== "darwin") return;
+	void setWorkspaceDockIconAsync();
+}
 
+async function setWorkspaceDockIconAsync(): Promise<void> {
 	try {
 		const iconPath = getIconPath();
-		const icon = nativeImage.createFromPath(iconPath);
-		if (icon.isEmpty()) {
-			console.warn("[dock-icon] Failed to load icon from:", iconPath);
-			return;
-		}
-
 		const workspaceName =
 			env.NODE_ENV === "development" ? getWorkspaceName() : null;
-
 		if (!workspaceName) {
-			app.dock?.setIcon(icon);
+			await invokeNative("app.setDockIcon", { path: iconPath });
 			console.log(`[dock-icon] Set dock icon from: ${iconPath}`);
 			return;
 		}
 
-		const size = icon.getSize();
-		const bitmap = icon.toBitmap();
-		const bounds = findContentBounds(bitmap, size.width, size.height);
-		const boundsWidth = bounds.right - bounds.left;
+		const { default: sharp } = await import("sharp");
+		const { data: bitmap, info } = await sharp(iconPath)
+			.ensureAlpha()
+			.raw()
+			.toBuffer({ resolveWithObject: true });
+		const bounds = findContentBounds(bitmap, info.width, info.height);
 		const rgb = pickWorkspaceColor(workspaceName);
-
 		drawCornerFold({
 			bitmap,
-			width: size.width,
-			height: size.height,
+			width: info.width,
+			height: info.height,
 			bounds,
-			cornerSize: Math.round(boundsWidth * 0.47),
+			cornerSize: Math.round((bounds.right - bounds.left) * 0.47),
 			rgb,
 		});
-
-		const newIcon = nativeImage.createFromBitmap(bitmap, {
-			width: size.width,
-			height: size.height,
+		const png = await sharp(bitmap, {
+			raw: { width: info.width, height: info.height, channels: 4 },
+		})
+			.png()
+			.toBuffer();
+		await invokeNative("app.setDockIcon", {
+			dataBase64: png.toString("base64"),
+			width: info.width,
+			height: info.height,
 		});
-
-		app.dock?.setIcon(newIcon);
 		console.log(
 			`[dock-icon] Set workspace dock icon corner fold rgb(${rgb.join(",")}) for "${workspaceName}" from ${iconPath}`,
 		);
@@ -265,13 +273,7 @@ export function setWorkspaceDockIcon(): void {
  *   badge; `0` clears it. No-op where the desktop environment lacks support.
  */
 export function setBadgeCount(count: number): void {
-	try {
-		if (process.platform === "darwin") {
-			app.dock?.setBadge(count > 0 ? String(count) : "");
-			return;
-		}
-		app.setBadgeCount(count);
-	} catch (error) {
+	void invokeNative("app.setBadgeCount", { count }).catch((error) => {
 		console.error("[dock-icon] Failed to set badge count:", error);
-	}
+	});
 }

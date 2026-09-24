@@ -1,15 +1,14 @@
 import { observable } from "@trpc/server/observable";
-import type {
-	BrowserWindow,
-	Notification as ElectronNotification,
-} from "electron";
-import { Notification } from "electron";
-import { setBadgeCount } from "main/lib/dock-icon";
 import {
 	type AgentLifecycleEvent,
 	type NotificationIds,
 	notificationsEmitter,
 } from "main/lib/notifications/server";
+import {
+	invokeNative,
+	type NativeWindowHandle,
+	onNativeEventNamed,
+} from "main/native/platform";
 import { NOTIFICATION_EVENTS } from "shared/constants";
 import type { V2NotificationSourceFocusTarget } from "shared/notification-types";
 import { z } from "zod";
@@ -58,11 +57,144 @@ const showNativeInputSchema = z.object({
 		.optional(),
 });
 type ShowNativeInput = z.infer<typeof showNativeInputSchema>;
+const nativeNotificationResultSchema = z.object({ id: z.string().min(1) });
+const nativeNotificationEventSchema = z.object({ id: z.string().min(1) });
 
-const activeNativeNotifications = new Map<string, ElectronNotification>();
+type NativeNotificationLifecycleEvent =
+	| "notification:click"
+	| "notification:closed";
+type PendingNativeNotificationEvents = {
+	events: NativeNotificationLifecycleEvent[];
+	expiresAt: number;
+};
+
+const PENDING_NOTIFICATION_EVENT_TTL_MS = 60_000;
+const MAX_PENDING_NOTIFICATION_EVENTS = 128;
+
+const activeNativeNotifications = new Map<string, string>();
+const notificationActions = new Map<
+	string,
+	{
+		getWindow: () => NativeWindowHandle | null;
+		clickTarget?: ShowNativeInput["clickTarget"];
+	}
+>();
+const pendingNativeNotificationEvents = new Map<
+	string,
+	PendingNativeNotificationEvents
+>();
 let nativeNotificationCounter = 0;
+let pendingNativeNotificationShows = 0;
 
-function focusWindow(getWindow: () => BrowserWindow | null): void {
+onNativeEventNamed("notification:click", (event) => {
+	const parsed = nativeNotificationEventSchema.safeParse(event.payload);
+	if (!parsed.success) return;
+	if (
+		!notificationActions.has(parsed.data.id) &&
+		pendingNativeNotificationShows === 0
+	) {
+		return;
+	}
+	handleNativeNotificationClick(parsed.data.id);
+});
+
+onNativeEventNamed("notification:closed", (event) => {
+	const parsed = nativeNotificationEventSchema.safeParse(event.payload);
+	if (!parsed.success) return;
+	if (
+		!notificationActions.has(parsed.data.id) &&
+		pendingNativeNotificationShows === 0
+	) {
+		return;
+	}
+	handleNativeNotificationClosed(parsed.data.id);
+});
+
+function handleNativeNotificationClick(id: string): void {
+	const action = notificationActions.get(id);
+	if (!action) {
+		rememberPendingNativeNotificationEvent(id, "notification:click");
+		return;
+	}
+	focusWindow(action.getWindow);
+	if (action.clickTarget) {
+		notificationsEmitter.emit(
+			NOTIFICATION_EVENTS.FOCUS_V2_NOTIFICATION_SOURCE,
+			action.clickTarget,
+		);
+	}
+}
+
+function handleNativeNotificationClosed(id: string): void {
+	if (!notificationActions.has(id)) {
+		rememberPendingNativeNotificationEvent(id, "notification:closed");
+		return;
+	}
+	removeNativeNotification(id);
+}
+
+function rememberPendingNativeNotificationEvent(
+	id: string,
+	event: NativeNotificationLifecycleEvent,
+): void {
+	const now = Date.now();
+	for (const [pendingId, pending] of pendingNativeNotificationEvents) {
+		if (pending.expiresAt <= now) {
+			pendingNativeNotificationEvents.delete(pendingId);
+		}
+	}
+
+	let pending = pendingNativeNotificationEvents.get(id);
+	if (!pending) {
+		if (
+			pendingNativeNotificationEvents.size >= MAX_PENDING_NOTIFICATION_EVENTS
+		) {
+			const oldestId = pendingNativeNotificationEvents.keys().next().value;
+			if (oldestId !== undefined) {
+				pendingNativeNotificationEvents.delete(oldestId);
+			}
+		}
+		pending = {
+			events: [],
+			expiresAt: now + PENDING_NOTIFICATION_EVENT_TTL_MS,
+		};
+		pendingNativeNotificationEvents.set(id, pending);
+	}
+	if (!pending.events.includes(event)) pending.events.push(event);
+}
+
+function removeNativeNotification(id: string): void {
+	notificationActions.delete(id);
+	for (const [key, activeId] of activeNativeNotifications) {
+		if (activeId === id) activeNativeNotifications.delete(key);
+	}
+}
+
+function registerNativeNotification(
+	id: string,
+	key: string,
+	action: {
+		getWindow: () => NativeWindowHandle | null;
+		clickTarget?: ShowNativeInput["clickTarget"];
+	},
+): void {
+	trackNativeNotification(key, id);
+	notificationActions.set(id, action);
+
+	const pending = pendingNativeNotificationEvents.get(id);
+	if (!pending) return;
+	pendingNativeNotificationEvents.delete(id);
+	if (pending.expiresAt <= Date.now()) return;
+	for (const event of pending.events) {
+		if (event === "notification:click") {
+			handleNativeNotificationClick(id);
+			continue;
+		}
+		handleNativeNotificationClosed(id);
+	}
+}
+
+function focusWindow(getWindow: () => NativeWindowHandle | null): void {
 	const window = getWindow();
 	if (!window) return;
 	if (window.isMinimized()) {
@@ -78,63 +210,63 @@ function getNativeNotificationKey(input: ShowNativeInput): string {
 	return `${target.workspaceId}:${target.source.type}:${target.source.id}`;
 }
 
-function trackNativeNotification(
-	key: string,
-	notification: ElectronNotification,
-): void {
+function trackNativeNotification(key: string, notificationId: string): void {
 	const previous = activeNativeNotifications.get(key);
-	previous?.close();
-	activeNativeNotifications.set(key, notification);
-
-	const untrack = () => {
-		if (activeNativeNotifications.get(key) === notification) {
-			activeNativeNotifications.delete(key);
-		}
-	};
-	notification.on("click", untrack);
-	notification.on("close", untrack);
+	if (previous) {
+		void invokeNative("notification.close", { id: previous }).catch((error) =>
+			console.error(
+				"[notifications] Failed to close native notification:",
+				error,
+			),
+		);
+	}
+	activeNativeNotifications.set(key, notificationId);
 }
 
 export const createNotificationsRouter = (
-	getWindow: () => BrowserWindow | null,
+	getWindow: () => NativeWindowHandle | null,
 ) => {
 	return router({
 		showNative: publicProcedure
 			.input(showNativeInputSchema)
-			.mutation(({ input }) => {
-				if (!Notification.isSupported()) {
+			.mutation(async ({ input }) => {
+				const supported = await invokeNative<boolean>(
+					"notification.isSupported",
+				);
+				if (!supported) {
 					return { success: false as const, reason: "unsupported" as const };
 				}
 
-				const notification = new Notification({
-					title: input.title,
-					subtitle: process.platform === "darwin" ? input.subtitle : undefined,
-					body:
-						process.platform !== "darwin" && input.subtitle
-							? `${input.subtitle}\n${input.body}`
-							: input.body,
-					silent: input.silent,
-				});
-				const key = getNativeNotificationKey(input);
-				trackNativeNotification(key, notification);
-
-				notification.on("click", () => {
-					focusWindow(getWindow);
-					if (!input.clickTarget) return;
-					notificationsEmitter.emit(
-						NOTIFICATION_EVENTS.FOCUS_V2_NOTIFICATION_SOURCE,
-						input.clickTarget,
+				pendingNativeNotificationShows++;
+				let nativeResult: unknown;
+				try {
+					nativeResult = await invokeNative<unknown>(
+						"notification.show",
+						{
+							title: input.title,
+							subtitle: input.subtitle,
+							body: input.body,
+							silent: input.silent,
+							clickTarget: input.clickTarget,
+						},
+						null,
 					);
+				} finally {
+					pendingNativeNotificationShows--;
+				}
+				const notification = nativeNotificationResultSchema.parse(nativeResult);
+				const key = getNativeNotificationKey(input);
+				registerNativeNotification(notification.id, key, {
+					getWindow,
+					clickTarget: input.clickTarget,
 				});
-
-				notification.show();
 				return { success: true as const };
 			}),
 
 		setDockBadge: publicProcedure
 			.input(z.object({ count: z.number().int().min(0) }))
-			.mutation(({ input }) => {
-				setBadgeCount(input.count);
+			.mutation(async ({ input }) => {
+				await invokeNative("app.setBadgeCount", { count: input.count });
 				return { success: true as const };
 			}),
 

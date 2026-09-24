@@ -4,7 +4,7 @@
  * A persistent background process that owns PTYs and terminal emulator state.
  * This allows terminal sessions to survive app restarts and updates.
  *
- * Run with: ELECTRON_RUN_AS_NODE=1 electron dist/main/terminal-host.js
+ * Run with: node dist/main/terminal-host.cjs
  *
  * IPC Protocol:
  * - Uses NDJSON (newline-delimited JSON) over Unix domain socket

@@ -1,8 +1,11 @@
 import { EventEmitter } from "node:events";
-import { BrowserWindow } from "electron";
 import express from "express";
 import { handleAuthCallback } from "lib/trpc/routers/auth/utils/auth-functions";
 import { reloadThemeStateFromDisk } from "main/lib/app-state";
+import {
+	getAllNativeWindows,
+	getFocusedNativeWindow,
+} from "main/native/platform";
 import { NOTIFICATION_EVENTS } from "shared/constants";
 import { env } from "shared/env.shared";
 import type { AgentLifecycleEvent } from "shared/notification-types";
@@ -176,7 +179,7 @@ app.get("/auth/callback", async (req, res) => {
 		return res.status(400).json(result);
 	}
 
-	const mainWindow = BrowserWindow.getAllWindows()[0];
+	const mainWindow = getFocusedNativeWindow() ?? getAllNativeWindows()[0];
 	if (mainWindow) {
 		if (mainWindow.isMinimized()) {
 			mainWindow.restore();

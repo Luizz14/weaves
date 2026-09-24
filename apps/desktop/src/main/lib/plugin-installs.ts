@@ -16,7 +16,6 @@ import {
 	type PluginMcpServerConfig,
 	SUPERSET_MANAGED_SKILLS,
 } from "@superset/shared/plugins";
-import log from "electron-log/main";
 import { resolveBundledCliPath } from "main/lib/bundled-cli";
 import { localDb } from "main/lib/local-db";
 import { createSerialQueue } from "main/lib/serial-queue";
@@ -31,6 +30,7 @@ import { createSerialQueue } from "main/lib/serial-queue";
  */
 
 const execFileAsync = promisify(execFile);
+const log = { warn: (...args: unknown[]) => console.warn(...args) };
 
 const pluginCliQueue = createSerialQueue();
 

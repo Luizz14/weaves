@@ -1,6 +1,6 @@
 // HostWorkerPool — lazy singleton over WorkerTaskRunner with:
 //  - script resolution mirroring daemon/singleton.ts (env override →
-//    side-by-side host-worker.js → workspace dist fallback)
+//    side-by-side host-worker.cjs → main-root/standalone dist fallback)
 //  - inline fallback: missing bundle or crash-looping workers degrade to
 //    running handlers on the main thread (current behavior), never failing
 //    the caller because of pool infrastructure
@@ -114,22 +114,23 @@ export function resolveHostWorkerScriptPath(): string | null {
 	if (override) return existsSync(override) ? override : null;
 
 	const here = path.dirname(fileURLToPath(import.meta.url));
-	// Production (electron-vite / standalone dist): host-service.js and
-	// host-worker.js are emitted side-by-side in the same dist directory.
-	const sideBySide = path.resolve(here, "host-worker.js");
-	if (existsSync(sideBySide)) return sideBySide;
+	// The desktop Vite build emits host-service.cjs and host-worker.cjs in
+	// dist/main. This module can land in a chunks/ directory, so check the
+	// main root as well as the current module directory.
+	for (const directory of [here, path.resolve(here, "..")]) {
+		for (const fileName of ["host-worker.cjs", "host-worker.js"]) {
+			const candidate = path.resolve(directory, fileName);
+			if (existsSync(candidate)) return candidate;
+		}
+	}
 
 	// Source-running fallback (`bun run` from packages/host-service): `here`
 	// is `packages/host-service/src/workers/`; the built entry sits at
-	// `packages/host-service/dist/host-worker.js` after `bun run build`.
-	const workspaceDist = path.resolve(
-		here,
-		"..",
-		"..",
-		"dist",
-		"host-worker.js",
-	);
-	if (existsSync(workspaceDist)) return workspaceDist;
+	// `packages/host-service/dist/host-worker.cjs` after a CJS build.
+	for (const fileName of ["host-worker.cjs", "host-worker.js"]) {
+		const workspaceDist = path.resolve(here, "..", "..", "dist", fileName);
+		if (existsSync(workspaceDist)) return workspaceDist;
+	}
 
 	return null;
 }

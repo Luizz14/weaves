@@ -42,6 +42,7 @@ export function BrowserPane({
 	const isLoading = browserState?.isLoading ?? false;
 	const loadError = browserState?.error ?? null;
 	const isBlankPage = currentUrl === "about:blank";
+	const webviewVisible = !isBlankPage && (!loadError || isLoading);
 	const { mutate: openDevTools } =
 		electronTrpc.browser.openDevTools.useMutation();
 
@@ -56,6 +57,7 @@ export function BrowserPane({
 	} = usePersistentWebview({
 		paneId,
 		initialUrl: currentUrl,
+		visible: webviewVisible,
 	});
 
 	const handleOpenDevTools = useCallback(() => {

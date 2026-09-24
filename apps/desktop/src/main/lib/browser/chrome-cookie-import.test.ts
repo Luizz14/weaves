@@ -1,7 +1,8 @@
 import { describe, expect, it } from "bun:test";
 import { createCipheriv, createHash } from "node:crypto";
-import type { Cookie, Session } from "electron";
 import {
+	type BrowserCookie,
+	type BrowserCookieSession,
 	decryptCookieValue,
 	deriveCookieKey,
 	type ImportedCookie,
@@ -9,6 +10,9 @@ import {
 	mapCookieRow,
 	safeStorageServiceFor,
 } from "./chrome-cookie-import";
+
+type Cookie = BrowserCookie & { hostOnly?: boolean };
+type Session = BrowserCookieSession;
 
 const AES_IV = Buffer.alloc(16, 0x20);
 
@@ -38,6 +42,7 @@ describe("safeStorageServiceFor", () => {
 		expect(safeStorageServiceFor("chrome")).toBe("Chrome Safe Storage");
 		expect(safeStorageServiceFor("brave")).toBe("Brave Safe Storage");
 		expect(safeStorageServiceFor("arc")).toBe("Arc Safe Storage");
+		expect(safeStorageServiceFor("electron")).toBeNull();
 		expect(safeStorageServiceFor("unknown")).toBeNull();
 	});
 });

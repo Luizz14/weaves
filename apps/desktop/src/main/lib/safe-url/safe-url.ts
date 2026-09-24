@@ -1,4 +1,4 @@
-import { shell } from "electron";
+import { invokeNative } from "main/native/platform";
 import { externalUrlLogLabel, isSafeExternalUrl } from "./scheme";
 
 /**
@@ -16,7 +16,7 @@ export async function safeOpenExternal(url: string): Promise<boolean> {
 		return false;
 	}
 	try {
-		await shell.openExternal(url);
+		await invokeNative("shell.openExternal", { url });
 		return true;
 	} catch (error) {
 		console.error(

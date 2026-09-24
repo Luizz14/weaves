@@ -27,7 +27,7 @@ export function DashboardContentError({ error }: ErrorComponentProps) {
 
 	useEffect(() => {
 		console.error("[dashboard] Content route error caught:", error);
-		void import("@sentry/electron/renderer")
+		void import("@sentry/browser")
 			.then((Sentry) => Sentry.captureException(error))
 			.catch((reportError) => {
 				// Don't let a telemetry failure vanish silently — the fallback UI

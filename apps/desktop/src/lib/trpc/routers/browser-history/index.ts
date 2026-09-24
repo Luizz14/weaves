@@ -1,8 +1,7 @@
 import { browserHistory } from "@superset/local-db";
 import { TRPCError } from "@trpc/server";
 import { like, or, sql } from "drizzle-orm";
-import { session } from "electron";
-import { importCookiesIntoSession } from "main/lib/browser/chrome-cookie-import";
+import { browserManager } from "main/lib/browser/browser-manager";
 import {
 	listChromeImportSources,
 	readHistoryFromProfile,
@@ -16,9 +15,6 @@ import { publicProcedure, router } from "../..";
 
 /** Rows per multi-row upsert, kept well under SQLite's bound-parameter limit. */
 const IMPORT_CHUNK_SIZE = 200;
-
-/** The partition the in-app browser pane (and app renderer) use. */
-const BROWSER_PARTITION = "persist:superset";
 
 export const createBrowserHistoryRouter = () => {
 	return router({
@@ -198,7 +194,13 @@ export const createBrowserHistoryRouter = () => {
 		 */
 		importCookiesFromSource: publicProcedure
 			.input(z.object({ sourceId: z.string() }))
-			.mutation(async ({ input }) => {
+			.mutation(async ({ input, ctx }) => {
+				if (!ctx.windowLabel) {
+					throw new TRPCError({
+						code: "UNAUTHORIZED",
+						message: "Browser caller has no trusted window label",
+					});
+				}
 				const profile = resolveImportProfile(input.sourceId);
 				if (!profile) {
 					throw new TRPCError({
@@ -208,10 +210,9 @@ export const createBrowserHistoryRouter = () => {
 				}
 
 				try {
-					return await importCookiesIntoSession(
-						session.fromPartition(BROWSER_PARTITION),
-						profile.profileDir,
-						profile.browserKey,
+					return await browserManager.importCookiesFromSource(
+						input.sourceId,
+						ctx.windowLabel,
 					);
 				} catch (error) {
 					throw new TRPCError({

@@ -4,6 +4,7 @@ import type { Terminal as XTerm } from "@xterm/xterm";
 import "@xterm/xterm/css/xterm.css";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { electronTrpc } from "renderer/lib/electron-trpc";
+import { getNativeFilePath } from "renderer/lib/native-bridge";
 import { sanitizeTerminalFontFamily } from "renderer/lib/terminal/appearance";
 import { buildTerminalCommand } from "renderer/lib/terminal/launch-command";
 import { useTabsStore } from "renderer/stores/tabs/store";
@@ -431,7 +432,7 @@ export const Terminal = memo(function Terminal({
 		let text: string;
 		if (files.length > 0) {
 			// Native file drop (from Finder, etc.)
-			const paths = files.map((file) => window.webUtils.getPathForFile(file));
+			const paths = files.map(getNativeFilePath);
 			text = shellEscapePaths(paths);
 		} else {
 			// Internal drag (from file tree) - path is in text/plain

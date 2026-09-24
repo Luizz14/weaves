@@ -30,8 +30,9 @@ import {
 	isPositiveInteger,
 	signalProcessTreeAndGroups,
 } from "@superset/pty-daemon/process-tree";
-import { app } from "electron";
+import { getNativeRuntimeMetadata } from "main/native/platform";
 import { SUPERSET_DIR_NAME } from "shared/constants";
+import { resolveNativeDesktopEntryPath } from "../desktop-entry-path";
 import { throwIfAborted } from "../terminal/abort";
 import {
 	TerminalAttachCanceledError,
@@ -89,10 +90,10 @@ const SCRIPT_MTIME_PATH = join(SUPERSET_HOME_DIR, "terminal-host.mtime");
 const CONNECT_TIMEOUT_MS = 5000;
 const REQUEST_TIMEOUT_MS = 30000;
 const SPAWN_LOCK_TIMEOUT_MS = 10000; // Max time to hold spawn lock
-// How long a spawned daemon gets to start accepting connections. A cold
-// `ELECTRON_RUN_AS_NODE` process start is not fast on a loaded machine, and
-// giving up early spawns a second daemon on top of the one still booting, so
-// this matches the window the spawn lock itself allows a spawn to take.
+// How long a spawned daemon gets to start accepting connections. A cold Node
+// process start is not fast on a loaded machine, and giving up early spawns a
+// second daemon on top of the one still booting, so this matches the window
+// the spawn lock itself allows a spawn to take.
 const DAEMON_READY_TIMEOUT_MS = SPAWN_LOCK_TIMEOUT_MS;
 // Max wait for a connection attempt started elsewhere in this client to settle.
 const CONNECT_SETTLE_TIMEOUT_MS = 10000;
@@ -1297,9 +1298,9 @@ export class TerminalHostClient extends EventEmitter {
 				logFd = -1;
 			}
 
-			// Prod: detached so terminal sessions survive Electron restarts.
-			// Dev: attached so it dies with Electron on `bun dev` kill.
-			const isDev = !app.isPackaged;
+			// Prod: detached so terminal sessions survive desktop restarts.
+			// Dev: attached so it dies with `bun dev` kill.
+			const isDev = !getNativeRuntimeMetadata()?.isPackaged;
 			let child: ReturnType<typeof spawn> | null = null;
 			try {
 				child = spawn(process.execPath, [daemonScript], {
@@ -1307,7 +1308,6 @@ export class TerminalHostClient extends EventEmitter {
 					stdio: logFd >= 0 ? ["ignore", logFd, logFd] : "ignore",
 					env: {
 						...process.env,
-						ELECTRON_RUN_AS_NODE: "1",
 						NODE_ENV: process.env.NODE_ENV,
 					},
 				});
@@ -1371,14 +1371,7 @@ export class TerminalHostClient extends EventEmitter {
 	 * Get path to daemon script
 	 */
 	private getDaemonScriptPath(): string {
-		if (app.isPackaged) {
-			// Production: script is in app resources
-			return join(app.getAppPath(), "dist", "main", "terminal-host.js");
-		}
-
-		// Development: electron-vite outputs to dist/main/
-		const appPath = app.getAppPath();
-		return join(appPath, "dist", "main", "terminal-host.js");
+		return resolveNativeDesktopEntryPath("terminal-host.cjs");
 	}
 
 	/**

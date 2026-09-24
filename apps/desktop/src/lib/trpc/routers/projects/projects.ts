@@ -15,8 +15,6 @@ import {
 } from "@superset/local-db";
 import { TRPCError } from "@trpc/server";
 import { and, desc, eq, inArray, isNotNull, isNull, not } from "drizzle-orm";
-import type { BrowserWindow } from "electron";
-import { dialog } from "electron";
 import { track } from "main/lib/analytics";
 import { localDb } from "main/lib/local-db";
 import {
@@ -24,6 +22,10 @@ import {
 	saveProjectIconFromDataUrl,
 } from "main/lib/project-icons";
 import { getWorkspaceRuntimeRegistry } from "main/lib/workspace-runtime";
+import {
+	type NativeWindowHandle,
+	openNativeDialog,
+} from "main/native/platform";
 import { PROJECT_COLOR_VALUES } from "shared/constants/project-colors";
 import { z } from "zod";
 import { publicProcedure, router } from "../..";
@@ -306,7 +308,9 @@ function extractRepoName(urlInput: string): string | null {
 }
 
 /** Create the tRPC router for project CRUD, branch listing, and git operations. */
-export const createProjectsRouter = (getWindow: () => BrowserWindow | null) => {
+export const createProjectsRouter = (
+	getWindow: () => NativeWindowHandle | null,
+) => {
 	return router({
 		get: publicProcedure
 			.input(z.object({ id: z.string() }))
@@ -564,19 +568,24 @@ export const createProjectsRouter = (getWindow: () => BrowserWindow | null) => {
 				if (!window) {
 					return { canceled: true as const, path: null };
 				}
-				const result = await dialog.showOpenDialog(window, {
-					properties: ["openDirectory", "createDirectory"],
-					title: i18n._(
-						msg({
-							message: "Select Directory",
-						}),
-					),
-					defaultPath: input.defaultPath,
-				});
+				const result = await openNativeDialog(
+					{
+						properties: ["openDirectory", "createDirectory"],
+						title: i18n._(
+							msg({
+								message: "Select Directory",
+							}),
+						),
+						defaultPath: input.defaultPath,
+					},
+					window.label,
+				);
 				if (result.canceled || result.filePaths.length === 0) {
 					return { canceled: true as const, path: null };
 				}
-				return { canceled: false as const, path: result.filePaths[0] };
+				const [selectedPath] = result.filePaths;
+				if (!selectedPath) return { canceled: true as const, path: null };
+				return { canceled: false as const, path: selectedPath };
 			}),
 
 		// Fast: returns only local branches + cached remote refs (no network)
@@ -1089,14 +1098,17 @@ export const createProjectsRouter = (getWindow: () => BrowserWindow | null) => {
 			if (!window) {
 				return { canceled: false, error: "No window available" };
 			}
-			const result = await dialog.showOpenDialog(window, {
-				properties: ["openDirectory", "multiSelections"],
-				title: i18n._(
-					msg({
-						message: "Open Project",
-					}),
-				),
-			});
+			const result = await openNativeDialog(
+				{
+					properties: ["openDirectory", "multiSelections"],
+					title: i18n._(
+						msg({
+							message: "Open Project",
+						}),
+					),
+				},
+				window.label,
+			);
 
 			if (result.canceled || result.filePaths.length === 0) {
 				return { canceled: true };
@@ -1255,21 +1267,34 @@ export const createProjectsRouter = (getWindow: () => BrowserWindow | null) => {
 								error: "No window available",
 							};
 						}
-						const result = await dialog.showOpenDialog(window, {
-							properties: ["openDirectory", "createDirectory"],
-							title: i18n._(
-								msg({
-									message: "Select Clone Destination",
-								}),
-							),
-						});
+						const result = await openNativeDialog(
+							{
+								properties: ["openDirectory", "createDirectory"],
+								title: i18n._(
+									msg({
+										message: "Select Clone Destination",
+									}),
+								),
+							},
+							window.label,
+						);
 
 						// User canceled - return canceled state (not an error)
 						if (result.canceled || result.filePaths.length === 0) {
 							return { canceled: true as const, success: false as const };
 						}
-
-						targetDir = result.filePaths[0];
+						const [selectedPath] = result.filePaths;
+						if (!selectedPath) {
+							return { canceled: true as const, success: false as const };
+						}
+						targetDir = selectedPath;
+					}
+					if (!targetDir) {
+						return {
+							canceled: false as const,
+							success: false as const,
+							error: "Clone destination is required",
+						};
 					}
 
 					const repoName = extractRepoName(input.url);

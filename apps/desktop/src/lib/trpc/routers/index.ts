@@ -1,4 +1,4 @@
-import type { BrowserWindow } from "electron";
+import type { NativeWindowHandle } from "main/native/platform";
 import { router } from "..";
 import { createAnalyticsRouter } from "./analytics";
 import { createAuthRouter } from "./auth";
@@ -33,7 +33,7 @@ import { createUiStateRouter } from "./ui-state";
 import { createWindowRouter } from "./window";
 import { createWorkspacesRouter } from "./workspaces";
 
-export const createAppRouter = (getWindow: () => BrowserWindow | null) => {
+export const createAppRouter = (getWindow: () => NativeWindowHandle | null) => {
 	return router({
 		analytics: createAnalyticsRouter(),
 		browser: createBrowserRouter(),

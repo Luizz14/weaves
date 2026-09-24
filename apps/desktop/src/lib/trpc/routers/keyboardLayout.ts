@@ -11,8 +11,8 @@ export const createKeyboardLayoutRouter = () => {
 		get: publicProcedure.query((): KeyboardLayoutData => {
 			return getKeyboardLayoutSnapshot();
 		}),
-		// observable (not async generator) per apps/desktop/AGENTS.md —
-		// trpc-electron only supports observables for IPC subscriptions.
+		// Keep the subscription as an observable so the native RPC dispatcher can
+		// emit started/data/stopped frames without buffering an async generator.
 		changes: publicProcedure.subscription(() => {
 			return observable<KeyboardLayoutData>((emit) => {
 				// Prime the subscriber with the current snapshot so the renderer

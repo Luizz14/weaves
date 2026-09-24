@@ -5,6 +5,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { type ReactNode, useCallback, useEffect, useState } from "react";
 import { LuFolderPlus, LuLoader, LuX } from "react-icons/lu";
+import { getNativeFilePath } from "renderer/lib/native-bridge";
 import { useOpenProject } from "renderer/react-query/projects";
 
 interface SidebarDropZoneProps {
@@ -87,7 +88,7 @@ export function SidebarDropZone({ children, className }: SidebarDropZoneProps) {
 
 			let filePath: string;
 			try {
-				filePath = window.webUtils.getPathForFile(firstFile);
+				filePath = getNativeFilePath(firstFile);
 			} catch {
 				setError("Could not get path from dropped item");
 				return;

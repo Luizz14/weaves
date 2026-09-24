@@ -1,8 +1,12 @@
 import type { Dirent } from "node:fs";
 import { existsSync, readdirSync } from "node:fs";
 import path from "node:path";
-import { app, session } from "electron";
 import { env } from "main/env.main";
+import {
+	getNativePath,
+	getNativeRuntimeMetadata,
+	invokeNative,
+} from "main/native/platform";
 import { getChromiumUserDataDirs } from "../browser/chromium-profiles";
 
 const APP_PARTITION = "persist:superset";
@@ -111,8 +115,8 @@ function resolveReactDevToolsPath(): string | null {
 }
 
 function resolveWebviewExtensionPath(): string | null {
-	const candidates = app.isPackaged
-		? [path.join(process.resourcesPath, "browser-extension")]
+	const candidates = getNativeRuntimeMetadata()?.isPackaged
+		? [path.join(getNativePath("resources"), "browser-extension")]
 		: [
 				path.join(process.cwd(), "src/resources/browser-extension"),
 				path.join(process.cwd(), "dist/resources/browser-extension"),
@@ -138,49 +142,16 @@ export async function loadReactDevToolsExtension(): Promise<void> {
 		return;
 	}
 
-	const targets = [
-		{ label: "default", ses: session.defaultSession },
-		{ label: APP_PARTITION, ses: session.fromPartition(APP_PARTITION) },
-	];
-
-	for (const { label, ses } of targets) {
-		if (ses.extensions.getExtension(REACT_DEVTOOLS_EXTENSION_ID)) continue;
-
-		try {
-			const extension = await ses.extensions.loadExtension(extensionPath, {
-				allowFileAccess: true,
-			});
-			console.log(
-				`[main] React DevTools loaded in ${label} session (v${extension.version})`,
-			);
-		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-			if (message.includes("already loaded")) continue;
-			console.error(
-				`[main] Failed to load React DevTools in ${label} session:`,
-				error,
-			);
-		}
-	}
+	await invokeNative("devtools.enable", {
+		path: extensionPath,
+		partition: APP_PARTITION,
+	});
 }
 
 export async function loadWebviewBrowserExtension(): Promise<void> {
 	const extensionPath = resolveWebviewExtensionPath();
-	if (!extensionPath) {
-		console.warn(
-			"[main] Browser extension not found; skipping webview extension load",
-		);
-		return;
-	}
-
-	try {
-		await session
-			.fromPartition(APP_PARTITION)
-			.extensions.loadExtension(extensionPath);
-		console.log("[main] Browser extension loaded");
-	} catch (error) {
-		const message = error instanceof Error ? error.message : String(error);
-		if (message.includes("already loaded")) return;
-		console.error("[main] Failed to load browser extension:", error);
-	}
+	await invokeNative("browser.tools.configure", {
+		partition: APP_PARTITION,
+		extensionPath,
+	});
 }

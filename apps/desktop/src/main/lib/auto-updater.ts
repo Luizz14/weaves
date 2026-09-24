@@ -1,20 +1,23 @@
 import { EventEmitter } from "node:events";
 import { statfsSync } from "node:fs";
 import { msg } from "@lingui/core/macro";
-import * as Sentry from "@sentry/electron/main";
+import * as Sentry from "@sentry/node";
 import { i18n } from "@superset/i18n";
-import { app, dialog } from "electron";
-import log from "electron-log/main";
-import { autoUpdater, type UpdateCheckResult } from "electron-updater";
 import { env } from "main/env.main";
-import { setSkipQuitConfirmation } from "main/index";
 import { appState } from "main/lib/app-state";
 import {
 	isEnvironmentUpdateError,
 	isUpstreamServerError,
 } from "main/lib/update-error-classification";
 import { redactUpdateError } from "main/lib/update-error-redaction";
-import { gte, prerelease } from "semver";
+import {
+	getNativeAppVersion,
+	getNativePath,
+	invokeNative,
+	onNativeEventNamed,
+	showNativeMessageBox,
+} from "main/native/platform";
+import { prerelease } from "semver";
 import {
 	AUTO_UPDATE_STATUS,
 	type AutoUpdateProgress,
@@ -23,59 +26,22 @@ import {
 } from "shared/auto-update";
 import { PLATFORM } from "shared/constants";
 
-// electron-updater's internal cache only self-invalidates when the remote
-// sha512 differs from cached metadata, so a corrupt cached download (e.g.
-// failed Squirrel install) gets retried indefinitely until the user
-// manually reinstalls. Reach into the protected helper to clear it.
-interface AppUpdaterInternals {
-	downloadedUpdateHelper: { clear(): Promise<void> } | null;
-}
-
-async function clearCachedUpdate(reason: string): Promise<void> {
-	const helper = (autoUpdater as unknown as AppUpdaterInternals)
-		.downloadedUpdateHelper;
-	if (!helper) return;
-	try {
-		await helper.clear();
-		log.info(`[auto-updater] Cleared cached update (${reason})`);
-	} catch (error) {
-		log.error("[auto-updater] Failed to clear cached update:", error);
-	}
-}
-
-const UPDATE_CHECK_INTERVAL_MS = 1000 * 60 * 60 * 4; // 4 hours
-
-/**
- * Detect if this is a prerelease build from app version using semver.
- * Versions like "0.0.53-canary" have prerelease component ["canary"].
- * Stable versions like "0.0.53" have no prerelease component.
- */
-function isPrereleaseBuild(): boolean {
-	const version = app.getVersion();
-	const prereleaseComponents = prerelease(version);
-	return prereleaseComponents !== null && prereleaseComponents.length > 0;
-}
-
-const IS_PRERELEASE = isPrereleaseBuild();
+const UPDATE_CHECK_INTERVAL_MS = 1000 * 60 * 60 * 4;
+const PERSONAL_INSTALL_BUILD = process.env.TAURI_PERSONAL_INSTALL === "1";
+const IS_PRERELEASE = prerelease(getNativeAppVersion()) !== null;
 const IS_AUTO_UPDATE_PLATFORM = PLATFORM.IS_MAC || PLATFORM.IS_LINUX;
 
-// Use explicit feed URLs to ensure we always fetch platform-specific manifests
-// (for example latest-mac.yml and latest-linux.yml) from the correct release.
-// - Stable: fetches from /releases/latest/download/ (latest non-prerelease)
-// - Canary: fetches from /releases/download/desktop-canary/ (rolling canary tag)
-const UPDATE_FEED_URL = IS_PRERELEASE
-	? "https://github.com/superset-sh/superset/releases/download/desktop-canary"
-	: "https://github.com/superset-sh/superset/releases/latest/download";
+export function getUpdateManifestUrl(isPrerelease: boolean): string {
+	return isPrerelease
+		? "https://github.com/superset-sh/superset/releases/download/desktop-canary/canary.json"
+		: "https://github.com/superset-sh/superset/releases/latest/download/latest.json";
+}
+
+const UPDATE_FEED_URL = getUpdateManifestUrl(IS_PRERELEASE);
 
 export type { AutoUpdateStatusEvent } from "shared/auto-update";
-
 export const autoUpdateEmitter = new EventEmitter();
 
-// Network errors that don't need to be shown to the user or reported: they are
-// transient and the next check retries. Chromium names every transport failure
-// net::ERR_* (timeouts, HTTP/2 resets, a laptop suspending mid-download, a
-// proxy's certificate), and none of them is a defect in the feed or artifact —
-// an enumerated list was reporting ~800 of the unlisted ones a day.
 const SILENT_ERROR_PATTERNS = [
 	"net::ERR_",
 	"ENOTFOUND",
@@ -84,48 +50,25 @@ const SILENT_ERROR_PATTERNS = [
 	"ECONNRESET",
 ];
 
-// Certificate failures are the exception: a proxy that rewrites TLS is
-// permanent, so the user needs to see why updates never arrive.
 function isNetworkError(error: Error | string): boolean {
 	const message = typeof error === "string" ? error : error.message;
 	if (message.includes("net::ERR_CERT_")) return false;
 	return SILENT_ERROR_PATTERNS.some((pattern) => message.includes(pattern));
 }
 
-// What a scheduled check lets pass in silence: the transport failed, or the
-// feed host answered that it had. The interactive check keeps telling the user
-// about the second, since they asked.
 function isTransientError(error: Error): boolean {
 	return isNetworkError(error) || isUpstreamServerError(error);
 }
 
-// Free bytes on the volume backing the updater caches, which sit beside our app
-// data. Returns null when the volume can't be queried, so an unknown answer
-// never reads as "out of space".
 function freeStagingBytes(): number | null {
 	try {
-		const { bavail, bsize } = statfsSync(app.getPath("userData"));
+		const { bavail, bsize } = statfsSync(getNativePath("userData"));
 		return bavail * bsize;
 	} catch {
 		return null;
 	}
 }
 
-// electron-updater starts the auto-download inside checkForUpdates and hands
-// back its promise unattached; every rejection has already gone through the
-// `error` event, so the copy only needs to stop being unhandled.
-function releaseDownloadPromise(result: UpdateCheckResult | null): void {
-	result?.downloadPromise?.catch(() => {});
-}
-
-// Squirrel.Mac builds its update command disabled whenever DISABLE_UPDATE_CHECK
-// is present in the process environment, and answers every check with "The
-// command is disabled and cannot be executed". electron-updater only hands the
-// archive to Squirrel after downloading it, so on such a machine each check
-// downloads the whole release, fails, discards the cache, and repeats four
-// hours later. The desktop copies the user's login-shell environment into
-// process.env, so a shell export reaches Squirrel too. Honour the variable the
-// way Squirrel does and skip the check.
 function isUpdateCheckDisabledByEnvironment(): boolean {
 	return PLATFORM.IS_MAC && process.env.DISABLE_UPDATE_CHECK !== undefined;
 }
@@ -136,6 +79,7 @@ let currentError: string | undefined;
 let currentProgress: AutoUpdateProgress | undefined;
 let isDismissed = false;
 let isInstalling = false;
+let updaterConfigured = false;
 
 function emitStatus(
 	status: AutoUpdateStatus,
@@ -147,14 +91,67 @@ function emitStatus(
 	currentVersion = version;
 	currentError = error;
 	currentProgress = progress;
+	if (isDismissed && status === AUTO_UPDATE_STATUS.READY) return;
+	autoUpdateEmitter.emit("status-changed", {
+		status,
+		version,
+		error,
+		progress,
+	} satisfies AutoUpdateStatusEvent);
+}
 
-	if (isDismissed && status === AUTO_UPDATE_STATUS.READY) {
+function payloadRecord(payload: unknown): Record<string, unknown> {
+	return typeof payload === "object" && payload !== null
+		? (payload as Record<string, unknown>)
+		: {};
+}
+
+function handleNativeUpdaterEvent(payload: unknown): void {
+	const value = payloadRecord(payload);
+	const status = value.status;
+	if (typeof status !== "string") return;
+	if (!Object.values(AUTO_UPDATE_STATUS).includes(status as AutoUpdateStatus)) {
+		console.error("[auto-updater] Native host sent unknown status:", status);
 		return;
 	}
-
-	const event: AutoUpdateStatusEvent = { status, version, error, progress };
-	autoUpdateEmitter.emit("status-changed", event);
+	const progress = payloadRecord(value.progress);
+	emitStatus(
+		status as AutoUpdateStatus,
+		typeof value.version === "string" ? value.version : undefined,
+		typeof value.error === "string" ? value.error : undefined,
+		Object.keys(progress).length > 0
+			? {
+					percent: Number(progress.percent),
+					transferredBytes: Number(progress.transferredBytes),
+					totalBytes: Number(progress.totalBytes),
+				}
+			: undefined,
+	);
+	if (status === AUTO_UPDATE_STATUS.ERROR) isInstalling = false;
+	if (status === AUTO_UPDATE_STATUS.READY) isInstalling = false;
 }
+
+onNativeEventNamed("updater:status", (event) =>
+	handleNativeUpdaterEvent(event.payload),
+);
+onNativeEventNamed("updater:error", (event) => {
+	const value = payloadRecord(event.payload);
+	const message =
+		typeof value.message === "string" ? value.message : "Native updater failed";
+	isInstalling = false;
+	const error = new Error(message);
+	if (isTransientError(error)) {
+		emitStatus(AUTO_UPDATE_STATUS.IDLE);
+		return;
+	}
+	const freeBytes = freeStagingBytes();
+	emitStatus(AUTO_UPDATE_STATUS.ERROR, undefined, message);
+	if (!isEnvironmentUpdateError(message, freeBytes)) {
+		Sentry.captureException(redactUpdateError(error), {
+			contexts: { update_staging: { free_bytes: freeBytes } },
+		});
+	}
+});
 
 export function getUpdateStatus(): AutoUpdateStatusEvent {
 	if (isDismissed && currentStatus === AUTO_UPDATE_STATUS.READY) {
@@ -168,23 +165,12 @@ export function getUpdateStatus(): AutoUpdateStatusEvent {
 	};
 }
 
-// True from the moment electron-updater hands the archive to Squirrel.Mac,
-// which unpacks ~2GB into ~/Library/Caches/<appId>.ShipIt and then verifies it.
-// That work outlives the download promise, so it is also the window in which a
-// second check must not start: Squirrel gates its own check on a ReactiveObjC
-// command that is disabled until the app relaunches, so a repeat check cannot
-// stage anything newer — it only re-downloads the archive and points a second
-// staging run at the same cache directory.
 export function isUpdateReadyToInstall(): boolean {
 	return isInstalling || currentStatus === AUTO_UPDATE_STATUS.READY;
 }
 
 export function installUpdate(): void {
 	if (env.NODE_ENV === "development") {
-		// Simulate the real lifecycle so the renderer can be previewed with the
-		// simulate* mutations: installing lingers, then the post-update
-		// confirmation shows, then everything goes idle.
-		log.info("[auto-updater] Install skipped in dev mode");
 		const installedVersion = currentVersion;
 		setTimeout(() => {
 			emitStatus(AUTO_UPDATE_STATUS.UPDATED, installedVersion);
@@ -192,26 +178,16 @@ export function installUpdate(): void {
 		}, 3500);
 		return;
 	}
-	// MacUpdater.quitAndInstall() registers a fresh native-updater
-	// `update-downloaded` listener each time it runs before Squirrel.Mac has
-	// finished staging. Without this guard, repeat clicks fan out into
-	// parallel quitAndInstall calls once Squirrel fires — racing to swap
-	// the binary and leaving the app on the old version.
-	if (isInstalling) {
-		log.info(
-			"[auto-updater] Install already in progress, ignoring duplicate request",
-		);
-		return;
-	}
-	if (currentStatus !== AUTO_UPDATE_STATUS.READY) {
-		log.warn(
-			`[auto-updater] Install ignored: update not ready (status=${currentStatus})`,
-		);
-		return;
-	}
+	if (isInstalling || currentStatus !== AUTO_UPDATE_STATUS.READY) return;
 	isInstalling = true;
-	setSkipQuitConfirmation();
-	autoUpdater.quitAndInstall(false, true);
+	void invokeNative("updater.install", { restart: true }).catch((error) => {
+		isInstalling = false;
+		emitStatus(
+			AUTO_UPDATE_STATUS.ERROR,
+			undefined,
+			error instanceof Error ? error.message : String(error),
+		);
+	});
 }
 
 export function dismissUpdate(): void {
@@ -220,68 +196,49 @@ export function dismissUpdate(): void {
 }
 
 export function checkForUpdates(): void {
-	if (env.NODE_ENV === "development" || !IS_AUTO_UPDATE_PLATFORM) {
-		return;
-	}
-	if (isUpdateCheckDisabledByEnvironment()) {
-		log.info(
-			"[auto-updater] Check skipped: DISABLE_UPDATE_CHECK is set in the environment",
-		);
-		return;
-	}
-	if (isUpdateReadyToInstall()) {
-		log.info(
-			`[auto-updater] Check skipped: ${currentVersion} is already staged and installs on restart`,
-		);
-		return;
-	}
+	if (env.NODE_ENV === "development" || !IS_AUTO_UPDATE_PLATFORM) return;
+	if (PERSONAL_INSTALL_BUILD) return;
+	if (isUpdateCheckDisabledByEnvironment() || isUpdateReadyToInstall()) return;
+	if (!updaterConfigured) setupAutoUpdater();
 	isDismissed = false;
 	emitStatus(AUTO_UPDATE_STATUS.CHECKING);
-	autoUpdater
-		.checkForUpdates()
-		.then(releaseDownloadPromise)
-		.catch((error) => {
-			if (isTransientError(error)) {
-				log.info(
-					"[auto-updater] Update server unreachable, will retry later:",
-					error?.message,
-				);
+	void invokeNative("updater.check", { feedUrl: UPDATE_FEED_URL }).catch(
+		(error) => {
+			const normalized =
+				error instanceof Error ? error : new Error(String(error));
+			if (isTransientError(normalized)) {
 				emitStatus(AUTO_UPDATE_STATUS.IDLE);
 				return;
 			}
-			log.error("[auto-updater] Failed to check for updates:", error);
-			emitStatus(AUTO_UPDATE_STATUS.ERROR, undefined, error.message);
-		});
+			emitStatus(AUTO_UPDATE_STATUS.ERROR, undefined, normalized.message);
+		},
+	);
 }
 
 export function checkForUpdatesInteractive(): void {
+	if (PERSONAL_INSTALL_BUILD) return;
 	if (env.NODE_ENV === "development") {
-		dialog.showMessageBox({
+		void showNativeMessageBox({
 			type: "info",
 			title: i18n._(msg({ message: "Updates" })),
 			message: i18n._(
-				msg({
-					message: "Auto-updates are disabled in development mode.",
-				}),
+				msg({ message: "Auto-updates are disabled in development mode." }),
 			),
 		});
 		return;
 	}
 	if (!IS_AUTO_UPDATE_PLATFORM) {
-		dialog.showMessageBox({
+		void showNativeMessageBox({
 			type: "info",
 			title: i18n._(msg({ message: "Updates" })),
 			message: i18n._(
-				msg({
-					message: "Auto-updates are only available on macOS and Linux.",
-				}),
+				msg({ message: "Auto-updates are only available on macOS and Linux." }),
 			),
 		});
 		return;
 	}
-
 	if (isUpdateCheckDisabledByEnvironment()) {
-		dialog.showMessageBox({
+		void showNativeMessageBox({
 			type: "info",
 			title: i18n._(msg({ message: "Updates" })),
 			message: i18n._(
@@ -293,16 +250,11 @@ export function checkForUpdatesInteractive(): void {
 		});
 		return;
 	}
-
 	if (isUpdateReadyToInstall()) {
-		dialog.showMessageBox({
+		void showNativeMessageBox({
 			type: "info",
 			title: i18n._(msg({ message: "Updates" })),
-			message: i18n._(
-				msg({
-					message: "An update is ready to install.",
-				}),
-			),
+			message: i18n._(msg({ message: "An update is ready to install." })),
 			detail: i18n._({
 				...msg({
 					message: "Version {version} installs the next time you restart.",
@@ -312,86 +264,15 @@ export function checkForUpdatesInteractive(): void {
 		});
 		return;
 	}
-
-	isDismissed = false;
-	emitStatus(AUTO_UPDATE_STATUS.CHECKING);
-
-	autoUpdater
-		.checkForUpdates()
-		.then((result) => {
-			releaseDownloadPromise(result);
-			if (
-				!result?.updateInfo ||
-				gte(app.getVersion(), result.updateInfo.version)
-			) {
-				emitStatus(AUTO_UPDATE_STATUS.IDLE);
-				dialog.showMessageBox({
-					type: "info",
-					title: i18n._(
-						msg({
-							message: "No Updates",
-						}),
-					),
-					message: i18n._(
-						msg({
-							message: "You're up to date!",
-						}),
-					),
-					detail: i18n._({
-						...msg({
-							message: "Version {version} is the latest version.",
-						}),
-						values: { version: app.getVersion() },
-					}),
-				});
-			}
-		})
-		.catch((error) => {
-			if (isNetworkError(error)) {
-				log.info("[auto-updater] Network unavailable");
-				emitStatus(AUTO_UPDATE_STATUS.IDLE);
-				dialog.showMessageBox({
-					type: "info",
-					title: i18n._(
-						msg({
-							message: "No Internet Connection",
-						}),
-					),
-					message: i18n._(
-						msg({
-							message:
-								"Unable to check for updates. Please check your internet connection.",
-						}),
-					),
-				});
-				return;
-			}
-			log.error("[auto-updater] Failed to check for updates:", error);
-			emitStatus(AUTO_UPDATE_STATUS.ERROR, undefined, error.message);
-			dialog.showMessageBox({
-				type: "error",
-				title: i18n._(
-					msg({
-						message: "Update Error",
-					}),
-				),
-				message: i18n._(
-					msg({
-						message: "Failed to check for updates. Please try again later.",
-					}),
-				),
-			});
-		});
+	checkForUpdates();
 }
 
 const SIMULATED_VERSION = "99.0.0-test";
 let simulateDownloadInterval: NodeJS.Timeout | undefined;
 
 function clearSimulatedDownload(): void {
-	if (simulateDownloadInterval) {
-		clearInterval(simulateDownloadInterval);
-		simulateDownloadInterval = undefined;
-	}
+	if (simulateDownloadInterval) clearInterval(simulateDownloadInterval);
+	simulateDownloadInterval = undefined;
 }
 
 export function simulateUpdateReady(): void {
@@ -406,9 +287,6 @@ export function simulateDownloading(): void {
 	isDismissed = false;
 	clearSimulatedDownload();
 	emitStatus(AUTO_UPDATE_STATUS.DOWNLOADING, SIMULATED_VERSION);
-
-	// Stream fake progress so the renderer's ring/percent can be exercised,
-	// then land on READY like a real download.
 	const totalBytes = 48 * 1024 * 1024;
 	let percent = 0;
 	simulateDownloadInterval = setInterval(() => {
@@ -437,146 +315,37 @@ export function simulateError(): void {
 }
 
 export function setupAutoUpdater(): void {
-	if (env.NODE_ENV === "development" || !IS_AUTO_UPDATE_PLATFORM) {
+	if (
+		updaterConfigured ||
+		PERSONAL_INSTALL_BUILD ||
+		env.NODE_ENV === "development" ||
+		!IS_AUTO_UPDATE_PLATFORM
+	)
 		return;
-	}
-
-	// Squirrel.Mac install failures happen in ShipIt out-of-process and never
-	// reach the lib's `error` event, so route both the lib's internal logger
-	// and our own handler narration through electron-log. Both halves of the
-	// state machine end up interleaved in ~/Library/Logs/Superset/main.log —
-	// always use `log.{info,warn,error}` here, not `console.*`.
-	log.transports.file.level = "info";
-	autoUpdater.logger = log;
-
-	autoUpdater.autoDownload = true;
-	autoUpdater.autoInstallOnAppQuit = true;
-	autoUpdater.disableDifferentialDownload = true;
-
-	// Allow downgrade for prerelease builds so users can switch back to stable
-	autoUpdater.allowDowngrade = IS_PRERELEASE;
-
-	// Use generic provider with explicit feed URL so electron-updater can request
-	// the correct manifest for the current platform from GitHub release assets.
-	autoUpdater.setFeedURL({
-		provider: "generic",
-		url: UPDATE_FEED_URL,
-	});
-
-	log.info(
-		`[auto-updater] Initialized: version=${app.getVersion()}, channel=${IS_PRERELEASE ? "canary" : "stable"}, feedURL=${UPDATE_FEED_URL}`,
-	);
-
-	autoUpdater.on("error", (error) => {
-		// Allow retry if Squirrel surfaces an error instead of actually quitting.
-		isInstalling = false;
-		if (isTransientError(error)) {
-			log.info(
-				"[auto-updater] Update server unreachable, will retry later:",
-				error?.message,
-			);
-			emitStatus(AUTO_UPDATE_STATUS.IDLE);
-			return;
-		}
-		log.error(
-			`[auto-updater] Error during update (currentVersion=${app.getVersion()}):`,
-			error?.message || error,
+	updaterConfigured = true;
+	void invokeNative("updater.configure", {
+		feedUrl: UPDATE_FEED_URL,
+		channel: IS_PRERELEASE ? "canary" : "stable",
+		autoDownload: true,
+		autoInstallOnAppQuit: true,
+		allowDowngrade: IS_PRERELEASE,
+	}).catch((error) => {
+		console.error("[auto-updater] Native updater configuration failed:", error);
+		emitStatus(
+			AUTO_UPDATE_STATUS.ERROR,
+			undefined,
+			error instanceof Error ? error.message : String(error),
 		);
-		void clearCachedUpdate(`error: ${error?.message ?? "unknown"}`);
-		emitStatus(AUTO_UPDATE_STATUS.ERROR, undefined, error.message);
-		const freeBytes = freeStagingBytes();
-		if (!isEnvironmentUpdateError(error?.message ?? String(error), freeBytes)) {
-			// Squirrel unpacks the archive beside itself under the same volume, so
-			// how much room it had is the one fact that separates a release defect
-			// from a machine that could never have held the staged copy. The
-			// classifier reads it and then throws it away; report it too, or every
-			// staging failure arrives undecidable.
-			Sentry.captureException(redactUpdateError(error), {
-				contexts: { update_staging: { free_bytes: freeBytes } },
-			});
-		}
 	});
-
-	autoUpdater.on("checking-for-update", () => {
-		log.info(
-			`[auto-updater] Checking for updates... (currentVersion=${app.getVersion()}, feedURL=${UPDATE_FEED_URL})`,
-		);
-		emitStatus(AUTO_UPDATE_STATUS.CHECKING);
-	});
-
-	autoUpdater.on("update-available", (info) => {
-		log.info(
-			`[auto-updater] Update available: ${app.getVersion()} → ${info.version} (files: ${info.files?.map((f: { url: string }) => f.url).join(", ")})`,
-		);
-		emitStatus(AUTO_UPDATE_STATUS.DOWNLOADING, info.version);
-	});
-
-	autoUpdater.on("update-not-available", (info) => {
-		log.info(
-			`[auto-updater] No updates available (currentVersion=${app.getVersion()}, latestVersion=${info.version})`,
-		);
-		emitStatus(AUTO_UPDATE_STATUS.IDLE);
-	});
-
-	// Throttle renderer notifications; electron-updater emits per chunk.
-	const PROGRESS_EMIT_INTERVAL_MS = 500;
-	let lastProgressEmitAt = 0;
-	autoUpdater.on("download-progress", (progress) => {
-		log.info(
-			`[auto-updater] Download progress: ${progress.percent.toFixed(1)}% (${(progress.transferred / 1024 / 1024).toFixed(1)}MB / ${(progress.total / 1024 / 1024).toFixed(1)}MB)`,
-		);
-		const now = Date.now();
-		if (now - lastProgressEmitAt < PROGRESS_EMIT_INTERVAL_MS) return;
-		lastProgressEmitAt = now;
-		emitStatus(AUTO_UPDATE_STATUS.DOWNLOADING, currentVersion, undefined, {
-			percent: progress.percent,
-			transferredBytes: progress.transferred,
-			totalBytes: progress.total,
-		});
-	});
-
-	autoUpdater.on("update-downloaded", (info) => {
-		log.info(
-			`[auto-updater] Update downloaded: ${app.getVersion()} → ${info.version}. Ready to install.`,
-		);
-		emitStatus(AUTO_UPDATE_STATUS.READY, info.version);
-	});
-
-	// If the version changed since the last launch, an update was just
-	// installed — surface a transient confirmation before the first check.
 	const lastRunVersion = appState.data.lastRunVersion;
-	const currentAppVersion = app.getVersion();
+	const currentAppVersion = getNativeAppVersion();
 	const justUpdated = !!lastRunVersion && lastRunVersion !== currentAppVersion;
-	if (justUpdated) {
-		log.info(
-			`[auto-updater] Updated: ${lastRunVersion} → ${currentAppVersion}`,
-		);
-		emitStatus(AUTO_UPDATE_STATUS.UPDATED, currentAppVersion);
-	}
+	if (justUpdated) emitStatus(AUTO_UPDATE_STATUS.UPDATED, currentAppVersion);
 	if (lastRunVersion !== currentAppVersion) {
 		appState.data.lastRunVersion = currentAppVersion;
-		appState.write().catch((error) => {
-			log.error("[auto-updater] Failed to persist lastRunVersion:", error);
-		});
+		void appState.write();
 	}
-
 	const interval = setInterval(checkForUpdates, UPDATE_CHECK_INTERVAL_MS);
 	interval.unref();
-
-	// Delay the first check when just updated so the confirmation isn't
-	// immediately overwritten by CHECKING before the renderer sees it.
-	const firstCheckDelayMs = justUpdated ? 10_000 : 0;
-	const startChecks = () => {
-		setTimeout(checkForUpdates, firstCheckDelayMs);
-	};
-	if (app.isReady()) {
-		startChecks();
-	} else {
-		app
-			.whenReady()
-			.then(startChecks)
-			.catch((error) => {
-				log.error("[auto-updater] Failed to start update checks:", error);
-			});
-	}
+	setTimeout(checkForUpdates, justUpdated ? 10_000 : 0);
 }

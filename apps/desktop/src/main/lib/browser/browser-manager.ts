@@ -1,9 +1,16 @@
+import { randomUUID } from "node:crypto";
 import { EventEmitter } from "node:events";
-import { msg } from "@lingui/core/macro";
-import { i18n } from "@superset/i18n";
+import {
+	existsSync,
+	lstatSync,
+	mkdirSync,
+	readFileSync,
+	renameSync,
+	writeFileSync,
+} from "node:fs";
+import { join } from "node:path";
 import { PROTOCOL_SCHEMES } from "@superset/shared/constants";
-import { clipboard, Menu, webContents } from "electron";
-import { safeOpenExternal } from "main/lib/safe-url";
+import { getNativePath } from "main/native/platform";
 import type {
 	DesignModeRect,
 	DesignModeScreenshot,
@@ -14,33 +21,30 @@ import { chordFromInput, type ForwardedKey } from "shared/hotkey-chord";
 import {
 	forwardSessionFor,
 	handleTargetCommand,
+	type ShimIds,
 	shimIds,
 	tagEventSession,
 } from "./cdp-target-shim";
-import { DesignModeController } from "./design-mode-controller";
-import { captureDesignModeScreenshot } from "./design-mode-screenshot";
-import { buildDesignModeScript } from "./design-mode-script";
-import { markBrowserPanePopup, shouldOpenAsPopup } from "./popup-window";
+import {
+	type CookieKeychainIdentity,
+	type ImportedCookie,
+	readCookiesFromProfileWithStatus,
+} from "./chrome-cookie-import";
+import { resolveImportProfile } from "./chrome-history-import";
+import {
+	type BrowserGuest,
+	DesignModeController,
+} from "./design-mode-controller";
+import {
+	dispatchNativeBrowser,
+	type NativeBrowserCapture,
+	type NativeBrowserEvent,
+	type NativeBrowserPane,
+	subscribeNativeBrowserEvents,
+	subscribeNativeMenuEvents,
+} from "./native-browser";
 
-interface ConsoleEntry {
-	level: "log" | "warn" | "error" | "info" | "debug";
-	message: string;
-	timestamp: number;
-}
-
-interface PaneRegistration {
-	webContentsId: number;
-	/** Null for panes registered by surfaces that predate workspace scoping (v1). */
-	workspaceId: string | null;
-}
-
-export interface BrowserPaneInfo {
-	paneId: string;
-	workspaceId: string | null;
-	url: string;
-	title: string;
-	isLoading: boolean;
-}
+export interface BrowserPaneInfo extends NativeBrowserPane {}
 
 export interface BrowserOpenRequest {
 	workspaceId: string;
@@ -51,71 +55,141 @@ export interface BrowserOpenRequest {
 	requestId: string;
 }
 
+export interface BrowserRegisterOptions {
+	workspaceId?: string;
+	url?: string;
+	visible?: boolean;
+	bounds?: BrowserBounds;
+}
+
+export interface BrowserBounds {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+}
+
+export interface BrowserScreenshot extends NativeBrowserCapture {}
+
 export interface CdpSession {
 	send: (rawMessage: string) => void;
 	detach: () => void;
 }
 
-const MAX_CONSOLE_ENTRIES = 500;
+export class CdpBusyError extends Error {}
 
-// A hidden pane presents no compositor frames, so `capturePage` can hang
-// indefinitely or fail ("UnknownVizError" / an empty bitmap). The agent wake
-// makes the renderer re-park the webview presentable, and the capture
-// request itself forces a frame — but on a deeply idled guest that first
-// frame lands seconds later, resolving the *next* attempt instantly. So:
-// bound each attempt, retry until the deadline.
-const CAPTURE_DEADLINE_MS = 15_000;
-const CAPTURE_ATTEMPT_TIMEOUT_MS = 1_500;
-const CAPTURE_RETRY_INTERVAL_MS = 100;
+const DEFAULT_BROWSER_URL = "about:blank";
+const LEGACY_GUEST_SNAPSHOT = [
+	"migration",
+	"electron-guest-partition",
+] as const;
+const LEGACY_COOKIE_IMPORT_MARKER = [
+	"migration",
+	"browser-cookies-imported.json",
+] as const;
+const LEGACY_GUEST_METADATA = "metadata.json";
 
-function sanitizeUrl(url: string): string {
-	if (/^https?:\/\//i.test(url) || url.startsWith("about:")) {
-		return url;
-	}
-	if (url.startsWith("localhost") || url.startsWith("127.0.0.1")) {
-		return `http://${url}`;
-	}
-	if (url.includes(".")) {
-		return `https://${url}`;
-	}
-	return `https://www.google.com/search?q=${encodeURIComponent(url)}`;
+interface LegacyCookieImportResult {
+	imported: number;
+	skipped: number;
+	keyUnavailable: boolean;
+	snapshotAvailable: boolean;
 }
 
-// Schemes a guest pane may navigate to. Enforced on `will-navigate` so it holds
-// no matter who initiates the load — the toolbar, a link, or a raw CDP
-// `Page.navigate` (which bypasses `sanitizeUrl`). Blocks `file:`/`chrome:`/
-// `devtools:`/etc. so an agent can't read local files or internal pages through
-// the pane.
+interface ImportedCookieWriteResult {
+	imported: number;
+	skipped: number;
+	keyUnavailable?: boolean;
+}
 const ALLOWED_GUEST_SCHEMES = new Set(["http:", "https:", "about:"]);
-
-// A published page links back with the shipped `superset://` scheme; a dev
-// instance registers `superset-<workspace>` and must honour both.
 const DEEP_LINK_SCHEMES = new Set([
 	`${PROTOCOL_SCHEMES.PROD}:`,
 	`${PROTOCOL_SCHEME}:`,
 ]);
+const MAX_CONSOLE_ENTRIES = 500;
 
-/**
- * Resolves the next `mousedown` in the guest's current document. Installs a
- * single capture-phase listener the first time (idempotent across repeated
- * injections into the same document) and queues a resolver per call so a
- * fresh `executeJavaScript` await always gets the *next* press, not a stale
- * one. Never calls `stopPropagation`/`preventDefault` — purely observes.
- */
-const NEXT_MOUSEDOWN_SCRIPT = `(() => {
-	if (!window.__supersetMousedownHook) {
-		window.__supersetMousedownHook = { resolvers: [] };
-		document.addEventListener("mousedown", () => {
-			const hook = window.__supersetMousedownHook;
-			const resolvers = hook.resolvers;
-			hook.resolvers = [];
-			for (const resolve of resolvers) resolve();
-		}, true);
+interface PaneRegistration extends BrowserPaneInfo {
+	ownerLabel: string;
+}
+
+interface PaneRegistrationTask {
+	ownerLabel: string;
+	workspaceId: string | null;
+	promise: Promise<{ success: true; pane: BrowserPaneInfo }>;
+}
+
+interface GuestListener {
+	event: string;
+	listener: (...args: unknown[]) => void;
+}
+
+interface CdpRegistration {
+	sessionId: string;
+	ids: ShimIds;
+	flatSessionId: string | null;
+	autoAttachEmitted: boolean;
+	onMessage: (payload: string) => void;
+	onDetach: (reason: string) => void;
+	closed: boolean;
+}
+
+interface ConsoleEntry {
+	level: "log" | "warn" | "error" | "info" | "debug";
+	message: string;
+	timestamp: number;
+}
+
+function sanitizeUrl(url: string): string {
+	if (/^https?:\/\//i.test(url) || url.startsWith("about:")) return url;
+	if (url.startsWith("localhost") || url.startsWith("127.0.0.1")) {
+		return `http://${url}`;
 	}
-	return new Promise((resolve) => {
-		window.__supersetMousedownHook.resolvers.push(resolve);
-	});
-})()`;
+	if (url.includes(".")) return `https://${url}`;
+	return `https://www.google.com/search?q=${encodeURIComponent(url)}`;
+}
+
+function containsControlCharacters(value: string): boolean {
+	for (const character of value) {
+		const code = character.charCodeAt(0);
+		if (code < 0x20 || code === 0x7f) return true;
+	}
+	return false;
+}
+
+function legacyCookieKeychainIdentity(
+	metadataPath: string,
+): CookieKeychainIdentity | null {
+	try {
+		const metadata: unknown = JSON.parse(readFileSync(metadataPath, "utf8"));
+		if (!metadata || typeof metadata !== "object") return null;
+		const record = metadata as Record<string, unknown>;
+		const keychain = record.keychain;
+		if (
+			record.version !== 1 ||
+			record.source !== "electron-guest-partition" ||
+			!keychain ||
+			typeof keychain !== "object"
+		) {
+			return null;
+		}
+		const identity = keychain as Record<string, unknown>;
+		if (
+			typeof identity.service !== "string" ||
+			identity.service.length === 0 ||
+			identity.service.length > 256 ||
+			containsControlCharacters(identity.service) ||
+			typeof identity.account !== "string" ||
+			identity.account.length === 0 ||
+			identity.account.length > 256 ||
+			containsControlCharacters(identity.account)
+		) {
+			return null;
+		}
+		return { service: identity.service, account: identity.account };
+	} catch {
+		return null;
+	}
+}
 
 function protocolOf(url: string): string | null {
 	try {
@@ -125,86 +199,18 @@ function protocolOf(url: string): string | null {
 	}
 }
 
-function isAllowedGuestUrl(url: string): boolean {
-	const protocol = protocolOf(url);
-	return protocol !== null && ALLOWED_GUEST_SCHEMES.has(protocol);
-}
-
 export function isDeepLinkUrl(url: string): boolean {
 	const protocol = protocolOf(url);
 	return protocol !== null && DEEP_LINK_SCHEMES.has(protocol);
 }
 
-/**
- * Shared by panes and by the popups they open. Returns a detach function. A
- * guest has no protocol handler of its own, so an app deep link is cancelled
- * in the guest and handed to `onDeepLink` instead of being dropped.
- */
-function attachNavigationGuard(
-	wc: Electron.WebContents,
-	onDeepLink: (url: string) => void,
-): () => void {
-	const handler = (event: Electron.Event, url: string) => {
-		if (isDeepLinkUrl(url)) {
-			event.preventDefault();
-			onDeepLink(url);
-			return;
-		}
-		if (!isAllowedGuestUrl(url)) event.preventDefault();
-	};
-	wc.on("will-navigate", handler);
-	wc.on("will-redirect", handler);
-	return () => {
-		try {
-			wc.off("will-navigate", handler);
-			wc.off("will-redirect", handler);
-		} catch {
-			// webContents may be destroyed
-		}
-	};
-}
-
-/**
- * Window options for a popup opened from a guest pane.
- *
- * Geometry is deliberately left out: Electron already parses `width`/`height`/
- * `x`/`y` from the `features` string, and options returned here outrank that
- * parse — setting them would only re-derive what Chromium worked out, and drift
- * from it. `partition` is left out for a different reason: the popup inherits
- * the opener's session, and that shared cookie jar is the point of allowing it.
- */
-function popupWindowOptions(): Electron.BrowserWindowConstructorOptions {
-	return {
-		autoHideMenuBar: true,
-		// A sign-in window has no business going fullscreen.
-		fullscreenable: false,
-		// `webPreferences` is deliberately not set. Electron inherits the
-		// opener's security preferences and refuses to relax them, so the popup
-		// is already no-Node and context-isolated. Restating them here would be
-		// worse than redundant: if a value we pin ever diverges from the guest's
-		// (`sandbox` especially), Electron isolates the child in its own process
-		// and `window.opener` comes back null, silently breaking the one thing
-		// this popup exists to preserve.
-	};
-}
-
-/**
- * Resolve address-bar input to a URL the guest may load, or throw if it names
- * an explicit disallowed scheme (`file:`, `chrome:`, `data:`, `javascript:`,
- * …). Bare input keeps the address-bar heuristic (`sanitizeUrl`: host[:port] →
- * http, a dotted token → https, anything else → web search) — only an explicit
- * unsupported scheme is rejected, so a programmatic caller gets a clear error
- * instead of silently landing on a search page.
- */
+/** Resolve address-bar input without ever silently accepting a blocked scheme. */
 export function resolveGuestUrl(input: string): string {
 	const trimmed = input.trim();
 	const schemeMatch = trimmed.match(/^([a-zA-Z][a-zA-Z0-9+.-]*):/);
 	if (schemeMatch) {
 		const scheme = `${(schemeMatch[1] as string).toLowerCase()}:`;
 		const rest = trimmed.slice((schemeMatch[0] as string).length);
-		// Tell a real scheme ("file:///…", "data:…") apart from a bare host:port
-		// ("localhost:3000"), where the "scheme" is a hostname and the rest is a
-		// port — only the former should be scheme-checked.
 		const looksLikeHostPort = /^\d+(?:[/?#]|$)/.test(rest);
 		if (!looksLikeHostPort && !ALLOWED_GUEST_SCHEMES.has(scheme)) {
 			throw new Error(
@@ -215,358 +221,947 @@ export function resolveGuestUrl(input: string): string {
 	return sanitizeUrl(trimmed);
 }
 
-/** Thrown when a pane already has a live CDP session (a single one is allowed). */
-export class CdpBusyError extends Error {}
-
-function withTimeout<T>(
-	promise: Promise<T>,
-	ms: number,
-	message: string,
-): Promise<T> {
-	return new Promise<T>((resolve, reject) => {
-		const timer = setTimeout(() => reject(new Error(message)), ms);
-		promise.then(
-			(value) => {
-				clearTimeout(timer);
-				resolve(value);
-			},
-			(err: unknown) => {
-				clearTimeout(timer);
-				reject(err);
-			},
-		);
-	});
+function errorMessage(error: unknown): string {
+	return error instanceof Error ? error.message : String(error);
 }
 
+function asPane(value: unknown): BrowserPaneInfo {
+	if (!value || typeof value !== "object") {
+		throw new Error("Native browser returned an invalid pane");
+	}
+	const pane = value as Partial<BrowserPaneInfo>;
+	if (typeof pane.paneId !== "string")
+		throw new Error("Native browser returned a pane without an id");
+	return {
+		paneId: pane.paneId,
+		workspaceId: typeof pane.workspaceId === "string" ? pane.workspaceId : null,
+		url: typeof pane.url === "string" ? pane.url : DEFAULT_BROWSER_URL,
+		title: typeof pane.title === "string" ? pane.title : "",
+		isLoading: pane.isLoading === true,
+		canGoBack: pane.canGoBack === true,
+		canGoForward: pane.canGoForward === true,
+		zoomFactor:
+			typeof pane.zoomFactor === "number" && Number.isFinite(pane.zoomFactor)
+				? pane.zoomFactor
+				: 1,
+	};
+}
+
+function asEvent(value: unknown): NativeBrowserEvent | null {
+	if (!value || typeof value !== "object") return null;
+	const event = value as Partial<NativeBrowserEvent>;
+	return typeof event.kind === "string" ? (event as NativeBrowserEvent) : null;
+}
+
+/**
+ * Node-side browser coordinator. It owns no guest document and has no native
+ * browser object; every guest operation crosses the single native adapter.
+ */
 class BrowserManager extends EventEmitter {
-	private panes = new Map<string, PaneRegistration>();
-	private consoleLogs = new Map<string, ConsoleEntry[]>();
-	private consoleListeners = new Map<string, () => void>();
-	private contextMenuListeners = new Map<string, () => void>();
-	private beforeInputListeners = new Map<string, () => void>();
-	private navigationListeners = new Map<string, () => void>();
-	private popupListeners = new Map<string, () => void>();
-	private focusListeners = new Map<string, () => void>();
-	private cdpDetachers = new Map<string, () => void>();
-	// Ref-count of in-flight agent work per pane (a live CDP session, a
-	// screenshot capture). While present the guest renderer stays
-	// un-throttled — see acquireAgentWake. The entry object's identity ties
-	// releases to the registration generation they were acquired under.
-	private agentWakes = new Map<string, { count: number }>();
-	// Canonical chords to suppress in the focused guest and forward for the
-	// renderer to replay. Kept override/layout-aware by the renderer.
-	private forwardableChords = new Set<string>();
-	private designMode = new DesignModeController();
+	private readonly panes = new Map<string, PaneRegistration>();
+	private readonly registrationTasks = new Map<string, PaneRegistrationTask>();
+	private readonly consoleLogs = new Map<string, ConsoleEntry[]>();
+	private readonly guestListeners = new Map<string, Set<GuestListener>>();
+	private readonly cdpSessions = new Map<string, CdpRegistration>();
+	private readonly agentWakes = new Set<string>();
+	private readonly forwardableChordsByOwner = new Map<string, Set<string>>();
+	private readonly contextActions = new Map<
+		string,
+		{ paneId: string; action: string; url?: string; text?: string }
+	>();
+	private contextActionSequence = 0;
+	private legacyCookieImport: Promise<LegacyCookieImportResult> | null = null;
+	private readonly designMode = new DesignModeController();
+	private cdpSequence = 0;
 
-	setForwardableChords(chords: string[]): void {
-		this.forwardableChords = new Set(chords);
+	constructor() {
+		super();
+		subscribeNativeBrowserEvents((event) => this.handleNativeEvent(event));
+		subscribeNativeMenuEvents((payload, ownerLabel) =>
+			this.handleContextAction(payload, ownerLabel),
+		);
 	}
 
-	register(paneId: string, webContentsId: number, workspaceId?: string): void {
-		// Clean even when prevId === webContentsId so BrowserManager owns
-		// listener idempotency; callers can re-register without duplicating.
-		const prev = this.panes.get(paneId);
-		if (prev != null) {
-			for (const map of [
-				this.consoleListeners,
-				this.contextMenuListeners,
-				this.beforeInputListeners,
-				this.navigationListeners,
-				this.popupListeners,
-				this.focusListeners,
-			]) {
-				const cleanup = map.get(paneId);
-				if (cleanup) {
-					cleanup();
-					map.delete(paneId);
+	async setForwardableChords(
+		chords: string[],
+		ownerLabel: string,
+	): Promise<void> {
+		this.forwardableChordsByOwner.set(ownerLabel, new Set(chords));
+		await dispatchNativeBrowser(
+			"browser.hotkeys.setForwardableChords",
+			{ chords },
+			ownerLabel,
+		);
+	}
+
+	/** Called by the native host's browser:event event demultiplexer. */
+	handleNativeEvent(raw: unknown): void {
+		const event = asEvent(raw);
+		if (!event) return;
+		const ownerLabel =
+			typeof event.ownerLabel === "string" ? event.ownerLabel : null;
+		if (!ownerLabel) return;
+		const paneId = typeof event.paneId === "string" ? event.paneId : null;
+		if (paneId) {
+			const registeredPane = this.panes.get(paneId);
+			if (registeredPane && registeredPane.ownerLabel !== ownerLabel) return;
+			if (!registeredPane && event.kind !== "paneRegistered") return;
+		}
+		switch (event.kind) {
+			case "paneRegistered":
+			case "paneState": {
+				if (!paneId) return;
+				const previous = this.panes.get(paneId);
+				const pane = this.mergePane(previous, event);
+				this.panes.set(paneId, pane);
+				if (event.kind === "paneRegistered") {
+					this.emit("pane-registered", {
+						paneId,
+						workspaceId: pane.workspaceId,
+					});
 				}
+				this.emit(`pane-state:${paneId}`, { ...pane, kind: event.kind });
+				this.notifyGuest(paneId, "paneState", event);
+				return;
 			}
+			case "paneClosed":
+				if (paneId) this.handlePaneClosed(paneId, "pane closed");
+				return;
+			case "deepLink":
+				if (typeof event.url === "string") this.emit("deep-link", event.url);
+				return;
+			case "navigationStarted":
+			case "navigationCommitted":
+			case "navigationFailed":
+			case "loadingStarted":
+			case "loadingFinished":
+			case "addressChanged":
+				if (paneId) {
+					this.applyNavigationEvent(paneId, event);
+					this.notifyGuest(paneId, "navigation", event);
+				}
+				return;
+			case "console":
+				if (paneId) this.recordConsole(paneId, event);
+				return;
+			case "foundInPage":
+				if (paneId)
+					this.emit(`found-in-page:${paneId}`, {
+						activeMatchOrdinal:
+							typeof event.activeMatchOrdinal === "number"
+								? event.activeMatchOrdinal
+								: 0,
+						matches: typeof event.matches === "number" ? event.matches : 0,
+					});
+				return;
+			case "newWindow":
+				if (paneId && typeof event.url === "string") {
+					if (event.popup === true) this.emit(`popup:${paneId}`, event);
+					else this.emit(`new-window:${paneId}`, event.url);
+				}
+				return;
+			case "contextMenuAction":
+				if (paneId) this.emit(`context-menu-action:${paneId}`, event);
+				return;
+			case "closePane":
+				if (paneId) this.emit(`close-pane:${paneId}`);
+				return;
+			case "reloadPane":
+				if (paneId) this.emit(`reload-pane:${paneId}`);
+				return;
+			case "paneFocus":
+				if (paneId) this.emit(`pane-focus:${paneId}`);
+				return;
+			case "keyForward":
+				if (paneId && isForwardedKey(event.key))
+					this.emit(`key-forward:${paneId}`, event.key);
+				return;
+			case "agentActive":
+				this.agentWakes.clear();
+				for (const id of Array.isArray(event.paneIds) ? event.paneIds : []) {
+					if (typeof id === "string") this.agentWakes.add(id);
+				}
+				this.emit("agent-active", { paneIds: [...this.agentWakes] });
+				return;
+			case "cdp":
+				if (paneId && typeof event.sessionId === "string") {
+					const session = this.cdpSessions.get(event.sessionId);
+					if (session && typeof event.payload === "string") {
+						try {
+							const payload = JSON.parse(event.payload) as Record<
+								string,
+								unknown
+							>;
+							if (typeof payload.method === "string") {
+								const sessionId = tagEventSession(
+									typeof payload.sessionId === "string"
+										? payload.sessionId
+										: undefined,
+									session.flatSessionId,
+								);
+								if (sessionId) payload.sessionId = sessionId;
+							}
+							session.onMessage(JSON.stringify(payload));
+						} catch {
+							session.onMessage(event.payload);
+						}
+					}
+				}
+				return;
+			case "cdpClosed":
+				if (paneId) {
+					for (const [sessionId, session] of this.cdpSessions) {
+						if (sessionId.startsWith(`${paneId}:`)) {
+							session.closed = true;
+							this.cdpSessions.delete(sessionId);
+							session.onDetach(
+								String(event.reason ?? "native event backpressure"),
+							);
+						}
+					}
+				}
+				return;
+			case "download":
+				this.emit("download", event);
+				return;
+			default:
+				return;
 		}
-		this.panes.set(paneId, {
-			webContentsId,
-			workspaceId: workspaceId ?? prev?.workspaceId ?? null,
-		});
-		const wc = webContents.fromId(webContentsId);
-		if (wc) {
-			// Throttling stays enabled by default so parked/offscreen persistent
-			// webviews don't run at full speed in the background — except while
-			// agent work is in flight on the pane (see acquireAgentWake), where a
-			// throttled+hidden guest stops presenting frames and CDP input and
-			// screenshots silently break.
-			this.applyThrottling(paneId, wc);
-			this.setupWindowOpen(paneId, wc);
-			this.setupConsoleCapture(paneId, wc);
-			this.setupContextMenu(paneId, wc);
-			this.setupBeforeInput(paneId, wc);
-			this.setupNavigationGuard(paneId, wc);
-			this.setupFocusForward(paneId, wc);
-		}
-		this.emit("pane-registered", {
-			paneId,
-			workspaceId: workspaceId ?? prev?.workspaceId ?? null,
-		});
 	}
 
-	unregister(paneId: string): void {
-		for (const map of [
-			this.consoleListeners,
-			this.contextMenuListeners,
-			this.beforeInputListeners,
-			this.navigationListeners,
-			this.popupListeners,
-			this.focusListeners,
-		]) {
-			const cleanup = map.get(paneId);
-			if (cleanup) {
-				cleanup();
-				map.delete(paneId);
-			}
-		}
-		this.cdpDetachers.get(paneId)?.();
-		this.designMode.cancel(paneId, "destroyed");
-		this.panes.delete(paneId);
-		this.consoleLogs.delete(paneId);
-		// Tell subscribers when a live wake dies with the pane, so the renderer
-		// doesn't keep a stale pane id in its exemption set.
-		if (this.agentWakes.delete(paneId)) this.emitAgentActive();
-	}
-
-	/**
-	 * Keep the pane's guest responsive while agent work is in flight (a live
-	 * CDP session, an in-flight screenshot). Two halves, both required: this
-	 * disables background throttling on the guest, and the `agent-active`
-	 * event tells the renderer registry to park the pane's webview
-	 * presentable (`opacity: 0`) instead of `visibility: hidden` — a
-	 * visibility-hidden webview stops getting compositor frames entirely, so
-	 * `capturePage`/`Page.captureScreenshot` hang or fail ("UnknownVizError").
-	 * Ref-counted so overlapping work (a CDP session plus a screenshot)
-	 * doesn't drop the wake early. Each release is bound to the wake entry it
-	 * incremented: unregister() discards the entry, so a release held by
-	 * work that outlived the pane (a capture can run up to 15 s) cannot
-	 * decrement a wake acquired after the pane re-registered. Returns an
-	 * idempotent release.
-	 */
-	private acquireAgentWake(paneId: string): () => void {
-		let entry = this.agentWakes.get(paneId);
-		if (entry) {
-			entry.count += 1;
-		} else {
-			entry = { count: 1 };
-			this.agentWakes.set(paneId, entry);
-			const wc = this.getWebContents(paneId);
-			if (wc) this.applyThrottling(paneId, wc);
-			this.emitAgentActive();
-		}
-		let released = false;
-		return () => {
-			if (released) return;
-			released = true;
-			// A different (or missing) entry means the pane's wake state was
-			// reset since this wake was acquired — this release is stale.
-			if (this.agentWakes.get(paneId) !== entry) return;
-			entry.count -= 1;
-			if (entry.count <= 0) {
-				this.agentWakes.delete(paneId);
-				const wc = this.getWebContents(paneId);
-				if (wc) this.applyThrottling(paneId, wc);
-				this.emitAgentActive();
-			}
+	private mergePane(
+		previous: PaneRegistration | undefined,
+		event: NativeBrowserEvent,
+	): PaneRegistration {
+		return {
+			paneId: previous?.paneId ?? String(event.paneId),
+			workspaceId:
+				typeof event.workspaceId === "string"
+					? event.workspaceId
+					: (previous?.workspaceId ?? null),
+			url: typeof event.url === "string" ? event.url : (previous?.url ?? ""),
+			title:
+				typeof event.title === "string" ? event.title : (previous?.title ?? ""),
+			isLoading:
+				typeof event.isLoading === "boolean"
+					? event.isLoading
+					: (previous?.isLoading ?? false),
+			canGoBack:
+				typeof event.canGoBack === "boolean"
+					? event.canGoBack
+					: (previous?.canGoBack ?? false),
+			canGoForward:
+				typeof event.canGoForward === "boolean"
+					? event.canGoForward
+					: (previous?.canGoForward ?? false),
+			zoomFactor:
+				typeof event.zoomFactor === "number"
+					? event.zoomFactor
+					: (previous?.zoomFactor ?? 1),
+			ownerLabel:
+				typeof event.ownerLabel === "string"
+					? event.ownerLabel
+					: (previous?.ownerLabel ?? "main"),
 		};
 	}
 
-	private applyThrottling(paneId: string, wc: Electron.WebContents): void {
-		try {
-			wc.setBackgroundThrottling(!this.agentWakes.has(paneId));
-		} catch {
-			// webContents may be destroyed
-		}
-	}
-
-	/**
-	 * The host window's own subframes — a page pane's iframe, the PDF viewer —
-	 * swallow keystrokes the way a guest webview does: while one has focus the
-	 * host document's listeners never see them. Suppress the forwardable chords
-	 * there too and hand them to that window's renderer to replay. Focus in the
-	 * top frame is left alone so the renderer handles the real event.
-	 */
-	registerHostWindow(wc: Electron.WebContents): void {
-		wc.on("before-input-event", (event, input) => {
-			if (input.type !== "keyDown") return;
-			if (!wc.focusedFrame?.parent) return;
-			const key = this.forwardableKey(input);
-			if (!key) return;
-			event.preventDefault();
-			this.emit(`host-key-forward:${wc.id}`, key);
+	private applyNavigationEvent(
+		paneId: string,
+		event: NativeBrowserEvent,
+	): void {
+		const previous = this.panes.get(paneId);
+		if (!previous) return;
+		this.panes.set(paneId, this.mergePane(previous, event));
+		this.emit(`pane-state:${paneId}`, {
+			...this.panes.get(paneId),
+			kind: event.kind,
 		});
 	}
 
-	unregisterAll(): void {
-		for (const paneId of [...this.panes.keys()]) {
-			this.unregister(paneId);
+	private showContextMenu(
+		paneId: string,
+		request: Record<string, unknown>,
+	): void {
+		const pane = this.panes.get(paneId);
+		if (!pane) return;
+		const linkURL = typeof request.linkURL === "string" ? request.linkURL : "";
+		const pageURL = typeof request.pageURL === "string" ? request.pageURL : "";
+		const selectionText =
+			typeof request.selectionText === "string"
+				? request.selectionText.slice(0, 4096)
+				: "";
+		for (const [id, action] of this.contextActions) {
+			if (action.paneId === paneId) this.contextActions.delete(id);
+		}
+		const items: Array<Record<string, unknown>> = [];
+		const add = (
+			label: string,
+			action: string,
+			value?: { url?: string; text?: string },
+		) => {
+			const id = `browser-context-${++this.contextActionSequence}`;
+			this.contextActions.set(id, { paneId, action, ...value });
+			items.push({ label, action: id });
+		};
+		if (linkURL) {
+			add("Open Link as New Split", "open-in-split", { url: linkURL });
+			add("Open Link in Default Browser", "open-external", { url: linkURL });
+			add("Copy Link Address", "copy", { text: linkURL });
+		}
+		if (selectionText) add("Copy Selection", "copy", { text: selectionText });
+		if (pageURL && pageURL !== "about:blank") {
+			add("Open Page in Default Browser", "open-external", { url: pageURL });
+			add("Copy Page URL", "copy", { text: pageURL });
+			if (pane.canGoBack) add("Back", "back");
+			if (pane.canGoForward) add("Forward", "forward");
+			add("Reload", "reload");
+		}
+		if (!items.length) return;
+		while (this.contextActions.size > 256) {
+			const oldest = this.contextActions.keys().next().value;
+			if (!oldest) break;
+			this.contextActions.delete(oldest);
+		}
+		void dispatchNativeBrowser(
+			"menu.popupContext",
+			{ items },
+			pane.ownerLabel,
+		).catch((error) => console.error("[browser] context menu failed", error));
+	}
+
+	private handleContextAction(raw: unknown, ownerLabel?: string): void {
+		if (!raw || typeof raw !== "object") return;
+		const actionId = (raw as { action?: unknown }).action;
+		if (typeof actionId !== "string") return;
+		const action = this.contextActions.get(actionId);
+		if (
+			!action ||
+			(this.panes.get(action.paneId)?.ownerLabel ?? "main") !== ownerLabel
+		)
+			return;
+		this.contextActions.delete(actionId);
+		if (action.action === "open-in-split" && action.url) {
+			this.emit(`context-menu-action:${action.paneId}`, {
+				action: "open-in-split",
+				url: action.url,
+			});
+		} else if (action.action === "open-external" && action.url) {
+			void dispatchNativeBrowser(
+				"shell.openExternal",
+				{ url: action.url },
+				ownerLabel,
+			);
+		} else if (action.action === "copy" && action.text) {
+			void dispatchNativeBrowser(
+				"clipboard.writeText",
+				{ text: action.text },
+				ownerLabel,
+			);
+		} else if (action.action === "back") {
+			void this.goBack(action.paneId);
+		} else if (action.action === "forward") {
+			void this.goForward(action.paneId);
+		} else if (action.action === "reload") {
+			void this.reload(action.paneId);
 		}
 	}
 
-	/**
-	 * Resolve a pane's live webContents. When `workspaceId` is passed (every
-	 * external/bridge caller does), the pane must belong to that workspace or
-	 * this returns null — so an agent authenticated for one workspace can't
-	 * reach another workspace's (or org's) panes by guessing a pane id. The
-	 * renderer IPC path omits it: it only ever touches its own pane.
-	 */
-	getWebContents(
-		paneId: string,
-		workspaceId?: string,
-	): Electron.WebContents | null {
-		const reg = this.panes.get(paneId);
-		if (!reg) return null;
-		if (workspaceId != null && reg.workspaceId !== workspaceId) return null;
-		const wc = webContents.fromId(reg.webContentsId);
-		if (!wc || wc.isDestroyed()) return null;
-		return wc;
+	private recordConsole(paneId: string, event: NativeBrowserEvent): void {
+		if (event.message === "__SUPERSET_FOCUS__") {
+			this.emit(`pane-focus:${paneId}`);
+			return;
+		}
+		if (
+			typeof event.message === "string" &&
+			event.message.startsWith("__SUPERSET_INPUT__")
+		) {
+			try {
+				const key = JSON.parse(
+					event.message.slice("__SUPERSET_INPUT__".length),
+				) as ForwardedKey;
+				const chord = chordFromInput(key);
+				const ownerLabel = this.panes.get(paneId)?.ownerLabel;
+				if (
+					chord &&
+					ownerLabel &&
+					this.forwardableChordsByOwner.get(ownerLabel)?.has(chord)
+				)
+					this.emit(`key-forward:${paneId}`, key);
+			} catch {
+				// Ignore malformed guest bridge observations.
+			}
+			return;
+		}
+		if (
+			typeof event.message === "string" &&
+			event.message.startsWith("__SUPERSET_CONTEXT__")
+		) {
+			try {
+				this.showContextMenu(
+					paneId,
+					JSON.parse(
+						event.message.slice("__SUPERSET_CONTEXT__".length),
+					) as Record<string, unknown>,
+				);
+			} catch {
+				// Ignore malformed guest bridge observations.
+			}
+			return;
+		}
+		const level = isConsoleLevel(event.level) ? event.level : "log";
+		const entries = this.consoleLogs.get(paneId) ?? [];
+		const entry: ConsoleEntry = {
+			level,
+			message: typeof event.message === "string" ? event.message : "",
+			timestamp:
+				typeof event.timestamp === "number" ? event.timestamp : Date.now(),
+		};
+		entries.push(entry);
+		if (entries.length > MAX_CONSOLE_ENTRIES)
+			entries.splice(0, entries.length - MAX_CONSOLE_ENTRIES);
+		this.consoleLogs.set(paneId, entries);
+		this.emit(`console:${paneId}`, entry);
 	}
 
-	/** Live panes (dead webContents are skipped), optionally workspace-scoped. */
-	listPanes(workspaceId?: string): BrowserPaneInfo[] {
-		const panes: BrowserPaneInfo[] = [];
-		for (const [paneId, reg] of this.panes) {
-			if (workspaceId && reg.workspaceId !== workspaceId) continue;
-			const wc = this.getWebContents(paneId);
-			if (!wc) continue;
-			panes.push({
+	private notifyGuest(paneId: string, event: string, payload: unknown): void {
+		for (const listener of this.guestListeners.get(paneId) ?? []) {
+			if (listener.event === event) listener.listener(payload);
+		}
+	}
+
+	private handlePaneClosed(paneId: string, reason: string): void {
+		this.panes.delete(paneId);
+		this.consoleLogs.delete(paneId);
+		this.designMode.cancel(paneId, "destroyed");
+		for (const [sessionId, session] of this.cdpSessions) {
+			if (sessionId.startsWith(`${paneId}:`)) {
+				session.closed = true;
+				this.cdpSessions.delete(sessionId);
+				session.onDetach(reason);
+			}
+		}
+		this.agentWakes.delete(paneId);
+		this.emit("agent-active", { paneIds: [...this.agentWakes] });
+	}
+
+	private call<T>(
+		method: string,
+		params: unknown,
+		ownerLabel: string,
+	): Promise<T> {
+		return dispatchNativeBrowser<T>(method, params, ownerLabel);
+	}
+
+	private callForPane<T>(
+		method: string,
+		paneId: string,
+		params: unknown,
+		trustedOwnerLabel?: string,
+		workspaceId?: string,
+	): Promise<T> {
+		const pane = this.panes.get(paneId);
+		if (!pane || (workspaceId != null && pane.workspaceId !== workspaceId)) {
+			throw new Error(`No browser pane ${paneId}`);
+		}
+		if (trustedOwnerLabel && pane.ownerLabel !== trustedOwnerLabel) {
+			throw new Error(`Browser pane ${paneId} is not owned by this renderer`);
+		}
+		// Calls without a renderer label originate only from the authenticated
+		// Node automation bridge or native lifecycle handling, never guest input.
+		return this.call(method, params, trustedOwnerLabel ?? pane.ownerLabel);
+	}
+
+	async register(
+		paneId: string,
+		options: BrowserRegisterOptions = {},
+		ownerLabel: string,
+	): Promise<{ success: true; pane: BrowserPaneInfo }> {
+		if (!ownerLabel) {
+			throw new Error("Browser registration requires a trusted window label");
+		}
+		const requestedUrl = resolveGuestUrl(options.url ?? DEFAULT_BROWSER_URL);
+		const workspaceId = options.workspaceId ?? null;
+		const pending = this.registrationTasks.get(paneId);
+		if (pending && pending.ownerLabel !== ownerLabel) {
+			throw new Error(`Browser pane ${paneId} is not owned by this renderer`);
+		}
+		if (pending && pending.workspaceId !== workspaceId) {
+			throw new Error(
+				`Browser pane ${paneId} is already registered for another workspace`,
+			);
+		}
+		const promise = pending
+			? pending.promise.then(() =>
+					this.registerNativePane(
+						paneId,
+						options,
+						workspaceId,
+						requestedUrl,
+						ownerLabel,
+					),
+				)
+			: this.registerNativePane(
+					paneId,
+					options,
+					workspaceId,
+					requestedUrl,
+					ownerLabel,
+				);
+		const task: PaneRegistrationTask = { ownerLabel, workspaceId, promise };
+		this.registrationTasks.set(paneId, task);
+		try {
+			return await promise;
+		} finally {
+			if (this.registrationTasks.get(paneId) === task) {
+				this.registrationTasks.delete(paneId);
+			}
+		}
+	}
+
+	private async registerNativePane(
+		paneId: string,
+		options: BrowserRegisterOptions,
+		workspaceId: string | null,
+		requestedUrl: string,
+		ownerLabel: string,
+	): Promise<{ success: true; pane: BrowserPaneInfo }> {
+		const existing = this.panes.get(paneId);
+		if (existing) {
+			if (existing.ownerLabel !== ownerLabel) {
+				throw new Error(`Browser pane ${paneId} is not owned by this renderer`);
+			}
+			if (existing.workspaceId !== workspaceId) {
+				throw new Error(
+					`Browser pane ${paneId} is already registered for another workspace`,
+				);
+			}
+			let nativePane: BrowserPaneInfo | null = null;
+			try {
+				nativePane = asPane(
+					await this.call("browser.pane.info", { paneId }, ownerLabel),
+				);
+			} catch (error) {
+				if (
+					!(error instanceof Error) ||
+					!error.message.includes(`no browser pane ${paneId}`)
+				) {
+					throw error;
+				}
+				this.handlePaneClosed(paneId, "pane closed");
+			}
+			if (nativePane) {
+				if (nativePane.paneId !== paneId) {
+					throw new Error("Native browser returned a different pane id");
+				}
+				if (nativePane.workspaceId !== workspaceId) {
+					throw new Error(
+						`Native browser pane ${paneId} belongs to another workspace`,
+					);
+				}
+				this.panes.set(paneId, { ...nativePane, ownerLabel });
+				if (options.bounds)
+					await this.setBounds(paneId, options.bounds, ownerLabel);
+				await this.setVisibility(paneId, options.visible ?? true, ownerLabel);
+				this.emit("pane-registered", {
+					paneId,
+					workspaceId: nativePane.workspaceId,
+				});
+				return { success: true, pane: { ...nativePane } };
+			}
+		}
+		const pane = asPane(
+			await this.call(
+				"browser.pane.create",
+				{
+					paneId,
+					workspaceId,
+					url: "about:blank",
+					visible: options.visible ?? true,
+					bounds: options.bounds,
+				},
+				ownerLabel,
+			),
+		);
+		this.panes.set(paneId, {
+			...pane,
+			ownerLabel,
+		});
+		this.emit("pane-registered", {
+			paneId,
+			workspaceId: pane.workspaceId,
+		});
+		try {
+			const migration = await this.importLegacyCookies(ownerLabel, paneId);
+			if (
+				migration.snapshotAvailable &&
+				(migration.keyUnavailable || migration.skipped > 0)
+			) {
+				throw new Error(
+					"Legacy browser cookies could not be fully imported; initial navigation was paused",
+				);
+			}
+		} catch (error) {
+			try {
+				await this.callForPane(
+					"browser.pane.destroy",
+					paneId,
+					{ paneId },
+					ownerLabel,
+				);
+			} catch (cleanupError) {
+				console.warn(
+					"[browser] failed to close pane after cookie import error",
+					cleanupError,
+				);
+			} finally {
+				this.handlePaneClosed(paneId, "cookie import failed");
+			}
+			throw error;
+		}
+		if (requestedUrl !== "about:blank") {
+			await this.callForPane(
+				"browser.pane.navigate",
 				paneId,
-				workspaceId: reg.workspaceId,
-				url: wc.getURL(),
-				title: wc.getTitle(),
-				isLoading: wc.isLoading(),
+				{ paneId, url: requestedUrl },
+				ownerLabel,
+			);
+			pane.url = requestedUrl;
+			const current = this.panes.get(paneId);
+			if (current) this.panes.set(paneId, { ...current, url: requestedUrl });
+		}
+		return { success: true, pane: { ...pane, url: requestedUrl } };
+	}
+
+	async unregister(
+		paneId: string,
+		ownerLabel?: string,
+	): Promise<{ success: true }> {
+		await this.callForPane(
+			"browser.pane.destroy",
+			paneId,
+			{ paneId },
+			ownerLabel,
+		);
+		this.handlePaneClosed(paneId, "pane closed");
+		return { success: true };
+	}
+
+	getPane(paneId: string, workspaceId?: string): BrowserPaneInfo | null {
+		const pane = this.panes.get(paneId);
+		if (!pane || (workspaceId != null && pane.workspaceId !== workspaceId))
+			return null;
+		return { ...pane };
+	}
+
+	assertPaneOwner(paneId: string, ownerLabel: string): void {
+		const pane = this.panes.get(paneId);
+		if (!pane || pane.ownerLabel !== ownerLabel) {
+			throw new Error(`Browser pane ${paneId} is not owned by this renderer`);
+		}
+	}
+
+	async getPageInfo(
+		paneId: string,
+		workspaceId?: string,
+		ownerLabel?: string,
+	): Promise<BrowserPaneInfo | null> {
+		const previous = this.panes.get(paneId);
+		if (previous && workspaceId != null && previous.workspaceId !== workspaceId)
+			return null;
+		const trustedOwnerLabel = ownerLabel ?? previous?.ownerLabel;
+		if (!trustedOwnerLabel) return null;
+		let pane: BrowserPaneInfo;
+		try {
+			pane = asPane(
+				await this.call("browser.pane.info", { paneId }, trustedOwnerLabel),
+			);
+		} catch (error) {
+			if (
+				error instanceof Error &&
+				error.message.includes(`no browser pane ${paneId}`)
+			)
+				return null;
+			throw error;
+		}
+		if (workspaceId != null && pane.workspaceId !== workspaceId) return null;
+		this.panes.set(paneId, {
+			...pane,
+			ownerLabel: previous?.ownerLabel ?? trustedOwnerLabel,
+		});
+		return pane;
+	}
+
+	listPanes(workspaceId?: string): BrowserPaneInfo[] {
+		return [...this.panes.values()]
+			.filter((pane) => workspaceId == null || pane.workspaceId === workspaceId)
+			.map(({ ownerLabel: _ownerLabel, ...pane }) => pane);
+	}
+
+	async listPanesLive(workspaceId?: string): Promise<BrowserPaneInfo[]> {
+		if (this.panes.size === 0) return [];
+		const ownerLabels = new Set(
+			[...this.panes.values()]
+				.filter(
+					(pane) => workspaceId == null || pane.workspaceId === workspaceId,
+				)
+				.map((pane) => pane.ownerLabel),
+		);
+		const pages = await Promise.all(
+			[...ownerLabels].map((ownerLabel) =>
+				this.call<unknown>("browser.panes.list", { workspaceId }, ownerLabel),
+			),
+		);
+		if (pages.some((value) => !Array.isArray(value)))
+			throw new Error("Native browser returned an invalid pane list");
+		const panes = pages.flatMap((value) => (value as unknown[]).map(asPane));
+		for (const pane of panes) {
+			const previous = this.panes.get(pane.paneId);
+			this.panes.set(pane.paneId, {
+				...pane,
+				ownerLabel: previous?.ownerLabel ?? "main",
 			});
 		}
 		return panes;
 	}
 
-	/**
-	 * Ask the renderer to open a URL in a workspace's browser pane. Consumed by
-	 * the `browser.onOpenRequest` subscription; the resulting pane announces
-	 * itself back through a `pane-registered` event.
-	 */
 	requestOpen(request: BrowserOpenRequest): void {
 		this.emit("open-request", request);
 	}
 
-	/**
-	 * Attach a raw CDP session to the pane's guest webContents. One session per
-	 * pane: the platform allows a single debugger per webContents, so a second
-	 * attach throws until the first detaches.
-	 */
+	async navigate(
+		paneId: string,
+		url: string,
+		workspaceId?: string,
+		ownerLabel?: string,
+	): Promise<{ success: true }> {
+		this.requirePane(paneId, workspaceId);
+		await this.callForPane(
+			"browser.pane.navigate",
+			paneId,
+			{ paneId, url: resolveGuestUrl(url) },
+			ownerLabel,
+			workspaceId,
+		);
+		return { success: true };
+	}
+
+	async goBack(
+		paneId: string,
+		workspaceId?: string,
+		ownerLabel?: string,
+	): Promise<void> {
+		this.requirePane(paneId, workspaceId);
+		await this.callForPane(
+			"browser.pane.goBack",
+			paneId,
+			{ paneId },
+			ownerLabel,
+			workspaceId,
+		);
+	}
+
+	async goForward(
+		paneId: string,
+		workspaceId?: string,
+		ownerLabel?: string,
+	): Promise<void> {
+		this.requirePane(paneId, workspaceId);
+		await this.callForPane(
+			"browser.pane.goForward",
+			paneId,
+			{ paneId },
+			ownerLabel,
+			workspaceId,
+		);
+	}
+
+	async reload(
+		paneId: string,
+		hard = false,
+		workspaceId?: string,
+		ownerLabel?: string,
+	): Promise<boolean> {
+		if (!this.getPane(paneId, workspaceId)) return false;
+		await this.callForPane(
+			"browser.pane.reload",
+			paneId,
+			{ paneId, hard },
+			ownerLabel,
+			workspaceId,
+		);
+		return true;
+	}
+
+	async screenshot(
+		paneId: string,
+		workspaceId?: string,
+		ownerLabel?: string,
+	): Promise<BrowserScreenshot> {
+		this.requirePane(paneId, workspaceId);
+		return this.callForPane<BrowserScreenshot>(
+			"browser.pane.screenshot",
+			paneId,
+			{ paneId },
+			ownerLabel,
+			workspaceId,
+		);
+	}
+
+	async capturePng(paneId: string, workspaceId?: string): Promise<string> {
+		return (await this.screenshot(paneId, workspaceId)).base64;
+	}
+
+	async evaluateJS(
+		paneId: string,
+		code: string,
+		workspaceId?: string,
+		ownerLabel?: string,
+	): Promise<unknown> {
+		this.requirePane(paneId, workspaceId);
+		return this.callForPane(
+			"browser.pane.evaluate",
+			paneId,
+			{ paneId, code },
+			ownerLabel,
+			workspaceId,
+		);
+	}
+
+	getConsoleLogs(paneId: string, workspaceId?: string): ConsoleEntry[] {
+		if (!this.getPane(paneId, workspaceId)) return [];
+		return [...(this.consoleLogs.get(paneId) ?? [])];
+	}
+
+	async setDesignMode(
+		paneId: string,
+		enabled: boolean,
+		ownerLabel?: string,
+	): Promise<boolean> {
+		if (!this.getPane(paneId)) return false;
+		await this.callForPane(
+			"browser.pane.designMode",
+			paneId,
+			{
+				paneId,
+				action: enabled ? "arm" : "teardown",
+			},
+			ownerLabel,
+		);
+		return true;
+	}
+
+	awaitDesignSelection(
+		paneId: string,
+		opId: string,
+	): Promise<DesignModeSelectionResult> {
+		if (!this.getPane(paneId)) {
+			return Promise.resolve({
+				opId,
+				kind: "error",
+				reason: `No browser pane ${paneId}`,
+			});
+		}
+		return this.designMode.awaitSelection(paneId, opId, this.guestFor(paneId));
+	}
+
+	cancelDesignSelection(paneId: string, ownerLabel?: string): void {
+		this.designMode.cancel(paneId, "user");
+		void this.callForPane(
+			"browser.pane.designMode",
+			paneId,
+			{
+				paneId,
+				action: "teardown",
+			},
+			ownerLabel,
+		).catch(() => {});
+	}
+
+	async captureDesignScreenshot(
+		paneId: string,
+		rect: DesignModeRect,
+		ownerLabel?: string,
+	): Promise<DesignModeScreenshot | null> {
+		if (!this.getPane(paneId)) return null;
+		return this.callForPane<DesignModeScreenshot | null>(
+			"browser.pane.designScreenshot",
+			paneId,
+			{ paneId, rect },
+			ownerLabel,
+		);
+	}
+
+	getAgentActivePaneIds(ownerLabel: string): string[] {
+		return [...this.agentWakes].filter(
+			(paneId) => this.panes.get(paneId)?.ownerLabel === ownerLabel,
+		);
+	}
+
 	attachCdp(
 		paneId: string,
 		workspaceId: string,
 		onMessage: (payload: string) => void,
 		onDetach: (reason: string) => void,
 	): CdpSession {
-		const wc = this.getWebContents(paneId, workspaceId);
-		if (!wc) throw new Error(`No webContents for pane ${paneId}`);
-		if (this.cdpDetachers.has(paneId)) {
+		this.requirePane(paneId, workspaceId);
+		if (
+			[...this.cdpSessions.values()].some((s) =>
+				s.sessionId.startsWith(`${paneId}:`),
+			)
+		) {
 			throw new CdpBusyError(
 				`A CDP session is already attached to pane ${paneId}`,
 			);
 		}
-		wc.debugger.attach("1.3");
-		// Hold the wake for the whole session so input dispatch and screenshots
-		// keep working while the pane's workspace is not the visible view.
-		const releaseWake = this.acquireAgentWake(paneId);
-
-		// A browser-level CDP client (browser-use, Playwright) expects one `page`
-		// target to attach to, but the guest debugger answers `Target.*` with the
-		// whole process's target list (webview + host app shell). The shim in
-		// `cdp-target-shim` presents this pane as a single page target and maps a
-		// synthetic flatten session to the debugger's root channel.
-		const ids = shimIds(paneId);
-		let flatSessionId: string | null = null;
-		let autoAttachEmitted = false;
-		const paneUrlTitle = () => {
-			try {
-				return { url: wc.getURL(), title: wc.getTitle() };
-			} catch {
-				// webContents may be mid-navigation or destroyed
-				return { url: "", title: "" };
+		const sessionId = `${paneId}:${++this.cdpSequence}`;
+		const registration: CdpRegistration = {
+			sessionId,
+			ids: shimIds(paneId),
+			flatSessionId: null,
+			autoAttachEmitted: false,
+			onMessage,
+			onDetach,
+			closed: false,
+		};
+		this.cdpSessions.set(sessionId, registration);
+		this.agentWakes.add(paneId);
+		this.emit("agent-active", { paneIds: [...this.agentWakes] });
+		void this.callForPane(
+			"browser.cdp.attach",
+			paneId,
+			{ paneId, sessionId },
+			undefined,
+			workspaceId,
+		).catch((error) => {
+			if (!registration.closed) {
+				registration.closed = true;
+				this.cdpSessions.delete(sessionId);
+				this.agentWakes.delete(paneId);
+				this.emit("agent-active", { paneIds: [...this.agentWakes] });
+				onDetach(errorMessage(error));
 			}
-		};
-
-		let closed = false;
-		const handleMessage = (
-			_event: Electron.Event,
-			method: string,
-			params: unknown,
-			sessionId?: string,
-		) => {
-			const outSessionId = tagEventSession(sessionId, flatSessionId);
-			onMessage(
-				JSON.stringify({
-					method,
-					params,
-					...(outSessionId ? { sessionId: outSessionId } : {}),
-				}),
-			);
-		};
-		const handleDetach = (_event: Electron.Event, reason: string) => {
-			cleanup();
-			onDetach(reason);
-		};
-		// Once the webContents is destroyed, any wc.debugger touch throws
-		// synchronously ("Object has been destroyed") — so every path below
-		// checks isDestroyed() before reaching for it.
-		const cleanup = () => {
-			if (closed) return;
-			closed = true;
-			if (!wc.isDestroyed()) {
-				wc.debugger.off("message", handleMessage);
-				wc.debugger.off("detach", handleDetach);
-			}
-			this.cdpDetachers.delete(paneId);
-			releaseWake();
-		};
-		wc.debugger.on("message", handleMessage);
-		wc.debugger.on("detach", handleDetach);
-
-		const detach = () => {
-			cleanup();
-			if (wc.isDestroyed()) return;
-			try {
-				wc.debugger.detach();
-			} catch {
-				// debugger may already be detached
-			}
-		};
-		// The forced path (pane unregistered while a client is attached) must
-		// tell the client, so it sees a clear close instead of every later
-		// command failing with "No webContents for pane …".
-		this.cdpDetachers.set(paneId, () => {
-			const wasOpen = !closed;
-			detach();
-			if (wasOpen) onDetach("pane closed");
 		});
 
+		const detach = () => {
+			if (registration.closed) return;
+			registration.closed = true;
+			this.cdpSessions.delete(sessionId);
+			this.agentWakes.delete(paneId);
+			this.emit("agent-active", { paneIds: [...this.agentWakes] });
+			void this.callForPane(
+				"browser.cdp.detach",
+				paneId,
+				{ paneId, sessionId },
+				undefined,
+				workspaceId,
+			).catch(() => {});
+		};
 		return {
-			send: (rawMessage: string) => {
-				if (closed) return;
-				// A bridge message can arrive after the guest was torn down (pane
-				// closed while an agent's CDP client was mid-session). Close the
-				// session the way the forced-detach path does instead of letting
-				// the synchronous destroyed-webContents throw escape the ws
-				// message handler and take down the main process (DESKTOP-ZS).
-				if (wc.isDestroyed()) {
-					detach();
-					onDetach("pane closed");
-					return;
-				}
-				let parsed: {
-					id?: number;
-					method?: string;
-					params?: unknown;
-					sessionId?: string;
-				};
+			send: (rawMessage) => {
+				if (registration.closed) return;
+				let input: Record<string, unknown>;
 				try {
-					parsed = JSON.parse(rawMessage);
+					input = JSON.parse(rawMessage) as Record<string, unknown>;
 				} catch {
 					onMessage(
 						JSON.stringify({
@@ -575,765 +1170,466 @@ class BrowserManager extends EventEmitter {
 					);
 					return;
 				}
-				const { id, method, params, sessionId } = parsed;
-				if (typeof method !== "string") {
-					onMessage(
-						JSON.stringify({
-							id,
-							error: { code: -32600, message: "Missing method" },
-							...(sessionId ? { sessionId } : {}),
-						}),
-					);
-					return;
-				}
-				const reply = (result: unknown) => {
-					onMessage(
-						JSON.stringify({
-							id,
-							result,
-							...(sessionId ? { sessionId } : {}),
-						}),
-					);
-				};
-				// Present this pane as a single `page` target to a browser-level
-				// client, instead of the guest debugger's process-wide list.
-				const { url, title } = paneUrlTitle();
-				const targetRes = handleTargetCommand(method, params, {
-					ids,
-					url,
-					title,
-					flatSessionId,
-					autoAttachEmitted,
+				const method = typeof input.method === "string" ? input.method : "";
+				const clientSessionId =
+					typeof input.sessionId === "string" ? input.sessionId : undefined;
+				const target = handleTargetCommand(method, input.params, {
+					ids: registration.ids,
+					url: this.getPane(paneId)?.url ?? "",
+					title: this.getPane(paneId)?.title ?? "",
+					flatSessionId: registration.flatSessionId,
+					autoAttachEmitted: registration.autoAttachEmitted,
 				});
-				if (targetRes) {
-					flatSessionId = targetRes.flatSessionId;
-					autoAttachEmitted = targetRes.autoAttachEmitted;
-					for (const ev of targetRes.events) onMessage(JSON.stringify(ev));
-					reply(targetRes.result);
-					// createTarget reuses the pane as the new target, so honor the
-					// requested navigation here (guarded by the scheme allowlist).
-					if (targetRes.navigateTo && isAllowedGuestUrl(targetRes.navigateTo)) {
-						wc.debugger
-							.sendCommand("Page.navigate", { url: targetRes.navigateTo })
-							.catch(() => {
-								// pane may be mid-teardown; navigation is best-effort
-							});
-					}
-					return;
-				}
-				// The renderer-side `Page.captureScreenshot` waits for the guest's
-				// next BeginFrame, which a hidden (parked) pane may never produce —
-				// the field failure mode was 2-minute hangs. `capturePage` from the
-				// main process forces a frame reliably, so serve the common case
-				// (default viewport capture as png/jpeg) through it. Requests
-				// capturePage can't honor faithfully — `clip`, `captureBeyondViewport`
-				// (puppeteer full-page), or another format — keep the native path
-				// rather than silently returning the wrong image. The reply echoes
-				// the client's sessionId, so flattened (shim-session) requests get a
-				// correctly-tagged response too.
-				const shotParams = params as
-					| {
-							clip?: unknown;
-							captureBeyondViewport?: unknown;
-							format?: unknown;
-							quality?: unknown;
-							fromSurface?: unknown;
-							optimizeForSpeed?: unknown;
-					  }
-					| undefined;
-				const format = shotParams?.format;
-				if (
-					method === "Page.captureScreenshot" &&
-					shotParams?.clip == null &&
-					shotParams?.captureBeyondViewport !== true &&
-					shotParams?.fromSurface !== false &&
-					shotParams?.optimizeForSpeed !== true &&
-					(format == null || format === "png" || format === "jpeg")
-				) {
-					const quality = shotParams?.quality;
-					this.capturePageImage(paneId)
-						.then((image) => {
-							if (closed) return;
-							const data =
-								format === "jpeg"
-									? image
-											.toJPEG(typeof quality === "number" ? quality : 80)
-											.toString("base64")
-									: image.toPNG().toString("base64");
-							reply({ data });
-						})
-						.catch((err: unknown) => {
-							if (closed) return;
-							onMessage(
-								JSON.stringify({
-									id,
-									error: {
-										code: -32000,
-										message: err instanceof Error ? err.message : String(err),
-									},
-									...(sessionId ? { sessionId } : {}),
-								}),
-							);
-						});
-					return;
-				}
-				// `will-navigate` doesn't fire for CDP-initiated navigations, so the
-				// scheme allowlist is re-checked here — otherwise `Page.navigate`
-				// could point the guest at file:// / chrome:// and read it back.
-				if (method === "Page.navigate") {
-					const navUrl = (params as { url?: unknown } | undefined)?.url;
-					if (typeof navUrl === "string" && !isAllowedGuestUrl(navUrl)) {
-						onMessage(
-							JSON.stringify({
-								id,
-								error: {
-									code: -32000,
-									message: `Navigation to ${navUrl} is not allowed`,
-								},
-								...(sessionId ? { sessionId } : {}),
-							}),
+				if (target) {
+					registration.flatSessionId = target.flatSessionId;
+					registration.autoAttachEmitted = target.autoAttachEmitted;
+					for (const event of target.events) onMessage(JSON.stringify(event));
+					if (target.navigateTo)
+						void this.navigate(paneId, target.navigateTo, workspaceId).catch(
+							() => {},
 						);
-						return;
-					}
-				}
-				// Chromium resizes the guest's view for these without checking it
-				// still has one, and a crashed renderer's view is gone: forwarding
-				// either segfaults the main process (DESKTOP-195).
-				if (
-					(method === "Emulation.setDeviceMetricsOverride" ||
-						method === "Emulation.setVisibleSize") &&
-					wc.isCrashed()
-				) {
-					onMessage(
-						JSON.stringify({
-							id,
-							error: {
-								code: -32000,
-								message: `${method} is unavailable while the page is crashed; navigate it to recover`,
-							},
-							...(sessionId ? { sessionId } : {}),
-						}),
-					);
+					const response: Record<string, unknown> = {
+						id: input.id,
+						result: target.result,
+					};
+					if (clientSessionId) response.sessionId = clientSessionId;
+					onMessage(JSON.stringify(response));
 					return;
 				}
-				// The synthetic flatten session maps to the debugger's root
-				// channel, so strip it before forwarding; the response still
-				// echoes the client's original sessionId above.
-				const forwardSessionId = forwardSessionFor(sessionId, flatSessionId);
-				wc.debugger
-					.sendCommand(method, params, forwardSessionId)
-					.then((result) => {
-						if (closed) return;
-						onMessage(
-							JSON.stringify({
-								id,
-								result: result ?? {},
-								...(sessionId ? { sessionId } : {}),
-							}),
-						);
+				const forwardedSessionId = forwardSessionFor(
+					clientSessionId,
+					registration.flatSessionId,
+				);
+				if (forwardedSessionId) input.sessionId = forwardedSessionId;
+				else delete input.sessionId;
+				void this.callForPane<{ payload?: string } | string>(
+					"browser.cdp.send",
+					paneId,
+					{
+						paneId,
+						sessionId,
+						message: JSON.stringify(input),
+					},
+					undefined,
+					workspaceId,
+				)
+					.then((response) => {
+						if (registration.closed) return;
+						const payload =
+							typeof response === "string" ? response : response?.payload;
+						if (payload) {
+							try {
+								const parsed = JSON.parse(payload) as Record<string, unknown>;
+								if (clientSessionId) parsed.sessionId = clientSessionId;
+								onMessage(JSON.stringify(parsed));
+							} catch {
+								onMessage(payload);
+							}
+						}
 					})
-					.catch((err: unknown) => {
-						if (closed) return;
-						onMessage(
-							JSON.stringify({
-								id,
-								error: {
-									code: -32000,
-									message: err instanceof Error ? err.message : String(err),
-								},
-								...(sessionId ? { sessionId } : {}),
-							}),
-						);
+					.catch((error) => {
+						if (!registration.closed) onDetach(errorMessage(error));
 					});
 			},
 			detach,
 		};
 	}
 
-	/**
-	 * Panes with agent work in flight (live CDP session or capture). The
-	 * renderer parks these presentable and exempts them from LRU eviction.
-	 */
-	getAgentActivePaneIds(): string[] {
-		return [...this.agentWakes.keys()];
-	}
-
-	private emitAgentActive(): void {
-		this.emit("agent-active", { paneIds: this.getAgentActivePaneIds() });
-	}
-
-	navigate(paneId: string, url: string, workspaceId?: string): void {
-		// Resolve first: a disallowed scheme throws here rather than silently
-		// becoming a web search, so the caller gets a clear error.
-		const resolved = resolveGuestUrl(url);
-		const wc = this.getWebContents(paneId, workspaceId);
-		if (!wc) throw new Error(`No webContents for pane ${paneId}`);
-		wc.loadURL(resolved);
-	}
-
-	async screenshot(
-		paneId: string,
-	): Promise<{ image: Electron.NativeImage; url: string }> {
-		const image = await this.capturePageImage(paneId);
-		clipboard.writeImage(image);
-		const wc = this.getWebContents(paneId);
-		return { image, url: wc?.getURL() ?? "" };
-	}
-
-	/** Screenshot for programmatic callers — must not clobber the clipboard. */
-	async capturePng(paneId: string, workspaceId?: string): Promise<string> {
-		const image = await this.capturePageImage(paneId, workspaceId);
-		return image.toPNG().toString("base64");
-	}
-
-	private async capturePageImage(
-		paneId: string,
-		workspaceId?: string,
-	): Promise<Electron.NativeImage> {
-		const wc = this.getWebContents(paneId, workspaceId);
-		if (!wc) throw new Error(`No webContents for pane ${paneId}`);
-		// Transient wake: a hidden pane presents no frames, so an un-waked
-		// capture hangs or fails with "UnknownVizError".
-		const releaseWake = this.acquireAgentWake(paneId);
-		try {
-			const deadline = Date.now() + CAPTURE_DEADLINE_MS;
-			let lastError: unknown = null;
-			do {
-				try {
-					// An abandoned attempt is not wasted: its copy request still
-					// forces a frame, which the next attempt captures instantly.
-					const image = await withTimeout(
-						wc.capturePage(),
-						CAPTURE_ATTEMPT_TIMEOUT_MS,
-						`Screenshot attempt for pane ${paneId} timed out`,
-					);
-					if (!image.isEmpty()) return image;
-					lastError = new Error(
-						`Captured an empty image for pane ${paneId} — its renderer produced no frame`,
-					);
-				} catch (err) {
-					lastError = err;
-				}
-				await new Promise((resolve) =>
-					setTimeout(resolve, CAPTURE_RETRY_INTERVAL_MS),
-				);
-			} while (Date.now() < deadline);
-			throw lastError instanceof Error
-				? lastError
-				: new Error(`Screenshot failed for pane ${paneId}`);
-		} finally {
-			releaseWake();
-		}
-	}
-
-	async evaluateJS(
-		paneId: string,
-		code: string,
-		workspaceId?: string,
-	): Promise<unknown> {
-		const wc = this.getWebContents(paneId, workspaceId);
-		if (!wc) throw new Error(`No webContents for pane ${paneId}`);
-		return wc.executeJavaScript(code);
-	}
-
-	getConsoleLogs(paneId: string, workspaceId?: string): ConsoleEntry[] {
-		if (!this.getWebContents(paneId, workspaceId)) return [];
-		return this.consoleLogs.get(paneId) ?? [];
-	}
-
-	/**
-	 * Enable/disable design mode on a pane. Enabling injects the element-picker
-	 * overlay into the guest; disabling cancels any in-flight selection and
-	 * tears the overlay down. Re-injection is idempotent.
-	 */
-	async setDesignMode(paneId: string, enabled: boolean): Promise<boolean> {
-		const wc = this.getWebContents(paneId);
-		if (!wc) return false;
-		if (!enabled) {
-			const hadActiveOp = this.designMode.hasActiveOp(paneId);
-			this.designMode.cancel(paneId, "user");
-			// Cancelling an active op already injects the teardown; only a bare
-			// overlay (selection settled, composer showing) still needs one.
-			if (hadActiveOp) return true;
-			try {
-				await wc.executeJavaScript(buildDesignModeScript("teardown"));
-				return true;
-			} catch {
-				return false;
-			}
-		}
-		try {
-			await wc.executeJavaScript(buildDesignModeScript("arm"));
-			return true;
-		} catch {
-			return false;
-		}
-	}
-
-	/** Await one design-mode element selection; resolves exactly once. */
-	awaitDesignSelection(
-		paneId: string,
-		opId: string,
-	): Promise<DesignModeSelectionResult> {
-		const wc = this.getWebContents(paneId);
-		if (!wc) {
-			return Promise.resolve({
-				opId,
-				kind: "error",
-				reason: `No webContents for pane ${paneId}`,
-			});
-		}
-		return this.designMode.awaitSelection(paneId, opId, wc);
-	}
-
-	cancelDesignSelection(paneId: string): void {
-		this.designMode.cancel(paneId, "user");
-	}
-
-	/** Screenshot of the guest cropped to a selected element's viewport rect. */
-	async captureDesignScreenshot(
-		paneId: string,
-		rect: DesignModeRect,
-	): Promise<DesignModeScreenshot | null> {
-		const wc = this.getWebContents(paneId);
-		if (!wc) return null;
-		// capturePageImage brings the agent wake + per-attempt timeout + retry —
-		// a bare capturePage() hangs on a pane that goes hidden mid-capture.
-		return captureDesignModeScreenshot(rect, wc, () =>
-			this.capturePageImage(paneId),
+	async openDevTools(paneId: string, ownerLabel?: string): Promise<void> {
+		this.requirePane(paneId);
+		await this.callForPane(
+			"browser.pane.openDevTools",
+			paneId,
+			{ paneId },
+			ownerLabel,
 		);
 	}
 
-	openDevTools(paneId: string): void {
-		const wc = this.getWebContents(paneId);
-		if (!wc) return;
-		wc.openDevTools({ mode: "detach" });
-	}
-
-	/**
-	 * Emulate a fixed device viewport (Chrome's "device toolbar"), or clear the
-	 * emulation when `params` is null. Device metrics live on the main-process
-	 * `WebContents`, not the renderer-side `<webview>` tag, so this is the one
-	 * viewport control that can't be done directly from the registry.
-	 */
-	setDeviceEmulation(
+	async setDeviceEmulation(
 		paneId: string,
 		params: { width: number; height: number } | null,
-	): void {
-		const wc = this.getWebContents(paneId);
-		// Electron's emulation calls dereference the renderer's view, which a
-		// crashed guest no longer has.
-		if (!wc || wc.isCrashed()) return;
-		if (!params) {
-			wc.disableDeviceEmulation();
-			return;
-		}
-		wc.enableDeviceEmulation({
-			screenPosition: "mobile",
-			screenSize: { width: params.width, height: params.height },
-			viewPosition: { x: 0, y: 0 },
-			deviceScaleFactor: 0,
-			viewSize: { width: params.width, height: params.height },
-			scale: 1,
-		});
-	}
-
-	// Block navigations to disallowed schemes (file:, chrome:, devtools:, …) on
-	// the guest itself, so the policy holds whether the load came from the
-	// toolbar, a link, or a raw CDP `Page.navigate` (which skips sanitizeUrl).
-	private setupNavigationGuard(paneId: string, wc: Electron.WebContents): void {
-		this.navigationListeners.set(
+		ownerLabel?: string,
+	): Promise<void> {
+		this.requirePane(paneId);
+		await this.callForPane(
+			"browser.pane.setDeviceEmulation",
 			paneId,
-			attachNavigationGuard(wc, (url) => this.emit("deep-link", url)),
+			{ paneId, params },
+			ownerLabel,
 		);
 	}
 
-	private setupWindowOpen(paneId: string, wc: Electron.WebContents): void {
-		wc.setWindowOpenHandler((details) =>
-			this.resolveWindowOpen(paneId, details),
-		);
-		const onCreated = (window: Electron.BrowserWindow) => {
-			this.configurePopupWindow(paneId, window);
-		};
-		wc.on("did-create-window", onCreated);
-		this.popupListeners.set(paneId, () => {
-			try {
-				wc.off("did-create-window", onCreated);
-			} catch {
-				// webContents may be destroyed
-			}
-		});
-	}
-
-	/**
-	 * Decide what a guest's `window.open` should do.
-	 *
-	 * A `target="_blank"` link (a tab disposition) keeps the pane behaviour: deny
-	 * the native window and let the renderer open the URL as a split. The one
-	 * exception is an OAuth authorization URL, which arrives with the same
-	 * disposition when a site opens sign-in via a bare `window.open(url)` but
-	 * cannot survive losing its opener — see `shouldOpenAsPopup`.
-	 *
-	 * A real popup has to stay a real popup. `window.open(url, name, "width=…")`
-	 * is how "Sign in with Google" flows work (Firebase `signInWithPopup`, Google
-	 * Identity Services, Auth0): the popup hands its result back through
-	 * `window.opener` and then closes itself. Re-opening that URL as a detached
-	 * pane drops both the opener and the window name, so the flow can never
-	 * complete — the reported symptom is Google bouncing the callback to
-	 * `accounts.google.com/CookieMismatch` (SUPER-1272). Allowing the window also
-	 * keeps it on the opener's session, so it shares the pane's cookie jar.
-	 */
-	private resolveWindowOpen(
+	async findInPage(
 		paneId: string,
-		details: Electron.HandlerDetails,
-	): Electron.WindowOpenHandlerResponse {
-		if (isDeepLinkUrl(details.url)) {
-			this.emit("deep-link", details.url);
-			return { action: "deny" };
+		text: string,
+		options: { forward?: boolean; findNext?: boolean } = {},
+		ownerLabel?: string,
+	): Promise<void> {
+		this.requirePane(paneId);
+		await this.callForPane(
+			"browser.pane.findInPage",
+			paneId,
+			{
+				paneId,
+				text,
+				forward: options.forward ?? true,
+				findNext: options.findNext ?? true,
+			},
+			ownerLabel,
+		);
+	}
+
+	async stopFindInPage(
+		paneId: string,
+		action: "clearSelection" | "keepSelection" | "activateSelection",
+		ownerLabel?: string,
+	): Promise<void> {
+		this.requirePane(paneId);
+		await this.callForPane(
+			"browser.pane.stopFindInPage",
+			paneId,
+			{ paneId, action },
+			ownerLabel,
+		);
+	}
+
+	async print(paneId: string, ownerLabel?: string): Promise<void> {
+		this.requirePane(paneId);
+		await this.callForPane(
+			"browser.pane.print",
+			paneId,
+			{ paneId },
+			ownerLabel,
+		);
+	}
+
+	async setZoom(
+		paneId: string,
+		zoomFactor: number,
+		ownerLabel?: string,
+	): Promise<void> {
+		this.requirePane(paneId);
+		await this.callForPane(
+			"browser.pane.setZoom",
+			paneId,
+			{ paneId, zoomFactor },
+			ownerLabel,
+		);
+	}
+
+	async setBounds(
+		paneId: string,
+		bounds: BrowserBounds,
+		ownerLabel?: string,
+	): Promise<void> {
+		this.requirePane(paneId);
+		await this.callForPane(
+			"browser.pane.setBounds",
+			paneId,
+			{ paneId, bounds },
+			ownerLabel,
+		);
+	}
+
+	async setVisibility(
+		paneId: string,
+		visible: boolean,
+		ownerLabel?: string,
+	): Promise<void> {
+		this.requirePane(paneId);
+		await this.callForPane(
+			"browser.pane.setVisibility",
+			paneId,
+			{ paneId, visible },
+			ownerLabel,
+		);
+	}
+
+	async focus(paneId: string, ownerLabel?: string): Promise<void> {
+		this.requirePane(paneId);
+		await this.callForPane(
+			"browser.pane.focus",
+			paneId,
+			{ paneId },
+			ownerLabel,
+		);
+	}
+
+	async clearBrowsingData(
+		type: "cookies" | "cache" | "storage" | "all",
+		ownerLabel: string,
+	): Promise<void> {
+		await this.call("browser.storage.clear", { type }, ownerLabel);
+	}
+
+	async getCookieDomains(
+		ownerLabel: string,
+	): Promise<Array<{ domain: string; cookieCount: number }>> {
+		return this.call("browser.cookies.domains", {}, ownerLabel);
+	}
+
+	async clearCookiesForDomain(
+		domain: string,
+		ownerLabel: string,
+	): Promise<void> {
+		await this.call("browser.cookies.clearDomain", { domain }, ownerLabel);
+	}
+
+	async importCookiesFromSource(
+		sourceId: string,
+		ownerLabel: string,
+		preferredPaneId?: string,
+	): Promise<ImportedCookieWriteResult> {
+		const profile = resolveImportProfile(sourceId);
+		if (!profile)
+			throw new Error("That browser profile is no longer available.");
+		const read = await readCookiesFromProfileWithStatus(
+			profile.profileDir,
+			profile.browserKey,
+		);
+		if (read.keyUnavailable) {
+			return { imported: 0, skipped: read.skipped, keyUnavailable: true };
 		}
-		if (!isAllowedGuestUrl(details.url)) return { action: "deny" };
-		if (shouldOpenAsPopup(details)) {
+		const result = read.cookies.length
+			? await this.setImportedCookies(read.cookies, ownerLabel, preferredPaneId)
+			: { imported: 0, skipped: 0 };
+		return {
+			imported: result.imported,
+			skipped: result.skipped + read.skipped,
+			keyUnavailable: false,
+		};
+	}
+
+	async importLegacyCookies(
+		ownerLabel: string,
+		preferredPaneId?: string,
+	): Promise<LegacyCookieImportResult> {
+		if (this.legacyCookieImport) return this.legacyCookieImport;
+		const operation = this.importLegacyCookiesForOwner(
+			ownerLabel,
+			preferredPaneId,
+		).finally(() => {
+			this.legacyCookieImport = null;
+		});
+		this.legacyCookieImport = operation;
+		return operation;
+	}
+
+	private async importLegacyCookiesForOwner(
+		ownerLabel: string,
+		preferredPaneId?: string,
+	): Promise<LegacyCookieImportResult> {
+		let userDataPath: string;
+		try {
+			userDataPath = getNativePath("userData");
+		} catch {
 			return {
-				action: "allow",
-				// The default, but worth stating: a sign-in popup must not
-				// outlive the page that opened it.
-				outlivesOpener: false,
-				overrideBrowserWindowOptions: popupWindowOptions(),
+				imported: 0,
+				skipped: 0,
+				keyUnavailable: false,
+				snapshotAvailable: false,
 			};
 		}
-		this.emit(`new-window:${paneId}`, details.url);
-		return { action: "deny" };
-	}
-
-	/**
-	 * A popup loads arbitrary web content in the pane's session, so it gets the
-	 * pane's scheme guard, and the same window-open policy so the nested consent
-	 * window Google opens mid-flow stays a popup too.
-	 */
-	private configurePopupWindow(
-		paneId: string,
-		window: Electron.BrowserWindow,
-	): void {
-		const wc = window.webContents;
-		markBrowserPanePopup(wc);
-		const detachGuard = attachNavigationGuard(wc, (url) =>
-			this.emit("deep-link", url),
+		const markerPath = join(userDataPath, ...LEGACY_COOKIE_IMPORT_MARKER);
+		if (existsSync(markerPath)) {
+			return {
+				imported: 0,
+				skipped: 0,
+				keyUnavailable: false,
+				snapshotAvailable: true,
+			};
+		}
+		if (
+			![...this.panes.values()].some((pane) => pane.ownerLabel === ownerLabel)
+		) {
+			return {
+				imported: 0,
+				skipped: 0,
+				keyUnavailable: false,
+				snapshotAvailable: false,
+			};
+		}
+		const profile = join(userDataPath, ...LEGACY_GUEST_SNAPSHOT);
+		const cookiesPath = join(profile, "Cookies");
+		const metadataPath = join(profile, LEGACY_GUEST_METADATA);
+		if (!existsSync(cookiesPath)) {
+			return {
+				imported: 0,
+				skipped: 0,
+				keyUnavailable: false,
+				snapshotAvailable: false,
+			};
+		}
+		if (
+			lstatSync(cookiesPath).isSymbolicLink() ||
+			!lstatSync(cookiesPath).isFile() ||
+			!existsSync(metadataPath) ||
+			lstatSync(metadataPath).isSymbolicLink() ||
+			!lstatSync(metadataPath).isFile()
+		) {
+			return {
+				imported: 0,
+				skipped: 0,
+				keyUnavailable: true,
+				snapshotAvailable: true,
+			};
+		}
+		const identity = legacyCookieKeychainIdentity(metadataPath);
+		if (!identity) {
+			return {
+				imported: 0,
+				skipped: 0,
+				keyUnavailable: true,
+				snapshotAvailable: true,
+			};
+		}
+		const read = await readCookiesFromProfileWithStatus(
+			profile,
+			"electron",
+			identity,
 		);
-		wc.setWindowOpenHandler((details) =>
-			this.resolveWindowOpen(paneId, details),
+		if (read.keyUnavailable) {
+			return {
+				imported: 0,
+				skipped: read.skipped,
+				keyUnavailable: true,
+				snapshotAvailable: true,
+			};
+		}
+		const result = read.cookies.length
+			? await this.setImportedCookies(read.cookies, ownerLabel, preferredPaneId)
+			: { imported: 0, skipped: 0 };
+		const skipped = result.skipped + read.skipped;
+		if (skipped > 0 || result.imported !== read.cookies.length) {
+			return {
+				imported: result.imported,
+				skipped,
+				keyUnavailable: false,
+				snapshotAvailable: true,
+			};
+		}
+		const markerDirectory = join(userDataPath, "migration");
+		const temporaryMarkerPath = `${markerPath}.${randomUUID()}.tmp`;
+		mkdirSync(markerDirectory, { recursive: true });
+		writeFileSync(
+			temporaryMarkerPath,
+			JSON.stringify({
+				version: 1,
+				importedAt: Date.now(),
+				count: result.imported,
+				snapshot: LEGACY_GUEST_SNAPSHOT.join("/"),
+			}),
+			{ flag: "wx" },
 		);
-		wc.on("did-create-window", (child) => {
-			this.configurePopupWindow(paneId, child);
-		});
-		window.on("closed", detachGuard);
-	}
-
-	private setupContextMenu(paneId: string, wc: Electron.WebContents): void {
-		const handler = (
-			_event: Electron.Event,
-			params: Electron.ContextMenuParams,
-		) => {
-			const { linkURL, pageURL, selectionText, editFlags } = params;
-
-			const menuItems: Electron.MenuItemConstructorOptions[] = [];
-
-			if (linkURL) {
-				menuItems.push(
-					{
-						label: i18n._(
-							msg({
-								message: "Open Link in Default Browser",
-							}),
-						),
-						click: () => {
-							void safeOpenExternal(linkURL);
-						},
-					},
-					{
-						label: i18n._(
-							msg({
-								message: "Open Link as New Split",
-							}),
-						),
-						click: () =>
-							this.emit(`context-menu-action:${paneId}`, {
-								action: "open-in-split" as const,
-								url: linkURL,
-							}),
-					},
-					{
-						label: i18n._(
-							msg({
-								message: "Copy Link Address",
-							}),
-						),
-						click: () => clipboard.writeText(linkURL),
-					},
-					{ type: "separator" },
-				);
-			}
-
-			if (selectionText) {
-				menuItems.push({
-					label: i18n._(
-						msg({
-							message: "Copy",
-						}),
-					),
-					enabled: editFlags.canCopy,
-					click: () => wc.copy(),
-				});
-			}
-
-			if (editFlags.canPaste) {
-				menuItems.push({
-					label: i18n._(
-						msg({
-							message: "Paste",
-						}),
-					),
-					click: () => wc.paste(),
-				});
-			}
-
-			if (editFlags.canSelectAll) {
-				menuItems.push({
-					label: i18n._(
-						msg({
-							message: "Select All",
-						}),
-					),
-					click: () => wc.selectAll(),
-				});
-			}
-
-			if (selectionText || editFlags.canPaste || editFlags.canSelectAll) {
-				menuItems.push({ type: "separator" });
-			}
-
-			menuItems.push(
-				{
-					label: i18n._(
-						msg({
-							message: "Back",
-						}),
-					),
-					enabled: wc.canGoBack(),
-					click: () => wc.goBack(),
-				},
-				{
-					label: i18n._(
-						msg({
-							message: "Forward",
-						}),
-					),
-					enabled: wc.canGoForward(),
-					click: () => wc.goForward(),
-				},
-				{
-					label: i18n._(
-						msg({
-							message: "Reload",
-						}),
-					),
-					click: () => wc.reload(),
-				},
-			);
-
-			if (!linkURL) {
-				menuItems.push(
-					{ type: "separator" },
-					{
-						label: i18n._(
-							msg({
-								message: "Open Page in Default Browser",
-							}),
-						),
-						click: () => {
-							if (pageURL && pageURL !== "about:blank") {
-								void safeOpenExternal(pageURL);
-							}
-						},
-						enabled: !!pageURL && pageURL !== "about:blank",
-					},
-					{
-						label: i18n._(
-							msg({
-								message: "Copy Page URL",
-							}),
-						),
-						click: () => {
-							if (pageURL) clipboard.writeText(pageURL);
-						},
-						enabled: !!pageURL && pageURL !== "about:blank",
-					},
-				);
-			}
-
-			const menu = Menu.buildFromTemplate(menuItems);
-			menu.popup();
-		};
-
-		wc.on("context-menu", handler);
-		this.contextMenuListeners.set(paneId, () => {
-			try {
-				wc.off("context-menu", handler);
-			} catch {
-				// webContents may be destroyed
-			}
-		});
-	}
-
-	/** The keystroke as a forwardable chord, or null when it is not one. */
-	private forwardableKey(input: Electron.Input): ForwardedKey | null {
-		const chord = chordFromInput(input);
-		if (!chord || !this.forwardableChords.has(chord)) return null;
+		renameSync(temporaryMarkerPath, markerPath);
 		return {
-			key: input.key,
-			code: input.code,
-			meta: input.meta,
-			control: input.control,
-			alt: input.alt,
-			shift: input.shift,
+			imported: result.imported,
+			skipped,
+			keyUnavailable: false,
+			snapshotAvailable: true,
 		};
 	}
 
-	// When a webview has focus, keystrokes route to the guest renderer — host
-	// `react-hotkeys-hook` listeners never see them and the menu's CmdOrCtrl+W
-	// accelerator closes the whole window. `before-input-event` fires in the
-	// main process before both, so we intercept CmdOrCtrl+W/R and any
-	// renderer-registered forwardable chord here. Everything else falls through
-	// untouched, keeping in-page shortcuts (copy/paste/find/…) working.
-	private setupBeforeInput(paneId: string, wc: Electron.WebContents): void {
-		const handler = (event: Electron.Event, input: Electron.Input): void => {
-			if (input.type !== "keyDown") return;
+	private async setImportedCookies(
+		cookies: ImportedCookie[],
+		ownerLabel: string,
+		preferredPaneId?: string,
+	): Promise<ImportedCookieWriteResult> {
+		if (cookies.length === 0) return { imported: 0, skipped: 0 };
+		const pane = preferredPaneId
+			? this.panes.get(preferredPaneId)
+			: [...this.panes.values()].find(
+					(candidate) => candidate.ownerLabel === ownerLabel,
+				);
+		if (!pane) return { imported: 0, skipped: cookies.length };
+		if (pane.ownerLabel !== ownerLabel) {
+			throw new Error(
+				"Cookie import target belongs to another trusted renderer",
+			);
+		}
+		return this.call<ImportedCookieWriteResult>(
+			"browser.cookies.setMany",
+			{
+				paneId: pane.paneId,
+				cookies,
+			},
+			ownerLabel,
+		);
+	}
 
-			if ((input.meta || input.control) && !input.shift && !input.alt) {
-				const key = input.key.toLowerCase();
-				if (key === "w") {
-					event.preventDefault();
-					this.emit(`close-pane:${paneId}`);
-					return;
+	async importCookiesFromPane(
+		sourceId: string,
+		paneId: string,
+		workspaceId: string,
+	): Promise<{ imported: number; keyUnavailable: boolean }> {
+		const pane = this.panes.get(paneId);
+		if (!pane || pane.workspaceId !== workspaceId) {
+			throw new Error("Cookie import target is not live in this workspace");
+		}
+		const result = await this.importCookiesFromSource(
+			sourceId,
+			pane.ownerLabel,
+			paneId,
+		);
+		return {
+			imported: result.imported,
+			keyUnavailable: result.keyUnavailable === true,
+		};
+	}
+
+	async unregisterAll(): Promise<void> {
+		for (const paneId of [...this.panes.keys()]) await this.unregister(paneId);
+	}
+
+	private guestFor(paneId: string): BrowserGuest {
+		return {
+			executeJavaScript: (script) => this.evaluateJS(paneId, script),
+			isDestroyed: () => !this.panes.has(paneId),
+			on: (event, listener) => {
+				let listeners = this.guestListeners.get(paneId);
+				if (!listeners) {
+					listeners = new Set();
+					this.guestListeners.set(paneId, listeners);
 				}
-				if (key === "r") {
-					event.preventDefault();
-					this.emit(`reload-pane:${paneId}`);
-					return;
+				listeners.add({ event, listener });
+			},
+			off: (event, listener) => {
+				const listeners = this.guestListeners.get(paneId);
+				if (!listeners) return;
+				for (const entry of listeners) {
+					if (entry.event === event && entry.listener === listener)
+						listeners.delete(entry);
 				}
-			}
-
-			const key = this.forwardableKey(input);
-			if (!key) return;
-			event.preventDefault();
-			this.emit(`key-forward:${paneId}`, key);
+			},
 		};
-
-		wc.on("before-input-event", handler);
-		this.beforeInputListeners.set(paneId, () => {
-			try {
-				wc.off("before-input-event", handler);
-			} catch {
-				// webContents may be destroyed
-			}
-		});
 	}
 
-	/**
-	 * A click inside the guest never bubbles a DOM event to the pane's own
-	 * mousedown handler — the webview is a separate WebContents, hoisted
-	 * outside the pane tree. `WebContents.on('focus')` looks like the fix
-	 * (Electron's documented signal for focus moving between WebContents in
-	 * the same window) but doesn't actually fire for a `<webview>` guest —
-	 * confirmed live: `wc.isFocused()` stayed false immediately after a click
-	 * that had already moved the host's `document.activeElement` onto the
-	 * webview element. `<webview>` uses the older guest-view plumbing, and its
-	 * focus doesn't route through the same WebContents-level signal a
-	 * WebContentsView would give.
-	 *
-	 * Instead, borrow the same no-preload technique design-mode already uses:
-	 * inject a script that resolves a Promise on the guest's next mousedown,
-	 * `executeJavaScript` awaits it, and re-arms immediately after. No
-	 * preload/nodeIntegration needed — the guest stays untrusted.
-	 */
-	private setupFocusForward(paneId: string, wc: Electron.WebContents): void {
-		let cancelled = false;
-		// Bumped on every main-frame document. A navigation does not reject
-		// the executeJavaScript that was awaiting a mousedown in the old
-		// document — that promise simply never settles — so a loop tied to the
-		// old generation can never notice on its own. dom-ready starts a fresh
-		// loop for the new document; the stale one exits at its next check and
-		// a late resolution from it is dropped rather than emitted.
-		let generation = 0;
-		const loop = async (gen: number): Promise<void> => {
-			while (!cancelled && gen === generation) {
-				if (wc.isDestroyed()) return;
-				try {
-					await wc.executeJavaScript(NEXT_MOUSEDOWN_SCRIPT);
-				} catch {
-					// Script failed to run (mid-navigation, crashed renderer):
-					// retry, but not in a hot spin.
-					await new Promise((resolve) => setTimeout(resolve, 100));
-					continue;
-				}
-				if (cancelled || gen !== generation) return;
-				this.emit(`pane-focus:${paneId}`);
-			}
-		};
-		const rearm = (): void => {
-			generation += 1;
-			void loop(generation);
-		};
-
-		wc.on("dom-ready", rearm);
-		this.focusListeners.set(paneId, () => {
-			cancelled = true;
-			try {
-				wc.off("dom-ready", rearm);
-			} catch {
-				// webContents may be destroyed
-			}
-		});
-		void loop(generation);
+	private requirePane(paneId: string, workspaceId?: string): PaneRegistration {
+		const pane = this.panes.get(paneId);
+		if (!pane || (workspaceId != null && pane.workspaceId !== workspaceId)) {
+			throw new Error(`No browser pane ${paneId}`);
+		}
+		return pane;
 	}
+}
 
-	private setupConsoleCapture(paneId: string, wc: Electron.WebContents): void {
-		// Electron's console-message `level` is 0..3 = verbose, info, warning,
-		// error (per electron.d.ts). console.log fires level 1 (info), so a naive
-		// 0:log,1:warn,… map mislabels every message by one.
-		const LEVEL_MAP: Record<number, ConsoleEntry["level"]> = {
-			0: "debug",
-			1: "log",
-			2: "warn",
-			3: "error",
-		};
+function isConsoleLevel(value: unknown): value is ConsoleEntry["level"] {
+	return (
+		value === "log" ||
+		value === "warn" ||
+		value === "error" ||
+		value === "info" ||
+		value === "debug"
+	);
+}
 
-		const handler = (
-			_event: Electron.Event,
-			level: number,
-			message: string,
-		) => {
-			const entries = this.consoleLogs.get(paneId) ?? [];
-			entries.push({
-				level: LEVEL_MAP[level] ?? "log",
-				message,
-				timestamp: Date.now(),
-			});
-			if (entries.length > MAX_CONSOLE_ENTRIES) {
-				entries.splice(0, entries.length - MAX_CONSOLE_ENTRIES);
-			}
-			this.consoleLogs.set(paneId, entries);
-			this.emit(`console:${paneId}`, entries[entries.length - 1]);
-		};
-
-		wc.on("console-message", handler);
-		this.consoleListeners.set(paneId, () => {
-			try {
-				wc.off("console-message", handler);
-			} catch {
-				// webContents may be destroyed
-			}
-		});
-	}
+function isForwardedKey(value: unknown): value is ForwardedKey {
+	return (
+		typeof value === "object" &&
+		value !== null &&
+		typeof (value as ForwardedKey).key === "string" &&
+		typeof (value as ForwardedKey).code === "string"
+	);
 }
 
 export const browserManager = new BrowserManager();

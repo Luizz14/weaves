@@ -2,8 +2,6 @@ import type { ChildProcess } from "node:child_process";
 import { msg } from "@lingui/core/macro";
 import { i18n } from "@superset/i18n";
 import { TRPCError } from "@trpc/server";
-import type { BrowserWindow, OpenDialogOptions } from "electron";
-import { dialog } from "electron";
 import {
 	getCustomRingtoneInfo,
 	getCustomRingtonePath,
@@ -11,6 +9,11 @@ import {
 } from "main/lib/custom-ringtones";
 import { playSoundFile } from "main/lib/play-sound";
 import { getSoundPath } from "main/lib/sound-paths";
+import {
+	type NativeDialogOptions,
+	type NativeWindowHandle,
+	openNativeDialog,
+} from "main/native/platform";
 import {
 	CUSTOM_RINGTONE_ID,
 	DEFAULT_RINGTONE_ID,
@@ -107,7 +110,9 @@ function getNotificationRingtoneSoundPath(ringtoneId: string): string | null {
 /**
  * Ringtone router for audio preview and playback operations
  */
-export const createRingtoneRouter = (getWindow: () => BrowserWindow | null) => {
+export const createRingtoneRouter = (
+	getWindow: () => NativeWindowHandle | null,
+) => {
 	return router({
 		/**
 		 * Preview a ringtone by ringtone ID.
@@ -170,7 +175,7 @@ export const createRingtoneRouter = (getWindow: () => BrowserWindow | null) => {
 		 */
 		importCustom: publicProcedure.mutation(async () => {
 			const window = getWindow();
-			const openDialogOptions: OpenDialogOptions = {
+			const openDialogOptions: NativeDialogOptions = {
 				properties: ["openFile"],
 				title: i18n._(
 					msg({
@@ -188,18 +193,16 @@ export const createRingtoneRouter = (getWindow: () => BrowserWindow | null) => {
 					},
 				],
 			};
-			const result = window
-				? await dialog.showOpenDialog(window, openDialogOptions)
-				: await dialog.showOpenDialog(openDialogOptions);
+			const result = await openNativeDialog(openDialogOptions, window?.label);
 
 			if (result.canceled || result.filePaths.length === 0) {
 				return { canceled: true as const, ringtone: null };
 			}
+			const [selectedPath] = result.filePaths;
+			if (!selectedPath) return { canceled: true as const, ringtone: null };
 
 			try {
-				const ringtone = await importCustomRingtoneFromPath(
-					result.filePaths[0],
-				);
+				const ringtone = await importCustomRingtoneFromPath(selectedPath);
 				return { canceled: false as const, ringtone };
 			} catch (error) {
 				throw new TRPCError({

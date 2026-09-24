@@ -5,6 +5,13 @@ import type {
 import { clampDesignModePayload } from "./design-mode-payload";
 import { buildDesignModeScript } from "./design-mode-script";
 
+export interface BrowserGuest {
+	executeJavaScript(script: string): Promise<unknown>;
+	isDestroyed(): boolean;
+	on(event: string, listener: (...args: unknown[]) => void): void;
+	off(event: string, listener: (...args: unknown[]) => void): void;
+}
+
 interface ActiveDesignModeOp {
 	opId: string;
 	resolve: (result: DesignModeSelectionResult) => void;
@@ -49,7 +56,7 @@ export class DesignModeController {
 	awaitSelection(
 		paneId: string,
 		opId: string,
-		guest: Electron.WebContents,
+		guest: BrowserGuest,
 	): Promise<DesignModeSelectionResult> {
 		// One op per pane: a late click from a previous operation must not
 		// resolve the wrong promise. The replaced op skips teardown so the
@@ -130,12 +137,18 @@ export class DesignModeController {
 			// An armed selection must not keep the app alive after quit.
 			timeoutId.unref?.();
 
-			guest.on("did-start-navigation", handleNavigation);
+			guest.on(
+				"did-start-navigation",
+				handleNavigation as (...args: unknown[]) => void,
+			);
 			guest.on("destroyed", handleDestroyed);
 
 			const cleanup = (preserveOverlay?: boolean): void => {
 				try {
-					guest.off("did-start-navigation", handleNavigation);
+					guest.off(
+						"did-start-navigation",
+						handleNavigation as (...args: unknown[]) => void,
+					);
 					guest.off("destroyed", handleDestroyed);
 				} catch {
 					// The guest may already be gone; cleanup is best-effort.

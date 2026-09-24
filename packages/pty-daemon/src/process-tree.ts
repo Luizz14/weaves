@@ -166,14 +166,18 @@ export function readProcessTable(): ProcessInfo[] {
  */
 export function readProcessTableAsync(): Promise<ProcessInfo[] | null> {
 	return new Promise((resolve) => {
-		execFile(
-			"ps",
-			PS_TABLE_ARGS,
-			{ encoding: "utf8", timeout: PS_TIMEOUT_MS },
-			(error, stdout) => {
-				resolve(error ? null : parseProcessTable(stdout));
-			},
-		);
+		try {
+			execFile(
+				"ps",
+				PS_TABLE_ARGS,
+				{ encoding: "utf8", timeout: PS_TIMEOUT_MS },
+				(error, stdout) => {
+					resolve(error ? null : parseProcessTable(stdout));
+				},
+			);
+		} catch {
+			resolve(null);
+		}
 	});
 }
 
@@ -220,20 +224,24 @@ export function getProcessGroupAndTty(
 	if (!isPositiveInteger(pid))
 		return Promise.resolve({ pgid: null, tty: null });
 	return new Promise((resolve) => {
-		execFile(
-			"ps",
-			["-o", "pgid=,tty=", "-p", String(pid)],
-			{ encoding: "utf8", timeout: PS_TIMEOUT_MS },
-			(error, stdout) => {
-				if (error) return resolve({ pgid: null, tty: null });
-				const [pgidText, ttyText] = stdout.trim().split(/\s+/);
-				const pgid = Number(pgidText);
-				resolve({
-					pgid: isPositiveInteger(pgid) ? pgid : null,
-					tty: normalizeTtyName(ttyText),
-				});
-			},
-		);
+		try {
+			execFile(
+				"ps",
+				["-o", "pgid=,tty=", "-p", String(pid)],
+				{ encoding: "utf8", timeout: PS_TIMEOUT_MS },
+				(error, stdout) => {
+					if (error) return resolve({ pgid: null, tty: null });
+					const [pgidText, ttyText] = stdout.trim().split(/\s+/);
+					const pgid = Number(pgidText);
+					resolve({
+						pgid: isPositiveInteger(pgid) ? pgid : null,
+						tty: normalizeTtyName(ttyText),
+					});
+				},
+			);
+		} catch {
+			resolve({ pgid: null, tty: null });
+		}
 	});
 }
 

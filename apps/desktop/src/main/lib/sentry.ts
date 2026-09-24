@@ -1,7 +1,5 @@
-import * as Sentry from "@sentry/electron/main";
-import { IPCMode } from "@sentry/electron/main";
+import * as Sentry from "@sentry/node";
 import { createSentryEventThrottle } from "@superset/shared/sentry-throttle";
-import { session } from "electron";
 import { env } from "../env.main";
 
 let sentryInitialized = false;
@@ -25,11 +23,6 @@ export function initSentry(): void {
 			// One machine repeating one failure should not crowd out everyone
 			// else's rare ones, nor spend the org's quota getting there.
 			beforeSend: throttleRepeats,
-			ipcMode: IPCMode.Classic,
-			getSessions: () => [
-				session.defaultSession,
-				session.fromPartition("persist:superset"),
-			],
 		});
 
 		sentryInitialized = true;

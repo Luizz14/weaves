@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
 import { downloadManager } from "main/lib/browser/download-manager";
 import { z } from "zod";
@@ -24,8 +25,16 @@ export const createDownloadsRouter = () => {
 
 		cancel: publicProcedure
 			.input(z.object({ id: z.string() }))
-			.mutation(({ input }) => {
-				return { cancelled: downloadManager.cancel(input.id) };
+			.mutation(async ({ input, ctx }) => {
+				if (!ctx.windowLabel) {
+					throw new TRPCError({
+						code: "UNAUTHORIZED",
+						message: "Download caller has no trusted window label",
+					});
+				}
+				return {
+					cancelled: await downloadManager.cancel(input.id, ctx.windowLabel),
+				};
 			}),
 
 		clear: publicProcedure.mutation(() => {
@@ -39,19 +48,34 @@ export const createDownloadsRouter = () => {
 		// file on disk.
 		showInFolder: publicProcedure
 			.input(z.object({ id: z.string() }))
-			.mutation(({ input }) => {
+			.mutation(async ({ input, ctx }) => {
+				if (!ctx.windowLabel) {
+					throw new TRPCError({
+						code: "UNAUTHORIZED",
+						message: "Download caller has no trusted window label",
+					});
+				}
 				const row = downloadManager.getById(input.id);
 				if (!row) return { success: false };
-				downloadManager.showInFolder(row.savePath);
+				await downloadManager.showInFolder(row.savePath, ctx.windowLabel);
 				return { success: true };
 			}),
 
 		openFile: publicProcedure
 			.input(z.object({ id: z.string() }))
-			.mutation(async ({ input }) => {
+			.mutation(async ({ input, ctx }) => {
+				if (!ctx.windowLabel) {
+					throw new TRPCError({
+						code: "UNAUTHORIZED",
+						message: "Download caller has no trusted window label",
+					});
+				}
 				const row = downloadManager.getById(input.id);
 				if (!row) return { success: false };
-				const error = await downloadManager.openFile(row.savePath);
+				const error = await downloadManager.openFile(
+					row.savePath,
+					ctx.windowLabel,
+				);
 				return { success: error === "" };
 			}),
 	});

@@ -71,6 +71,37 @@ const showAlertMock = mock(async () => ({
 	checkboxChecked: false,
 }));
 
+mock.module("main/native/platform", () => ({
+	getNativeAppVersion: () => APP_VERSION,
+	getNativePath: () => "/tmp/app/resources",
+	getNativePermissionSnapshot: () => ({}),
+	getNativeRuntimeMetadata: () => ({
+		schemaVersion: 1,
+		appName: "Superset",
+		version: APP_VERSION,
+		isPackaged: false,
+		appPath: "/tmp/app",
+		resourcePath: "/tmp/app/resources",
+		userDataPath: "/tmp/superset",
+		sessionDataPath: "/tmp/superset/session",
+		platform: process.platform,
+		arch: process.arch,
+		paths: {
+			appPath: "/tmp/app",
+			resourcePath: "/tmp/app/resources",
+			userDataPath: "/tmp/superset",
+			sessionDataPath: "/tmp/superset/session",
+			downloads: "/tmp/Downloads",
+		},
+		preferredLanguages: ["en-US"],
+		runtime: "tauri",
+	}),
+	invokeNative: mock(async () => null),
+	showNativeMessageBox: showAlertMock,
+}));
+
+spyOn(os, "uptime").mockReturnValue(60);
+
 // Keep every electron export name other suite files link against (e.g.
 // browser-manager's webContents/clipboard/Menu): bun's mock.module can swap
 // export values but cannot add names to an already-instantiated module
@@ -121,7 +152,9 @@ mock.module("./local-db", () => ({
 const { HOST_SERVICE_RESPAWN_MAX_ATTEMPTS } = await import(
 	"./host-service-respawn"
 );
-const { HostServiceCoordinator } = await import("./host-service-coordinator");
+const { HostServiceCoordinator, resolveHostServiceCorsOrigins } = await import(
+	"./host-service-coordinator"
+);
 
 const baseManifest = (pid: number, endpoint = "http://127.0.0.1:55555") => ({
 	pid,
@@ -231,6 +264,44 @@ describe("HostServiceCoordinator preferred ports", () => {
 		expect(ports).toHaveLength(1);
 		expect(ports[0]).toBeGreaterThanOrEqual(48_000);
 		expect(ports[0]).toBeLessThan(49_000);
+	});
+});
+
+describe("host-service origin propagation", () => {
+	test("includes the HTTPS Tauri origin for packaged desktop hosts", () => {
+		expect(
+			resolveHostServiceCorsOrigins({
+				publicDesktopUrl: "https://desktop.example",
+				isPackaged: true,
+				devPort: 5173,
+			}),
+		).toEqual(["https://desktop.example", "https://tauri.localhost"]);
+	});
+
+	test("preserves configured origins and both development origins", () => {
+		expect(
+			resolveHostServiceCorsOrigins({
+				configuredOrigins: "https://desktop.example, https://tauri.localhost",
+				isPackaged: false,
+				devPort: 5173,
+			}),
+		).toEqual([
+			"https://desktop.example",
+			"https://tauri.localhost",
+			"http://localhost:5173",
+			"http://127.0.0.1:5173",
+		]);
+	});
+
+	test("does not propagate a wildcard origin into a desktop host", () => {
+		expect(
+			resolveHostServiceCorsOrigins({
+				configuredOrigins: "*, https://desktop.example",
+				publicDesktopUrl: "*",
+				isPackaged: true,
+				devPort: 5173,
+			}),
+		).toEqual(["https://desktop.example", "https://tauri.localhost"]);
 	});
 });
 
@@ -684,7 +755,7 @@ describe("HostServiceCoordinator single-flight / adoption", () => {
 		identity: { elapsedMs: number; command: string } | null = {
 			elapsedMs: 30_000,
 			command:
-				"/Applications/Superset.app/Contents/MacOS/Superset /app/host-service.js",
+				"/Applications/Superset.app/Contents/MacOS/Superset /app/host-service.cjs",
 		},
 	): void {
 		(
@@ -760,7 +831,7 @@ describe("HostServiceCoordinator single-flight / adoption", () => {
 		stubHolderIdentity({
 			elapsedMs: 10_000,
 			command:
-				"/Applications/Superset.app/Contents/MacOS/Superset /app/host-service.js",
+				"/Applications/Superset.app/Contents/MacOS/Superset /app/host-service.cjs",
 		});
 
 		await coordinator.start("org-1", spawnConfig);

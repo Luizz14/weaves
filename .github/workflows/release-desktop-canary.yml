@@ -74,7 +74,6 @@ jobs:
     with:
       channel: canary
       version_suffix: "-canary.${{ needs.check-changes.outputs.version_timestamp }}"
-      electron_builder_config: electron-builder.canary.ts
       artifact_prefix: desktop-canary
       artifact_retention_days: 7
     secrets: inherit
@@ -105,20 +104,28 @@ jobs:
       - name: Create canary-named copies for updater URLs
         run: |
           cd release-artifacts
-          for file in *.AppImage; do
+          for file in *.dmg; do
             if [[ -f "$file" ]]; then
-              arch=$(echo "$file" | sed -E 's/.*-([^-]+)\.AppImage$/\1/')
-              cp "$file" "Superset-Canary-${arch}.AppImage"
-              echo "Created canary copy: Superset-Canary-${arch}.AppImage"
+              arch=$(echo "$file" | sed -E 's/.*-([^-]+)\.dmg$/\1/')
+              cp "$file" "Superset-Canary-${arch}.dmg"
+              echo "Created canary copy: Superset-Canary-${arch}.dmg"
             fi
           done
-          # Prerelease builds may request canary-linux.yml; keep latest-linux.yml as fallback.
-          for file in *-linux.yml; do
-            if [[ -f "$file" && "$file" != "canary-linux.yml" && "$file" != "latest-linux.yml" ]]; then
-              cp "$file" "canary-linux.yml"
-              cp "$file" "latest-linux.yml"
-              echo "Created canary manifests: canary-linux.yml, latest-linux.yml from $file"
-              break
+
+      - name: Merge signed Tauri canary updater metadata
+        run: |
+          BASE_VERSION=$(node -p "require('./apps/desktop/package.json').version")
+          VERSION="${BASE_VERSION}-canary.${{ needs.check-changes.outputs.version_timestamp }}"
+          node apps/desktop/scripts/tauri/create-updater-manifest.mjs \
+            --version "$VERSION" \
+            --artifacts-dir release-artifacts \
+            --base-url "https://github.com/${{ github.repository }}/releases/download/desktop-canary" \
+            --output release-artifacts/canary.json
+          for file in release-artifacts/*-mac.zip; do
+            if [[ -f "$file" ]]; then
+              arch=$(basename "$file" | sed -E 's/.*-([^-]+)-mac\.zip$/\1/')
+              cp "$file" "release-artifacts/Superset-Canary-${arch}-mac.zip"
+              echo "Created canary copy: Superset-Canary-${arch}-mac.zip"
             fi
           done
 

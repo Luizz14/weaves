@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
 import { screenshotManager } from "main/lib/browser/screenshot-manager";
 import { z } from "zod";
@@ -29,19 +30,34 @@ export const createScreenshotsRouter = () => {
 		// renderer-supplied path, matching the downloads router.
 		showInFolder: publicProcedure
 			.input(z.object({ id: z.string() }))
-			.mutation(({ input }) => {
+			.mutation(async ({ input, ctx }) => {
+				if (!ctx.windowLabel) {
+					throw new TRPCError({
+						code: "UNAUTHORIZED",
+						message: "Screenshot caller has no trusted window label",
+					});
+				}
 				const row = screenshotManager.getById(input.id);
 				if (!row) return { success: false };
-				screenshotManager.showInFolder(row.savePath);
+				await screenshotManager.showInFolder(row.savePath, ctx.windowLabel);
 				return { success: true };
 			}),
 
 		openFile: publicProcedure
 			.input(z.object({ id: z.string() }))
-			.mutation(async ({ input }) => {
+			.mutation(async ({ input, ctx }) => {
+				if (!ctx.windowLabel) {
+					throw new TRPCError({
+						code: "UNAUTHORIZED",
+						message: "Screenshot caller has no trusted window label",
+					});
+				}
 				const row = screenshotManager.getById(input.id);
 				if (!row) return { success: false };
-				const error = await screenshotManager.openFile(row.savePath);
+				const error = await screenshotManager.openFile(
+					row.savePath,
+					ctx.windowLabel,
+				);
 				return { success: error === "" };
 			}),
 	});

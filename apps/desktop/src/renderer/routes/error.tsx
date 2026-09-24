@@ -26,7 +26,7 @@ export function ErrorPage({ error, info }: ErrorComponentProps) {
 
 	useEffect(() => {
 		console.error("[renderer] Route error caught:", error, componentStack);
-		void import("@sentry/electron/renderer")
+		void import("@sentry/browser")
 			.then((Sentry) =>
 				Sentry.captureException(error, {
 					extra: componentStack ? { componentStack } : undefined,

@@ -1,6 +1,7 @@
 import { cpus } from "node:os";
-import { join } from "node:path";
 import { TRPCError } from "@trpc/server";
+import { resolveNativeDesktopEntryPath } from "main/lib/desktop-entry-path";
+import { onNativeEventNamed } from "main/native/platform";
 import {
 	type WorkerTaskAbortedError,
 	WorkerTaskError,
@@ -22,14 +23,7 @@ let gitTaskRunner: WorkerTaskRunner | null = null;
 let didRegisterDisposeHook = false;
 
 function getWorkerScriptPath(): string {
-	try {
-		// Lazy require avoids test/runtime issues where electron is unavailable.
-		const { app } = require("electron") as typeof import("electron");
-		const appPath = app?.getAppPath?.() ?? process.cwd();
-		return join(appPath, "dist", "main", "git-task-worker.js");
-	} catch {
-		return join(process.cwd(), "dist", "main", "git-task-worker.js");
-	}
+	return resolveNativeDesktopEntryPath("git-task-worker.cjs");
 }
 
 function getRunner(): WorkerTaskRunner {
@@ -42,19 +36,11 @@ function getRunner(): WorkerTaskRunner {
 		});
 
 		if (!didRegisterDisposeHook) {
-			try {
-				const { app } = require("electron") as typeof import("electron");
-				app?.once("before-quit", () => {
-					void gitTaskRunner?.dispose();
-					gitTaskRunner = null;
-				});
-				didRegisterDisposeHook = true;
-			} catch (error) {
-				console.warn(
-					"[changes-git] failed to register before-quit dispose hook",
-					error,
-				);
-			}
+			onNativeEventNamed("app:before-quit", () => {
+				void gitTaskRunner?.dispose();
+				gitTaskRunner = null;
+			});
+			didRegisterDisposeHook = true;
 		}
 	}
 	return gitTaskRunner;

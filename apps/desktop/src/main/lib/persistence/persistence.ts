@@ -1,18 +1,18 @@
 import { join } from "node:path";
-import { exposeElectronSQLitePersistence } from "@tanstack/electron-db-sqlite-persistence/main";
 import { createNodeSQLitePersistence } from "@tanstack/node-db-sqlite-persistence";
 import Database from "better-sqlite3";
-import { ipcMain } from "electron";
-import log from "electron-log/main";
 import {
 	ensureSupersetHomeDirExists,
 	SUPERSET_HOME_DIR,
 } from "../app-environment";
 
+const log = { warn: (...args: unknown[]) => console.warn(...args) };
+
 const VACUUM_RECLAIM_THRESHOLD_BYTES = 64 * 1024 * 1024;
 
-let dispose: (() => void) | null = null;
 let database: Database.Database | null = null;
+let persistenceInstance: ReturnType<typeof createNodeSQLitePersistence> | null =
+	null;
 
 function reclaimBloatedDatabaseFile(target: Database.Database): void {
 	try {
@@ -45,20 +45,24 @@ export function initTanstackDbPersistence(): void {
 	database.pragma("synchronous = NORMAL");
 	database.pragma("busy_timeout = 5000");
 	reclaimBloatedDatabaseFile(database);
-	const persistence = createNodeSQLitePersistence({
+	persistenceInstance = createNodeSQLitePersistence({
 		database,
 		appliedTxPruneMaxRows: 1_000,
 		appliedTxPruneMaxAgeSeconds: 24 * 60 * 60,
 	});
-	dispose = exposeElectronSQLitePersistence({
-		ipcMain,
-		persistence,
-	});
 }
 
 export function shutdownTanstackDbPersistence(): void {
-	dispose?.();
-	dispose = null;
+	persistenceInstance = null;
 	database?.close();
 	database = null;
+}
+
+export function getTanstackDbPersistence(): ReturnType<
+	typeof createNodeSQLitePersistence
+> {
+	if (!persistenceInstance) {
+		throw new Error("TanStack DB persistence is not initialized");
+	}
+	return persistenceInstance;
 }

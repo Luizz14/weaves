@@ -1,11 +1,10 @@
 import { msg } from "@lingui/core/macro";
 import { i18n } from "@superset/i18n";
-import { dialog } from "electron";
-import { quitAppCompletely } from "main/index";
+import { invokeNative, showNativeMessageBox } from "main/native/platform";
 
 export async function confirmAndQuitCompletely(): Promise<void> {
 	try {
-		const { response } = await dialog.showMessageBox({
+		const { response } = await showNativeMessageBox({
 			type: "warning",
 			buttons: [
 				i18n._(
@@ -34,9 +33,7 @@ export async function confirmAndQuitCompletely(): Promise<void> {
 				}),
 			),
 		});
-		if (response === 0) {
-			quitAppCompletely();
-		}
+		if (response === 0) await invokeNative("app.quitCompletely");
 	} catch (error) {
 		console.error("[quit] Quit-completely confirmation failed:", error);
 	}

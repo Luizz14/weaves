@@ -1,9 +1,16 @@
 import { msg } from "@lingui/core/macro";
 import { i18n } from "@superset/i18n";
 import { COMPANY } from "@superset/shared/constants";
-import { app, BrowserWindow, Menu, shell } from "electron";
 import { env } from "main/env.main";
+import { dispatchNativeMenuClick } from "main/lib/menu-action-router";
 import { resetTerminalStateDev } from "main/lib/terminal/dev-reset";
+import {
+	getAllNativeWindows,
+	getFocusedNativeWindow,
+	getNativeAppName,
+	invokeNative,
+	onNativeEventNamed,
+} from "main/native/platform";
 import {
 	checkForUpdatesInteractive,
 	simulateDownloading,
@@ -12,6 +19,52 @@ import {
 } from "./auto-updater";
 import { menuEmitter } from "./menu-events";
 import { confirmAndQuitCompletely } from "./quit-completely";
+
+type NativeMenuItem = {
+	label?: string;
+	role?: string;
+	type?: "separator";
+	action?: string;
+	accelerator?: string;
+	registerAccelerator?: boolean;
+	submenu?: NativeMenuItem[];
+};
+
+const PERSONAL_INSTALL_BUILD = process.env.TAURI_PERSONAL_INSTALL === "1";
+const menuActions = new Map<string, () => void>();
+let nextMenuActionId = 0;
+
+function registerMenuAction(callback: () => void): string {
+	const id = `menu-action-${++nextMenuActionId}`;
+	menuActions.set(id, callback);
+	return id;
+}
+
+onNativeEventNamed("menu:action", (event) => {
+	const payload =
+		typeof event.payload === "object" && event.payload !== null
+			? (event.payload as { action?: unknown })
+			: {};
+	if (typeof payload.action === "string") menuActions.get(payload.action)?.();
+});
+
+// Native tray/menu fallbacks use stable semantic ids instead of the dynamic
+// action tokens sent by menu.setApplicationMenu. Keep both paths equivalent.
+onNativeEventNamed("menu:clicked", (event) => {
+	const payload =
+		typeof event.payload === "object" && event.payload !== null
+			? (event.payload as { id?: unknown })
+			: {};
+	if (typeof payload.id === "string")
+		dispatchNativeMenuClick(payload.id, {
+			emit: menuEmitter.emit.bind(menuEmitter),
+			checkUpdates: checkForUpdatesInteractive,
+			quit: () => {
+				void invokeNative("app.quit");
+			},
+			quitCompletely: () => void confirmAndQuitCompletely(),
+		});
+});
 
 export function createApplicationMenu() {
 	const reloadAccelerator = "CmdOrCtrl+R";
@@ -23,7 +76,8 @@ export function createApplicationMenu() {
 	const newWindowAccelerator =
 		process.platform === "darwin" ? "Cmd+Shift+N" : "Ctrl+Alt+N";
 
-	const template: Electron.MenuItemConstructorOptions[] = [
+	menuActions.clear();
+	const template: NativeMenuItem[] = [
 		{
 			label: i18n._(msg({ message: "File" })),
 			submenu: [
@@ -34,9 +88,9 @@ export function createApplicationMenu() {
 						}),
 					),
 					accelerator: newWindowAccelerator,
-					click: () => {
+					action: registerMenuAction(() => {
 						menuEmitter.emit("new-window");
-					},
+					}),
 				},
 				{ type: "separator" },
 				{
@@ -46,9 +100,9 @@ export function createApplicationMenu() {
 						}),
 					),
 					accelerator: "CmdOrCtrl+O",
-					click: () => {
+					action: registerMenuAction(() => {
 						menuEmitter.emit("open-project");
-					},
+					}),
 				},
 				{ type: "separator" },
 				// Explicit click handler (not `role: "close"`) — `role: "close"` adds
@@ -61,9 +115,9 @@ export function createApplicationMenu() {
 							message: "Close Window",
 						}),
 					),
-					click: () => {
-						BrowserWindow.getFocusedWindow()?.close();
-					},
+					action: registerMenuAction(() => {
+						getFocusedNativeWindow()?.close();
+					}),
 				},
 				// macOS keeps these in the application menu, which only it has.
 				...(process.platform === "darwin"
@@ -73,25 +127,29 @@ export function createApplicationMenu() {
 							{
 								label: i18n._(msg({ message: "Settings..." })),
 								accelerator: openSettingsAccelerator,
-								click: () => {
+								action: registerMenuAction(() => {
 									menuEmitter.emit("open-settings");
-								},
+								}),
 							},
-							{
-								label: i18n._(msg({ message: "Check for Updates..." })),
-								click: () => {
-									checkForUpdatesInteractive();
-								},
-							},
-							{ type: "separator" },
+							...(!PERSONAL_INSTALL_BUILD
+								? ([
+										{
+											label: i18n._(msg({ message: "Check for Updates..." })),
+											action: registerMenuAction(() => {
+												checkForUpdatesInteractive();
+											}),
+										},
+										{ type: "separator" },
+									] satisfies NativeMenuItem[])
+								: []),
 							{ role: "quit" },
 							{
 								label: i18n._(msg({ message: "Quit Superset Completely" })),
-								click: () => {
+								action: registerMenuAction(() => {
 									void confirmAndQuitCompletely();
-								},
+								}),
 							},
-						] satisfies Electron.MenuItemConstructorOptions[])),
+						] satisfies NativeMenuItem[])),
 			],
 		},
 		{
@@ -112,9 +170,9 @@ export function createApplicationMenu() {
 				{
 					label: i18n._(msg({ message: "Reload" })),
 					accelerator: reloadAccelerator,
-					click: () => {
-						BrowserWindow.getFocusedWindow()?.reload();
-					},
+					action: registerMenuAction(() => {
+						getFocusedNativeWindow()?.webContents.reload();
+					}),
 				},
 				// Explicit click handler (not `role: "forceReload"`) — the role adds
 				// an implicit CmdOrCtrl+Shift+R accelerator that prevents the renderer's
@@ -125,9 +183,9 @@ export function createApplicationMenu() {
 							message: "Force Reload",
 						}),
 					),
-					click: () => {
-						BrowserWindow.getFocusedWindow()?.webContents.reloadIgnoringCache();
-					},
+					action: registerMenuAction(() => {
+						getFocusedNativeWindow()?.webContents.reloadIgnoringCache();
+					}),
 				},
 				{ role: "toggleDevTools" },
 				{ type: "separator" },
@@ -145,9 +203,9 @@ export function createApplicationMenu() {
 							message: "Toggle Scripts Bar",
 						}),
 					),
-					click: () => {
+					action: registerMenuAction(() => {
 						menuEmitter.emit("toggle-presets-bar");
-					},
+					}),
 				},
 				{ type: "separator" },
 				{ role: "togglefullscreen" },
@@ -180,9 +238,9 @@ export function createApplicationMenu() {
 							message: "Check Resources",
 						}),
 					),
-					click: () => {
+					action: registerMenuAction(() => {
 						menuEmitter.emit("check-resources");
-					},
+					}),
 				},
 			],
 		},
@@ -195,9 +253,9 @@ export function createApplicationMenu() {
 							message: "Documentation",
 						}),
 					),
-					click: () => {
-						shell.openExternal(COMPANY.DOCS_URL);
-					},
+					action: registerMenuAction(() => {
+						void invokeNative("shell.openExternal", { url: COMPANY.DOCS_URL });
+					}),
 				},
 				{ type: "separator" },
 				{
@@ -206,9 +264,9 @@ export function createApplicationMenu() {
 							message: "Contact Us",
 						}),
 					),
-					click: () => {
-						shell.openExternal(COMPANY.MAIL_TO);
-					},
+					action: registerMenuAction(() => {
+						void invokeNative("shell.openExternal", { url: COMPANY.MAIL_TO });
+					}),
 				},
 				{
 					label: i18n._(
@@ -216,9 +274,11 @@ export function createApplicationMenu() {
 							message: "Report Issue",
 						}),
 					),
-					click: () => {
-						shell.openExternal(COMPANY.REPORT_ISSUE_URL);
-					},
+					action: registerMenuAction(() => {
+						void invokeNative("shell.openExternal", {
+							url: COMPANY.REPORT_ISSUE_URL,
+						});
+					}),
 				},
 				{
 					label: i18n._(
@@ -226,9 +286,11 @@ export function createApplicationMenu() {
 							message: "Join Discord",
 						}),
 					),
-					click: () => {
-						shell.openExternal(COMPANY.DISCORD_URL);
-					},
+					action: registerMenuAction(() => {
+						void invokeNative("shell.openExternal", {
+							url: COMPANY.DISCORD_URL,
+						});
+					}),
 				},
 				{ type: "separator" },
 				{
@@ -238,9 +300,9 @@ export function createApplicationMenu() {
 						}),
 					),
 					accelerator: showHotkeysAccelerator,
-					click: () => {
+					action: registerMenuAction(() => {
 						menuEmitter.emit("open-settings", "keyboard");
-					},
+					}),
 				},
 			],
 		},
@@ -253,30 +315,30 @@ export function createApplicationMenu() {
 			submenu: [
 				{
 					label: "Reset Terminal State",
-					click: () => {
+					action: registerMenuAction(() => {
 						resetTerminalStateDev()
 							.then(() => {
-								for (const window of BrowserWindow.getAllWindows()) {
-									window.reload();
+								for (const window of getAllNativeWindows()) {
+									window.webContents.reload();
 								}
 							})
 							.catch((error) => {
 								console.error("[menu] Failed to reset terminal state:", error);
 							});
-					},
+					}),
 				},
 				{ type: "separator" },
 				{
 					label: "Simulate Update Downloading",
-					click: () => simulateDownloading(),
+					action: registerMenuAction(() => simulateDownloading()),
 				},
 				{
 					label: "Simulate Update Ready",
-					click: () => simulateUpdateReady(),
+					action: registerMenuAction(() => simulateUpdateReady()),
 				},
 				{
 					label: "Simulate Update Error",
-					click: () => simulateError(),
+					action: registerMenuAction(() => simulateError()),
 				},
 			],
 		});
@@ -284,7 +346,7 @@ export function createApplicationMenu() {
 
 	if (process.platform === "darwin") {
 		template.unshift({
-			label: app.name,
+			label: getNativeAppName(),
 			submenu: [
 				{ role: "about" },
 				{ type: "separator" },
@@ -295,21 +357,25 @@ export function createApplicationMenu() {
 						}),
 					),
 					accelerator: openSettingsAccelerator,
-					click: () => {
+					action: registerMenuAction(() => {
 						menuEmitter.emit("open-settings");
-					},
+					}),
 				},
-				{
-					label: i18n._(
-						msg({
-							message: "Check for Updates...",
-						}),
-					),
-					click: () => {
-						checkForUpdatesInteractive();
-					},
-				},
-				{ type: "separator" },
+				...(!PERSONAL_INSTALL_BUILD
+					? ([
+							{
+								label: i18n._(
+									msg({
+										message: "Check for Updates...",
+									}),
+								),
+								action: registerMenuAction(() => {
+									checkForUpdatesInteractive();
+								}),
+							},
+							{ type: "separator" },
+						] satisfies NativeMenuItem[])
+					: []),
 				{ role: "services" },
 				{ type: "separator" },
 				{ role: "hide" },
@@ -323,14 +389,15 @@ export function createApplicationMenu() {
 							message: "Quit Superset Completely",
 						}),
 					),
-					click: () => {
+					action: registerMenuAction(() => {
 						void confirmAndQuitCompletely();
-					},
+					}),
 				},
 			],
 		});
 	}
 
-	const menu = Menu.buildFromTemplate(template);
-	Menu.setApplicationMenu(menu);
+	void invokeNative("menu.setApplicationMenu", { template }).catch((error) => {
+		console.error("[menu] Failed to configure native application menu:", error);
+	});
 }

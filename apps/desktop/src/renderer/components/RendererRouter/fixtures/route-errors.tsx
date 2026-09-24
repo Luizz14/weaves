@@ -31,7 +31,7 @@ GlobalRegistrator.register({ url: "http://localhost" });
 ).IS_REACT_ACT_ENVIRONMENT = true;
 
 const captured: unknown[] = [];
-mock.module("@sentry/electron/renderer", () => ({
+mock.module("@sentry/browser", () => ({
 	captureException: (error: unknown) => captured.push(error),
 }));
 const originalError = new Error("Original route failure");

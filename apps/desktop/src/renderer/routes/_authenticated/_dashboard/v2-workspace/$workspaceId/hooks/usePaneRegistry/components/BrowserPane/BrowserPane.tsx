@@ -5,6 +5,8 @@ import { GlobeIcon, SquareDashedMousePointer, XIcon } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { ImportHistoryDialog } from "renderer/components/ImportHistoryDialog";
+
+import { pointerPassthrough } from "renderer/lib/pointer-passthrough";
 import { electronTrpcClient } from "renderer/lib/trpc-client";
 import {
 	BROWSER_IMPORT_BANNER_ID,
@@ -232,9 +234,15 @@ export function BrowserPane({
 		};
 	}, []);
 
+	useEffect(() => {
+		const source = `browser-history-import:${ctx.pane.id}`;
+		pointerPassthrough.set(source, isImportOpen);
+		return () => pointerPassthrough.set(source, false);
+	}, [ctx.pane.id, isImportOpen]);
+
 	return (
 		// min-w-0: without it the banner row's intrinsic width becomes the pane
-		// root's flex min-content, overflowing the pane slot — and the webview
+		// root's flex min-content, overflowing the pane slot — and the native page
 		// follows the placeholder rect, painting over the neighbor pane.
 		<div ref={rootRef} className="relative flex h-full min-w-0 flex-1 flex-col">
 			{designMode.phase !== "idle" && (
@@ -311,7 +319,7 @@ export function BrowserPane({
 				/>
 			</div>
 			{/* Everything that must paint over the page goes through the registry's
-			    overlay layer: the webview is hoisted out of the pane tree, so no
+			    overlay layer: the native page is outside the pane tree, so no
 			    z-index in here can reach above it. */}
 			{overlayContainer &&
 				createPortal(

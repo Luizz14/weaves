@@ -34,6 +34,22 @@ function isCustomColor(color: string): boolean {
 	return color !== PROJECT_COLOR_DEFAULT && color.startsWith("#");
 }
 
+export function normalizeProjectIconUrl(iconUrl: string): string {
+	if (iconUrl.startsWith("superset-icon://")) {
+		return iconUrl.replace(
+			"superset-icon://",
+			"https://superset-icon.localhost/",
+		);
+	}
+	if (iconUrl.startsWith("http://superset-icon.localhost/")) {
+		return iconUrl.replace(
+			"http://superset-icon.localhost/",
+			"https://superset-icon.localhost/",
+		);
+	}
+	return iconUrl;
+}
+
 /**
  * Determines whether the GitHub avatar should be displayed.
  * Exported for unit testing.
@@ -74,6 +90,7 @@ export function ProjectThumbnail({
 	const firstLetter = projectName.charAt(0).toUpperCase();
 	const hasCustomColor = isCustomColor(projectColor);
 	const shouldUseTransparentIconFrame = projectColor === PROJECT_COLOR_DEFAULT;
+	const normalizedIconUrl = iconUrl ? normalizeProjectIconUrl(iconUrl) : null;
 
 	// Border: gray by default, custom color with slight transparency when set
 	const borderClasses = cn(
@@ -84,8 +101,8 @@ export function ProjectThumbnail({
 		? { borderColor: hexToRgba(projectColor, 0.6) }
 		: undefined;
 
-	// Priority 1: Show project icon if available (works for both superset-icon:// and https://)
-	if (iconUrl && !iconError) {
+	// Priority 1: Show project icon if available.
+	if (normalizedIconUrl && !iconError) {
 		return (
 			<div
 				className={cn(
@@ -98,7 +115,7 @@ export function ProjectThumbnail({
 				style={borderStyle}
 			>
 				<img
-					src={iconUrl}
+					src={normalizedIconUrl}
 					alt={`${projectName} icon`}
 					className="size-full object-cover"
 					onError={() => setIconError(true)}

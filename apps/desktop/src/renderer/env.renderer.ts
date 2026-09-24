@@ -1,7 +1,7 @@
 /**
  * Environment variables for the RENDERER PROCESS (browser context).
  *
- * These values are injected at BUILD TIME by Vite's `define` in electron.vite.config.ts.
+ * These values are injected at BUILD TIME by Vite's `define` in vite.config.ts.
  * They are NOT read from process.env at runtime - Vite replaces the references with
  * literal strings during compilation.
  *
