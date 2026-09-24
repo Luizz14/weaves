@@ -15,6 +15,8 @@ import type { DashboardSidebarPinnedWorkspace } from "../../types";
 import { DashboardSidebarSectionHeader } from "../DashboardSidebarSectionHeader";
 import { DashboardSidebarWorkspaceItem } from "../DashboardSidebarWorkspaceItem";
 import { SidebarDropZone } from "../SidebarDropZone";
+import { SidebarRevealItem } from "../SidebarRevealItem";
+import { SidebarRevealList } from "../SidebarRevealList";
 import { SortableWorkspaceItem } from "../SortableWorkspaceItem";
 
 interface DashboardSidebarPinnedSectionProps {
@@ -105,7 +107,7 @@ export function DashboardSidebarPinnedSection({
 				label={t({ message: "Pinned" })}
 				section="pinned"
 			/>
-			{!isSectionCollapsed && (
+			<SidebarRevealList open={!isSectionCollapsed}>
 				<SortableContext
 					items={pinnedItems}
 					strategy={verticalListSortingStrategy}
@@ -119,21 +121,22 @@ export function DashboardSidebarPinnedSection({
 							? projectsById.get(workspace.projectId)
 							: null;
 						return (
-							<SortableWorkspaceItem
-								key={String(id)}
-								sortableId={String(id)}
-								workspace={workspace}
-								indentation="top-level"
-								pinnedContext={{
-									projectName: project?.name ?? null,
-									projectIconUrl: project?.iconUrl ?? null,
-								}}
-								onHoverCardOpen={onWorkspaceHover}
-							/>
+							<SidebarRevealItem key={String(id)}>
+								<SortableWorkspaceItem
+									sortableId={String(id)}
+									workspace={workspace}
+									indentation="top-level"
+									pinnedContext={{
+										projectName: project?.name ?? null,
+										projectIconUrl: project?.iconUrl ?? null,
+									}}
+									onHoverCardOpen={onWorkspaceHover}
+								/>
+							</SidebarRevealItem>
 						);
 					})}
 				</SortableContext>
-			)}
+			</SidebarRevealList>
 			{/* An empty section only stays mounted mid-drag; the drop zone renders
 			    regardless of collapse so the first pin can always land. */}
 			{pinnedItems.length === 0 && (

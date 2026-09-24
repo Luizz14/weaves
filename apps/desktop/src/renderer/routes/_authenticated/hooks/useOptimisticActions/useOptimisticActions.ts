@@ -31,6 +31,12 @@ interface V2WorkspacePatch {
 	taskId?: string | null;
 	/** Full replacement of the workspace's tag set (sidebar folder membership). */
 	tags?: string[];
+	/** Links the workspace to an Azure DevOps work item; `null` unlinks it. */
+	externalWorkItem?: {
+		provider: "azure-devops";
+		id: string;
+		url: string;
+	} | null;
 }
 
 type TaskListRow = RouterOutputs["task"]["list"][number];
@@ -311,9 +317,15 @@ export function useOptimisticActions() {
 						"The workspace's host is offline — try again when it reconnects.",
 					);
 				}
+				const { externalWorkItem, ...columns } = patch;
 				hostWorkspacesCache.upsertWorkspace({
 					...workspace,
-					...patch,
+					...columns,
+					...(externalWorkItem !== undefined && {
+						externalWorkItemProvider: externalWorkItem?.provider ?? null,
+						externalWorkItemId: externalWorkItem?.id ?? null,
+						externalWorkItemUrl: externalWorkItem?.url ?? null,
+					}),
 					worktreePath: workspace.worktreePath ?? "",
 					worktreeExists: workspace.worktreeExists ?? true,
 					updatedAt: new Date(),
@@ -325,6 +337,7 @@ export function useOptimisticActions() {
 						branch: patch.branch,
 						taskId: patch.taskId,
 						tags: patch.tags,
+						externalWorkItem,
 					})
 					.catch((error: unknown) => {
 						hostWorkspacesCache.invalidateHost(workspace.hostId);

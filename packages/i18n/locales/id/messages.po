@@ -776,6 +776,9 @@ msgstr "{months}bln"
 msgid "{months}mo ago"
 msgstr "{months}bln lalu"
 
+msgid "{movedCount} selected worktree(s) will move here from another work item."
+msgstr ""
+
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceBuiltinRemove"
 msgstr "{name} bawaan dan tidak dapat dihapus"
@@ -2283,6 +2286,9 @@ msgstr "Setidaknya satu tim yang bisa kami sebut namanya, termasuk tim kami, mel
 
 msgid "at once"
 msgstr "sekaligus"
+
+msgid "Attach worktrees you already have to #{workItemId}. They keep their branch and stay in their project."
+msgstr ""
 
 msgid "Attached"
 msgstr "Terhubung"
@@ -8698,6 +8704,9 @@ msgstr "Baris {0}–{1}"
 msgid "Link"
 msgstr "Tautan"
 
+msgid "Link {selectedCount}"
+msgstr ""
+
 msgid "Link ↵"
 msgstr "Tautkan ↵"
 
@@ -8712,6 +8721,12 @@ msgstr "tautan disalin"
 
 msgid "Link copied"
 msgstr "Tautan disalin"
+
+msgid "Link existing"
+msgstr ""
+
+msgid "Link existing worktrees"
+msgstr ""
 
 msgid "Link GitHub issue"
 msgstr "Tautkan issue GitHub"
@@ -10334,6 +10349,9 @@ msgstr "Belum ada workspace di host ini"
 msgid "No workspaces yet"
 msgstr "Belum ada workspace"
 
+msgid "No worktrees to link."
+msgstr ""
+
 msgid "No worktrees yet."
 msgstr "No worktrees yet."
 
@@ -11059,6 +11077,9 @@ msgstr "Buka workspace run ini"
 
 msgid "open the task in a workspace"
 msgstr "membuka tugas di workspace"
+
+msgid "Open work item"
+msgstr ""
 
 msgid "Open workspace"
 msgstr "Buka workspace"
@@ -13456,6 +13477,9 @@ msgstr "Cari branch..."
 
 msgid "Search by key name..."
 msgstr "Cari berdasarkan nama kunci..."
+
+msgid "Search by name, branch or project"
+msgstr ""
 
 msgid "Search changed files"
 msgstr "Cari file yang berubah"
@@ -16668,6 +16692,9 @@ msgstr "Lepaskan tautan"
 msgid "Unlink {0}"
 msgstr "Lepaskan tautan {0}"
 
+msgid "Unlink from this work item"
+msgstr ""
+
 msgid "Unmute notifications"
 msgstr "Nyalakan notifikasi"
 
@@ -16981,6 +17008,12 @@ msgstr "Pesan pengguna"
 
 msgid "User not found"
 msgstr "Pengguna tidak ditemukan"
+
+msgid "User Stories"
+msgstr ""
+
+msgid "User story"
+msgstr ""
 
 msgid "user@example.com"
 msgstr "user@example.com"

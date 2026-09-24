@@ -776,6 +776,9 @@ msgstr "{months} m"
 msgid "{months}mo ago"
 msgstr "hace {months} m"
 
+msgid "{movedCount} selected worktree(s) will move here from another work item."
+msgstr ""
+
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceBuiltinRemove"
 msgstr "{name} es integrado y no se puede quitar"
@@ -2283,6 +2286,9 @@ msgstr "Al menos un equipo al que podamos nombrar, incluido el nuestro, supera t
 
 msgid "at once"
 msgstr "a la vez"
+
+msgid "Attach worktrees you already have to #{workItemId}. They keep their branch and stay in their project."
+msgstr ""
 
 msgid "Attached"
 msgstr "Conectada"
@@ -8698,6 +8704,9 @@ msgstr "Líneas {0}–{1}"
 msgid "Link"
 msgstr "Enlace"
 
+msgid "Link {selectedCount}"
+msgstr ""
+
 msgid "Link ↵"
 msgstr "Enlazar ↵"
 
@@ -8712,6 +8721,12 @@ msgstr "enlace copiado"
 
 msgid "Link copied"
 msgstr "Enlace copiado"
+
+msgid "Link existing"
+msgstr ""
+
+msgid "Link existing worktrees"
+msgstr ""
 
 msgid "Link GitHub issue"
 msgstr "Enlazar issue de GitHub"
@@ -10334,6 +10349,9 @@ msgstr "Aún no hay espacios de trabajo en este host"
 msgid "No workspaces yet"
 msgstr "Aún no hay espacios de trabajo"
 
+msgid "No worktrees to link."
+msgstr ""
+
 msgid "No worktrees yet."
 msgstr "No worktrees yet."
 
@@ -11059,6 +11077,9 @@ msgstr "Abrir el espacio de trabajo de la ejecución"
 
 msgid "open the task in a workspace"
 msgstr "abrir la tarea en un espacio de trabajo"
+
+msgid "Open work item"
+msgstr ""
 
 msgid "Open workspace"
 msgstr "Abrir el espacio de trabajo"
@@ -13456,6 +13477,9 @@ msgstr "Buscar ramas..."
 
 msgid "Search by key name..."
 msgstr "Buscar por nombre de clave..."
+
+msgid "Search by name, branch or project"
+msgstr ""
 
 msgid "Search changed files"
 msgstr "Buscar archivos modificados"
@@ -16668,6 +16692,9 @@ msgstr "Desvincular"
 msgid "Unlink {0}"
 msgstr "Desvincular {0}"
 
+msgid "Unlink from this work item"
+msgstr ""
+
 msgid "Unmute notifications"
 msgstr "Reactivar notificaciones"
 
@@ -16981,6 +17008,12 @@ msgstr "Mensajes del usuario"
 
 msgid "User not found"
 msgstr "Usuario no encontrado"
+
+msgid "User Stories"
+msgstr ""
+
+msgid "User story"
+msgstr ""
 
 msgid "user@example.com"
 msgstr "usuario@ejemplo.com"

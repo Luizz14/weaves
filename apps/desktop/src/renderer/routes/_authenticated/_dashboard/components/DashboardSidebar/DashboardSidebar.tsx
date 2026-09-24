@@ -31,6 +31,7 @@ import { DashboardSidebarPinnedSection } from "./components/DashboardSidebarPinn
 import { DashboardSidebarProjectSection } from "./components/DashboardSidebarProjectSection";
 import { DashboardSidebarSectionRenameProvider } from "./components/DashboardSidebarSectionRenameContext";
 import { DashboardSidebarSessionsSection } from "./components/DashboardSidebarSessionsSection";
+import { DashboardSidebarUserStoriesSection } from "./components/DashboardSidebarUserStoriesSection";
 import { DashboardSidebarWorkspacesHeader } from "./components/DashboardSidebarWorkspacesHeader";
 import { useV2SetupScriptCard } from "./components/V2SetupScriptCard";
 import { useDashboardSidebarData } from "./hooks/useDashboardSidebarData";
@@ -361,6 +362,11 @@ export function DashboardSidebar({
 													<DashboardSidebarPinnedSection
 														pinnedWorkspaces={pinnedWorkspaces}
 														isCollapsed={isCollapsed}
+														onWorkspaceHover={refreshWorkspacePullRequest}
+													/>
+												)}
+												{!isCollapsed && (
+													<DashboardSidebarUserStoriesSection
 														onWorkspaceHover={refreshWorkspacePullRequest}
 													/>
 												)}

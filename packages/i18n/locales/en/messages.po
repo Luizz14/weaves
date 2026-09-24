@@ -776,6 +776,9 @@ msgstr "{months}mo"
 msgid "{months}mo ago"
 msgstr "{months}mo ago"
 
+msgid "{movedCount} selected worktree(s) will move here from another work item."
+msgstr "{movedCount} selected worktree(s) will move here from another work item."
+
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceBuiltinRemove"
 msgstr "{name} is built in and cannot be removed"
@@ -2283,6 +2286,9 @@ msgstr "At least one team we can name, ours included, passes every F4 gate for a
 
 msgid "at once"
 msgstr "at once"
+
+msgid "Attach worktrees you already have to #{workItemId}. They keep their branch and stay in their project."
+msgstr "Attach worktrees you already have to #{workItemId}. They keep their branch and stay in their project."
 
 msgid "Attached"
 msgstr "Attached"
@@ -8698,6 +8704,9 @@ msgstr "Lines {0}–{1}"
 msgid "Link"
 msgstr "Link"
 
+msgid "Link {selectedCount}"
+msgstr "Link {selectedCount}"
+
 msgid "Link ↵"
 msgstr "Link ↵"
 
@@ -8712,6 +8721,12 @@ msgstr "link copied"
 
 msgid "Link copied"
 msgstr "Link copied"
+
+msgid "Link existing"
+msgstr "Link existing"
+
+msgid "Link existing worktrees"
+msgstr "Link existing worktrees"
 
 msgid "Link GitHub issue"
 msgstr "Link GitHub issue"
@@ -10334,6 +10349,9 @@ msgstr "No workspaces on this host yet"
 msgid "No workspaces yet"
 msgstr "No workspaces yet"
 
+msgid "No worktrees to link."
+msgstr "No worktrees to link."
+
 msgid "No worktrees yet."
 msgstr "No worktrees yet."
 
@@ -11059,6 +11077,9 @@ msgstr "Open the run's workspace"
 
 msgid "open the task in a workspace"
 msgstr "open the task in a workspace"
+
+msgid "Open work item"
+msgstr "Open work item"
 
 msgid "Open workspace"
 msgstr "Open workspace"
@@ -13456,6 +13477,9 @@ msgstr "Search branches..."
 
 msgid "Search by key name..."
 msgstr "Search by key name..."
+
+msgid "Search by name, branch or project"
+msgstr "Search by name, branch or project"
 
 msgid "Search changed files"
 msgstr "Search changed files"
@@ -16668,6 +16692,9 @@ msgstr "Unlink"
 msgid "Unlink {0}"
 msgstr "Unlink {0}"
 
+msgid "Unlink from this work item"
+msgstr "Unlink from this work item"
+
 msgid "Unmute notifications"
 msgstr "Unmute notifications"
 
@@ -16981,6 +17008,12 @@ msgstr "User messages"
 
 msgid "User not found"
 msgstr "User not found"
+
+msgid "User Stories"
+msgstr "User Stories"
+
+msgid "User story"
+msgstr "User story"
 
 msgid "user@example.com"
 msgstr "user@example.com"

@@ -776,6 +776,9 @@ msgstr "{months}mês"
 msgid "{months}mo ago"
 msgstr "há {months}mês"
 
+msgid "{movedCount} selected worktree(s) will move here from another work item."
+msgstr "{movedCount} worktree(s) selecionado(s) sairão de outro work item e virão para este."
+
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceBuiltinRemove"
 msgstr "{name} é integrado e não pode ser removido"
@@ -2283,6 +2286,9 @@ msgstr "Pelo menos um time que a gente consiga citar, incluindo o nosso, passa p
 
 msgid "at once"
 msgstr "ao mesmo tempo"
+
+msgid "Attach worktrees you already have to #{workItemId}. They keep their branch and stay in their project."
+msgstr "Vincule worktrees que você já tem ao #{workItemId}. Eles mantêm a branch e continuam no projeto."
 
 msgid "Attached"
 msgstr "Conectada"
@@ -8698,6 +8704,9 @@ msgstr "Linhas {0}–{1}"
 msgid "Link"
 msgstr "Link"
 
+msgid "Link {selectedCount}"
+msgstr "Vincular {selectedCount}"
+
 msgid "Link ↵"
 msgstr "Vincular ↵"
 
@@ -8712,6 +8721,12 @@ msgstr "link copiado"
 
 msgid "Link copied"
 msgstr "Link copiado"
+
+msgid "Link existing"
+msgstr "Vincular existente"
+
+msgid "Link existing worktrees"
+msgstr "Vincular worktrees existentes"
 
 msgid "Link GitHub issue"
 msgstr "Vincular issue do GitHub"
@@ -10334,6 +10349,9 @@ msgstr "Nenhuma área de trabalho neste host ainda"
 msgid "No workspaces yet"
 msgstr "Nenhuma área de trabalho ainda"
 
+msgid "No worktrees to link."
+msgstr "Nenhum worktree para vincular."
+
 msgid "No worktrees yet."
 msgstr "Nenhuma worktree ainda."
 
@@ -11059,6 +11077,9 @@ msgstr "Abrir a área de trabalho da execução"
 
 msgid "open the task in a workspace"
 msgstr "abrir a tarefa em uma área de trabalho"
+
+msgid "Open work item"
+msgstr "Abrir work item"
 
 msgid "Open workspace"
 msgstr "Abrir área de trabalho"
@@ -13456,6 +13477,9 @@ msgstr "Buscar branches..."
 
 msgid "Search by key name..."
 msgstr "Buscar por nome de chave..."
+
+msgid "Search by name, branch or project"
+msgstr "Buscar por nome, branch ou projeto"
 
 msgid "Search changed files"
 msgstr "Buscar arquivos alterados"
@@ -16668,6 +16692,9 @@ msgstr "Desvincular"
 msgid "Unlink {0}"
 msgstr "Desvincular {0}"
 
+msgid "Unlink from this work item"
+msgstr "Desvincular deste work item"
+
 msgid "Unmute notifications"
 msgstr "Reativar notificações"
 
@@ -16981,6 +17008,12 @@ msgstr "Mensagens do usuário"
 
 msgid "User not found"
 msgstr "Usuário não encontrado"
+
+msgid "User Stories"
+msgstr "User Stories"
+
+msgid "User story"
+msgstr "User story"
 
 msgid "user@example.com"
 msgstr "usuario@exemplo.com"

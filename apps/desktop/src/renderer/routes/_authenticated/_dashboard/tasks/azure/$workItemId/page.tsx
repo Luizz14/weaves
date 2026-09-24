@@ -7,7 +7,7 @@ import { Skeleton } from "@superset/ui/skeleton";
 import { toast } from "@superset/ui/sonner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
 	LuArrowLeft,
 	LuExternalLink,
@@ -28,6 +28,7 @@ import { Route as TasksLayoutRoute } from "../../layout";
 import { AzureWorktreeRow } from "./components/AzureWorktreeRow";
 import { CreateAzureWorktreeDialog } from "./components/CreateAzureWorktreeDialog";
 import { GenerateAzureBuildDialog } from "./components/GenerateAzureBuildDialog";
+import { LinkExistingWorktreeDialog } from "./components/LinkExistingWorktreeDialog";
 
 export const Route = createFileRoute(
 	"/_authenticated/_dashboard/tasks/azure/$workItemId/",
@@ -125,6 +126,15 @@ function AzureWorkItemDetailPage() {
 			new Map(projects.map((project) => [project.projectKey, project.name])),
 		[projects],
 	);
+	const unknownProjectLabel = t({ message: "Unknown project" });
+	const projectName = useCallback(
+		(projectId: string | null) =>
+			projectId
+				? (projectNameById.get(projectId) ?? projectId)
+				: unknownProjectLabel,
+		[projectNameById, unknownProjectLabel],
+	);
+	const [linkDialogOpen, setLinkDialogOpen] = useState(false);
 	const claim = useMutation({
 		mutationFn: async () => {
 			if (!hostUrl) throw new Error("Azure DevOps host is unavailable");
@@ -505,6 +515,15 @@ function AzureWorkItemDetailPage() {
 									<Trans>Generate build</Trans>
 								</Button>
 								<Button
+									variant="outline"
+									className="h-10"
+									disabled={isReadOnly || !webUrl}
+									onClick={() => setLinkDialogOpen(true)}
+								>
+									<LuLink />
+									<Trans>Link existing</Trans>
+								</Button>
+								<Button
 									className="h-10"
 									disabled={!claimResolved || isReadOnly}
 									onClick={() => setWorktreeDialogOpen(true)}
@@ -516,15 +535,12 @@ function AzureWorkItemDetailPage() {
 						</div>
 						<div className="mt-4 grid gap-3">
 							{linkedWorkspaces.map((workspace) => {
-								const projectName = workspace.projectId
-									? (projectNameById.get(workspace.projectId) ??
-										workspace.projectId)
-									: t({ message: "Unknown project" });
 								return (
 									<AzureWorktreeRow
 										key={workspace.id}
 										workspace={workspace}
-										projectName={projectName}
+										projectName={projectName(workspace.projectId)}
+										canUnlink={!isReadOnly}
 										workItemId={workItemId}
 										workItemType={type}
 										workItemTitle={title}
@@ -598,6 +614,14 @@ function AzureWorkItemDetailPage() {
 				workItemId={workItemId}
 				workItemTitle={title}
 				workItemUrl={webUrl}
+			/>
+			<LinkExistingWorktreeDialog
+				open={linkDialogOpen}
+				onOpenChange={setLinkDialogOpen}
+				workItemId={workItemId}
+				workItemUrl={webUrl}
+				workspaces={workspaces}
+				projectName={projectName}
 			/>
 			<GenerateAzureBuildDialog
 				open={buildDialogOpen}

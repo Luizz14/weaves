@@ -1,12 +1,13 @@
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { Button } from "@superset/ui/button";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { LuGitBranch, LuGitPullRequest } from "react-icons/lu";
+import { LuGitBranch, LuGitPullRequest, LuUnlink } from "react-icons/lu";
 import { useHostUrl } from "renderer/hooks/host-service/useHostTargetUrl";
 import { getHostServiceClientByUrl } from "renderer/lib/host-service-client";
 import { navigateToV2Workspace } from "renderer/routes/_authenticated/_dashboard/utils/workspace-navigation";
+import { useOptimisticActions } from "renderer/routes/_authenticated/hooks/useOptimisticActions";
 import type { HostWorkspaceItem } from "renderer/routes/_authenticated/providers/HostWorkspacesProvider";
 import { CreateAzurePullRequestDialog } from "../CreateAzurePullRequestDialog";
 
@@ -18,6 +19,7 @@ type AzureWorktreeRowProps = {
 	workItemTitle: string;
 	workItemUrl: string;
 	showCreatePullRequest: boolean;
+	canUnlink: boolean;
 	onPullRequestCreated: () => void;
 };
 
@@ -29,9 +31,12 @@ export function AzureWorktreeRow({
 	workItemTitle,
 	workItemUrl,
 	showCreatePullRequest,
+	canUnlink,
 	onPullRequestCreated,
 }: AzureWorktreeRowProps) {
+	const { t } = useLingui();
 	const navigate = useNavigate();
+	const actions = useOptimisticActions();
 	const queryClient = useQueryClient();
 	const hostUrl = useHostUrl(workspace.hostId);
 	const [pullRequestDialogOpen, setPullRequestDialogOpen] = useState(false);
@@ -101,6 +106,22 @@ export function AzureWorktreeRow({
 				>
 					<Trans>Open</Trans>
 				</Button>
+				{canUnlink ? (
+					<Button
+						variant="ghost"
+						size="icon"
+						className="size-8 text-muted-foreground"
+						title={t({ message: "Unlink from this work item" })}
+						aria-label={t({ message: "Unlink from this work item" })}
+						onClick={() =>
+							actions.v2Workspaces.updateWorkspace(workspace.id, {
+								externalWorkItem: null,
+							})
+						}
+					>
+						<LuUnlink />
+					</Button>
+				) : null}
 			</div>
 			<CreateAzurePullRequestDialog
 				open={pullRequestDialogOpen}

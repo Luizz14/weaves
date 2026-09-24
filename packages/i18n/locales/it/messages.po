@@ -776,6 +776,9 @@ msgstr "{months}me"
 msgid "{months}mo ago"
 msgstr "{months}me fa"
 
+msgid "{movedCount} selected worktree(s) will move here from another work item."
+msgstr ""
+
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceBuiltinRemove"
 msgstr "{name} è integrato e non può essere rimosso"
@@ -2283,6 +2286,9 @@ msgstr "Almeno un team di cui possiamo fare il nome, incluso il nostro, supera t
 
 msgid "at once"
 msgstr "in parallelo"
+
+msgid "Attach worktrees you already have to #{workItemId}. They keep their branch and stay in their project."
+msgstr ""
 
 msgid "Attached"
 msgstr "Collegata"
@@ -8698,6 +8704,9 @@ msgstr "Righe {0}–{1}"
 msgid "Link"
 msgstr "Link"
 
+msgid "Link {selectedCount}"
+msgstr ""
+
 msgid "Link ↵"
 msgstr "Collega ↵"
 
@@ -8712,6 +8721,12 @@ msgstr "link copiato"
 
 msgid "Link copied"
 msgstr "Link copiato"
+
+msgid "Link existing"
+msgstr ""
+
+msgid "Link existing worktrees"
+msgstr ""
 
 msgid "Link GitHub issue"
 msgstr "Collega una issue GitHub"
@@ -10334,6 +10349,9 @@ msgstr "Ancora nessun workspace su questo host"
 msgid "No workspaces yet"
 msgstr "Ancora nessun workspace"
 
+msgid "No worktrees to link."
+msgstr ""
+
 msgid "No worktrees yet."
 msgstr "No worktrees yet."
 
@@ -11059,6 +11077,9 @@ msgstr "Apri il workspace dell'esecuzione"
 
 msgid "open the task in a workspace"
 msgstr "aprire il task in un workspace"
+
+msgid "Open work item"
+msgstr ""
 
 msgid "Open workspace"
 msgstr "Apri il workspace"
@@ -13456,6 +13477,9 @@ msgstr "Cerca nei branch..."
 
 msgid "Search by key name..."
 msgstr "Cerca per nome della chiave..."
+
+msgid "Search by name, branch or project"
+msgstr ""
 
 msgid "Search changed files"
 msgstr "Cerca file modificati"
@@ -16668,6 +16692,9 @@ msgstr "Scollega"
 msgid "Unlink {0}"
 msgstr "Scollega {0}"
 
+msgid "Unlink from this work item"
+msgstr ""
+
 msgid "Unmute notifications"
 msgstr "Riattiva le notifiche"
 
@@ -16981,6 +17008,12 @@ msgstr "Messaggi dell'utente"
 
 msgid "User not found"
 msgstr "Utente non trovato"
+
+msgid "User Stories"
+msgstr ""
+
+msgid "User story"
+msgstr ""
 
 msgid "user@example.com"
 msgstr "user@example.com"

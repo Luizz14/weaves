@@ -9,6 +9,7 @@ import {
 	getWorkspaceTags,
 	getWorkspaceTagsByWorkspaceId,
 	toCloudShape,
+	type UpdateLocalWorkspacePatch,
 	updateLocalWorkspace,
 } from "../../../workspaces/local-workspace-store";
 import { protectedProcedure, router } from "../../index";
@@ -106,6 +107,14 @@ export const workspaceRouter = router({
 				branch: z.string().min(1).optional(),
 				taskId: z.string().uuid().nullable().optional(),
 				tags: workspaceTagsInputSchema.optional(),
+				externalWorkItem: z
+					.object({
+						provider: z.literal("azure-devops"),
+						id: z.string().regex(/^\d+$/),
+						url: z.url(),
+					})
+					.nullable()
+					.optional(),
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
@@ -118,16 +127,17 @@ export const workspaceRouter = router({
 					message: "Workspace not found",
 				});
 			}
-			const patch: {
-				name?: string;
-				branch?: string;
-				taskId?: string | null;
-				tags?: string[];
-			} = {};
+			const patch: UpdateLocalWorkspacePatch = {};
 			if (input.name !== undefined) patch.name = input.name;
 			if (input.branch !== undefined) patch.branch = input.branch;
 			if (input.taskId !== undefined) patch.taskId = input.taskId;
 			if (input.tags !== undefined) patch.tags = input.tags;
+			if (input.externalWorkItem !== undefined) {
+				patch.externalWorkItemProvider =
+					input.externalWorkItem?.provider ?? null;
+				patch.externalWorkItemId = input.externalWorkItem?.id ?? null;
+				patch.externalWorkItemUrl = input.externalWorkItem?.url ?? null;
+			}
 			if (Object.keys(patch).length === 0) {
 				return {
 					...toCloudShape(current, ctx.organizationId),

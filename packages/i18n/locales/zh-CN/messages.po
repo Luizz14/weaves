@@ -776,6 +776,9 @@ msgstr "{months}个月"
 msgid "{months}mo ago"
 msgstr "{months}个月前"
 
+msgid "{movedCount} selected worktree(s) will move here from another work item."
+msgstr ""
+
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceBuiltinRemove"
 msgstr "{name} 是内置的，无法移除"
@@ -2283,6 +2286,9 @@ msgstr "至少有一支叫得出名字的团队（包括我们自己）连续一
 
 msgid "at once"
 msgstr "同时"
+
+msgid "Attach worktrees you already have to #{workItemId}. They keep their branch and stay in their project."
+msgstr ""
 
 msgid "Attached"
 msgstr "已附加"
@@ -8698,6 +8704,9 @@ msgstr "第{0}–{1}行"
 msgid "Link"
 msgstr "链接"
 
+msgid "Link {selectedCount}"
+msgstr ""
+
 msgid "Link ↵"
 msgstr "关联 ↵"
 
@@ -8712,6 +8721,12 @@ msgstr "链接已复制"
 
 msgid "Link copied"
 msgstr "链接已复制"
+
+msgid "Link existing"
+msgstr ""
+
+msgid "Link existing worktrees"
+msgstr ""
 
 msgid "Link GitHub issue"
 msgstr "关联GitHub议题"
@@ -10334,6 +10349,9 @@ msgstr "此主机上还没有工作区"
 msgid "No workspaces yet"
 msgstr "暂无工作区"
 
+msgid "No worktrees to link."
+msgstr ""
+
 msgid "No worktrees yet."
 msgstr "No worktrees yet."
 
@@ -11059,6 +11077,9 @@ msgstr "打开这次运行的工作区"
 
 msgid "open the task in a workspace"
 msgstr "在工作区中打开任务"
+
+msgid "Open work item"
+msgstr ""
 
 msgid "Open workspace"
 msgstr "打开工作区"
@@ -13456,6 +13477,9 @@ msgstr "搜索分支..."
 
 msgid "Search by key name..."
 msgstr "按键名搜索..."
+
+msgid "Search by name, branch or project"
+msgstr ""
 
 msgid "Search changed files"
 msgstr "搜索更改的文件"
@@ -16668,6 +16692,9 @@ msgstr "取消关联"
 msgid "Unlink {0}"
 msgstr "取消关联 {0}"
 
+msgid "Unlink from this work item"
+msgstr ""
+
 msgid "Unmute notifications"
 msgstr "取消静音通知"
 
@@ -16981,6 +17008,12 @@ msgstr "用户消息"
 
 msgid "User not found"
 msgstr "未找到用户"
+
+msgid "User Stories"
+msgstr ""
+
+msgid "User story"
+msgstr ""
 
 msgid "user@example.com"
 msgstr "user@example.com"

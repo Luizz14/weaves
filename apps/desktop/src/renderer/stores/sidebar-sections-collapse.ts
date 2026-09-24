@@ -1,7 +1,12 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
-export type SidebarSectionKey = "cloud" | "pinned" | "sessions" | "workspaces";
+export type SidebarSectionKey =
+	| "cloud"
+	| "pinned"
+	| "sessions"
+	| "userStories"
+	| "workspaces";
 
 export const SIDEBAR_SECTIONS_COLLAPSE_STORAGE_KEY =
 	"sidebar-workspaces-collapse";
@@ -20,6 +25,7 @@ export const useSidebarSectionsCollapseStore =
 						cloud: false,
 						pinned: false,
 						sessions: false,
+						userStories: false,
 						workspaces: false,
 					},
 					toggle: (section) =>
@@ -43,6 +49,7 @@ export const useSidebarSectionsCollapseStore =
 									cloud: false,
 									pinned: false,
 									sessions: false,
+									userStories: false,
 									workspaces: state.isCollapsed ?? false,
 								},
 							};

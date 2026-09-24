@@ -776,6 +776,9 @@ msgstr "{months} mois"
 msgid "{months}mo ago"
 msgstr "il y a {months} mois"
 
+msgid "{movedCount} selected worktree(s) will move here from another work item."
+msgstr ""
+
 #. js-lingui-explicit-id
 msgid "serverError.plugins.marketplaceBuiltinRemove"
 msgstr "{name} est intégré et ne peut pas être supprimé"
@@ -2283,6 +2286,9 @@ msgstr "Au moins une équipe identifiable, la nôtre comprise, passe toutes les 
 
 msgid "at once"
 msgstr "en parallèle"
+
+msgid "Attach worktrees you already have to #{workItemId}. They keep their branch and stay in their project."
+msgstr ""
 
 msgid "Attached"
 msgstr "Attachée"
@@ -8698,6 +8704,9 @@ msgstr "Lignes {0}–{1}"
 msgid "Link"
 msgstr "Lien"
 
+msgid "Link {selectedCount}"
+msgstr ""
+
 msgid "Link ↵"
 msgstr "Lier ↵"
 
@@ -8712,6 +8721,12 @@ msgstr "lien copié"
 
 msgid "Link copied"
 msgstr "Lien copié"
+
+msgid "Link existing"
+msgstr ""
+
+msgid "Link existing worktrees"
+msgstr ""
 
 msgid "Link GitHub issue"
 msgstr "Lier une issue GitHub"
@@ -10334,6 +10349,9 @@ msgstr "Aucun espace de travail sur cet hôte pour l'instant"
 msgid "No workspaces yet"
 msgstr "Aucun espace de travail pour le moment"
 
+msgid "No worktrees to link."
+msgstr ""
+
 msgid "No worktrees yet."
 msgstr "No worktrees yet."
 
@@ -11059,6 +11077,9 @@ msgstr "Ouvrir l'espace de travail de l'exécution"
 
 msgid "open the task in a workspace"
 msgstr "ouvrir la tâche dans un espace de travail"
+
+msgid "Open work item"
+msgstr ""
 
 msgid "Open workspace"
 msgstr "Ouvrir l'espace de travail"
@@ -13456,6 +13477,9 @@ msgstr "Rechercher des branches..."
 
 msgid "Search by key name..."
 msgstr "Rechercher par nom de clé..."
+
+msgid "Search by name, branch or project"
+msgstr ""
 
 msgid "Search changed files"
 msgstr "Rechercher les fichiers modifiés"
@@ -16668,6 +16692,9 @@ msgstr "Dissocier"
 msgid "Unlink {0}"
 msgstr "Dissocier {0}"
 
+msgid "Unlink from this work item"
+msgstr ""
+
 msgid "Unmute notifications"
 msgstr "Réactiver les notifications"
 
@@ -16981,6 +17008,12 @@ msgstr "Messages utilisateur"
 
 msgid "User not found"
 msgstr "Utilisateur introuvable"
+
+msgid "User Stories"
+msgstr ""
+
+msgid "User story"
+msgstr ""
 
 msgid "user@example.com"
 msgstr "utilisateur@exemple.com"
