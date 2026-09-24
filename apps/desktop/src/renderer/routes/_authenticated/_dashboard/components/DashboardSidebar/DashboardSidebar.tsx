@@ -7,7 +7,8 @@ import { CSS } from "@dnd-kit/utilities";
 import { useLingui } from "@lingui/react/macro";
 import { OverflowFadeContainer } from "@superset/ui/overflow-fade-container";
 import { useMatchRoute } from "@tanstack/react-router";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { motion } from "motion/react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
 	SidebarCardSlot,
 	useHiringCard,
@@ -35,6 +36,7 @@ import { useV2SetupScriptCard } from "./components/V2SetupScriptCard";
 import { useDashboardSidebarData } from "./hooks/useDashboardSidebarData";
 import { useDashboardSidebarShortcuts } from "./hooks/useDashboardSidebarShortcuts";
 import { useMigrateLegacySidebarFolders } from "./hooks/useMigrateLegacySidebarFolders";
+import { useOrganizationSwipe } from "./hooks/useOrganizationSwipe";
 import { useDashboardSidebarDnd } from "./hooks/useSidebarDnd";
 import { DashboardSidebarDndProvider } from "./providers/DashboardSidebarDndProvider";
 import { DashboardSidebarHoverProvider } from "./providers/DashboardSidebarHoverProvider";
@@ -307,6 +309,9 @@ export function DashboardSidebar({
 	const starNagCard = useStarNagCard({ isCollapsed });
 	const hiringCard = useHiringCard({ surface: "v2" });
 
+	const swipeTargetRef = useRef<HTMLDivElement>(null);
+	const organizationSwipe = useOrganizationSwipe(swipeTargetRef);
+
 	const handleReorderProjects = useCallback(
 		(reordered: string[]) => {
 			setProjectOrder(reordered);
@@ -343,79 +348,90 @@ export function DashboardSidebar({
 								<div className="flex h-full flex-col border-r border-border bg-sidebar dark:bg-muted/35">
 									<DashboardSidebarHeader isCollapsed={isCollapsed} />
 
-									<OverflowFadeContainer
-										fadeEdges={["top", "bottom"]}
-										className="flex-1 overflow-y-auto hide-scrollbar"
+									<div
+										ref={swipeTargetRef}
+										className="flex min-h-0 flex-1 flex-col"
 									>
-										{(isCollapsed || !workspacesListCollapsed) && (
-											<DashboardSidebarPinnedSection
-												pinnedWorkspaces={pinnedWorkspaces}
-												isCollapsed={isCollapsed}
-												onWorkspaceHover={refreshWorkspacePullRequest}
-											/>
-										)}
-										<DashboardSidebarCloudSection
-											isCollapsed={isCollapsed}
-											onWorkspaceHover={refreshWorkspacePullRequest}
-										/>
-										<DashboardSidebarSessionsSection
-											sessionWorkspaces={sessionWorkspaces}
-											isCollapsed={isCollapsed}
-											workspaceShortcutLabels={workspaceShortcutLabels}
-											onWorkspaceHover={refreshWorkspacePullRequest}
-											onDeleteSection={deleteSection}
-											onRenameSection={renameSection}
-											onToggleSectionCollapse={toggleSectionCollapsed}
-										/>
-										{!isCollapsed && (
-											<div className="mt-3 first:mt-0">
-												<DashboardSidebarBulkActions projects={orderedGroups}>
-													<DashboardSidebarWorkspacesHeader
-														sortMode={sortMode}
-														onSortModeChange={setSidebarProjectSortMode}
-														filterQuery={projectFilterQuery}
-														onFilterQueryChange={setProjectFilterQuery}
-													/>
-												</DashboardSidebarBulkActions>
-											</div>
-										)}
-										{!isCollapsed && !workspacesListCollapsed && (
-											<DashboardSidebarGithubNotice status={githubStatus} />
-										)}
-										{(isCollapsed || !workspacesListCollapsed) && (
-											<SortableContext
-												items={displayedProjectIds}
-												strategy={verticalListSortingStrategy}
-											>
-												{displayedGroups.map((project) => (
-													<SortableProjectWrapper
-														key={project.id}
-														project={project}
+										<OverflowFadeContainer
+											fadeEdges={["top", "bottom"]}
+											className="flex-1 overflow-x-hidden overflow-y-auto hide-scrollbar"
+										>
+											<motion.div style={organizationSwipe}>
+												{(isCollapsed || !workspacesListCollapsed) && (
+													<DashboardSidebarPinnedSection
+														pinnedWorkspaces={pinnedWorkspaces}
 														isCollapsed={isCollapsed}
-														isDragDisabled={isProjectDragDisabled}
-														workspaceShortcutLabels={workspaceShortcutLabels}
 														onWorkspaceHover={refreshWorkspacePullRequest}
-														onToggleCollapse={toggleProjectCollapsed}
 													/>
-												))}
-											</SortableContext>
-										)}
-										{!isCollapsed && !workspacesListCollapsed && (
-											<DashboardSidebarHiddenProjects
-												projects={hiddenProjects}
-												onShow={showHiddenProject}
-											/>
-										)}
-										{!isCollapsed &&
-											isFilterActive &&
-											displayedGroups.length === 0 && (
-												<div className="select-text cursor-text px-4 py-2 text-xs text-muted-foreground">
-													{t({
-														message: `No projects match "${trimmedFilterQuery}"`,
-													})}
-												</div>
-											)}
-									</OverflowFadeContainer>
+												)}
+												<DashboardSidebarCloudSection
+													isCollapsed={isCollapsed}
+													onWorkspaceHover={refreshWorkspacePullRequest}
+												/>
+												<DashboardSidebarSessionsSection
+													sessionWorkspaces={sessionWorkspaces}
+													isCollapsed={isCollapsed}
+													workspaceShortcutLabels={workspaceShortcutLabels}
+													onWorkspaceHover={refreshWorkspacePullRequest}
+													onDeleteSection={deleteSection}
+													onRenameSection={renameSection}
+													onToggleSectionCollapse={toggleSectionCollapsed}
+												/>
+												{!isCollapsed && (
+													<div className="mt-3 first:mt-0">
+														<DashboardSidebarBulkActions
+															projects={orderedGroups}
+														>
+															<DashboardSidebarWorkspacesHeader
+																sortMode={sortMode}
+																onSortModeChange={setSidebarProjectSortMode}
+																filterQuery={projectFilterQuery}
+																onFilterQueryChange={setProjectFilterQuery}
+															/>
+														</DashboardSidebarBulkActions>
+													</div>
+												)}
+												{!isCollapsed && !workspacesListCollapsed && (
+													<DashboardSidebarGithubNotice status={githubStatus} />
+												)}
+												{(isCollapsed || !workspacesListCollapsed) && (
+													<SortableContext
+														items={displayedProjectIds}
+														strategy={verticalListSortingStrategy}
+													>
+														{displayedGroups.map((project) => (
+															<SortableProjectWrapper
+																key={project.id}
+																project={project}
+																isCollapsed={isCollapsed}
+																isDragDisabled={isProjectDragDisabled}
+																workspaceShortcutLabels={
+																	workspaceShortcutLabels
+																}
+																onWorkspaceHover={refreshWorkspacePullRequest}
+																onToggleCollapse={toggleProjectCollapsed}
+															/>
+														))}
+													</SortableContext>
+												)}
+												{!isCollapsed && !workspacesListCollapsed && (
+													<DashboardSidebarHiddenProjects
+														projects={hiddenProjects}
+														onShow={showHiddenProject}
+													/>
+												)}
+												{!isCollapsed &&
+													isFilterActive &&
+													displayedGroups.length === 0 && (
+														<div className="select-text cursor-text px-4 py-2 text-xs text-muted-foreground">
+															{t({
+																message: `No projects match "${trimmedFilterQuery}"`,
+															})}
+														</div>
+													)}
+											</motion.div>
+										</OverflowFadeContainer>
+									</div>
 									<SidebarCardSlot
 										isCollapsed={isCollapsed}
 										entries={[

@@ -55,7 +55,6 @@ import { FileMenuListener } from "./components/FileMenuListener";
 import { GitInitConfirmDialog } from "./components/GitInitConfirmDialog";
 import { GlobalBrowserLifecycle } from "./components/GlobalBrowserLifecycle";
 import { OrdemPokemonCardReveal } from "./components/OrdemPokemonCardReveal";
-import { OrganizationSwitchTransition } from "./components/OrganizationSwitchTransition";
 import { OrganizationWorkspaceRestore } from "./components/OrganizationWorkspaceRestore";
 import { RecentWorkspaceSwitcher } from "./components/RecentWorkspaceSwitcher";
 import { TeardownLogsDialog } from "./components/TeardownLogsDialog";
@@ -312,7 +311,6 @@ function AuthenticatedLayout() {
 						<HostWorkspacesProvider>
 							<OrganizationWorkspaceRestore />
 							<RecentWorkspaceSwitcher />
-							<OrganizationSwitchTransition />
 							<WorkerPoolContextProvider
 								poolOptions={{ workerFactory: createPierreWorker, poolSize: 8 }}
 								highlighterOptions={{ preferredHighlighter: "shiki-wasm" }}

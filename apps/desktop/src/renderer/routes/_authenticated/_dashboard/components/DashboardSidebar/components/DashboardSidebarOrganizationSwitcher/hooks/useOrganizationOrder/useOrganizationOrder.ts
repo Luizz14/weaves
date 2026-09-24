@@ -3,7 +3,7 @@ import { reconcileOrganizationOrder } from "../../utils/reconcileOrganizationOrd
 
 export const ORGANIZATION_ORDER_STORAGE_KEY = "organization-switcher-order-v1";
 
-function readStoredOrder(): string[] {
+export function readStoredOrder(): string[] {
 	if (typeof localStorage === "undefined") return [];
 	try {
 		const value = localStorage.getItem(ORGANIZATION_ORDER_STORAGE_KEY);
