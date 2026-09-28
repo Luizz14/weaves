@@ -18,6 +18,7 @@ import { isExpectedRendererExit } from "main/lib/renderer-exit";
 import { NOTIFICATION_EVENTS, PLATFORM } from "shared/constants";
 import { env } from "shared/env.shared";
 import type { AgentLifecycleEvent } from "shared/notification-types";
+import { STARTUP_DIAGNOSTICS_ARGUMENT } from "shared/startup-diagnostics";
 import { createIPCHandler } from "trpc-electron/main";
 import { productName } from "~/package.json";
 import {
@@ -41,6 +42,11 @@ import {
 	getWorkspaceName,
 } from "../lib/notifications/utils";
 import { recordV1TerminalExit } from "../lib/notifications/v1-agent-sessions";
+import {
+	markStartup,
+	observeRendererStartup,
+	startupDiagnosticsEnabled,
+} from "../lib/startup-diagnostics/startup-diagnostics";
 import {
 	getAllWindows,
 	getFocusedOrLastWindow,
@@ -426,6 +432,9 @@ export async function createPlatformWindow({
 			: { titleBarOverlay: titleBarOverlayColors(), icon: getIconPath() }),
 		webPreferences: {
 			preload: join(__dirname, "../preload/index.js"),
+			...(startupDiagnosticsEnabled
+				? { additionalArguments: [STARTUP_DIAGNOSTICS_ARGUMENT] }
+				: {}),
 			webviewTag: true,
 			// Chromium's built-in PDF viewer, used by the file pane's PDF view
 			plugins: true,
@@ -434,6 +443,12 @@ export async function createPlatformWindow({
 			partition: "persist:superset",
 		},
 	});
+
+	markStartup("window-created");
+	observeRendererStartup(window.webContents);
+	if (startupDiagnosticsEnabled) {
+		window.once("show", () => markStartup("window-show"));
+	}
 
 	registerWindow({ window, orgId, key: key ?? randomUUID() });
 	window.on("focus", () => markFocused(window.id));
@@ -548,6 +563,9 @@ export async function createPlatformWindow({
 				window.maximize();
 			}
 			window.show();
+			if (startupDiagnosticsEnabled && window.isVisible()) {
+				markStartup("window-show");
+			}
 			initialized = true;
 			hasCompletedFirstLoad = true;
 		}
