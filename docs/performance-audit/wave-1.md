@@ -196,3 +196,26 @@ suite reported 3,993 passes with the same 42 failures and 2 errors as the origin
 code; the additional fifth name-preservation case passed in the focused rerun.
 Desktop typecheck reproduced the same 40 diagnostic lines, with no new ones.
 There is no claim of measured startup, RSS, or CPU improvement.
+
+## P02: keep maps for Sentry, exclude them from distribution
+
+Main/renderer keep generating hidden source maps in `dist`; the packager excludes
+`*.map` from its default files, explicit runtime dependency copies, app resources
+and extra resources. The inclusion/exclusion patterns for the default files stay
+in one contiguous group: electron-builder otherwise normalizes separated groups
+in an order that can re-include `dist` maps. The actual packaged ASAR and files
+outside it were inspected, rather than relying on configuration alone.
+
+The host-service Sentry upload now includes all main-build JavaScript and maps,
+including shared chunks imported by host-service/host-worker. Desktop upload and
+release identification are retained. Maps are not deleted from build output.
+
+Validation: arm64 release build and packaging passed; native runtime and PTY
+bundle guards passed; the ASAR and external app files contain zero `.map` files.
+Valid version-3 maps with mappings and source content remain in `dist` for main,
+host and renderer, with no sourceMappingURL directive in those bundles. The full
+desktop suite reported 3,994 passes and the same 42 failures/2 errors as before.
+
+**Pending, explicitly accepted by the user:** real upload and symbolication of
+test errors in Sentry for main, renderer and host. Local map validation does not
+prove server-side symbolication. No real Sentry event/upload is claimed.

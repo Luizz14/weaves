@@ -62,39 +62,43 @@ const config: Configuration = {
 		{
 			from: "dist/resources/migrations",
 			to: "resources/migrations",
-			filter: ["**/*"],
+			filter: ["**/*", "!**/*.map"],
 		},
 		{
 			from: "dist/resources/host-migrations",
 			to: "resources/host-migrations",
-			filter: ["**/*"],
+			filter: ["**/*", "!**/*.map"],
 		},
 		{
 			from: "dist/resources/chat-migrations",
 			to: "resources/chat-migrations",
-			filter: ["**/*"],
+			filter: ["**/*", "!**/*.map"],
 		},
 		{
 			from: "dist/resources/bin",
 			to: "resources/bin",
-			filter: ["**/*"],
+			filter: ["**/*", "!**/*.map"],
 		},
 	],
 
 	files: [
 		"dist/**/*",
 		"package.json",
+		"!**/.DS_Store",
+		"!**/*.map",
 		{
 			from: pkg.resources,
 			to: "resources",
-			filter: ["**/*"],
+			filter: ["**/*", "!**/*.map"],
 		},
 		// Runtime modules that stay external to the main bundle.
 		// bun creates symlinks for direct deps in workspace node_modules.
 		// The copy:native-modules script replaces symlinks with real files
 		// before building (required for Bun 1.3+ isolated installs).
-		...packagedNodeModuleCopies,
-		"!**/.DS_Store",
+		...packagedNodeModuleCopies.map((copy) => ({
+			...copy,
+			filter: [...copy.filter, "!**/*.map"],
+		})),
 	],
 
 	// Rebuild native modules for Electron's Node.js version

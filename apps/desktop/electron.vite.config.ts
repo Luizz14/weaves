@@ -55,7 +55,7 @@ const hostServiceSentryPlugin = process.env.SENTRY_AUTH_TOKEN
 			authToken: process.env.SENTRY_AUTH_TOKEN,
 			release: { name: version },
 			sourcemaps: {
-				assets: ["**/host-service.js*", "**/host-worker.js*"],
+				assets: [`${devPath}/main/**/*.js*`],
 			},
 		})
 	: null;
@@ -130,7 +130,7 @@ export default defineConfig({
 		build: {
 			minify: "esbuild",
 			target: "node24",
-			sourcemap: true,
+			sourcemap: "hidden",
 			rollupOptions: {
 				input: {
 					index: resolve("src/main/index.ts"),
@@ -285,7 +285,7 @@ export default defineConfig({
 		build: {
 			minify: "esbuild",
 			target: "chrome146",
-			sourcemap: true,
+			sourcemap: "hidden",
 			outDir: resolve(devPath, "renderer"),
 
 			rollupOptions: {
