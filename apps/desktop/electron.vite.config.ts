@@ -16,6 +16,7 @@ import {
 	htmlEnvTransformPlugin,
 	linguiMacroPlugin,
 } from "./vite/helpers";
+import { preserveRuntimeNamesPlugin } from "./vite/preserve-runtime-names";
 
 // override: true ensures .env values take precedence over inherited env vars
 config({ path: resolve(__dirname, "../../.env"), override: true, quiet: true });
@@ -61,7 +62,12 @@ const hostServiceSentryPlugin = process.env.SENTRY_AUTH_TOKEN
 
 export default defineConfig({
 	main: {
-		plugins: [tsconfigPaths, linguiMacroPlugin(), copyResourcesPlugin()],
+		plugins: [
+			tsconfigPaths,
+			linguiMacroPlugin(),
+			copyResourcesPlugin(),
+			preserveRuntimeNamesPlugin(),
+		],
 
 		define: {
 			"process.env.NODE_ENV": defineEnv(process.env.NODE_ENV, "production"),
@@ -122,6 +128,8 @@ export default defineConfig({
 		},
 
 		build: {
+			minify: "esbuild",
+			target: "node24",
 			sourcemap: true,
 			rollupOptions: {
 				input: {
@@ -179,6 +187,8 @@ export default defineConfig({
 		},
 
 		build: {
+			minify: "esbuild",
+			target: "node24",
 			outDir: resolve(devPath, "preload"),
 			rollupOptions: {
 				input: {
@@ -273,6 +283,8 @@ export default defineConfig({
 		publicDir: resolve(resources, "public"),
 
 		build: {
+			minify: "esbuild",
+			target: "chrome146",
 			sourcemap: true,
 			outDir: resolve(devPath, "renderer"),
 

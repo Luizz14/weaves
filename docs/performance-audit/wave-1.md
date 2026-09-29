@@ -171,3 +171,28 @@ RSS and CPU both became zero before `ps` marked it as a zombie. Such unavailable
 rows are now excluded as well; the regression suite covers that race. Other
 decreasing counters still invalidate the sample. This correction does not make
 a locked-session run an accepted R0.
+
+## Revised scope and P01 (2026-09-29)
+
+The user waived the baseline and repeated performance measurements and asked to
+proceed directly with the optimizations. Runtime improvement numbers and
+measurement-based acceptance are no longer gates for this wave. Cold launches
+remain deferred. The user also approved a versioned `@pierre/diffs` patch for P08
+and implementing P02 with real Sentry symbolication explicitly left pending.
+These instructions supersede the measurement blockers above.
+
+P01 enables esbuild minification with `node24` for main/preload (including the
+main build's child entrypoints) and `chrome146` for renderer. A build-only
+transform preserves names selectively in PostHog feature-flag errors, the Claude
+SDK's constructor-based user agent, MCP transport classes used by Sentry, and
+the PTY adapter whose function name is checked by the existing handoff guard.
+Other application modules remain eligible for identifier minification. Source
+maps remain generated and the name-preserving transform supplies a composed map.
+
+Validation: five targeted name/source-map tests passed, the arm64 release built
+and packaged with ad-hoc signing, and `validate-native-runtime` plus
+`check-pty-daemon-bundle` passed without weakening either guard. The full desktop
+suite reported 3,993 passes with the same 42 failures and 2 errors as the original
+code; the additional fifth name-preservation case passed in the focused rerun.
+Desktop typecheck reproduced the same 40 diagnostic lines, with no new ones.
+There is no claim of measured startup, RSS, or CPU improvement.
