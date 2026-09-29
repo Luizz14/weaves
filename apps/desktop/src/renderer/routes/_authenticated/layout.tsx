@@ -312,7 +312,12 @@ function AuthenticatedLayout() {
 							<OrganizationWorkspaceRestore />
 							<RecentWorkspaceSwitcher />
 							<WorkerPoolContextProvider
-								poolOptions={{ workerFactory: createPierreWorker, poolSize: 8 }}
+								poolOptions={{
+									workerFactory: createPierreWorker,
+									poolSize: 8,
+									initialPoolSize: 2,
+									lazy: true,
+								}}
 								highlighterOptions={{ preferredHighlighter: "shiki-wasm" }}
 							>
 								<DiffThemeSync />

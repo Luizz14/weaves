@@ -219,3 +219,49 @@ desktop suite reported 3,994 passes and the same 42 failures/2 errors as before.
 **Pending, explicitly accepted by the user:** real upload and symbolication of
 test errors in Sentry for main, renderer and host. Local map validation does not
 prove server-side symbolication. No real Sentry event/upload is claimed.
+
+## P08: lazy, demand-grown diff worker pool
+
+The authenticated layout opts into `lazy: true`, `initialPoolSize: 2` and the
+existing maximum `poolSize: 8`. A versioned patch of `@pierre/diffs` 1.3.6 defers
+initialization, including theme-only updates, until a file/diff consumer needs
+rendering. Plain-text diffs also trigger initialization. Existing configurations
+without these options retain eager behavior.
+
+The queue adds one worker at a time when runnable work has no available worker,
+up to the configured maximum. Theme broadcasts wait for an in-progress worker
+initialization. Termination cancels in-flight growth; growth failures clean up
+only the new worker and leave the existing pool draining work. This does not
+shrink idle workers or change host/terminal lifecycle.
+
+The patch modifies only the worker manager and its declarations/options. Stale
+upstream sourceMappingURL references in patched files are removed; Vite generates
+maps against the patched sources. The patch applies cleanly to pristine 1.3.6,
+and `bun install --frozen-lockfile --ignore-scripts` successfully installs it.
+No dependency versions were changed.
+
+Validation:
+
+- Seven regression tests passed: no startup workers, initial size, demand growth
+  and cap, theme changes while growing, termination, growth failure, plain text,
+  and compatibility with eager callers (some tests cover multiple assertions).
+- `bun run --cwd apps/desktop check:diff-worker-pool` passed with actual worker
+  threads and shiki-wasm, highlighting additions/deletions and draining a queue
+  with bounded growth. This is a runtime smoke check, not a timing benchmark.
+- Full desktop suite: 4,001 passes, the same 42 failures and 2 errors as before.
+  Typecheck has 12 remaining preexisting diagnostic lines and no new diagnostics.
+- Arm64 release build/package, `validate-native-runtime`, and
+  `check-pty-daemon-bundle` passed. The final package still has zero `.map` files,
+  while main/renderer/host maps remain valid in `dist`.
+- Release UI checked through CDP on ports 19324/19325, requiring a renderer URL
+  under `/private/tmp/superset-performance-wave1/p08-release/`. The authenticated
+  workspace and terminal loaded with startup diagnostics disabled. There were
+  no worker targets before opening Changes via actual mouse input. Opening
+  Changes created two worker targets; the diff showed syntax highlighting and
+  added/deleted lines. Before/after screenshots were inspected locally, not
+  committed because they contain session content. This is functional verification,
+  not an accepted R0 or startup performance measurement.
+
+Implementation of P01, P02 and P08 is complete for the revised scope. Real Sentry
+upload/symbolication is the remaining explicitly deferred validation. No runtime
+performance improvement numbers are claimed; the next wave awaits user approval.

@@ -1,0 +1,196 @@
+diff --git a/dist/worker/WorkerPoolManager.d.ts b/dist/worker/WorkerPoolManager.d.ts
+index 74bdec106a3072fd31ddfdd494187efadcd2f355..9ff28eda31029c6036ac35d5c11af9e0fc4e2e99 100644
+--- a/dist/worker/WorkerPoolManager.d.ts
++++ b/dist/worker/WorkerPoolManager.d.ts
+@@ -13,6 +13,10 @@ interface ThemeSubscriber {
+ type RenderTaskInstance = FileRendererInstance | DiffRendererInstance;
+ declare class WorkerPoolManager {
+   private options;
++  private initialLanguages;
++  private workerGrowth;
++  private growthFailed;
++  private growWorkers;
+   private highlighter;
+   private readonly preferredHighlighter;
+   private renderOptions;
+@@ -125,4 +129,3 @@ declare class WorkerPoolManager {
+ }
+ //#endregion
+ export { WorkerPoolManager };
+-//# sourceMappingURL=WorkerPoolManager.d.ts.map
+\ No newline at end of file
+diff --git a/dist/worker/WorkerPoolManager.js b/dist/worker/WorkerPoolManager.js
+index 653af02f7850812fa207f1078f700c1250414bcc..443b9cd74cd6066ee8558034ef3dfd074f9bdaf6 100644
+--- a/dist/worker/WorkerPoolManager.js
++++ b/dist/worker/WorkerPoolManager.js
+@@ -33,6 +33,9 @@ var WorkerPoolTaskCanceledError = class extends Error {
+ };
+ var WorkerPoolManager = class {
+ 	options;
++	initialLanguages;
++	workerGrowth;
++	growthFailed = false;
+ 	highlighter;
+ 	preferredHighlighter;
+ 	renderOptions;
+@@ -65,7 +68,8 @@ var WorkerPoolManager = class {
+ 		};
+ 		this.fileCache = new LRUMapPkg.LRUMap(options.totalASTLRUCacheSize ?? 100);
+ 		this.diffCache = new LRUMapPkg.LRUMap(options.totalASTLRUCacheSize ?? 100);
+-		this.queueInitialization(langs);
++		this.initialLanguages = langs ?? [];
++		if (!options.lazy) this.queueInitialization(langs);
+ 	}
+ 	isWorkingPool() {
+ 		return !this.workersFailed;
+@@ -109,6 +113,10 @@ var WorkerPoolManager = class {
+ 				maxLineDiffLength,
+ 				tokenizeMaxLineLength
+ 			};
++			if (this.options.lazy && this.initialized === false) {
++				this.renderOptions = newRenderOptions;
++				return;
++			}
+ 			if (!this.isInitialized()) await this.initialize();
+ 			if (!isCurrentRequest() || areDiffRenderOptionsEqual(newRenderOptions, this.renderOptions)) return;
+ 			const themeNames = getThemes(theme);
+@@ -156,6 +164,7 @@ var WorkerPoolManager = class {
+ 	async setRenderOptionsOnWorkers(renderOptions, resolvedThemes) {
+ 		if (this.workersFailed) return;
+ 		if (!this.isInitialized()) await this.initialize();
++		while (this.workerGrowth != null) await this.workerGrowth;
+ 		const taskPromises = [];
+ 		for (const managedWorker of this.workers) {
+ 			if (!managedWorker.initialized) {
+@@ -231,7 +240,7 @@ var WorkerPoolManager = class {
+ 	isInitialized() {
+ 		return this.initialized === true;
+ 	}
+-	async initialize(languages = []) {
++	async initialize(languages = this.initialLanguages) {
+ 		if (this.initialized === true) return;
+ 		else if (this.initialized === false) {
+ 			const { lifecycleGeneration } = this;
+@@ -286,13 +295,15 @@ var WorkerPoolManager = class {
+ 			this.queueBroadcastStateChanges();
+ 		} else return this.initialized;
+ 	}
+-	async initializeWorkers(resolvedThemes, resolvedLanguages) {
++	async initializeWorkers(resolvedThemes, resolvedLanguages, append = false) {
+ 		this.workersFailed = false;
+ 		const initPromises = [];
+ 		const customExtensionVersion = getCustomExtensionsVersion();
+ 		const customExtensionMap = customExtensionVersion > 0 ? getCustomExtensionsMap() : void 0;
+-		if (this.workers.length > 0) this.terminateWorkers();
+-		for (let i = 0; i < (this.options.poolSize ?? 8); i++) {
++		if (!append && this.workers.length > 0) this.terminateWorkers();
++		const maximum = this.options.poolSize ?? 8;
++		const target = append ? Math.min(maximum, this.workers.length + 1) : Math.min(maximum, this.options.initialPoolSize ?? maximum);
++		for (let i = this.workers.length; i < target; i++) {
+ 			const worker = this.options.workerFactory();
+ 			const managedWorker = {
+ 				worker,
+@@ -305,7 +316,11 @@ var WorkerPoolManager = class {
+ 			worker.addEventListener("message", (event) => {
+ 				this.handleWorkerMessage(managedWorker, event.data);
+ 			});
+-			worker.addEventListener("error", (error) => console.error("Worker error:", error, managedWorker));
++			worker.addEventListener("error", (error) => {
++				const task = this.activeTaskById.get(managedWorker.pendingSetupRequestId);
++				if (task?.type === "initialize") task.reject(new Error(error.message || "Worker initialization failed"));
++				console.error("Worker error:", error, managedWorker);
++			});
+ 			this.workers.push(managedWorker);
+ 			initPromises.push(new Promise((resolve, reject) => {
+ 				const id = this.generateRequestId();
+@@ -330,11 +345,32 @@ var WorkerPoolManager = class {
+ 					requestStart: Date.now()
+ 				};
+ 				this.activeTaskById.set(id, task);
++				managedWorker.pendingSetupRequestId = id;
+ 				this.executeTask(managedWorker, task);
+ 			}));
+ 		}
+ 		await Promise.all(initPromises);
+ 	}
++	growWorkers() {
++		if (this.workerGrowth != null || this.growthFailed || this.workers.length >= (this.options.poolSize ?? 8)) return;
++		if (!this.queuedTasks.some((task) => !this.hasActiveRequest(task))) return;
++		const { lifecycleGeneration } = this;
++		const previousCount = this.workers.length;
++		this.workerGrowth = this.initializeWorkers(getResolvedThemes(getThemes(this.renderOptions.theme)), [], true).catch((error) => {
++			if (!this.isCurrentLifecycle(lifecycleGeneration)) return;
++			for (const worker of this.workers.splice(previousCount)) {
++				const task = this.activeTaskById.get(worker.pendingSetupRequestId);
++				this.cleanWorkerAndTask(worker, task);
++				worker.worker.terminate();
++			}
++			this.growthFailed = true;
++			console.error("Worker pool growth failed:", error);
++		}).finally(() => {
++			if (!this.isCurrentLifecycle(lifecycleGeneration)) return;
++			this.workerGrowth = void 0;
++			this.queueDrain();
++		});
++	}
+ 	drainQueue = () => {
+ 		this._queuedDrain = void 0;
+ 		if (this.initialized !== true || this.queuedTasks.length === 0) return;
+@@ -351,6 +387,7 @@ var WorkerPoolManager = class {
+ 			this.assignWorkerToTask(task, availableWorker);
+ 			this.resolveLanguagesAndExecuteTask(availableWorker, task, langs);
+ 		}
++		this.growWorkers();
+ 		this.queueBroadcastStateChanges();
+ 	};
+ 	highlightFileAST(instance, file) {
+@@ -432,16 +469,22 @@ var WorkerPoolManager = class {
+ 		}
+ 	}
+ 	getPlainDiffAST(diff, startingLine, totalLines, expandedHunks, collapsedContextThreshold) {
+-		return this.highlighter != null ? renderDiffWithHighlighter(diff, this.highlighter, this.renderOptions, {
++		if (this.highlighter == null) {
++			this.queueInitialization();
++			return;
++		}
++		return renderDiffWithHighlighter(diff, this.highlighter, this.renderOptions, {
+ 			forcePlainText: true,
+ 			startingLine,
+ 			totalLines,
+ 			expandedHunks,
+ 			collapsedContextThreshold
+-		}) : void 0;
++		});
+ 	}
+ 	terminate() {
+ 		this.lifecycleGeneration++;
++		this.workerGrowth = void 0;
++		this.growthFailed = false;
+ 		this.cancelActiveWorkerTasks();
+ 		this.terminateWorkers();
+ 		const error = new WorkerPoolTerminatedError();
+@@ -882,4 +925,3 @@ function normalizeWorkerError(error) {
+ //#endregion
+ export { WorkerPoolManager };
+ 
+-//# sourceMappingURL=WorkerPoolManager.js.map
+\ No newline at end of file
+diff --git a/dist/worker/types.d.ts b/dist/worker/types.d.ts
+index d8e15459bdc27513c727c2749882e81ac56bec82..5600921b547010514ed280233dcb8e1ad480aff7 100644
+--- a/dist/worker/types.d.ts
++++ b/dist/worker/types.d.ts
+@@ -104,6 +104,8 @@ interface WorkerPoolOptions {
+    * @default 8
+    */
+   poolSize?: number;
++  initialPoolSize?: number;
++  lazy?: boolean;
+   totalASTLRUCacheSize?: number;
+ }
+ interface WorkerInitializationRenderOptions extends Partial<WorkerRenderingOptions> {
+@@ -170,4 +172,3 @@ interface WorkerStats {
+ }
+ //#endregion
+ export { AllWorkerTasks, DiffRendererInstance, FileRendererInstance, InitializeSuccessResponse, InitializeWorkerRequest, InitializeWorkerTask, RegisterThemeSuccessResponse, RenderDiffRequest, RenderDiffSuccessResponse, RenderDiffTask, RenderErrorResponse, RenderFileRequest, RenderFileSuccessResponse, RenderFileTask, RenderSuccessResponse, RenderTaskCallbacks, ResolvedLanguage, SetRenderOptionsWorkerRequest, SetRenderOptionsWorkerTask, SubmitRequest, WorkerInitializationRenderOptions, WorkerPoolOptions, WorkerRenderingOptions, WorkerRequest, WorkerRequestId, WorkerResponse, WorkerStats };
+-//# sourceMappingURL=types.d.ts.map
+\ No newline at end of file
