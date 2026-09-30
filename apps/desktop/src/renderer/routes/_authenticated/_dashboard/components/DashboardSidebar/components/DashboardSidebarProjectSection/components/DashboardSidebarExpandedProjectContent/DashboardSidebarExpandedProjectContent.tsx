@@ -1,5 +1,6 @@
 import { SortableContext } from "@dnd-kit/sortable";
 import { useLingui } from "@lingui/react/macro";
+import { useMatchRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 import {
 	dropZoneId,
@@ -12,10 +13,12 @@ import type {
 	DashboardSidebarWorkspace,
 	DashboardSidebarWorkspaceIndentation,
 } from "../../../../types";
+import { useDashboardSidebarSectionRename } from "../../../DashboardSidebarSectionRenameContext";
 import { WorkspaceBulkMenuScope } from "../../../DashboardSidebarWorkspaceItem/components/WorkspaceBulkMenuScope";
 import { SidebarDropZone } from "../../../SidebarDropZone";
 import { SidebarRevealItem } from "../../../SidebarRevealItem";
 import { SidebarRevealList } from "../../../SidebarRevealList";
+import { SidebarVirtualList } from "../../../SidebarVirtualList";
 import { SortableSectionHeader } from "../../../SortableSectionHeader";
 import { SortableWorkspaceItem } from "../../../SortableWorkspaceItem";
 
@@ -68,6 +71,7 @@ export function DashboardSidebarExpandedProjectContent({
 		sessionItems,
 		getContainerSortingStrategy,
 		activeSectionId,
+		activeType,
 		activeWorkspaceHome,
 		groupInfo,
 		collapsedSectionIds,
@@ -77,10 +81,28 @@ export function DashboardSidebarExpandedProjectContent({
 	const flatItems = useMemo(
 		() =>
 			containerId === SESSIONS_CONTAINER
-				? sessionItems
-				: (projectItems[containerId] ?? []),
+				? sessionItems.map(String)
+				: (projectItems[containerId] ?? []).map(String),
 		[projectItems, sessionItems, containerId],
 	);
+	const matchRoute = useMatchRoute();
+	const activeRoute = matchRoute({ to: "/v2-workspace/$workspaceId" });
+	const { pendingRenameSectionId } = useDashboardSidebarSectionRename();
+	const retainedItemIds = [
+		activeRoute ? `ws::${activeRoute.workspaceId}` : "",
+		pendingRenameSectionId ? `sec::${pendingRenameSectionId}` : "",
+	];
+	const visibleItems = useMemo(
+		() =>
+			flatItems.filter((id) => {
+				const parsed = parseId(id);
+				if (parsed?.type !== "workspace") return true;
+				const group = groupInfo.get(parsed.realId);
+				return !group || !collapsedSectionIds.has(group.sectionId);
+			}),
+		[flatItems, groupInfo, collapsedSectionIds],
+	);
+
 	const sortingStrategy = getContainerSortingStrategy(containerId);
 	const { isWorkspaceSelected, selectWorkspaceFromEvent } =
 		useDashboardSidebarSelection();
@@ -115,74 +137,78 @@ export function DashboardSidebarExpandedProjectContent({
 					groupInfo={groupInfo}
 				>
 					<SortableContext items={flatItems} strategy={sortingStrategy}>
-						{flatItems.map((id) => {
-							const parsed = parseId(id);
-							if (!parsed) return null;
+						<SidebarVirtualList
+							items={visibleItems}
+							fullItems={flatItems}
+							isDragging={activeType !== null}
+							retainedItemIds={retainedItemIds}
+						>
+							{(id, virtual) => {
+								const parsed = parseId(id);
+								if (!parsed) return null;
 
-							if (parsed.type === "section") {
-								const section = sectionsById.get(parsed.realId);
-								if (!section) return null;
+								if (parsed.type === "section") {
+									const section = sectionsById.get(parsed.realId);
+									if (!section) return null;
+									return (
+										<SidebarRevealItem
+											disabled={virtual || activeType !== null}
+										>
+											<SortableSectionHeader
+												sortableId={String(id)}
+												section={section}
+												indentation={topLevelIndentation}
+												onDelete={onDeleteSection}
+												onRename={onRenameSection}
+												onToggleCollapse={onToggleSectionCollapse}
+											/>
+										</SidebarRevealItem>
+									);
+								}
+
+								const workspace = workspacesById.get(parsed.realId);
+								if (!workspace) return null;
+								const group = groupInfo.get(parsed.realId);
+								const isInSection = !!group;
+								const isInCollapsedSection =
+									isInSection && collapsedSectionIds.has(group.sectionId);
+								const inDraggedSection =
+									isInSection && group.sectionId === activeSectionId;
+								const canBulkSelect = isBulkSelectable(workspace);
+
 								return (
-									<SidebarRevealItem key={String(id)}>
-										<SortableSectionHeader
+									<SidebarRevealItem disabled={virtual || activeType !== null}>
+										<SortableWorkspaceItem
 											sortableId={String(id)}
-											section={section}
-											indentation={topLevelIndentation}
-											onDelete={onDeleteSection}
-											onRename={onRenameSection}
-											onToggleCollapse={onToggleSectionCollapse}
+											workspace={workspace}
+											accentColor={group?.color}
+											isInSection={isInSection}
+											indentation={
+												isInSection ? groupedIndentation : topLevelIndentation
+											}
+											onHoverCardOpen={onWorkspaceHover}
+											shortcutLabel={workspaceShortcutLabels.get(parsed.realId)}
+											isSelected={
+												canBulkSelect && isWorkspaceSelected(parsed.realId)
+											}
+											onSelectionClick={
+												canBulkSelect
+													? (event) =>
+															selectWorkspaceFromEvent(event, {
+																workspaceId: parsed.realId,
+																projectId: containerId,
+																orderedWorkspaceIds: selectableWorkspaceIds,
+															})
+													: undefined
+											}
+											collapsed={isInCollapsedSection}
+											isDragPlaceholder={inDraggedSection}
+											disabled={isInCollapsedSection}
 										/>
 									</SidebarRevealItem>
 								);
-							}
-
-							const workspace = workspacesById.get(parsed.realId);
-							if (!workspace) return null;
-							const group = groupInfo.get(parsed.realId);
-							const isInSection = !!group;
-							const isInCollapsedSection =
-								isInSection && collapsedSectionIds.has(group.sectionId);
-							const inDraggedSection =
-								isInSection && group.sectionId === activeSectionId;
-							const canBulkSelect = isBulkSelectable(workspace);
-
-							// The zero-height collapse lives inside the sortable wrapper
-							// (see SortableWorkspaceItem) so the clip box moves with the
-							// dnd translate — wrapping here would clip displaced rows
-							// out of view mid-drag. Rows stay mounted and full-height
-							// during a section drag: the group travels as a block.
-							return (
-								<SidebarRevealItem key={String(id)}>
-									<SortableWorkspaceItem
-										sortableId={String(id)}
-										workspace={workspace}
-										accentColor={group?.color}
-										isInSection={isInSection}
-										indentation={
-											isInSection ? groupedIndentation : topLevelIndentation
-										}
-										onHoverCardOpen={onWorkspaceHover}
-										shortcutLabel={workspaceShortcutLabels.get(parsed.realId)}
-										isSelected={
-											canBulkSelect && isWorkspaceSelected(parsed.realId)
-										}
-										onSelectionClick={
-											canBulkSelect
-												? (event) =>
-														selectWorkspaceFromEvent(event, {
-															workspaceId: parsed.realId,
-															projectId: containerId,
-															orderedWorkspaceIds: selectableWorkspaceIds,
-														})
-												: undefined
-										}
-										collapsed={isInCollapsedSection}
-										isDragPlaceholder={inDraggedSection}
-										disabled={isInCollapsedSection}
-									/>
-								</SidebarRevealItem>
-							);
-						})}
+							}}
+						</SidebarVirtualList>
 					</SortableContext>
 					{dropZoneEligible && (
 						<SidebarDropZone
