@@ -1,6 +1,11 @@
 import "@sentry/electron/preload";
 
 import { contextBridge, ipcRenderer, webUtils } from "electron";
+import {
+	type RendererStartupMarker,
+	STARTUP_DIAGNOSTICS_ARGUMENT,
+	STARTUP_DIAGNOSTICS_CHANNEL,
+} from "shared/startup-diagnostics";
 import { exposeElectronTRPC } from "trpc-electron/main";
 
 declare const __APP_VERSION__: string;
@@ -20,6 +25,10 @@ const API = {
 	username: process.env.USER,
 	appVersion: __APP_VERSION__,
 	platform: process.platform,
+	startupDiagnostics: process.argv.includes(STARTUP_DIAGNOSTICS_ARGUMENT)
+		? (marker: RendererStartupMarker) =>
+				ipcRenderer.send(STARTUP_DIAGNOSTICS_CHANNEL, marker)
+		: undefined,
 };
 
 // Store mapping of user listeners to wrapped listeners for proper cleanup

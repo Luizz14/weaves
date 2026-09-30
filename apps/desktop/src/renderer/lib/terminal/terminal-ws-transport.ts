@@ -7,6 +7,7 @@ import {
 import type { Terminal as XTerm } from "@xterm/xterm";
 import { ensureFreshJwt } from "renderer/lib/auth-client";
 import { posthog } from "renderer/lib/posthog";
+import { markRendererStartup } from "renderer/lib/startup-diagnostics";
 import {
 	type AttachRetryState,
 	clearAttachRetryableMessage,
@@ -596,9 +597,23 @@ export function connect(
 	// Recreate per connect so the coalescer always targets the current terminal;
 	// dispose flushes anything the previous socket left pending.
 	transport._writeCoalescer?.dispose();
-	transport._writeCoalescer = createWriteCoalescer((data, done) =>
-		terminal.write(data, done),
-	);
+	transport._writeCoalescer = createWriteCoalescer((data, done) => {
+		if (!window.App?.startupDiagnostics) {
+			terminal.write(data, done);
+			return;
+		}
+		terminal.write(data, () => {
+			done();
+			if (
+				transport.connectionState === "open" &&
+				transport._visible &&
+				!transport.sessionEnded &&
+				terminal.element?.getClientRects().length
+			) {
+				markRendererStartup("terminal-usable");
+			}
+		});
+	});
 	setupLiveness(transport);
 	setConnectionState(transport, "connecting");
 

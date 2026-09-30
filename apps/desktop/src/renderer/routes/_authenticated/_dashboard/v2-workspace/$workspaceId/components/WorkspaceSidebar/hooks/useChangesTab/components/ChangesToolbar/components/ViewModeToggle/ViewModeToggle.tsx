@@ -1,7 +1,7 @@
 import { useLingui } from "@lingui/react/macro";
 import { Button } from "@superset/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
-import { Folder, ListTree } from "lucide-react";
+import { List, ListTree } from "lucide-react";
 import type { ChangesViewMode } from "renderer/routes/_authenticated/providers/CollectionsProvider/dashboardSidebarLocal/schema";
 
 interface ViewModeToggleProps {
@@ -15,14 +15,14 @@ interface ViewModeToggleProps {
  */
 export function ViewModeToggle({ viewMode, onChange }: ViewModeToggleProps) {
 	const { t } = useLingui();
-	const next: ChangesViewMode = viewMode === "folders" ? "tree" : "folders";
+	const next: ChangesViewMode = viewMode === "tree" ? "flat" : "tree";
 	const label =
 		next === "tree"
 			? t({ message: "Tree view" })
 			: t({
-					message: "Folder view",
+					message: "Flat view",
 				});
-	const Icon = next === "tree" ? ListTree : Folder;
+	const Icon = next === "tree" ? ListTree : List;
 	return (
 		<Tooltip>
 			<TooltipTrigger asChild>

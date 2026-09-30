@@ -8,11 +8,12 @@ import type { ChangesetFile } from "renderer/routes/_authenticated/_dashboard/v2
 export function useStagingMutations(workspaceId: string) {
 	const { t } = useLingui();
 	const utils = workspaceTrpc.useUtils();
-	const invalidate = () => {
-		void utils.git.getStatus.invalidate({ workspaceId });
-		void utils.git.getDiff.invalidate({ workspaceId });
-	};
-	const { mutate: stage } = workspaceTrpc.git.stageFile.useMutation({
+	const invalidate = () =>
+		Promise.all([
+			utils.git.getStatus.invalidate({ workspaceId }),
+			utils.git.getDiff.invalidate({ workspaceId }),
+		]);
+	const { mutateAsync: stage } = workspaceTrpc.git.stageFile.useMutation({
 		onSuccess: invalidate,
 		onError: (err) => {
 			toast.error(t({ message: "Couldn't stage file" }), {
@@ -20,7 +21,7 @@ export function useStagingMutations(workspaceId: string) {
 			});
 		},
 	});
-	const { mutate: unstage } = workspaceTrpc.git.unstageFile.useMutation({
+	const { mutateAsync: unstage } = workspaceTrpc.git.unstageFile.useMutation({
 		onSuccess: invalidate,
 		onError: (err) => {
 			toast.error(t({ message: "Couldn't unstage file" }), {
@@ -30,13 +31,27 @@ export function useStagingMutations(workspaceId: string) {
 	});
 
 	const stageFile = useCallback(
-		(file: ChangesetFile) =>
-			stage({ workspaceId, filePath: file.path, oldPath: file.oldPath }),
+		async (file: ChangesetFile) => {
+			try {
+				await stage({
+					workspaceId,
+					filePath: file.path,
+					oldPath: file.oldPath,
+				});
+			} catch {}
+		},
 		[stage, workspaceId],
 	);
 	const unstageFile = useCallback(
-		(file: ChangesetFile) =>
-			unstage({ workspaceId, filePath: file.path, oldPath: file.oldPath }),
+		async (file: ChangesetFile) => {
+			try {
+				await unstage({
+					workspaceId,
+					filePath: file.path,
+					oldPath: file.oldPath,
+				});
+			} catch {}
+		},
 		[unstage, workspaceId],
 	);
 

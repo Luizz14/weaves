@@ -225,6 +225,7 @@ function V2WorkspaceContent() {
 	});
 
 	const {
+		openFilePane,
 		openFilePaneFromTreeClick,
 		revealPath,
 		selectedFilePath,
@@ -428,7 +429,7 @@ function V2WorkspaceContent() {
 	);
 
 	return (
-		<FileDocumentStoreProvider>
+		<FileDocumentStoreProvider openFile={openFilePane}>
 			<WorkspaceGitStatusProvider workspaceId={workspaceId}>
 				<V2WorkspaceOpenInButton workspaceId={workspaceId} hidden />
 				<div className="flex min-h-0 min-w-0 flex-1">

@@ -11,6 +11,7 @@ import type {
 import type { FoldSignal } from "../ChangesFileList";
 import { ChangesFileList } from "../ChangesFileList";
 import { ChangesToolbar } from "../ChangesToolbar";
+import { LocalChangesList } from "../LocalChangesList";
 import { ChangesSearchInput } from "./components/ChangesSearchInput";
 import { filterChangesetFiles } from "./filterChangesetFiles";
 import { shouldShowChangesLoading } from "./shouldShowChangesLoading";
@@ -138,7 +139,11 @@ export const ChangesTabContent = memo(function ChangesTabContent({
 					onFilterChange={onFilterChange}
 					commits={commits.data?.commits ?? []}
 					uncommittedCount={
-						status.data.staged.length + status.data.unstaged.length
+						new Set(
+							[...status.data.staged, ...status.data.unstaged].map(
+								(file) => file.path,
+							),
+						).size
 					}
 					viewMode={viewMode}
 					onViewModeChange={onViewModeChange}
@@ -169,20 +174,36 @@ export const ChangesTabContent = memo(function ChangesTabContent({
 					onClose={closeSearch}
 				/>
 			)}
-			<ChangesFileList
-				files={visibleFiles}
-				isFiltered={isFiltered}
-				workspaceId={workspaceId}
-				isLoading={isLoading}
-				viewMode={viewMode}
-				worktreePath={worktreePath}
-				selectedFilePath={selectedFilePath}
-				selectedChangeKey={selectedChangeKey}
-				foldSignal={foldSignal}
-				onSelectFile={onSelectFile}
-				onOpenFile={onOpenFile}
-				onOpenInEditor={onOpenInEditor}
-			/>
+			{filter.kind === "uncommitted" ? (
+				<LocalChangesList
+					files={visibleFiles}
+					isFiltered={isFiltered}
+					workspaceId={workspaceId}
+					viewMode={viewMode}
+					worktreePath={worktreePath}
+					selectedFilePath={selectedFilePath}
+					selectedChangeKey={selectedChangeKey}
+					foldSignal={foldSignal}
+					onSelectFile={onSelectFile}
+					onOpenFile={onOpenFile}
+					onOpenInEditor={onOpenInEditor}
+				/>
+			) : (
+				<ChangesFileList
+					files={visibleFiles}
+					isFiltered={isFiltered}
+					workspaceId={workspaceId}
+					isLoading={isLoading}
+					viewMode={viewMode}
+					worktreePath={worktreePath}
+					selectedFilePath={selectedFilePath}
+					selectedChangeKey={selectedChangeKey}
+					foldSignal={foldSignal}
+					onSelectFile={onSelectFile}
+					onOpenFile={onOpenFile}
+					onOpenInEditor={onOpenInEditor}
+				/>
+			)}
 		</div>
 	);
 });

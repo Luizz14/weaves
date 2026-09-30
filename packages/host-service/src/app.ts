@@ -16,6 +16,8 @@ import { createApiClient } from "./api";
 import { createChatV3Mount, registerChatV3Routes } from "./chat-v3";
 import { createDb, type HostDb } from "./db";
 import { EventBus, GitWatcher, registerEventBusRoute } from "./events";
+import { registerLspRoutes } from "./lsp/routes";
+import { LspSessions } from "./lsp/sessions";
 import { agentIsBusy, PageWatchManager } from "./page-watch/index.ts";
 import { registerForwardMuxRoute } from "./ports/forward-mux-route";
 import { portManager } from "./ports/port-manager";
@@ -266,7 +268,13 @@ export function createApp(options: CreateAppOptions): CreateAppResult {
 	});
 	pageWatch.subscribeToTerminalEvents(eventBus);
 
+	const lsp = new LspSessions({ db, filesystem });
+	eventBus.onWorkspaceChanged((event) => {
+		if (event.eventType === "deleted")
+			void lsp.stopWorkspace(event.workspaceId);
+	});
 	const runtime = {
+		lsp,
 		filesystem,
 		pullRequests: pullRequestRuntime,
 		pageWatch,
@@ -322,6 +330,8 @@ export function createApp(options: CreateAppOptions): CreateAppResult {
 		return next();
 	};
 	app.use("/terminal/*", wsAuth);
+	app.use("/lsp/*", wsAuth);
+	registerLspRoutes(app, upgradeWebSocket, lsp);
 	app.use("/events", wsAuth);
 	app.use("/chat-v3/*", wsAuth);
 	app.use("/browser/*", wsAuth);
@@ -434,6 +444,11 @@ export function createApp(options: CreateAppOptions): CreateAppResult {
 
 	const ownsDb = options.db === undefined;
 	const dispose = async (): Promise<void> => {
+		try {
+			await lsp.dispose();
+		} catch (error) {
+			console.error("[lsp] Dispose failed", error);
+		}
 		// Each step is best-effort and isolated: a throw in one cleanup must
 		// not skip the others, otherwise a flaky `.stop()` could leak the
 		// open SQLite handle for the rest of the process lifetime.

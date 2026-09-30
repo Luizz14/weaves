@@ -22,6 +22,7 @@ const OVERSCAN = 8;
 
 interface ChangesFoldersViewProps {
 	files: ChangesetFile[];
+	flat?: boolean;
 	workspaceId: string;
 	worktreePath?: string;
 	/** Absolute path of the diff pane's open file — highlights its row. */
@@ -42,6 +43,7 @@ interface ChangesFoldersViewProps {
 interface FolderGroup {
 	folderPath: string;
 	files: ChangesetFile[];
+	flat?: boolean;
 }
 
 type Row =
@@ -70,6 +72,7 @@ type Row =
  */
 export const ChangesFoldersView = memo(function ChangesFoldersView({
 	files,
+	flat = false,
 	workspaceId,
 	worktreePath,
 	selectedFilePath,
@@ -79,7 +82,18 @@ export const ChangesFoldersView = memo(function ChangesFoldersView({
 	onOpenFile,
 	onOpenInEditor,
 }: ChangesFoldersViewProps) {
-	const groups = useMemo(() => groupFilesByFolder(files), [files]);
+	const groups = useMemo(
+		() =>
+			flat
+				? [
+						{
+							folderPath: "",
+							files: [...files].sort((a, b) => a.path.localeCompare(b.path)),
+						},
+					]
+				: groupFilesByFolder(files),
+		[files, flat],
+	);
 	const selectedRelPath =
 		selectedFilePath && worktreePath
 			? toRelativeWorkspacePath(worktreePath, selectedFilePath)
@@ -114,14 +128,15 @@ export const ChangesFoldersView = memo(function ChangesFoldersView({
 	const rows = useMemo(() => {
 		const next: Row[] = [];
 		for (const group of groups) {
-			const isOpen = !closedFolders.has(group.folderPath);
-			next.push({
-				kind: "folder",
-				// `folderPath` ("" for the root group) is the unique per-group key.
-				key: `folder:${group.folderPath || "__root__"}`,
-				group,
-				isOpen,
-			});
+			const isOpen = flat || !closedFolders.has(group.folderPath);
+			if (!flat)
+				next.push({
+					kind: "folder",
+					// `folderPath` ("" for the root group) is the unique per-group key.
+					key: `folder:${group.folderPath || "__root__"}`,
+					group,
+					isOpen,
+				});
 			if (!isOpen) continue;
 			for (const file of group.files) {
 				next.push({
@@ -132,7 +147,7 @@ export const ChangesFoldersView = memo(function ChangesFoldersView({
 			}
 		}
 		return next;
-	}, [groups, closedFolders]);
+	}, [groups, closedFolders, flat]);
 
 	const listRef = useRef<HTMLDivElement>(null);
 	const virtualizer = useVirtualizer({
@@ -184,7 +199,7 @@ export const ChangesFoldersView = memo(function ChangesFoldersView({
 									file={row.file}
 									workspaceId={workspaceId}
 									worktreePath={worktreePath}
-									hideDir
+									hideDir={!flat}
 									isSelected={
 										row.file.path === selectedRelPath &&
 										(selectedChangeKey == null ||

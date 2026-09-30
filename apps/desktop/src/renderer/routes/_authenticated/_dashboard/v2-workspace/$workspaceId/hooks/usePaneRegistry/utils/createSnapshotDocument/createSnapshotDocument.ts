@@ -43,6 +43,7 @@ export function createSnapshotDocument({
 		resolveConflict: () => Promise.resolve(),
 		clearSaveError: () => {},
 		subscribe: () => () => {},
+		subscribeSaved: () => () => {},
 		getVersion: () => 0,
 	};
 }

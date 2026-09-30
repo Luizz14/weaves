@@ -123,6 +123,7 @@ export function useSkillDocument({ name }: UseSkillDocumentParams) {
 		resolveConflict: async () => {},
 		clearSaveError,
 		subscribe: () => () => {},
+		subscribeSaved: () => () => {},
 		getVersion: () => 0,
 	};
 

@@ -414,6 +414,13 @@
       "when": 1790110075212,
       "tag": "0058_worthless_bloodscream",
       "breakpoints": true
+    },
+    {
+      "idx": 59,
+      "version": "6",
+      "when": 1790786117785,
+      "tag": "0059_worried_silver_samurai",
+      "breakpoints": true
     }
   ]
 }

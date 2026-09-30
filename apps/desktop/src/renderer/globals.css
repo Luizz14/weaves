@@ -389,3 +389,34 @@
 html[data-pointer-passthrough] iframe {
 	pointer-events: none;
 }
+
+@font-face {
+	font-family: "Project Plex Sans";
+	src: url("/project-fonts/IBMPlexSans-Regular.ttf") format("truetype");
+	font-weight: 400;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Project Plex Sans";
+	src: url("/project-fonts/IBMPlexSans-SemiBold.ttf") format("truetype");
+	font-weight: 600 700;
+	font-display: swap;
+}
+
+.git-stage-checkbox[aria-checked="mixed"] [data-slot="checkbox-indicator"] svg {
+	display: none;
+}
+.git-stage-checkbox[aria-checked="mixed"]
+	[data-slot="checkbox-indicator"]::after {
+	content: "";
+	width: 8px;
+	height: 1px;
+	background: currentColor;
+}
+
+.git-stage-checkbox[aria-checked="true"],
+.git-stage-checkbox[aria-checked="mixed"] {
+	border-color: var(--muted-foreground);
+	background-color: var(--muted-foreground);
+	color: var(--background);
+}

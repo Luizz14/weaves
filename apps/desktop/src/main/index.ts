@@ -56,6 +56,7 @@ import { portForwardManager } from "./lib/port-forward";
 import { ensureProjectIconsDir, getProjectIconPath } from "./lib/project-icons";
 import { runQuitCleanup } from "./lib/quit-sequence";
 import { initSentry } from "./lib/sentry";
+import { markStartup } from "./lib/startup-diagnostics/startup-diagnostics";
 import {
 	prewarmTerminalRuntime,
 	reconcileDaemonSessions,
@@ -74,6 +75,9 @@ import {
 	persistOpenWindows,
 	restoreWindows,
 } from "./windows/main";
+
+markStartup("process-start");
+markStartup("bootstrap-imports-end");
 
 console.log("[main] Local database ready:", !!localDb);
 const IS_DEV = process.env.NODE_ENV === "development";
@@ -452,6 +456,7 @@ if (!gotTheLock) {
 
 	(async () => {
 		await app.whenReady();
+		markStartup("app-ready");
 		// Persisted language setting wins; otherwise infer from OS preferences
 		// (plans/20260826-i18n-strategy.md). Menus are built later in
 		// initAppServices/initTray, so a plain activate is enough here.

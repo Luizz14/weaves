@@ -39,10 +39,6 @@ export function AppearanceSettings({ visibleItems }: AppearanceSettingsProps) {
 		SETTING_ITEM_ID.APPEARANCE_MARKDOWN,
 		visibleItems,
 	);
-	const showEditorFont = isItemVisible(
-		SETTING_ITEM_ID.APPEARANCE_EDITOR_FONT,
-		visibleItems,
-	);
 	const showTerminalFont = isItemVisible(
 		SETTING_ITEM_ID.APPEARANCE_TERMINAL_FONT,
 		visibleItems,
@@ -79,10 +75,10 @@ export function AppearanceSettings({ visibleItems }: AppearanceSettingsProps) {
 						{showMarkdown && <MarkdownStyleSection />}
 					</div>
 				)}
-				{(showEditorFont || showTerminalFont) && (
+				{showTerminalFont && (
 					<FontSettingSection
 						key="typography"
-						showEditor={showEditorFont}
+						showEditor={false}
 						showTerminal={showTerminalFont}
 					/>
 				)}

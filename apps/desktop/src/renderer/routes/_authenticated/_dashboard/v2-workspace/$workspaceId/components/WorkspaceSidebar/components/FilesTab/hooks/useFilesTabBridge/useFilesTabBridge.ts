@@ -30,6 +30,8 @@ interface UseFilesTabBridgeOptions {
 	model: FileTree;
 	workspaceId: string;
 	rootPath: string;
+	isVisible?: (path: string) => boolean;
+	compactFolders?: boolean;
 }
 
 export interface FilesTabBridge {
@@ -96,8 +98,15 @@ export function useFilesTabBridge({
 	model,
 	workspaceId,
 	rootPath,
+	isVisible,
+	compactFolders,
 }: UseFilesTabBridgeOptions): FilesTabBridge {
 	const utils = workspaceTrpc.useUtils();
+	const visibility = useRef(isVisible);
+	visibility.current = isVisible;
+	const compact = useRef(compactFolders);
+	compact.current = compactFolders;
+	const previousRoot = useRef("");
 	const [isRefreshing, setIsRefreshing] = useState(false);
 
 	// Sets/Maps are mutated in place (clear() on reset, never reassigned) so
@@ -172,6 +181,7 @@ export function useFilesTabBridge({
 					const ops: { type: "add"; path: string }[] = [];
 					for (const entry of result.entries) {
 						const rel = toRel(rootPath, entry.absolutePath);
+						if (visibility.current && !visibility.current(rel)) continue;
 						const treePath = entry.kind === "directory" ? `${rel}/` : rel;
 						if (knownPathsRef.current.has(treePath)) continue;
 						knownPathsRef.current.add(treePath);
@@ -185,6 +195,21 @@ export function useFilesTabBridge({
 						}
 					}
 					if (ops.length > 0) model.batch(ops);
+					const visibleEntries = result.entries.filter(
+						(entry) =>
+							!visibility.current ||
+							visibility.current(toRel(rootPath, entry.absolutePath)),
+					);
+					if (
+						compact.current &&
+						relDir.split("/").length < 8 &&
+						(relDir === "" ||
+							(visibleEntries.length === 1 &&
+								visibleEntries[0].kind === "directory"))
+					)
+						for (const entry of visibleEntries)
+							if (entry.kind === "directory")
+								void fetchDir(toRel(rootPath, entry.absolutePath));
 					loadedDirsRef.current.add(relDir);
 					unloadedDirCandidatesRef.current.delete(relDir);
 				} catch (error) {
@@ -250,6 +275,9 @@ export function useFilesTabBridge({
 		setIsRefreshing(true);
 		const startVersion = versionRef.current;
 		const startTreeRevision = treeRevisionRef.current;
+		const expanded = [...knownPathsRef.current].filter((path) =>
+			lookupDirectory(model, path)?.isExpanded(),
+		);
 		try {
 			// Always include the root: when the initial load failed (host
 			// restarting, relay flap) nothing is in loadedDirs, and a refresh
@@ -278,6 +306,7 @@ export function useFilesTabBridge({
 					}
 					for (const entry of result.entries) {
 						const rel = toRel(rootPath, entry.absolutePath);
+						if (visibility.current && !visibility.current(rel)) continue;
 						freshPaths.add(entry.kind === "directory" ? `${rel}/` : rel);
 					}
 					freshLoadedDirs.add(dir);
@@ -323,7 +352,9 @@ export function useFilesTabBridge({
 					}
 				}
 			}
-			model.resetPaths(Array.from(freshPaths));
+			model.resetPaths(Array.from(freshPaths), {
+				initialExpandedPaths: expanded,
+			});
 		} finally {
 			setIsRefreshing(false);
 		}
@@ -334,6 +365,11 @@ export function useFilesTabBridge({
 	useEffect(() => {
 		if (!rootPath || !workspaceId) return;
 		versionRef.current += 1;
+		if (previousRoot.current === `${workspaceId}:${rootPath}`) {
+			inflightDirsRef.current.clear();
+			return;
+		}
+		previousRoot.current = `${workspaceId}:${rootPath}`;
 		invalidateTreeListings();
 		knownPathsRef.current.clear();
 		loadedDirsRef.current.clear();
@@ -434,6 +470,14 @@ export function useFilesTabBridge({
 			}
 
 			const rel = toRel(rootPath, event.absolutePath);
+			if (
+				event.kind !== "delete" &&
+				visibility.current &&
+				!visibility.current(rel)
+			) {
+				void doRefresh();
+				return;
+			}
 			if (rel === event.absolutePath && event.absolutePath !== rootPath) {
 				if (import.meta.env.DEV) {
 					console.log("[fs:debug] drop: outside workspace", {

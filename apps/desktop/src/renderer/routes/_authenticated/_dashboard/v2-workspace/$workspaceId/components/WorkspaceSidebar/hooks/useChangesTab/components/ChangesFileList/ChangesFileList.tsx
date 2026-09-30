@@ -150,6 +150,7 @@ export const ChangesFileList = memo(function ChangesFileList({
 							/>
 						) : (
 							<ChangesFoldersView
+								flat={viewMode === "flat"}
 								files={groupFiles}
 								workspaceId={workspaceId}
 								worktreePath={worktreePath}
