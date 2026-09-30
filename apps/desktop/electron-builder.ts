@@ -10,6 +10,7 @@ import pkg from "./package.json";
 import {
 	packagedAsarUnpackGlobs,
 	packagedNodeModuleCopies,
+	packagedRuntimeExclusions,
 } from "./runtime-dependencies";
 
 const currentYear = new Date().getFullYear();
@@ -86,6 +87,7 @@ const config: Configuration = {
 		"package.json",
 		"!**/.DS_Store",
 		"!**/*.map",
+		...packagedRuntimeExclusions,
 		{
 			from: pkg.resources,
 			to: "resources",
@@ -97,7 +99,17 @@ const config: Configuration = {
 		// before building (required for Bun 1.3+ isolated installs).
 		...packagedNodeModuleCopies.map((copy) => ({
 			...copy,
-			filter: [...copy.filter, "!**/*.map"],
+			filter: [
+				...copy.filter,
+				"!**/*.map",
+				...packagedRuntimeExclusions
+					.map((pattern) =>
+						pattern
+							.replace(`!**/${copy.from}/`, "!")
+							.replace("!**/node_modules/**/", "!**/"),
+					)
+					.filter((pattern) => !pattern.includes("node_modules/")),
+			],
 		})),
 	],
 

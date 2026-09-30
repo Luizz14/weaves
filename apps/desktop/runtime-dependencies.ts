@@ -115,3 +115,13 @@ export const requiredMaterializedNodeModules = [
 	"picomatch",
 	"node-addon-api",
 ];
+
+export const packagedRuntimeExclusions = [
+	"!**/*.tsbuildinfo",
+	"!**/node_modules/**/{test,tests,__tests__,example,examples,demo,demos}/**/*",
+	"!**/node_modules/better-sqlite3/{src,deps}/**/*",
+	"!**/node_modules/node-pty/src/**",
+	`!**/node_modules/node-pty/prebuilds/!(*-\${arch}){,/**/*}`,
+	"!**/node_modules/react-icons{,/**/*}",
+	"!**/node_modules/emojibase-data{,/**/*}",
+];
