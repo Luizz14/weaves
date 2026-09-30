@@ -2215,6 +2215,9 @@ msgstr "Area path"
 msgid "Arguments"
 msgstr "引数"
 
+msgid "Arguments (JSON array)"
+msgstr ""
+
 msgid "Argv used to launch the agent."
 msgstr "エージェントの起動に使うargv。"
 
@@ -2397,6 +2400,9 @@ msgstr "自動(システム)"
 
 msgid "Auto follows your system language. You can change it later in Settings."
 msgstr "自動ではシステムの言語に従います。後から設定で変更できます。"
+
+msgid "Auto-detect"
+msgstr ""
 
 msgid "auto-generated"
 msgstr "自動生成"
@@ -3285,6 +3291,9 @@ msgstr "チェックが成功しました"
 msgid "Checks Skipped"
 msgstr "チェックをスキップ"
 
+msgid "Choose a definition"
+msgstr ""
+
 msgid "Choose a folder"
 msgstr "フォルダを選択"
 
@@ -3681,6 +3690,9 @@ msgstr "コードブロック"
 msgid "Code Block"
 msgstr "Code Block"
 
+msgid "Code intelligence for the local v2 editor. Servers start when you open a supported file and use your installed tools."
+msgstr ""
+
 msgid "Codex Chat"
 msgstr "Codex チャット"
 
@@ -3892,6 +3904,9 @@ msgstr "Stripeで計算中 — 初回読み込みは最大1分かかります"
 
 msgid "Config location"
 msgstr "設定の場所"
+
+msgid "Configuration (JSON object)"
+msgstr ""
 
 msgid "Configure"
 msgstr "設定"
@@ -4528,6 +4543,9 @@ msgstr "リンクを開けませんでした"
 
 msgid "Could not open Photos"
 msgstr "「写真」を開けませんでした"
+
+msgid "Could not open the definition"
+msgstr ""
 
 msgid "Could not reach the desktop."
 msgstr "デスクトップに接続できませんでした。"
@@ -6043,6 +6061,9 @@ msgstr "先に「設定 > エージェント」でエージェントを有効に
 msgid "Enable auto-merge"
 msgstr "自動マージを有効にする"
 
+msgid "Enable language server"
+msgstr ""
+
 msgid "Enable relay access…"
 msgstr "リレーアクセスを有効にする…"
 
@@ -6211,6 +6232,9 @@ msgstr "プリミティブの上に作ったもの一式 — Superset独自の�
 msgid "Everything you've published is deleted, not hidden. You can rejoin later and it will rebuild from the transcripts still on this machine — only your past ranking is lost."
 msgstr "公開したものはすべて削除され、非表示になるわけではありません。後で再参加すれば、このマシンに残っているトランスクリプトから再構築されます — 失われるのは過去のランキングのみです。"
 
+msgid "Executable or XML JAR path"
+msgstr ""
+
 msgid "Existing repo path"
 msgstr "既存リポジトリのパス"
 
@@ -6266,6 +6290,9 @@ msgstr "拡大"
 
 msgid "Experimental"
 msgstr "実験的機能"
+
+msgid "Experimental Android/Gradle support"
+msgstr ""
 
 msgid "Expired"
 msgstr "期限切れ"
@@ -6555,6 +6582,9 @@ msgstr "ファネルデータを読み込めませんでした"
 msgid "Failed to load image"
 msgstr "画像の読み込みに失敗しました"
 
+msgid "Failed to load language server settings"
+msgstr ""
+
 msgid "Failed to load pull requests"
 msgstr "Failed to load pull requests"
 
@@ -6685,6 +6715,9 @@ msgstr "ワークスペースのパスを解決できませんでした: {messag
 msgid "Failed to restart daemon"
 msgstr "デーモンの再起動に失敗しました"
 
+msgid "Failed to restart language server"
+msgstr ""
+
 msgid "Failed to restore"
 msgstr "復元できませんでした"
 
@@ -6813,6 +6846,9 @@ msgstr "フックの更新に失敗しました"
 
 msgid "Failed to update language"
 msgstr "言語の更新に失敗しました"
+
+msgid "Failed to update language servers"
+msgstr ""
 
 msgid "Failed to update logo"
 msgstr "ロゴの更新に失敗しました"
@@ -8026,6 +8062,9 @@ msgstr "情報"
 msgid "Information"
 msgstr "情報"
 
+msgid "Initialization options (JSON object)"
+msgstr ""
+
 msgid "Initialize Git"
 msgstr "Gitを初期化"
 
@@ -8464,6 +8503,24 @@ msgstr "言語"
 
 msgid "Language saved on this device, but syncing it to your account failed."
 msgstr "言語はこのデバイスに保存しましたが、アカウントへの同期に失敗しました。"
+
+msgid "Language server disabled"
+msgstr ""
+
+msgid "Language server not found"
+msgstr ""
+
+msgid "Language server ready"
+msgstr ""
+
+msgid "Language server stopped"
+msgstr ""
+
+msgid "Language server unavailable"
+msgstr ""
+
+msgid "Language servers"
+msgstr ""
 
 msgid "Large"
 msgstr "大"
@@ -10436,6 +10493,9 @@ msgstr "すべてのクライアントがまだ {gaps} を送信していない�
 
 msgid "Not found"
 msgstr "見つかりません"
+
+msgid "Not found on PATH; workspace installations are detected when opening a file."
+msgstr ""
 
 msgid "Not granted"
 msgstr "未許可"
@@ -12904,6 +12964,9 @@ msgstr "今すぐ再起動すると{accountLabel}に移行し、各セッショ�
 msgid "Restart running {providerLabel} agents?"
 msgstr "実行中の{providerLabel}エージェントを再起動しますか？"
 
+msgid "Restart server"
+msgstr ""
+
 msgid "Restart terminal daemon?"
 msgstr "ターミナルデーモンを再起動しますか?"
 
@@ -13914,6 +13977,9 @@ msgstr "Separator"
 msgid "series {0}"
 msgstr "系列{0}"
 
+msgid "Server configuration and schemas"
+msgstr ""
+
 msgid "Service availability is published at <0>status.superset.sh</0>, and security and compliance documentation at <1>trust.superset.sh</1>."
 msgstr "サービスの稼働状況は<0>status.superset.sh</0>で、セキュリティとコンプライアンスに関するドキュメントは<1>trust.superset.sh</1>で公開しています。"
 
@@ -14798,6 +14864,9 @@ msgstr "{agentLabel}を起動中"
 
 msgid "Starting cloud workspace"
 msgstr "クラウドワークスペースを開始中"
+
+msgid "Starting language server…"
+msgstr ""
 
 msgid "Starting up. This should only take a moment."
 msgstr "起動中です。まもなく準備が整います。"
@@ -16912,6 +16981,9 @@ msgstr "「{0}」を使用"
 
 msgid "Use {label}"
 msgstr "{label}を使用"
+
+msgid "Use a JSON array for arguments and JSON objects for configuration and initialization options."
+msgstr ""
 
 msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
 msgstr "ブランチ名、コミットメッセージ、プルリクエストの下書きには小型のローカルCLIモデルを使用します。"

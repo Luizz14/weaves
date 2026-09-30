@@ -2215,6 +2215,9 @@ msgstr "Area path"
 msgid "Arguments"
 msgstr "Argumenty"
 
+msgid "Arguments (JSON array)"
+msgstr ""
+
 msgid "Argv used to launch the agent."
 msgstr "Argv použité ke spuštění agenta."
 
@@ -2397,6 +2400,9 @@ msgstr "Automaticky (systém)"
 
 msgid "Auto follows your system language. You can change it later in Settings."
 msgstr "Automatický režim se řídí jazykem systému. Později to můžete změnit v Nastavení."
+
+msgid "Auto-detect"
+msgstr ""
 
 msgid "auto-generated"
 msgstr "automaticky"
@@ -3285,6 +3291,9 @@ msgstr "Kontroly prošly"
 msgid "Checks Skipped"
 msgstr "Kontroly přeskočeny"
 
+msgid "Choose a definition"
+msgstr ""
+
 msgid "Choose a folder"
 msgstr "Vyberte složku"
 
@@ -3681,6 +3690,9 @@ msgstr "Blok kódu"
 msgid "Code Block"
 msgstr "Blok kódu"
 
+msgid "Code intelligence for the local v2 editor. Servers start when you open a supported file and use your installed tools."
+msgstr ""
+
 msgid "Codex Chat"
 msgstr "Chat Codex"
 
@@ -3892,6 +3904,9 @@ msgstr "Počítá se ve Stripe — při prvním načtení až minutu"
 
 msgid "Config location"
 msgstr "Umístění konfigurace"
+
+msgid "Configuration (JSON object)"
+msgstr ""
 
 msgid "Configure"
 msgstr "Nastavit"
@@ -4528,6 +4543,9 @@ msgstr "Odkaz se nepodařilo otevřít"
 
 msgid "Could not open Photos"
 msgstr "Nepodařilo se otevřít Fotky"
+
+msgid "Could not open the definition"
+msgstr ""
 
 msgid "Could not reach the desktop."
 msgstr "K ploše se nepodařilo připojit."
@@ -6043,6 +6061,9 @@ msgstr "Nejprve zapněte agenta v Nastavení > Agenti"
 msgid "Enable auto-merge"
 msgstr "Zapnout auto-merge"
 
+msgid "Enable language server"
+msgstr ""
+
 msgid "Enable relay access…"
 msgstr "Povolit přístup přes relay…"
 
@@ -6211,6 +6232,9 @@ msgstr "Vše, co jsme postavili nad primitivy — originály Superset, sada"
 msgid "Everything you've published is deleted, not hidden. You can rejoin later and it will rebuild from the transcripts still on this machine — only your past ranking is lost."
 msgstr "Všechno, co jste zveřejnili, se smaže, ne jen skryje. Můžete se později vrátit a znovu se to sestaví z přepisů, které na tomto počítači zůstaly — přijdete jen o dosavadní umístění."
 
+msgid "Executable or XML JAR path"
+msgstr ""
+
 msgid "Existing repo path"
 msgstr "Cesta k existujícímu repozitáři"
 
@@ -6266,6 +6290,9 @@ msgstr "Růst"
 
 msgid "Experimental"
 msgstr "Experimentální"
+
+msgid "Experimental Android/Gradle support"
+msgstr ""
 
 msgid "Expired"
 msgstr "Vypršelo"
@@ -6555,6 +6582,9 @@ msgstr "Nepodařilo se načíst data trychtýře"
 msgid "Failed to load image"
 msgstr "Nepodařilo se načíst obrázek"
 
+msgid "Failed to load language server settings"
+msgstr ""
+
 msgid "Failed to load pull requests"
 msgstr "Failed to load pull requests"
 
@@ -6685,6 +6715,9 @@ msgstr "Nepodařilo se určit cestu k pracovnímu prostoru: {message}"
 msgid "Failed to restart daemon"
 msgstr "Nepodařilo se restartovat démona"
 
+msgid "Failed to restart language server"
+msgstr ""
+
 msgid "Failed to restore"
 msgstr "Obnovení se nezdařilo"
 
@@ -6813,6 +6846,9 @@ msgstr "Nepodařilo se aktualizovat hooky"
 
 msgid "Failed to update language"
 msgstr "Nepodařilo se změnit jazyk"
+
+msgid "Failed to update language servers"
+msgstr ""
 
 msgid "Failed to update logo"
 msgstr "Nepodařilo se aktualizovat logo"
@@ -8026,6 +8062,9 @@ msgstr "Info"
 msgid "Information"
 msgstr "Informace"
 
+msgid "Initialization options (JSON object)"
+msgstr ""
+
 msgid "Initialize Git"
 msgstr "Inicializovat Git"
 
@@ -8464,6 +8503,24 @@ msgstr "Jazyk"
 
 msgid "Language saved on this device, but syncing it to your account failed."
 msgstr "Jazyk je uložený na tomto zařízení, ale synchronizace s vaším účtem selhala."
+
+msgid "Language server disabled"
+msgstr ""
+
+msgid "Language server not found"
+msgstr ""
+
+msgid "Language server ready"
+msgstr ""
+
+msgid "Language server stopped"
+msgstr ""
+
+msgid "Language server unavailable"
+msgstr ""
+
+msgid "Language servers"
+msgstr ""
 
 msgid "Large"
 msgstr "Velké"
@@ -10436,6 +10493,9 @@ msgstr "Ne každý klient zatím odesílá {gaps}, takže je tato fáze podhodno
 
 msgid "Not found"
 msgstr "Nenalezeno"
+
+msgid "Not found on PATH; workspace installations are detected when opening a file."
+msgstr ""
 
 msgid "Not granted"
 msgstr "Nepovoleno"
@@ -12904,6 +12964,9 @@ msgstr "Restartujte je teď a přejdou na {accountLabel}; každá relace naváž
 msgid "Restart running {providerLabel} agents?"
 msgstr "Restartovat běžící agenty {providerLabel}?"
 
+msgid "Restart server"
+msgstr ""
+
 msgid "Restart terminal daemon?"
 msgstr "Restartovat terminálového démona?"
 
@@ -13914,6 +13977,9 @@ msgstr "Oddělovač"
 msgid "series {0}"
 msgstr "řada {0}"
 
+msgid "Server configuration and schemas"
+msgstr ""
+
 msgid "Service availability is published at <0>status.superset.sh</0>, and security and compliance documentation at <1>trust.superset.sh</1>."
 msgstr "Dostupnost služby zveřejňujeme na <0>status.superset.sh</0> a dokumentaci k bezpečnosti a compliance na <1>trust.superset.sh</1>."
 
@@ -14798,6 +14864,9 @@ msgstr "Spouštím {agentLabel}"
 
 msgid "Starting cloud workspace"
 msgstr "Spouštím cloudový pracovní prostor"
+
+msgid "Starting language server…"
+msgstr ""
 
 msgid "Starting up. This should only take a moment."
 msgstr "Spouští se. Mělo by to trvat jen chvilku."
@@ -16912,6 +16981,9 @@ msgstr "Použít „{0}“"
 
 msgid "Use {label}"
 msgstr "Použít {label}"
+
+msgid "Use a JSON array for arguments and JSON objects for configuration and initialization options."
+msgstr ""
 
 msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
 msgstr "Použijte malý lokální model CLI pro názvy větví, zprávy commitů a návrhy pull requestů."

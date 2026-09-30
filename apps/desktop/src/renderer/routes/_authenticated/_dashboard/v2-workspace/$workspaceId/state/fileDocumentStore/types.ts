@@ -45,5 +45,6 @@ export interface SharedFileDocument {
 	clearSaveError(): void;
 
 	subscribe(listener: () => void): () => void;
+	subscribeSaved(listener: (content: string) => void): () => void;
 	getVersion(): number;
 }

@@ -29,6 +29,7 @@ export const SETTING_ITEM_ID = {
 	APPEARANCE_MARKDOWN: "appearance-markdown",
 	APPEARANCE_CUSTOM_THEMES: "appearance-custom-themes",
 	APPEARANCE_EDITOR_FONT: "appearance-editor-font",
+	APPEARANCE_LSP: "appearance-lsp",
 	APPEARANCE_TERMINAL_FONT: "appearance-terminal-font",
 
 	RINGTONES_NOTIFICATION: "ringtones-notification",
@@ -186,6 +187,7 @@ export const SETTING_ITEM_VARIANT: Record<SettingItemId, SettingVariant> = {
 	[SETTING_ITEM_ID.APPEARANCE_MARKDOWN]: "shared",
 	[SETTING_ITEM_ID.APPEARANCE_CUSTOM_THEMES]: "shared",
 	[SETTING_ITEM_ID.APPEARANCE_EDITOR_FONT]: "v2",
+	[SETTING_ITEM_ID.APPEARANCE_LSP]: "v2",
 	[SETTING_ITEM_ID.APPEARANCE_TERMINAL_FONT]: "v2",
 
 	[SETTING_ITEM_ID.RINGTONES_NOTIFICATION]: "shared",
@@ -621,6 +623,23 @@ export const SETTINGS_ITEMS: SettingsItem[] = [
 			"i18n",
 			"english",
 			"international",
+		],
+	},
+	{
+		id: SETTING_ITEM_ID.APPEARANCE_LSP,
+		section: "appearance",
+		title: "Language servers",
+		description: "Code intelligence for the local v2 editor",
+		keywords: [
+			"lsp",
+			"autocomplete",
+			"diagnostics",
+			"typescript",
+			"dart",
+			"kotlin",
+			"json",
+			"xml",
+			"yaml",
 		],
 	},
 	{

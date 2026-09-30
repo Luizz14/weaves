@@ -1,5 +1,6 @@
 import { Trans } from "@lingui/react/macro";
 import type { ReactNode } from "react";
+import { useIsV2CloudEnabled } from "renderer/hooks/useIsV2CloudEnabled";
 import {
 	isItemVisible,
 	SETTING_ITEM_ID,
@@ -7,6 +8,7 @@ import {
 } from "../../../utils/settings-search";
 import { FontSettingSection } from "./components/FontSettingSection";
 import { LanguageSection } from "./components/LanguageSection";
+import { LspSettings } from "./components/LspSettings";
 import { MarkdownStyleSection } from "./components/MarkdownStyleSection";
 import { ThemeSection } from "./components/ThemeSection";
 
@@ -31,6 +33,7 @@ interface AppearanceSettingsProps {
 }
 
 export function AppearanceSettings({ visibleItems }: AppearanceSettingsProps) {
+	const isV2 = useIsV2CloudEnabled();
 	const showTheme = isItemVisible(
 		SETTING_ITEM_ID.APPEARANCE_THEME,
 		visibleItems,
@@ -69,6 +72,10 @@ export function AppearanceSettings({ visibleItems }: AppearanceSettingsProps) {
 			</div>
 
 			<SectionList>
+				{isV2 &&
+					isItemVisible(SETTING_ITEM_ID.APPEARANCE_LSP, visibleItems) && (
+						<LspSettings key="lsp" />
+					)}
 				{(showThemeSection || showLanguage || showMarkdown) && (
 					<div
 						key="appearance-card"

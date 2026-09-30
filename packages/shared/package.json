@@ -4,6 +4,10 @@
 	"private": true,
 	"type": "module",
 	"exports": {
+		"./lsp": {
+			"types": "./src/lsp.ts",
+			"default": "./src/lsp.ts"
+		},
 		"./connectors": {
 			"types": "./src/connectors/index.ts",
 			"default": "./src/connectors/index.ts"

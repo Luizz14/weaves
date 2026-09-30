@@ -2215,6 +2215,9 @@ msgstr "Area path"
 msgid "Arguments"
 msgstr "Argumenten"
 
+msgid "Arguments (JSON array)"
+msgstr ""
+
 msgid "Argv used to launch the agent."
 msgstr "Argv waarmee de agent wordt gestart."
 
@@ -2397,6 +2400,9 @@ msgstr "Automatisch (systeem)"
 
 msgid "Auto follows your system language. You can change it later in Settings."
 msgstr "Automatisch volgt je systeemtaal. Je kunt dit later wijzigen in Instellingen."
+
+msgid "Auto-detect"
+msgstr ""
 
 msgid "auto-generated"
 msgstr "automatisch gegenereerd"
@@ -3285,6 +3291,9 @@ msgstr "Checks geslaagd"
 msgid "Checks Skipped"
 msgstr "Checks overgeslagen"
 
+msgid "Choose a definition"
+msgstr ""
+
 msgid "Choose a folder"
 msgstr "Kies een map"
 
@@ -3681,6 +3690,9 @@ msgstr "Codeblok"
 msgid "Code Block"
 msgstr "Codeblok"
 
+msgid "Code intelligence for the local v2 editor. Servers start when you open a supported file and use your installed tools."
+msgstr ""
+
 msgid "Codex Chat"
 msgstr "Codex-chat"
 
@@ -3892,6 +3904,9 @@ msgstr "Wordt berekend in Stripe — kan de eerste keer een minuut duren"
 
 msgid "Config location"
 msgstr "Configuratielocatie"
+
+msgid "Configuration (JSON object)"
+msgstr ""
 
 msgid "Configure"
 msgstr "Configureren"
@@ -4528,6 +4543,9 @@ msgstr "Kan link niet openen"
 
 msgid "Could not open Photos"
 msgstr "Kan Foto's niet openen"
+
+msgid "Could not open the definition"
+msgstr ""
 
 msgid "Could not reach the desktop."
 msgstr "Kan het bureaublad niet bereiken."
@@ -6043,6 +6061,9 @@ msgstr "Schakel eerst een agent in bij Instellingen > Agents"
 msgid "Enable auto-merge"
 msgstr "Auto-merge inschakelen"
 
+msgid "Enable language server"
+msgstr ""
+
 msgid "Enable relay access…"
 msgstr "Relaytoegang inschakelen…"
 
@@ -6211,6 +6232,9 @@ msgstr "Alles wat we boven op de primitives hebben gebouwd — Superset-originel
 msgid "Everything you've published is deleted, not hidden. You can rejoin later and it will rebuild from the transcripts still on this machine — only your past ranking is lost."
 msgstr "Alles wat je hebt gepubliceerd wordt verwijderd, niet verborgen. Je kunt later opnieuw meedoen; dan wordt het opnieuw opgebouwd uit de transcripten die nog op deze machine staan — alleen je eerdere positie gaat verloren."
 
+msgid "Executable or XML JAR path"
+msgstr ""
+
 msgid "Existing repo path"
 msgstr "Pad van bestaande repo"
 
@@ -6266,6 +6290,9 @@ msgstr "Uitbreiding"
 
 msgid "Experimental"
 msgstr "Experimenteel"
+
+msgid "Experimental Android/Gradle support"
+msgstr ""
 
 msgid "Expired"
 msgstr "Verlopen"
@@ -6555,6 +6582,9 @@ msgstr "Laden van funnelgegevens mislukt"
 msgid "Failed to load image"
 msgstr "Laden van afbeelding mislukt"
 
+msgid "Failed to load language server settings"
+msgstr ""
+
 msgid "Failed to load pull requests"
 msgstr "Failed to load pull requests"
 
@@ -6685,6 +6715,9 @@ msgstr "Pad van werkruimte bepalen mislukt: {message}"
 msgid "Failed to restart daemon"
 msgstr "Herstarten van daemon mislukt"
 
+msgid "Failed to restart language server"
+msgstr ""
+
 msgid "Failed to restore"
 msgstr "Herstellen mislukt"
 
@@ -6813,6 +6846,9 @@ msgstr "Bijwerken van hooks mislukt"
 
 msgid "Failed to update language"
 msgstr "Bijwerken van taal mislukt"
+
+msgid "Failed to update language servers"
+msgstr ""
 
 msgid "Failed to update logo"
 msgstr "Bijwerken van logo mislukt"
@@ -8026,6 +8062,9 @@ msgstr "Info"
 msgid "Information"
 msgstr "Informatie"
 
+msgid "Initialization options (JSON object)"
+msgstr ""
+
 msgid "Initialize Git"
 msgstr "Git initialiseren"
 
@@ -8464,6 +8503,24 @@ msgstr "Taal"
 
 msgid "Language saved on this device, but syncing it to your account failed."
 msgstr "Taal opgeslagen op dit apparaat, maar synchroniseren naar je account is mislukt."
+
+msgid "Language server disabled"
+msgstr ""
+
+msgid "Language server not found"
+msgstr ""
+
+msgid "Language server ready"
+msgstr ""
+
+msgid "Language server stopped"
+msgstr ""
+
+msgid "Language server unavailable"
+msgstr ""
+
+msgid "Language servers"
+msgstr ""
 
 msgid "Large"
 msgstr "Groot"
@@ -10436,6 +10493,9 @@ msgstr "Nog niet elke client verstuurt {gaps}, dus die stap wordt ondergeteld."
 
 msgid "Not found"
 msgstr "Niet gevonden"
+
+msgid "Not found on PATH; workspace installations are detected when opening a file."
+msgstr ""
 
 msgid "Not granted"
 msgstr "Niet verleend"
@@ -12904,6 +12964,9 @@ msgstr "Herstart ze nu om ze naar {accountLabel} te verplaatsen; elke sessie pak
 msgid "Restart running {providerLabel} agents?"
 msgstr "Draaiende {providerLabel}-agents herstarten?"
 
+msgid "Restart server"
+msgstr ""
+
 msgid "Restart terminal daemon?"
 msgstr "Terminal-daemon herstarten?"
 
@@ -13914,6 +13977,9 @@ msgstr "Separator"
 msgid "series {0}"
 msgstr "reeks {0}"
 
+msgid "Server configuration and schemas"
+msgstr ""
+
 msgid "Service availability is published at <0>status.superset.sh</0>, and security and compliance documentation at <1>trust.superset.sh</1>."
 msgstr "De beschikbaarheid van de dienst staat op <0>status.superset.sh</0> en documentatie over security en compliance op <1>trust.superset.sh</1>."
 
@@ -14798,6 +14864,9 @@ msgstr "{agentLabel} starten"
 
 msgid "Starting cloud workspace"
 msgstr "Cloudwerkruimte starten"
+
+msgid "Starting language server…"
+msgstr ""
 
 msgid "Starting up. This should only take a moment."
 msgstr "Bezig met starten. Dit duurt maar even."
@@ -16912,6 +16981,9 @@ msgstr "“{0}” gebruiken"
 
 msgid "Use {label}"
 msgstr "{label} gebruiken"
+
+msgid "Use a JSON array for arguments and JSON objects for configuration and initialization options."
+msgstr ""
 
 msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
 msgstr "Gebruik een klein lokaal CLI-model voor branchnamen, commitberichten en pull-requestconcepten."

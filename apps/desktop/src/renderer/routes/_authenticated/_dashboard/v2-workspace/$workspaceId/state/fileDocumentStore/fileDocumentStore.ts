@@ -28,6 +28,7 @@ interface DocumentEntry {
 	refCount: number;
 	version: number;
 	subscribers: Set<() => void>;
+	saveSubscribers: Set<(content: string) => void>;
 }
 
 const DEFAULT_MAX_BYTES = 10 * 1024 * 1024;
@@ -267,6 +268,13 @@ function createHandle(entry: DocumentEntry): SharedFileDocument {
 				entry.conflict = null;
 				entry.hasExternalChange = false;
 				notify(entry);
+				for (const listener of entry.saveSubscribers) {
+					try {
+						listener(currentValue);
+					} catch (error) {
+						console.error("[file-document] Save listener failed", error);
+					}
+				}
 				return { status: "saved", revision: result.revision };
 			} catch (error) {
 				entry.pendingSave = false;
@@ -315,6 +323,12 @@ function createHandle(entry: DocumentEntry): SharedFileDocument {
 		getVersion() {
 			return entry.version;
 		},
+		subscribeSaved(listener) {
+			entry.saveSubscribers.add(listener);
+			return () => {
+				entry.saveSubscribers.delete(listener);
+			};
+		},
 	};
 }
 
@@ -343,6 +357,7 @@ export function acquireDocument(
 			refCount: 0,
 			version: 0,
 			subscribers: new Set(),
+			saveSubscribers: new Set(),
 		};
 		entries.set(k, entry);
 		void loadEntry(entry);

@@ -1,10 +1,12 @@
 import { router } from "../../index";
+import { lspSettingsRouter } from "../lsp/lsp";
 import { agentConfigsRouter } from "./agent-configs";
 import { branchPrefixRouter } from "./branch-prefix";
 import { quickAiSettingsRouter } from "./quick-ai";
 import { worktreeLocationRouter } from "./worktree-location";
 
 export const settingsRouter = router({
+	lsp: lspSettingsRouter,
 	agentConfigs: agentConfigsRouter,
 	branchPrefix: branchPrefixRouter,
 	quickAi: quickAiSettingsRouter,

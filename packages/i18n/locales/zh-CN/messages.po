@@ -2215,6 +2215,9 @@ msgstr "Area path"
 msgid "Arguments"
 msgstr "参数"
 
+msgid "Arguments (JSON array)"
+msgstr ""
+
 msgid "Argv used to launch the agent."
 msgstr "用于启动智能体的argv。"
 
@@ -2397,6 +2400,9 @@ msgstr "自动（跟随系统）"
 
 msgid "Auto follows your system language. You can change it later in Settings."
 msgstr "自动模式会跟随你的系统语言。之后可以在设置中更改。"
+
+msgid "Auto-detect"
+msgstr ""
 
 msgid "auto-generated"
 msgstr "自动生成"
@@ -3285,6 +3291,9 @@ msgstr "检查通过"
 msgid "Checks Skipped"
 msgstr "检查已跳过"
 
+msgid "Choose a definition"
+msgstr ""
+
 msgid "Choose a folder"
 msgstr "选择文件夹"
 
@@ -3681,6 +3690,9 @@ msgstr "代码块"
 msgid "Code Block"
 msgstr "代码块"
 
+msgid "Code intelligence for the local v2 editor. Servers start when you open a supported file and use your installed tools."
+msgstr ""
+
 msgid "Codex Chat"
 msgstr "Codex 聊天"
 
@@ -3892,6 +3904,9 @@ msgstr "正在Stripe中计算 — 首次加载最多需要一分钟"
 
 msgid "Config location"
 msgstr "配置位置"
+
+msgid "Configuration (JSON object)"
+msgstr ""
 
 msgid "Configure"
 msgstr "配置"
@@ -4528,6 +4543,9 @@ msgstr "无法打开链接"
 
 msgid "Could not open Photos"
 msgstr "无法打开“照片”"
+
+msgid "Could not open the definition"
+msgstr ""
 
 msgid "Could not reach the desktop."
 msgstr "无法连接到桌面。"
@@ -6043,6 +6061,9 @@ msgstr "请先在设置 > 智能体中启用一个智能体"
 msgid "Enable auto-merge"
 msgstr "启用自动合并"
 
+msgid "Enable language server"
+msgstr ""
+
 msgid "Enable relay access…"
 msgstr "启用中继访问…"
 
@@ -6211,6 +6232,9 @@ msgstr "我们在基础组件之上构建的一切——Superset原创组件、�
 msgid "Everything you've published is deleted, not hidden. You can rejoin later and it will rebuild from the transcripts still on this machine — only your past ranking is lost."
 msgstr "你发布过的所有内容都会被删除，而不是隐藏。你之后可以重新加入，届时会根据此机器上仍保留的记录重新生成，只有过往排名会丢失。"
 
+msgid "Executable or XML JAR path"
+msgstr ""
+
 msgid "Existing repo path"
 msgstr "已有仓库路径"
 
@@ -6266,6 +6290,9 @@ msgstr "扩张"
 
 msgid "Experimental"
 msgstr "实验功能"
+
+msgid "Experimental Android/Gradle support"
+msgstr ""
 
 msgid "Expired"
 msgstr "已过期"
@@ -6555,6 +6582,9 @@ msgstr "加载漏斗数据失败"
 msgid "Failed to load image"
 msgstr "加载图片失败"
 
+msgid "Failed to load language server settings"
+msgstr ""
+
 msgid "Failed to load pull requests"
 msgstr "Failed to load pull requests"
 
@@ -6685,6 +6715,9 @@ msgstr "解析工作区路径失败：{message}"
 msgid "Failed to restart daemon"
 msgstr "重启守护进程失败"
 
+msgid "Failed to restart language server"
+msgstr ""
+
 msgid "Failed to restore"
 msgstr "恢复失败"
 
@@ -6813,6 +6846,9 @@ msgstr "更新钩子失败"
 
 msgid "Failed to update language"
 msgstr "更新语言失败"
+
+msgid "Failed to update language servers"
+msgstr ""
 
 msgid "Failed to update logo"
 msgstr "更新logo失败"
@@ -8026,6 +8062,9 @@ msgstr "信息"
 msgid "Information"
 msgstr "信息"
 
+msgid "Initialization options (JSON object)"
+msgstr ""
+
 msgid "Initialize Git"
 msgstr "初始化Git"
 
@@ -8464,6 +8503,24 @@ msgstr "语言"
 
 msgid "Language saved on this device, but syncing it to your account failed."
 msgstr "语言已在此设备上保存，但同步到你的账户失败。"
+
+msgid "Language server disabled"
+msgstr ""
+
+msgid "Language server not found"
+msgstr ""
+
+msgid "Language server ready"
+msgstr ""
+
+msgid "Language server stopped"
+msgstr ""
+
+msgid "Language server unavailable"
+msgstr ""
+
+msgid "Language servers"
+msgstr ""
 
 msgid "Large"
 msgstr "大"
@@ -10436,6 +10493,9 @@ msgstr "并非所有客户端都已发送 {gaps}，因此该阶段的计数偏�
 
 msgid "Not found"
 msgstr "未找到"
+
+msgid "Not found on PATH; workspace installations are detected when opening a file."
+msgstr ""
 
 msgid "Not granted"
 msgstr "未授予"
@@ -12904,6 +12964,9 @@ msgstr "立即重新启动即可迁移到{accountLabel}；每个会话都会从�
 msgid "Restart running {providerLabel} agents?"
 msgstr "要重新启动运行中的{providerLabel}智能体吗？"
 
+msgid "Restart server"
+msgstr ""
+
 msgid "Restart terminal daemon?"
 msgstr "重启终端守护进程？"
 
@@ -13914,6 +13977,9 @@ msgstr "分隔线"
 msgid "series {0}"
 msgstr "系列{0}"
 
+msgid "Server configuration and schemas"
+msgstr ""
+
 msgid "Service availability is published at <0>status.superset.sh</0>, and security and compliance documentation at <1>trust.superset.sh</1>."
 msgstr "服务可用性发布在<0>status.superset.sh</0>，安全与合规文档在<1>trust.superset.sh</1>。"
 
@@ -14798,6 +14864,9 @@ msgstr "正在启动{agentLabel}"
 
 msgid "Starting cloud workspace"
 msgstr "正在启动云端工作区"
+
+msgid "Starting language server…"
+msgstr ""
 
 msgid "Starting up. This should only take a moment."
 msgstr "正在启动，请稍等片刻。"
@@ -16912,6 +16981,9 @@ msgstr "使用“{0}”"
 
 msgid "Use {label}"
 msgstr "使用 {label}"
+
+msgid "Use a JSON array for arguments and JSON objects for configuration and initialization options."
+msgstr ""
 
 msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
 msgstr "使用小型本地 CLI 模型生成分支名称、提交消息和拉取请求草稿。"

@@ -2215,6 +2215,9 @@ msgstr "Area path"
 msgid "Arguments"
 msgstr "Argomenti"
 
+msgid "Arguments (JSON array)"
+msgstr ""
+
 msgid "Argv used to launch the agent."
 msgstr "Argv usato per avviare l'agente."
 
@@ -2397,6 +2400,9 @@ msgstr "Auto (sistema)"
 
 msgid "Auto follows your system language. You can change it later in Settings."
 msgstr "Auto segue la lingua del sistema. Puoi cambiarla in seguito nelle Impostazioni."
+
+msgid "Auto-detect"
+msgstr ""
 
 msgid "auto-generated"
 msgstr "generato automaticamente"
@@ -3285,6 +3291,9 @@ msgstr "Controlli superati"
 msgid "Checks Skipped"
 msgstr "Controlli saltati"
 
+msgid "Choose a definition"
+msgstr ""
+
 msgid "Choose a folder"
 msgstr "Scegli una cartella"
 
@@ -3681,6 +3690,9 @@ msgstr "Blocco di codice"
 msgid "Code Block"
 msgstr "Code Block"
 
+msgid "Code intelligence for the local v2 editor. Servers start when you open a supported file and use your installed tools."
+msgstr ""
+
 msgid "Codex Chat"
 msgstr "Chat Codex"
 
@@ -3892,6 +3904,9 @@ msgstr "Calcolo in Stripe — fino a un minuto al primo caricamento"
 
 msgid "Config location"
 msgstr "Posizione della configurazione"
+
+msgid "Configuration (JSON object)"
+msgstr ""
 
 msgid "Configure"
 msgstr "Configura"
@@ -4528,6 +4543,9 @@ msgstr "Impossibile aprire il link"
 
 msgid "Could not open Photos"
 msgstr "Impossibile aprire Foto"
+
+msgid "Could not open the definition"
+msgstr ""
 
 msgid "Could not reach the desktop."
 msgstr "Impossibile raggiungere il desktop."
@@ -6043,6 +6061,9 @@ msgstr "Attiva prima un agente in Impostazioni > Agenti"
 msgid "Enable auto-merge"
 msgstr "Attiva il merge automatico"
 
+msgid "Enable language server"
+msgstr ""
+
 msgid "Enable relay access…"
 msgstr "Attiva l'accesso relay…"
 
@@ -6211,6 +6232,9 @@ msgstr "Tutto ciò che abbiamo costruito sopra i primitivi — gli originali Sup
 msgid "Everything you've published is deleted, not hidden. You can rejoin later and it will rebuild from the transcripts still on this machine — only your past ranking is lost."
 msgstr "Tutto ciò che hai pubblicato viene eliminato, non nascosto. Puoi rientrare più tardi e verrà ricostruito dalle trascrizioni ancora presenti su questa macchina — perdi solo la tua posizione passata."
 
+msgid "Executable or XML JAR path"
+msgstr ""
+
 msgid "Existing repo path"
 msgstr "Percorso del repo esistente"
 
@@ -6266,6 +6290,9 @@ msgstr "Espansione"
 
 msgid "Experimental"
 msgstr "Sperimentale"
+
+msgid "Experimental Android/Gradle support"
+msgstr ""
 
 msgid "Expired"
 msgstr "Scaduto"
@@ -6555,6 +6582,9 @@ msgstr "Caricamento dei dati del funnel non riuscito"
 msgid "Failed to load image"
 msgstr "Caricamento dell'immagine non riuscito"
 
+msgid "Failed to load language server settings"
+msgstr ""
+
 msgid "Failed to load pull requests"
 msgstr "Failed to load pull requests"
 
@@ -6685,6 +6715,9 @@ msgstr "Risoluzione del percorso del workspace non riuscita: {message}"
 msgid "Failed to restart daemon"
 msgstr "Riavvio del daemon non riuscito"
 
+msgid "Failed to restart language server"
+msgstr ""
+
 msgid "Failed to restore"
 msgstr "Ripristino non riuscito"
 
@@ -6813,6 +6846,9 @@ msgstr "Aggiornamento degli hook non riuscito"
 
 msgid "Failed to update language"
 msgstr "Aggiornamento della lingua non riuscito"
+
+msgid "Failed to update language servers"
+msgstr ""
 
 msgid "Failed to update logo"
 msgstr "Aggiornamento del logo non riuscito"
@@ -8026,6 +8062,9 @@ msgstr "Info"
 msgid "Information"
 msgstr "Informazioni"
 
+msgid "Initialization options (JSON object)"
+msgstr ""
+
 msgid "Initialize Git"
 msgstr "Inizializza Git"
 
@@ -8464,6 +8503,24 @@ msgstr "Lingua"
 
 msgid "Language saved on this device, but syncing it to your account failed."
 msgstr "Lingua salvata su questo dispositivo, ma la sincronizzazione con il tuo account non è riuscita."
+
+msgid "Language server disabled"
+msgstr ""
+
+msgid "Language server not found"
+msgstr ""
+
+msgid "Language server ready"
+msgstr ""
+
+msgid "Language server stopped"
+msgstr ""
+
+msgid "Language server unavailable"
+msgstr ""
+
+msgid "Language servers"
+msgstr ""
 
 msgid "Large"
 msgstr "Grande"
@@ -10436,6 +10493,9 @@ msgstr "Non tutti i client inviano ancora {gaps}, quindi quella fase è sottosti
 
 msgid "Not found"
 msgstr "Non trovato"
+
+msgid "Not found on PATH; workspace installations are detected when opening a file."
+msgstr ""
 
 msgid "Not granted"
 msgstr "Non concessa"
@@ -12904,6 +12964,9 @@ msgstr "Riavviali ora per spostarli su {accountLabel}; ogni sessione riprende la
 msgid "Restart running {providerLabel} agents?"
 msgstr "Riavviare gli agenti {providerLabel} in esecuzione?"
 
+msgid "Restart server"
+msgstr ""
+
 msgid "Restart terminal daemon?"
 msgstr "Riavviare il daemon del terminale?"
 
@@ -13914,6 +13977,9 @@ msgstr "Separator"
 msgid "series {0}"
 msgstr "serie {0}"
 
+msgid "Server configuration and schemas"
+msgstr ""
+
 msgid "Service availability is published at <0>status.superset.sh</0>, and security and compliance documentation at <1>trust.superset.sh</1>."
 msgstr "La disponibilità del servizio è pubblicata su <0>status.superset.sh</0> e la documentazione su sicurezza e conformità su <1>trust.superset.sh</1>."
 
@@ -14798,6 +14864,9 @@ msgstr "Avvio di {agentLabel}"
 
 msgid "Starting cloud workspace"
 msgstr "Avvio del workspace cloud"
+
+msgid "Starting language server…"
+msgstr ""
 
 msgid "Starting up. This should only take a moment."
 msgstr "Avvio in corso. Dovrebbe volerci solo un momento."
@@ -16912,6 +16981,9 @@ msgstr "Usa “{0}”"
 
 msgid "Use {label}"
 msgstr "Usa {label}"
+
+msgid "Use a JSON array for arguments and JSON objects for configuration and initialization options."
+msgstr ""
 
 msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
 msgstr "Usa un piccolo modello CLI locale per nomi di branch, messaggi di commit e bozze di pull request."

@@ -2215,6 +2215,9 @@ msgstr "Area path"
 msgid "Arguments"
 msgstr "Đối số"
 
+msgid "Arguments (JSON array)"
+msgstr ""
+
 msgid "Argv used to launch the agent."
 msgstr "Argv dùng để khởi chạy agent."
 
@@ -2397,6 +2400,9 @@ msgstr "Tự động (theo hệ thống)"
 
 msgid "Auto follows your system language. You can change it later in Settings."
 msgstr "Tự động sẽ theo ngôn ngữ hệ thống. Bạn có thể đổi sau trong Cài đặt."
+
+msgid "Auto-detect"
+msgstr ""
 
 msgid "auto-generated"
 msgstr "tự động tạo"
@@ -3285,6 +3291,9 @@ msgstr "Check đã qua"
 msgid "Checks Skipped"
 msgstr "Check đã bỏ qua"
 
+msgid "Choose a definition"
+msgstr ""
+
 msgid "Choose a folder"
 msgstr "Chọn thư mục"
 
@@ -3681,6 +3690,9 @@ msgstr "Khối mã"
 msgid "Code Block"
 msgstr "Code Block"
 
+msgid "Code intelligence for the local v2 editor. Servers start when you open a supported file and use your installed tools."
+msgstr ""
+
 msgid "Codex Chat"
 msgstr "Trò chuyện Codex"
 
@@ -3892,6 +3904,9 @@ msgstr "Đang tính trong Stripe — có thể mất đến một phút ở lầ
 
 msgid "Config location"
 msgstr "Vị trí cấu hình"
+
+msgid "Configuration (JSON object)"
+msgstr ""
 
 msgid "Configure"
 msgstr "Cấu hình"
@@ -4528,6 +4543,9 @@ msgstr "Không thể mở liên kết"
 
 msgid "Could not open Photos"
 msgstr "Không thể mở Photos"
+
+msgid "Could not open the definition"
+msgstr ""
 
 msgid "Could not reach the desktop."
 msgstr "Không thể kết nối tới màn hình nền."
@@ -6043,6 +6061,9 @@ msgstr "Hãy bật một agent trong Cài đặt > Agent trước"
 msgid "Enable auto-merge"
 msgstr "Bật tự động merge"
 
+msgid "Enable language server"
+msgstr ""
+
 msgid "Enable relay access…"
 msgstr "Bật truy cập relay…"
 
@@ -6211,6 +6232,9 @@ msgstr "Mọi thứ chúng tôi dựng trên nền các primitive — thành ph�
 msgid "Everything you've published is deleted, not hidden. You can rejoin later and it will rebuild from the transcripts still on this machine — only your past ranking is lost."
 msgstr "Mọi thứ bạn đã đăng sẽ bị xóa, không phải ẩn đi. Bạn có thể tham gia lại sau và dữ liệu sẽ được dựng lại từ các transcript còn trên máy này — chỉ mất thứ hạng cũ."
 
+msgid "Executable or XML JAR path"
+msgstr ""
+
 msgid "Existing repo path"
 msgstr "Đường dẫn repo có sẵn"
 
@@ -6266,6 +6290,9 @@ msgstr "Mở rộng"
 
 msgid "Experimental"
 msgstr "Thử nghiệm"
+
+msgid "Experimental Android/Gradle support"
+msgstr ""
 
 msgid "Expired"
 msgstr "Đã hết hạn"
@@ -6555,6 +6582,9 @@ msgstr "Không thể tải dữ liệu phễu"
 msgid "Failed to load image"
 msgstr "Không thể tải ảnh"
 
+msgid "Failed to load language server settings"
+msgstr ""
+
 msgid "Failed to load pull requests"
 msgstr "Failed to load pull requests"
 
@@ -6685,6 +6715,9 @@ msgstr "Không thể xác định đường dẫn workspace: {message}"
 msgid "Failed to restart daemon"
 msgstr "Không thể khởi động lại daemon"
 
+msgid "Failed to restart language server"
+msgstr ""
+
 msgid "Failed to restore"
 msgstr "Không thể khôi phục"
 
@@ -6813,6 +6846,9 @@ msgstr "Không thể cập nhật hook"
 
 msgid "Failed to update language"
 msgstr "Không thể cập nhật ngôn ngữ"
+
+msgid "Failed to update language servers"
+msgstr ""
 
 msgid "Failed to update logo"
 msgstr "Không thể cập nhật logo"
@@ -8026,6 +8062,9 @@ msgstr "Thông tin"
 msgid "Information"
 msgstr "Thông tin"
 
+msgid "Initialization options (JSON object)"
+msgstr ""
+
 msgid "Initialize Git"
 msgstr "Khởi tạo Git"
 
@@ -8464,6 +8503,24 @@ msgstr "Ngôn ngữ"
 
 msgid "Language saved on this device, but syncing it to your account failed."
 msgstr "Đã lưu ngôn ngữ trên thiết bị này, nhưng không đồng bộ được lên tài khoản của bạn."
+
+msgid "Language server disabled"
+msgstr ""
+
+msgid "Language server not found"
+msgstr ""
+
+msgid "Language server ready"
+msgstr ""
+
+msgid "Language server stopped"
+msgstr ""
+
+msgid "Language server unavailable"
+msgstr ""
+
+msgid "Language servers"
+msgstr ""
 
 msgid "Large"
 msgstr "Lớn"
@@ -10436,6 +10493,9 @@ msgstr "Chưa phải mọi client đều gửi {gaps}, nên giai đoạn đó b�
 
 msgid "Not found"
 msgstr "Không tìm thấy"
+
+msgid "Not found on PATH; workspace installations are detected when opening a file."
+msgstr ""
 
 msgid "Not granted"
 msgstr "Chưa cấp"
@@ -12904,6 +12964,9 @@ msgstr "Khởi động lại ngay để chuyển sang {accountLabel}; mỗi phi�
 msgid "Restart running {providerLabel} agents?"
 msgstr "Khởi động lại các agent {providerLabel} đang chạy?"
 
+msgid "Restart server"
+msgstr ""
+
 msgid "Restart terminal daemon?"
 msgstr "Khởi động lại daemon terminal?"
 
@@ -13914,6 +13977,9 @@ msgstr "Separator"
 msgid "series {0}"
 msgstr "chuỗi {0}"
 
+msgid "Server configuration and schemas"
+msgstr ""
+
 msgid "Service availability is published at <0>status.superset.sh</0>, and security and compliance documentation at <1>trust.superset.sh</1>."
 msgstr "Tình trạng dịch vụ được công bố tại <0>status.superset.sh</0>, còn tài liệu bảo mật và tuân thủ tại <1>trust.superset.sh</1>."
 
@@ -14798,6 +14864,9 @@ msgstr "Đang khởi động {agentLabel}"
 
 msgid "Starting cloud workspace"
 msgstr "Đang khởi động workspace trên cloud"
+
+msgid "Starting language server…"
+msgstr ""
 
 msgid "Starting up. This should only take a moment."
 msgstr "Đang khởi động. Sẽ chỉ mất một lát."
@@ -16912,6 +16981,9 @@ msgstr "Dùng “{0}”"
 
 msgid "Use {label}"
 msgstr "Dùng {label}"
+
+msgid "Use a JSON array for arguments and JSON objects for configuration and initialization options."
+msgstr ""
 
 msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
 msgstr "Dùng mô hình CLI cục bộ nhỏ cho tên nhánh, thông điệp commit và bản nháp pull request."

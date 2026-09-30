@@ -2215,6 +2215,9 @@ msgstr "Area path"
 msgid "Arguments"
 msgstr "인수"
 
+msgid "Arguments (JSON array)"
+msgstr ""
+
 msgid "Argv used to launch the agent."
 msgstr "에이전트를 실행할 때 사용하는 argv입니다."
 
@@ -2397,6 +2400,9 @@ msgstr "자동(시스템)"
 
 msgid "Auto follows your system language. You can change it later in Settings."
 msgstr "자동은 시스템 언어를 따릅니다. 나중에 설정에서 변경할 수 있습니다."
+
+msgid "Auto-detect"
+msgstr ""
 
 msgid "auto-generated"
 msgstr "자동 생성"
@@ -3285,6 +3291,9 @@ msgstr "검사 통과"
 msgid "Checks Skipped"
 msgstr "검사 건너뜀"
 
+msgid "Choose a definition"
+msgstr ""
+
 msgid "Choose a folder"
 msgstr "폴더 선택"
 
@@ -3681,6 +3690,9 @@ msgstr "코드 블록"
 msgid "Code Block"
 msgstr "코드 블록"
 
+msgid "Code intelligence for the local v2 editor. Servers start when you open a supported file and use your installed tools."
+msgstr ""
+
 msgid "Codex Chat"
 msgstr "Codex 채팅"
 
@@ -3892,6 +3904,9 @@ msgstr "Stripe에서 계산 중 — 첫 로드 시 최대 1분 소요"
 
 msgid "Config location"
 msgstr "구성 위치"
+
+msgid "Configuration (JSON object)"
+msgstr ""
 
 msgid "Configure"
 msgstr "구성"
@@ -4528,6 +4543,9 @@ msgstr "링크를 열 수 없습니다"
 
 msgid "Could not open Photos"
 msgstr "사진 앱을 열지 못했습니다"
+
+msgid "Could not open the definition"
+msgstr ""
 
 msgid "Could not reach the desktop."
 msgstr "데스크톱에 연결할 수 없습니다."
@@ -6043,6 +6061,9 @@ msgstr "먼저 설정 > 에이전트에서 에이전트를 활성화하세요"
 msgid "Enable auto-merge"
 msgstr "자동 머지 활성화"
 
+msgid "Enable language server"
+msgstr ""
+
 msgid "Enable relay access…"
 msgstr "릴레이 접근 활성화…"
 
@@ -6211,6 +6232,9 @@ msgstr "프리미티브 위에 우리가 만든 모든 것 — Superset 오리�
 msgid "Everything you've published is deleted, not hidden. You can rejoin later and it will rebuild from the transcripts still on this machine — only your past ranking is lost."
 msgstr "게시한 모든 내용이 숨겨지는 것이 아니라 삭제됩니다. 나중에 다시 참여하면 이 컴퓨터에 남아 있는 기록에서 다시 만들어지며, 지난 순위만 사라집니다."
 
+msgid "Executable or XML JAR path"
+msgstr ""
+
 msgid "Existing repo path"
 msgstr "기존 리포지토리 경로"
 
@@ -6266,6 +6290,9 @@ msgstr "확장"
 
 msgid "Experimental"
 msgstr "실험실"
+
+msgid "Experimental Android/Gradle support"
+msgstr ""
 
 msgid "Expired"
 msgstr "만료됨"
@@ -6555,6 +6582,9 @@ msgstr "퍼널 데이터를 불러오지 못했습니다"
 msgid "Failed to load image"
 msgstr "이미지를 불러오지 못했습니다"
 
+msgid "Failed to load language server settings"
+msgstr ""
+
 msgid "Failed to load pull requests"
 msgstr "Failed to load pull requests"
 
@@ -6685,6 +6715,9 @@ msgstr "워크스페이스 경로를 확인하지 못했습니다: {message}"
 msgid "Failed to restart daemon"
 msgstr "데몬을 다시 시작하지 못했습니다"
 
+msgid "Failed to restart language server"
+msgstr ""
+
 msgid "Failed to restore"
 msgstr "복원하지 못했습니다"
 
@@ -6813,6 +6846,9 @@ msgstr "훅을 업데이트하지 못했습니다"
 
 msgid "Failed to update language"
 msgstr "언어를 변경하지 못했습니다"
+
+msgid "Failed to update language servers"
+msgstr ""
 
 msgid "Failed to update logo"
 msgstr "로고를 업데이트하지 못했습니다"
@@ -8026,6 +8062,9 @@ msgstr "정보"
 msgid "Information"
 msgstr "정보"
 
+msgid "Initialization options (JSON object)"
+msgstr ""
+
 msgid "Initialize Git"
 msgstr "Git 초기화"
 
@@ -8464,6 +8503,24 @@ msgstr "언어"
 
 msgid "Language saved on this device, but syncing it to your account failed."
 msgstr "이 기기에는 언어를 저장했지만 계정에 동기화하지 못했습니다."
+
+msgid "Language server disabled"
+msgstr ""
+
+msgid "Language server not found"
+msgstr ""
+
+msgid "Language server ready"
+msgstr ""
+
+msgid "Language server stopped"
+msgstr ""
+
+msgid "Language server unavailable"
+msgstr ""
+
+msgid "Language servers"
+msgstr ""
 
 msgid "Large"
 msgstr "큼"
@@ -10436,6 +10493,9 @@ msgstr "아직 모든 클라이언트가 {gaps}를 보내지 않아 해당 단�
 
 msgid "Not found"
 msgstr "찾을 수 없습니다"
+
+msgid "Not found on PATH; workspace installations are detected when opening a file."
+msgstr ""
 
 msgid "Not granted"
 msgstr "허용 안 됨"
@@ -12904,6 +12964,9 @@ msgstr "지금 다시 시작하면 {accountLabel}(으)로 이동하며, 각 세�
 msgid "Restart running {providerLabel} agents?"
 msgstr "실행 중인 {providerLabel} 에이전트를 다시 시작할까요?"
 
+msgid "Restart server"
+msgstr ""
+
 msgid "Restart terminal daemon?"
 msgstr "터미널 데몬을 다시 시작할까요?"
 
@@ -13914,6 +13977,9 @@ msgstr "구분선"
 msgid "series {0}"
 msgstr "시리즈 {0}"
 
+msgid "Server configuration and schemas"
+msgstr ""
+
 msgid "Service availability is published at <0>status.superset.sh</0>, and security and compliance documentation at <1>trust.superset.sh</1>."
 msgstr "서비스 가용성은 <0>status.superset.sh</0>에, 보안 및 규정 준수 문서는 <1>trust.superset.sh</1>에 공개되어 있습니다."
 
@@ -14798,6 +14864,9 @@ msgstr "{agentLabel} 시작 중"
 
 msgid "Starting cloud workspace"
 msgstr "클라우드 워크스페이스 시작 중"
+
+msgid "Starting language server…"
+msgstr ""
 
 msgid "Starting up. This should only take a moment."
 msgstr "시작 중이에요. 잠시만 기다려 주세요."
@@ -16912,6 +16981,9 @@ msgstr "“{0}” 사용"
 
 msgid "Use {label}"
 msgstr "{label} 사용"
+
+msgid "Use a JSON array for arguments and JSON objects for configuration and initialization options."
+msgstr ""
 
 msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
 msgstr "브랜치 이름, 커밋 메시지 및 풀 리퀘스트 초안에 작은 로컬 CLI 모델을 사용합니다."

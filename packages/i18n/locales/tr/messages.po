@@ -2215,6 +2215,9 @@ msgstr "Area path"
 msgid "Arguments"
 msgstr "Argümanlar"
 
+msgid "Arguments (JSON array)"
+msgstr ""
+
 msgid "Argv used to launch the agent."
 msgstr "Ajanı başlatmak için kullanılan argv."
 
@@ -2397,6 +2400,9 @@ msgstr "Otomatik (sistem)"
 
 msgid "Auto follows your system language. You can change it later in Settings."
 msgstr "Otomatik, sistem dilinizi izler. Daha sonra Ayarlar'dan değiştirebilirsiniz."
+
+msgid "Auto-detect"
+msgstr ""
 
 msgid "auto-generated"
 msgstr "otomatik oluşturulur"
@@ -3285,6 +3291,9 @@ msgstr "Kontroller geçti"
 msgid "Checks Skipped"
 msgstr "Kontroller atlandı"
 
+msgid "Choose a definition"
+msgstr ""
+
 msgid "Choose a folder"
 msgstr "Bir klasör seçin"
 
@@ -3681,6 +3690,9 @@ msgstr "Kod bloğu"
 msgid "Code Block"
 msgstr "Kod bloğu"
 
+msgid "Code intelligence for the local v2 editor. Servers start when you open a supported file and use your installed tools."
+msgstr ""
+
 msgid "Codex Chat"
 msgstr "Codex Sohbeti"
 
@@ -3892,6 +3904,9 @@ msgstr "Stripe üzerinde hesaplanıyor — ilk yüklemede bir dakikayı bulabili
 
 msgid "Config location"
 msgstr "Yapılandırma konumu"
+
+msgid "Configuration (JSON object)"
+msgstr ""
 
 msgid "Configure"
 msgstr "Yapılandır"
@@ -4528,6 +4543,9 @@ msgstr "Bağlantı açılamadı"
 
 msgid "Could not open Photos"
 msgstr "Fotoğraflar açılamadı"
+
+msgid "Could not open the definition"
+msgstr ""
 
 msgid "Could not reach the desktop."
 msgstr "Masaüstüne ulaşılamadı."
@@ -6043,6 +6061,9 @@ msgstr "Önce Ayarlar > Ajanlar bölümünden bir ajanı etkinleştirin"
 msgid "Enable auto-merge"
 msgstr "Otomatik birleştirmeyi etkinleştir"
 
+msgid "Enable language server"
+msgstr ""
+
 msgid "Enable relay access…"
 msgstr "Röle erişimini etkinleştir…"
 
@@ -6211,6 +6232,9 @@ msgstr "İlkellerin üzerine kurduğumuz her şey — Superset özgünleri, ajan
 msgid "Everything you've published is deleted, not hidden. You can rejoin later and it will rebuild from the transcripts still on this machine — only your past ranking is lost."
 msgstr "Yayımladığınız her şey gizlenmez, silinir. Daha sonra yeniden katılabilirsiniz ve bu makinede duran kayıtlardan yeniden oluşturulur — yalnızca geçmiş sıralamanız kaybolur."
 
+msgid "Executable or XML JAR path"
+msgstr ""
+
 msgid "Existing repo path"
 msgstr "Mevcut depo yolu"
 
@@ -6266,6 +6290,9 @@ msgstr "Genişleme"
 
 msgid "Experimental"
 msgstr "Deneysel"
+
+msgid "Experimental Android/Gradle support"
+msgstr ""
 
 msgid "Expired"
 msgstr "Süresi doldu"
@@ -6555,6 +6582,9 @@ msgstr "Huni verisi yüklenemedi"
 msgid "Failed to load image"
 msgstr "Görsel yüklenemedi"
 
+msgid "Failed to load language server settings"
+msgstr ""
+
 msgid "Failed to load pull requests"
 msgstr "Failed to load pull requests"
 
@@ -6685,6 +6715,9 @@ msgstr "Çalışma alanı yolu çözümlenemedi: {message}"
 msgid "Failed to restart daemon"
 msgstr "Daemon yeniden başlatılamadı"
 
+msgid "Failed to restart language server"
+msgstr ""
+
 msgid "Failed to restore"
 msgstr "Geri yüklenemedi"
 
@@ -6813,6 +6846,9 @@ msgstr "Hook'lar güncellenemedi"
 
 msgid "Failed to update language"
 msgstr "Dil güncellenemedi"
+
+msgid "Failed to update language servers"
+msgstr ""
 
 msgid "Failed to update logo"
 msgstr "Logo güncellenemedi"
@@ -8026,6 +8062,9 @@ msgstr "Bilgi"
 msgid "Information"
 msgstr "Bilgi"
 
+msgid "Initialization options (JSON object)"
+msgstr ""
+
 msgid "Initialize Git"
 msgstr "Git'i başlat"
 
@@ -8464,6 +8503,24 @@ msgstr "Dil"
 
 msgid "Language saved on this device, but syncing it to your account failed."
 msgstr "Dil bu cihaza kaydedildi, ancak hesabınıza eşitlenemedi."
+
+msgid "Language server disabled"
+msgstr ""
+
+msgid "Language server not found"
+msgstr ""
+
+msgid "Language server ready"
+msgstr ""
+
+msgid "Language server stopped"
+msgstr ""
+
+msgid "Language server unavailable"
+msgstr ""
+
+msgid "Language servers"
+msgstr ""
 
 msgid "Large"
 msgstr "Büyük"
@@ -10436,6 +10493,9 @@ msgstr "Her istemci {gaps} göndermiyor, bu yüzden o aşama eksik sayılıyor."
 
 msgid "Not found"
 msgstr "Bulunamadı"
+
+msgid "Not found on PATH; workspace installations are detected when opening a file."
+msgstr ""
 
 msgid "Not granted"
 msgstr "Verilmedi"
@@ -12904,6 +12964,9 @@ msgstr "Şimdi yeniden başlatarak {accountLabel} hesabına taşıyın; her otur
 msgid "Restart running {providerLabel} agents?"
 msgstr "Çalışan {providerLabel} ajanları yeniden başlatılsın mı?"
 
+msgid "Restart server"
+msgstr ""
+
 msgid "Restart terminal daemon?"
 msgstr "Terminal daemon'u yeniden başlatılsın mı?"
 
@@ -13914,6 +13977,9 @@ msgstr "Ayırıcı"
 msgid "series {0}"
 msgstr "seri {0}"
 
+msgid "Server configuration and schemas"
+msgstr ""
+
 msgid "Service availability is published at <0>status.superset.sh</0>, and security and compliance documentation at <1>trust.superset.sh</1>."
 msgstr "Hizmet durumu <0>status.superset.sh</0> adresinde, güvenlik ve uyumluluk belgeleri ise <1>trust.superset.sh</1> adresinde yayımlanır."
 
@@ -14798,6 +14864,9 @@ msgstr "{agentLabel} başlatılıyor"
 
 msgid "Starting cloud workspace"
 msgstr "Bulut çalışma alanı başlatılıyor"
+
+msgid "Starting language server…"
+msgstr ""
 
 msgid "Starting up. This should only take a moment."
 msgstr "Başlatılıyor. Yalnızca kısa bir süre alacaktır."
@@ -16912,6 +16981,9 @@ msgstr "“{0}” kullan"
 
 msgid "Use {label}"
 msgstr "{label} kullan"
+
+msgid "Use a JSON array for arguments and JSON objects for configuration and initialization options."
+msgstr ""
 
 msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
 msgstr "Dal adları, commit mesajları ve pull request taslakları için küçük bir yerel CLI modeli kullanın."

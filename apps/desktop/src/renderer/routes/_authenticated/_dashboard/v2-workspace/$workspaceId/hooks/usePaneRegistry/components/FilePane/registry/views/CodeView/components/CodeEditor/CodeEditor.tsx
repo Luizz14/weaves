@@ -29,6 +29,9 @@ import { useQuery } from "@tanstack/react-query";
 import { type MutableRefObject, useEffect, useRef } from "react";
 import { FONT_SETTINGS_QUERY_KEY } from "renderer/lib/font-settings";
 import { electronTrpcClient } from "renderer/lib/trpc-client";
+import type { SharedFileDocument } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/fileDocumentStore";
+import type { EditorLspStatus } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/coordinator";
+import { useLspCoordinator } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/LspProvider";
 import { useResolvedTheme } from "renderer/stores/theme";
 import {
 	type CodeEditorAdapter,
@@ -43,6 +46,8 @@ import { loadLanguageSupport } from "./loadLanguageSupport";
 import { getCodeSyntaxHighlighting } from "./syntax-highlighting";
 
 interface CodeEditorProps {
+	document?: SharedFileDocument;
+	onLspStatus?: (status: EditorLspStatus) => void;
 	value: string;
 	language: string;
 	readOnly?: boolean;
@@ -59,6 +64,8 @@ interface CodeEditorProps {
 }
 
 export function CodeEditor({
+	document,
+	onLspStatus,
 	value,
 	language,
 	readOnly = false,
@@ -75,6 +82,10 @@ export function CodeEditor({
 	const languageCompartment = useRef(new Compartment()).current;
 	const themeCompartment = useRef(new Compartment()).current;
 	const editableCompartment = useRef(new Compartment()).current;
+	const lspCompartment = useRef(new Compartment()).current;
+	const lsp = useLspCoordinator();
+	const onLspStatusRef = useRef(onLspStatus);
+	onLspStatusRef.current = onLspStatus;
 	const onChangeRef = useRef(onChange);
 	const onSaveRef = useRef(onSave);
 	const onScrollPositionChangeRef = useRef(onScrollPositionChange);
@@ -168,6 +179,7 @@ export function CodeEditor({
 					),
 				]),
 				languageCompartment.of([]),
+				lspCompartment.of([]),
 				updateListener,
 			],
 		});
@@ -214,6 +226,24 @@ export function CodeEditor({
 			viewRef.current = null;
 		};
 	}, []);
+
+	useEffect(() => {
+		const view = viewRef.current;
+		if (!view || !document || !lsp || readOnly) {
+			onLspStatusRef.current?.(null);
+			return;
+		}
+		const unregister = lsp.registerView(document.absolutePath, view);
+		const detach = lsp.attach(document, view, lspCompartment, (status) =>
+			onLspStatusRef.current?.(status),
+		);
+		return () => {
+			detach();
+			unregister();
+			if (viewRef.current === view)
+				view.dispatch({ effects: lspCompartment.reconfigure([]) });
+		};
+	}, [document, document?.absolutePath, lsp, lspCompartment, readOnly]);
 
 	useEffect(() => {
 		const view = viewRef.current;

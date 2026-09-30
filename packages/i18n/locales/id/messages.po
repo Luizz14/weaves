@@ -2215,6 +2215,9 @@ msgstr "Area path"
 msgid "Arguments"
 msgstr "Argumen"
 
+msgid "Arguments (JSON array)"
+msgstr ""
+
 msgid "Argv used to launch the agent."
 msgstr "Argv yang dipakai untuk menjalankan agen."
 
@@ -2397,6 +2400,9 @@ msgstr "Otomatis (sistem)"
 
 msgid "Auto follows your system language. You can change it later in Settings."
 msgstr "Otomatis mengikuti bahasa sistem Anda. Anda bisa mengubahnya nanti di Pengaturan."
+
+msgid "Auto-detect"
+msgstr ""
 
 msgid "auto-generated"
 msgstr "dibuat otomatis"
@@ -3285,6 +3291,9 @@ msgstr "Check lulus"
 msgid "Checks Skipped"
 msgstr "Check Dilewati"
 
+msgid "Choose a definition"
+msgstr ""
+
 msgid "Choose a folder"
 msgstr "Pilih folder"
 
@@ -3681,6 +3690,9 @@ msgstr "Blok kode"
 msgid "Code Block"
 msgstr "Blok Kode"
 
+msgid "Code intelligence for the local v2 editor. Servers start when you open a supported file and use your installed tools."
+msgstr ""
+
 msgid "Codex Chat"
 msgstr "Chat Codex"
 
@@ -3892,6 +3904,9 @@ msgstr "Menghitung di Stripe — hingga satu menit saat pemuatan pertama"
 
 msgid "Config location"
 msgstr "Lokasi konfigurasi"
+
+msgid "Configuration (JSON object)"
+msgstr ""
 
 msgid "Configure"
 msgstr "Atur"
@@ -4528,6 +4543,9 @@ msgstr "Tidak bisa membuka tautan"
 
 msgid "Could not open Photos"
 msgstr "Tidak bisa membuka Photos"
+
+msgid "Could not open the definition"
+msgstr ""
 
 msgid "Could not reach the desktop."
 msgstr "Tidak dapat menjangkau desktop."
@@ -6043,6 +6061,9 @@ msgstr "Aktifkan dulu sebuah agen di Pengaturan > Agen"
 msgid "Enable auto-merge"
 msgstr "Aktifkan auto-merge"
 
+msgid "Enable language server"
+msgstr ""
+
 msgid "Enable relay access…"
 msgstr "Aktifkan akses relay…"
 
@@ -6211,6 +6232,9 @@ msgstr "Semua yang kami bangun di atas primitif — orisinal Superset, suite"
 msgid "Everything you've published is deleted, not hidden. You can rejoin later and it will rebuild from the transcripts still on this machine — only your past ranking is lost."
 msgstr "Semua yang Anda publikasikan dihapus, bukan disembunyikan. Anda bisa bergabung lagi nanti dan datanya akan dibangun ulang dari transkrip yang masih ada di mesin ini — hanya peringkat lama Anda yang hilang."
 
+msgid "Executable or XML JAR path"
+msgstr ""
+
 msgid "Existing repo path"
 msgstr "Path repo yang sudah ada"
 
@@ -6266,6 +6290,9 @@ msgstr "Ekspansi"
 
 msgid "Experimental"
 msgstr "Eksperimental"
+
+msgid "Experimental Android/Gradle support"
+msgstr ""
 
 msgid "Expired"
 msgstr "Kedaluwarsa"
@@ -6555,6 +6582,9 @@ msgstr "Gagal memuat data funnel"
 msgid "Failed to load image"
 msgstr "Gagal memuat gambar"
 
+msgid "Failed to load language server settings"
+msgstr ""
+
 msgid "Failed to load pull requests"
 msgstr "Failed to load pull requests"
 
@@ -6685,6 +6715,9 @@ msgstr "Gagal menentukan path workspace: {message}"
 msgid "Failed to restart daemon"
 msgstr "Gagal memulai ulang daemon"
 
+msgid "Failed to restart language server"
+msgstr ""
+
 msgid "Failed to restore"
 msgstr "Gagal memulihkan"
 
@@ -6813,6 +6846,9 @@ msgstr "Gagal memperbarui hook"
 
 msgid "Failed to update language"
 msgstr "Gagal memperbarui bahasa"
+
+msgid "Failed to update language servers"
+msgstr ""
 
 msgid "Failed to update logo"
 msgstr "Gagal memperbarui logo"
@@ -8026,6 +8062,9 @@ msgstr "Info"
 msgid "Information"
 msgstr "Informasi"
 
+msgid "Initialization options (JSON object)"
+msgstr ""
+
 msgid "Initialize Git"
 msgstr "Inisialisasi Git"
 
@@ -8464,6 +8503,24 @@ msgstr "Bahasa"
 
 msgid "Language saved on this device, but syncing it to your account failed."
 msgstr "Bahasa tersimpan di perangkat ini, tapi sinkronisasi ke akun Anda gagal."
+
+msgid "Language server disabled"
+msgstr ""
+
+msgid "Language server not found"
+msgstr ""
+
+msgid "Language server ready"
+msgstr ""
+
+msgid "Language server stopped"
+msgstr ""
+
+msgid "Language server unavailable"
+msgstr ""
+
+msgid "Language servers"
+msgstr ""
 
 msgid "Large"
 msgstr "Besar"
@@ -10436,6 +10493,9 @@ msgstr "Belum semua klien mengirim {gaps}, jadi tahap itu terhitung kurang."
 
 msgid "Not found"
 msgstr "Tidak ditemukan"
+
+msgid "Not found on PATH; workspace installations are detected when opening a file."
+msgstr ""
 
 msgid "Not granted"
 msgstr "Belum diberikan"
@@ -12904,6 +12964,9 @@ msgstr "Jalankan ulang sekarang untuk memindahkannya ke {accountLabel}; setiap s
 msgid "Restart running {providerLabel} agents?"
 msgstr "Jalankan ulang agen {providerLabel} yang sedang berjalan?"
 
+msgid "Restart server"
+msgstr ""
+
 msgid "Restart terminal daemon?"
 msgstr "Mulai ulang daemon terminal?"
 
@@ -13914,6 +13977,9 @@ msgstr "Separator"
 msgid "series {0}"
 msgstr "seri {0}"
 
+msgid "Server configuration and schemas"
+msgstr ""
+
 msgid "Service availability is published at <0>status.superset.sh</0>, and security and compliance documentation at <1>trust.superset.sh</1>."
 msgstr "Ketersediaan layanan dipublikasikan di <0>status.superset.sh</0>, dan dokumentasi keamanan serta kepatuhan di <1>trust.superset.sh</1>."
 
@@ -14798,6 +14864,9 @@ msgstr "Memulai {agentLabel}"
 
 msgid "Starting cloud workspace"
 msgstr "Memulai workspace cloud"
+
+msgid "Starting language server…"
+msgstr ""
 
 msgid "Starting up. This should only take a moment."
 msgstr "Sedang memulai. Ini hanya perlu sebentar."
@@ -16912,6 +16981,9 @@ msgstr "Pakai “{0}”"
 
 msgid "Use {label}"
 msgstr "Gunakan {label}"
+
+msgid "Use a JSON array for arguments and JSON objects for configuration and initialization options."
+msgstr ""
 
 msgid "Use a small local CLI model for branch names, commit messages, and pull request drafts."
 msgstr "Gunakan model CLI lokal kecil untuk nama branch, pesan commit, dan draf pull request."
