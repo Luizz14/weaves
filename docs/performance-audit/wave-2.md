@@ -69,3 +69,23 @@ in the P03 baseline. Typecheck retained the same 12 preexisting diagnostics and
 introduced none. The existing dialog/automation business logic was not submitted
 against a live backend as part of these checks. No performance benchmark or
 startup/CPU/RSS improvement number is claimed.
+
+## P19
+
+Diff sections/file panes select only display preferences and their stable actions;
+infinite-scroll selects the section/view controls it actually reads. The changes
+sidebar selects its current workspace's selection record rather than subscribing
+to every workspace's selected-file map. The active dashboard SidebarToggle selects
+the derived collapse boolean and its action, preserving the getter's semantics.
+No stores, persistence formats or mutation behavior were changed.
+
+React integration checks passed for unrelated-state render suppression, preference
+updates, current-workspace selection, switching workspace, clearing selection,
+and the real sidebar collapse action. These are behavioral assertions, not a
+performance benchmark. Existing changes-store migration/selection tests passed.
+
+Arm64 build/package and both native guards passed. Full desktop suite: 4,046
+passed, 8 failed, 2 errors, with no newly failing test names relative to the base.
+The focused checks also passed with real HotkeyLabel dependencies. Typecheck has
+the same 12 preexisting diagnostics and no new ones. Live backend mutations were
+not used for these UI/store tests.
