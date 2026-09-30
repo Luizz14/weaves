@@ -19,16 +19,12 @@ import {
 	getTerminalAgentBindingsQueryKey,
 	type TerminalAgentBinding,
 } from "renderer/hooks/host-service/useTerminalAgentBindings";
-import { deriveTerminalAgentStatus } from "renderer/hooks/host-service/useTerminalAgentStatuses";
 import { getHostEventBus } from "renderer/lib/host-event-bus";
 import { getHostServiceClientByUrl } from "renderer/lib/host-service-client";
 import { useHostWorkspaces } from "renderer/routes/_authenticated/providers/HostWorkspacesProvider";
 import { useV2NotificationStore } from "renderer/stores/v2-notifications";
-import {
-	type ActivePaneStatus,
-	getHighestPriorityStatus,
-	type PaneStatus,
-} from "shared/tabs-types";
+import type { ActivePaneStatus, PaneStatus } from "shared/tabs-types";
+import { SidebarStatusCache } from "./utils/sidebarStatusCache";
 
 export interface SidebarWorkspaceStatusEntry {
 	/** Highest-priority attention status across the workspace's terminals. */
@@ -120,34 +116,6 @@ export interface SidebarStatusWorkspaceRef {
 interface WorkspaceStatusTarget {
 	workspaceId: string;
 	hostUrl: string | null;
-}
-
-function mapsShallowEqual<Value>(
-	left: ReadonlyMap<string, Value>,
-	right: ReadonlyMap<string, Value>,
-): boolean {
-	if (left.size !== right.size) return false;
-	for (const [key, value] of left) {
-		if (right.get(key) !== value) return false;
-	}
-	return true;
-}
-
-function entriesEqual(
-	left: SidebarWorkspaceStatusEntry,
-	right: SidebarWorkspaceStatusEntry,
-): boolean {
-	return (
-		left.status === right.status &&
-		left.isUnread === right.isUnread &&
-		(left.diffStats === right.diffStats ||
-			(left.diffStats !== null &&
-				right.diffStats !== null &&
-				left.diffStats.additions === right.diffStats.additions &&
-				left.diffStats.deletions === right.diffStats.deletions)) &&
-		mapsShallowEqual(left.bindings, right.bindings) &&
-		mapsShallowEqual(left.statuses, right.statuses)
-	);
 }
 
 /**
@@ -297,64 +265,27 @@ export function DashboardSidebarWorkspaceStatusProvider({
 		(state) => state.terminalSeenAt,
 	);
 
-	const previousEntriesRef = useRef(
-		new Map<string, SidebarWorkspaceStatusEntry>(),
+	const [statusCache] = useState(() => new SidebarStatusCache());
+	const entries = useMemo(
+		() =>
+			statusCache.update({
+				targets,
+				bindingRowsByIndex,
+				manualUnread,
+				terminalSeenAt,
+				activeWorkspaceId,
+				activeDiffStats,
+			}),
+		[
+			statusCache,
+			targets,
+			bindingRowsByIndex,
+			manualUnread,
+			terminalSeenAt,
+			activeWorkspaceId,
+			activeDiffStats,
+		],
 	);
-	const entries = useMemo(() => {
-		const previous = previousEntriesRef.current;
-		const next = new Map<string, SidebarWorkspaceStatusEntry>();
-		targets.forEach((target, index) => {
-			const bindingRows = bindingRowsByIndex[index] ?? [];
-			const bindings = new Map<string, TerminalAgentBinding>();
-			const statuses = new Map<string, PaneStatus>();
-			for (const binding of bindingRows) {
-				bindings.set(binding.terminalId, binding);
-				statuses.set(
-					binding.terminalId,
-					deriveTerminalAgentStatus({
-						lastEventType: binding.lastEventType,
-						lastEventAt: binding.lastEventAt,
-						lastSeenAt: terminalSeenAt[binding.terminalId],
-					}),
-				);
-			}
-			const hasManualUnread = Boolean(manualUnread[target.workspaceId]);
-			let hasAttentionTerminal = false;
-			for (const status of statuses.values()) {
-				if (status === "review" || status === "failed") {
-					hasAttentionTerminal = true;
-					break;
-				}
-			}
-			const candidate: SidebarWorkspaceStatusEntry = {
-				status: getHighestPriorityStatus([
-					hasManualUnread ? "review" : undefined,
-					...statuses.values(),
-				]),
-				isUnread: hasManualUnread || hasAttentionTerminal,
-				bindings,
-				statuses,
-				diffStats:
-					target.workspaceId === activeWorkspaceId ? activeDiffStats : null,
-			};
-			const previousEntry = previous.get(target.workspaceId);
-			next.set(
-				target.workspaceId,
-				previousEntry && entriesEqual(previousEntry, candidate)
-					? previousEntry
-					: candidate,
-			);
-		});
-		previousEntriesRef.current = next;
-		return next;
-	}, [
-		targets,
-		bindingRowsByIndex,
-		manualUnread,
-		terminalSeenAt,
-		activeWorkspaceId,
-		activeDiffStats,
-	]);
 
 	store.replaceEntries(entries);
 	useEffect(() => {

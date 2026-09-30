@@ -68,3 +68,41 @@ benchmarks. Desktop suite: 4060 passed, 8 failed, 2 errors; no new failing names
 relative to P18. Typecheck retained the same 12 diagnostics with none added.
 Biome and diff checks passed. The arm64 release build/package and both native
 runtime/PTY bundle guards passed. No notarization or publication was performed.
+
+## P11: sidebar status derivation
+
+Current code already invalidates bindings from lifecycle events, uses a 30-second
+staleTime for recovery, and polls at 60 seconds only while subagents need host-side
+expiry checks. These semantics, all-workspace query keys and sandbox exclusion
+remain intact. This sidebar slice does not change the host coordinator or general
+workspace fallback polling.
+
+Status derivation now reuses each workspace's binding/status maps and snapshot
+when its query data, relevant terminal seen markers, manual unread flag and active
+diff counts are unchanged. Changes in other workspaces or unrelated notification
+keys no longer rebuild those maps or rederive their terminal status. Fresh binding
+metadata still updates the snapshot even when the attention badge is identical,
+so agent/session/subagent consumers continue to see roster changes. The cache is
+bounded by the provider's current targets and is replaced on each pass; removed
+workspaces release their cached inputs and snapshots.
+
+Eight regression tests passed: unrelated notifications across 1000 workspaces,
+seen/read markers and manual unread, permission status, new binding data,
+agent/session metadata, terminal removal, active diff counts, target reorder,
+workspace removal/re-addition and empty query data. In the 1000-workspace case,
+the initial pass reads 1000 terminal event types and an unrelated notification
+adds zero reads; entry identities also remain stable. This is an operation-count
+regression check, not an elapsed-time, CPU or RSS benchmark.
+
+Final desktop suite: 4068 passed, 8 failed, 2 errors. Failing names match P17/P18;
+typecheck retains the same 12 existing diagnostics and no new ones. Changed-file
+Biome and diff checks passed. Arm64 release build/package and both required guards
+passed. The final packaged ASAR also passed native smoke checks for SQLite, PTY
+spawn/output, watcher, keymap, keyring, ast-grep and process metrics without
+resolving checkout modules or modifying the user profile. QA against actual host events and the signed-in full desktop remains a
+verification gap; the cache tests and P17 Electron fixture are local/synthetic.
+
+The sidebar wave is complete locally, one commit per item. P19's previously
+committed scoped SidebarToggle remains in place. Runtime CPU/RSS/startup numbers
+are not claimed: the user waived those measurements. The branch has not been
+pushed or merged, and the original worktree's changes were not modified.
