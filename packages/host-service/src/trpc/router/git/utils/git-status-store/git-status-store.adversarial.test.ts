@@ -2,7 +2,10 @@ import { describe, expect, test } from "bun:test";
 import type { Branch, ChangedFile } from "../../types";
 import type { GitStatusSnapshot } from "../git-status";
 import type { GitStatusPartial } from "../git-status-partial";
-import { GitStatusStore } from "./git-status-store";
+import {
+	GitStatusStore,
+	MAX_GIT_BASE_VARIANTS_PER_WORKSPACE,
+} from "./git-status-store";
 
 const BRANCH: Branch = {
 	name: "main",
@@ -72,7 +75,10 @@ function variantsOf(store: GitStatusStore, workspaceId: string) {
 		store as unknown as {
 			workspaces: Map<
 				string,
-				Map<string, { cached: unknown; pending: Set<string> | null }>
+				Map<
+					string,
+					{ cached: GitStatusSnapshot | null; pending: Set<string> | null }
+				>
 			>;
 		}
 	).workspaces.get(workspaceId);
@@ -531,7 +537,7 @@ describe("GitStatusStore keys and growth", () => {
 		);
 	});
 
-	test("variants are never evicted: one cached snapshot per distinct baseBranch ever read", async () => {
+	test("idle variants are bounded after exploring 300 base branches", async () => {
 		const store = new GitStatusStore();
 		store.attach("w");
 		const h = harness({
@@ -542,13 +548,20 @@ describe("GitStatusStore keys and growth", () => {
 			await store.read({ workspaceId: "w", baseBranch: `branch-${i}`, ...h });
 		}
 		const variants = variantsOf(store, "w");
-		expect(variants.size).toBe(300);
+		expect(variants.size).toBe(MAX_GIT_BASE_VARIANTS_PER_WORKSPACE);
+		expect([...variants.keys()]).toEqual(
+			Array.from(
+				{ length: MAX_GIT_BASE_VARIANTS_PER_WORKSPACE },
+				(_, i) => `branch-${300 - MAX_GIT_BASE_VARIANTS_PER_WORKSPACE + i}`,
+			),
+		);
 		let cachedEntries = 0;
 		for (const v of variants.values()) {
-			cachedEntries += (v.cached as GitStatusSnapshot).unstaged.length;
+			cachedEntries += v.cached?.unstaged.length ?? 0;
 		}
+		expect(cachedEntries).toBe(MAX_GIT_BASE_VARIANTS_PER_WORKSPACE * 2_000);
 		console.info(
-			`[finding] ${variants.size} variants retained, ${cachedEntries} cached ChangedFile entries for one workspace`,
+			`[P20 regression] ${variants.size} variants retained, ${cachedEntries} cached ChangedFile entries for one workspace`,
 		);
 	});
 });
