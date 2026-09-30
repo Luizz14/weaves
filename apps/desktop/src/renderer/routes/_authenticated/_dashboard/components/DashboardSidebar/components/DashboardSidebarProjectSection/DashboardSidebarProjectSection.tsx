@@ -2,7 +2,7 @@ import type {
 	DraggableAttributes,
 	DraggableSyntheticListeners,
 } from "@dnd-kit/core";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useMemo } from "react";
 import { DeleteProjectDialog } from "renderer/routes/_authenticated/components/DeleteProjectDialog";
 import type { DashboardSidebarProject } from "../../types";
@@ -35,6 +35,7 @@ export function DashboardSidebarProjectSection({
 	dragHandleListeners,
 	dragHandleAttributes,
 }: DashboardSidebarProjectSectionProps) {
+	const reduceMotion = useReducedMotion();
 	const flattenedCollapsedWorkspaces = useMemo(
 		() => getProjectChildrenWorkspaces(project.children),
 		[project.children],
@@ -163,7 +164,7 @@ export function DashboardSidebarProjectSection({
 						initial={{ height: 0, opacity: 0 }}
 						animate={{ height: "auto", opacity: 1 }}
 						exit={{ height: 0, opacity: 0 }}
-						transition={{ duration: 0.15, ease: "easeOut" }}
+						transition={{ duration: reduceMotion ? 0 : 0.15, ease: "easeOut" }}
 						className="overflow-hidden"
 					>
 						<DashboardSidebarExpandedProjectContent

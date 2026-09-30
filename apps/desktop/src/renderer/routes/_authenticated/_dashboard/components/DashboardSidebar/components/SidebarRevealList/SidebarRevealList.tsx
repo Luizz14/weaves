@@ -1,9 +1,10 @@
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
-import { sidebarRevealListVariants } from "../../utils/sidebarRevealVariants";
+import { getSidebarRevealListVariants } from "../../utils/sidebarRevealVariants";
 
 interface SidebarRevealListProps {
 	open: boolean;
+	itemCount: number;
 	children: ReactNode;
 	className?: string;
 }
@@ -15,6 +16,7 @@ interface SidebarRevealListProps {
  */
 export function SidebarRevealList({
 	open,
+	itemCount,
 	children,
 	className,
 }: SidebarRevealListProps) {
@@ -23,11 +25,10 @@ export function SidebarRevealList({
 		<AnimatePresence initial={false}>
 			{open && (
 				<motion.div
-					variants={sidebarRevealListVariants}
+					variants={getSidebarRevealListVariants(itemCount, !!reduceMotion)}
 					initial="closed"
 					animate="open"
 					exit="closed"
-					transition={reduceMotion ? { duration: 0 } : undefined}
 					className={
 						className ? `overflow-hidden ${className}` : "overflow-hidden"
 					}

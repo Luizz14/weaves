@@ -107,7 +107,7 @@ export function DashboardSidebarExpandedProjectContent({
 	);
 
 	return (
-		<SidebarRevealList open={!isCollapsed}>
+		<SidebarRevealList itemCount={flatItems.length} open={!isCollapsed}>
 			<div className="pb-1">
 				<WorkspaceBulkMenuScope
 					projectId={projectId}

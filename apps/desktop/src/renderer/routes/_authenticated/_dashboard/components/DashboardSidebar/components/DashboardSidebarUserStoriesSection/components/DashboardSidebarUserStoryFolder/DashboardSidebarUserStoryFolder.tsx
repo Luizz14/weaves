@@ -72,7 +72,7 @@ export function DashboardSidebarUserStoryFolder({
 					<LuSquareArrowOutUpRight className="size-3.5" />
 				</button>
 			</div>
-			<SidebarRevealList open={isOpen}>
+			<SidebarRevealList itemCount={workspaces.length} open={isOpen}>
 				{workspaces.map((workspace) => {
 					const project = workspace.projectId
 						? projectsById.get(workspace.projectId)
