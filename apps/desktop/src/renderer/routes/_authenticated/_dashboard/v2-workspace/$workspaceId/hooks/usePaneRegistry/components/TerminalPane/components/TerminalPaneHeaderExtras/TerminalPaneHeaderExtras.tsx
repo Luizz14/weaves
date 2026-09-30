@@ -1,7 +1,12 @@
 import { useLingui } from "@lingui/react/macro";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
+import { TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { cn } from "@superset/ui/utils";
 import { SquarePen } from "lucide-react";
+import {
+	PaneActionButton,
+	PaneActionTooltip as Tooltip,
+	usePaneActionDock,
+} from "renderer/components/PaneActionButton";
 import { useHotkeyDisplay } from "renderer/hotkeys";
 import type { SubagentPaneData } from "../../../../../../types";
 import {
@@ -16,6 +21,7 @@ import { TerminalSessionHandoffMenu } from "./components/TerminalSessionHandoffM
 import { TerminalSubagentsMenu } from "./components/TerminalSubagentsMenu";
 
 interface TerminalPaneHeaderExtrasProps {
+	variant?: "header" | "menu";
 	workspaceId: string;
 	terminalId: string;
 	terminalInstanceId: string;
@@ -36,12 +42,14 @@ interface TerminalPaneHeaderExtrasProps {
  * Also hosts the connection indicator and identifier copy menu.
  */
 export function TerminalPaneHeaderExtras({
+	variant = "header",
 	workspaceId,
 	terminalId,
 	terminalInstanceId,
 	onCreateNewAgentSession,
 	onOpenSubagent,
 }: TerminalPaneHeaderExtrasProps) {
+	const inDock = usePaneActionDock();
 	const { t } = useLingui();
 	const isOpen = useTerminalRichInputOpen();
 	const hotkeyText = useHotkeyDisplay("TOGGLE_TERMINAL_RICH_INPUT").text;
@@ -55,13 +63,21 @@ export function TerminalPaneHeaderExtras({
 				});
 
 	return (
-		<div className="flex items-center gap-1">
+		<div
+			className={cn(
+				"flex items-center gap-1",
+				inDock
+					? "flex-col items-stretch gap-0.5"
+					: variant === "menu" && "flex-wrap",
+			)}
+		>
 			<TerminalAccountUsage
 				key={`${workspaceId}:${terminalId}`}
 				workspaceId={workspaceId}
 				terminalId={terminalId}
 			/>
 			<TerminalSubagentsMenu
+				compact={variant === "header"}
 				workspaceId={workspaceId}
 				terminalId={terminalId}
 				onOpenSubagent={onOpenSubagent}
@@ -71,32 +87,42 @@ export function TerminalPaneHeaderExtras({
 				terminalInstanceId={terminalInstanceId}
 			/>
 			<TerminalPageWatchChip
+				compact={variant === "header"}
 				workspaceId={workspaceId}
 				terminalId={terminalId}
 			/>
-			<TerminalIdCopyMenu workspaceId={workspaceId} terminalId={terminalId} />
-			<TerminalSessionHandoffMenu
+			<TerminalIdCopyMenu
 				workspaceId={workspaceId}
 				terminalId={terminalId}
-				onCreateNewAgentSession={onCreateNewAgentSession}
+				triggerClassName={variant === "menu" ? "block" : undefined}
 			/>
+			{variant === "header" && (
+				<TerminalSessionHandoffMenu
+					workspaceId={workspaceId}
+					terminalId={terminalId}
+					onCreateNewAgentSession={onCreateNewAgentSession}
+				/>
+			)}
 			<Tooltip>
 				<TooltipTrigger asChild>
-					<button
+					<PaneActionButton
 						type="button"
 						onClick={() => terminalRichInputOpenStore.toggle("header_button")}
 						aria-label={label}
 						aria-pressed={isOpen}
 						className={cn(
 							// ⌘I still opens it; the button yields to split/close first.
-							"hidden rounded p-1 transition-colors @min-[200px]/pane-header:block",
+							"rounded p-1 transition-colors",
+							variant === "header"
+								? "hidden @min-[200px]/pane-header:block"
+								: "block",
 							isOpen
 								? "bg-secondary text-foreground"
 								: "text-muted-foreground/60 hover:text-muted-foreground",
 						)}
-					>
-						<SquarePen className="size-3.5" />
-					</button>
+						label={label}
+						icon={<SquarePen className="size-3.5" />}
+					/>
 				</TooltipTrigger>
 				<TooltipContent side="bottom">{label}</TooltipContent>
 			</Tooltip>

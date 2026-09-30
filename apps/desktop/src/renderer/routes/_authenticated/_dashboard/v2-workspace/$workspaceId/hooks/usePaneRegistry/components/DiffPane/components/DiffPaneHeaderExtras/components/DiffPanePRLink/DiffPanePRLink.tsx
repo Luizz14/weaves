@@ -1,8 +1,13 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { WorkspaceStore } from "@superset/panes";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
+import { TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { workspaceTrpc } from "@superset/workspace-client";
 import { LuArrowRight } from "react-icons/lu";
+import {
+	PaneActionButton,
+	PaneActionTooltip as Tooltip,
+	usePaneActionDock,
+} from "renderer/components/PaneActionButton";
 import { useWorkspace } from "renderer/routes/_authenticated/_dashboard/v2-workspace/providers/WorkspaceProvider";
 import { PRIcon, type PRState } from "renderer/screens/main/components/PRIcon";
 import type { StoreApi } from "zustand/vanilla";
@@ -22,6 +27,7 @@ interface DiffPanePRLinkProps {
  * can't resolve a repo without one.
  */
 export function DiffPanePRLink({ workspaceId, store }: DiffPanePRLinkProps) {
+	const inDock = usePaneActionDock();
 	const { t } = useLingui();
 	const { workspace } = useWorkspace();
 	// Same query key useDiffAnnotations polls at 10s from inside the pane, so
@@ -49,13 +55,17 @@ export function DiffPanePRLink({ workspaceId, store }: DiffPanePRLinkProps) {
 		<>
 			<Tooltip>
 				<TooltipTrigger asChild>
-					<button
+					<PaneActionButton
 						type="button"
 						onClick={() => openPullRequestPaneInStore(store, pr.number)}
 						aria-label={t({
 							message: `Open pull request #${pr.number}`,
 						})}
 						className="group flex h-5 shrink-0 items-center whitespace-nowrap gap-1.5 rounded-md border border-border/60 bg-muted/30 px-1.5 transition-colors hover:bg-accent/60"
+						label={t({
+							message: `Open pull request #${pr.number}`,
+						})}
+						icon={<PRIcon state={state} className="size-4" />}
 					>
 						<PRIcon state={state} className="size-3.5 shrink-0" />
 						{/* Verb-first label: the bare number read as a badge, not as
@@ -66,7 +76,7 @@ export function DiffPanePRLink({ workspaceId, store }: DiffPanePRLinkProps) {
 							})}
 						</span>
 						<LuArrowRight className="hidden size-3 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-px @min-[360px]/pane-header:block" />
-					</button>
+					</PaneActionButton>
 				</TooltipTrigger>
 				<TooltipContent side="bottom">
 					<Trans>Open pull request</Trans>
@@ -74,10 +84,12 @@ export function DiffPanePRLink({ workspaceId, store }: DiffPanePRLinkProps) {
 			</Tooltip>
 			{/* Rendered here, not by the parent, so no stray divider shows when
 			    the link is hidden (no PR / session workspace). */}
-			<div
-				className="mx-1 h-3.5 w-px shrink-0 bg-muted-foreground/30"
-				aria-hidden="true"
-			/>
+			{!inDock && (
+				<div
+					className="mx-1 h-3.5 w-px shrink-0 bg-muted-foreground/30"
+					aria-hidden="true"
+				/>
+			)}
 		</>
 	);
 }

@@ -15,6 +15,10 @@ import { workspaceTrpc } from "@superset/workspace-client";
 import { formatDistanceToNowStrict } from "date-fns";
 import { Bot, Check, EyeOff } from "lucide-react";
 import { useCallback, useState } from "react";
+import {
+	PaneActionButton,
+	usePaneActionDock,
+} from "renderer/components/PaneActionButton";
 import { usePageWatchers } from "renderer/hooks/host-service/usePageWatchers";
 import { useTerminalAgentBindings } from "renderer/hooks/host-service/useTerminalAgentBindings";
 import { StatusIndicator } from "renderer/screens/main/components/StatusIndicator";
@@ -33,6 +37,7 @@ export function PageWatcherMenu({
 	pageSlug,
 }: PageWatcherMenuProps) {
 	const { t } = useLingui();
+	const inDock = usePaneActionDock();
 	const bindings = useTerminalAgentBindings(workspaceId);
 	const watchers = usePageWatchers(workspaceId);
 	const assign = workspaceTrpc.pageWatch.assign.useMutation();
@@ -94,26 +99,36 @@ export function PageWatcherMenu({
 	return (
 		<DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
 			<DropdownMenuTrigger asChild>
-				<Button
-					variant="ghost"
-					size="sm"
-					className="h-6 gap-1 px-1.5 text-muted-foreground/60 text-xs hover:text-muted-foreground"
-					aria-label={t({
-						message: "Choose which agent watches this page for comments",
-					})}
-					disabled={assign.isPending || unwatch.isPending}
-				>
-					{watcher ? (
-						<>
-							<StatusIndicator status="working" />
-							<span className="max-w-24 truncate">
-								{watcher.agentId ?? label(watcher.terminalId)}
-							</span>
-						</>
-					) : (
-						<Bot className="size-4" />
-					)}
-				</Button>
+				{inDock ? (
+					<PaneActionButton
+						label={t({
+							message: "Choose which agent watches this page for comments",
+						})}
+						icon={<Bot className="size-4" />}
+						disabled={assign.isPending || unwatch.isPending}
+					/>
+				) : (
+					<Button
+						variant="ghost"
+						size="sm"
+						className="h-6 gap-1 px-1.5 text-muted-foreground/60 text-xs hover:text-muted-foreground"
+						aria-label={t({
+							message: "Choose which agent watches this page for comments",
+						})}
+						disabled={assign.isPending || unwatch.isPending}
+					>
+						{watcher ? (
+							<>
+								<StatusIndicator status="working" />
+								<span className="max-w-24 truncate">
+									{watcher.agentId ?? label(watcher.terminalId)}
+								</span>
+							</>
+						) : (
+							<Bot className="size-4" />
+						)}
+					</Button>
+				)}
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="w-64">
 				<DropdownMenuLabel className="font-normal text-muted-foreground text-xs">

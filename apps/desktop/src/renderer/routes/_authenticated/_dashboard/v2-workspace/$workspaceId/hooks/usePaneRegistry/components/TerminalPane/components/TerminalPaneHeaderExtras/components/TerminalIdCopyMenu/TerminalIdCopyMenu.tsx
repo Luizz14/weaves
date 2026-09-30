@@ -5,18 +5,25 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@superset/ui/dropdown-menu";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
+import { TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
+import { cn } from "@superset/ui/utils";
 import { Bot, Check, Copy, TerminalSquare } from "lucide-react";
 import { useState } from "react";
+import {
+	PaneActionButton,
+	PaneActionTooltip as Tooltip,
+} from "renderer/components/PaneActionButton";
 import { useTerminalAgentBinding } from "renderer/hooks/host-service/useTerminalAgentBindings";
 import { useCopyToClipboard } from "renderer/hooks/useCopyToClipboard";
 
 interface TerminalIdCopyMenuProps {
+	triggerClassName?: string;
 	workspaceId: string;
 	terminalId: string;
 }
 
 export function TerminalIdCopyMenu({
+	triggerClassName,
 	workspaceId,
 	terminalId,
 }: TerminalIdCopyMenuProps) {
@@ -41,8 +48,10 @@ export function TerminalIdCopyMenu({
 				});
 	// Secondary action: yields to split/close when the pane is squeezed
 	// below its minimum (the IDs stay reachable via the session dropdown).
-	const buttonClassName =
-		"hidden rounded p-1 text-muted-foreground/60 transition-colors hover:text-muted-foreground @min-[200px]/pane-header:block";
+	const buttonClassName = cn(
+		"hidden rounded p-1 text-muted-foreground/60 transition-colors hover:text-muted-foreground @min-[200px]/pane-header:block",
+		triggerClassName,
+	);
 
 	if (!agentSessionId) {
 		const terminalTooltipLabel = copied
@@ -56,7 +65,7 @@ export function TerminalIdCopyMenu({
 		return (
 			<Tooltip>
 				<TooltipTrigger asChild>
-					<button
+					<PaneActionButton
 						type="button"
 						aria-label={terminalTooltipLabel}
 						className={buttonClassName}
@@ -68,13 +77,15 @@ export function TerminalIdCopyMenu({
 								}),
 							)
 						}
-					>
-						{copied ? (
-							<Check className="size-3.5" />
-						) : (
-							<Copy className="size-3.5" />
-						)}
-					</button>
+						label={terminalTooltipLabel}
+						icon={
+							copied ? (
+								<Check className="size-3.5" />
+							) : (
+								<Copy className="size-3.5" />
+							)
+						}
+					/>
 				</TooltipTrigger>
 				<TooltipContent side="bottom">{terminalTooltipLabel}</TooltipContent>
 			</Tooltip>
@@ -86,17 +97,19 @@ export function TerminalIdCopyMenu({
 			<Tooltip>
 				<TooltipTrigger asChild>
 					<DropdownMenuTrigger asChild>
-						<button
+						<PaneActionButton
 							type="button"
 							aria-label={tooltipLabel}
 							className={buttonClassName}
-						>
-							{copied ? (
-								<Check className="size-3.5" />
-							) : (
-								<Copy className="size-3.5" />
-							)}
-						</button>
+							label={tooltipLabel}
+							icon={
+								copied ? (
+									<Check className="size-3.5" />
+								) : (
+									<Copy className="size-3.5" />
+								)
+							}
+						/>
 					</DropdownMenuTrigger>
 				</TooltipTrigger>
 				<TooltipContent side="bottom">{tooltipLabel}</TooltipContent>

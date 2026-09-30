@@ -20,7 +20,10 @@ import {
 import { FilesTab } from "./components/FilesTab";
 import { PRActionHeader } from "./components/PRActionHeader";
 import { SidebarHeader } from "./components/SidebarHeader";
-import { WorkspaceActionDock } from "./components/WorkspaceActionDock";
+import {
+	WorkspaceActionDock,
+	type WorkspacePanelActionTab,
+} from "./components/WorkspaceActionDock";
 import { type SelectedDiffTarget, useChangesTab } from "./hooks/useChangesTab";
 import { useReviewTab } from "./hooks/useReviewTab";
 import type { SidebarTabDefinition } from "./types";
@@ -60,6 +63,7 @@ interface WorkspaceSidebarProps {
 	gitActionContent: ReactNode;
 	openInActionContent: ReactNode;
 	commandsActionContent: ReactNode;
+	panelActionTab?: WorkspacePanelActionTab | null;
 	showActionDock: boolean;
 }
 
@@ -76,6 +80,7 @@ export function WorkspaceSidebar({
 	gitActionContent,
 	openInActionContent,
 	commandsActionContent,
+	panelActionTab,
 	showActionDock,
 }: WorkspaceSidebarProps) {
 	const { t } = useLingui();
@@ -197,6 +202,7 @@ export function WorkspaceSidebar({
 					gitContent={gitActionContent}
 					openInContent={openInActionContent}
 					commandsContent={commandsActionContent}
+					panelTab={panelActionTab}
 				/>
 			)}
 		</div>

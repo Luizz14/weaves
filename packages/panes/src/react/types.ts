@@ -66,6 +66,10 @@ export interface PaneTitleSource {
 }
 
 export interface PaneDefinition<TData> {
+	hideHeaderWhenSolo?: boolean;
+	renderSoloActions?(context: RendererContext<TData>): ReactNode;
+	hasSoloActions?(context: RendererContext<TData>): boolean;
+	getTabIcon?(context: RendererContext<TData>): ReactNode;
 	renderPane(context: RendererContext<TData>): ReactNode;
 	getTitle?(pane: Pane<TData>): string | undefined;
 	/**

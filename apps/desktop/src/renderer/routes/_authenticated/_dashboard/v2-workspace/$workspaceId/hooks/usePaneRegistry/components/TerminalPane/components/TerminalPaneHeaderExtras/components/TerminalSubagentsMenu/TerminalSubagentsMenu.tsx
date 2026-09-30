@@ -8,11 +8,13 @@ import {
 	DropdownMenuTrigger,
 } from "@superset/ui/dropdown-menu";
 import { cn } from "@superset/ui/utils";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Users } from "lucide-react";
+import { PaneActionButton } from "renderer/components/PaneActionButton";
 import { useTerminalAgentBinding } from "renderer/hooks/host-service/useTerminalAgentBindings";
 import type { SubagentPaneData } from "../../../../../../../../types";
 
 interface TerminalSubagentsMenuProps {
+	compact?: boolean;
 	workspaceId: string;
 	terminalId: string;
 	onOpenSubagent: (data: SubagentPaneData) => void;
@@ -24,6 +26,7 @@ interface TerminalSubagentsMenuProps {
  * transcript pane.
  */
 export function TerminalSubagentsMenu({
+	compact = true,
 	workspaceId,
 	terminalId,
 	onOpenSubagent,
@@ -43,20 +46,23 @@ export function TerminalSubagentsMenu({
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<button
+				<PaneActionButton
 					type="button"
 					aria-label={label}
 					className={cn(
 						// Lowest-priority header chip: first to go in a narrow pane so
 						// the action icons keep their room.
-						"mr-1 hidden h-5 items-center gap-0.5 rounded px-1.5 text-[10px] font-medium tabular-nums @min-[360px]/pane-header:flex",
+						"mr-1 h-5 items-center gap-0.5 rounded px-1.5 text-[10px] font-medium tabular-nums",
+						compact ? "hidden @min-[360px]/pane-header:flex" : "flex",
 						"text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground",
 						"data-[state=open]:bg-secondary data-[state=open]:text-foreground",
 					)}
+					label={label}
+					icon={<Users className="size-4" />}
 				>
 					<span>{label}</span>
 					<ChevronDown className="size-3" />
-				</button>
+				</PaneActionButton>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="w-56">
 				<DropdownMenuLabel className="text-[10px] font-medium tracking-wide text-muted-foreground uppercase">

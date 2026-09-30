@@ -1,9 +1,14 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { RendererContext } from "@superset/panes";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
+import { TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { useCallback } from "react";
 import { LuCheck, LuCopy } from "react-icons/lu";
 import { TbExternalLink, TbFolderOpen } from "react-icons/tb";
+import {
+	PaneActionButton,
+	PaneActionTooltip as Tooltip,
+	usePaneActionDock,
+} from "renderer/components/PaneActionButton";
 import { useCopyToClipboard } from "renderer/hooks/useCopyToClipboard";
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import { useOpenInExternalEditor } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/useOpenInExternalEditor";
@@ -21,6 +26,7 @@ export function FilePaneHeaderExtras({
 	context,
 	workspaceId,
 }: FilePaneHeaderExtrasProps) {
+	const inDock = usePaneActionDock();
 	const { t } = useLingui();
 	const data = context.pane.data as FilePaneData;
 	const { filePath } = data;
@@ -56,7 +62,13 @@ export function FilePaneHeaderExtras({
 	}, [filePath, openInFinderMutation]);
 
 	return (
-		<div className="flex min-w-0 items-center gap-1">
+		<div
+			className={
+				inDock
+					? "flex min-w-0 flex-col gap-0.5"
+					: "flex min-w-0 items-center gap-1"
+			}
+		>
 			{shouldShowToggle && activeView && (
 				<FileViewToggle
 					views={orderForToggle(views)}
@@ -67,20 +79,24 @@ export function FilePaneHeaderExtras({
 			)}
 			<Tooltip>
 				<TooltipTrigger asChild>
-					<button
+					<PaneActionButton
 						type="button"
 						aria-label={t({
 							message: "Copy path",
 						})}
 						onClick={() => void copyToClipboard(filePath)}
 						className="rounded p-1 text-muted-foreground/60 transition-colors hover:text-muted-foreground"
-					>
-						{copied ? (
-							<LuCheck className="size-3.5" />
-						) : (
-							<LuCopy className="size-3.5" />
-						)}
-					</button>
+						label={t({
+							message: "Copy path",
+						})}
+						icon={
+							copied ? (
+								<LuCheck className="size-3.5" />
+							) : (
+								<LuCopy className="size-3.5" />
+							)
+						}
+					/>
 				</TooltipTrigger>
 				<TooltipContent side="bottom">
 					{copied ? <Trans>Copied</Trans> : <Trans>Copy path</Trans>}
@@ -88,16 +104,18 @@ export function FilePaneHeaderExtras({
 			</Tooltip>
 			<Tooltip>
 				<TooltipTrigger asChild>
-					<button
+					<PaneActionButton
 						type="button"
 						aria-label={t({
 							message: "Reveal in Finder",
 						})}
 						onClick={handleOpenInFinder}
 						className="rounded p-1 text-muted-foreground/60 transition-colors hover:text-muted-foreground"
-					>
-						<TbFolderOpen className="size-3.5" />
-					</button>
+						label={t({
+							message: "Reveal in Finder",
+						})}
+						icon={<TbFolderOpen className="size-3.5" />}
+					/>
 				</TooltipTrigger>
 				<TooltipContent side="bottom">
 					<Trans>Reveal in Finder</Trans>
@@ -105,16 +123,18 @@ export function FilePaneHeaderExtras({
 			</Tooltip>
 			<Tooltip>
 				<TooltipTrigger asChild>
-					<button
+					<PaneActionButton
 						type="button"
 						aria-label={t({
 							message: "Open in editor",
 						})}
 						onClick={handleOpenExternal}
 						className="rounded p-1 text-muted-foreground/60 transition-colors hover:text-muted-foreground"
-					>
-						<TbExternalLink className="size-3.5" />
-					</button>
+						label={t({
+							message: "Open in editor",
+						})}
+						icon={<TbExternalLink className="size-3.5" />}
+					/>
 				</TooltipTrigger>
 				<TooltipContent side="bottom">
 					<Trans>Open in editor</Trans>

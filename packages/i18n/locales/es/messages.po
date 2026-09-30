@@ -2855,6 +2855,9 @@ msgstr "Examinar..."
 msgid "Browser"
 msgstr "Navegador"
 
+msgid "Browser actions"
+msgstr ""
+
 msgid "Browser Connection was refused"
 msgstr "Se rechazó la conexión del navegador"
 
@@ -11325,6 +11328,9 @@ msgstr "packages/ui/src/components/ui/kbd.tsx"
 msgid "Page"
 msgstr "Página"
 
+msgid "Page actions"
+msgstr ""
+
 msgid "Page by you"
 msgstr "Página creada por ti"
 
@@ -11393,6 +11399,9 @@ msgstr "Raíz del diseño de paneles: renderiza el árbol de paneles de un espac
 
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
+
+msgid "Panel"
+msgstr ""
 
 msgid "Paragraph"
 msgstr "Párrafo"
@@ -12105,6 +12114,9 @@ msgstr "Publicando como <0>{handle}</0>. Solo recuentos de tokens y nombres de m
 
 msgid "Pull request"
 msgstr "Pull request"
+
+msgid "Pull Request"
+msgstr ""
 
 #. placeholder {0}: data.prNumber
 #. placeholder {0}: pullRequest.prNumber

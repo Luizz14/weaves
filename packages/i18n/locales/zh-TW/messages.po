@@ -2855,6 +2855,9 @@ msgstr "瀏覽..."
 msgid "Browser"
 msgstr "瀏覽器"
 
+msgid "Browser actions"
+msgstr ""
+
 msgid "Browser Connection was refused"
 msgstr "瀏覽器連線被拒絕"
 
@@ -11325,6 +11328,9 @@ msgstr "packages/ui/src/components/ui/kbd.tsx"
 msgid "Page"
 msgstr "頁面"
 
+msgid "Page actions"
+msgstr ""
+
 msgid "Page by you"
 msgstr "你建立的頁面"
 
@@ -11393,6 +11399,9 @@ msgstr "面板佈局根節點：渲染工作區的面板樹"
 
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
+
+msgid "Panel"
+msgstr ""
 
 msgid "Paragraph"
 msgstr "段落"
@@ -12105,6 +12114,9 @@ msgstr "以<0>{handle}</0>的身份釋出。僅包含token數量和模型名稱�
 
 msgid "Pull request"
 msgstr "拉取請求"
+
+msgid "Pull Request"
+msgstr ""
 
 #. placeholder {0}: data.prNumber
 #. placeholder {0}: pullRequest.prNumber

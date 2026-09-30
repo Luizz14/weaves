@@ -2,12 +2,16 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { formatDate, formatPercent } from "@superset/i18n/format";
 import { AGENT_IDENTITY_LABELS } from "@superset/shared/agent-catalog";
 import { Popover, PopoverContent, PopoverTrigger } from "@superset/ui/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
+import { TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { cn } from "@superset/ui/utils";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, CircleHelp, Loader2, Zap } from "lucide-react";
 import { useState } from "react";
+import {
+	PaneActionButton,
+	PaneActionTooltip as Tooltip,
+} from "renderer/components/PaneActionButton";
 import { useHostUsageQuota } from "renderer/hooks/host-service/useHostUsageQuota";
 import { useTerminalAgentBinding } from "renderer/hooks/host-service/useTerminalAgentBindings";
 import { useWorkspaceHostUrl } from "renderer/hooks/host-service/useWorkspaceHostUrl";
@@ -91,9 +95,16 @@ export function TerminalAccountUsage({
 			<Tooltip open={open ? false : undefined}>
 				<TooltipTrigger asChild>
 					<PopoverTrigger asChild>
-						<button
+						<PaneActionButton
 							type="button"
 							data-testid="pane-account-usage"
+							iconClassName={
+								severity >= 90
+									? "text-red-500"
+									: severity >= 70
+										? "text-amber-500"
+										: undefined
+							}
 							aria-label={`${title}: ${summary}`}
 							className={cn(
 								"flex size-7 shrink-0 items-center justify-center rounded transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
@@ -104,21 +115,23 @@ export function TerminalAccountUsage({
 										? "text-amber-500 hover:text-amber-500"
 										: "text-muted-foreground/60 hover:text-muted-foreground",
 							)}
-						>
-							{state === "ready" && tightest ? (
-								<UsageProgressRing usedPercent={tightest.usedPercent} />
-							) : state === "stale" || state === "unavailable" ? (
-								<UsageProgressRing unavailable />
-							) : (
-								<Icon
-									aria-hidden
-									className={cn(
-										"size-4",
-										state === "loading" && "animate-spin",
-									)}
-								/>
-							)}
-						</button>
+							label={title}
+							icon={
+								state === "ready" && tightest ? (
+									<UsageProgressRing usedPercent={tightest.usedPercent} />
+								) : state === "stale" || state === "unavailable" ? (
+									<UsageProgressRing unavailable />
+								) : (
+									<Icon
+										aria-hidden
+										className={cn(
+											"size-4",
+											state === "loading" && "animate-spin",
+										)}
+									/>
+								)
+							}
+						/>
 					</PopoverTrigger>
 				</TooltipTrigger>
 				<TooltipContent side="bottom">

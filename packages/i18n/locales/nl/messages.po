@@ -2855,6 +2855,9 @@ msgstr "Bladeren..."
 msgid "Browser"
 msgstr "Browser"
 
+msgid "Browser actions"
+msgstr ""
+
 msgid "Browser Connection was refused"
 msgstr "De browserverbinding is geweigerd"
 
@@ -11325,6 +11328,9 @@ msgstr "packages/ui/src/components/ui/kbd.tsx"
 msgid "Page"
 msgstr "Pagina"
 
+msgid "Page actions"
+msgstr ""
+
 msgid "Page by you"
 msgstr "Pagina van jou"
 
@@ -11393,6 +11399,9 @@ msgstr "Root van de panelenlay-out: rendert de panelenboom van een werkruimte"
 
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
+
+msgid "Panel"
+msgstr ""
 
 msgid "Paragraph"
 msgstr "Alinea"
@@ -12105,6 +12114,9 @@ msgstr "Gepubliceerd als <0>{handle}</0>. Alleen tokenaantallen en modelnamen, g
 
 msgid "Pull request"
 msgstr "Pull request"
+
+msgid "Pull Request"
+msgstr ""
 
 #. placeholder {0}: data.prNumber
 #. placeholder {0}: pullRequest.prNumber

@@ -10,7 +10,7 @@ import {
 	Share2,
 	Trash2,
 } from "lucide-react";
-import { useCallback } from "react";
+import { type ReactNode, useCallback } from "react";
 import { cn } from "../../../../../../lib/utils";
 import { Button } from "../../../../../ui/button";
 import {
@@ -30,6 +30,7 @@ import type { PageHeaderPage, PageHeaderVersion } from "../../types";
 import { VersionThumbnail } from "./components/VersionThumbnail";
 
 interface PageTitleMenuProps {
+	trigger?: ReactNode;
 	page: PageHeaderPage;
 	versions: PageHeaderVersion[];
 	editable: boolean;
@@ -45,6 +46,7 @@ interface PageTitleMenuProps {
 }
 
 export function PageTitleMenu({
+	trigger,
 	page,
 	versions,
 	editable,
@@ -75,30 +77,32 @@ export function PageTitleMenu({
 	return (
 		<DropdownMenu open={open} onOpenChange={onOpenChange}>
 			<DropdownMenuTrigger asChild>
-				<Button
-					size="xs"
-					variant="ghost"
-					className={cn(
-						"min-w-0",
-						compact
-							? "-ml-1 h-5 gap-1 px-1 font-[inherit] text-xs"
-							: "gap-1.5 font-medium text-sm",
-					)}
-				>
-					<FileText
+				{trigger ?? (
+					<Button
+						size="xs"
+						variant="ghost"
 						className={cn(
-							"shrink-0 text-muted-foreground",
-							compact ? "size-3" : "size-3.5",
+							"min-w-0",
+							compact
+								? "-ml-1 h-5 gap-1 px-1 font-[inherit] text-xs"
+								: "gap-1.5 font-medium text-sm",
 						)}
-					/>
-					<span className="truncate">{page.title}</span>
-					<ChevronDown
-						className={cn(
-							"shrink-0 text-muted-foreground",
-							compact ? "size-2.5" : "size-3",
-						)}
-					/>
-				</Button>
+					>
+						<FileText
+							className={cn(
+								"shrink-0 text-muted-foreground",
+								compact ? "size-3" : "size-3.5",
+							)}
+						/>
+						<span className="truncate">{page.title}</span>
+						<ChevronDown
+							className={cn(
+								"shrink-0 text-muted-foreground",
+								compact ? "size-2.5" : "size-3",
+							)}
+						/>
+					</Button>
+				)}
 			</DropdownMenuTrigger>
 
 			<DropdownMenuContent align="start" className="w-56">

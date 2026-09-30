@@ -2855,6 +2855,9 @@ msgstr "Duyệt..."
 msgid "Browser"
 msgstr "Trình duyệt"
 
+msgid "Browser actions"
+msgstr ""
+
 msgid "Browser Connection was refused"
 msgstr "Kết nối của trình duyệt bị từ chối"
 
@@ -11325,6 +11328,9 @@ msgstr "packages/ui/src/components/ui/kbd.tsx"
 msgid "Page"
 msgstr "Trang"
 
+msgid "Page actions"
+msgstr ""
+
 msgid "Page by you"
 msgstr "Trang do bạn tạo"
 
@@ -11393,6 +11399,9 @@ msgstr "Gốc bố cục khung: dựng cây khung của một workspace"
 
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
+
+msgid "Panel"
+msgstr ""
 
 msgid "Paragraph"
 msgstr "Đoạn văn"
@@ -12105,6 +12114,9 @@ msgstr "Đang đăng với tên <0>{handle}</0>. Chỉ số token và tên mô h
 
 msgid "Pull request"
 msgstr "Pull request"
+
+msgid "Pull Request"
+msgstr ""
 
 #. placeholder {0}: data.prNumber
 #. placeholder {0}: pullRequest.prNumber

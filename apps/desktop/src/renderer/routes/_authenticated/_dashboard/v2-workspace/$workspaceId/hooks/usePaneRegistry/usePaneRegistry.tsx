@@ -76,8 +76,11 @@ import { openSubagentPaneInStore } from "../../utils/openSubagentPaneInStore";
 import type { OpenReviewDiff } from "../useReviewCommentNavigation";
 import type { TerminalLauncher } from "../useV2TerminalLauncher";
 import { BrowserPane, BrowserPaneToolbar } from "./components/BrowserPane";
+import { BrowserPaneActions } from "./components/BrowserPane/components/BrowserPaneActions";
+import { BrowserTabFavicon } from "./components/BrowserPane/components/BrowserTabFavicon";
 import { ChatV3Pane } from "./components/ChatV3Pane";
 import { CodexChatPane } from "./components/CodexChatPane";
+import { CodexChatTabIcon } from "./components/CodexChatPane/components/CodexChatTabIcon";
 import { CommentPane } from "./components/CommentPane";
 import { CommentPaneHeaderExtras } from "./components/CommentPane/components/CommentPaneHeaderExtras";
 import { CommentPaneTitle } from "./components/CommentPane/components/CommentPaneTitle";
@@ -97,8 +100,10 @@ import { SubagentPane } from "./components/SubagentPane";
 import { TerminalPane } from "./components/TerminalPane";
 import { TerminalPaneHeaderExtras } from "./components/TerminalPane/components/TerminalPaneHeaderExtras";
 import { TerminalPaneIcon } from "./components/TerminalPane/components/TerminalPaneIcon";
+import { TerminalPaneSoloActions } from "./components/TerminalPane/components/TerminalPaneSoloActions";
 import { TerminalSessionDropdown } from "./components/TerminalPane/components/TerminalSessionDropdown";
 import { terminalContextMenuLinkStore } from "./components/TerminalPane/contextMenuLinkStore";
+import { attachCreatedAgentPane } from "./utils/attachCreatedAgentPane";
 import { openInActions } from "./utils/openInActions";
 import { pagePaneLabel } from "./utils/pagePaneLabel";
 
@@ -226,12 +231,17 @@ export function usePaneRegistry({
 	);
 
 	const createNewAgentSession = useCallback(
-		async (input: {
-			configId: string;
-			placement: "split-pane" | "new-tab";
-			prompt: string;
-			forkSessionId?: string;
-		}): Promise<{ terminalId: string } | null> => {
+		async (
+			input: {
+				configId: string;
+				placement: "split-pane" | "new-tab";
+				prompt: string;
+				forkSessionId?: string;
+			},
+			sourcePaneId?: string,
+		): Promise<{ terminalId: string } | null> => {
+			const targetPaneId =
+				sourcePaneId ?? store.getState().getActivePane()?.pane.id;
 			try {
 				// Host pipeline bakes the prompt into the initialCommand using the
 				// agent's argv/stdin transport — no follow-up writeInput needed,
@@ -253,17 +263,17 @@ export function usePaneRegistry({
 					return null;
 				}
 				const terminalId = result.sessionId;
-				const state = store.getState();
 				const pane = {
 					kind: "terminal" as const,
 					titleOverride: result.label,
 					data: { terminalId } as TerminalPaneData,
 				};
-				if (input.placement === "split-pane" && state.activeTabId) {
-					state.addPane({ tabId: state.activeTabId, pane });
-				} else {
-					state.addTab({ panes: [pane] });
-				}
+				attachCreatedAgentPane({
+					store,
+					sourcePaneId: targetPaneId,
+					placement: input.placement,
+					pane,
+				});
 				return { terminalId };
 			} catch (error) {
 				const description = errorMessage(
@@ -294,6 +304,10 @@ export function usePaneRegistry({
 	return useMemo<PaneRegistry<PaneViewerData>>(
 		() => ({
 			file: {
+				hideHeaderWhenSolo: true,
+				renderSoloActions: (ctx) => (
+					<FilePaneHeaderExtras context={ctx} workspaceId={workspaceId} />
+				),
 				getIcon: (ctx: RendererContext<PaneViewerData>) => {
 					const data = ctx.pane.data as FilePaneData;
 					const name = getFileName(data.filePath);
@@ -385,6 +399,7 @@ export function usePaneRegistry({
 					),
 			},
 			"git-history": {
+				hideHeaderWhenSolo: true,
 				getIcon: () => <GitGraph className="size-3.5" />,
 				getTitle: () => t({ message: "Git History" }),
 				renderPane: (ctx) => (
@@ -395,6 +410,7 @@ export function usePaneRegistry({
 				),
 			},
 			"git-file": {
+				hideHeaderWhenSolo: true,
 				getIcon: (ctx) => (
 					<FileIcon
 						fileName={getFileName((ctx.pane.data as GitFilePaneData).filePath)}
@@ -411,6 +427,10 @@ export function usePaneRegistry({
 				onHeaderClick: (ctx) => ctx.actions.pin(),
 			},
 			diff: {
+				hideHeaderWhenSolo: true,
+				renderSoloActions: (ctx) => (
+					<DiffPaneHeaderExtras workspaceId={workspaceId} store={ctx.store} />
+				),
 				getIcon: () => <GitCompareArrows className="size-3.5" />,
 				getTitle: () => t({ message: "Changes" }),
 				renderPane: (ctx: RendererContext<PaneViewerData>) => (
@@ -437,6 +457,18 @@ export function usePaneRegistry({
 					),
 			},
 			terminal: {
+				hideHeaderWhenSolo: true,
+				renderSoloActions: (ctx) => (
+					<TerminalPaneSoloActions
+						context={ctx}
+						workspaceId={workspaceId}
+						launcher={launcher}
+						onCreateNewAgentSession={(input) =>
+							createNewAgentSession(input, ctx.pane.id)
+						}
+						onOpenSubagent={(data) => openSubagentPaneInStore(ctx.store, data)}
+					/>
+				),
 				getIcon: (ctx) => {
 					const { terminalId } = ctx.pane.data as TerminalPaneData;
 					return (
@@ -707,6 +739,16 @@ export function usePaneRegistry({
 				},
 			},
 			browser: {
+				renderSoloActions: (ctx) => <BrowserPaneActions ctx={ctx} />,
+				getTabIcon: (ctx) => {
+					const data = ctx.pane.data as BrowserPaneData;
+					return (
+						<BrowserTabFavicon
+							key={`${data.url}|${data.faviconUrl ?? "none"}`}
+							src={data.faviconUrl ?? null}
+						/>
+					);
+				},
 				getIcon: () => <Globe className="size-3.5" />,
 				getTitle: (pane) => {
 					const data = pane.data as BrowserPaneData;
@@ -746,6 +788,7 @@ export function usePaneRegistry({
 			...(desktopUrl
 				? {
 						desktop: {
+							hideHeaderWhenSolo: true,
 							getIcon: () => <Monitor className="size-3.5" />,
 							getTitle: () =>
 								t({
@@ -756,6 +799,8 @@ export function usePaneRegistry({
 					}
 				: {}),
 			"codex-chat": {
+				hideHeaderWhenSolo: true,
+				getTabIcon: () => <CodexChatTabIcon />,
 				getIcon: (ctx) => {
 					const status = (ctx.pane.data as CodexChatPaneData).status;
 					return (
@@ -805,6 +850,7 @@ export function usePaneRegistry({
 			...(isChatV3Enabled
 				? {
 						"chat-v3": {
+							hideHeaderWhenSolo: true,
 							getIcon: () => <MessageSquare className="size-3.5" />,
 							getTitle: () =>
 								t({
@@ -840,6 +886,12 @@ export function usePaneRegistry({
 					}
 				: {}),
 			comment: {
+				hideHeaderWhenSolo: true,
+				renderSoloActions: (ctx) => (
+					<div className="flex flex-col gap-0.5">
+						<CommentPaneHeaderExtras context={ctx} />
+					</div>
+				),
 				getIcon: (ctx: RendererContext<PaneViewerData>) => {
 					const data = ctx.pane.data as CommentPaneData;
 					if (!data.avatarUrl) {
@@ -879,6 +931,17 @@ export function usePaneRegistry({
 					),
 			},
 			"pull-request": {
+				hideHeaderWhenSolo: true,
+				hasSoloActions: (ctx) =>
+					((ctx.pane.data as PullRequestPaneData).projectId ??
+						workspace.projectId) != null,
+				renderSoloActions: (ctx) => (
+					<div className="flex flex-col gap-0.5">
+						<PullRequestPaneHeaderExtras
+							data={ctx.pane.data as PullRequestPaneData}
+						/>
+					</div>
+				),
 				getIcon: () => <GitPullRequest className="size-3.5" />,
 				getTitle: (pane) => {
 					const data = pane.data as PullRequestPaneData;
@@ -909,6 +972,7 @@ export function usePaneRegistry({
 					),
 			},
 			[SUBAGENT_PANE_KIND]: {
+				hideHeaderWhenSolo: true,
 				getIcon: () => <LuBot className="size-3.5" />,
 				getTitle: (pane) => {
 					const { agentType } = pane.data as SubagentPaneData;
@@ -930,6 +994,23 @@ export function usePaneRegistry({
 			...(isPagesEnabled
 				? {
 						page: {
+							hideHeaderWhenSolo: true,
+							renderSoloActions: (ctx: RendererContext<PaneViewerData>) => (
+								<div className="flex min-w-0 flex-col gap-0.5">
+									<PagePaneTitle
+										data={ctx.pane.data as PagePaneData}
+										paneId={ctx.pane.id}
+										onClose={ctx.actions.close}
+									/>
+									<div className="flex flex-col gap-0.5">
+										<PagePaneHeaderExtras
+											data={ctx.pane.data as PagePaneData}
+											paneId={ctx.pane.id}
+											workspaceId={workspaceId}
+										/>
+									</div>
+								</div>
+							),
 							getIcon: () => <FileText className="size-3.5" />,
 							getTitle: (pane) => pagePaneLabel(pane.data as PagePaneData),
 							renderTitle: (ctx: RendererContext<PaneViewerData>) => (
@@ -971,6 +1052,7 @@ export function usePaneRegistry({
 					}
 				: {}),
 			devtools: {
+				hideHeaderWhenSolo: true,
 				getTitle: () =>
 					t({
 						message: "DevTools",
@@ -988,6 +1070,7 @@ export function usePaneRegistry({
 		[
 			store,
 			workspaceId,
+			workspace.projectId,
 			isChatV3Enabled,
 			isPagesEnabled,
 			clearWorkspaceRunTerminal,

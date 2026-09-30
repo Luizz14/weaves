@@ -2855,6 +2855,9 @@ msgstr "Przeglądaj..."
 msgid "Browser"
 msgstr "Przeglądarka"
 
+msgid "Browser actions"
+msgstr ""
+
 msgid "Browser Connection was refused"
 msgstr "Przeglądarka odrzuciła połączenie"
 
@@ -11325,6 +11328,9 @@ msgstr "packages/ui/src/components/ui/kbd.tsx"
 msgid "Page"
 msgstr "Strona"
 
+msgid "Page actions"
+msgstr ""
+
 msgid "Page by you"
 msgstr "Strona utworzona przez Ciebie"
 
@@ -11393,6 +11399,9 @@ msgstr "Korzeń układu paneli: renderuje drzewo paneli obszaru roboczego"
 
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
+
+msgid "Panel"
+msgstr ""
 
 msgid "Paragraph"
 msgstr "Akapit"
@@ -12105,6 +12114,9 @@ msgstr "Publikujesz jako <0>{handle}</0>. Tylko liczby tokenów i nazwy modeli, 
 
 msgid "Pull request"
 msgstr "Pull request"
+
+msgid "Pull Request"
+msgstr ""
 
 #. placeholder {0}: data.prNumber
 #. placeholder {0}: pullRequest.prNumber

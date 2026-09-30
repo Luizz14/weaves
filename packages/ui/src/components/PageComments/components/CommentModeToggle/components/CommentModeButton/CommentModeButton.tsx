@@ -2,9 +2,12 @@
 
 import { useLingui } from "@lingui/react/macro";
 import { SquareMousePointer } from "lucide-react";
+import { cn } from "../../../../../../lib/utils";
 import { Toggle } from "../../../../../ui/toggle";
 
 interface CommentModeButtonProps {
+	className?: string;
+	showLabel?: boolean;
 	enabled: boolean;
 	openCount: number;
 	onToggle: () => void;
@@ -12,6 +15,8 @@ interface CommentModeButtonProps {
 }
 
 export function CommentModeButton({
+	className,
+	showLabel = false,
 	enabled,
 	openCount,
 	onToggle,
@@ -49,9 +54,10 @@ export function CommentModeButton({
 			onPressedChange={onToggle}
 			aria-label={label}
 			title={label}
-			className="h-7 min-w-7 gap-1.5 px-2"
+			className={cn("h-7 min-w-7 gap-1.5 px-2", className)}
 		>
-			<SquareMousePointer className="size-3.5" />
+			<SquareMousePointer className="size-3.5 shrink-0" />
+			{showLabel && <span className="min-w-0 truncate">{label}</span>}
 			{openCount > 0 ? (
 				<span className="font-medium text-xs tabular-nums">{openCount}</span>
 			) : null}

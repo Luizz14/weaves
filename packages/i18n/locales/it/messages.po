@@ -2855,6 +2855,9 @@ msgstr "Sfoglia..."
 msgid "Browser"
 msgstr "Browser"
 
+msgid "Browser actions"
+msgstr ""
+
 msgid "Browser Connection was refused"
 msgstr "La connessione del browser è stata rifiutata"
 
@@ -11325,6 +11328,9 @@ msgstr "packages/ui/src/components/ui/kbd.tsx"
 msgid "Page"
 msgstr "Pagina"
 
+msgid "Page actions"
+msgstr ""
+
 msgid "Page by you"
 msgstr "Pagina creata da te"
 
@@ -11393,6 +11399,9 @@ msgstr "Radice del layout dei pannelli: renderizza l'albero dei pannelli di un w
 
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
+
+msgid "Panel"
+msgstr ""
 
 msgid "Paragraph"
 msgstr "Paragrafo"
@@ -12105,6 +12114,9 @@ msgstr "Pubblichi come <0>{handle}</0>. Solo conteggi di token e nomi dei modell
 
 msgid "Pull request"
 msgstr "Pull request"
+
+msgid "Pull Request"
+msgstr ""
 
 #. placeholder {0}: data.prNumber
 #. placeholder {0}: pullRequest.prNumber

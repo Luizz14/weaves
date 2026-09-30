@@ -5,6 +5,11 @@ import {
 	PageSharePopover,
 } from "@superset/ui/page-comments";
 import { Share2 } from "lucide-react";
+import {
+	PANE_DOCK_ACTION_CLASS_NAME,
+	PaneActionButton,
+	usePaneActionDock,
+} from "renderer/components/PaneActionButton";
 import { usePageHeaderData } from "renderer/routes/_authenticated/_dashboard/hooks/usePageHeaderData";
 import type { PagePaneData } from "../../../../types";
 import { usePagePaneUi } from "../../hooks/usePagePaneUi";
@@ -23,6 +28,7 @@ export function PagePaneHeaderExtras({
 	workspaceId,
 }: PagePaneHeaderExtrasProps) {
 	const { t } = useLingui();
+	const inDock = usePaneActionDock();
 	const {
 		page,
 		versions,
@@ -48,7 +54,9 @@ export function PagePaneHeaderExtras({
 				/>
 			) : null}
 			<CommentModeButton
-				compact
+				compact={!inDock}
+				showLabel={inDock}
+				className={inDock ? PANE_DOCK_ACTION_CLASS_NAME : undefined}
 				enabled={commentsEnabled}
 				openCount={threads.filter((thread) => !thread.resolved).length}
 				onToggle={() => setCommentsEnabled(!commentsEnabled)}
@@ -66,19 +74,26 @@ export function PagePaneHeaderExtras({
 					onSetVisibility={onSetVisibility}
 					onSetSharedVersion={onSetSharedVersion}
 				>
-					<Button
-						variant="ghost"
-						size="icon"
-						className="size-6 p-0 text-muted-foreground/60 hover:text-muted-foreground"
-						aria-label={t({
-							message: "Share page",
-						})}
-						title={t({
-							message: "Share page",
-						})}
-					>
-						<Share2 className="size-3.5" />
-					</Button>
+					{inDock ? (
+						<PaneActionButton
+							label={t({ message: "Share page" })}
+							icon={<Share2 className="size-4" />}
+						/>
+					) : (
+						<Button
+							variant="ghost"
+							size="icon"
+							className="size-6 p-0 text-muted-foreground/60 hover:text-muted-foreground"
+							aria-label={t({
+								message: "Share page",
+							})}
+							title={t({
+								message: "Share page",
+							})}
+						>
+							<Share2 className="size-3.5" />
+						</Button>
+					)}
 				</PageSharePopover>
 			) : null}
 		</>

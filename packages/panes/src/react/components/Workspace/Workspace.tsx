@@ -4,6 +4,7 @@ import { useDragLayer } from "react-dnd";
 import { useStore } from "zustand";
 import type { Pane } from "../../../types";
 import type { WorkspaceProps } from "../../types";
+import { SoloPaneActions } from "./components/SoloPaneActions";
 import { Tab } from "./components/Tab";
 import { TabBar } from "./components/TabBar";
 import { TAB_DRAG_TYPE } from "./components/TabBar/components/TabItem";
@@ -87,6 +88,10 @@ export function Workspace<TData>({
 			console.error("onAfterCloseTab threw", err);
 		}
 	};
+	const soloPane =
+		displayedTab?.layout?.type === "pane"
+			? displayedTab.panes[displayedTab.layout.paneId]
+			: undefined;
 
 	return (
 		<div
@@ -96,6 +101,7 @@ export function Workspace<TData>({
 			)}
 		>
 			<TabBar
+				store={store}
 				tabs={tabs}
 				registry={registry}
 				activeTabId={activeTabId}
@@ -123,7 +129,24 @@ export function Workspace<TData>({
 				renderTabIcon={renderTabIcon}
 				renderAddTabMenu={renderAddTabMenu}
 				renderTabBarLeading={renderTabBarLeading}
-				renderTabBarTrailing={renderTabBarTrailing}
+				renderTabBarTrailing={() => (
+					<div className="flex items-center gap-2">
+						{displayedTab &&
+							soloPane &&
+							(registry[soloPane.kind]?.hideHeaderWhenSolo ||
+								registry[soloPane.kind]?.renderSoloActions) && (
+								<SoloPaneActions
+									key={soloPane.id}
+									pane={soloPane}
+									store={store}
+									tab={displayedTab}
+									registry={registry}
+									paneActions={paneActions}
+								/>
+							)}
+						{renderTabBarTrailing?.()}
+					</div>
+				)}
 				renderTabAccessory={renderTabAccessory}
 			/>
 			{renderBelowTabBar?.()}

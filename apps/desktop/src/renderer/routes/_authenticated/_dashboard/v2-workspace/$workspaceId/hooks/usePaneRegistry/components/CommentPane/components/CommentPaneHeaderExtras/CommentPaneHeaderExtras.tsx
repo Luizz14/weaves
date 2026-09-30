@@ -1,9 +1,16 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { RendererContext } from "@superset/panes";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
+import { TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
+import { cn } from "@superset/ui/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import { LuCheck, LuCopy } from "react-icons/lu";
+import {
+	PANE_DOCK_ACTION_CLASS_NAME,
+	PaneActionButton,
+	PaneActionTooltip as Tooltip,
+	usePaneActionDock,
+} from "renderer/components/PaneActionButton";
 import { electronTrpcClient } from "renderer/lib/trpc-client";
 import type { CommentPaneData, PaneViewerData } from "../../../../../../types";
 
@@ -15,6 +22,7 @@ export function CommentPaneHeaderExtras({
 	context,
 }: CommentPaneHeaderExtrasProps) {
 	const { t } = useLingui();
+	const inDock = usePaneActionDock();
 	const data = context.pane.data as CommentPaneData;
 	const [copied, setCopied] = useState(false);
 	const copyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -57,9 +65,19 @@ export function CommentPaneHeaderExtras({
 							aria-label={t({
 								message: "Open on GitHub",
 							})}
-							className="rounded p-1 text-muted-foreground/60 transition-colors hover:text-muted-foreground"
+							className={cn(
+								"rounded p-1 text-muted-foreground/60 transition-colors hover:text-muted-foreground",
+								inDock && PANE_DOCK_ACTION_CLASS_NAME,
+								inDock &&
+									"[&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-muted-foreground",
+							)}
 						>
 							<FaGithub className="size-3.5" />
+							{inDock && (
+								<span className="min-w-0 truncate">
+									<Trans>Open on GitHub</Trans>
+								</span>
+							)}
 						</a>
 					</TooltipTrigger>
 					<TooltipContent side="bottom">
@@ -69,20 +87,29 @@ export function CommentPaneHeaderExtras({
 			)}
 			<Tooltip>
 				<TooltipTrigger asChild>
-					<button
+					<PaneActionButton
 						type="button"
 						aria-label={t({
 							message: "Copy comment",
 						})}
 						onClick={handleCopyAll}
-						className="rounded p-1 text-muted-foreground/60 transition-colors hover:text-muted-foreground"
-					>
-						{copied ? (
-							<LuCheck className="size-3.5" />
-						) : (
-							<LuCopy className="size-3.5" />
+						className={cn(
+							"rounded p-1 text-muted-foreground/60 transition-colors hover:text-muted-foreground",
+							inDock && PANE_DOCK_ACTION_CLASS_NAME,
+							inDock &&
+								"[&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-muted-foreground",
 						)}
-					</button>
+						label={t({
+							message: "Copy comment",
+						})}
+						icon={
+							copied ? (
+								<LuCheck className="size-3.5" />
+							) : (
+								<LuCopy className="size-3.5" />
+							)
+						}
+					/>
 				</TooltipTrigger>
 				<TooltipContent side="bottom">
 					{copied ? <Trans>Copied</Trans> : <Trans>Copy comment</Trans>}

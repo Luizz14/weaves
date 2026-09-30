@@ -2855,6 +2855,9 @@ msgstr "Parcourir..."
 msgid "Browser"
 msgstr "Navigateur"
 
+msgid "Browser actions"
+msgstr ""
+
 msgid "Browser Connection was refused"
 msgstr "La connexion du navigateur a été refusée"
 
@@ -11325,6 +11328,9 @@ msgstr "packages/ui/src/components/ui/kbd.tsx"
 msgid "Page"
 msgstr "Page"
 
+msgid "Page actions"
+msgstr ""
+
 msgid "Page by you"
 msgstr "Page créée par vous"
 
@@ -11393,6 +11399,9 @@ msgstr "Racine de la disposition des volets : affiche l'arborescence des volets 
 
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
+
+msgid "Panel"
+msgstr ""
 
 msgid "Paragraph"
 msgstr "Paragraphe"
@@ -12105,6 +12114,9 @@ msgstr "Publication sous <0>{handle}</0>. Uniquement le nombre de tokens et les 
 
 msgid "Pull request"
 msgstr "Pull request"
+
+msgid "Pull Request"
+msgstr ""
 
 #. placeholder {0}: data.prNumber
 #. placeholder {0}: pullRequest.prNumber

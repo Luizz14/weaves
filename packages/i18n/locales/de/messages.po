@@ -2855,6 +2855,9 @@ msgstr "Durchsuchen..."
 msgid "Browser"
 msgstr "Browser"
 
+msgid "Browser actions"
+msgstr ""
+
 msgid "Browser Connection was refused"
 msgstr "Die Browser-Verbindung wurde abgelehnt"
 
@@ -11325,6 +11328,9 @@ msgstr "packages/ui/src/components/ui/kbd.tsx"
 msgid "Page"
 msgstr "Seite"
 
+msgid "Page actions"
+msgstr ""
+
 msgid "Page by you"
 msgstr "Seite von dir"
 
@@ -11393,6 +11399,9 @@ msgstr "Wurzel des Bereichs-Layouts: rendert den Bereichsbaum eines Arbeitsberei
 
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
+
+msgid "Panel"
+msgstr ""
 
 msgid "Paragraph"
 msgstr "Absatz"
@@ -12105,6 +12114,9 @@ msgstr "Veröffentlichung als <0>{handle}</0>. Nur Token-Zahlen und Modellnamen,
 
 msgid "Pull request"
 msgstr "Pull Request"
+
+msgid "Pull Request"
+msgstr ""
 
 #. placeholder {0}: data.prNumber
 #. placeholder {0}: pullRequest.prNumber
