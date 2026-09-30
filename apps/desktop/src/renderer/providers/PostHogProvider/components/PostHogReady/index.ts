@@ -1,0 +1,1 @@
+export { PostHogReady } from "./PostHogReady";

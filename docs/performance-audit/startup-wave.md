@@ -40,3 +40,40 @@ release build/package and validate:native-runtime plus check:pty-daemon-bundle
 passed, with ad-hoc signing and no notarization/publication. Startup behavior was
 checked via source/event/filesystem regressions, not live signed-in profile QA
 or launch-time/CPU/RSS measurements.
+
+## P07: telemetry-independent content, preserving cached flags
+
+The user approved the public PostHog React context bootstrap after inspection
+showed that simply mounting the tree earlier can leave feature-flag hooks with
+an uninitialized initial value offline. The provider now always renders content
+and publishes the same client through the SDK's public PostHogContext. On the
+existing initialization effect's completion, it supplies the supported bootstrap
+flags/payloads to React consumers. Getter-backed bootstrap reads current SDK
+cache values instead of retaining an account's initial snapshot. It neither
+changes SDK persistence/config nor duplicates the PostHog client.
+
+Only UserIdentifier, SurfaceTagger, TelemetrySync and LocaleTagger wait behind
+PostHogReady. The latter remains inside I18nProvider. AuthProvider, locale
+readiness, desktop notices and their session/JWT/organization gates retain their
+existing implementations. Content remains in the same tree slot across readiness
+updates; it is not remounted to refresh the flags.
+
+Two regression tests passed for the first render and current cache/reset values.
+A standalone Electron fixture used the real public PostHog React flag/payload
+hooks and the actual provider, with a synthetic offline client. It passed content
+commit before initialization, cached flags/payloads without a network response,
+later flag updates, empty cache after reset, preserved input/node identity and
+initialization failure without a blank screen/remount. Telemetry effects still
+start after initialization and desktop_opened. This is component-level synthetic
+evidence, not a real authenticated SDK/account-switch/backend QA result.
+
+| Structural behavior | Before | After |
+| --- | --- | --- |
+| Content before initialization effect | Absent | Mounted |
+| Telemetry effects | After initialization | After initialization |
+| Cached flags/payloads before network response | Read on delayed tree mount | Forwarded through public React bootstrap |
+
+Desktop suite: 4077 passed, 8 failed, 2 errors, with no new failing names relative
+to P04. Typecheck retains the same 12 diagnostics and adds none. Biome/diff checks
+and the arm64 release build/package passed, including both required native/PTY
+guards. No startup/CPU/RSS benchmark or production telemetry event was measured.
