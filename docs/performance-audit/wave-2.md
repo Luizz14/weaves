@@ -40,3 +40,32 @@ Validation:
 Foreign platforms/architectures received filter-compatibility tests, not native
 Windows/Linux or x64 execution on this arm64 macOS machine. Real Sentry upload and
 symbolication remain the explicitly deferred validation from wave 1.
+
+## P06
+
+Automation list content now lives under the Settings route's components rather
+than being exported by the legacy redirect route. The redirect remains, and the
+existing router code splitting can isolate the actual content and dependencies.
+The task creation dialog is loaded only when opened, with speculative import on
+pointer/focus intent; its existing editor, validation, reset and submission code
+is retained. Rich-text and emoji dependencies follow these existing route/dialog
+boundaries instead of changing editor initialization or paste semantics.
+
+The shared Mermaid plugin retains its synchronous `getMermaid`/`initialize` API
+and asynchronous `render` API, loading the vendor engine when a diagram renders.
+Theme/config forwarding, error propagation and the existing native SVG text-label
+policy remain. No auth/telemetry gating was changed.
+
+Validation: eight Mermaid/message tests and nine task navigation/wiring tests
+passed. A standalone Chromium/Electron harness rendered real diagrams in dark and
+default themes and exported nonempty PNGs without foreignObject labels. It did
+not start Superset or access the user profile. The compiled renderer's transitive
+static import closure contains neither Mermaid's engine/plugin nor Tiptap emoji
+or CodeMirror; dynamic diagram/editor chunks remain in the build.
+
+Arm64 release build/package and both native guards passed. Desktop suite:
+4,043 passed, 8 failed, 2 errors; every remaining failing test was already present
+in the P03 baseline. Typecheck retained the same 12 preexisting diagnostics and
+introduced none. The existing dialog/automation business logic was not submitted
+against a live backend as part of these checks. No performance benchmark or
+startup/CPU/RSS improvement number is claimed.
