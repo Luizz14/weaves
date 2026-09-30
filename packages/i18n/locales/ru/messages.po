@@ -1535,9 +1535,6 @@ msgstr "Добавь тесты для самого рискованного н�
 msgid "Add tests where they're missing"
 msgstr "Добавить тесты там, где их нет"
 
-msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
-msgstr "Перед созданием сборки добавьте токен Bitrise в настройки Azure DevOps этого проекта."
-
 msgid "Add this build to mocks"
 msgstr "Добавить эту сборку в моки"
 
@@ -3911,9 +3908,6 @@ msgstr "Настройка поведения веток git и worktree"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Настройте, как задачи синхронизируются между Superset и Linear."
 
-msgid "Configure mobile build generation in this project's Azure DevOps settings."
-msgstr "Настройте создание мобильных сборок в параметрах Azure DevOps этого проекта."
-
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "Настройка поведения терминала и переиспользуемых скриптов терминала"
 
@@ -3979,9 +3973,6 @@ msgstr "Подключите интеграцию, чтобы использов
 
 msgid "Connect any AI agent to Superset."
 msgstr "Подключите любого AI-агента к Superset."
-
-msgid "Connect Azure DevOps"
-msgstr "Connect Azure DevOps"
 
 msgid "Connect Azure DevOps board"
 msgstr "Connect Azure DevOps board"
@@ -5099,6 +5090,9 @@ msgstr "Настройте внешний вид Superset на своём уст
 #. placeholder {0}: showHotkeysKeys.map((key) => ( <Kbd key={key}>{key}</Kbd> ))
 msgid "Customize keyboard shortcuts for your workflow. Press <0>{0}</0> to open this page anytime."
 msgstr "Настройте горячие клавиши под свой процесс. Нажмите <0>{0}</0>, чтобы открыть эту страницу в любой момент."
+
+msgid "Customize mobile build"
+msgstr ""
 
 msgid "Cyan"
 msgstr "Голубой"
@@ -8880,9 +8874,6 @@ msgstr "Загружаем ещё..."
 msgid "Loading more…"
 msgstr "Загружаем ещё…"
 
-msgid "Loading project build settings…"
-msgstr "Загрузка настроек сборки проекта…"
-
 msgid "Loading project…"
 msgstr "Загрузка проекта…"
 
@@ -10073,9 +10064,6 @@ msgstr "Нет известных создателей"
 
 msgid "No labels"
 msgstr "Без меток"
-
-msgid "No linked worktree"
-msgstr "Нет связанного worktree"
 
 msgid "No live sessions"
 msgstr "Нет активных сессий"
@@ -13856,9 +13844,6 @@ msgstr "Выбрать команды"
 msgid "Select terminal script directory"
 msgstr "Выберите папку скрипта терминала"
 
-msgid "Select worktree"
-msgstr "Выберите worktree"
-
 msgid "Select worktree location"
 msgstr "Выберите расположение worktree"
 
@@ -16251,9 +16236,6 @@ msgstr "Хост этой рабочей области офлайн"
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "Хост этого рабочего пространства работает на более старой службе хоста, чем поддерживает приложение. Обновите её, чтобы переподключиться; рабочее пространство и файлы останутся нетронутыми."
 
-msgid "This worktree's host is unavailable."
-msgstr "Хост этого worktree недоступен."
-
 msgid "Thorough reasoning effort"
 msgstr "Тщательные рассуждения"
 
@@ -17675,9 +17657,6 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
-
-msgid "Worktree and branch"
-msgstr "Worktree и ветка"
 
 msgid "Worktree branch"
 msgstr "Ветка worktree"

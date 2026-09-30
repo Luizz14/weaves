@@ -414,30 +414,32 @@ export function TasksView({
 
 	return (
 		<div className="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden">
-			<TasksTopBar
-				currentTab={currentTab}
-				onTabChange={handleTabChange}
-				searchQuery={searchQuery}
-				onSearchChange={handleSearchChange}
-				assigneeFilter={assigneeFilter}
-				onAssigneeFilterChange={handleAssigneeFilterChange}
-				selectedTasks={selectedTasks}
-				onClearSelection={handleClearSelection}
-				selectedIssues={selectedIssues}
-				onClearIssueSelection={handleClearIssueSelection}
-				viewMode={viewMode}
-				onViewModeChange={setViewMode}
-				taskSource={taskSource}
-				availableTaskSources={taskSources}
-				onTaskSourceChange={handleTaskSourceChange}
-				projectFilters={projectFilters}
-				onProjectFiltersChange={handleProjectFiltersChange}
-				githubProjectIds={Array.from(githubProjectIds)}
-				linearProjectFilter={linearProjectFilter}
-				onLinearProjectFilterChange={handleLinearProjectFilterChange}
-				includeClosedIssues={includeClosedIssues}
-				onIncludeClosedIssuesChange={handleIncludeClosedIssuesChange}
-			/>
+			{!showAzure && (
+				<TasksTopBar
+					currentTab={currentTab}
+					onTabChange={handleTabChange}
+					searchQuery={searchQuery}
+					onSearchChange={handleSearchChange}
+					assigneeFilter={assigneeFilter}
+					onAssigneeFilterChange={handleAssigneeFilterChange}
+					selectedTasks={selectedTasks}
+					onClearSelection={handleClearSelection}
+					selectedIssues={selectedIssues}
+					onClearIssueSelection={handleClearIssueSelection}
+					viewMode={viewMode}
+					onViewModeChange={setViewMode}
+					taskSource={taskSource}
+					availableTaskSources={taskSources}
+					onTaskSourceChange={handleTaskSourceChange}
+					projectFilters={projectFilters}
+					onProjectFiltersChange={handleProjectFiltersChange}
+					githubProjectIds={Array.from(githubProjectIds)}
+					linearProjectFilter={linearProjectFilter}
+					onLinearProjectFilterChange={handleLinearProjectFilterChange}
+					includeClosedIssues={includeClosedIssues}
+					onIncludeClosedIssuesChange={handleIncludeClosedIssuesChange}
+				/>
+			)}
 
 			<div className="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden">
 				{showTasks &&
@@ -470,7 +472,14 @@ export function TasksView({
 						onSelectionChange={handleIssueSelectionChange}
 					/>
 				)}
-				{showAzure && <AzureDevOpsContent searchQuery={searchQuery} />}
+				{showAzure && (
+					<AzureDevOpsContent
+						searchQuery={searchQuery}
+						onSearchChange={handleSearchChange}
+						availableTaskSources={taskSources}
+						onTaskSourceChange={handleTaskSourceChange}
+					/>
+				)}
 			</div>
 		</div>
 	);

@@ -1535,9 +1535,6 @@ msgstr "Test edilmemiş en riskli kod için test ekle…"
 msgid "Add tests where they're missing"
 msgstr "Eksik olan yerlere test ekle"
 
-msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
-msgstr "Derleme oluşturmadan önce bu projenin Azure DevOps ayarlarına Bitrise belirtecini ekleyin."
-
 msgid "Add this build to mocks"
 msgstr "Bu derlemeyi mock'lara ekle"
 
@@ -3911,9 +3908,6 @@ msgstr "Git dal ve worktree davranışını yapılandırın"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Görevlerin Superset ile Linear arasında nasıl eşitleneceğini yapılandırın."
 
-msgid "Configure mobile build generation in this project's Azure DevOps settings."
-msgstr "Mobil derleme oluşturmayı bu projenin Azure DevOps ayarlarından yapılandırın."
-
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "Terminal davranışını ve yeniden kullanılabilir terminal betiklerini yapılandırın"
 
@@ -3979,9 +3973,6 @@ msgstr "Görevleri kullanmak için bir entegrasyon bağlayın"
 
 msgid "Connect any AI agent to Superset."
 msgstr "Herhangi bir AI ajanını Superset'e bağlayın."
-
-msgid "Connect Azure DevOps"
-msgstr "Connect Azure DevOps"
 
 msgid "Connect Azure DevOps board"
 msgstr "Connect Azure DevOps board"
@@ -5099,6 +5090,9 @@ msgstr "Superset'in cihazınızda nasıl göründüğünü özelleştirin"
 #. placeholder {0}: showHotkeysKeys.map((key) => ( <Kbd key={key}>{key}</Kbd> ))
 msgid "Customize keyboard shortcuts for your workflow. Press <0>{0}</0> to open this page anytime."
 msgstr "Klavye kısayollarını iş akışınıza göre özelleştirin. Bu sayfayı istediğiniz zaman açmak için <0>{0}</0> tuşlarına basın."
+
+msgid "Customize mobile build"
+msgstr ""
 
 msgid "Cyan"
 msgstr "Camgöbeği"
@@ -8880,9 +8874,6 @@ msgstr "Daha fazlası yükleniyor..."
 msgid "Loading more…"
 msgstr "Daha fazlası yükleniyor…"
 
-msgid "Loading project build settings…"
-msgstr "Proje derleme ayarları yükleniyor…"
-
 msgid "Loading project…"
 msgstr "Proje yükleniyor…"
 
@@ -10073,9 +10064,6 @@ msgstr "Bilinen oluşturan yok"
 
 msgid "No labels"
 msgstr "Etiket yok"
-
-msgid "No linked worktree"
-msgstr "Bağlı worktree yok"
 
 msgid "No live sessions"
 msgstr "Canlı oturum yok"
@@ -13856,9 +13844,6 @@ msgstr "Takımları seç"
 msgid "Select terminal script directory"
 msgstr "Terminal betiği dizinini seçin"
 
-msgid "Select worktree"
-msgstr "Worktree seçin"
-
 msgid "Select worktree location"
 msgstr "Worktree konumunu seçin"
 
@@ -16251,9 +16236,6 @@ msgstr "Bu çalışma alanının host'u çevrimdışı"
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "Bu çalışma alanının ana makinesi, bu uygulamanın desteklediğinden daha eski bir ana makine hizmeti çalıştırıyor. Yeniden bağlanmak için güncelleyin; çalışma alanı ve dosyaları olduğu gibi kalır."
 
-msgid "This worktree's host is unavailable."
-msgstr "Bu worktree'nin ana makinesi kullanılamıyor."
-
 msgid "Thorough reasoning effort"
 msgstr "Kapsamlı akıl yürütme çabası"
 
@@ -17675,9 +17657,6 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
-
-msgid "Worktree and branch"
-msgstr "Worktree ve branch"
 
 msgid "Worktree branch"
 msgstr "Worktree branch'i"

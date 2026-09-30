@@ -1535,9 +1535,6 @@ msgstr "Doplň testy pro nejrizikovější netestovaný kód…"
 msgid "Add tests where they're missing"
 msgstr "Doplnit testy tam, kde chybí"
 
-msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
-msgstr "Před vytvořením sestavení přidejte token Bitrise v nastavení Azure DevOps tohoto projektu."
-
 msgid "Add this build to mocks"
 msgstr "Přidat toto sestavení do mocků"
 
@@ -3911,9 +3908,6 @@ msgstr "Nastavte chování git větví a worktree"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Nastavte, jak se úkoly synchronizují mezi Superset a Linearem."
 
-msgid "Configure mobile build generation in this project's Azure DevOps settings."
-msgstr "Nakonfigurujte generování mobilních sestavení v nastavení Azure DevOps tohoto projektu."
-
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "Nastavte chování terminálu a znovupoužitelné terminálové skripty"
 
@@ -3979,9 +3973,6 @@ msgstr "Pro používání Úkolů připojte integraci"
 
 msgid "Connect any AI agent to Superset."
 msgstr "Připojte k Superset libovolného AI agenta."
-
-msgid "Connect Azure DevOps"
-msgstr "Connect Azure DevOps"
 
 msgid "Connect Azure DevOps board"
 msgstr "Connect Azure DevOps board"
@@ -5099,6 +5090,9 @@ msgstr "Přizpůsobte si, jak Superset na vašem zařízení vypadá"
 #. placeholder {0}: showHotkeysKeys.map((key) => ( <Kbd key={key}>{key}</Kbd> ))
 msgid "Customize keyboard shortcuts for your workflow. Press <0>{0}</0> to open this page anytime."
 msgstr "Přizpůsobte si klávesové zkratky svému workflow. Tuto stránku kdykoli otevřete stiskem <0>{0}</0>."
+
+msgid "Customize mobile build"
+msgstr ""
 
 msgid "Cyan"
 msgstr "Azurová"
@@ -8880,9 +8874,6 @@ msgstr "Načítám další..."
 msgid "Loading more…"
 msgstr "Načítám další…"
 
-msgid "Loading project build settings…"
-msgstr "Načítání nastavení sestavení projektu…"
-
 msgid "Loading project…"
 msgstr "Načítám projekt…"
 
@@ -10073,9 +10064,6 @@ msgstr "Žádní známí autoři"
 
 msgid "No labels"
 msgstr "Žádné štítky"
-
-msgid "No linked worktree"
-msgstr "Žádný propojený worktree"
 
 msgid "No live sessions"
 msgstr "Žádné živé relace"
@@ -13856,9 +13844,6 @@ msgstr "Vyberte týmy"
 msgid "Select terminal script directory"
 msgstr "Vyberte adresář terminálového skriptu"
 
-msgid "Select worktree"
-msgstr "Vyberte worktree"
-
 msgid "Select worktree location"
 msgstr "Vyberte umístění worktree"
 
@@ -16251,9 +16236,6 @@ msgstr "Host tohoto pracovního prostoru je offline"
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "Hostitel tohoto pracovního prostoru používá starší službu hostitele, než tato aplikace podporuje. Aktualizujte ji pro opětovné připojení; pracovní prostor a jeho soubory zůstanou nedotčené."
 
-msgid "This worktree's host is unavailable."
-msgstr "Hostitel tohoto worktree není dostupný."
-
 msgid "Thorough reasoning effort"
 msgstr "Důkladné uvažování"
 
@@ -17675,9 +17657,6 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
-
-msgid "Worktree and branch"
-msgstr "Worktree a větev"
 
 msgid "Worktree branch"
 msgstr "Větev worktree"

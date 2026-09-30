@@ -1535,9 +1535,6 @@ msgstr "Tambahkan tes untuk kode paling berisiko yang belum diuji…"
 msgid "Add tests where they're missing"
 msgstr "Tambahkan tes yang belum ada"
 
-msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
-msgstr "Tambahkan token Bitrise di pengaturan Azure DevOps proyek ini sebelum membuat build."
-
 msgid "Add this build to mocks"
 msgstr "Tambahkan build ini ke mocks"
 
@@ -3911,9 +3908,6 @@ msgstr "Atur perilaku branch git dan worktree"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Atur cara tugas disinkronkan antara Superset dan Linear."
 
-msgid "Configure mobile build generation in this project's Azure DevOps settings."
-msgstr "Konfigurasikan pembuatan build seluler di pengaturan Azure DevOps proyek ini."
-
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "Atur perilaku terminal dan skrip terminal pakai ulang"
 
@@ -3979,9 +3973,6 @@ msgstr "Hubungkan integrasi untuk menggunakan Tugas"
 
 msgid "Connect any AI agent to Superset."
 msgstr "Hubungkan agen AI mana pun ke Superset."
-
-msgid "Connect Azure DevOps"
-msgstr "Connect Azure DevOps"
 
 msgid "Connect Azure DevOps board"
 msgstr "Connect Azure DevOps board"
@@ -5099,6 +5090,9 @@ msgstr "Sesuaikan tampilan Superset di perangkat Anda"
 #. placeholder {0}: showHotkeysKeys.map((key) => ( <Kbd key={key}>{key}</Kbd> ))
 msgid "Customize keyboard shortcuts for your workflow. Press <0>{0}</0> to open this page anytime."
 msgstr "Sesuaikan pintasan keyboard untuk alur kerja Anda. Tekan <0>{0}</0> untuk membuka halaman ini kapan saja."
+
+msgid "Customize mobile build"
+msgstr ""
 
 msgid "Cyan"
 msgstr "Sian"
@@ -8880,9 +8874,6 @@ msgstr "Memuat lagi..."
 msgid "Loading more…"
 msgstr "Memuat lagi…"
 
-msgid "Loading project build settings…"
-msgstr "Memuat pengaturan build proyek…"
-
 msgid "Loading project…"
 msgstr "Memuat proyek…"
 
@@ -10073,9 +10064,6 @@ msgstr "Tidak ada pembuat yang diketahui"
 
 msgid "No labels"
 msgstr "Tanpa label"
-
-msgid "No linked worktree"
-msgstr "Tidak ada worktree tertaut"
 
 msgid "No live sessions"
 msgstr "Tidak ada sesi aktif"
@@ -13856,9 +13844,6 @@ msgstr "Pilih tim"
 msgid "Select terminal script directory"
 msgstr "Pilih direktori skrip terminal"
 
-msgid "Select worktree"
-msgstr "Pilih worktree"
-
 msgid "Select worktree location"
 msgstr "Pilih lokasi worktree"
 
@@ -16251,9 +16236,6 @@ msgstr "Host workspace ini sedang offline"
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "Host workspace ini menjalankan layanan host yang lebih lama dari yang didukung aplikasi ini. Perbarui untuk tersambung kembali; workspace dan berkasnya tidak tersentuh."
 
-msgid "This worktree's host is unavailable."
-msgstr "Host worktree ini tidak tersedia."
-
 msgid "Thorough reasoning effort"
 msgstr "Upaya penalaran menyeluruh"
 
@@ -17675,9 +17657,6 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
-
-msgid "Worktree and branch"
-msgstr "Worktree dan branch"
 
 msgid "Worktree branch"
 msgstr "Branch worktree"

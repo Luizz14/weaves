@@ -10,6 +10,7 @@ import {
 } from "renderer/hooks/host-projects/resolveProjectIconUrl";
 import { useHostProjects } from "renderer/hooks/host-projects/useHostProjects";
 import { useHostUrl } from "renderer/hooks/host-service/useHostTargetUrl";
+import { useAzureDevOpsBoardAvailability } from "renderer/hooks/useAzureDevOpsBoardAvailability";
 import { getHostServiceClientByUrl } from "renderer/lib/host-service-client";
 import { useWorkspaceHostOptions } from "renderer/routes/_authenticated/components/DashboardNewWorkspaceModal/components/DashboardNewWorkspaceForm/components/DevicePicker/hooks/useWorkspaceHostOptions";
 import { ProjectThumbnail } from "renderer/routes/_authenticated/components/ProjectThumbnail";
@@ -51,6 +52,7 @@ export function V2ProjectSettings({
 		useWorkspaceHostOptions();
 	const targetHostUrl = useHostUrl(hostId);
 	const targetHostId = hostId ?? machineId;
+	const { hasConfiguredBoard } = useAzureDevOpsBoardAvailability();
 
 	// Projects are fully local — identity comes from the host fan-out.
 	const { projects: hostProjects, isReady } = useHostProjects();
@@ -239,7 +241,7 @@ export function V2ProjectSettings({
 					</SettingsRow>
 				</SettingsSection>
 
-				{targetHostUrl && hostProject && (
+				{hasConfiguredBoard && targetHostUrl && hostProject && (
 					<AzureDevOpsSection
 						key={`${projectId}:${targetHostId}`}
 						projectId={projectId}

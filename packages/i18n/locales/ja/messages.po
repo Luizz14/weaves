@@ -1535,9 +1535,6 @@ msgstr "テストのない危険なコードにテストを追加…"
 msgid "Add tests where they're missing"
 msgstr "テストが不足している箇所に追加"
 
-msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
-msgstr "ビルドを生成する前に、このプロジェクトの Azure DevOps 設定に Bitrise トークンを追加してください。"
-
 msgid "Add this build to mocks"
 msgstr "このビルドをモックに追加"
 
@@ -3911,9 +3908,6 @@ msgstr "gitブランチとワークツリーの動作を設定"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "SupersetとLinearの間でタスクをどう同期するかを設定します。"
 
-msgid "Configure mobile build generation in this project's Azure DevOps settings."
-msgstr "このプロジェクトの Azure DevOps 設定でモバイルビルド生成を設定してください。"
-
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "ターミナルの動作と再利用可能なターミナルスクリプトを設定"
 
@@ -3979,9 +3973,6 @@ msgstr "タスクを使うには連携を接続してください"
 
 msgid "Connect any AI agent to Superset."
 msgstr "どのAIエージェントでもSupersetに接続。"
-
-msgid "Connect Azure DevOps"
-msgstr "Connect Azure DevOps"
 
 msgid "Connect Azure DevOps board"
 msgstr "Connect Azure DevOps board"
@@ -5099,6 +5090,9 @@ msgstr "デバイスでのSupersetの見た目をカスタマイズ"
 #. placeholder {0}: showHotkeysKeys.map((key) => ( <Kbd key={key}>{key}</Kbd> ))
 msgid "Customize keyboard shortcuts for your workflow. Press <0>{0}</0> to open this page anytime."
 msgstr "ワークフローに合わせてキーボードショートカットをカスタマイズ。<0>{0}</0>でいつでもこのページを開けます。"
+
+msgid "Customize mobile build"
+msgstr ""
 
 msgid "Cyan"
 msgstr "シアン"
@@ -8880,9 +8874,6 @@ msgstr "さらに読み込み中..."
 msgid "Loading more…"
 msgstr "さらに読み込み中…"
 
-msgid "Loading project build settings…"
-msgstr "プロジェクトのビルド設定を読み込み中…"
-
 msgid "Loading project…"
 msgstr "プロジェクトを読み込み中…"
 
@@ -10073,9 +10064,6 @@ msgstr "既知の作成者はいません"
 
 msgid "No labels"
 msgstr "ラベルなし"
-
-msgid "No linked worktree"
-msgstr "リンクされた worktree がありません"
 
 msgid "No live sessions"
 msgstr "ライブセッションはありません"
@@ -13856,9 +13844,6 @@ msgstr "チームを選択"
 msgid "Select terminal script directory"
 msgstr "ターミナルスクリプトのディレクトリを選択"
 
-msgid "Select worktree"
-msgstr "worktree を選択"
-
 msgid "Select worktree location"
 msgstr "ワークツリーの場所を選択"
 
@@ -16251,9 +16236,6 @@ msgstr "このワークスペースのホストはオフラインです"
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "このワークスペースのホストは、このアプリが対応するより古いホストサービスを実行しています。更新して再接続してください。ワークスペースとファイルはそのまま残ります。"
 
-msgid "This worktree's host is unavailable."
-msgstr "この worktree のホストは利用できません。"
-
 msgid "Thorough reasoning effort"
 msgstr "徹底的な推論"
 
@@ -17675,9 +17657,6 @@ msgstr "ワークツリー"
 
 msgid "Worktree"
 msgstr "ワークツリー"
-
-msgid "Worktree and branch"
-msgstr "worktree とブランチ"
 
 msgid "Worktree branch"
 msgstr "worktree ブランチ"

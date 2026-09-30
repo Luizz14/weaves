@@ -1535,9 +1535,6 @@ msgstr "給風險最高又沒測試的程式碼補上測試…"
 msgid "Add tests where they're missing"
 msgstr "給缺測試的地方補測試"
 
-msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
-msgstr "產生組建前，請在此專案的 Azure DevOps 設定中新增 Bitrise 權杖。"
-
 msgid "Add this build to mocks"
 msgstr "將此組建新增至 mocks"
 
@@ -3911,9 +3908,6 @@ msgstr "配置git分支和worktree行為"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "配置任務在Superset和Linear之間的同步方式。"
 
-msgid "Configure mobile build generation in this project's Azure DevOps settings."
-msgstr "請在此專案的 Azure DevOps 設定中設定行動組建產生功能。"
-
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "配置終端行為和可複用的終端指令碼"
 
@@ -3979,9 +3973,6 @@ msgstr "連結整合以使用任務"
 
 msgid "Connect any AI agent to Superset."
 msgstr "把任意AI代理程式接入Superset。"
-
-msgid "Connect Azure DevOps"
-msgstr "Connect Azure DevOps"
 
 msgid "Connect Azure DevOps board"
 msgstr "Connect Azure DevOps board"
@@ -5099,6 +5090,9 @@ msgstr "自訂Superset在你裝置上的外觀"
 #. placeholder {0}: showHotkeysKeys.map((key) => ( <Kbd key={key}>{key}</Kbd> ))
 msgid "Customize keyboard shortcuts for your workflow. Press <0>{0}</0> to open this page anytime."
 msgstr "為你的工作流自訂鍵盤快速鍵。隨時按<0>{0}</0>開啟此頁面。"
+
+msgid "Customize mobile build"
+msgstr ""
 
 msgid "Cyan"
 msgstr "青色"
@@ -8880,9 +8874,6 @@ msgstr "正在載入更多..."
 msgid "Loading more…"
 msgstr "正在載入更多…"
 
-msgid "Loading project build settings…"
-msgstr "正在載入專案組建設定…"
-
 msgid "Loading project…"
 msgstr "正在載入專案…"
 
@@ -10073,9 +10064,6 @@ msgstr "沒有已知的建立者"
 
 msgid "No labels"
 msgstr "無標籤"
-
-msgid "No linked worktree"
-msgstr "沒有連結的 worktree"
 
 msgid "No live sessions"
 msgstr "沒有活動會話"
@@ -13856,9 +13844,6 @@ msgstr "選擇團隊"
 msgid "Select terminal script directory"
 msgstr "選擇終端指令碼目錄"
 
-msgid "Select worktree"
-msgstr "選取 worktree"
-
 msgid "Select worktree location"
 msgstr "選擇worktree位置"
 
@@ -16251,9 +16236,6 @@ msgstr "此工作區的主機已離線"
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "此工作區的主機執行的主機服務版本低於此應用程式支援的版本。更新後即可重新連線；工作區及其檔案不受影響。"
 
-msgid "This worktree's host is unavailable."
-msgstr "此 worktree 的主機無法使用。"
-
 msgid "Thorough reasoning effort"
 msgstr "深入的推理投入"
 
@@ -17675,9 +17657,6 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "worktree"
-
-msgid "Worktree and branch"
-msgstr "Worktree 與分支"
 
 msgid "Worktree branch"
 msgstr "Worktree 分支"

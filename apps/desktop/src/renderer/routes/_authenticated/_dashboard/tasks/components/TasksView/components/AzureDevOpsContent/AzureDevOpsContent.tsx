@@ -17,20 +17,19 @@ import {
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import {
-	LuPencil,
-	LuRefreshCw,
-	LuUserRound,
-	LuUsersRound,
-} from "react-icons/lu";
+import { LuRefreshCw, LuUserRound, LuUsersRound } from "react-icons/lu";
 import { VscAzureDevops } from "react-icons/vsc";
 import { useHostUrls } from "renderer/hooks/host-service/useHostTargetUrl";
+import { useAzureDevOpsBoardAvailability } from "renderer/hooks/useAzureDevOpsBoardAvailability";
 import { getHostServiceClientByUrl } from "renderer/lib/host-service-client";
+import { WindowControlsInset } from "renderer/routes/_authenticated/_dashboard/components/WindowControlsInset";
+import { WorkItemsSearch } from "renderer/routes/_authenticated/_dashboard/components/WorkItemsSearch";
 import { useWorkspaceHostOptions } from "renderer/routes/_authenticated/components/DashboardNewWorkspaceModal/components/DashboardNewWorkspaceForm/components/DevicePicker/hooks/useWorkspaceHostOptions";
 import { useHostWorkspaces } from "renderer/routes/_authenticated/providers/HostWorkspacesProvider";
+import { TaskSourceSwitcher } from "../TaskSourceSwitcher";
+import type { TaskSource } from "../TasksTopBar/TasksTopBar";
 import { AzureDevOpsBoard } from "./components/AzureDevOpsBoard";
 import { AzureDevOpsEmptyState } from "./components/AzureDevOpsEmptyState";
-import { AzureDevOpsSetupDialog } from "./components/AzureDevOpsSetupDialog";
 import type {
 	AzureDevOpsBoardDisplayItem,
 	AzureDevOpsBoardStage,
@@ -38,6 +37,9 @@ import type {
 
 type AzureDevOpsContentProps = {
 	searchQuery: string;
+	onSearchChange: (query: string) => void;
+	availableTaskSources: TaskSource[];
+	onTaskSourceChange: (source: TaskSource) => void;
 };
 
 const boardQueryKey = (
@@ -53,48 +55,24 @@ const boardQueryKey = (
 		includeClaimed,
 	] as const;
 
-export function AzureDevOpsContent({ searchQuery }: AzureDevOpsContentProps) {
+export function AzureDevOpsContent({
+	searchQuery,
+	onSearchChange,
+	availableTaskSources,
+	onTaskSourceChange,
+}: AzureDevOpsContentProps) {
 	const { t } = useLingui();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
-	const { currentDeviceName, localHostId, activeHostUrl, otherHosts } =
+	const { currentDeviceName, localHostId, otherHosts } =
 		useWorkspaceHostOptions();
-	const hostIds = useMemo(
-		() =>
-			[
-				...(localHostId ? [localHostId] : []),
-				...otherHosts.filter((host) => host.isOnline).map((host) => host.id),
-			].filter((hostId, index, all) => all.indexOf(hostId) === index),
-		[localHostId, otherHosts],
-	);
-	const hostTargets = useHostUrls(hostIds);
-	const configQueries = useQueries({
-		queries: hostTargets.map((target) => ({
-			queryKey: ["azure-devops", "board-config", target.hostId, target.url],
-			enabled: target.url !== null,
-			queryFn: () =>
-				target.url
-					? getHostServiceClientByUrl(
-							target.url,
-						).azureDevOps.getBoardConfig.query()
-					: null,
-			retry: false,
-		})),
-	});
-	const configuredIndex = configQueries.findIndex(
-		(query) => query.data != null,
-	);
-	const configuredTarget =
-		configuredIndex >= 0 ? hostTargets[configuredIndex] : null;
-	const boardConfig =
-		configuredIndex >= 0 ? configQueries[configuredIndex]?.data : null;
+	const { configuredTarget, isLoading } = useAzureDevOpsBoardAvailability();
 	const targetHostUrl = configuredTarget?.url ?? null;
 	const targetHostId = configuredTarget?.hostId ?? localHostId;
 	const [selectedIteration, setSelectedIteration] = useState<
 		string | undefined
 	>();
 	const [includeClaimed, setIncludeClaimed] = useState(false);
-	const [setupOpen, setSetupOpen] = useState(false);
 	const [optimisticStages, setOptimisticStages] = useState<
 		ReadonlyMap<number, AzureDevOpsBoardStage>
 	>(new Map());
@@ -401,39 +379,12 @@ export function AzureDevOpsContent({ searchQuery }: AzureDevOpsContentProps) {
 			: (otherHosts.find((host) => host.id === targetHostId)?.name ??
 				t({ message: "Azure host" }));
 
-	if (configuredIndex < 0 && configQueries.some((query) => query.isPending)) {
-		return (
-			<div className="flex flex-1 items-center justify-center text-sm text-muted-foreground">
-				<LuRefreshCw className="mr-2 size-4 animate-spin motion-reduce:animate-none" />
-				<Trans>Looking for an Azure DevOps board…</Trans>
-			</div>
-		);
-	}
-
-	if (!targetHostUrl) {
-		return (
-			<>
-				<AzureDevOpsEmptyState
-					canConnect={activeHostUrl !== null}
-					onConnect={() => setSetupOpen(true)}
-				/>
-				<AzureDevOpsSetupDialog
-					hostUrl={activeHostUrl}
-					open={setupOpen}
-					onOpenChange={setSetupOpen}
-					onConfigured={() =>
-						queryClient.invalidateQueries({
-							queryKey: ["azure-devops", "board-config"],
-						})
-					}
-				/>
-			</>
-		);
-	}
-
 	return (
 		<div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-background">
-			<div className="flex flex-wrap items-center gap-2 border-b border-border px-4 py-3">
+			<div
+				data-tasks-toolbar
+				className="@container flex flex-wrap items-center gap-2 border-b border-border px-4 py-3"
+			>
 				<div className="mr-auto flex min-w-0 items-center gap-2">
 					<h2 className="text-balance text-lg font-semibold">
 						<Trans>Work</Trans>
@@ -443,96 +394,99 @@ export function AzureDevOpsContent({ searchQuery }: AzureDevOpsContentProps) {
 						Azure DevOps
 					</span>
 				</div>
-				<Button
-					type="button"
-					variant="ghost"
-					size="icon-lg"
-					className="transition-[transform,background-color] active:not-disabled:scale-[0.96]"
-					aria-label={t({ message: "Edit Azure DevOps board configuration" })}
-					title={t({ message: "Edit Azure DevOps board configuration" })}
-					onClick={() => setSetupOpen(true)}
-				>
-					<LuPencil />
-				</Button>
-				<Select
-					value={selectedIteration ?? boardQuery.data?.iterationPath ?? ""}
-					onValueChange={(value) => setSelectedIteration(value)}
-				>
-					<SelectTrigger className="h-9 w-56">
-						<SelectValue placeholder={t({ message: "Current sprint" })} />
-					</SelectTrigger>
-					<SelectContent>
-						{boardQuery.data?.iterations.map((iteration) => (
-							<SelectItem key={iteration.id} value={iteration.path}>
-								{iteration.name}
-							</SelectItem>
-						))}
-					</SelectContent>
-				</Select>
-				<Button
-					type="button"
-					variant="outline"
-					className="h-9 transition-[transform,background-color] active:not-disabled:scale-[0.96]"
-					onClick={() => setIncludeClaimed((current) => !current)}
-				>
-					{includeClaimed ? <LuUsersRound /> : <LuUserRound />}
-					{includeClaimed ? <Trans>All</Trans> : <Trans>Mine</Trans>}
-				</Button>
-				<Button
-					type="button"
-					variant="ghost"
-					size="icon-lg"
-					className="transition-[transform,background-color] active:not-disabled:scale-[0.96]"
-					aria-label={t({ message: "Refresh Azure DevOps board" })}
-					title={t({ message: `Azure CLI on ${targetName}` })}
-					disabled={boardQuery.isFetching}
-					onClick={() => void refreshBoard()}
-				>
-					<LuRefreshCw
-						className={
-							boardQuery.isFetching
-								? "animate-spin motion-reduce:animate-none"
-								: undefined
+				<TaskSourceSwitcher
+					value="azure"
+					sources={availableTaskSources}
+					onChange={onTaskSourceChange}
+				/>
+				<WorkItemsSearch
+					value={searchQuery}
+					onChange={onSearchChange}
+					placeholder={t({ message: "Search Azure work items…" })}
+					label={t({ message: "Search Azure work items" })}
+					containerClassName="w-full @4xl:w-56 @6xl:w-64"
+				/>
+				{targetHostUrl ? (
+					<>
+						<Select
+							value={selectedIteration ?? boardQuery.data?.iterationPath ?? ""}
+							onValueChange={(value) => setSelectedIteration(value)}
+						>
+							<SelectTrigger className="h-9 w-56">
+								<SelectValue placeholder={t({ message: "Current sprint" })} />
+							</SelectTrigger>
+							<SelectContent>
+								{boardQuery.data?.iterations.map((iteration) => (
+									<SelectItem key={iteration.id} value={iteration.path}>
+										{iteration.name}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+						<Button
+							type="button"
+							variant="outline"
+							className="h-9 transition-[transform,background-color] active:not-disabled:scale-[0.96]"
+							onClick={() => setIncludeClaimed((current) => !current)}
+						>
+							{includeClaimed ? <LuUsersRound /> : <LuUserRound />}
+							{includeClaimed ? <Trans>All</Trans> : <Trans>Mine</Trans>}
+						</Button>
+						<Button
+							type="button"
+							variant="ghost"
+							size="icon-lg"
+							className="transition-[transform,background-color] active:not-disabled:scale-[0.96]"
+							aria-label={t({ message: "Refresh Azure DevOps board" })}
+							title={t({ message: `Azure CLI on ${targetName}` })}
+							disabled={boardQuery.isFetching}
+							onClick={() => void refreshBoard()}
+						>
+							<LuRefreshCw
+								className={
+									boardQuery.isFetching
+										? "animate-spin motion-reduce:animate-none"
+										: undefined
+								}
+							/>
+						</Button>
+					</>
+				) : null}
+				<WindowControlsInset />
+			</div>
+			{isLoading && !targetHostUrl ? (
+				<div className="flex flex-1 items-center justify-center text-sm text-muted-foreground">
+					<LuRefreshCw className="mr-2 size-4 animate-spin motion-reduce:animate-none" />
+					<Trans>Looking for an Azure DevOps board…</Trans>
+				</div>
+			) : !targetHostUrl ? (
+				<AzureDevOpsEmptyState />
+			) : (
+				<>
+					{boardQuery.error ? (
+						<div className="mx-4 mt-4 rounded-lg bg-destructive/8 px-4 py-3 text-sm text-destructive shadow-[0_0_0_1px_rgb(239_68_68/0.2)]">
+							{errorMessage(boardQuery.error)}
+						</div>
+					) : null}
+					<AzureDevOpsBoard
+						items={items}
+						workspaceCountByItem={workspaceCountByItem}
+						pullRequestCountByItem={pullRequestCountByItem}
+						onMove={handleMove}
+						onOpenItem={(item) =>
+							navigate({
+								to: "/tasks/azure/$workItemId",
+								params: { workItemId: String(item.id) },
+								search: {
+									type: "azure",
+									azureHost: targetHostId ?? undefined,
+									iteration: boardQuery.data?.iterationPath ?? undefined,
+								},
+							})
 						}
 					/>
-				</Button>
-			</div>
-			{boardQuery.error ? (
-				<div className="mx-4 mt-4 rounded-lg bg-destructive/8 px-4 py-3 text-sm text-destructive shadow-[0_0_0_1px_rgb(239_68_68/0.2)]">
-					{errorMessage(boardQuery.error)}
-				</div>
-			) : null}
-			<AzureDevOpsBoard
-				items={items}
-				workspaceCountByItem={workspaceCountByItem}
-				pullRequestCountByItem={pullRequestCountByItem}
-				onMove={handleMove}
-				onOpenItem={(item) =>
-					navigate({
-						to: "/tasks/azure/$workItemId",
-						params: { workItemId: String(item.id) },
-						search: {
-							type: "azure",
-							azureHost: targetHostId ?? undefined,
-							iteration: boardQuery.data?.iterationPath ?? undefined,
-						},
-					})
-				}
-			/>
-			<AzureDevOpsSetupDialog
-				hostUrl={targetHostUrl}
-				initialConfig={boardConfig}
-				open={setupOpen}
-				onOpenChange={setSetupOpen}
-				onConfigured={() => {
-					void queryClient.invalidateQueries({
-						queryKey: ["azure-devops", "board-config"],
-					});
-					void queryClient.invalidateQueries({
-						queryKey: ["azure-devops", "board", targetHostUrl],
-					});
-				}}
-			/>
+				</>
+			)}
 		</div>
 	);
 }

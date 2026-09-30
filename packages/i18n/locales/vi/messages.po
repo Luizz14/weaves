@@ -1535,9 +1535,6 @@ msgstr "Thêm test cho phần code rủi ro nhất chưa được test…"
 msgid "Add tests where they're missing"
 msgstr "Thêm test ở những chỗ còn thiếu"
 
-msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
-msgstr "Thêm mã thông báo Bitrise trong cài đặt Azure DevOps của dự án này trước khi tạo bản dựng."
-
 msgid "Add this build to mocks"
 msgstr "Thêm bản dựng này vào mocks"
 
@@ -3911,9 +3908,6 @@ msgstr "Cấu hình hành vi của nhánh git và worktree"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Cấu hình cách tác vụ đồng bộ giữa Superset và Linear."
 
-msgid "Configure mobile build generation in this project's Azure DevOps settings."
-msgstr "Cấu hình tạo bản dựng di động trong cài đặt Azure DevOps của dự án này."
-
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "Cấu hình hành vi terminal và các script terminal dùng lại được"
 
@@ -3979,9 +3973,6 @@ msgstr "Kết nối tích hợp để sử dụng Tác vụ"
 
 msgid "Connect any AI agent to Superset."
 msgstr "Kết nối mọi agent AI với Superset."
-
-msgid "Connect Azure DevOps"
-msgstr "Connect Azure DevOps"
 
 msgid "Connect Azure DevOps board"
 msgstr "Connect Azure DevOps board"
@@ -5099,6 +5090,9 @@ msgstr "Tùy chỉnh giao diện Superset trên thiết bị của bạn"
 #. placeholder {0}: showHotkeysKeys.map((key) => ( <Kbd key={key}>{key}</Kbd> ))
 msgid "Customize keyboard shortcuts for your workflow. Press <0>{0}</0> to open this page anytime."
 msgstr "Tùy chỉnh phím tắt cho quy trình của bạn. Nhấn <0>{0}</0> để mở trang này bất cứ lúc nào."
+
+msgid "Customize mobile build"
+msgstr ""
 
 msgid "Cyan"
 msgstr "Xanh lơ"
@@ -8880,9 +8874,6 @@ msgstr "Đang tải thêm..."
 msgid "Loading more…"
 msgstr "Đang tải thêm…"
 
-msgid "Loading project build settings…"
-msgstr "Đang tải cài đặt bản dựng của dự án…"
-
 msgid "Loading project…"
 msgstr "Đang tải dự án…"
 
@@ -10073,9 +10064,6 @@ msgstr "Không có người tạo nào được biết"
 
 msgid "No labels"
 msgstr "Không có nhãn"
-
-msgid "No linked worktree"
-msgstr "Không có worktree được liên kết"
 
 msgid "No live sessions"
 msgstr "Không có phiên nào đang chạy"
@@ -13856,9 +13844,6 @@ msgstr "Chọn nhóm"
 msgid "Select terminal script directory"
 msgstr "Chọn thư mục cho script terminal"
 
-msgid "Select worktree"
-msgstr "Chọn worktree"
-
 msgid "Select worktree location"
 msgstr "Chọn vị trí worktree"
 
@@ -16251,9 +16236,6 @@ msgstr "Host của workspace này đang ngoại tuyến"
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "Máy chủ của workspace này chạy dịch vụ máy chủ cũ hơn mức ứng dụng hỗ trợ. Hãy cập nhật để kết nối lại; workspace và các tệp không bị ảnh hưởng."
 
-msgid "This worktree's host is unavailable."
-msgstr "Không thể truy cập máy chủ của worktree này."
-
 msgid "Thorough reasoning effort"
 msgstr "Mức suy luận kỹ lưỡng"
 
@@ -17675,9 +17657,6 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
-
-msgid "Worktree and branch"
-msgstr "Worktree và branch"
 
 msgid "Worktree branch"
 msgstr "Branch của worktree"

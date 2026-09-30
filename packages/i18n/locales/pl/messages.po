@@ -1535,9 +1535,6 @@ msgstr "Dodaj testy do najbardziej ryzykownego nieprzetestowanego kodu…"
 msgid "Add tests where they're missing"
 msgstr "Dodaj testy tam, gdzie ich brakuje"
 
-msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
-msgstr "Dodaj token Bitrise w ustawieniach Azure DevOps tego projektu przed wygenerowaniem kompilacji."
-
 msgid "Add this build to mocks"
 msgstr "Dodaj tę kompilację do mocków"
 
@@ -3911,9 +3908,6 @@ msgstr "Skonfiguruj zachowanie gałęzi git i worktree"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Skonfiguruj, jak zadania synchronizują się między Superset a Linear."
 
-msgid "Configure mobile build generation in this project's Azure DevOps settings."
-msgstr "Skonfiguruj generowanie kompilacji mobilnych w ustawieniach Azure DevOps tego projektu."
-
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "Skonfiguruj zachowanie terminala i skrypty terminala wielokrotnego użytku"
 
@@ -3979,9 +3973,6 @@ msgstr "Połącz integrację, aby korzystać z zadań"
 
 msgid "Connect any AI agent to Superset."
 msgstr "Podłącz dowolnego agenta AI do Superset."
-
-msgid "Connect Azure DevOps"
-msgstr "Connect Azure DevOps"
 
 msgid "Connect Azure DevOps board"
 msgstr "Connect Azure DevOps board"
@@ -5099,6 +5090,9 @@ msgstr "Dostosuj wygląd Superset na swoim urządzeniu"
 #. placeholder {0}: showHotkeysKeys.map((key) => ( <Kbd key={key}>{key}</Kbd> ))
 msgid "Customize keyboard shortcuts for your workflow. Press <0>{0}</0> to open this page anytime."
 msgstr "Dostosuj skróty klawiszowe do swojego sposobu pracy. Naciśnij <0>{0}</0>, aby otworzyć tę stronę w dowolnej chwili."
+
+msgid "Customize mobile build"
+msgstr ""
 
 msgid "Cyan"
 msgstr "Cyjan"
@@ -8880,9 +8874,6 @@ msgstr "Wczytywanie kolejnych..."
 msgid "Loading more…"
 msgstr "Wczytywanie kolejnych…"
 
-msgid "Loading project build settings…"
-msgstr "Wczytywanie ustawień kompilacji projektu…"
-
 msgid "Loading project…"
 msgstr "Wczytywanie projektu…"
 
@@ -10073,9 +10064,6 @@ msgstr "Brak znanych twórców"
 
 msgid "No labels"
 msgstr "Brak etykiet"
-
-msgid "No linked worktree"
-msgstr "Brak połączonego worktree"
 
 msgid "No live sessions"
 msgstr "Brak aktywnych sesji"
@@ -13856,9 +13844,6 @@ msgstr "Wybierz zespoły"
 msgid "Select terminal script directory"
 msgstr "Wybierz katalog skryptu terminala"
 
-msgid "Select worktree"
-msgstr "Wybierz worktree"
-
 msgid "Select worktree location"
 msgstr "Wybierz lokalizację worktree"
 
@@ -16251,9 +16236,6 @@ msgstr "Host tego obszaru roboczego jest offline"
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "Host tej przestrzeni roboczej działa na starszej usłudze hosta, niż obsługuje ta aplikacja. Zaktualizuj go, aby połączyć się ponownie; przestrzeń robocza i jej pliki pozostają nietknięte."
 
-msgid "This worktree's host is unavailable."
-msgstr "Host tego worktree jest niedostępny."
-
 msgid "Thorough reasoning effort"
 msgstr "Dogłębne rozumowanie"
 
@@ -17675,9 +17657,6 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
-
-msgid "Worktree and branch"
-msgstr "Worktree i gałąź"
 
 msgid "Worktree branch"
 msgstr "Gałąź worktree"

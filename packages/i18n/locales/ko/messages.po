@@ -1535,9 +1535,6 @@ msgstr "테스트가 없는 가장 위험한 코드에 테스트 추가…"
 msgid "Add tests where they're missing"
 msgstr "빠진 테스트 추가하기"
 
-msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
-msgstr "빌드를 생성하기 전에 이 프로젝트의 Azure DevOps 설정에 Bitrise 토큰을 추가하세요."
-
 msgid "Add this build to mocks"
 msgstr "이 빌드를 모의 데이터에 추가"
 
@@ -3911,9 +3908,6 @@ msgstr "git 브랜치와 worktree 동작을 설정합니다"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Superset과 Linear 사이에서 작업을 동기화하는 방식을 설정합니다."
 
-msgid "Configure mobile build generation in this project's Azure DevOps settings."
-msgstr "이 프로젝트의 Azure DevOps 설정에서 모바일 빌드 생성을 구성하세요."
-
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "터미널 동작과 재사용 가능한 터미널 스크립트를 설정합니다"
 
@@ -3979,9 +3973,6 @@ msgstr "작업을 사용하려면 연동을 연결하세요"
 
 msgid "Connect any AI agent to Superset."
 msgstr "어떤 AI 에이전트든 Superset에 연결하세요."
-
-msgid "Connect Azure DevOps"
-msgstr "Connect Azure DevOps"
 
 msgid "Connect Azure DevOps board"
 msgstr "Connect Azure DevOps board"
@@ -5099,6 +5090,9 @@ msgstr "기기에서 Superset이 보이는 방식을 설정합니다"
 #. placeholder {0}: showHotkeysKeys.map((key) => ( <Kbd key={key}>{key}</Kbd> ))
 msgid "Customize keyboard shortcuts for your workflow. Press <0>{0}</0> to open this page anytime."
 msgstr "작업 방식에 맞게 키보드 단축키를 설정합니다. 언제든 <0>{0}</0>을(를) 눌러 이 페이지를 열 수 있습니다."
+
+msgid "Customize mobile build"
+msgstr ""
 
 msgid "Cyan"
 msgstr "청록"
@@ -8880,9 +8874,6 @@ msgstr "더 불러오는 중..."
 msgid "Loading more…"
 msgstr "더 불러오는 중…"
 
-msgid "Loading project build settings…"
-msgstr "프로젝트 빌드 설정을 불러오는 중…"
-
 msgid "Loading project…"
 msgstr "프로젝트 불러오는 중…"
 
@@ -10073,9 +10064,6 @@ msgstr "알려진 만든 사람이 없습니다"
 
 msgid "No labels"
 msgstr "레이블 없음"
-
-msgid "No linked worktree"
-msgstr "연결된 worktree가 없습니다"
 
 msgid "No live sessions"
 msgstr "활성 세션 없음"
@@ -13856,9 +13844,6 @@ msgstr "팀 선택"
 msgid "Select terminal script directory"
 msgstr "터미널 스크립트 디렉터리 선택"
 
-msgid "Select worktree"
-msgstr "worktree 선택"
-
 msgid "Select worktree location"
 msgstr "worktree 위치 선택"
 
@@ -16251,9 +16236,6 @@ msgstr "이 워크스페이스의 호스트가 오프라인입니다"
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "이 워크스페이스의 호스트는 이 앱이 지원하는 것보다 오래된 호스트 서비스를 실행 중입니다. 업데이트하면 다시 연결됩니다. 워크스페이스와 파일은 그대로 유지됩니다."
 
-msgid "This worktree's host is unavailable."
-msgstr "이 worktree의 호스트를 사용할 수 없습니다."
-
 msgid "Thorough reasoning effort"
 msgstr "철저한 추론"
 
@@ -17675,9 +17657,6 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "worktree"
-
-msgid "Worktree and branch"
-msgstr "worktree 및 브랜치"
 
 msgid "Worktree branch"
 msgstr "worktree 브랜치"

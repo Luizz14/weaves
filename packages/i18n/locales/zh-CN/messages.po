@@ -1535,9 +1535,6 @@ msgstr "给风险最高又没测试的代码补上测试…"
 msgid "Add tests where they're missing"
 msgstr "给缺测试的地方补测试"
 
-msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
-msgstr "生成构建前，请在此项目的 Azure DevOps 设置中添加 Bitrise 令牌。"
-
 msgid "Add this build to mocks"
 msgstr "将此构建添加到 mocks"
 
@@ -3911,9 +3908,6 @@ msgstr "配置git分支和worktree行为"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "配置任务在Superset和Linear之间的同步方式。"
 
-msgid "Configure mobile build generation in this project's Azure DevOps settings."
-msgstr "请在此项目的 Azure DevOps 设置中配置移动构建生成。"
-
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "配置终端行为和可复用的终端脚本"
 
@@ -3979,9 +3973,6 @@ msgstr "连接集成以使用任务"
 
 msgid "Connect any AI agent to Superset."
 msgstr "把任意AI智能体接入Superset。"
-
-msgid "Connect Azure DevOps"
-msgstr "Connect Azure DevOps"
 
 msgid "Connect Azure DevOps board"
 msgstr "Connect Azure DevOps board"
@@ -5099,6 +5090,9 @@ msgstr "自定义Superset在你设备上的外观"
 #. placeholder {0}: showHotkeysKeys.map((key) => ( <Kbd key={key}>{key}</Kbd> ))
 msgid "Customize keyboard shortcuts for your workflow. Press <0>{0}</0> to open this page anytime."
 msgstr "为你的工作流自定义键盘快捷键。随时按<0>{0}</0>打开此页面。"
+
+msgid "Customize mobile build"
+msgstr ""
 
 msgid "Cyan"
 msgstr "青色"
@@ -8880,9 +8874,6 @@ msgstr "正在加载更多..."
 msgid "Loading more…"
 msgstr "正在加载更多…"
 
-msgid "Loading project build settings…"
-msgstr "正在加载项目构建设置…"
-
 msgid "Loading project…"
 msgstr "正在加载项目…"
 
@@ -10073,9 +10064,6 @@ msgstr "没有已知的创建者"
 
 msgid "No labels"
 msgstr "无标签"
-
-msgid "No linked worktree"
-msgstr "没有关联的 worktree"
 
 msgid "No live sessions"
 msgstr "没有活动会话"
@@ -13856,9 +13844,6 @@ msgstr "选择团队"
 msgid "Select terminal script directory"
 msgstr "选择终端脚本目录"
 
-msgid "Select worktree"
-msgstr "选择 worktree"
-
 msgid "Select worktree location"
 msgstr "选择worktree位置"
 
@@ -16251,9 +16236,6 @@ msgstr "此工作区的主机已离线"
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "此工作区的主机运行的主机服务版本低于此应用支持的版本。更新后即可重新连接；工作区及其文件不受影响。"
 
-msgid "This worktree's host is unavailable."
-msgstr "此 worktree 的主机不可用。"
-
 msgid "Thorough reasoning effort"
 msgstr "深入的推理投入"
 
@@ -17675,9 +17657,6 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "worktree"
-
-msgid "Worktree and branch"
-msgstr "Worktree 和分支"
 
 msgid "Worktree branch"
 msgstr "Worktree 分支"
