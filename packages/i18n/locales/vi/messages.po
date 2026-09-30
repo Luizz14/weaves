@@ -4722,6 +4722,10 @@ msgstr "Không đọc được lịch sử sử dụng từ host này."
 msgid "Couldn't remove the local sign-in"
 msgstr "Không thể xóa phiên đăng nhập cục bộ"
 
+#. placeholder {0}: errorMessage(error, "Unknown error")
+msgid "Couldn't rename the workspace: {0}"
+msgstr ""
+
 msgid "Couldn't restart terminals"
 msgstr "Không thể khởi động lại terminal"
 
@@ -4772,6 +4776,10 @@ msgstr "Không thể bật chế độ thiết kế trên trang này"
 
 msgid "Couldn't start workspace"
 msgstr "Không khởi động được workspace"
+
+#. placeholder {0}: errorMessage(error)
+msgid "Couldn't summarize the workspace: {0}"
+msgstr ""
 
 msgid "Couldn't unstage changes"
 msgstr "Không thể bỏ stage các thay đổi"
@@ -9555,6 +9563,9 @@ msgstr "Đặt không gian tên cho nhánh mới của dự án này. Mặc đ�
 msgid "Naming instructions"
 msgstr "Hướng dẫn đặt tên"
 
+msgid "Naming the workspace from its activity…"
+msgstr ""
+
 msgid "Native PR reviews"
 msgstr "Review PR ngay trong ứng dụng"
 
@@ -9836,6 +9847,12 @@ msgstr "Không có phiên terminal nào đang chạy"
 
 msgid "No agent"
 msgstr "Không có agent"
+
+msgid "No agent requests to name this workspace from yet"
+msgstr ""
+
+msgid "No agent requests yet"
+msgstr ""
 
 #. placeholder {0}: host.name
 msgid "No agents configured on {0}"
@@ -12315,6 +12332,9 @@ msgstr "Rebase & merge"
 msgid "Rebase and merge"
 msgstr "Rebase và merge"
 
+msgid "Recent activity"
+msgstr ""
+
 msgid "Recent Activity"
 msgstr "Hoạt động gần đây"
 
@@ -12413,6 +12433,9 @@ msgstr "Làm mới pull request"
 
 msgid "Refresh repositories"
 msgstr "Làm mới repository"
+
+msgid "Refresh summary"
+msgstr ""
 
 msgid "Refreshes when Claude Code next runs."
 msgstr "Làm mới khi Claude Code chạy lần tiếp theo."
@@ -12632,11 +12655,21 @@ msgstr "Đổi tên phiên"
 msgid "rename the branch"
 msgstr "đổi tên nhánh"
 
+msgid "rename the workspace with AI"
+msgstr ""
+
+msgid "Rename with AI"
+msgstr ""
+
 msgid "Rename workspace"
 msgstr "Đổi tên workspace"
 
 msgid "Rename..."
 msgstr "Đổi tên..."
+
+#. placeholder {0}: result.name
+msgid "Renamed to \"{0}\""
+msgstr ""
 
 msgid "Renaming branch to {newName}..."
 msgstr "Đang đổi tên nhánh thành {newName}..."
@@ -14962,6 +14995,12 @@ msgstr "cho giao diện agent, và các component dùng chung của ứng dụng
 
 msgid "Sum of CPU used by Superset and monitored terminal process trees. Over 100% means multiple CPU cores are busy. Sustained high values usually cause UI sluggishness and higher battery drain."
 msgstr "Tổng CPU mà Superset và các cây tiến trình terminal được theo dõi sử dụng. Trên 100% nghĩa là nhiều nhân CPU đang bận. Giá trị cao kéo dài thường làm giao diện chậm và hao pin hơn."
+
+msgid "Summarize"
+msgstr ""
+
+msgid "Summarizing…"
+msgstr ""
 
 msgid "Summary"
 msgstr "Tóm tắt"

@@ -20,6 +20,7 @@ import {
 import type { WorkspaceSelectionEvent } from "../../providers/DashboardSidebarSelectionProvider";
 import { useSidebarWorkspaceStatus } from "../../providers/DashboardSidebarWorkspaceStatusProvider";
 import type {
+	DashboardSidebarPinnedContext,
 	DashboardSidebarWorkspace,
 	DashboardSidebarWorkspaceIndentation,
 } from "../../types";
@@ -42,11 +43,10 @@ interface DashboardSidebarWorkspaceItemProps {
 	isSelected?: boolean;
 	onSelectionClick?: (event: WorkspaceSelectionEvent) => boolean;
 	/**
-	 * Set when the row renders inside the top-level Pinned section: shows the
-	 * owning project's avatar for cross-project context.
+	 * Set when the row renders outside its project group (Pinned, User
+	 * Stories): shows the owning project's avatar for cross-project context.
 	 */
-	/** projectName is null for pinned project-less "session" workspaces. */
-	pinnedContext?: { projectName: string | null; projectIconUrl: string | null };
+	pinnedContext?: DashboardSidebarPinnedContext;
 }
 
 export function DashboardSidebarWorkspaceItem({
@@ -110,6 +110,7 @@ export function DashboardSidebarWorkspaceItem({
 		handleOpenInFinder,
 		handleRemoveFromSidebar,
 		handleRemovePullRequest,
+		handleRenameWithAi,
 		handleTogglePin,
 		handleToggleUnread,
 		isActive,
@@ -147,6 +148,8 @@ export function DashboardSidebarWorkspaceItem({
 		v2WorkspaceActions.updateWorkspace(id, { branch: newBranchName });
 	};
 	const isPending = pendingTransaction?.type === "insert";
+	const canRenameWithAi =
+		projectId !== null && !isSessionWorkspace && hostType !== "cloud";
 
 	const {
 		requestOpen: hoverRequestOpen,
@@ -155,9 +158,23 @@ export function DashboardSidebarWorkspaceItem({
 	} = useDashboardSidebarHoverActions();
 	const rowRef = useRef<HTMLDivElement>(null);
 	const hoverEligible = !isPending;
+	const pinnedProjectName = pinnedContext?.projectName;
+	const pinnedProjectIconUrl = pinnedContext?.projectIconUrl;
+	const pinnedProjectColor = pinnedContext?.projectColor;
 	const hoverPayload = useMemo(
-		() => ({ workspace, onEditBranchClick: setRenameBranchTarget }),
-		[workspace],
+		() => ({
+			workspace,
+			pinnedContext:
+				pinnedProjectName === undefined
+					? undefined
+					: {
+							projectName: pinnedProjectName,
+							projectIconUrl: pinnedProjectIconUrl ?? null,
+							projectColor: pinnedProjectColor,
+						},
+			onEditBranchClick: setRenameBranchTarget,
+		}),
+		[workspace, pinnedProjectName, pinnedProjectIconUrl, pinnedProjectColor],
 	);
 
 	const handleMouseEnter = useCallback(
@@ -305,6 +322,7 @@ export function DashboardSidebarWorkspaceItem({
 							onRemoveFromSidebar={handleRemoveFromSidebar}
 							onRemovePullRequest={handleRemovePullRequest}
 							onRename={startRename}
+							onRenameWithAi={canRenameWithAi ? handleRenameWithAi : undefined}
 							onDelete={requestDelete}
 							onToggleUnread={handleToggleUnread}
 							onClearStatus={handleClearStatus}
@@ -395,6 +413,7 @@ export function DashboardSidebarWorkspaceItem({
 						onRemoveFromSidebar={handleRemoveFromSidebar}
 						onRemovePullRequest={handleRemovePullRequest}
 						onRename={startRename}
+						onRenameWithAi={canRenameWithAi ? handleRenameWithAi : undefined}
 						onDelete={requestDelete}
 						onToggleUnread={handleToggleUnread}
 						onClearStatus={handleClearStatus}

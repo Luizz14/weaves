@@ -4722,6 +4722,10 @@ msgstr "Tidak bisa membaca riwayat penggunaan dari host ini."
 msgid "Couldn't remove the local sign-in"
 msgstr "Tidak bisa menghapus sesi masuk lokal"
 
+#. placeholder {0}: errorMessage(error, "Unknown error")
+msgid "Couldn't rename the workspace: {0}"
+msgstr ""
+
 msgid "Couldn't restart terminals"
 msgstr "Tidak bisa memulai ulang terminal"
 
@@ -4772,6 +4776,10 @@ msgstr "Tidak bisa memulai mode desain di halaman ini"
 
 msgid "Couldn't start workspace"
 msgstr "Tidak bisa memulai workspace"
+
+#. placeholder {0}: errorMessage(error)
+msgid "Couldn't summarize the workspace: {0}"
+msgstr ""
 
 msgid "Couldn't unstage changes"
 msgstr "Tidak bisa meng-unstage perubahan"
@@ -9555,6 +9563,9 @@ msgstr "Beri namespace untuk branch baru di proyek ini. Bawaannya mengikuti peng
 msgid "Naming instructions"
 msgstr "Instruksi penamaan"
 
+msgid "Naming the workspace from its activity…"
+msgstr ""
+
 msgid "Native PR reviews"
 msgstr "Review PR native"
 
@@ -9836,6 +9847,12 @@ msgstr "Tidak ada sesi terminal aktif"
 
 msgid "No agent"
 msgstr "Tanpa agen"
+
+msgid "No agent requests to name this workspace from yet"
+msgstr ""
+
+msgid "No agent requests yet"
+msgstr ""
 
 #. placeholder {0}: host.name
 msgid "No agents configured on {0}"
@@ -12315,6 +12332,9 @@ msgstr "Rebase & Merge"
 msgid "Rebase and merge"
 msgstr "Rebase dan merge"
 
+msgid "Recent activity"
+msgstr ""
+
 msgid "Recent Activity"
 msgstr "Aktivitas Terbaru"
 
@@ -12413,6 +12433,9 @@ msgstr "Segarkan pull request"
 
 msgid "Refresh repositories"
 msgstr "Segarkan repositori"
+
+msgid "Refresh summary"
+msgstr ""
 
 msgid "Refreshes when Claude Code next runs."
 msgstr "Diperbarui saat Claude Code berikutnya dijalankan."
@@ -12632,11 +12655,21 @@ msgstr "Ganti nama sesi"
 msgid "rename the branch"
 msgstr "mengganti nama branch"
 
+msgid "rename the workspace with AI"
+msgstr ""
+
+msgid "Rename with AI"
+msgstr ""
+
 msgid "Rename workspace"
 msgstr "Ganti nama workspace"
 
 msgid "Rename..."
 msgstr "Ganti nama..."
+
+#. placeholder {0}: result.name
+msgid "Renamed to \"{0}\""
+msgstr ""
 
 msgid "Renaming branch to {newName}..."
 msgstr "Mengganti nama branch menjadi {newName}..."
@@ -14962,6 +14995,12 @@ msgstr "untuk UI agen, dan komponen aplikasi bersama. Klik path impor mana pun u
 
 msgid "Sum of CPU used by Superset and monitored terminal process trees. Over 100% means multiple CPU cores are busy. Sustained high values usually cause UI sluggishness and higher battery drain."
 msgstr "Jumlah CPU yang dipakai Superset dan pohon proses terminal yang dipantau. Di atas 100% berarti beberapa inti CPU sedang sibuk. Nilai tinggi yang bertahan lama biasanya membuat UI terasa lambat dan baterai lebih boros."
+
+msgid "Summarize"
+msgstr ""
+
+msgid "Summarizing…"
+msgstr ""
 
 msgid "Summary"
 msgstr "Ringkasan"

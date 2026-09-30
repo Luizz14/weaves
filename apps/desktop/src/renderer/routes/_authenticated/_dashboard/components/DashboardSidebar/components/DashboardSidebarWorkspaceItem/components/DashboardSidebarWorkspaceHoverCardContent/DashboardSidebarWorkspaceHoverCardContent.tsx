@@ -11,21 +11,28 @@ import {
 } from "react-icons/lu";
 import type { DiffStats } from "renderer/hooks/host-service/useDiffStats";
 import { useHotkeyDisplay } from "renderer/hotkeys";
-import type { DashboardSidebarWorkspace } from "../../../../types";
+import { ProjectThumbnail } from "renderer/routes/_authenticated/components/ProjectThumbnail";
+import type {
+	DashboardSidebarPinnedContext,
+	DashboardSidebarWorkspace,
+} from "../../../../types";
 import { ChecksList } from "./components/ChecksList";
 import { ChecksSummary } from "./components/ChecksSummary";
 import { LinkedTaskSection } from "./components/LinkedTaskSection";
 import { PullRequestStatusBadge } from "./components/PullRequestStatusBadge";
 import { ReviewStatus } from "./components/ReviewStatus";
+import { WorkspaceRecentActivity } from "./components/WorkspaceRecentActivity";
 
 interface DashboardSidebarWorkspaceHoverCardContentProps {
 	workspace: DashboardSidebarWorkspace;
+	pinnedContext?: DashboardSidebarPinnedContext;
 	diffStats: DiffStats | null;
 	onEditBranchClick?: (branchName: string) => void;
 }
 
 export function DashboardSidebarWorkspaceHoverCardContent({
 	workspace,
+	pinnedContext,
 	diffStats,
 	onEditBranchClick,
 }: DashboardSidebarWorkspaceHoverCardContentProps) {
@@ -65,6 +72,17 @@ export function DashboardSidebarWorkspaceHoverCardContent({
 	return (
 		<div className="space-y-3">
 			<div className="space-y-1.5">
+				{pinnedContext?.projectName && (
+					<div className="flex min-w-0 items-center gap-1.5 text-xs text-muted-foreground">
+						<ProjectThumbnail
+							projectName={pinnedContext.projectName}
+							iconUrl={pinnedContext.projectIconUrl}
+							color={pinnedContext.projectColor}
+							className="size-3.5 text-[8px]"
+						/>
+						<span className="truncate">{pinnedContext.projectName}</span>
+					</div>
+				)}
 				{hasCustomAlias && <div className="text-sm font-medium">{name}</div>}
 				<div className="space-y-0.5">
 					<span className="text-[10px] uppercase tracking-wide text-muted-foreground">
@@ -112,6 +130,11 @@ export function DashboardSidebarWorkspaceHoverCardContent({
 			</div>
 
 			{taskId && <LinkedTaskSection taskId={taskId} />}
+
+			<WorkspaceRecentActivity
+				workspaceId={workspace.id}
+				hostId={workspace.hostId}
+			/>
 
 			{needsRebase && (
 				<div className="flex items-center gap-2 text-amber-500 text-xs bg-amber-500/10 px-2 py-1.5 rounded-md">

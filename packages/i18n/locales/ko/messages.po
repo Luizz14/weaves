@@ -4722,6 +4722,10 @@ msgstr "이 호스트에서 사용량 기록을 읽지 못했습니다."
 msgid "Couldn't remove the local sign-in"
 msgstr "로컬 로그인 정보를 제거하지 못했습니다"
 
+#. placeholder {0}: errorMessage(error, "Unknown error")
+msgid "Couldn't rename the workspace: {0}"
+msgstr ""
+
 msgid "Couldn't restart terminals"
 msgstr "터미널을 다시 시작하지 못했습니다"
 
@@ -4772,6 +4776,10 @@ msgstr "이 페이지에서 디자인 모드를 시작할 수 없습니다"
 
 msgid "Couldn't start workspace"
 msgstr "워크스페이스를 시작하지 못했습니다"
+
+#. placeholder {0}: errorMessage(error)
+msgid "Couldn't summarize the workspace: {0}"
+msgstr ""
 
 msgid "Couldn't unstage changes"
 msgstr "스테이징을 해제하지 못했습니다"
@@ -9555,6 +9563,9 @@ msgstr "이 프로젝트의 새 브랜치에 네임스페이스를 붙입니다.
 msgid "Naming instructions"
 msgstr "이름 지정 지침"
 
+msgid "Naming the workspace from its activity…"
+msgstr ""
+
 msgid "Native PR reviews"
 msgstr "네이티브 PR 리뷰"
 
@@ -9836,6 +9847,12 @@ msgstr "활성 터미널 세션 없음"
 
 msgid "No agent"
 msgstr "에이전트 없음"
+
+msgid "No agent requests to name this workspace from yet"
+msgstr ""
+
+msgid "No agent requests yet"
+msgstr ""
 
 #. placeholder {0}: host.name
 msgid "No agents configured on {0}"
@@ -12315,6 +12332,9 @@ msgstr "리베이스 후 머지"
 msgid "Rebase and merge"
 msgstr "리베이스 후 머지"
 
+msgid "Recent activity"
+msgstr ""
+
 msgid "Recent Activity"
 msgstr "최근 활동"
 
@@ -12413,6 +12433,9 @@ msgstr "풀 리퀘스트 새로 고침"
 
 msgid "Refresh repositories"
 msgstr "리포지토리 새로 고침"
+
+msgid "Refresh summary"
+msgstr ""
 
 msgid "Refreshes when Claude Code next runs."
 msgstr "다음에 Claude Code를 실행하면 갱신됩니다."
@@ -12632,11 +12655,21 @@ msgstr "세션 이름 변경"
 msgid "rename the branch"
 msgstr "브랜치 이름을 변경할"
 
+msgid "rename the workspace with AI"
+msgstr ""
+
+msgid "Rename with AI"
+msgstr ""
+
 msgid "Rename workspace"
 msgstr "워크스페이스 이름 변경"
 
 msgid "Rename..."
 msgstr "이름 변경..."
+
+#. placeholder {0}: result.name
+msgid "Renamed to \"{0}\""
+msgstr ""
 
 msgid "Renaming branch to {newName}..."
 msgstr "브랜치 이름을 {newName}(으)로 변경하는 중..."
@@ -14962,6 +14995,12 @@ msgstr "스위트, 그리고 공용 앱 컴포넌트입니다. import 경로를 
 
 msgid "Sum of CPU used by Superset and monitored terminal process trees. Over 100% means multiple CPU cores are busy. Sustained high values usually cause UI sluggishness and higher battery drain."
 msgstr "Superset과 모니터링 중인 터미널 프로세스 트리가 사용하는 CPU의 합계입니다. 100%를 넘으면 여러 CPU 코어가 사용 중이라는 뜻입니다. 높은 값이 계속되면 보통 UI가 느려지고 배터리 소모가 커집니다."
+
+msgid "Summarize"
+msgstr ""
+
+msgid "Summarizing…"
+msgstr ""
 
 msgid "Summary"
 msgstr "요약"

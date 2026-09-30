@@ -8,7 +8,10 @@ import {
 	useState,
 	useSyncExternalStore,
 } from "react";
-import type { DashboardSidebarWorkspace } from "../../types";
+import type {
+	DashboardSidebarPinnedContext,
+	DashboardSidebarWorkspace,
+} from "../../types";
 
 const OPEN_DELAY_MS = 400;
 const CLOSE_DELAY_MS = 100;
@@ -80,6 +83,8 @@ function isPointInsideCardCone(
 
 export interface DashboardSidebarHoverPayload {
 	workspace: DashboardSidebarWorkspace;
+	/** Set for rows rendered outside their project group. */
+	pinnedContext?: DashboardSidebarPinnedContext;
 	onEditBranchClick: (branchName: string) => void;
 }
 

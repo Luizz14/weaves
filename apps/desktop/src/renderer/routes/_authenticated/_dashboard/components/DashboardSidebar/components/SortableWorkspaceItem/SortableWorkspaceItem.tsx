@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { useDashboardSidebarDnd } from "../../hooks/useSidebarDnd";
 import type { WorkspaceSelectionEvent } from "../../providers/DashboardSidebarSelectionProvider";
 import type {
+	DashboardSidebarPinnedContext,
 	DashboardSidebarWorkspace,
 	DashboardSidebarWorkspaceIndentation,
 } from "../../types";
@@ -34,7 +35,7 @@ interface SortableWorkspaceItemProps {
 	isSelected?: boolean;
 	onSelectionClick?: (event: WorkspaceSelectionEvent) => boolean;
 	/** Set for rows rendered inside the top-level Pinned section. */
-	pinnedContext?: { projectName: string | null; projectIconUrl: string | null };
+	pinnedContext?: DashboardSidebarPinnedContext;
 }
 
 export function SortableWorkspaceItem({

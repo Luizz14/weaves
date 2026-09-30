@@ -70,6 +70,19 @@ export type DashboardSidebarPinnedWorkspace = DashboardSidebarWorkspace & {
 	projectIconUrl: string | null;
 };
 
+/**
+ * Project identity for a workspace row rendered outside its project group
+ * (Pinned, User Stories).
+ */
+export interface DashboardSidebarPinnedContext {
+	/** Null for project-less "session" workspaces. */
+	projectName: string | null;
+	projectIconUrl: string | null;
+	projectColor?: string | null;
+	/** Also print the project name at the row's trailing edge. */
+	showProjectLabel?: boolean;
+}
+
 export interface DashboardSidebarSection {
 	id: string;
 	projectId: string;

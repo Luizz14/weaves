@@ -24,6 +24,7 @@ import { RenameInput } from "renderer/screens/main/components/WorkspaceSidebar/R
 import { usePullRequestPaneIntent } from "renderer/stores/pull-request-pane-intent";
 import type { ActivePaneStatus } from "shared/tabs-types";
 import type {
+	DashboardSidebarPinnedContext,
 	DashboardSidebarWorkspace,
 	DashboardSidebarWorkspaceIndentation,
 	DashboardSidebarWorkspacePullRequest,
@@ -67,9 +68,8 @@ interface DashboardSidebarExpandedWorkspaceRowProps
 	indentation?: DashboardSidebarWorkspaceIndentation;
 	isBulkSelectable?: boolean;
 	isSelected?: boolean;
-	/** Present when rendered in the Pinned section: shows the project avatar. */
-	/** projectName is null for pinned project-less "session" workspaces. */
-	pinnedContext?: { projectName: string | null; projectIconUrl: string | null };
+	/** Present outside a project group (Pinned, User Stories): shows the project avatar. */
+	pinnedContext?: DashboardSidebarPinnedContext;
 	onClick?: MouseEventHandler<HTMLDivElement>;
 	onKeyboardActivate?: KeyboardEventHandler<HTMLDivElement>;
 	onWorkspaceChipsClick?: MouseEventHandler<HTMLDivElement>;
@@ -146,6 +146,14 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
 
 		const creationStatusText = isPending ? "Creating…" : null;
 		const isLocalWorkspace = workspace.type === "local";
+		const showsDiffStats =
+			isActive &&
+			!!diffStats &&
+			(diffStats.additions > 0 || diffStats.deletions > 0);
+		const projectLabel = pinnedContext?.showProjectLabel
+			? pinnedContext.projectName
+			: null;
+		const hasHoverActions = !isPending && !isSelected;
 
 		return (
 			<div
@@ -320,6 +328,7 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
 											})
 										}
 										iconUrl={pinnedContext.projectIconUrl}
+										color={pinnedContext.projectColor}
 										className="size-3.5 text-[8px]"
 									/>
 								</div>
@@ -369,18 +378,26 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
 								<span className="text-[11px] text-muted-foreground">
 									{creationStatusText}
 								</span>
+							) : showsDiffStats && diffStats ? (
+								<DashboardSidebarWorkspaceDiffStats
+									additions={diffStats.additions}
+									deletions={diffStats.deletions}
+									isActive={isActive}
+								/>
 							) : (
-								isActive &&
-								diffStats &&
-								(diffStats.additions > 0 || diffStats.deletions > 0) && (
-									<DashboardSidebarWorkspaceDiffStats
-										additions={diffStats.additions}
-										deletions={diffStats.deletions}
-										isActive={isActive}
-									/>
+								projectLabel && (
+									<span
+										className={cn(
+											"max-w-24 truncate text-[11px] text-muted-foreground",
+											hasHoverActions &&
+												"group-hover:invisible group-focus-within:invisible",
+										)}
+									>
+										{projectLabel}
+									</span>
 								)
 							)}
-							{!isPending && !isSelected && (
+							{hasHoverActions && (
 								<div className="hidden items-center justify-end gap-1.5 group-hover:flex group-focus-within:flex">
 									{shortcutLabel && (
 										<span className="shrink-0 font-mono text-[10px] tabular-nums text-muted-foreground">

@@ -4722,6 +4722,10 @@ msgstr "無法從此主機讀取用量歷史。"
 msgid "Couldn't remove the local sign-in"
 msgstr "無法移除本地登入"
 
+#. placeholder {0}: errorMessage(error, "Unknown error")
+msgid "Couldn't rename the workspace: {0}"
+msgstr ""
+
 msgid "Couldn't restart terminals"
 msgstr "無法重啟終端"
 
@@ -4772,6 +4776,10 @@ msgstr "無法在此頁面啟動設計模式"
 
 msgid "Couldn't start workspace"
 msgstr "無法啟動工作區"
+
+#. placeholder {0}: errorMessage(error)
+msgid "Couldn't summarize the workspace: {0}"
+msgstr ""
 
 msgid "Couldn't unstage changes"
 msgstr "無法取消暫存更改"
@@ -9555,6 +9563,9 @@ msgstr "為此專案的新分支設定名稱空間。預設使用主機全域性
 msgid "Naming instructions"
 msgstr "命名說明"
 
+msgid "Naming the workspace from its activity…"
+msgstr ""
+
 msgid "Native PR reviews"
 msgstr "原生PR審查"
 
@@ -9836,6 +9847,12 @@ msgstr "沒有活動的終端會話"
 
 msgid "No agent"
 msgstr "無代理程式"
+
+msgid "No agent requests to name this workspace from yet"
+msgstr ""
+
+msgid "No agent requests yet"
+msgstr ""
 
 #. placeholder {0}: host.name
 msgid "No agents configured on {0}"
@@ -12315,6 +12332,9 @@ msgstr "變基併合併"
 msgid "Rebase and merge"
 msgstr "變基併合併"
 
+msgid "Recent activity"
+msgstr ""
+
 msgid "Recent Activity"
 msgstr "最近動態"
 
@@ -12413,6 +12433,9 @@ msgstr "重新整理拉取請求"
 
 msgid "Refresh repositories"
 msgstr "重新整理儲存庫"
+
+msgid "Refresh summary"
+msgstr ""
 
 msgid "Refreshes when Claude Code next runs."
 msgstr "下次執行 Claude Code 時重新整理。"
@@ -12632,11 +12655,21 @@ msgstr "重新命名會話"
 msgid "rename the branch"
 msgstr "重新命名分支"
 
+msgid "rename the workspace with AI"
+msgstr ""
+
+msgid "Rename with AI"
+msgstr ""
+
 msgid "Rename workspace"
 msgstr "重新命名工作區"
 
 msgid "Rename..."
 msgstr "重新命名..."
+
+#. placeholder {0}: result.name
+msgid "Renamed to \"{0}\""
+msgstr ""
 
 msgid "Renaming branch to {newName}..."
 msgstr "正在將分支重新命名為{newName}..."
@@ -14962,6 +14995,12 @@ msgstr "套件，以及共享應用元件。點選任意匯入路徑即可複製
 
 msgid "Sum of CPU used by Superset and monitored terminal process trees. Over 100% means multiple CPU cores are busy. Sustained high values usually cause UI sluggishness and higher battery drain."
 msgstr "Superset與受監控的終端處理程序樹佔用的CPU總和。超過100%表示有多個CPU核心處於繁忙狀態。持續偏高通常會導致介面卡頓和耗電增加。"
+
+msgid "Summarize"
+msgstr ""
+
+msgid "Summarizing…"
+msgstr ""
 
 msgid "Summary"
 msgstr "摘要"

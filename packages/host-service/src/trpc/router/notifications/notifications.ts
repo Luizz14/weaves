@@ -8,6 +8,7 @@ import type { HostServiceContext } from "../../../types";
 import { touchLocalWorkspaceActivity } from "../../../workspaces/local-workspace-store";
 import { publicProcedure, router } from "../../index";
 import { captureSessionAccount } from "../usage/session-account/session-account";
+import { autoNameWorkspaceFromActivity } from "../workspace-creation/utils/auto-name-from-activity";
 
 // Hook scripts emit "" for unset env vars; we coerce to undefined so the
 // AgentIdentity broadcast carries only meaningful fields.
@@ -226,6 +227,16 @@ export const notificationsRouter = router({
 		// to In Progress.
 		if (eventType === "Start") {
 			markLinkedTaskStarted(ctx, terminalSession.originWorkspaceId);
+		}
+
+		if (eventType === "Stop") {
+			const workspaceId = terminalSession.originWorkspaceId;
+			void autoNameWorkspaceFromActivity(ctx, workspaceId).catch((err) => {
+				console.warn(
+					`[notifications.hook] auto-name failed for workspace ${workspaceId}:`,
+					err,
+				);
+			});
 		}
 
 		return { success: true, ignored: false as const };

@@ -4,8 +4,11 @@ import {
 } from "@superset/shared/workspace-launch";
 import { hostSettings } from "../../../../db/schema";
 import type { HostServiceContext } from "../../../../types";
+import { getHostWorkerPool } from "../../../../workers/host-worker-pool";
+import { gitAuthorNameTask } from "../../../../workers/tasks/git";
 import type { LocalProject } from "../shared/local-project";
 import type { ExecGh } from "./exec-gh";
+import { listBranchNames } from "./list-branch-names";
 
 /** Resolves the authenticated GitHub username via `gh api user`. */
 export async function getGitHubUsername(
@@ -79,4 +82,44 @@ export async function resolveProjectBranchPrefix({
 
 	const existingSet = new Set(existingBranches.map((b) => b.toLowerCase()));
 	return existingSet.has(prefix.toLowerCase()) ? undefined : prefix;
+}
+
+/**
+ * `resolveProjectBranchPrefix`'s `getAuthorName` for callers with no other
+ * git need (unlike `create`, which already holds an on-loop client bound to
+ * `repoPath` from building the worktree). Reads the *same repo's*
+ * `user.name` off-loop in the worker pool instead of constructing a new
+ * `ctx.git()` client on this loop (see the no-main-loop-blocking ratchet) —
+ * repo-scoped, not the home-directory identity `gitIdentityTask` reads for
+ * the global settings preview, so a repo-local `user.name` override still
+ * agrees with what `create` used for this same branch.
+ */
+export function createOffLoopAuthorNameGetter(
+	repoPath: string,
+): () => Promise<string | null> {
+	return () =>
+		getHostWorkerPool().run(gitAuthorNameTask, { worktreePath: repoPath });
+}
+
+/**
+ * The prefix to reapply when renaming an existing workspace's branch. A
+ * failure means no prefix rather than no rename.
+ */
+export async function resolveRenameBranchPrefix(
+	ctx: HostServiceContext,
+	project: LocalProject,
+): Promise<string | undefined> {
+	const repoPath = project.repoPath;
+	if (!repoPath) return undefined;
+	try {
+		return await resolveProjectBranchPrefix({
+			ctx,
+			project,
+			getAuthorName: createOffLoopAuthorNameGetter(repoPath),
+			existingBranches: await listBranchNames(ctx, repoPath),
+		});
+	} catch (err) {
+		console.warn("[resolveRenameBranchPrefix] failed", err);
+		return undefined;
+	}
 }

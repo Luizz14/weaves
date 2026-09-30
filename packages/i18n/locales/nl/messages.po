@@ -4722,6 +4722,10 @@ msgstr "Kan de gebruiksgeschiedenis van deze host niet lezen."
 msgid "Couldn't remove the local sign-in"
 msgstr "Kan de lokale login niet verwijderen"
 
+#. placeholder {0}: errorMessage(error, "Unknown error")
+msgid "Couldn't rename the workspace: {0}"
+msgstr ""
+
 msgid "Couldn't restart terminals"
 msgstr "Kan terminals niet herstarten"
 
@@ -4772,6 +4776,10 @@ msgstr "Kan de designmodus niet starten op deze pagina"
 
 msgid "Couldn't start workspace"
 msgstr "Kan werkruimte niet starten"
+
+#. placeholder {0}: errorMessage(error)
+msgid "Couldn't summarize the workspace: {0}"
+msgstr ""
 
 msgid "Couldn't unstage changes"
 msgstr "Kan wijzigingen niet unstagen"
@@ -9555,6 +9563,9 @@ msgstr "Geef nieuwe branches van dit project een eigen naamruimte. Standaard gel
 msgid "Naming instructions"
 msgstr "Naamgevingsinstructies"
 
+msgid "Naming the workspace from its activity…"
+msgstr ""
+
 msgid "Native PR reviews"
 msgstr "Native PR-reviews"
 
@@ -9836,6 +9847,12 @@ msgstr "Geen actieve terminalsessies"
 
 msgid "No agent"
 msgstr "Geen agent"
+
+msgid "No agent requests to name this workspace from yet"
+msgstr ""
+
+msgid "No agent requests yet"
+msgstr ""
 
 #. placeholder {0}: host.name
 msgid "No agents configured on {0}"
@@ -12315,6 +12332,9 @@ msgstr "Rebasen en mergen"
 msgid "Rebase and merge"
 msgstr "Rebasen en mergen"
 
+msgid "Recent activity"
+msgstr ""
+
 msgid "Recent Activity"
 msgstr "Recente activiteit"
 
@@ -12413,6 +12433,9 @@ msgstr "Pull requests vernieuwen"
 
 msgid "Refresh repositories"
 msgstr "Repositories vernieuwen"
+
+msgid "Refresh summary"
+msgstr ""
 
 msgid "Refreshes when Claude Code next runs."
 msgstr "Wordt vernieuwd zodra Claude Code opnieuw draait."
@@ -12632,11 +12655,21 @@ msgstr "Sessienaam wijzigen"
 msgid "rename the branch"
 msgstr "de branch hernoemen"
 
+msgid "rename the workspace with AI"
+msgstr ""
+
+msgid "Rename with AI"
+msgstr ""
+
 msgid "Rename workspace"
 msgstr "Werkruimte hernoemen"
 
 msgid "Rename..."
 msgstr "Naam wijzigen..."
+
+#. placeholder {0}: result.name
+msgid "Renamed to \"{0}\""
+msgstr ""
 
 msgid "Renaming branch to {newName}..."
 msgstr "Branch hernoemen naar {newName}..."
@@ -14962,6 +14995,12 @@ msgstr "-suite voor agent-UI's en gedeelde app-componenten. Klik op een importpa
 
 msgid "Sum of CPU used by Superset and monitored terminal process trees. Over 100% means multiple CPU cores are busy. Sustained high values usually cause UI sluggishness and higher battery drain."
 msgstr "Som van het CPU-gebruik van Superset en de gemonitorde terminalprocesbomen. Boven 100% betekent dat meerdere CPU-cores bezig zijn. Langdurig hoge waarden zorgen meestal voor een trage UI en meer batterijverbruik."
+
+msgid "Summarize"
+msgstr ""
+
+msgid "Summarizing…"
+msgstr ""
 
 msgid "Summary"
 msgstr "Samenvatting"

@@ -310,6 +310,8 @@ export const hostAgentConfigs = sqliteTable(
 	],
 );
 
+export type WorkspaceNameSource = "auto" | "user" | "ai";
+
 export const workspaces = sqliteTable(
 	"workspaces",
 	{
@@ -337,6 +339,10 @@ export const workspaces = sqliteTable(
 		// Empty string means "not yet backfilled from cloud" — the startup
 		// backfill sweep targets these rows.
 		name: text().notNull().default(""),
+		// Null for rows that predate the column; see isAutoNameEligible.
+		nameSource: text("name_source").$type<WorkspaceNameSource>(),
+		summary: text(),
+		summaryUpdatedAt: integer("summary_updated_at"),
 		// "local" shares the project's primary checkout (files, index, and
 		// the checked-out branch) with every other local workspace of that
 		// project; "worktree" owns an isolated checkout; "session" is
