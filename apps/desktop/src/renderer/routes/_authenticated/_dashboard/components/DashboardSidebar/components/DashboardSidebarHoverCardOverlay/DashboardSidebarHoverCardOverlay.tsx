@@ -90,6 +90,7 @@ export function DashboardSidebarHoverCardOverlay({
 				>
 					<DashboardSidebarWorkspaceHoverCardContent
 						workspace={payload.workspace}
+						pinnedContext={payload.pinnedContext}
 						diffStats={diffStats}
 						onEditBranchClick={payload.onEditBranchClick}
 					/>

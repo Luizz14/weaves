@@ -97,6 +97,10 @@ export function readFileTail(path: string, maxBytes: number): string | null {
 
 interface ClaudeEvent {
 	type?: string;
+	timestamp?: string;
+	isMeta?: boolean;
+	isSidechain?: boolean;
+	isCompactSummary?: boolean;
 	message?: {
 		role?: string;
 		content?: string | Array<{ type?: string; text?: string }>;
@@ -226,8 +230,20 @@ export function hasHarnessSession(input: {
 	}
 }
 
-/** Codex names rollouts `rollout-<timestamp>-<session id>.jsonl`, in date dirs. */
 function hasCodexRollout(sessionId: string, home: string): boolean | null {
+	const found = findCodexRollout(sessionId, home);
+	return typeof found === "string" ? true : found;
+}
+
+/**
+ * Codex names rollouts `rollout-<timestamp>-<session id>.jsonl`, in date dirs.
+ * The path when found, false when the tree was walked without a match, null
+ * when there is no tree or the walk hit its bound.
+ */
+function findCodexRollout(
+	sessionId: string,
+	home: string,
+): string | false | null {
 	const root = join(home, "sessions");
 	if (!existsSync(root)) return null;
 	const suffix = `-${sessionId}.jsonl`;
@@ -243,7 +259,7 @@ function hasCodexRollout(sessionId: string, home: string): boolean | null {
 			if (entry.isDirectory()) {
 				stack.push(join(dir, entry.name));
 			} else if (entry.name.endsWith(suffix)) {
-				return true;
+				return join(dir, entry.name);
 			}
 		}
 	}
@@ -288,5 +304,157 @@ function hasOpencodeSession(sessionId: string): boolean | null {
 		return row !== null && row !== undefined;
 	} finally {
 		db.close();
+	}
+}
+
+export interface HarnessTurn {
+	role: "user" | "assistant";
+	text: string;
+	/** Epoch ms, when the harness recorded one. */
+	at: number | null;
+}
+
+/**
+ * Harness-injected user-role text (slash-command echoes, system reminders,
+ * AGENTS.md preambles, interrupt markers) that the person never typed.
+ */
+function isAuthoredPrompt(text: string): boolean {
+	return (
+		!text.startsWith("<") &&
+		!text.startsWith("# AGENTS.md") &&
+		!text.startsWith("[Request interrupted")
+	);
+}
+
+function epochOf(value: unknown): number | null {
+	if (typeof value !== "string") return null;
+	const ms = Date.parse(value);
+	return Number.isNaN(ms) ? null : ms;
+}
+
+export function parseClaudeTurns(raw: string): HarnessTurn[] {
+	const turns: HarnessTurn[] = [];
+	for (const line of raw.split("\n")) {
+		if (!line) continue;
+		let event: ClaudeEvent;
+		try {
+			event = JSON.parse(line) as ClaudeEvent;
+		} catch {
+			continue;
+		}
+		if (event.type !== "user" && event.type !== "assistant") continue;
+		if (event.isMeta || event.isSidechain || event.isCompactSummary) continue;
+		const text = textOf(event);
+		if (!text) continue;
+		if (event.type === "user" && !isAuthoredPrompt(text)) continue;
+		turns.push({ role: event.type, text, at: epochOf(event.timestamp) });
+	}
+	return turns;
+}
+
+function codexMessageText(content: unknown): string {
+	if (typeof content === "string") return content.trim();
+	if (!Array.isArray(content)) return "";
+	return content
+		.map((part: { text?: unknown } | null) =>
+			typeof part?.text === "string" ? part.text : "",
+		)
+		.filter(Boolean)
+		.join("\n")
+		.trim();
+}
+
+/**
+ * Codex writes each exchange twice: `event_msg` records carry exactly what
+ * was typed, `response_item` records carry the model-facing messages
+ * (environment context and instructions included). Prefer the former and
+ * fall back for rollouts that predate it.
+ */
+export function parseCodexTurns(raw: string): HarnessTurn[] {
+	const fromEvents: HarnessTurn[] = [];
+	const fromItems: HarnessTurn[] = [];
+	for (const line of raw.split("\n")) {
+		if (!line.trim()) continue;
+		let record: {
+			type?: string;
+			timestamp?: string;
+			payload?: {
+				type?: string;
+				role?: string;
+				message?: unknown;
+				content?: unknown;
+			};
+		};
+		try {
+			record = JSON.parse(line);
+		} catch {
+			continue;
+		}
+		const payload = record.payload;
+		if (!payload) continue;
+		const at = epochOf(record.timestamp);
+		if (record.type === "event_msg") {
+			const text =
+				typeof payload.message === "string" ? payload.message.trim() : "";
+			if (!text) continue;
+			if (payload.type === "user_message") {
+				fromEvents.push({ role: "user", text, at });
+			} else if (payload.type === "agent_message") {
+				fromEvents.push({ role: "assistant", text, at });
+			}
+			continue;
+		}
+		if (record.type !== "response_item" || payload.type !== "message") continue;
+		const text = codexMessageText(payload.content);
+		if (!text) continue;
+		if (payload.role === "user" && isAuthoredPrompt(text)) {
+			fromItems.push({ role: "user", text, at });
+		} else if (payload.role === "assistant") {
+			fromItems.push({ role: "assistant", text, at });
+		}
+	}
+	return fromEvents.some((turn) => turn.role === "user")
+		? fromEvents
+		: fromItems;
+}
+
+/**
+ * A bound session's conversation as structured turns, read from the tail of
+ * the harness's own store. Null when the harness keeps none we can read.
+ */
+export function readHarnessTurns(input: {
+	agentId: string | null | undefined;
+	agentSessionId: string | null | undefined;
+	worktreePath: string | null | undefined;
+	env?: HarnessEnv;
+	maxBytes?: number;
+}): HarnessTurn[] | null {
+	const { agentId, agentSessionId, worktreePath } = input;
+	const maxBytes = input.maxBytes ?? MAX_HARNESS_SOURCE_BYTES;
+	if (!agentId || !agentSessionId) return null;
+	if (!/^[\w-]+$/.test(agentSessionId)) return null;
+	try {
+		switch (agentId) {
+			case "claude": {
+				if (!worktreePath) return null;
+				const path = claudeTranscriptPath(
+					worktreePath,
+					agentSessionId,
+					claudeConfigDir(input.env),
+				);
+				const raw = path ? readFileTail(path, maxBytes) : null;
+				return raw === null ? null : parseClaudeTurns(raw);
+			}
+			case "codex": {
+				const path = findCodexRollout(agentSessionId, codexHome(input.env));
+				const raw =
+					typeof path === "string" ? readFileTail(path, maxBytes) : null;
+				return raw === null ? null : parseCodexTurns(raw);
+			}
+			default:
+				return null;
+		}
+	} catch {
+		return null;
 	}
 }

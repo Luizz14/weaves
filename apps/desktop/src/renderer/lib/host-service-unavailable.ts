@@ -33,6 +33,7 @@ export type HostServiceAction =
 	| "removeAgent"
 	| "removePrLink"
 	| "renameBranch"
+	| "renameWorkspaceWithAi"
 	| "reorderAgents"
 	| "resetAgents"
 	| "resolveWorkspacePath"
@@ -77,6 +78,9 @@ const ACTION_MESSAGES: Record<HostServiceAction, MessageDescriptor> = {
 	}),
 	renameBranch: msg({
 		message: "rename the branch",
+	}),
+	renameWorkspaceWithAi: msg({
+		message: "rename the workspace with AI",
 	}),
 	reorderAgents: msg({
 		message: "reorder agents",

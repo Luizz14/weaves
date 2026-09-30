@@ -15,6 +15,10 @@ import {
 import { protectedProcedure, router } from "../../index";
 import { resolveWorktreePath } from "../git/utils/resolve-worktree";
 import { destroyWorkspace } from "../workspace-cleanup";
+import {
+	collectRecentPrompts,
+	readRecentWorkspaceSessions,
+} from "../workspace-creation/utils/workspace-activity";
 
 export const workspaceRouter = router({
 	get: protectedProcedure
@@ -94,6 +98,41 @@ export const workspaceRouter = router({
 		}),
 
 	/**
+	 * What the person last asked this workspace's agents, plus the stored
+	 * summary. Reads only the tail of each transcript: it backs a hover card.
+	 */
+	recentActivity: protectedProcedure
+		.input(z.object({ workspaceId: z.string() }))
+		.query(({ ctx, input }) => {
+			const row = ctx.db.query.workspaces
+				.findFirst({ where: eq(workspaces.id, input.workspaceId) })
+				.sync();
+			if (!row) {
+				throw new TRPCError({
+					code: "NOT_FOUND",
+					message: "Workspace not found",
+				});
+			}
+			const sessions = readRecentWorkspaceSessions(ctx.db, row.id, {
+				limit: 3,
+				maxBytes: 512 * 1024,
+			});
+			return {
+				prompts: collectRecentPrompts(sessions, 3),
+				summary: row.summary,
+				summaryUpdatedAt: row.summaryUpdatedAt,
+				externalWorkItem:
+					row.externalWorkItemProvider && row.externalWorkItemId
+						? {
+								provider: row.externalWorkItemProvider,
+								id: row.externalWorkItemId,
+								url: row.externalWorkItemUrl,
+							}
+						: null,
+			};
+		}),
+
+	/**
 	 * Rename / branch-repoint / task-link update, local-first: the host.db
 	 * row commits and broadcasts immediately; the cloud mirror push is
 	 * best-effort (the reconciler retries when unreachable). `branch` only
@@ -128,7 +167,10 @@ export const workspaceRouter = router({
 				});
 			}
 			const patch: UpdateLocalWorkspacePatch = {};
-			if (input.name !== undefined) patch.name = input.name;
+			if (input.name !== undefined && input.name !== current.name) {
+				patch.name = input.name;
+				patch.nameSource = "user";
+			}
 			if (input.branch !== undefined) patch.branch = input.branch;
 			if (input.taskId !== undefined) patch.taskId = input.taskId;
 			if (input.tags !== undefined) patch.tags = input.tags;

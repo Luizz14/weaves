@@ -28,6 +28,7 @@ import { listBranchNames } from "./list-branch-names";
 import { deduplicateBranchName } from "./sanitize-branch";
 
 const WORKSPACE_TITLE_MAX = 150;
+const WORKSPACE_LABEL_MAX = 32;
 const BRANCH_NAME_MAX = 25;
 // Custom naming instructions often mandate ticket ids or type prefixes
 // that don't fit the default budget, so they get more room and "/".
@@ -56,6 +57,20 @@ function sanitizeCustomBranchCandidate(raw: string): string {
 		.replace(/^[-/]+|[-/]+$/g, "")
 		.slice(0, CUSTOM_BRANCH_NAME_MAX)
 		.replace(/[-/]+$/g, "");
+}
+
+export function sanitizeWorkspaceLabel(raw: string): string {
+	return raw
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "")
+		.toLowerCase()
+		.trim()
+		.replace(/\s+/g, "-")
+		.replace(/[^a-z0-9-]/g, "")
+		.replace(/-+/g, "-")
+		.replace(/^-+|-+$/g, "")
+		.slice(0, WORKSPACE_LABEL_MAX)
+		.replace(/-+$/g, "");
 }
 
 function trimTitle(raw: string): string {
@@ -359,17 +374,25 @@ export async function generateWorkspaceNamesFromPrompt(
 	return derived;
 }
 
-const generatedBranchSchema = z.object({ branchName: z.string() });
+const generatedBranchSchema = z.object({
+	branchName: z.string(),
+	label: z.string(),
+});
 const generatedBranchJsonSchema = {
 	type: "object",
-	properties: { branchName: { type: "string" } },
-	required: ["branchName"],
+	properties: {
+		branchName: { type: "string" },
+		label: { type: "string" },
+	},
+	required: ["branchName", "label"],
 	additionalProperties: false,
 };
 
 /**
- * Generates only the git branch from the first prompt. Workspace display
- * names belong to the app and must never be replaced by this path.
+ * Generates the git branch plus a short kebab-case label for the workspace
+ * row. Callers decide whether the label may replace the display name
+ * (`renameTitle`); the branch is always English, the label follows the
+ * prompt's language.
  */
 export async function generateWorkspaceBranchFromPrompt(
 	prompt: string,
@@ -386,7 +409,8 @@ export async function generateWorkspaceBranchFromPrompt(
 			? `Follow these project naming instructions when they conflict with the defaults:\n<naming-instructions>\n${custom}\n</naming-instructions>`
 			: `Use 2-4 English words in kebab-case, with at most ${BRANCH_NAME_MAX} characters and no prefix.`,
 		"The branch name must be in English regardless of the prompt language.",
-		'Return only JSON in this exact shape: {"branchName":"..."}.',
+		`Also return a label: 2-4 lowercase words in kebab-case, at most ${WORKSPACE_LABEL_MAX} characters, in the same language as the user prompt, naming what is being changed (for example "aviso-saque-limite").`,
+		'Return only JSON in this exact shape: {"branchName":"...","label":"..."}.',
 	].join("\n");
 
 	try {
@@ -403,7 +427,14 @@ export async function generateWorkspaceBranchFromPrompt(
 			title: "",
 			branchName: response.branchName,
 		});
-		if (parsed.branchName) return parsed;
+		if (parsed.branchName) {
+			return {
+				branchName: parsed.branchName,
+				title:
+					sanitizeWorkspaceLabel(response.label) ||
+					sanitizeWorkspaceLabel(parsed.branchName),
+			};
+		}
 	} catch (error) {
 		console.warn(
 			"[generateWorkspaceBranchFromPrompt] Gemini branch naming failed:",
@@ -412,7 +443,9 @@ export async function generateWorkspaceBranchFromPrompt(
 	}
 
 	const branchName = deriveWorkspaceBranchFromPrompt(cleaned);
-	return branchName ? { title: "", branchName } : null;
+	return branchName
+		? { title: sanitizeWorkspaceLabel(branchName), branchName }
+		: null;
 }
 
 interface ApplyGeneratedNamesArgs {
@@ -529,8 +562,11 @@ export async function applyGeneratedWorkspaceNames(
 		}
 	}
 
-	const patch: { name?: string; branch?: string } = {};
-	if (titleChanged) patch.name = aiNames.title;
+	const patch: { name?: string; nameSource?: "ai"; branch?: string } = {};
+	if (titleChanged) {
+		patch.name = aiNames.title;
+		patch.nameSource = "ai";
+	}
 	if (gitRenamed) patch.branch = deduped;
 	if (patch.name === undefined && patch.branch === undefined) return null;
 

@@ -11,7 +11,11 @@ import {
 } from "@superset/shared/workspace-tags";
 import { and, eq, inArray } from "drizzle-orm";
 import type { HostDb } from "../db";
-import { workspaces, workspaceTags } from "../db/schema";
+import {
+	type WorkspaceNameSource,
+	workspaces,
+	workspaceTags,
+} from "../db/schema";
 import type { EventBus } from "../events";
 import type { WorkspaceSnapshot } from "../events/types";
 import type { ApiClient } from "../types";
@@ -244,6 +248,7 @@ export interface InsertLocalWorkspaceValues {
 	worktreePath: string;
 	branch: string;
 	name: string;
+	nameSource?: WorkspaceNameSource | null;
 	type?: "local" | "worktree" | "session";
 	taskId?: string | null;
 	externalWorkItemProvider?: string | null;
@@ -272,6 +277,7 @@ export function insertLocalWorkspace(
 				worktreePath: values.worktreePath,
 				branch: values.branch,
 				name: values.name,
+				nameSource: values.nameSource ?? null,
 				type: values.type ?? "worktree",
 				taskId: values.taskId ?? null,
 				externalWorkItemProvider: values.externalWorkItemProvider ?? null,
@@ -309,6 +315,9 @@ export function insertLocalWorkspace(
 
 export interface UpdateLocalWorkspacePatch {
 	name?: string;
+	nameSource?: WorkspaceNameSource;
+	summary?: string;
+	summaryUpdatedAt?: number;
 	branch?: string;
 	worktreePath?: string;
 	taskId?: string | null;

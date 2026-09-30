@@ -129,6 +129,7 @@ export function DashboardSidebarPinnedSection({
 									pinnedContext={{
 										projectName: project?.name ?? null,
 										projectIconUrl: project?.iconUrl ?? null,
+										projectColor: project?.color ?? null,
 									}}
 									onHoverCardOpen={onWorkspaceHover}
 								/>

@@ -1,0 +1,1 @@
+export { WorkspaceRecentActivity } from "./WorkspaceRecentActivity";

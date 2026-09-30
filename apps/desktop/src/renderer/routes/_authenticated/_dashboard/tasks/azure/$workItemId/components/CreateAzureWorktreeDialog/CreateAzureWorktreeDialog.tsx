@@ -90,7 +90,6 @@ export function CreateAzureWorktreeDialog({
 				snapshot: {
 					id: crypto.randomUUID(),
 					projectId,
-					name: workItemTitle,
 					branch: branch.trim(),
 					skipBranchPrefix: true,
 					externalWorkItem: {

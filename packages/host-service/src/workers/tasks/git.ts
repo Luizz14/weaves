@@ -403,6 +403,29 @@ export const gitDeleteBranchTask = defineWorkerTask<
 	},
 });
 
+/**
+ * Whether `branch` exists beyond this machine: it tracks an upstream, or
+ * `origin` advertises a head of that name. A failed `ls-remote` throws, so
+ * callers can treat "could not tell" as published and leave the branch alone.
+ */
+export const gitBranchPublishedTask = defineWorkerTask<
+	{ worktreePath: string; branch: string; gitEnv: GitTaskEnv },
+	{ published: boolean }
+>({
+	type: "git/branchPublished",
+	handler: async ({ worktreePath, branch, gitEnv }) => {
+		const git = createUserSimpleGit(worktreePath).env(gitEnv);
+		const upstream = await git
+			.raw(["rev-parse", "--abbrev-ref", `${branch}@{upstream}`])
+			.catch(() => "");
+		if (upstream.trim()) return { published: true };
+		const remotes = (await git.raw(["remote"])).trim();
+		if (!remotes.split("\n").includes("origin")) return { published: false };
+		const heads = await git.raw(["ls-remote", "--heads", "origin", branch]);
+		return { published: heads.trim().length > 0 };
+	},
+});
+
 export const gitStagePathsTask = defineWorkerTask<
 	{
 		worktreePath: string;
@@ -555,6 +578,39 @@ export const gitPrHeadBaseTask = defineWorkerTask<
 	},
 });
 
+/**
+ * Commit subjects and a diff stat against the branch's base (merge base, so
+ * work landed on the base since forking is excluded), for summarizing what a
+ * workspace has done. Uncommitted changes are in the stat.
+ */
+export const gitWorkSinceBaseTask = defineWorkerTask<
+	{ worktreePath: string; gitEnv: GitTaskEnv },
+	{ commitSubjects: string; diffStat: string }
+>({
+	type: "git/workSinceBase",
+	handler: async ({ worktreePath, gitEnv }) => {
+		const git = createUserSimpleGit(worktreePath).env(gitEnv);
+		const head = (
+			await git.revparse(["--abbrev-ref", "HEAD"]).catch(() => "")
+		).trim();
+		const configuredBase =
+			head && head !== "HEAD"
+				? (
+						await git.raw(["config", `branch.${head}.base`]).catch(() => "")
+					).trim() || undefined
+				: undefined;
+		const { originRef } = await resolveDiffCategoryRefs(git, "against-base", {
+			baseBranch: configuredBase,
+		});
+		const base = originRef ?? "HEAD";
+		const [commitSubjects, diffStat] = await Promise.all([
+			git.raw(["log", "-30", `${base}..HEAD`, "--format=%s"]).catch(() => ""),
+			git.raw(["diff", "--stat=120", base]).catch(() => ""),
+		]);
+		return { commitSubjects: commitSubjects.trim(), diffStat: diffStat.trim() };
+	},
+});
+
 export const gitTasks = [
 	gitStatusSnapshotTask,
 	gitStatusPartialTask,
@@ -569,8 +625,10 @@ export const gitTasks = [
 	gitWorktreeStateTask,
 	gitWorktreeRemoveTask,
 	gitDeleteBranchTask,
+	gitBranchPublishedTask,
 	gitStagePathsTask,
 	gitCommitTask,
 	gitPushTask,
 	gitPrHeadBaseTask,
+	gitWorkSinceBaseTask,
 ];

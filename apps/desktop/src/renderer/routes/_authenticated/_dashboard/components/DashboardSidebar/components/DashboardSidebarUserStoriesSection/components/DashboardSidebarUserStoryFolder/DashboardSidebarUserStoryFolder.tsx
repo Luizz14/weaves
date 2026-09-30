@@ -86,6 +86,8 @@ export function DashboardSidebarUserStoryFolder({
 								pinnedContext={{
 									projectName: project?.name ?? null,
 									projectIconUrl: project?.iconUrl ?? null,
+									projectColor: project?.color ?? null,
+									showProjectLabel: true,
 								}}
 								onHoverCardOpen={onWorkspaceHover}
 							/>

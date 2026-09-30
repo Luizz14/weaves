@@ -4722,6 +4722,10 @@ msgstr "このホストから使用履歴を読み取れませんでした。"
 msgid "Couldn't remove the local sign-in"
 msgstr "ローカルのサインインを削除できませんでした"
 
+#. placeholder {0}: errorMessage(error, "Unknown error")
+msgid "Couldn't rename the workspace: {0}"
+msgstr ""
+
 msgid "Couldn't restart terminals"
 msgstr "ターミナルを再起動できませんでした"
 
@@ -4772,6 +4776,10 @@ msgstr "このページでデザインモードを開始できませんでした
 
 msgid "Couldn't start workspace"
 msgstr "ワークスペースを開始できませんでした"
+
+#. placeholder {0}: errorMessage(error)
+msgid "Couldn't summarize the workspace: {0}"
+msgstr ""
 
 msgid "Couldn't unstage changes"
 msgstr "変更をステージ解除できませんでした"
@@ -9555,6 +9563,9 @@ msgstr "このプロジェクトの新しいブランチに名前空間を付け
 msgid "Naming instructions"
 msgstr "命名指示"
 
+msgid "Naming the workspace from its activity…"
+msgstr ""
+
 msgid "Native PR reviews"
 msgstr "ネイティブのPRレビュー"
 
@@ -9836,6 +9847,12 @@ msgstr "アクティブなターミナルセッションはありません"
 
 msgid "No agent"
 msgstr "エージェントなし"
+
+msgid "No agent requests to name this workspace from yet"
+msgstr ""
+
+msgid "No agent requests yet"
+msgstr ""
 
 #. placeholder {0}: host.name
 msgid "No agents configured on {0}"
@@ -12315,6 +12332,9 @@ msgstr "リベースしてマージ"
 msgid "Rebase and merge"
 msgstr "リベースしてマージ"
 
+msgid "Recent activity"
+msgstr ""
+
 msgid "Recent Activity"
 msgstr "最近のアクティビティ"
 
@@ -12413,6 +12433,9 @@ msgstr "プルリクエストを更新"
 
 msgid "Refresh repositories"
 msgstr "リポジトリを更新"
+
+msgid "Refresh summary"
+msgstr ""
 
 msgid "Refreshes when Claude Code next runs."
 msgstr "次に Claude Code を実行すると更新されます。"
@@ -12632,11 +12655,21 @@ msgstr "セッションの名前を変更"
 msgid "rename the branch"
 msgstr "ブランチ名を変更する"
 
+msgid "rename the workspace with AI"
+msgstr ""
+
+msgid "Rename with AI"
+msgstr ""
+
 msgid "Rename workspace"
 msgstr "ワークスペースの名前を変更"
 
 msgid "Rename..."
 msgstr "名前を変更..."
+
+#. placeholder {0}: result.name
+msgid "Renamed to \"{0}\""
+msgstr ""
 
 msgid "Renaming branch to {newName}..."
 msgstr "ブランチ名を{newName}に変更中..."
@@ -14962,6 +14995,12 @@ msgstr "スイート、そして共有アプリコンポーネントです。イ
 
 msgid "Sum of CPU used by Superset and monitored terminal process trees. Over 100% means multiple CPU cores are busy. Sustained high values usually cause UI sluggishness and higher battery drain."
 msgstr "Supersetと監視対象のターミナルプロセスツリーが使用するCPUの合計。100%を超える場合は複数のCPUコアが動作しています。高い値が続くと、通常はUIの動作が重くなり、バッテリー消費も増えます。"
+
+msgid "Summarize"
+msgstr ""
+
+msgid "Summarizing…"
+msgstr ""
 
 msgid "Summary"
 msgstr "概要"

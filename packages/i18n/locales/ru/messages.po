@@ -4722,6 +4722,10 @@ msgstr "Не удалось прочитать историю использов
 msgid "Couldn't remove the local sign-in"
 msgstr "Не удалось удалить локальный вход"
 
+#. placeholder {0}: errorMessage(error, "Unknown error")
+msgid "Couldn't rename the workspace: {0}"
+msgstr ""
+
 msgid "Couldn't restart terminals"
 msgstr "Не удалось перезапустить терминалы"
 
@@ -4772,6 +4776,10 @@ msgstr "Не удалось запустить режим дизайна на э
 
 msgid "Couldn't start workspace"
 msgstr "Не удалось запустить рабочую область"
+
+#. placeholder {0}: errorMessage(error)
+msgid "Couldn't summarize the workspace: {0}"
+msgstr ""
 
 msgid "Couldn't unstage changes"
 msgstr "Не удалось снять индексацию"
@@ -9555,6 +9563,9 @@ msgstr "Пространство имён для новых веток этог�
 msgid "Naming instructions"
 msgstr "Правила именования"
 
+msgid "Naming the workspace from its activity…"
+msgstr ""
+
 msgid "Native PR reviews"
 msgstr "Нативное ревью PR"
 
@@ -9836,6 +9847,12 @@ msgstr "Нет активных сессий терминала"
 
 msgid "No agent"
 msgstr "Без агента"
+
+msgid "No agent requests to name this workspace from yet"
+msgstr ""
+
+msgid "No agent requests yet"
+msgstr ""
 
 #. placeholder {0}: host.name
 msgid "No agents configured on {0}"
@@ -12315,6 +12332,9 @@ msgstr "Перебазировать и объединить"
 msgid "Rebase and merge"
 msgstr "Перебазировать и объединить"
 
+msgid "Recent activity"
+msgstr ""
+
 msgid "Recent Activity"
 msgstr "Недавняя активность"
 
@@ -12413,6 +12433,9 @@ msgstr "Обновить пул-реквесты"
 
 msgid "Refresh repositories"
 msgstr "Обновить репозитории"
+
+msgid "Refresh summary"
+msgstr ""
 
 msgid "Refreshes when Claude Code next runs."
 msgstr "Обновится при следующем запуске Claude Code."
@@ -12632,11 +12655,21 @@ msgstr "Переименовать сессию"
 msgid "rename the branch"
 msgstr "переименовать ветку"
 
+msgid "rename the workspace with AI"
+msgstr ""
+
+msgid "Rename with AI"
+msgstr ""
+
 msgid "Rename workspace"
 msgstr "Переименовать рабочую область"
 
 msgid "Rename..."
 msgstr "Переименовать..."
+
+#. placeholder {0}: result.name
+msgid "Renamed to \"{0}\""
+msgstr ""
 
 msgid "Renaming branch to {newName}..."
 msgstr "Переименование ветки в {newName}..."
@@ -14962,6 +14995,12 @@ msgstr "для интерфейсов агентов и общие компон�
 
 msgid "Sum of CPU used by Superset and monitored terminal process trees. Over 100% means multiple CPU cores are busy. Sustained high values usually cause UI sluggishness and higher battery drain."
 msgstr "Суммарная загрузка CPU от Superset и отслеживаемых деревьев процессов терминала. Больше 100% означает, что заняты несколько ядер. Долго держащиеся высокие значения обычно вызывают подтормаживание интерфейса и ускоренный разряд батареи."
+
+msgid "Summarize"
+msgstr ""
+
+msgid "Summarizing…"
+msgstr ""
 
 msgid "Summary"
 msgstr "Сводка"

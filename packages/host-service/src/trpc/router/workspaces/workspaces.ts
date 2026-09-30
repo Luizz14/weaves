@@ -1,5 +1,5 @@
-import { mkdirSync } from "node:fs";
-import { dirname } from "node:path";
+import { existsSync, mkdirSync } from "node:fs";
+import { basename, dirname } from "node:path";
 import { recordDiscoveryByBranch } from "@superset/shared/ordem-paranormal";
 import {
 	deriveWorkspaceBranchFromPrompt,
@@ -16,10 +16,7 @@ import { getGitAuthorName } from "../../../runtime/git/identity";
 import { type ResolvedRef, resolveRef } from "../../../runtime/git/refs";
 import type { HostServiceContext } from "../../../types";
 import { getHostWorkerPool } from "../../../workers/host-worker-pool";
-import {
-	gitAuthorNameTask,
-	gitFetchBaseRefTask,
-} from "../../../workers/tasks/git";
+import { gitFetchBaseRefTask } from "../../../workers/tasks/git";
 import {
 	type CloudShapedWorkspace,
 	getLocalWorkspace,
@@ -79,7 +76,12 @@ import {
 	generateWorkspaceNamesFromPrompt,
 	sanitizeBranchCandidate,
 } from "../workspace-creation/utils/ai-workspace-names";
-import { resolveProjectBranchPrefix } from "../workspace-creation/utils/branch-prefix";
+import { autoNameWorkspaceFromActivity } from "../workspace-creation/utils/auto-name-from-activity";
+import {
+	createOffLoopAuthorNameGetter,
+	resolveProjectBranchPrefix,
+	resolveRenameBranchPrefix,
+} from "../workspace-creation/utils/branch-prefix";
 import type { ExecGh } from "../workspace-creation/utils/exec-gh";
 import { listBranchNames } from "../workspace-creation/utils/list-branch-names";
 import {
@@ -360,23 +362,6 @@ function createWorkerBaseRefFetcher(
 	};
 }
 
-/**
- * `resolveProjectBranchPrefix`'s `getAuthorName` for callers with no other
- * git need (unlike `create`, which already holds an on-loop client bound to
- * `repoPath` from building the worktree). Reads the *same repo's*
- * `user.name` off-loop in the worker pool instead of constructing a new
- * `ctx.git()` client on this loop (see the no-main-loop-blocking ratchet) —
- * repo-scoped, not the home-directory identity `gitIdentityTask` reads for
- * the global settings preview, so a repo-local `user.name` override still
- * agrees with what `create` used for this same branch.
- */
-function createOffLoopAuthorNameGetter(
-	repoPath: string,
-): () => Promise<string | null> {
-	return () =>
-		getHostWorkerPool().run(gitAuthorNameTask, { worktreePath: repoPath });
-}
-
 async function planBranchSource(
 	git: GitClient,
 	branch: string,
@@ -564,6 +549,7 @@ async function registerLocalWorkspace(args: {
 	id: string | undefined;
 	projectId: string;
 	name: string;
+	nameSource: "auto" | "user";
 	branch: string;
 	worktreePath: string;
 	taskId: string | undefined;
@@ -583,6 +569,7 @@ async function registerLocalWorkspace(args: {
 			worktreePath: args.worktreePath,
 			branch: args.branch,
 			name: args.name,
+			nameSource: args.nameSource,
 			taskId: args.taskId ?? null,
 			externalWorkItemProvider: args.externalWorkItem?.provider ?? null,
 			externalWorkItemId: args.externalWorkItem?.id ?? null,
@@ -630,8 +617,8 @@ export const workspacesRouter = router({
 			const repoPath = requireProjectRepoPath(localProject);
 
 			// Start branch naming from the first prompt while git creates the
-			// worktree. Display names remain app-owned; only an omitted branch
-			// can be replaced before terminals and agents start. PR and adopted
+			// worktree. Only an omitted branch or display name can be replaced
+			// before terminals and agents start. PR and adopted
 			// worktree paths already have meaningful branches and skip this.
 			const composerPrompt =
 				input.agents?.[0]?.prompt?.trim() || input.namingPrompt?.trim() || "";
@@ -943,6 +930,7 @@ export const workspacesRouter = router({
 								id: input.id,
 								projectId: input.projectId,
 								name: input.name ?? prMetadata.title ?? resolvedBranch,
+								nameSource: "user",
 								branch: resolvedBranch,
 								worktreePath,
 								taskId: input.taskId,
@@ -1070,10 +1058,33 @@ export const workspacesRouter = router({
 					const typedNameSlug = input.name
 						? sanitizeBranchCandidate(input.name)
 						: "";
+					// A renamed branch frees its character, but its worktree
+					// directory keeps the name; count directories as taken too.
+					const worktreeLeaves = ctx.db
+						.select({ path: workspaces.worktreePath })
+						.from(workspaces)
+						.where(eq(workspaces.projectId, input.projectId))
+						.all()
+						.map((row) => basename(row.path));
 					const candidate =
-						typedNameSlug || generateFriendlyBranchName(existing);
+						typedNameSlug ||
+						generateFriendlyBranchName([...existing, ...worktreeLeaves]);
 					const prefixed = prefix ? `${prefix}/${candidate}` : candidate;
 					resolvedBranch = deduplicateBranchName(prefixed, existing);
+					const taken = new Set(existing);
+					while (
+						existsSync(
+							safeResolveWorktreePath(
+								localProject.id,
+								resolvedBranch,
+								worktreeBaseDir,
+							),
+						) &&
+						!taken.has(resolvedBranch)
+					) {
+						taken.add(resolvedBranch);
+						resolvedBranch = deduplicateBranchName(prefixed, [...taken]);
+					}
 					recordDiscoveryByBranch(resolvedBranch, { project: input.projectId });
 					plan = {
 						branch: resolvedBranch,
@@ -1227,6 +1238,7 @@ export const workspacesRouter = router({
 								id: input.id,
 								projectId: input.projectId,
 								name: input.name ?? resolvedBranch,
+								nameSource: input.name ? "user" : "auto",
 								branch: resolvedBranch,
 								worktreePath,
 								taskId: input.taskId,
@@ -1254,7 +1266,7 @@ export const workspacesRouter = router({
 			// call has been running since the top of the mutation and is
 			// bounded by its own timeouts, so this usually adds well under a
 			// second on top of the git work; the rename itself (`branch -m`
-			// plus a row update) is milliseconds. The workspace display name and
+			// plus a row update) is milliseconds. A typed display name and the
 			// worktree directory keep their creation-time values.
 			if (!alreadyExists && aiNamesPromise && worktreePath !== undefined) {
 				const names = await aiNamesPromise;
@@ -1268,7 +1280,7 @@ export const workspacesRouter = router({
 							oldBranchName: resolvedBranch,
 							oldWorkspaceName: workspaceRow.name || resolvedBranch,
 							names,
-							renameTitle: false,
+							renameTitle: !input.name,
 							renameBranch: aiCanRenameBranch,
 							branchPrefix: resolvedBranchPrefix,
 						});
@@ -1520,20 +1532,7 @@ export const workspacesRouter = router({
 				});
 			}
 			const repoPath = project.repoPath ?? "";
-			const branchPrefix = repoPath
-				? await resolveProjectBranchPrefix({
-						ctx,
-						project,
-						getAuthorName: createOffLoopAuthorNameGetter(repoPath),
-						existingBranches: await listBranchNames(ctx, repoPath),
-					}).catch((err) => {
-						console.warn(
-							"[workspaces.aiRename] branch prefix resolution failed",
-							err,
-						);
-						return undefined;
-					})
-				: undefined;
+			const branchPrefix = await resolveRenameBranchPrefix(ctx, project);
 			void applyAiWorkspaceRename({
 				ctx,
 				workspaceId: input.workspaceId,
@@ -1550,6 +1549,26 @@ export const workspacesRouter = router({
 				console.warn("[workspaces.aiRename] failed", err);
 			});
 			return { success: true as const };
+		}),
+
+	/**
+	 * Names a workspace (and, while unpublished, its branch) after what its
+	 * newest agent session was asked to do. Explicit, so it also replaces a
+	 * name the user typed.
+	 */
+	autoNameFromActivity: protectedProcedure
+		.input(z.object({ workspaceId: z.string().uuid() }))
+		.mutation(async ({ ctx, input }) => {
+			const local = getLocalWorkspace(ctx.db, input.workspaceId);
+			if (!local) {
+				throw new TRPCError({
+					code: "NOT_FOUND",
+					message: `Workspace not found: ${input.workspaceId}`,
+				});
+			}
+			return autoNameWorkspaceFromActivity(ctx, input.workspaceId, {
+				force: true,
+			});
 		}),
 
 	generateBranchName: protectedProcedure

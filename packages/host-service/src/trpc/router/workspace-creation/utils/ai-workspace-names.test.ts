@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import {
 	generateWorkspaceNamesFromPrompt,
 	resolveGeneratedBranchName,
+	sanitizeWorkspaceLabel,
 } from "./ai-workspace-names";
 
 describe("generateWorkspaceNamesFromPrompt", () => {
@@ -102,5 +103,21 @@ describe("resolveGeneratedBranchName", () => {
 			prefixedCandidate: "kiet/",
 			changed: false,
 		});
+	});
+});
+
+describe("sanitizeWorkspaceLabel", () => {
+	test("folds accents and spaces into a short kebab-case label", () => {
+		expect(sanitizeWorkspaceLabel("  Integração Menu Ajuda! ")).toBe(
+			"integracao-menu-ajuda",
+		);
+	});
+
+	test("caps the label without leaving a trailing hyphen", () => {
+		const label = sanitizeWorkspaceLabel(
+			"alteracoes aviso saque limite diario conta pj",
+		);
+		expect(label.length).toBeLessThanOrEqual(32);
+		expect(label.endsWith("-")).toBe(false);
 	});
 });

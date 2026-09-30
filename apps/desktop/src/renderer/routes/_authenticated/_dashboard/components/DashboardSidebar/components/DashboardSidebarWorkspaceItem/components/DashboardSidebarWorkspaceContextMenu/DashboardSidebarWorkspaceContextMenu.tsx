@@ -26,6 +26,7 @@ import {
 	LuPin,
 	LuPinOff,
 	LuRadioTower,
+	LuSparkles,
 	LuTrash2,
 	LuUnlink,
 	LuX,
@@ -61,6 +62,7 @@ interface DashboardSidebarWorkspaceContextMenuProps {
 	onCopyWorkspaceId: () => void;
 	onRemoveFromSidebar: () => void;
 	onRename?: () => void;
+	onRenameWithAi?: () => void;
 	/** Cloud workspaces only: turn this sandbox into a reusable environment. */
 	onPromoteToEnvironment?: () => void;
 	onDelete?: () => void;
@@ -90,6 +92,7 @@ export function DashboardSidebarWorkspaceContextMenu({
 	onCopyWorkspaceId,
 	onRemoveFromSidebar,
 	onRename,
+	onRenameWithAi,
 	onPromoteToEnvironment,
 	onDelete,
 	onToggleUnread,
@@ -135,6 +138,12 @@ export function DashboardSidebarWorkspaceContextMenu({
 					<ContextMenuItem onSelect={onRename}>
 						<LuPencil className="size-4 mr-2" />
 						<Trans>Rename</Trans>
+					</ContextMenuItem>
+				)}
+				{onRenameWithAi && (
+					<ContextMenuItem onSelect={onRenameWithAi}>
+						<LuSparkles className="size-4 mr-2" />
+						<Trans>Rename with AI</Trans>
 					</ContextMenuItem>
 				)}
 				{isLocalWorkspace && (

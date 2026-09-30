@@ -4722,6 +4722,10 @@ msgstr "Impossible de lire l'historique d'utilisation depuis cet hôte."
 msgid "Couldn't remove the local sign-in"
 msgstr "Impossible de supprimer la connexion locale"
 
+#. placeholder {0}: errorMessage(error, "Unknown error")
+msgid "Couldn't rename the workspace: {0}"
+msgstr ""
+
 msgid "Couldn't restart terminals"
 msgstr "Impossible de redémarrer les terminaux"
 
@@ -4772,6 +4776,10 @@ msgstr "Impossible de démarrer le mode design sur cette page"
 
 msgid "Couldn't start workspace"
 msgstr "Impossible de démarrer l'espace de travail"
+
+#. placeholder {0}: errorMessage(error)
+msgid "Couldn't summarize the workspace: {0}"
+msgstr ""
 
 msgid "Couldn't unstage changes"
 msgstr "Impossible de désindexer les modifications"
@@ -9555,6 +9563,9 @@ msgstr "Préfixe les nouvelles branches de ce projet. Par défaut, reprend le pa
 msgid "Naming instructions"
 msgstr "Instructions de nommage"
 
+msgid "Naming the workspace from its activity…"
+msgstr ""
+
 msgid "Native PR reviews"
 msgstr "Revues de pull requests natives"
 
@@ -9836,6 +9847,12 @@ msgstr "Aucune session de terminal active"
 
 msgid "No agent"
 msgstr "Aucun agent"
+
+msgid "No agent requests to name this workspace from yet"
+msgstr ""
+
+msgid "No agent requests yet"
+msgstr ""
 
 #. placeholder {0}: host.name
 msgid "No agents configured on {0}"
@@ -12315,6 +12332,9 @@ msgstr "Rebaser et fusionner"
 msgid "Rebase and merge"
 msgstr "Rebaser et fusionner"
 
+msgid "Recent activity"
+msgstr ""
+
 msgid "Recent Activity"
 msgstr "Activité récente"
 
@@ -12413,6 +12433,9 @@ msgstr "Actualiser les pull requests"
 
 msgid "Refresh repositories"
 msgstr "Actualiser les dépôts"
+
+msgid "Refresh summary"
+msgstr ""
 
 msgid "Refreshes when Claude Code next runs."
 msgstr "Actualisé au prochain lancement de Claude Code."
@@ -12632,11 +12655,21 @@ msgstr "Renommer la session"
 msgid "rename the branch"
 msgstr "renommer la branche"
 
+msgid "rename the workspace with AI"
+msgstr ""
+
+msgid "Rename with AI"
+msgstr ""
+
 msgid "Rename workspace"
 msgstr "Renommer l'espace de travail"
 
 msgid "Rename..."
 msgstr "Renommer..."
+
+#. placeholder {0}: result.name
+msgid "Renamed to \"{0}\""
+msgstr ""
 
 msgid "Renaming branch to {newName}..."
 msgstr "Renommage de la branche en {newName}..."
@@ -14962,6 +14995,12 @@ msgstr "suite pour les interfaces d'agent, et les composants d'application parta
 
 msgid "Sum of CPU used by Superset and monitored terminal process trees. Over 100% means multiple CPU cores are busy. Sustained high values usually cause UI sluggishness and higher battery drain."
 msgstr "Somme du CPU utilisé par Superset et par les arborescences de processus des terminaux surveillés. Au-delà de 100 %, plusieurs cœurs CPU sont occupés. Des valeurs élevées prolongées entraînent généralement une interface lente et une consommation de batterie accrue."
+
+msgid "Summarize"
+msgstr ""
+
+msgid "Summarizing…"
+msgstr ""
 
 msgid "Summary"
 msgstr "Résumé"

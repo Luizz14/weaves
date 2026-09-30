@@ -298,6 +298,33 @@ export function useDashboardSidebarWorkspaceItemActions({
 		}
 	};
 
+	const handleRenameWithAi = () => {
+		if (!workspaceHostUrl) {
+			showHostServiceUnavailableToast(hostService, {
+				action: "renameWorkspaceWithAi",
+			});
+			return;
+		}
+		toast.promise(
+			getHostServiceClientByUrl(
+				workspaceHostUrl,
+			).workspaces.autoNameFromActivity.mutate({ workspaceId }),
+			{
+				loading: t({ message: "Naming the workspace from its activity…" }),
+				success: (result) =>
+					result
+						? t({ message: `Renamed to "${result.name}"` })
+						: t({
+								message: "No agent requests to name this workspace from yet",
+							}),
+				error: (error) =>
+					t({
+						message: `Couldn't rename the workspace: ${errorMessage(error, "Unknown error")}`,
+					}),
+			},
+		);
+	};
+
 	const handleCopyBranchName = async () => {
 		if (!branch) {
 			toast.error(
@@ -336,6 +363,7 @@ export function useDashboardSidebarWorkspaceItemActions({
 	};
 
 	return {
+		handleRenameWithAi,
 		cancelRename,
 		handleClearStatus,
 		handleClick,

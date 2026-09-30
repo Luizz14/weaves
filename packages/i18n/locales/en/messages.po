@@ -4722,6 +4722,10 @@ msgstr "Couldn't read usage history from this host."
 msgid "Couldn't remove the local sign-in"
 msgstr "Couldn't remove the local sign-in"
 
+#. placeholder {0}: errorMessage(error, "Unknown error")
+msgid "Couldn't rename the workspace: {0}"
+msgstr "Couldn't rename the workspace: {0}"
+
 msgid "Couldn't restart terminals"
 msgstr "Couldn't restart terminals"
 
@@ -4772,6 +4776,10 @@ msgstr "Couldn't start design mode on this page"
 
 msgid "Couldn't start workspace"
 msgstr "Couldn't start workspace"
+
+#. placeholder {0}: errorMessage(error)
+msgid "Couldn't summarize the workspace: {0}"
+msgstr "Couldn't summarize the workspace: {0}"
 
 msgid "Couldn't unstage changes"
 msgstr "Couldn't unstage changes"
@@ -9555,6 +9563,9 @@ msgstr "Namespace new branches for this project. Defaults to the host-wide Git s
 msgid "Naming instructions"
 msgstr "Naming instructions"
 
+msgid "Naming the workspace from its activity…"
+msgstr "Naming the workspace from its activity…"
+
 msgid "Native PR reviews"
 msgstr "Native PR reviews"
 
@@ -9836,6 +9847,12 @@ msgstr "No active terminal sessions"
 
 msgid "No agent"
 msgstr "No agent"
+
+msgid "No agent requests to name this workspace from yet"
+msgstr "No agent requests to name this workspace from yet"
+
+msgid "No agent requests yet"
+msgstr "No agent requests yet"
 
 #. placeholder {0}: host.name
 msgid "No agents configured on {0}"
@@ -12315,6 +12332,9 @@ msgstr "Rebase & Merge"
 msgid "Rebase and merge"
 msgstr "Rebase and merge"
 
+msgid "Recent activity"
+msgstr "Recent activity"
+
 msgid "Recent Activity"
 msgstr "Recent Activity"
 
@@ -12413,6 +12433,9 @@ msgstr "Refresh pull requests"
 
 msgid "Refresh repositories"
 msgstr "Refresh repositories"
+
+msgid "Refresh summary"
+msgstr "Refresh summary"
 
 msgid "Refreshes when Claude Code next runs."
 msgstr "Refreshes when Claude Code next runs."
@@ -12632,11 +12655,21 @@ msgstr "Rename session"
 msgid "rename the branch"
 msgstr "rename the branch"
 
+msgid "rename the workspace with AI"
+msgstr "rename the workspace with AI"
+
+msgid "Rename with AI"
+msgstr "Rename with AI"
+
 msgid "Rename workspace"
 msgstr "Rename workspace"
 
 msgid "Rename..."
 msgstr "Rename..."
+
+#. placeholder {0}: result.name
+msgid "Renamed to \"{0}\""
+msgstr "Renamed to \"{0}\""
 
 msgid "Renaming branch to {newName}..."
 msgstr "Renaming branch to {newName}..."
@@ -14962,6 +14995,12 @@ msgstr "suite for agent UIs, and shared app components. Click any import path to
 
 msgid "Sum of CPU used by Superset and monitored terminal process trees. Over 100% means multiple CPU cores are busy. Sustained high values usually cause UI sluggishness and higher battery drain."
 msgstr "Sum of CPU used by Superset and monitored terminal process trees. Over 100% means multiple CPU cores are busy. Sustained high values usually cause UI sluggishness and higher battery drain."
+
+msgid "Summarize"
+msgstr "Summarize"
+
+msgid "Summarizing…"
+msgstr "Summarizing…"
 
 msgid "Summary"
 msgstr "Summary"
