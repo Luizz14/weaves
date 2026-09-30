@@ -89,3 +89,38 @@ passed, 8 failed, 2 errors, with no newly failing test names relative to the bas
 The focused checks also passed with real HotkeyLabel dependencies. Typecheck has
 the same 12 preexisting diagnostics and no new ones. Live backend mutations were
 not used for these UI/store tests.
+
+## P22
+
+The native contextBridge check exposed that callbacks passed to separate preload
+calls have different proxy identities. The original bridge and a preload-only
+per-channel WeakMap both failed to remove the intended listener. The user
+explicitly approved the renderer-local facade with private subscription IDs.
+
+The public `window.ipcRenderer` API remains `invoke`, `send`, `on`, and `off`.
+The facade is installed in the main world via executeInMainWorld, keeping callback
+identity local to the renderer. Its WeakMap tracks stacks of IDs per callback and
+channel. A private transport retains each actual native wrapper by ID in preload;
+the transport is passed into the facade's closure, not exposed as another global
+API. The event object is still stripped from callbacks. `off` removes the latest
+matching registration, one per call, preserving EventEmitter semantics. Empty
+registries and subscription records are removed. Context isolation and sandboxing
+remain enabled; no caller migration or new public subscription argument is needed.
+
+Three regression tests cover independent channels, repeated registrations,
+unknown removals and repeated mount/unmount cleanup. A real isolated Electron
+renderer with the compiled preload passed the exact channel/duplicate test that
+failed before the change. That check exercised contextBridge proxies, not only a
+mock emitter; the profile and channels were temporary, without Superset startup
+or user-data access.
+
+Final arm64 build/package and both native guards passed. Native SQLite/PTY/watcher
+and other loaders were smoke-tested again directly from the final package.
+Desktop suite: 4,049 passed, 8 failed, 2 errors, all remaining failures already
+present in the base; typecheck has the same 12 preexisting diagnostics and no new
+ones. Focused checks and Biome for changed files passed. No benchmarks were run.
+
+P03/P06/P19/P22 are complete on the isolated branch, one commit per item. The
+original worktree's ongoing editor/LSP/settings/database edits were not moved,
+committed or modified by this work. No push, merge, publication or remote DB setup
+was performed. Real Sentry symbolication remains deferred from wave 1.
