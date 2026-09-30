@@ -1535,9 +1535,6 @@ msgstr "Voeg tests toe voor de riskantste ongeteste code…"
 msgid "Add tests where they're missing"
 msgstr "Tests toevoegen waar ze ontbreken"
 
-msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
-msgstr "Voeg het Bitrise-token toe aan de Azure DevOps-instellingen van dit project voordat je een build genereert."
-
 msgid "Add this build to mocks"
 msgstr "Deze build aan mocks toevoegen"
 
@@ -3914,9 +3911,6 @@ msgstr "Configureer het gedrag van git-branches en worktrees"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Bepaal hoe taken tussen Superset en Linear synchroniseren."
 
-msgid "Configure mobile build generation in this project's Azure DevOps settings."
-msgstr "Configureer het genereren van mobiele builds in de Azure DevOps-instellingen van dit project."
-
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "Configureer het gedrag van de terminal en herbruikbare terminalscripts"
 
@@ -3982,9 +3976,6 @@ msgstr "Koppel een integratie om taken te gebruiken"
 
 msgid "Connect any AI agent to Superset."
 msgstr "Verbind elke AI-agent met Superset."
-
-msgid "Connect Azure DevOps"
-msgstr "Connect Azure DevOps"
 
 msgid "Connect Azure DevOps board"
 msgstr "Connect Azure DevOps board"
@@ -5102,6 +5093,9 @@ msgstr "Pas aan hoe Superset er op je apparaat uitziet"
 #. placeholder {0}: showHotkeysKeys.map((key) => ( <Kbd key={key}>{key}</Kbd> ))
 msgid "Customize keyboard shortcuts for your workflow. Press <0>{0}</0> to open this page anytime."
 msgstr "Pas sneltoetsen aan je workflow aan. Druk op <0>{0}</0> om deze pagina altijd te openen."
+
+msgid "Customize mobile build"
+msgstr ""
 
 msgid "Cyan"
 msgstr "Cyaan"
@@ -8883,9 +8877,6 @@ msgstr "Meer laden..."
 msgid "Loading more…"
 msgstr "Meer laden…"
 
-msgid "Loading project build settings…"
-msgstr "Projectbuildinstellingen laden…"
-
 msgid "Loading project…"
 msgstr "Project laden…"
 
@@ -10076,9 +10067,6 @@ msgstr "Geen bekende makers"
 
 msgid "No labels"
 msgstr "Geen labels"
-
-msgid "No linked worktree"
-msgstr "Geen gekoppelde worktree"
 
 msgid "No live sessions"
 msgstr "Geen actieve sessies"
@@ -13868,9 +13856,6 @@ msgstr "Teams kiezen"
 msgid "Select terminal script directory"
 msgstr "Map voor terminalscript kiezen"
 
-msgid "Select worktree"
-msgstr "Selecteer worktree"
-
 msgid "Select worktree location"
 msgstr "Locatie voor worktree kiezen"
 
@@ -16263,9 +16248,6 @@ msgstr "De host van deze werkruimte is offline"
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "De host van deze werkruimte draait een oudere hostservice dan deze app ondersteunt. Werk hem bij om opnieuw te verbinden; de werkruimte en de bestanden blijven onaangeroerd."
 
-msgid "This worktree's host is unavailable."
-msgstr "De host van deze worktree is niet beschikbaar."
-
 msgid "Thorough reasoning effort"
 msgstr "Grondige redeneerinspanning"
 
@@ -17687,9 +17669,6 @@ msgstr "worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
-
-msgid "Worktree and branch"
-msgstr "Worktree en branch"
 
 msgid "Worktree branch"
 msgstr "Worktree-branch"

@@ -12,7 +12,6 @@ import {
 	LuArrowLeft,
 	LuExternalLink,
 	LuFileText,
-	LuHammer,
 	LuLink,
 	LuPlus,
 	LuRefreshCw,
@@ -27,7 +26,6 @@ import type { AzureDevOpsBoardResult } from "../../components/TasksView/componen
 import { Route as TasksLayoutRoute } from "../../layout";
 import { AzureWorktreeRow } from "./components/AzureWorktreeRow";
 import { CreateAzureWorktreeDialog } from "./components/CreateAzureWorktreeDialog";
-import { GenerateAzureBuildDialog } from "./components/GenerateAzureBuildDialog";
 import { LinkExistingWorktreeDialog } from "./components/LinkExistingWorktreeDialog";
 
 export const Route = createFileRoute(
@@ -71,7 +69,6 @@ function AzureWorkItemDetailPage() {
 	const { activeHostUrl } = useLocalHostService();
 	const hostUrl = configuredHostUrl ?? activeHostUrl;
 	const [worktreeDialogOpen, setWorktreeDialogOpen] = useState(false);
-	const [buildDialogOpen, setBuildDialogOpen] = useState(false);
 	const cachedBoardItem = hostUrl
 		? queryClient
 				.getQueriesData<AzureDevOpsBoardResult>({
@@ -508,15 +505,6 @@ function AzureWorkItemDetailPage() {
 								<Button
 									variant="outline"
 									className="h-10"
-									disabled={linkedWorkspaces.length === 0}
-									onClick={() => setBuildDialogOpen(true)}
-								>
-									<LuHammer />
-									<Trans>Generate build</Trans>
-								</Button>
-								<Button
-									variant="outline"
-									className="h-10"
 									disabled={isReadOnly || !webUrl}
 									onClick={() => setLinkDialogOpen(true)}
 								>
@@ -622,12 +610,6 @@ function AzureWorkItemDetailPage() {
 				workItemUrl={webUrl}
 				workspaces={workspaces}
 				projectName={projectName}
-			/>
-			<GenerateAzureBuildDialog
-				open={buildDialogOpen}
-				onOpenChange={setBuildDialogOpen}
-				workItemId={workItemId}
-				workspaces={linkedWorkspaces}
 			/>
 		</div>
 	);

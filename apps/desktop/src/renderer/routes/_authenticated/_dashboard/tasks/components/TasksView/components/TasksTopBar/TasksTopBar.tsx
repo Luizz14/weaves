@@ -1,17 +1,13 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import { Button } from "@superset/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@superset/ui/tabs";
 import { cn } from "@superset/ui/utils";
 import { useState } from "react";
-import { GoIssueOpened } from "react-icons/go";
 import {
 	HiOutlinePencilSquare,
 	HiOutlineQueueList,
 	HiOutlineViewColumns,
 	HiXMark,
 } from "react-icons/hi2";
-import { SiLinear } from "react-icons/si";
-import { VscAzureDevops } from "react-icons/vsc";
 import { useIsV2CloudEnabled } from "renderer/hooks/useIsV2CloudEnabled";
 import { OpenClosedFilter } from "renderer/routes/_authenticated/_dashboard/components/OpenClosedFilter";
 import { ProjectFilter } from "renderer/routes/_authenticated/_dashboard/components/ProjectFilter";
@@ -21,6 +17,7 @@ import { shouldShowTaskSourceSwitcher } from "renderer/routes/_authenticated/_da
 import type { ViewMode } from "../../../../stores/tasks-filter-state";
 import type { TaskWithStatus } from "../../hooks/useTasksData";
 import type { SelectedIssue } from "../GitHubIssuesContent";
+import { TaskSourceSwitcher } from "../TaskSourceSwitcher";
 import { AssigneeFilter } from "./components/AssigneeFilter";
 import { CreateTaskDialog } from "./components/CreateTaskDialog";
 import { LinearProjectFilter } from "./components/LinearProjectFilter";
@@ -64,12 +61,6 @@ interface TasksTopBarProps {
 	onIncludeClosedIssuesChange: (includeClosed: boolean) => void;
 }
 
-const TASK_SOURCES = [
-	{ value: "tasks" as const, Icon: SiLinear },
-	{ value: "issues" as const, Icon: GoIssueOpened },
-	{ value: "azure" as const, Icon: VscAzureDevops },
-] as const;
-
 export function TasksTopBar({
 	currentTab,
 	onTabChange,
@@ -95,17 +86,6 @@ export function TasksTopBar({
 	onIncludeClosedIssuesChange,
 }: TasksTopBarProps) {
 	const { t } = useLingui();
-	const taskSourceLabels: Record<TaskSource, string> = {
-		tasks: t({
-			message: "Linear",
-		}),
-		issues: t({
-			message: "GitHub issues",
-		}),
-		azure: t({
-			message: "Azure DevOps",
-		}),
-	};
 	const showTaskOnlyControls = taskSource === "tasks";
 	const showIssues = taskSource === "issues";
 	const taskSelectedCount = selectedTasks.length;
@@ -175,31 +155,11 @@ export function TasksTopBar({
 							<>
 								{shouldShowTaskSourceSwitcher(availableTaskSources) && (
 									<>
-										<Tabs
+										<TaskSourceSwitcher
 											value={taskSource}
-											onValueChange={(value) =>
-												onTaskSourceChange(value as TaskSource)
-											}
-											className="flex-row gap-0"
-										>
-											<TabsList className="h-8 gap-0.5 rounded-md bg-muted/50 p-0.5">
-												{TASK_SOURCES.filter((source) =>
-													availableTaskSources.includes(source.value),
-												).map((source) => {
-													const Icon = source.Icon;
-													return (
-														<TabsTrigger
-															key={source.value}
-															value={source.value}
-															className="h-7 rounded-sm px-2 text-xs shadow-none data-[state=active]:shadow-none"
-														>
-															<Icon className="size-3.5" />
-															<span>{taskSourceLabels[source.value]}</span>
-														</TabsTrigger>
-													);
-												})}
-											</TabsList>
-										</Tabs>
+											sources={availableTaskSources}
+											onChange={onTaskSourceChange}
+										/>
 										<div className="h-4 w-px shrink-0 bg-border" />
 									</>
 								)}

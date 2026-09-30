@@ -1535,9 +1535,6 @@ msgstr "Tests für den riskantesten ungetesteten Code schreiben…"
 msgid "Add tests where they're missing"
 msgstr "Tests ergänzen, wo sie fehlen"
 
-msgid "Add the Bitrise token in this project's Azure DevOps settings before generating a build."
-msgstr "Füge vor dem Erstellen eines Builds das Bitrise-Token in den Azure-DevOps-Einstellungen dieses Projekts hinzu."
-
 msgid "Add this build to mocks"
 msgstr "Diesen Build zu den Mocks hinzufügen"
 
@@ -3914,9 +3911,6 @@ msgstr "Verhalten von Git-Branches und Worktrees konfigurieren"
 msgid "Configure how tasks sync between Superset and Linear."
 msgstr "Lege fest, wie Aufgaben zwischen Superset und Linear synchronisiert werden."
 
-msgid "Configure mobile build generation in this project's Azure DevOps settings."
-msgstr "Konfiguriere die Generierung mobiler Builds in den Azure-DevOps-Einstellungen dieses Projekts."
-
 msgid "Configure terminal behavior and reusable terminal scripts"
 msgstr "Terminal-Verhalten und wiederverwendbare Terminal-Skripte konfigurieren"
 
@@ -3982,9 +3976,6 @@ msgstr "Verbinde eine Integration, um Aufgaben zu verwenden"
 
 msgid "Connect any AI agent to Superset."
 msgstr "Verbinde jeden KI-Agenten mit Superset."
-
-msgid "Connect Azure DevOps"
-msgstr "Connect Azure DevOps"
 
 msgid "Connect Azure DevOps board"
 msgstr "Connect Azure DevOps board"
@@ -5102,6 +5093,9 @@ msgstr "Passe an, wie Superset auf deinem Gerät aussieht"
 #. placeholder {0}: showHotkeysKeys.map((key) => ( <Kbd key={key}>{key}</Kbd> ))
 msgid "Customize keyboard shortcuts for your workflow. Press <0>{0}</0> to open this page anytime."
 msgstr "Passe Tastenkürzel an deinen Workflow an. Drücke <0>{0}</0>, um diese Seite jederzeit zu öffnen."
+
+msgid "Customize mobile build"
+msgstr ""
 
 msgid "Cyan"
 msgstr "Cyan"
@@ -8883,9 +8877,6 @@ msgstr "Mehr wird geladen..."
 msgid "Loading more…"
 msgstr "Mehr wird geladen…"
 
-msgid "Loading project build settings…"
-msgstr "Build-Einstellungen des Projekts werden geladen…"
-
 msgid "Loading project…"
 msgstr "Projekt wird geladen…"
 
@@ -10076,9 +10067,6 @@ msgstr "Keine bekannten Ersteller"
 
 msgid "No labels"
 msgstr "Keine Labels"
-
-msgid "No linked worktree"
-msgstr "Kein verknüpfter Worktree"
 
 msgid "No live sessions"
 msgstr "Keine aktiven Sitzungen"
@@ -13868,9 +13856,6 @@ msgstr "Teams auswählen"
 msgid "Select terminal script directory"
 msgstr "Verzeichnis für Terminal-Skript wählen"
 
-msgid "Select worktree"
-msgstr "Worktree auswählen"
-
 msgid "Select worktree location"
 msgstr "Worktree-Speicherort wählen"
 
@@ -16263,9 +16248,6 @@ msgstr "Der Host dieses Arbeitsbereichs ist offline"
 msgid "This workspace's host runs an older host service than this app supports. Update it to reconnect; the workspace and its files are untouched."
 msgstr "Der Host dieses Workspace führt einen älteren Host-Dienst aus, als diese App unterstützt. Aktualisiere ihn, um dich wieder zu verbinden; der Workspace und seine Dateien bleiben unberührt."
 
-msgid "This worktree's host is unavailable."
-msgstr "Der Host dieses Worktrees ist nicht verfügbar."
-
 msgid "Thorough reasoning effort"
 msgstr "Gründliches Reasoning"
 
@@ -17687,9 +17669,6 @@ msgstr "Worktree"
 
 msgid "Worktree"
 msgstr "Worktree"
-
-msgid "Worktree and branch"
-msgstr "Worktree und Branch"
 
 msgid "Worktree branch"
 msgstr "Worktree-Branch"

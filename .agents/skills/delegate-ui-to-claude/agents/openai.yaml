@@ -1,0 +1,6 @@
+interface:
+  display_name: "Delegate UI to Claude"
+  short_description: "Delega UI ao Claude e coordena a feature completa"
+  default_prompt: "Use $delegate-ui-to-claude para delegar a UI desta implementação ao Claude Code, coordenando contratos, outras camadas, integração e validação."
+policy:
+  allow_implicit_invocation: true

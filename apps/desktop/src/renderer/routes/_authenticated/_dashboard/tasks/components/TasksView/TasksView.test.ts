@@ -64,7 +64,9 @@ describe("Run in Workspace selection wiring (#2641)", () => {
 
 describe("Tasks and pull requests navigation", () => {
 	test("keeps GitHub issues as a contextual Tasks source", () => {
-		const source = readComponent("components/TasksTopBar/TasksTopBar.tsx");
+		const source = readComponent(
+			"components/TaskSourceSwitcher/TaskSourceSwitcher.tsx",
+		);
 
 		expect(source).toContain('message: "Linear"');
 		expect(source).toContain('message: "GitHub issues"');
