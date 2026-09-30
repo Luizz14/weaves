@@ -2855,6 +2855,9 @@ msgstr "Telusuri..."
 msgid "Browser"
 msgstr "Browser"
 
+msgid "Browser actions"
+msgstr ""
+
 msgid "Browser Connection was refused"
 msgstr "Koneksi browser ditolak"
 
@@ -11325,6 +11328,9 @@ msgstr "packages/ui/src/components/ui/kbd.tsx"
 msgid "Page"
 msgstr "Halaman"
 
+msgid "Page actions"
+msgstr ""
+
 msgid "Page by you"
 msgstr "Halaman oleh Anda"
 
@@ -11393,6 +11399,9 @@ msgstr "Root tata letak panel: merender pohon panel sebuah workspace"
 
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
+
+msgid "Panel"
+msgstr ""
 
 msgid "Paragraph"
 msgstr "Paragraf"
@@ -12105,6 +12114,9 @@ msgstr "Dipublikasikan sebagai <0>{handle}</0>. Hanya jumlah token dan nama mode
 
 msgid "Pull request"
 msgstr "Pull request"
+
+msgid "Pull Request"
+msgstr ""
 
 #. placeholder {0}: data.prNumber
 #. placeholder {0}: pullRequest.prNumber

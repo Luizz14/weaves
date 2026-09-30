@@ -2855,6 +2855,9 @@ msgstr "Обзор..."
 msgid "Browser"
 msgstr "Браузер"
 
+msgid "Browser actions"
+msgstr ""
+
 msgid "Browser Connection was refused"
 msgstr "В соединении браузера отказано"
 
@@ -11325,6 +11328,9 @@ msgstr "packages/ui/src/components/ui/kbd.tsx"
 msgid "Page"
 msgstr "Страница"
 
+msgid "Page actions"
+msgstr ""
+
 msgid "Page by you"
 msgstr "Ваша страница"
 
@@ -11393,6 +11399,9 @@ msgstr "Корень раскладки панелей: рендерит дер�
 
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
+
+msgid "Panel"
+msgstr ""
 
 msgid "Paragraph"
 msgstr "Абзац"
@@ -12105,6 +12114,9 @@ msgstr "Публикуется как <0>{handle}</0>. Только количе
 
 msgid "Pull request"
 msgstr "Пул-реквест"
+
+msgid "Pull Request"
+msgstr ""
 
 #. placeholder {0}: data.prNumber
 #. placeholder {0}: pullRequest.prNumber

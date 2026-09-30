@@ -16,6 +16,7 @@ import { eq } from "@tanstack/db";
 import { useLiveQuery } from "@tanstack/react-db";
 import { Check, LoaderCircle, Pencil, Plus, Trash2 } from "lucide-react";
 import { useCallback, useMemo, useState, useSyncExternalStore } from "react";
+import { PaneActionButton } from "renderer/components/PaneActionButton";
 import { useRenderStressInstrumentation } from "renderer/lib/performance/stress-instrumentation";
 import { markTerminalForBackground } from "renderer/lib/terminal/terminal-background-intents";
 import { terminalRuntimeRegistry } from "renderer/lib/terminal/terminal-runtime-registry";
@@ -356,7 +357,7 @@ export function TerminalSessionDropdown({
 			)}
 			<DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
 				<DropdownMenuTrigger asChild>
-					<button
+					<PaneActionButton
 						type="button"
 						aria-label={t({
 							message: "Terminal sessions",
@@ -364,6 +365,15 @@ export function TerminalSessionDropdown({
 						title={triggerTitle}
 						className="flex min-w-0 max-w-96 items-center gap-1.5 rounded px-1.5 py-0.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
 						onClick={(event) => event.stopPropagation()}
+						label={t({
+							message: "Terminal sessions",
+						})}
+						icon={
+							<TerminalPaneIcon
+								workspaceId={workspaceId}
+								terminalId={terminalId}
+							/>
+						}
 					>
 						<TerminalPaneIcon
 							workspaceId={workspaceId}
@@ -389,7 +399,7 @@ export function TerminalSessionDropdown({
 						{sessionsQuery.isFetching && isOpen && (
 							<LoaderCircle className="size-3 shrink-0 animate-spin" />
 						)}
-					</button>
+					</PaneActionButton>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="start" className="w-96">
 					<DropdownMenuLabel className="flex items-center gap-2 text-xs">

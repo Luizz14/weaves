@@ -3,6 +3,7 @@ export {
 	useTabTitle,
 	Workspace,
 } from "./components/Workspace";
+export { useActivePaneContext } from "./components/Workspace/hooks/useActivePaneContext";
 export type {
 	ContextMenuActionConfig,
 	PaneActionConfig,

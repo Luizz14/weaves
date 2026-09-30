@@ -1,8 +1,12 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import { toast } from "@superset/ui/sonner";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
+import { TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { useNavigate } from "@tanstack/react-router";
 import { LuCheck, LuCopy, LuMaximize2 } from "react-icons/lu";
+import {
+	PaneActionButton,
+	PaneActionTooltip as Tooltip,
+} from "renderer/components/PaneActionButton";
 import { useCopyToClipboard } from "renderer/hooks/useCopyToClipboard";
 import { usePullRequestDetail } from "renderer/routes/_authenticated/_dashboard/pull-requests/hooks/usePullRequestDetail";
 import { usePullRequestsSplitViewStore } from "renderer/routes/_authenticated/_dashboard/pull-requests/stores/pullRequestsSplitViewStore";
@@ -41,7 +45,7 @@ export function PullRequestPaneHeaderExtras({
 			{url && (
 				<Tooltip>
 					<TooltipTrigger asChild>
-						<button
+						<PaneActionButton
 							type="button"
 							onClick={() => {
 								void copyToClipboard(url).catch(() => {
@@ -50,20 +54,22 @@ export function PullRequestPaneHeaderExtras({
 							}}
 							aria-label={copyLabel}
 							className="rounded p-1 text-muted-foreground/60 transition-colors hover:text-muted-foreground"
-						>
-							{copied ? (
-								<LuCheck className="size-3.5" />
-							) : (
-								<LuCopy className="size-3.5" />
-							)}
-						</button>
+							label={copyLabel}
+							icon={
+								copied ? (
+									<LuCheck className="size-3.5" />
+								) : (
+									<LuCopy className="size-3.5" />
+								)
+							}
+						/>
 					</TooltipTrigger>
 					<TooltipContent side="bottom">{copyLabel}</TooltipContent>
 				</Tooltip>
 			)}
 			<Tooltip>
 				<TooltipTrigger asChild>
-					<button
+					<PaneActionButton
 						type="button"
 						onClick={() => {
 							// Same pair the PR list's own row click performs — the detail
@@ -79,9 +85,11 @@ export function PullRequestPaneHeaderExtras({
 							message: "Open in Pull Requests",
 						})}
 						className="rounded p-1 text-muted-foreground/60 transition-colors hover:text-muted-foreground"
-					>
-						<LuMaximize2 className="size-3.5" />
-					</button>
+						label={t({
+							message: "Open in Pull Requests",
+						})}
+						icon={<LuMaximize2 className="size-3.5" />}
+					/>
 				</TooltipTrigger>
 				<TooltipContent side="bottom">
 					<Trans>Open in Pull Requests</Trans>

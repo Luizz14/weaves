@@ -1,5 +1,5 @@
 import { Trans, useLingui } from "@lingui/react/macro";
-import type { RendererContext, Tab } from "@superset/panes";
+import type { RendererContext } from "@superset/panes";
 import { useParams } from "@tanstack/react-router";
 import { GlobeIcon, SquareDashedMousePointer, XIcon } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -10,11 +10,10 @@ import {
 	BROWSER_IMPORT_BANNER_ID,
 	useBrowserImportBannerDismissalsStore,
 } from "renderer/stores/browser-import-banner-dismissals";
-import type { BrowserPaneData, PaneViewerData } from "../../../../types";
+import type { PaneViewerData } from "../../../../types";
 
 import { BrowserErrorOverlay } from "./components/BrowserErrorOverlay";
 import { BrowserFindBar } from "./components/BrowserFindBar";
-import { BrowserTabFavicon } from "./components/BrowserTabFavicon";
 import { ChromeImportBanner } from "./components/ChromeImportBanner";
 import { DesignModePopover } from "./components/DesignModePopover";
 import { DeviceToolbar } from "./components/DeviceToolbar";
@@ -27,30 +26,6 @@ import {
 import { findBarStore, useFindBarOpen } from "./findBarStore";
 import { useBrowserState } from "./hooks/useBrowserState";
 import { usePersistentWebview } from "./hooks/usePersistentWebview";
-
-function getSingleBrowserPane(
-	tab: Tab<PaneViewerData>,
-): { id: string; data: BrowserPaneData } | null {
-	const paneIds = Object.keys(tab.panes);
-	if (paneIds.length !== 1) return null;
-	const pane = tab.panes[paneIds[0]];
-	if (pane.kind !== "browser") return null;
-	return { id: pane.id, data: pane.data as BrowserPaneData };
-}
-
-export function renderBrowserTabIcon(tab: Tab<PaneViewerData>) {
-	const browser = getSingleBrowserPane(tab);
-	if (!browser) return null;
-	const faviconUrl = browser.data.faviconUrl ?? null;
-	// Keyed by page + favicon URL so a failed favicon retries on navigation
-	// even when the favicon URL itself is unchanged.
-	return (
-		<BrowserTabFavicon
-			key={`${browser.data.url}|${faviconUrl ?? "none"}`}
-			src={faviconUrl}
-		/>
-	);
-}
 
 interface CreateNewAgentSessionInput {
 	configId: string;

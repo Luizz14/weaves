@@ -2855,6 +2855,9 @@ msgstr "Procurar..."
 msgid "Browser"
 msgstr "Navegador"
 
+msgid "Browser actions"
+msgstr "Ações do navegador"
+
 msgid "Browser Connection was refused"
 msgstr "A conexão do navegador foi recusada"
 
@@ -11325,6 +11328,9 @@ msgstr "packages/ui/src/components/ui/kbd.tsx"
 msgid "Page"
 msgstr "Página"
 
+msgid "Page actions"
+msgstr "Ações da página"
+
 msgid "Page by you"
 msgstr "Página criada por você"
 
@@ -11393,6 +11399,9 @@ msgstr "Raiz do layout de painéis: renderiza a árvore de painéis de uma área
 
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
+
+msgid "Panel"
+msgstr "Painel"
 
 msgid "Paragraph"
 msgstr "Parágrafo"
@@ -12105,6 +12114,9 @@ msgstr "Publicando como <0>{handle}</0>. Só contagens de tokens e nomes de mode
 
 msgid "Pull request"
 msgstr "Pull request"
+
+msgid "Pull Request"
+msgstr "Pull Request"
 
 #. placeholder {0}: data.prNumber
 #. placeholder {0}: pullRequest.prNumber

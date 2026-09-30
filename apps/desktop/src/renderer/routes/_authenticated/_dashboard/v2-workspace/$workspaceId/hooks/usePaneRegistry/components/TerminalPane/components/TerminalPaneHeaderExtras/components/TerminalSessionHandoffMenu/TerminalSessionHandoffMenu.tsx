@@ -17,11 +17,16 @@ import {
 	DropdownMenuTrigger,
 } from "@superset/ui/dropdown-menu";
 import { Label } from "@superset/ui/label";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
+import { TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
+import { cn } from "@superset/ui/utils";
 import { workspaceTrpc } from "@superset/workspace-client";
 import { Bot, GitFork, PanelRight, SquareStack } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { AgentSelect } from "renderer/components/AgentSelect";
+import {
+	PaneActionButton,
+	PaneActionTooltip as Tooltip,
+} from "renderer/components/PaneActionButton";
 import { useTerminalAgentBinding } from "renderer/hooks/host-service/useTerminalAgentBindings";
 import { useWorkspaceHostUrl } from "renderer/hooks/host-service/useWorkspaceHostUrl";
 import { useV2AgentConfigs } from "renderer/hooks/useV2AgentConfigs";
@@ -40,6 +45,7 @@ function estimateTokens(characters: number): number {
 type SessionAction = "handoff" | "fork";
 
 interface TerminalSessionHandoffMenuProps {
+	triggerClassName?: string;
 	workspaceId: string;
 	terminalId: string;
 	onCreateNewAgentSession: (input: {
@@ -51,6 +57,7 @@ interface TerminalSessionHandoffMenuProps {
 }
 
 export function TerminalSessionHandoffMenu({
+	triggerClassName,
 	workspaceId,
 	terminalId,
 	onCreateNewAgentSession,
@@ -180,15 +187,20 @@ export function TerminalSessionHandoffMenu({
 				<Tooltip>
 					<TooltipTrigger asChild>
 						<DropdownMenuTrigger asChild>
-							<button
+							<PaneActionButton
 								type="button"
 								aria-label={t({
 									message: "Continue or fork session",
 								})}
-								className="hidden rounded p-1 text-muted-foreground/60 transition-colors hover:text-muted-foreground @min-[200px]/pane-header:block"
-							>
-								<GitFork className="size-3.5" />
-							</button>
+								className={cn(
+									"hidden rounded p-1 text-muted-foreground/60 transition-colors hover:text-muted-foreground @min-[200px]/pane-header:block",
+									triggerClassName,
+								)}
+								label={t({
+									message: "Continue or fork session",
+								})}
+								icon={<GitFork className="size-3.5" />}
+							/>
 						</DropdownMenuTrigger>
 					</TooltipTrigger>
 					<TooltipContent side="bottom">

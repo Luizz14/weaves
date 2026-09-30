@@ -19,13 +19,22 @@ import {
 } from "react-icons/lu";
 
 interface WorkspaceActionTab {
-	id: "git" | "open" | "commands";
+	id: "git" | "open" | "commands" | "panel";
+	contentKey?: string;
+	label: string;
+	icon: ReactNode;
+	content: ReactNode;
+}
+
+export interface WorkspacePanelActionTab {
+	paneId: string;
 	label: string;
 	icon: ReactNode;
 	content: ReactNode;
 }
 
 interface WorkspaceActionDockProps {
+	panelTab?: WorkspacePanelActionTab | null;
 	isCollapsed: boolean;
 	compactPlacement?: "rail" | "tabbar";
 	gitContent: ReactNode;
@@ -41,10 +50,16 @@ export function WorkspaceActionDock({
 	gitContent,
 	openInContent,
 	commandsContent,
+	panelTab,
 }: WorkspaceActionDockProps) {
 	const { t } = useLingui();
 	const reduceMotion = useReducedMotion();
 	const rootRef = useRef<HTMLDivElement>(null);
+	const insideInteractionRef = useRef<{
+		pointer?: Event;
+		focus?: Event;
+		key?: Event;
+	}>({});
 	const contentRefs = useRef<Record<string, HTMLDivElement | null>>({});
 	const [activeTab, setActiveTab] = useState<string | null>(null);
 	const [compactOpen, setCompactOpen] = useState(false);
@@ -74,10 +89,43 @@ export function WorkspaceActionDock({
 				icon: <LuSquareTerminal className="size-4" />,
 				content: commandsContent,
 			},
+			...(panelTab
+				? [
+						{
+							id: "panel" as const,
+							contentKey: panelTab.paneId,
+							label: panelTab.label,
+							icon: panelTab.icon,
+							content: panelTab.content,
+						},
+					]
+				: []),
 		],
-		[t, gitContent, openInContent, commandsContent],
+		[t, gitContent, openInContent, commandsContent, panelTab],
 	);
-	const active = tabs.find((tab) => tab.id === activeTab) ?? null;
+	const selectedTabId = activeTab === "panel" && !panelTab ? "git" : activeTab;
+	const active = tabs.find((tab) => tab.id === selectedTabId) ?? null;
+	useEffect(() => {
+		if (activeTab === "panel" && !panelTab) {
+			setActiveTab("git");
+			const previousFocus = insideInteractionRef.current.focus?.target;
+			if (
+				previousFocus instanceof HTMLElement &&
+				!previousFocus.isConnected &&
+				document.activeElement === document.body &&
+				(compactOpen || !isCollapsed)
+			)
+				tabRefs.current[0]?.focus();
+		}
+		if (focusedIndex >= tabs.length) setFocusedIndex(0);
+	}, [
+		activeTab,
+		panelTab,
+		focusedIndex,
+		tabs.length,
+		compactOpen,
+		isCollapsed,
+	]);
 	const activeHeight = active ? (contentHeights[active.id] ?? 0) : 0;
 	const rootHeight = active
 		? Math.max(BAR_HEIGHT, activeHeight + 60)
@@ -133,6 +181,7 @@ export function WorkspaceActionDock({
 		const onPointerDown = (event: PointerEvent) => {
 			const target = event.target as HTMLElement | null;
 			if (
+				insideInteractionRef.current.pointer === event ||
 				rootRef.current?.contains(target) ||
 				target?.closest("[data-workspace-action-dock-portal]")
 			) {
@@ -141,6 +190,13 @@ export function WorkspaceActionDock({
 			setActiveTab(null);
 		};
 		const onKeyDown = (event: KeyboardEvent) => {
+			if (event.defaultPrevented) return;
+			const target = event.target as Node | null;
+			if (
+				insideInteractionRef.current.key === event &&
+				!rootRef.current?.contains(target)
+			)
+				return;
 			if (event.key === "Escape") setActiveTab(null);
 		};
 		document.addEventListener("pointerdown", onPointerDown);
@@ -160,10 +216,19 @@ export function WorkspaceActionDock({
 	const surface = (
 		<motion.div
 			ref={rootRef}
+			onPointerDownCapture={(event) => {
+				insideInteractionRef.current.pointer = event.nativeEvent;
+			}}
+			onFocusCapture={(event) => {
+				insideInteractionRef.current.focus = event.nativeEvent;
+			}}
+			onKeyDownCapture={(event) => {
+				insideInteractionRef.current.key = event.nativeEvent;
+			}}
 			initial={false}
 			animate={{
 				height: rootHeight,
-				width: isCollapsed || active ? "100%" : 136,
+				width: isCollapsed || active ? "100%" : tabs.length * 44 + 4,
 			}}
 			transition={
 				reduceMotion
@@ -179,10 +244,10 @@ export function WorkspaceActionDock({
 				style={{ bottom: BAR_HEIGHT + 8 }}
 			>
 				{tabs.map((tab) => {
-					const selected = tab.id === activeTab;
+					const selected = tab.id === selectedTabId;
 					return (
 						<motion.div
-							key={tab.id}
+							key={tab.contentKey ?? tab.id}
 							ref={registerContent(tab.id)}
 							id={`workspace-actions-panel-${tab.id}`}
 							role="tabpanel"
@@ -220,7 +285,7 @@ export function WorkspaceActionDock({
 				style={{ height: BAR_HEIGHT }}
 			>
 				{tabs.map((tab, index) => {
-					const selected = tab.id === activeTab;
+					const selected = tab.id === selectedTabId;
 					return (
 						<button
 							key={tab.id}
@@ -255,10 +320,10 @@ export function WorkspaceActionDock({
 								}
 							}}
 							className={cn(
-								"flex h-10 min-w-0 flex-1 items-center justify-center gap-2 rounded-xl px-3 text-xs font-medium outline-none transition-[background-color,color,transform] duration-150 active:scale-[0.96]",
+								"flex h-10 min-w-10 flex-1 items-center justify-center gap-2 rounded-xl px-3 text-xs font-medium outline-none transition-[background-color,color,transform] duration-150 active:scale-[0.96]",
 								"focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card",
 								selected
-									? "bg-muted text-foreground shadow-sm"
+									? "min-w-0 flex-auto bg-muted text-foreground shadow-sm"
 									: "text-muted-foreground hover:bg-muted/70 hover:text-foreground",
 							)}
 						>
@@ -274,7 +339,7 @@ export function WorkspaceActionDock({
 												? { duration: 0 }
 												: { type: "spring", duration: 0.3, bounce: 0 }
 										}
-										className="overflow-hidden whitespace-nowrap"
+										className="max-w-28 truncate"
 									>
 										{tab.label}
 									</motion.span>
@@ -332,7 +397,12 @@ export function WorkspaceActionDock({
 				data-workspace-action-dock-portal="true"
 				onInteractOutside={(event) => {
 					const target = event.target as HTMLElement | null;
-					if (target?.closest("[data-workspace-action-dock-portal]")) {
+					if (
+						insideInteractionRef.current.pointer ===
+							event.detail.originalEvent ||
+						insideInteractionRef.current.focus === event.detail.originalEvent ||
+						target?.closest("[data-workspace-action-dock-portal]")
+					) {
 						event.preventDefault();
 					}
 				}}

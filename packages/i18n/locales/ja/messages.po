@@ -2855,6 +2855,9 @@ msgstr "参照..."
 msgid "Browser"
 msgstr "ブラウザ"
 
+msgid "Browser actions"
+msgstr ""
+
 msgid "Browser Connection was refused"
 msgstr "ブラウザの接続が拒否されました"
 
@@ -11325,6 +11328,9 @@ msgstr "packages/ui/src/components/ui/kbd.tsx"
 msgid "Page"
 msgstr "ページ"
 
+msgid "Page actions"
+msgstr ""
+
 msgid "Page by you"
 msgstr "自分が作成したページ"
 
@@ -11393,6 +11399,9 @@ msgstr "ペインレイアウトのルート: ワークスペースのペイン�
 
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
+
+msgid "Panel"
+msgstr ""
 
 msgid "Paragraph"
 msgstr "段落"
@@ -12105,6 +12114,9 @@ msgstr "<0>{handle}</0>として公開中。トークン数とモデル名のみ
 
 msgid "Pull request"
 msgstr "プルリクエスト"
+
+msgid "Pull Request"
+msgstr ""
 
 #. placeholder {0}: data.prNumber
 #. placeholder {0}: pullRequest.prNumber

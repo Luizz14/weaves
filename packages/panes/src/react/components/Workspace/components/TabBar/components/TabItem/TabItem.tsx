@@ -159,8 +159,12 @@ export function TabItem<TData>({
 										}}
 										onDoubleClick={startEditing}
 									>
-										{icon && <span className="shrink-0">{icon}</span>}
-										<OverflowFadeText className="flex-1">
+										{icon && (
+											<span className="flex min-w-0 max-w-full shrink-0 items-center">
+												{icon}
+											</span>
+										)}
+										<OverflowFadeText className="flex-auto">
 											{title}
 										</OverflowFadeText>
 									</div>

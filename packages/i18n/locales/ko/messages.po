@@ -2855,6 +2855,9 @@ msgstr "찾아보기..."
 msgid "Browser"
 msgstr "브라우저"
 
+msgid "Browser actions"
+msgstr ""
+
 msgid "Browser Connection was refused"
 msgstr "브라우저 연결이 거부되었습니다"
 
@@ -11325,6 +11328,9 @@ msgstr "packages/ui/src/components/ui/kbd.tsx"
 msgid "Page"
 msgstr "페이지"
 
+msgid "Page actions"
+msgstr ""
+
 msgid "Page by you"
 msgstr "내가 만든 페이지"
 
@@ -11393,6 +11399,9 @@ msgstr "패널 레이아웃 루트: 워크스페이스의 패널 트리를 렌�
 
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
+
+msgid "Panel"
+msgstr ""
 
 msgid "Paragraph"
 msgstr "본문"
@@ -12105,6 +12114,9 @@ msgstr "<0>{handle}</0>(으)로 게시 중입니다. 토큰 수와 모델 이름
 
 msgid "Pull request"
 msgstr "풀 리퀘스트"
+
+msgid "Pull Request"
+msgstr ""
 
 #. placeholder {0}: data.prNumber
 #. placeholder {0}: pullRequest.prNumber

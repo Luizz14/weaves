@@ -1,3 +1,4 @@
+import { useLingui } from "@lingui/react/macro";
 import {
 	DeletePageDialog,
 	PageTitleMenu,
@@ -5,6 +6,10 @@ import {
 } from "@superset/ui/page-comments";
 import { FileText } from "lucide-react";
 import { useState } from "react";
+import {
+	PaneActionButton,
+	usePaneActionDock,
+} from "renderer/components/PaneActionButton";
 import { usePageHeaderData } from "renderer/routes/_authenticated/_dashboard/hooks/usePageHeaderData";
 import type { PagePaneData } from "../../../../types";
 import { usePagePaneUi } from "../../hooks/usePagePaneUi";
@@ -17,6 +22,8 @@ interface PagePaneTitleProps {
 }
 
 export function PagePaneTitle({ data, paneId, onClose }: PagePaneTitleProps) {
+	const inDock = usePaneActionDock();
+	const { t } = useLingui();
 	const { setShareOpen, previewVersion, setPreviewVersion } =
 		usePagePaneUi(paneId);
 	const { page, versions, currentUserId, onRename, onRefresh, onDelete } =
@@ -35,8 +42,22 @@ export function PagePaneTitle({ data, paneId, onClose }: PagePaneTitleProps) {
 	}
 
 	return (
-		<span className="flex min-w-0 items-center">
+		<span
+			className={
+				inDock
+					? "flex min-w-0 w-full items-center"
+					: "flex min-w-0 items-center"
+			}
+		>
 			<PageTitleMenu
+				trigger={
+					inDock ? (
+						<PaneActionButton
+							label={t({ message: "Page actions" })}
+							icon={<FileText className="size-4" />}
+						/>
+					) : undefined
+				}
 				page={page}
 				versions={versions}
 				editable={

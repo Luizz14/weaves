@@ -1,1 +1,4 @@
-export { WorkspaceActionDock } from "./WorkspaceActionDock";
+export {
+	WorkspaceActionDock,
+	type WorkspacePanelActionTab,
+} from "./WorkspaceActionDock";

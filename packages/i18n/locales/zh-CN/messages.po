@@ -2855,6 +2855,9 @@ msgstr "浏览..."
 msgid "Browser"
 msgstr "浏览器"
 
+msgid "Browser actions"
+msgstr ""
+
 msgid "Browser Connection was refused"
 msgstr "浏览器连接被拒绝"
 
@@ -11325,6 +11328,9 @@ msgstr "packages/ui/src/components/ui/kbd.tsx"
 msgid "Page"
 msgstr "页面"
 
+msgid "Page actions"
+msgstr ""
+
 msgid "Page by you"
 msgstr "你创建的页面"
 
@@ -11393,6 +11399,9 @@ msgstr "面板布局根节点：渲染工作区的面板树"
 
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
+
+msgid "Panel"
+msgstr ""
 
 msgid "Paragraph"
 msgstr "段落"
@@ -12105,6 +12114,9 @@ msgstr "以<0>{handle}</0>的身份发布。仅包含token数量和模型名称�
 
 msgid "Pull request"
 msgstr "拉取请求"
+
+msgid "Pull Request"
+msgstr ""
 
 #. placeholder {0}: data.prNumber
 #. placeholder {0}: pullRequest.prNumber

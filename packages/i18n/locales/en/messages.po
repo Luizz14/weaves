@@ -2855,6 +2855,9 @@ msgstr "Browse..."
 msgid "Browser"
 msgstr "Browser"
 
+msgid "Browser actions"
+msgstr "Browser actions"
+
 msgid "Browser Connection was refused"
 msgstr "Browser Connection was refused"
 
@@ -11325,6 +11328,9 @@ msgstr "packages/ui/src/components/ui/kbd.tsx"
 msgid "Page"
 msgstr "Page"
 
+msgid "Page actions"
+msgstr "Page actions"
+
 msgid "Page by you"
 msgstr "Page by you"
 
@@ -11393,6 +11399,9 @@ msgstr "Pane-layout root: renders a workspace's pane tree"
 
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
+
+msgid "Panel"
+msgstr "Panel"
 
 msgid "Paragraph"
 msgstr "Paragraph"
@@ -12105,6 +12114,9 @@ msgstr "Publishing as <0>{handle}</0>. Token counts and model names only, no rep
 
 msgid "Pull request"
 msgstr "Pull request"
+
+msgid "Pull Request"
+msgstr "Pull Request"
 
 #. placeholder {0}: data.prNumber
 #. placeholder {0}: pullRequest.prNumber

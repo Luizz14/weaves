@@ -14,13 +14,18 @@ import {
 	useState,
 } from "react";
 import { useDrop } from "react-dnd";
+import type { StoreApi } from "zustand/vanilla";
+import type { WorkspaceStore } from "../../../../../core/store";
 import type { Tab } from "../../../../../types";
 import type { PaneRegistry } from "../../../../types";
+import { getTabPaneEntries } from "../../utils/getTabPaneEntries";
 import { PANE_DRAG_TYPE } from "../Tab/components/Pane/components/PaneHeader";
 import { TAB_DRAG_TYPE, TabItem } from "./components/TabItem";
-import { computeInsertIndex, TAB_WIDTH } from "./utils";
+import { TabPaneIcon } from "./components/TabPaneIcon";
+import { computeInsertIndex, computeInsertLineLeft } from "./utils";
 
 interface TabBarProps<TData> {
+	store: StoreApi<WorkspaceStore<TData>>;
 	tabs: Tab<TData>[];
 	registry: PaneRegistry<TData>;
 	activeTabId: string | null;
@@ -72,6 +77,7 @@ function AddTabButton<_TData>({
 }
 
 export function TabBar<TData>({
+	store,
 	tabs,
 	registry,
 	activeTabId,
@@ -92,6 +98,13 @@ export function TabBar<TData>({
 	const [hasHorizontalOverflow, setHasHorizontalOverflow] = useState(false);
 
 	const insertIndexRef = useRef<number | null>(null);
+	const getTabBounds = () =>
+		Array.from(
+			tabsTrackRef.current?.querySelectorAll<HTMLElement>(
+				":scope > [data-tab-id]",
+			) ?? [],
+			(node) => node.getBoundingClientRect(),
+		);
 	const [insertIndex, setInsertIndex] = useState<number | null>(null);
 
 	const [{ isOver }, connectDrop] = useDrop(
@@ -102,11 +115,7 @@ export function TabBar<TData>({
 				const offset = monitor.getClientOffset();
 				if (!track || !offset) return;
 
-				const idx = computeInsertIndex(
-					offset.x,
-					track.getBoundingClientRect(),
-					tabs.length,
-				);
+				const idx = computeInsertIndex(offset.x, getTabBounds());
 				if (idx !== insertIndexRef.current) {
 					insertIndexRef.current = idx;
 					setInsertIndex(idx);
@@ -165,7 +174,14 @@ export function TabBar<TData>({
 		setHasHorizontalOverflow(state.hasOverflowX);
 	}, []);
 
-	const insertLineLeft = insertIndex !== null ? insertIndex * TAB_WIDTH : null;
+	const insertLineLeft =
+		insertIndex !== null
+			? computeInsertLineLeft(
+					insertIndex,
+					getTabBounds(),
+					tabsTrackRef.current?.getBoundingClientRect().left ?? 0,
+				)
+			: null;
 
 	return (
 		<div
@@ -193,9 +209,9 @@ export function TabBar<TData>({
 				>
 					{tabs.map((tab, i) => (
 						<div
-							className="h-full shrink-0 pt-1"
+							className="h-full w-max min-w-[120px] max-w-[320px] shrink-0 pt-1"
+							data-tab-id={tab.id}
 							key={tab.id}
-							style={{ width: TAB_WIDTH }}
 						>
 							<TabItem
 								tab={tab}
@@ -208,7 +224,24 @@ export function TabBar<TData>({
 								onCloseOthers={() => onCloseOtherTabs(tab.id)}
 								onCloseAll={onCloseAllTabs}
 								onRename={(title) => onRenameTab(tab.id, title)}
-								icon={renderTabIcon?.(tab)}
+								icon={
+									renderTabIcon?.(tab) ?? (
+										<span className="flex min-w-0 items-center gap-1 overflow-x-auto hide-scrollbar">
+											{getTabPaneEntries(tab).map(
+												({ pane, parentDirection }) => (
+													<TabPaneIcon
+														key={pane.id}
+														store={store}
+														tab={tab}
+														pane={pane}
+														parentDirection={parentDirection}
+														registry={registry}
+													/>
+												),
+											)}
+										</span>
+									)
+								}
 								accessory={renderTabAccessory?.(tab)}
 							/>
 						</div>

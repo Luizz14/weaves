@@ -13,7 +13,7 @@ import type {
 	PaneRegistry,
 	RendererContext,
 } from "../../../../../../types";
-import { PaneHeaderActions } from "../../../../../PaneHeaderActions";
+import { usePaneContext } from "../../../../hooks/usePaneContext";
 import { TAB_DRAG_TYPE } from "../../../TabBar/components/TabItem";
 import { PANE_MIN_SIZE_CLASS_NAME } from "../../constants";
 import { DropZoneOverlay } from "./components/DropZoneOverlay";
@@ -79,77 +79,15 @@ export function Pane<TData>({
 }: PaneComponentProps<TData>) {
 	const definition = registry[pane.kind];
 
-	const tabs = store.getState().tabs;
-	const tabPosition = tabs.findIndex((t) => t.id === tab.id);
-
-	const context: RendererContext<TData> = useMemo(() => {
-		const ctx: RendererContext<TData> = {
-			pane: { ...pane, parentDirection },
-			tab: { ...tab, position: tabPosition },
-			isActive,
-			store,
-			actions: {
-				close: async () => {
-					if (definition?.onBeforeClose) {
-						const allowed = await definition.onBeforeClose(pane);
-						if (!allowed) return;
-					}
-					store.getState().closePane({ tabId: tab.id, paneId: pane.id });
-				},
-				focus: () =>
-					store.getState().setActivePane({ tabId: tab.id, paneId: pane.id }),
-				setTitle: (title: string) =>
-					store.getState().setPaneTitleOverride({
-						tabId: tab.id,
-						paneId: pane.id,
-						titleOverride: title,
-					}),
-				pin: () =>
-					store.getState().setPanePinned({
-						paneId: pane.id,
-						pinned: true,
-					}),
-				updateData: (data: TData) =>
-					store.getState().setPaneData({ paneId: pane.id, data }),
-				split: (position, newPane) =>
-					store.getState().splitPane({
-						tabId: tab.id,
-						paneId: pane.id,
-						position: position === "down" ? "bottom" : "right",
-						newPane,
-					}),
-			},
-			headerActions: null,
-		};
-
-		// Resolve workspace-level actions (or empty if not provided)
-		const workspaceResolved =
-			typeof paneActions === "function"
-				? paneActions(ctx)
-				: (paneActions ?? []);
-
-		// Definition can override or modify workspace actions
-		const finalActions = resolveActions(
-			definition?.paneActions,
-			ctx,
-			workspaceResolved,
-		);
-
-		ctx.headerActions = (
-			<PaneHeaderActions actions={finalActions} context={ctx} />
-		);
-
-		return ctx;
-	}, [
-		pane,
-		tab,
-		isActive,
+	const { context } = usePaneContext({
 		store,
-		definition,
-		paneActions,
+		tab,
+		pane,
+		isActive,
+		registry,
 		parentDirection,
-		tabPosition,
-	]);
+		paneActions,
+	});
 
 	const resolvedContextMenuActions = useMemo(() => {
 		const workspaceResolved =
@@ -256,22 +194,24 @@ export function Pane<TData>({
 				}`}
 				onPointerDownCapture={context.actions.focus}
 			>
-				<PaneHeader
-					title={title}
-					icon={icon}
-					isActive={isActive}
-					titleContent={titleContent}
-					headerExtras={headerExtras}
-					toolbar={toolbar}
-					actionsContent={context.headerActions}
-					paneId={pane.id}
-					onClick={
-						definition?.onHeaderClick
-							? () => definition.onHeaderClick?.(context)
-							: context.actions.pin
-					}
-					onMiddleClick={context.actions.close}
-				/>
+				{!(parentDirection === null && definition?.hideHeaderWhenSolo) && (
+					<PaneHeader
+						title={title}
+						icon={icon}
+						isActive={isActive}
+						titleContent={titleContent}
+						headerExtras={headerExtras}
+						toolbar={toolbar}
+						actionsContent={context.headerActions}
+						paneId={pane.id}
+						onClick={
+							definition?.onHeaderClick
+								? () => definition.onHeaderClick?.(context)
+								: context.actions.pin
+						}
+						onMiddleClick={context.actions.close}
+					/>
+				)}
 				<PaneContent>
 					{definition ? (
 						definition.renderPane(context)

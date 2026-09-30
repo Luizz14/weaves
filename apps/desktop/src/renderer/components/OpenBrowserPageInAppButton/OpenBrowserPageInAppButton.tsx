@@ -1,10 +1,14 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { CreatePaneInput } from "@superset/panes";
 import { FEATURE_FLAGS } from "@superset/shared/constants";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
+import { TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { useNavigate } from "@tanstack/react-router";
 import { AppWindow } from "lucide-react";
 import { useFeatureFlagEnabled } from "posthog-js/react";
+import {
+	PaneActionButton,
+	PaneActionTooltip as Tooltip,
+} from "renderer/components/PaneActionButton";
 import { env } from "renderer/env.renderer";
 import { useHostProjects } from "renderer/hooks/host-projects/useHostProjects";
 import { parseSupersetPageUrl } from "renderer/lib/parseSupersetPageUrl";
@@ -34,7 +38,7 @@ export function OpenBrowserPageInAppButton({
 	return (
 		<Tooltip>
 			<TooltipTrigger asChild>
-				<button
+				<PaneActionButton
 					type="button"
 					aria-label={t({ message: "Open in app" })}
 					className="flex h-[22px] shrink-0 items-center gap-1 rounded-md bg-accent px-1.5 text-[11px] font-medium leading-none text-accent-foreground transition-colors hover:bg-accent/80"
@@ -64,12 +68,14 @@ export function OpenBrowserPageInAppButton({
 							search: { project: target.projectId },
 						});
 					}}
+					label={t({ message: "Open in app" })}
+					icon={<AppWindow className="size-4" />}
 				>
 					<AppWindow className="size-3" />
 					<span className="hidden @min-[480px]/browser-toolbar:inline whitespace-nowrap">
 						<Trans>Open in app</Trans>
 					</span>
-				</button>
+				</PaneActionButton>
 			</TooltipTrigger>
 			<TooltipContent side="bottom">
 				<Trans>Open in app</Trans>

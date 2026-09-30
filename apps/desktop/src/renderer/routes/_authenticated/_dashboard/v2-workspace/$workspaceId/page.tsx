@@ -57,8 +57,8 @@ import { useDefaultContextMenuActions } from "./hooks/useDefaultContextMenuActio
 import { useDefaultPaneActions } from "./hooks/useDefaultPaneActions";
 import { useDiffPaneTarget } from "./hooks/useDiffPaneTarget";
 import { usePagePaneIntentOpener } from "./hooks/usePagePaneIntentOpener";
+import { usePanelActionTab } from "./hooks/usePanelActionTab";
 import { usePaneRegistry } from "./hooks/usePaneRegistry";
-import { renderBrowserTabIcon } from "./hooks/usePaneRegistry/components/BrowserPane";
 import { usePullRequestPaneIntentOpener } from "./hooks/usePullRequestPaneIntentOpener";
 import { useRunWorkspaceCreationPresets } from "./hooks/useRunWorkspaceCreationPresets";
 import { useShellInteractionPassthrough } from "./hooks/useShellInteractionPassthrough";
@@ -316,6 +316,12 @@ function V2WorkspaceContent() {
 		[openFilePaneFromTreeClick, setRightSidebarOpen],
 	);
 	const defaultPaneActions = useDefaultPaneActions({ launcher });
+	const panelActionTab = usePanelActionTab({
+		store,
+		registry: paneRegistry,
+		paneActions: defaultPaneActions,
+		enabled: isLayoutReady,
+	});
 	const onBeforeCloseTab = useTabCloseGuard();
 
 	// Fallback for rows persisted before the rightSidebarWidth field existed —
@@ -435,7 +441,6 @@ function V2WorkspaceContent() {
 							registry={paneRegistry}
 							paneActions={defaultPaneActions}
 							contextMenuActions={defaultContextMenuActions}
-							renderTabIcon={renderBrowserTabIcon}
 							renderTabAccessory={(tab) => (
 								<V2NotificationStatusIndicator
 									sources={getV2NotificationSourcesForTab(tab)}
@@ -523,6 +528,7 @@ function V2WorkspaceContent() {
 											gitContent={gitActionContent}
 											openInContent={openInActionContent}
 											commandsContent={commandsActionContent}
+											panelTab={panelActionTab}
 										/>
 									)}
 									<RightSidebarToggle />
@@ -586,6 +592,7 @@ function V2WorkspaceContent() {
 											gitActionContent={gitActionContent}
 											openInActionContent={openInActionContent}
 											commandsActionContent={commandsActionContent}
+											panelActionTab={panelActionTab}
 											showActionDock={sidebarOpen}
 											onSelectFile={openFilePaneFromTreeClick}
 											onSelectDiffFile={openDiffPane}

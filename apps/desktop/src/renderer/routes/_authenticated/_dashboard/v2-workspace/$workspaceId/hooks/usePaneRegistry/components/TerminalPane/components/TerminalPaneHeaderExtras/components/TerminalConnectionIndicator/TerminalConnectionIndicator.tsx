@@ -17,6 +17,7 @@ import { cn } from "@superset/ui/utils";
 import { workspaceTrpc } from "@superset/workspace-client";
 import { Loader2, RotateCw, TriangleAlert } from "lucide-react";
 import { useCallback, useState, useSyncExternalStore } from "react";
+import { PaneActionButton } from "renderer/components/PaneActionButton";
 import {
 	type TerminalLogEntry,
 	terminalRuntimeRegistry,
@@ -211,19 +212,23 @@ export function TerminalConnectionIndicator({
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
-				<button
+				<PaneActionButton
 					type="button"
 					aria-label={t({
 						message: `Terminal connection: ${label}`,
 					})}
 					className="flex h-5 items-center gap-1.5 rounded px-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+					label={t({
+						message: `Terminal connection: ${label}`,
+					})}
+					icon={<span className={cn("size-1.5 rounded-full", dotClass)} />}
 				>
 					<span className={cn("size-1.5 rounded-full", dotClass)} />
 					{/* The dot always fits; the word only when the header has room. */}
 					<span className="hidden @min-[360px]/pane-header:inline">
 						{label}
 					</span>
-				</button>
+				</PaneActionButton>
 			</PopoverTrigger>
 			<PopoverContent
 				align="end"

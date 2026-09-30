@@ -12,6 +12,7 @@ import { CheckIcon, MinusIcon, PlusIcon, RotateCcwIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { TbDots } from "react-icons/tb";
 import { ImportHistoryDialog } from "renderer/components/ImportHistoryDialog";
+import { PaneActionButton } from "renderer/components/PaneActionButton";
 import { useCopyToClipboard } from "renderer/hooks/useCopyToClipboard";
 import { pointerPassthrough } from "renderer/lib/pointer-passthrough";
 import { electronTrpcClient } from "renderer/lib/trpc-client";
@@ -160,12 +161,12 @@ export function BrowserOverflowMenu({
 		<>
 			<DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
 				<DropdownMenuTrigger asChild>
-					<button
+					<PaneActionButton
 						type="button"
 						className="rounded-md p-1 text-muted-foreground/70 transition-colors hover:bg-muted/50 hover:text-foreground"
-					>
-						<TbDots className="size-3.5" />
-					</button>
+						label={t({ message: "Browser actions" })}
+						icon={<TbDots className="size-3.5" />}
+					/>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end" className="w-64">
 					<DropdownMenuItem onClick={onOpenFindBar} disabled={!hasPage}>

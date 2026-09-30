@@ -14,6 +14,10 @@ Ask when a material decision remains unresolved by the request, earlier answers,
 
 Prior authorization remains valid for the same action and scope. Complete the requested implementation, run applicable checks, and fix failures caused by the change before handing back the result. Reuse successful checks for unchanged code and inputs; rerun when changes or failures invalidate them. Report external blockers and verification gaps accurately. Do not infer permission to publish, send messages, discard data, change access, or mutate shared systems from a request for local implementation.
 
+### Ajustes visuais locais
+
+Para ajustes visuais locais, reutilize o padrão existente e limite a investigação ao componente alvo, a uma referência visual existente e às dependências diretas. Amplie a análise somente se encontrar impacto em comportamento ou contrato. Não refatore áreas adjacentes. Reutilize validações já válidas para código e entradas inalterados e faça uma verificação visual focada. Execute os checks aplicáveis uma vez ao final; repita apenas os invalidados por alterações ou falhas. Encerre a tarefa quando os critérios solicitados estiverem atendidos.
+
 ## Project Structure
 
 For UI components, use `ComponentName/ComponentName.tsx` with an `index.ts` barrel.
