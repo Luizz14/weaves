@@ -47,6 +47,7 @@ export interface TerminalRuntime {
 	fitAddon: FitAddon;
 	serializeAddon: SerializeAddon;
 	searchAddon: SearchAddon | null;
+	_ensureSearchAddon?: () => Promise<SearchAddon | null>;
 	progressAddon: ProgressAddon | null;
 	wrapper: HTMLDivElement;
 	container: HTMLDivElement | null;
@@ -350,7 +351,10 @@ export function createRuntime(
 		terminal,
 		fitAddon,
 		serializeAddon,
-		searchAddon: addonsResult.searchAddon,
+		get searchAddon() {
+			return addonsResult.searchAddon;
+		},
+		_ensureSearchAddon: addonsResult.ensureSearchAddon,
 		progressAddon: addonsResult.progressAddon,
 		wrapper,
 		container: null,
@@ -495,6 +499,7 @@ export function disposeRuntime(
 	runtime._disposeAddons?.();
 	runtime._disposeAddons = null;
 	runtime._setLigaturesEnabled = null;
+	runtime._ensureSearchAddon = undefined;
 	runtime._disposeResizeObserver?.();
 	runtime._disposeResizeObserver = null;
 	runtime.resizeObserver?.disconnect();

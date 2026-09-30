@@ -599,6 +599,17 @@ class TerminalRuntimeRegistryImpl {
 		return terminal ? { cols: terminal.cols, rows: terminal.rows } : null;
 	}
 
+	ensureSearchAddon(
+		terminalId: string,
+		instanceId?: string,
+	): Promise<SearchAddon | null> {
+		const runtime = this.getEntry(terminalId, instanceId)?.runtime;
+		return (
+			runtime?._ensureSearchAddon?.() ??
+			Promise.resolve(runtime?.searchAddon ?? null)
+		);
+	}
+
 	getSearchAddon(terminalId: string, instanceId?: string): SearchAddon | null {
 		return this.getEntry(terminalId, instanceId)?.runtime?.searchAddon ?? null;
 	}

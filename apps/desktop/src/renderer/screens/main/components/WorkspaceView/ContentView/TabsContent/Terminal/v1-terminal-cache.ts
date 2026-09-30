@@ -27,7 +27,8 @@ import type { TerminalStreamEvent } from "./types";
 export interface CachedTerminal {
 	xterm: XTerm;
 	fitAddon: FitAddon;
-	searchAddon: SearchAddon;
+	searchAddon: SearchAddon | null;
+	ensureSearchAddon?: () => Promise<SearchAddon | null>;
 	/** Counts in-flight writes so fits can wait out async image decodes. */
 	gate: ParserIdleGate;
 	wrapper: HTMLDivElement;
@@ -129,13 +130,16 @@ export function getOrCreate(
 		console.log(`[v1-terminal-cache] Creating new terminal: ${paneId}`);
 	}
 
-	const { xterm, fitAddon, searchAddon, gate, wrapper, cleanup } =
-		createTerminalInWrapper(options);
+	const created = createTerminalInWrapper(options);
+	const { xterm, fitAddon, gate, wrapper, cleanup } = created;
 
 	const entry: CachedTerminal = {
 		xterm,
 		fitAddon,
-		searchAddon,
+		get searchAddon() {
+			return created.searchAddon;
+		},
+		ensureSearchAddon: created.ensureSearchAddon,
 		gate,
 		wrapper,
 		cleanupCreation: cleanup,

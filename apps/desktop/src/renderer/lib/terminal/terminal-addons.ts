@@ -1,16 +1,17 @@
 import { ClipboardAddon } from "@xterm/addon-clipboard";
 import { ImageAddon } from "@xterm/addon-image";
-import { LigaturesAddon } from "@xterm/addon-ligatures";
 import { ProgressAddon } from "@xterm/addon-progress";
-import { SearchAddon } from "@xterm/addon-search";
+import type { SearchAddon } from "@xterm/addon-search";
 import { Unicode11Addon } from "@xterm/addon-unicode11";
 import { WebglAddon } from "@xterm/addon-webgl";
 import type { Terminal as XTerm } from "@xterm/xterm";
 import { Utf8Base64 } from "./clipboard-base64";
 import { FocusAwareClipboardProvider } from "./clipboard-provider";
+import { createOptionalTerminalAddons } from "./optional-addons/optional-addons";
 
 export interface LoadAddonsResult {
-	searchAddon: SearchAddon;
+	searchAddon: SearchAddon | null;
+	ensureSearchAddon: () => Promise<SearchAddon | null>;
 	progressAddon: ProgressAddon;
 	setLigaturesEnabled: (enabled: boolean) => void;
 	dispose: () => void;
@@ -31,7 +32,7 @@ export function loadAddons(
 ): LoadAddonsResult {
 	let disposed = false;
 	let webglAddon: WebglAddon | null = null;
-	let ligaturesAddon: LigaturesAddon | null = null;
+	const optionalAddons = createOptionalTerminalAddons(terminal);
 
 	// Utf8Base64 replaces the addon's UTF-8-unsafe default codec (#4839).
 	terminal.loadAddon(
@@ -44,30 +45,10 @@ export function loadAddons(
 
 	terminal.loadAddon(new ImageAddon());
 
-	const searchAddon = new SearchAddon();
-	terminal.loadAddon(searchAddon);
-
 	const progressAddon = new ProgressAddon();
 	terminal.loadAddon(progressAddon);
 
-	const setLigaturesEnabled = (enabled: boolean) => {
-		if (disposed) return;
-		if (!enabled) {
-			try {
-				ligaturesAddon?.dispose();
-			} catch {}
-			ligaturesAddon = null;
-			return;
-		}
-		if (ligaturesAddon) return;
-		try {
-			ligaturesAddon = new LigaturesAddon();
-			terminal.loadAddon(ligaturesAddon);
-		} catch {
-			ligaturesAddon = null;
-		}
-	};
-	setLigaturesEnabled(options.ligatures);
+	optionalAddons.setLigaturesEnabled(options.ligatures);
 
 	// Every terminal attempts WebGL on its own. A failure here degrades THIS
 	// terminal to xterm's DOM renderer, which costs 1.2x (a TUI redrawing a few
@@ -118,16 +99,16 @@ export function loadAddons(
 	});
 
 	return {
-		searchAddon,
+		get searchAddon() {
+			return optionalAddons.searchAddon;
+		},
+		ensureSearchAddon: optionalAddons.ensureSearchAddon,
 		progressAddon,
-		setLigaturesEnabled,
+		setLigaturesEnabled: optionalAddons.setLigaturesEnabled,
 		dispose: () => {
 			disposed = true;
 			cancelAnimationFrame(rafId);
-			try {
-				ligaturesAddon?.dispose();
-			} catch {}
-			ligaturesAddon = null;
+			optionalAddons.dispose();
 			try {
 				webglAddon?.dispose();
 			} catch {}
