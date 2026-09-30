@@ -1,27 +1,33 @@
 import type { Variants } from "motion/react";
 
-export const sidebarRevealListVariants: Variants = {
-	open: {
-		height: "auto",
-		opacity: 1,
-		transition: {
-			height: { duration: 0.18, ease: [0.2, 0, 0, 1] },
-			opacity: { duration: 0.12 },
-			staggerChildren: 0.03,
+export function getSidebarRevealListVariants(
+	itemCount: number,
+	reduceMotion: boolean,
+) {
+	const intervals = Math.max(1, itemCount - 1);
+	return {
+		open: {
+			height: "auto",
+			opacity: 1,
+			transition: {
+				height: { duration: reduceMotion ? 0 : 0.18, ease: [0.2, 0, 0, 1] },
+				opacity: { duration: reduceMotion ? 0 : 0.12 },
+				staggerChildren: reduceMotion ? 0 : Math.min(0.03, 0.18 / intervals),
+			},
 		},
-	},
-	closed: {
-		height: 0,
-		opacity: 0,
-		transition: {
-			when: "afterChildren",
-			height: { duration: 0.16, ease: [0.4, 0, 1, 1] },
-			opacity: { duration: 0.1 },
-			staggerChildren: 0.018,
-			staggerDirection: -1,
+		closed: {
+			height: 0,
+			opacity: 0,
+			transition: {
+				when: "afterChildren",
+				height: { duration: reduceMotion ? 0 : 0.16, ease: [0.4, 0, 1, 1] },
+				opacity: { duration: reduceMotion ? 0 : 0.1 },
+				staggerChildren: reduceMotion ? 0 : Math.min(0.018, 0.1 / intervals),
+				staggerDirection: -1,
+			},
 		},
-	},
-};
+	} satisfies Variants;
+}
 
 export const sidebarRevealItemVariants: Variants = {
 	open: {

@@ -1,9 +1,11 @@
 import {
+	chmodSync,
 	closeSync,
 	existsSync,
 	lstatSync,
 	mkdirSync,
 	openSync,
+	readFileSync,
 	readSync,
 	unlinkSync,
 	writeFileSync,
@@ -143,13 +145,25 @@ export function installBundledCliShim(
 		return "skipped";
 	}
 
+	const content = buildBundledCliShim(bundledCliPath, platform);
+	const mode = platform === "win32" ? 0o644 : 0o755;
+	if (existsSync(shimPath)) {
+		const stat = lstatSync(shimPath);
+		if (
+			stat.size === Buffer.byteLength(content) &&
+			readFileSync(shimPath, "utf-8") === content
+		) {
+			if (platform !== "win32" && (stat.mode & 0o777) !== mode)
+				chmodSync(shimPath, mode);
+			return "installed";
+		}
+	}
+
 	mkdirSync(binDir, { recursive: true });
 	if (existsSync(shimPath)) {
 		unlinkSync(shimPath);
 	}
-	writeFileSync(shimPath, buildBundledCliShim(bundledCliPath, platform), {
-		mode: platform === "win32" ? 0o644 : 0o755,
-	});
+	writeFileSync(shimPath, content, { mode });
 
 	console.log(`[bundled-cli] Installed Superset CLI shim at ${shimPath}`);
 	return "installed";

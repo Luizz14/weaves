@@ -1,8 +1,11 @@
-import { type MermaidConfig, mermaid } from "@streamdown/mermaid";
+import type { MermaidConfig } from "@streamdown/mermaid";
 import type { MermaidOptions, PluginConfig } from "streamdown";
+import { createLazyMermaidPlugin } from "./lazy-mermaid";
 
 /** Shared `plugins` prop for every `<Streamdown>` that renders mermaid. */
-export const mermaidPlugins: PluginConfig = { mermaid };
+export const mermaidPlugins: PluginConfig = {
+	mermaid: createLazyMermaidPlugin(() => import("@streamdown/mermaid")),
+};
 
 /**
  * Build the `mermaid` prop for `<Streamdown>` with HTML labels disabled.

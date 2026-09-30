@@ -8,7 +8,7 @@ import { LuFileCode, LuLoader } from "react-icons/lu";
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import { CodeEditor } from "renderer/screens/main/components/WorkspaceView/components/CodeEditor";
 import { FileSaveConflictDialog } from "renderer/screens/main/components/WorkspaceView/components/FileSaveConflictDialog";
-import { useChangesStore } from "renderer/stores/changes";
+import { useDiffDisplayPreferences } from "renderer/stores/changes";
 import { toAbsoluteWorkspacePath } from "shared/absolute-paths";
 import type { ChangeCategory, ChangedFile } from "shared/changes-types";
 import { detectLanguage } from "shared/detect-language";
@@ -93,7 +93,8 @@ export function FileDiffSection({
 		setActiveFileKey,
 		containerRef,
 	} = useScrollContext();
-	const { viewMode: diffViewMode, hideUnchangedRegions } = useChangesStore();
+	const { viewMode: diffViewMode, hideUnchangedRegions } =
+		useDiffDisplayPreferences();
 	const [isCopied, setIsCopied] = useState(false);
 	const [hasBeenVisible, setHasBeenVisible] = useState(false);
 	const [isInLoadRange, setIsInLoadRange] = useState(false);

@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useChangesStore } from "renderer/stores/changes";
 import { SidebarMode, useSidebarStore } from "renderer/stores/sidebar-state";
 import type { GitChangesStatus } from "shared/changes-types";
+import { useShallow } from "zustand/react/shallow";
 import { useScrollContext } from "../../context";
 import { sortFiles } from "../../utils";
 import { FileDiffSection } from "../FileDiffSection";
@@ -34,7 +35,19 @@ export function InfiniteScrollView({
 		expandedSections: expandedCategories,
 		moveSection,
 		toggleSection: toggleCategory,
-	} = useChangesStore();
+	} = useChangesStore(
+		useShallow((state) => ({
+			viewMode: state.viewMode,
+			setViewMode: state.setViewMode,
+			hideUnchangedRegions: state.hideUnchangedRegions,
+			toggleHideUnchangedRegions: state.toggleHideUnchangedRegions,
+			fileListViewMode: state.fileListViewMode,
+			sectionOrder: state.sectionOrder,
+			expandedSections: state.expandedSections,
+			moveSection: state.moveSection,
+			toggleSection: state.toggleSection,
+		})),
+	);
 	const isExpandedView = useSidebarStore(
 		(state) => state.currentMode === SidebarMode.Changes,
 	);

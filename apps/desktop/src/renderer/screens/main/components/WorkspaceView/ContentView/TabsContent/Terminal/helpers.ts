@@ -6,8 +6,7 @@ import { toast } from "@superset/ui/sonner";
 import { ClipboardAddon } from "@xterm/addon-clipboard";
 import { FitAddon } from "@xterm/addon-fit";
 import { ImageAddon } from "@xterm/addon-image";
-import { LigaturesAddon } from "@xterm/addon-ligatures";
-import { SearchAddon } from "@xterm/addon-search";
+import type { SearchAddon } from "@xterm/addon-search";
 import { Unicode11Addon } from "@xterm/addon-unicode11";
 import { WebglAddon } from "@xterm/addon-webgl";
 import type { ITheme } from "@xterm/xterm";
@@ -16,6 +15,7 @@ import { applyTerminalFontFamilyCssVariable } from "renderer/lib/terminal/appear
 import { Utf8Base64 } from "renderer/lib/terminal/clipboard-base64";
 import { FocusAwareClipboardProvider } from "renderer/lib/terminal/clipboard-provider";
 import type { DetectedLink } from "renderer/lib/terminal/links";
+import { createOptionalTerminalAddons } from "renderer/lib/terminal/optional-addons/optional-addons";
 import {
 	createParserIdleGate,
 	type ParserIdleGate,
@@ -94,7 +94,8 @@ export interface CreateTerminalOptions {
 export function createTerminalInWrapper(options: CreateTerminalOptions = {}): {
 	xterm: XTerm;
 	fitAddon: FitAddon;
-	searchAddon: SearchAddon;
+	searchAddon: SearchAddon | null;
+	ensureSearchAddon: () => Promise<SearchAddon | null>;
 	gate: ParserIdleGate;
 	wrapper: HTMLDivElement;
 	linkManager: TerminalLinkManager;
@@ -113,7 +114,7 @@ export function createTerminalInWrapper(options: CreateTerminalOptions = {}): {
 	const gate = createParserIdleGate();
 	xterm.write = wrapWrite(gate, xterm.write.bind(xterm));
 	const fitAddon = new FitAddon();
-	const searchAddon = new SearchAddon();
+	const optionalAddons = createOptionalTerminalAddons(xterm);
 
 	// Utf8Base64 replaces the addon's UTF-8-unsafe default codec (#4839).
 	const clipboardAddon = new ClipboardAddon(
@@ -137,16 +138,11 @@ export function createTerminalInWrapper(options: CreateTerminalOptions = {}): {
 	xterm.open(wrapper);
 
 	xterm.loadAddon(fitAddon);
-	xterm.loadAddon(searchAddon);
 	xterm.loadAddon(clipboardAddon);
 	xterm.loadAddon(unicode11Addon);
 	xterm.loadAddon(imageAddon);
 
-	try {
-		xterm.loadAddon(new LigaturesAddon());
-	} catch {
-		// Ligatures not supported by current font
-	}
+	optionalAddons.setLigaturesEnabled(true);
 
 	// Defer WebGL to rAF to avoid racing xterm's post-open viewport sync.
 	const rafId = requestAnimationFrame(() => {
@@ -230,12 +226,16 @@ export function createTerminalInWrapper(options: CreateTerminalOptions = {}): {
 	return {
 		xterm,
 		fitAddon,
-		searchAddon,
+		get searchAddon() {
+			return optionalAddons.searchAddon;
+		},
+		ensureSearchAddon: optionalAddons.ensureSearchAddon,
 		gate,
 		wrapper,
 		linkManager,
 		cleanup: () => {
 			disposed = true;
+			optionalAddons.dispose();
 			cancelAnimationFrame(rafId);
 			cleanupQuerySuppression();
 			uninstallWheelHandler();

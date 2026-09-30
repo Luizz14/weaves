@@ -9,15 +9,17 @@ import {
  * One cached snapshot per (workspace, baseBranch). Readers on the same
  * workspace routinely differ in base branch — the sidebar stats read with
  * none, the Changes tab with the configured one — and only the against-base
- * fields depend on it, so every variant is patched from the same change
- * stream instead of the variants evicting each other.
+ * fields depend on it, so every variant is patched from the same change stream.
  */
+export const MAX_GIT_BASE_VARIANTS_PER_WORKSPACE = 8;
+
 interface Variant {
 	cached: GitStatusSnapshot | null;
 	/** Paths changed since `cached`, or null when a full walk is required. */
 	pending: Set<string> | null;
 	/** Reads on one variant run one at a time so a later read sees the earlier patch. */
 	queue: Promise<unknown>;
+	pendingReads: number;
 }
 
 interface ReadInput {
@@ -59,13 +61,36 @@ export class GitStatusStore {
 		const key = input.baseBranch ?? "";
 		let variant = variants.get(key);
 		if (!variant) {
-			variant = { cached: null, pending: null, queue: Promise.resolve() };
-			variants.set(key, variant);
+			variant = {
+				cached: null,
+				pending: null,
+				queue: Promise.resolve(),
+				pendingReads: 0,
+			};
 		}
+		variants.delete(key);
+		variants.set(key, variant);
+		variant.pendingReads++;
+		this.trimVariants(variants);
 
 		const run = variant.queue.then(() => this.readVariant(input, variant));
 		variant.queue = run.catch(() => {});
-		return run;
+		try {
+			return await run;
+		} finally {
+			variant.pendingReads--;
+			if (this.workspaces.get(input.workspaceId) === variants)
+				this.trimVariants(variants);
+		}
+	}
+
+	private trimVariants(variants: Map<string, Variant>): void {
+		const limit =
+			MAX_GIT_BASE_VARIANTS_PER_WORKSPACE + Number(variants.has(""));
+		for (const [key, variant] of variants) {
+			if (variants.size <= limit) return;
+			if (key !== "" && variant.pendingReads === 0) variants.delete(key);
+		}
 	}
 
 	private async readVariant(

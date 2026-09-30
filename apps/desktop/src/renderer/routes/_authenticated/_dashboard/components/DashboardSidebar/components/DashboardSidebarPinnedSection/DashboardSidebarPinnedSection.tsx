@@ -107,7 +107,10 @@ export function DashboardSidebarPinnedSection({
 				label={t({ message: "Pinned" })}
 				section="pinned"
 			/>
-			<SidebarRevealList open={!isSectionCollapsed}>
+			<SidebarRevealList
+				itemCount={pinnedItems.length}
+				open={!isSectionCollapsed}
+			>
 				<SortableContext
 					items={pinnedItems}
 					strategy={verticalListSortingStrategy}

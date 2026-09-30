@@ -36,6 +36,7 @@ import { CommitInput } from "./components/CommitInput";
 import { DiscardConfirmDialog } from "./components/DiscardConfirmDialog";
 import { ReviewPanel } from "./components/ReviewPanel";
 import { useOrderedSections } from "./hooks";
+import { useChangesSidebarState } from "./hooks/useChangesSidebarState";
 import { getPRActionState, shouldAutoCreatePRAfterPublish } from "./utils";
 
 interface ChangesViewProps {
@@ -340,14 +341,12 @@ export function ChangesView({
 		fileListViewMode,
 		sectionOrder,
 		selectFile,
-		getSelectedFile,
+		selectedFileState,
 		setActiveTab,
 		toggleSection,
 		moveSection,
 		setFileListViewMode,
-	} = useChangesStore();
-
-	const selectedFileState = getSelectedFile(workspaceId || "");
+	} = useChangesSidebarState(workspaceId);
 	const selectedFile = selectedFileState?.file ?? null;
 	const selectedCommitHash = selectedFileState?.commitHash ?? null;
 

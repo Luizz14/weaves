@@ -8,12 +8,17 @@ import {
 } from "shared/startup-diagnostics";
 import { exposeElectronTRPC } from "trpc-electron/main";
 
+import {
+	type IpcRendererTransport,
+	installIpcRendererApi,
+} from "./ipc-listeners";
+
 declare const __APP_VERSION__: string;
 
 declare global {
 	interface Window {
 		App: typeof API;
-		ipcRenderer: typeof ipcRendererAPI;
+		ipcRenderer: ReturnType<typeof installIpcRendererApi>;
 		webUtils: {
 			getPathForFile: (file: File) => string;
 		};
@@ -31,40 +36,28 @@ const API = {
 		: undefined,
 };
 
-// Store mapping of user listeners to wrapped listeners for proper cleanup
-type IpcListener = (...args: unknown[]) => void;
-const listenerMap = new WeakMap<IpcListener, IpcListener>();
-
-/**
- * IPC renderer API
- * Note: Primary IPC communication uses tRPC. This API is for low-level IPC needs.
- */
-const ipcRendererAPI = {
-	// biome-ignore lint/suspicious/noExplicitAny: IPC invoke requires any for dynamic channel types
-	invoke: (channel: string, ...args: any[]) =>
-		ipcRenderer.invoke(channel, ...args),
-
-	// biome-ignore lint/suspicious/noExplicitAny: IPC send requires any for dynamic channel types
-	send: (channel: string, ...args: any[]) => ipcRenderer.send(channel, ...args),
-
-	// biome-ignore lint/suspicious/noExplicitAny: IPC listener requires any for dynamic event types
-	on: (channel: string, listener: (...args: any[]) => void) => {
-		// biome-ignore lint/suspicious/noExplicitAny: IPC event wrapper requires any
-		const wrappedListener = (_event: any, ...args: any[]) => {
+let nextSubscriptionId = 0;
+const subscriptions = new Map<
+	number,
+	{ channel: string; listener: (event: unknown, ...args: unknown[]) => void }
+>();
+const ipcTransport: IpcRendererTransport = {
+	invoke: (channel, ...args) => ipcRenderer.invoke(channel, ...args),
+	send: (channel, ...args) => ipcRenderer.send(channel, ...args),
+	subscribe(channel, listener) {
+		const id = ++nextSubscriptionId;
+		const wrapped = (_event: unknown, ...args: unknown[]) => {
 			listener(...args);
 		};
-		listenerMap.set(listener, wrappedListener);
-		ipcRenderer.on(channel, wrappedListener);
+		ipcRenderer.on(channel, wrapped);
+		subscriptions.set(id, { channel, listener: wrapped });
+		return id;
 	},
-
-	// biome-ignore lint/suspicious/noExplicitAny: IPC listener requires any for dynamic event types
-	off: (channel: string, listener: (...args: any[]) => void) => {
-		const wrappedListener = listenerMap.get(listener as IpcListener);
-		if (wrappedListener) {
-			// biome-ignore lint/suspicious/noExplicitAny: Electron IPC API requires this cast
-			ipcRenderer.removeListener(channel, wrappedListener as any);
-			listenerMap.delete(listener as IpcListener);
-		}
+	unsubscribe(channel, id) {
+		const subscription = subscriptions.get(id);
+		if (subscription?.channel !== channel) return;
+		ipcRenderer.removeListener(channel, subscription.listener);
+		subscriptions.delete(id);
 	},
 };
 
@@ -72,7 +65,10 @@ const ipcRendererAPI = {
 exposeElectronTRPC();
 
 contextBridge.exposeInMainWorld("App", API);
-contextBridge.exposeInMainWorld("ipcRenderer", ipcRendererAPI);
+contextBridge.executeInMainWorld({
+	func: installIpcRendererApi,
+	args: [ipcTransport],
+});
 contextBridge.exposeInMainWorld("webUtils", {
 	getPathForFile: (file: File) => webUtils.getPathForFile(file),
 });

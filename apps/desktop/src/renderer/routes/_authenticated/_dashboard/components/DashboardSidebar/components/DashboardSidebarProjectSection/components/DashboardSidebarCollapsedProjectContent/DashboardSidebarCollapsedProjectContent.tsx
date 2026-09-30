@@ -5,7 +5,7 @@ import {
 import { Plural } from "@lingui/react/macro";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { cn } from "@superset/ui/utils";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { type ComponentPropsWithoutRef, forwardRef, useMemo } from "react";
 import { ProjectThumbnail } from "renderer/routes/_authenticated/components/ProjectThumbnail";
 import {
@@ -47,6 +47,7 @@ export const DashboardSidebarCollapsedProjectContent = forwardRef<
 		},
 		ref,
 	) => {
+		const reduceMotion = useReducedMotion();
 		const { projectItems, workspacesById } = useDashboardSidebarDnd();
 		const flatItems = projectItems[projectId];
 
@@ -99,7 +100,10 @@ export const DashboardSidebarCollapsedProjectContent = forwardRef<
 							initial={{ height: 0, opacity: 0 }}
 							animate={{ height: "auto", opacity: 1 }}
 							exit={{ height: 0, opacity: 0 }}
-							transition={{ duration: 0.15, ease: "easeOut" }}
+							transition={{
+								duration: reduceMotion ? 0 : 0.15,
+								ease: "easeOut",
+							}}
 							className="overflow-hidden w-full"
 						>
 							<div className="flex w-full flex-col gap-1 pt-1">

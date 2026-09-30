@@ -1,7 +1,7 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import { Button } from "@superset/ui/button";
 import { cn } from "@superset/ui/utils";
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import {
 	HiOutlinePencilSquare,
 	HiOutlineQueueList,
@@ -19,12 +19,22 @@ import type { TaskWithStatus } from "../../hooks/useTasksData";
 import type { SelectedIssue } from "../GitHubIssuesContent";
 import { TaskSourceSwitcher } from "../TaskSourceSwitcher";
 import { AssigneeFilter } from "./components/AssigneeFilter";
-import { CreateTaskDialog } from "./components/CreateTaskDialog";
+
 import { LinearProjectFilter } from "./components/LinearProjectFilter";
 import { RunInWorkspacePopover } from "./components/RunInWorkspacePopover";
 import { RunInWorkspacePopoverV2 } from "./components/RunInWorkspacePopoverV2";
 import { RunIssuesInWorkspacePopover } from "./components/RunIssuesInWorkspacePopover";
 import { StatusFilter } from "./components/StatusFilter";
+
+const CreateTaskDialog = lazy(() =>
+	import("./components/CreateTaskDialog").then((module) => ({
+		default: module.CreateTaskDialog,
+	})),
+);
+
+function prefetchCreateTaskDialog() {
+	void import("./components/CreateTaskDialog").catch(() => {});
+}
 
 export type TabValue =
 	| "all"
@@ -211,6 +221,8 @@ export function TasksTopBar({
 									variant="outline"
 									size="sm"
 									className="h-8 gap-1.5 px-3"
+									onPointerEnter={prefetchCreateTaskDialog}
+									onFocus={prefetchCreateTaskDialog}
 									onClick={() => setIsCreateTaskOpen(true)}
 								>
 									<HiOutlinePencilSquare className="size-4" />
@@ -298,13 +310,17 @@ export function TasksTopBar({
 				</div>
 			</div>
 
-			<CreateTaskDialog
-				open={isCreateTaskOpen}
-				onOpenChange={setIsCreateTaskOpen}
-				currentTab={currentTab}
-				searchQuery={searchQuery}
-				assigneeFilter={assigneeFilter}
-			/>
+			{isCreateTaskOpen && (
+				<Suspense fallback={null}>
+					<CreateTaskDialog
+						open={isCreateTaskOpen}
+						onOpenChange={setIsCreateTaskOpen}
+						currentTab={currentTab}
+						searchQuery={searchQuery}
+						assigneeFilter={assigneeFilter}
+					/>
+				</Suspense>
+			)}
 		</>
 	);
 }

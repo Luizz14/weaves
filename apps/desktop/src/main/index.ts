@@ -57,6 +57,7 @@ import { ensureProjectIconsDir, getProjectIconPath } from "./lib/project-icons";
 import { runQuitCleanup } from "./lib/quit-sequence";
 import { initSentry } from "./lib/sentry";
 import { markStartup } from "./lib/startup-diagnostics/startup-diagnostics";
+import { scheduleStartupMaintenance } from "./lib/startup-maintenance/startup-maintenance";
 import {
 	prewarmTerminalRuntime,
 	reconcileDaemonSessions,
@@ -516,9 +517,6 @@ if (!gotTheLock) {
 		await initAppState();
 		initTanstackDbPersistence();
 
-		sweepNetworkLogs();
-		sweepDevAppProfiles();
-
 		await loadWebviewBrowserExtension();
 
 		// Must happen before renderer restore runs
@@ -622,10 +620,14 @@ if (!gotTheLock) {
 		}
 
 		initAppServices();
-		await makeAppSetup(
+		const firstWindow = await makeAppSetup(
 			() => createPlatformWindow({ orgId: null }),
 			restoreWindows,
 		);
+		scheduleStartupMaintenance(firstWindow, () => {
+			sweepNetworkLogs();
+			sweepDevAppProfiles();
+		});
 		setupAutoUpdater();
 		initTray();
 
