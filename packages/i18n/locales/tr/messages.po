@@ -1308,6 +1308,9 @@ msgstr "Hakkımızda"
 msgid "About Superset"
 msgstr "Superset hakkında"
 
+msgid "Absolute"
+msgstr ""
+
 msgid "Absolutely. Superset doesn't proxy any API calls. You use your own API keys directly with whatever AI providers you choose. This means you have full control over costs and usage."
 msgstr "Kesinlikle. Superset hiçbir API çağrısını vekil olarak iletmez. Seçtiğiniz AI sağlayıcılarıyla doğrudan kendi API anahtarlarınızı kullanırsınız. Böylece maliyet ve kullanım üzerinde tam denetime sahip olursunuz."
 
@@ -1601,6 +1604,9 @@ msgstr "Gelişmiş seçenekler"
 msgid "After"
 msgstr "Sonra"
 
+msgid "After a delay"
+msgstr ""
+
 msgid "Against base"
 msgstr "Temele göre"
 
@@ -1802,6 +1808,9 @@ msgstr "Tümü geçerli sekmede"
 msgid "All in current tab (split panes)"
 msgstr "Tümü geçerli sekmede (bölünmüş bölmeler)"
 
+msgid "All local changes"
+msgstr ""
+
 msgid "All objectives cleared. Top rung, nothing left to reach for."
 msgstr "Tüm hedefler geçildi. En üst basamak, ulaşılacak başka bir şey yok."
 
@@ -1939,6 +1948,9 @@ msgstr "Ayrıca: @superset/ui/radio-group, @superset/ui/switch"
 
 msgid "Also: @superset/ui/spinner"
 msgstr "Ayrıca: @superset/ui/spinner"
+
+msgid "Always"
+msgstr ""
 
 msgid "Always know which agent needs you, with notifications that deep-link straight to the blocked agent."
 msgstr "Doğrudan engellenen ajana bağlanan bildirimlerle, hangi ajanın size ihtiyacı olduğunu her zaman bilin."
@@ -2126,8 +2138,14 @@ msgstr "Uygulama görüntüleme dili. Otomatik, sistem dilinizi izler."
 msgid "Appearance"
 msgstr "Görünüm"
 
+msgid "Appearance, editing, project tools, and language preferences for the v2 editor."
+msgstr ""
+
 msgid "Apple logo"
 msgstr "Apple logosu"
+
+msgid "Application default"
+msgstr ""
 
 msgid "Application menu"
 msgstr "Uygulama menüsü"
@@ -2437,6 +2455,12 @@ msgstr "Görevleri otomatikleştirin"
 msgid "Automate workspace setup for {projectName}"
 msgstr "{projectName} için çalışma alanı kurulumunu otomatikleştirin"
 
+msgid "Automatic"
+msgstr ""
+
+msgid "Automatic (project tools first)"
+msgstr ""
+
 msgid "Automation"
 msgstr "Otomasyon"
 
@@ -2469,6 +2493,12 @@ msgstr "Otonom"
 
 msgid "Autonomous ticket-to-PR pipeline"
 msgstr "Otonom biletten PR'a boru hattı"
+
+msgid "Autosave"
+msgstr ""
+
+msgid "Autosave delay (ms)"
+msgstr ""
 
 msgid "Available"
 msgstr "Uygun"
@@ -2701,6 +2731,9 @@ msgstr "Bitrise derleme tetikleme belirteci"
 msgid "Bitrise token removed"
 msgstr "Bitrise belirteci kaldırıldı"
 
+msgid "Blinking cursor"
+msgstr ""
+
 msgid "Block"
 msgstr "Blok"
 
@@ -2733,6 +2766,9 @@ msgstr "Pano görünümü"
 
 msgid "Bold"
 msgstr "Kalın"
+
+msgid "Bold folder labels"
+msgstr ""
 
 msgid "Border"
 msgstr "Kenarlık"
@@ -2839,6 +2875,9 @@ msgstr "v1 projelerini, çalışma alanlarını ve terminal betiklerini v2'ye ta
 
 msgid "Bring your agents together."
 msgstr "Ajanlarınızı bir araya getirin."
+
+msgid "Browse"
+msgstr ""
 
 msgid "Browse and install skills, MCP servers, and agent configs shared by the community."
 msgstr "Toplulukça paylaşılan becerilere, MCP sunucularına ve ajan yapılandırmalarına göz atın ve kurun."
@@ -3143,6 +3182,9 @@ msgstr "Worktree konumunu değiştir"
 
 msgid "Change-failure rate at or below the human-era baseline for two consecutive quarters."
 msgstr "Değişiklik hata oranı, iki ardışık çeyrek boyunca insan dönemi taban çizgisinde veya altında kalır."
+
+msgid "Changed files"
+msgstr ""
 
 msgid "Changelog"
 msgstr "Değişiklik günlüğü"
@@ -3690,6 +3732,9 @@ msgstr "Kod bloğu"
 msgid "Code Block"
 msgstr "Kod bloğu"
 
+msgid "Code Editor"
+msgstr ""
+
 msgid "Code intelligence for the local v2 editor. Servers start when you open a supported file and use your installed tools."
 msgstr ""
 
@@ -3710,9 +3755,6 @@ msgid "Collapse {0}"
 msgstr "{0} grubunu daralt"
 
 msgid "Collapse all"
-msgstr "Tümünü daralt"
-
-msgid "Collapse All"
 msgstr "Tümünü daralt"
 
 msgid "Collapse all files"
@@ -3747,6 +3789,9 @@ msgstr "Tüm commit'leri birleştirir"
 
 msgid "Combine sequences such as => and !==."
 msgstr "=> ve !== gibi dizileri birleştirir."
+
+msgid "Comfortable"
+msgstr ""
 
 msgid "Coming soon"
 msgstr "Yakında"
@@ -3853,6 +3898,12 @@ msgstr "Topluluk"
 
 msgid "Community size from the public invite, refreshed every half hour."
 msgstr "Herkese açık davetten alınan topluluk büyüklüğü, her yarım saatte yenilenir."
+
+msgid "Compact"
+msgstr ""
+
+msgid "Compact folders"
+msgstr ""
 
 msgid "Company"
 msgstr "Şirket"
@@ -4495,6 +4546,9 @@ msgstr "{domain} unutulamadı"
 msgid "Could not import from browser"
 msgstr "Tarayıcıdan içe aktarılamadı"
 
+msgid "Could not import Zed preferences"
+msgstr ""
+
 msgid "Could not leave the queue"
 msgstr "Kuyruktan çıkılamadı"
 
@@ -4504,6 +4558,9 @@ msgstr "Dizin listelenemedi"
 #. placeholder {0}: host.name
 msgid "Could not load agents from {0}"
 msgstr "{0} üzerinden ajanlar yüklenemedi"
+
+msgid "Could not load editor settings"
+msgstr ""
 
 msgid "Could not load environments"
 msgstr "Ortamlar yüklenemedi"
@@ -4577,6 +4634,9 @@ msgstr "Bırakılan dosyalar okunamadı"
 msgid "Could not read the Google account. Please try again."
 msgstr "Google hesabı okunamadı. Lütfen yeniden deneyin."
 
+msgid "Could not read Zed preferences"
+msgstr ""
+
 msgid "Could not record cloud workspace"
 msgstr "Bulut çalışma alanı kaydedilemedi"
 
@@ -4600,6 +4660,9 @@ msgstr "Bu yorum çözülemedi"
 
 msgid "Could not restart the host service"
 msgstr "Ana makine hizmeti yeniden başlatılamadı"
+
+msgid "Could not save editor settings"
+msgstr ""
 
 msgid "Could not send"
 msgstr "Gönderilemedi"
@@ -4799,6 +4862,9 @@ msgstr "Dosya hazırlıktan çıkarılamadı"
 
 msgid "Couldn't update pull request"
 msgstr "Pull request güncellenemedi"
+
+msgid "Couldn't update staging"
+msgstr ""
 
 msgid "Couldn't update thread"
 msgstr "Konu güncellenemedi"
@@ -5488,6 +5554,9 @@ msgstr "Ayrılmış"
 msgid "Details"
 msgstr "Ayrıntılar"
 
+msgid "Detect installed Zed"
+msgstr ""
+
 msgid "Dev"
 msgstr "Geliştirme"
 
@@ -5523,6 +5592,12 @@ msgstr "Cihaz: {selectedLabel}"
 
 msgid "DevTools"
 msgstr "DevTools"
+
+msgid "Diagnostic badges"
+msgstr ""
+
+msgid "Diagnostics"
+msgstr ""
 
 msgid "Dialog"
 msgstr "Pencere"
@@ -5988,6 +6063,9 @@ msgctxt "github release action"
 msgid "Edited"
 msgstr "Düzenlendi"
 
+msgid "Editing"
+msgstr ""
+
 msgid "Editing file..."
 msgstr "Dosya düzenleniyor..."
 
@@ -6000,8 +6078,26 @@ msgstr "Düzenleyici"
 msgid "Editor & Workflow"
 msgstr "Düzenleyici ve iş akışı"
 
+msgid "Editor appearance"
+msgstr ""
+
+msgid "Editor preferences imported"
+msgstr ""
+
+msgid "Editor settings saved"
+msgstr ""
+
+msgid "Editor settings sections"
+msgstr ""
+
+msgid "Editor theme"
+msgstr ""
+
 msgid "Editor typography"
 msgstr "Düzenleyici tipografisi"
+
+msgid "Editor width"
+msgstr ""
 
 msgid "Efficient"
 msgstr "Verimli"
@@ -6117,6 +6213,9 @@ msgstr "Hesaba göre kurumsal ARR"
 
 msgid "Entries by section"
 msgstr "Bölüme göre girişler"
+
+msgid "Entry spacing"
+msgstr ""
 
 msgid "Environment"
 msgstr "Ortam"
@@ -6922,6 +7021,9 @@ msgstr "Bir bilet açın, değişikliğin çalıştığının kanıtı olarak ek
 msgid "File actions"
 msgstr "Dosya eylemleri"
 
+msgid "File and folder icons"
+msgstr ""
+
 msgid "File changes"
 msgstr "Dosya değişiklikleri"
 
@@ -7102,6 +7204,9 @@ msgstr "Alev"
 msgid "Flash balances speed and quality for short development tasks."
 msgstr "Flash, kısa geliştirme görevleri için hız ve kaliteyi dengeler."
 
+msgid "Flat view"
+msgstr ""
+
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Ajan filoları planlar, uygular, birbirinin işini inceler ve test eder. İnsanlar yönü belirler, istisnalara hakemlik eder ve zevkin sahibi olur. İnsan dikkatinin birimi artık pull request değildir. Karardır."
 
@@ -7149,9 +7254,6 @@ msgstr "Klasör"
 
 msgid "Folder links"
 msgstr "Klasör bağlantıları"
-
-msgid "Folder view"
-msgstr "Klasör görünümü"
 
 msgid "Folders to check out into new worktrees, one per line, relative to the repo root. Files at the root are always included. Empty checks out everything."
 msgstr "Yeni worktree'lere checkout edilecek klasörler; her satıra bir tane, depo köküne göre. Kökteki dosyalar her zaman dahildir. Boş bırakılırsa her şey checkout edilir."
@@ -7260,6 +7362,12 @@ msgstr "Çatallar"
 
 msgid "Form controls and field composition"
 msgstr "Form denetimleri ve alan kompozisyonu"
+
+msgid "Format on save"
+msgstr ""
+
+msgid "Formatter"
+msgstr ""
 
 msgid "Forward"
 msgstr "İleri"
@@ -7417,6 +7525,9 @@ msgstr "Git yazar adı"
 
 msgid "Git History"
 msgstr "Git Geçmişi"
+
+msgid "Git indicators"
+msgstr ""
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Git entegrasyonu başarısız oldu. Depoyu kontrol edip tekrar deneyin veya denemeyi iptal edin."
@@ -7650,6 +7761,12 @@ msgstr "Grafikten gizle"
 msgid "Hide from Sidebar"
 msgstr "Kenar çubuğundan gizle"
 
+msgid "Hide Git-ignored files"
+msgstr ""
+
+msgid "Hide hidden files"
+msgstr ""
+
 msgid "Hide log"
 msgstr "Günlüğü gizle"
 
@@ -7658,6 +7775,9 @@ msgstr "PR inceleme yorumlarını gizle"
 
 msgid "Hide Preview"
 msgstr "Önizlemeyi gizle"
+
+msgid "Hide project root"
+msgstr ""
 
 msgid "Hide pull request list"
 msgstr "Pull request listesini gizle"
@@ -7686,6 +7806,9 @@ msgstr "Yüksek"
 
 msgid "High usage"
 msgstr "Yüksek kullanım"
+
+msgid "Highlight active line"
+msgstr ""
 
 msgid "history"
 msgstr "geçmiş"
@@ -7970,6 +8093,12 @@ msgstr "Dosyadan içe aktar"
 msgid "Import from v1"
 msgstr "v1'den içe aktar"
 
+msgid "Import from Zed"
+msgstr ""
+
+msgid "Import selected preferences"
+msgstr ""
+
 msgid "Import settings from another browser"
 msgstr "Ayarları başka bir tarayıcıdan içe aktar"
 
@@ -8050,6 +8179,9 @@ msgstr "Superset'e özgü kutu varyantını içerir"
 msgid "Incognito Operator"
 msgstr "Gizli Operatör"
 
+msgid "Indent guides"
+msgstr ""
+
 msgid "Indigo"
 msgstr "Çivit"
 
@@ -8061,6 +8193,12 @@ msgstr "Bilgi"
 
 msgid "Information"
 msgstr "Bilgi"
+
+msgid "Inherit application theme"
+msgstr ""
+
+msgid "Inherit global preference"
+msgstr ""
 
 msgid "Initialization options (JSON object)"
 msgstr ""
@@ -8079,6 +8217,9 @@ msgstr "Başlatılıyor..."
 
 msgid "Initials fallback via getInitials, sizes xs → xl"
 msgstr "getInitials ile baş harf yedeği, xs → xl boyutları"
+
+msgid "Inlay hints"
+msgstr ""
 
 msgid "Inline"
 msgstr "Satır içi"
@@ -8501,6 +8642,9 @@ msgstr "Şeritler"
 msgid "Language"
 msgstr "Dil"
 
+msgid "Language overrides"
+msgstr ""
+
 msgid "Language saved on this device, but syncing it to your account failed."
 msgstr "Dil bu cihaza kaydedildi, ancak hesabınıza eşitlenemedi."
 
@@ -8682,6 +8826,9 @@ msgstr "Az"
 msgid "less than a minute ago"
 msgstr "bir dakikadan az önce"
 
+msgid "Letter spacing"
+msgstr ""
+
 msgid "Letter spacing (px)"
 msgstr "Harf aralığı (px)"
 
@@ -8738,6 +8885,12 @@ msgstr "Çizgi grafik: hiç insan düzenlemesi olmadan ajanların yazdığı bir
 
 msgid "Line height"
 msgstr "Satır yüksekliği"
+
+msgid "Line numbers"
+msgstr ""
+
+msgid "Line wrapping"
+msgstr ""
 
 msgid "Linear"
 msgstr "Linear"
@@ -9721,14 +9874,14 @@ msgstr "Yeni Codex Sohbeti"
 msgid "New environment"
 msgstr "Yeni ortam"
 
-msgid "New File"
-msgstr "Yeni dosya"
+msgid "New file"
+msgstr ""
 
 msgid "New File..."
 msgstr "Yeni dosya..."
 
-msgid "New Folder"
-msgstr "Yeni klasör"
+msgid "New folder"
+msgstr ""
 
 msgid "New Folder..."
 msgstr "Yeni klasör..."
@@ -9948,6 +10101,9 @@ msgstr "Değişiklik yok"
 
 msgid "No changes found."
 msgstr "No changes found."
+
+msgid "No changes in this staging filter"
+msgstr ""
 
 msgid "No changes on this branch yet."
 msgstr "Bu dalda henüz değişiklik yok."
@@ -10467,6 +10623,9 @@ msgstr "Bu sunucuda kullanılamıyor"
 msgid "Not bound · configure in Settings → Links"
 msgstr "Atanmadı · Ayarlar → Bağlantılar bölümünden yapılandırın"
 
+msgid "Not compatible; this value will not be imported."
+msgstr ""
+
 msgid "Not configured"
 msgstr "Yapılandırılmadı"
 
@@ -10646,11 +10805,17 @@ msgstr "Çevrimdışı / yerel öncelikli mod"
 msgid "Older"
 msgstr "Daha eski"
 
+msgid "On"
+msgstr ""
+
 msgid "on {offScopeHostName} — won't run here"
 msgstr "{offScopeHostName} üzerinde — burada çalışmaz"
 
 msgid "On click"
 msgstr "Tıklandığında"
+
+msgid "On focus change"
+msgstr ""
 
 msgid "On our radar. Order and scope may change."
 msgstr "Radarımızda. Sıra ve kapsam değişebilir."
@@ -10663,6 +10828,9 @@ msgstr "Bu hızla"
 
 msgid "On this page"
 msgstr "Bu sayfada"
+
+msgid "On window change"
+msgstr ""
 
 msgid "On your machine. Repos, worktrees, terminal output, and agent sessions stay local by default; cloud sync covers account and organization metadata only. Superset doesn't proxy any API calls."
 msgstr "Sizin makinenizde. Depolar, worktree'ler, terminal çıktısı ve ajan oturumları varsayılan olarak yerelde kalır; bulut eşitlemesi yalnızca hesap ve kuruluş meta verilerini kapsar. Superset hiçbir API çağrısını vekil olarak iletmez."
@@ -11292,6 +11460,9 @@ msgstr "Diğer uygulamalar"
 msgid "Other devices"
 msgstr "Diğer cihazlar"
 
+msgid "Other hints"
+msgstr ""
+
 msgid "Other Hosts"
 msgstr "Diğer host'lar"
 
@@ -11437,6 +11608,12 @@ msgstr "Bölme düzeni kökü: bir çalışma alanının bölme ağacını işle
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
 
+msgid "Panel indentation"
+msgstr ""
+
+msgid "Panel scrollbar"
+msgstr ""
+
 msgid "Paragraph"
 msgstr "Paragraf"
 
@@ -11452,6 +11629,9 @@ msgstr "Paralel yürütme"
 msgid "Parallel sessions per developer doubling every seven months, crossing the Operator, Plant Manager and Henry Ford thresholds between August 2026 and August 2028"
 msgstr "Geliştirici başına paralel oturumlar yedi ayda bir ikiye katlanarak Ağustos 2026 ile Ağustos 2028 arasında Operatör, Fabrika Müdürü ve Henry Ford eşiklerini aşıyor"
 
+msgid "Parameter hints"
+msgstr ""
+
 msgid "Parameters"
 msgstr "Parametreler"
 
@@ -11466,6 +11646,9 @@ msgstr "Bir kısmı kayıt, bir kısmı bahis. İlk iki madde zaten gerçekleşi
 
 msgid "Partial"
 msgstr "Kısmi"
+
+msgid "Partially staged; stage all changes in this file"
+msgstr ""
 
 msgid "Passed"
 msgstr "Geçti"
@@ -11828,6 +12011,9 @@ msgstr "Yapay zekâ hakkındaki tahminler ucuzdur, çünkü kimse onları denetl
 msgid "Preferences"
 msgstr "Tercihler"
 
+msgid "Preferred line length"
+msgstr ""
+
 msgid "Prefix"
 msgstr "Ön ek"
 
@@ -11857,6 +12043,12 @@ msgstr "Önizleme"
 
 msgid "Preview {filename}"
 msgstr "Önizle: {filename}"
+
+msgid "Preview compatible editor preferences before applying them. Unselected values remain unchanged."
+msgstr ""
+
+msgid "Preview import"
+msgstr ""
 
 msgid "Preview notice: blocking (update required)"
 msgstr "Bildirim önizlemesi: engelleyici (güncelleme gerekli)"
@@ -11981,11 +12173,17 @@ msgstr "Verimlilik"
 msgid "Profile name"
 msgstr "Profil adı"
 
+msgid "Programming language"
+msgstr ""
+
 msgid "Progress · Spinner"
 msgstr "İlerleme · Spinner"
 
 msgid "Project"
 msgstr "Proje"
+
+msgid "Project actions"
+msgstr ""
 
 msgid "Project created."
 msgstr "Proje oluşturuldu."
@@ -12016,6 +12214,9 @@ msgstr "Proje bulunamadı."
 
 msgid "Project not set up on this host"
 msgstr "Proje bu host'ta kurulu değil"
+
+msgid "Project panel"
+msgstr ""
 
 msgid "Project ready — open it from the sidebar."
 msgstr "Proje hazır — kenar çubuğundan açın."
@@ -12501,6 +12702,9 @@ msgstr "İlgili yazılar"
 msgid "Related work"
 msgstr "Related work"
 
+msgid "Relative"
+msgstr ""
+
 msgid "Relative path copied"
 msgstr "Göreli yol kopyalandı"
 
@@ -12847,6 +13051,9 @@ msgstr "Düzenleyiciyi sıfırla"
 msgid "Reset GitHub star nag state"
 msgstr "GitHub yıldız hatırlatma durumunu sıfırla"
 
+msgid "Reset language overrides"
+msgstr ""
+
 msgid "Reset layout"
 msgstr "Düzeni sıfırla"
 
@@ -13097,6 +13304,9 @@ msgstr "Ajanlarınızın otomatik olarak aldığı yeniden kullanılabilir yöne
 
 msgid "Reusable terminal launches. Click a script to edit or drag to reorder. Project setup, run, and teardown commands are lifecycle scripts."
 msgstr "Yeniden kullanılabilir terminal başlatmaları. Düzenlemek için bir betiğe tıklayın veya sıralamak için sürükleyin. Proje kurulum, çalıştırma ve kapatma komutları yaşam döngüsü betikleridir."
+
+msgid "Reveal active file"
+msgstr ""
 
 msgid "Reveal in Finder"
 msgstr "Finder'da göster"
@@ -13406,6 +13616,9 @@ msgstr "Tercihleri kaydet"
 msgid "Save profile"
 msgstr "Profili kaydet"
 
+msgid "Save settings"
+msgstr ""
+
 msgid "save the agent"
 msgstr "ajanı kaydetme"
 
@@ -13424,6 +13637,12 @@ msgstr "\"{0}\" ortam olarak kaydedildi"
 
 msgid "Saved to Downloads"
 msgstr "İndirilenler klasörüne kaydedildi"
+
+msgid "Saved without formatting. Check the project formatter or language server."
+msgstr ""
+
+msgid "Saving and formatting"
+msgstr ""
 
 msgid "Saving as an environment..."
 msgstr "Ortam olarak kaydediliyor..."
@@ -13907,6 +14126,9 @@ msgstr "Seçili çalışma alanı eylemleri"
 msgid "Selecting text in a terminal copies it to the clipboard right away, with trailing whitespace trimmed"
 msgstr "Terminalde metin seçmek, sondaki boşluklar kırpılmış olarak panoya hemen kopyalar"
 
+msgid "Selection"
+msgstr ""
+
 msgid "Send"
 msgstr "Gönder"
 
@@ -14223,6 +14445,9 @@ msgstr "Grafikte göster"
 msgid "Show in folder"
 msgstr "Klasörde göster"
 
+msgid "Show inlay hints"
+msgstr ""
+
 msgid "Show items in all states"
 msgstr "Tüm durumlardaki öğeleri göster"
 
@@ -14294,6 +14519,9 @@ msgstr "Çeviriyi göster"
 
 msgid "Show usage tab on sidebar"
 msgstr "Kenar çubuğunda kullanım sekmesini göster"
+
+msgid "Show whitespace"
+msgstr ""
 
 msgid "Show Workspaces in sidebar"
 msgstr "Kenar çubuğunda Çalışma Alanlarını göster"
@@ -14738,6 +14966,12 @@ msgstr "Dosyayı hazırla"
 msgid "Staged"
 msgstr "Hazırlanmış"
 
+msgid "Staged diff"
+msgstr ""
+
+msgid "Staging filter"
+msgstr ""
+
 msgid "Standard action strip for pane headers"
 msgstr "Bölme başlıkları için standart eylem şeridi"
 
@@ -14911,6 +15145,9 @@ msgstr "Adım {0} / 2"
 
 msgid "Step {step}: {name}"
 msgstr "Adım {step}: {name}"
+
+msgid "Sticky folders"
+msgstr ""
 
 msgid "Still can't reach the host."
 msgstr "Host'a hâlâ ulaşılamıyor."
@@ -15323,6 +15560,9 @@ msgstr "Sekme"
 
 msgid "Tab per command"
 msgstr "Komut başına sekme"
+
+msgid "Tab size"
+msgstr ""
 
 msgid "Table"
 msgstr "Tablo"
@@ -15933,6 +16173,9 @@ msgstr "Worktree ve commit'lenmemiş tüm değişiklikler kaldırılacak. Bu ger
 msgid "The worktree has uncommitted edits from the agent session."
 msgstr "Worktree'de ajan oturumundan kalan commit'lenmemiş düzenlemeler var."
 
+msgid "The Zed theme was not found. Other preferences can still be imported."
+msgstr ""
+
 msgid "Theme"
 msgstr "Tema"
 
@@ -16059,6 +16302,9 @@ msgstr "bu dosya"
 
 msgid "This file is empty or was deleted."
 msgstr "Bu dosya boş veya silinmiş."
+
+msgid "This font is not installed. The editor will use its fallback font."
+msgstr ""
 
 msgid "This GitHub installation is already connected to another Superset organization. Disconnect it there, or uninstall the Superset GitHub App, then try again."
 msgstr "Bu GitHub kurulumu zaten başka bir Superset kuruluşuna bağlı. Oradaki bağlantıyı kesin veya Superset GitHub App'i kaldırın, sonra yeniden deneyin."
@@ -16229,6 +16475,9 @@ msgstr "Bu, kuruluşunuzun herkese açık URL'sini değiştirir. Yer imlerinizi 
 #. placeholder {0}: team?.name
 msgid "This will delete <0>{0}</0> and remove all of its members. This can't be undone."
 msgstr "Bu işlem <0>{0}</0> takımını siler ve tüm üyelerini kaldırır. Bu geri alınamaz."
+
+msgid "This will discard unstaged changes to this file. Staged changes will be preserved."
+msgstr ""
 
 msgid "This will disconnect GitHub from your organization. The GitHub App will remain installed but will no longer sync data. You can reconnect at any time."
 msgstr "Bu işlem GitHub bağlantısını kuruluşunuzdan kaldırır. GitHub App kurulu kalır ancak artık veri eşitlemez. İstediğiniz zaman yeniden bağlanabilirsiniz."
@@ -16582,6 +16831,9 @@ msgstr "E-posta yazın, Enter'a basın"
 msgid "Type here to send to the terminal"
 msgstr "Terminale göndermek için buraya yazın"
 
+msgid "Type hints"
+msgstr ""
+
 msgid "Type the organization name to confirm."
 msgstr "Onaylamak için kuruluş adını yazın."
 
@@ -16808,6 +17060,9 @@ msgstr "Dosyayı hazırlıktan çıkar"
 msgid "Unstaged"
 msgstr "Hazırlanmamış"
 
+msgid "Unstaged diff"
+msgstr ""
+
 #. placeholder {0}: item.kind
 msgid "Unsupported item \"{0}\""
 msgstr "Desteklenmeyen öğe \"{0}\""
@@ -17018,6 +17273,9 @@ msgstr "Yeni ajanlar için kullan"
 msgid "Use global default"
 msgstr "Genel varsayılanı kullan"
 
+msgid "Use tabs instead of spaces"
+msgstr ""
+
 msgid "Use the Azure CLI session on this host for repositories, work items, and pipelines."
 msgstr "Depolar, iş öğeleri ve işlem hatları için bu ana bilgisayardaki Azure CLI oturumunu kullanın."
 
@@ -17222,8 +17480,14 @@ msgstr "Sürüm notlarını görüntüle"
 msgid "View releases on GitHub"
 msgstr "Sürümleri GitHub'da görüntüle"
 
+msgid "View staged diff"
+msgstr ""
+
 msgid "View Superset repository on GitHub"
 msgstr "Superset deposunu GitHub'da görüntüle"
+
+msgid "View unstaged diff"
+msgstr ""
 
 msgid "View usage"
 msgstr "Kullanımı görüntüle"
@@ -17990,6 +18254,9 @@ msgstr "Sürümünüz: {currentVersion}"
 
 msgid "Zap"
 msgstr "Şimşek"
+
+msgid "Zed settings file"
+msgstr ""
 
 msgid "Zero-edit majority on merged agent PRs"
 msgstr "Birleştirilen ajan PR'larında sıfır düzenleme çoğunluğu"

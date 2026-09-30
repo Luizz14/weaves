@@ -1308,6 +1308,9 @@ msgstr "O nás"
 msgid "About Superset"
 msgstr "O Superset"
 
+msgid "Absolute"
+msgstr ""
+
 msgid "Absolutely. Superset doesn't proxy any API calls. You use your own API keys directly with whatever AI providers you choose. This means you have full control over costs and usage."
 msgstr "Rozhodně. Superset nepřeposílá žádná API volání. Vlastní API klíče používáte přímo u poskytovatelů AI, které si zvolíte. Máte tak plnou kontrolu nad náklady i využitím."
 
@@ -1601,6 +1604,9 @@ msgstr "Pokročilé možnosti"
 msgid "After"
 msgstr "Po"
 
+msgid "After a delay"
+msgstr ""
+
 msgid "Against base"
 msgstr "Proti základní větvi"
 
@@ -1802,6 +1808,9 @@ msgstr "Vše v aktuální kartě"
 msgid "All in current tab (split panes)"
 msgstr "Vše v aktuální kartě (rozdělené panely)"
 
+msgid "All local changes"
+msgstr ""
+
 msgid "All objectives cleared. Top rung, nothing left to reach for."
 msgstr "Všechny cíle splněny. Nejvyšší příčka, výš už to nejde."
 
@@ -1939,6 +1948,9 @@ msgstr "Také: @superset/ui/radio-group, @superset/ui/switch"
 
 msgid "Also: @superset/ui/spinner"
 msgstr "Také: @superset/ui/spinner"
+
+msgid "Always"
+msgstr ""
 
 msgid "Always know which agent needs you, with notifications that deep-link straight to the blocked agent."
 msgstr "Vždy víte, který agent vás potřebuje — oznámení vedou přímo na zablokovaného agenta."
@@ -2126,8 +2138,14 @@ msgstr "Jazyk aplikace. Automatický režim se řídí jazykem systému."
 msgid "Appearance"
 msgstr "Vzhled"
 
+msgid "Appearance, editing, project tools, and language preferences for the v2 editor."
+msgstr ""
+
 msgid "Apple logo"
 msgstr "Logo Apple"
+
+msgid "Application default"
+msgstr ""
 
 msgid "Application menu"
 msgstr "Nabídka aplikace"
@@ -2437,6 +2455,12 @@ msgstr "Automatizujte úkoly"
 msgid "Automate workspace setup for {projectName}"
 msgstr "Zautomatizujte nastavení pracovního prostoru pro {projectName}"
 
+msgid "Automatic"
+msgstr ""
+
+msgid "Automatic (project tools first)"
+msgstr ""
+
 msgid "Automation"
 msgstr "Automatizace"
 
@@ -2469,6 +2493,12 @@ msgstr "Autonomní"
 
 msgid "Autonomous ticket-to-PR pipeline"
 msgstr "Autonomní cesta od ticketu k PR"
+
+msgid "Autosave"
+msgstr ""
+
+msgid "Autosave delay (ms)"
+msgstr ""
 
 msgid "Available"
 msgstr "Volné"
@@ -2701,6 +2731,9 @@ msgstr "Token pro spuštění sestavení Bitrise"
 msgid "Bitrise token removed"
 msgstr "Token Bitrise byl odebrán"
 
+msgid "Blinking cursor"
+msgstr ""
+
 msgid "Block"
 msgstr "Blok"
 
@@ -2733,6 +2766,9 @@ msgstr "Zobrazení nástěnky"
 
 msgid "Bold"
 msgstr "Tučné"
+
+msgid "Bold folder labels"
+msgstr ""
 
 msgid "Border"
 msgstr "Okraj"
@@ -2839,6 +2875,9 @@ msgstr "Přeneste projekty, pracovní prostory a terminálové skripty z v1 do v
 
 msgid "Bring your agents together."
 msgstr "Sjednoťte své agenty."
+
+msgid "Browse"
+msgstr ""
 
 msgid "Browse and install skills, MCP servers, and agent configs shared by the community."
 msgstr "Procházejte a instalujte skills, MCP servery a konfigurace agentů sdílené komunitou."
@@ -3143,6 +3182,9 @@ msgstr "Změnit umístění worktree"
 
 msgid "Change-failure rate at or below the human-era baseline for two consecutive quarters."
 msgstr "Míra selhání změn na úrovni lidské éry nebo pod ní po dvě čtvrtletí po sobě."
+
+msgid "Changed files"
+msgstr ""
 
 msgid "Changelog"
 msgstr "Changelog"
@@ -3690,6 +3732,9 @@ msgstr "Blok kódu"
 msgid "Code Block"
 msgstr "Blok kódu"
 
+msgid "Code Editor"
+msgstr ""
+
 msgid "Code intelligence for the local v2 editor. Servers start when you open a supported file and use your installed tools."
 msgstr ""
 
@@ -3710,9 +3755,6 @@ msgid "Collapse {0}"
 msgstr "Sbalit {0}"
 
 msgid "Collapse all"
-msgstr "Sbalit vše"
-
-msgid "Collapse All"
 msgstr "Sbalit vše"
 
 msgid "Collapse all files"
@@ -3747,6 +3789,9 @@ msgstr "Spojí všechny commity"
 
 msgid "Combine sequences such as => and !==."
 msgstr "Spojovat sekvence jako => a !==."
+
+msgid "Comfortable"
+msgstr ""
 
 msgid "Coming soon"
 msgstr "Již brzy"
@@ -3853,6 +3898,12 @@ msgstr "Komunita"
 
 msgid "Community size from the public invite, refreshed every half hour."
 msgstr "Velikost komunity podle veřejné pozvánky, obnovuje se každou půlhodinu."
+
+msgid "Compact"
+msgstr ""
+
+msgid "Compact folders"
+msgstr ""
 
 msgid "Company"
 msgstr "Firma"
@@ -4495,6 +4546,9 @@ msgstr "Nepodařilo se zapomenout {domain}"
 msgid "Could not import from browser"
 msgstr "Z prohlížeče se nepodařilo importovat"
 
+msgid "Could not import Zed preferences"
+msgstr ""
+
 msgid "Could not leave the queue"
 msgstr "Nepodařilo se opustit frontu"
 
@@ -4504,6 +4558,9 @@ msgstr "Nepodařilo se vypsat adresář"
 #. placeholder {0}: host.name
 msgid "Could not load agents from {0}"
 msgstr "Nepodařilo se načíst agenty z {0}"
+
+msgid "Could not load editor settings"
+msgstr ""
 
 msgid "Could not load environments"
 msgstr "Nepodařilo se načíst prostředí"
@@ -4577,6 +4634,9 @@ msgstr "Přetažené soubory se nepodařilo přečíst"
 msgid "Could not read the Google account. Please try again."
 msgstr "Nepodařilo se přečíst účet Google. Zkuste to prosím znovu."
 
+msgid "Could not read Zed preferences"
+msgstr ""
+
 msgid "Could not record cloud workspace"
 msgstr "Nepodařilo se zaznamenat cloudový pracovní prostor"
 
@@ -4600,6 +4660,9 @@ msgstr "Tento komentář se nepodařilo vyřešit"
 
 msgid "Could not restart the host service"
 msgstr "Službu hostitele se nepodařilo restartovat"
+
+msgid "Could not save editor settings"
+msgstr ""
 
 msgid "Could not send"
 msgstr "Nepodařilo se odeslat"
@@ -4799,6 +4862,9 @@ msgstr "Nepodařilo se zrušit přípravu souboru"
 
 msgid "Couldn't update pull request"
 msgstr "Pull request se nepodařilo aktualizovat"
+
+msgid "Couldn't update staging"
+msgstr ""
 
 msgid "Couldn't update thread"
 msgstr "Nepodařilo se aktualizovat vlákno"
@@ -5488,6 +5554,9 @@ msgstr "Odpojeno"
 msgid "Details"
 msgstr "Podrobnosti"
 
+msgid "Detect installed Zed"
+msgstr ""
+
 msgid "Dev"
 msgstr "Vývoj"
 
@@ -5523,6 +5592,12 @@ msgstr "Zařízení: {selectedLabel}"
 
 msgid "DevTools"
 msgstr "DevTools"
+
+msgid "Diagnostic badges"
+msgstr ""
+
+msgid "Diagnostics"
+msgstr ""
 
 msgid "Dialog"
 msgstr "Dialog"
@@ -5988,6 +6063,9 @@ msgctxt "github release action"
 msgid "Edited"
 msgstr "Upraveno"
 
+msgid "Editing"
+msgstr ""
+
 msgid "Editing file..."
 msgstr "Upravuji soubor..."
 
@@ -6000,8 +6078,26 @@ msgstr "Editor"
 msgid "Editor & Workflow"
 msgstr "Editor a workflow"
 
+msgid "Editor appearance"
+msgstr ""
+
+msgid "Editor preferences imported"
+msgstr ""
+
+msgid "Editor settings saved"
+msgstr ""
+
+msgid "Editor settings sections"
+msgstr ""
+
+msgid "Editor theme"
+msgstr ""
+
 msgid "Editor typography"
 msgstr "Typografie editoru"
+
+msgid "Editor width"
+msgstr ""
 
 msgid "Efficient"
 msgstr "Efektivní"
@@ -6117,6 +6213,9 @@ msgstr "Enterprise ARR podle účtu"
 
 msgid "Entries by section"
 msgstr "Vstupy podle sekce"
+
+msgid "Entry spacing"
+msgstr ""
 
 msgid "Environment"
 msgstr "Prostředí"
@@ -6922,6 +7021,9 @@ msgstr "Založte ticket a dostanete zpět ověřený PR připravený ke sloučen
 msgid "File actions"
 msgstr "Akce souboru"
 
+msgid "File and folder icons"
+msgstr ""
+
 msgid "File changes"
 msgstr "Změny souboru"
 
@@ -7102,6 +7204,9 @@ msgstr "Plamen"
 msgid "Flash balances speed and quality for short development tasks."
 msgstr "Flash vyvažuje rychlost a kvalitu pro krátké vývojové úlohy."
 
+msgid "Flat view"
+msgstr ""
+
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Flotily agentů plánují, implementují, revidují a testují práci jeden druhého. Lidé určují směr, rozsuzují výjimky a vlastní vkus. Jednotkou lidské pozornosti už není pull request. Je jí rozhodnutí."
 
@@ -7149,9 +7254,6 @@ msgstr "Složka"
 
 msgid "Folder links"
 msgstr "Odkazy na složky"
-
-msgid "Folder view"
-msgstr "Zobrazení složek"
 
 msgid "Folders to check out into new worktrees, one per line, relative to the repo root. Files at the root are always included. Empty checks out everything."
 msgstr "Složky, které se mají vytáhnout do nových worktree, jedna na řádek, relativně ke kořeni repozitáře. Soubory v kořeni jsou vždy zahrnuty. Prázdné vytáhne vše."
@@ -7260,6 +7362,12 @@ msgstr "Forky"
 
 msgid "Form controls and field composition"
 msgstr "Prvky formuláře a skládání polí"
+
+msgid "Format on save"
+msgstr ""
+
+msgid "Formatter"
+msgstr ""
 
 msgid "Forward"
 msgstr "Vpřed"
@@ -7417,6 +7525,9 @@ msgstr "Jméno autora v Gitu"
 
 msgid "Git History"
 msgstr "Historie Gitu"
+
+msgid "Git indicators"
+msgstr ""
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Integrace Git selhala. Zkontrolujte repozitář a zkuste to znovu nebo pokus zrušte."
@@ -7650,6 +7761,12 @@ msgstr "Skrýt z grafu"
 msgid "Hide from Sidebar"
 msgstr "Skrýt z postranního panelu"
 
+msgid "Hide Git-ignored files"
+msgstr ""
+
+msgid "Hide hidden files"
+msgstr ""
+
 msgid "Hide log"
 msgstr "Skrýt log"
 
@@ -7658,6 +7775,9 @@ msgstr "Skrýt komentáře z revize PR"
 
 msgid "Hide Preview"
 msgstr "Skrýt náhled"
+
+msgid "Hide project root"
+msgstr ""
 
 msgid "Hide pull request list"
 msgstr "Skrýt seznam pull requestů"
@@ -7686,6 +7806,9 @@ msgstr "Vysoká"
 
 msgid "High usage"
 msgstr "Vysoké využití"
+
+msgid "Highlight active line"
+msgstr ""
 
 msgid "history"
 msgstr "historie"
@@ -7970,6 +8093,12 @@ msgstr "Importovat ze souboru"
 msgid "Import from v1"
 msgstr "Import z v1"
 
+msgid "Import from Zed"
+msgstr ""
+
+msgid "Import selected preferences"
+msgstr ""
+
 msgid "Import settings from another browser"
 msgstr "Importovat nastavení z jiného prohlížeče"
 
@@ -8050,6 +8179,9 @@ msgstr "Obsahuje variantu box specifickou pro Superset"
 msgid "Incognito Operator"
 msgstr "Operátor v utajení"
 
+msgid "Indent guides"
+msgstr ""
+
 msgid "Indigo"
 msgstr "Indigová"
 
@@ -8061,6 +8193,12 @@ msgstr "Info"
 
 msgid "Information"
 msgstr "Informace"
+
+msgid "Inherit application theme"
+msgstr ""
+
+msgid "Inherit global preference"
+msgstr ""
 
 msgid "Initialization options (JSON object)"
 msgstr ""
@@ -8079,6 +8217,9 @@ msgstr "Inicializuji..."
 
 msgid "Initials fallback via getInitials, sizes xs → xl"
 msgstr "Záložní iniciály přes getInitials, velikosti xs → xl"
+
+msgid "Inlay hints"
+msgstr ""
 
 msgid "Inline"
 msgstr "V řádku"
@@ -8501,6 +8642,9 @@ msgstr "Sloupce"
 msgid "Language"
 msgstr "Jazyk"
 
+msgid "Language overrides"
+msgstr ""
+
 msgid "Language saved on this device, but syncing it to your account failed."
 msgstr "Jazyk je uložený na tomto zařízení, ale synchronizace s vaším účtem selhala."
 
@@ -8682,6 +8826,9 @@ msgstr "Méně"
 msgid "less than a minute ago"
 msgstr "před méně než minutou"
 
+msgid "Letter spacing"
+msgstr ""
+
 msgid "Letter spacing (px)"
 msgstr "Rozestup písmen (px)"
 
@@ -8738,6 +8885,12 @@ msgstr "Spojnicový graf: podíl sloučených změn napsaných agenty bez jedin�
 
 msgid "Line height"
 msgstr "Výška řádku"
+
+msgid "Line numbers"
+msgstr ""
+
+msgid "Line wrapping"
+msgstr ""
 
 msgid "Linear"
 msgstr "Linear"
@@ -9721,14 +9874,14 @@ msgstr "Nový chat Codex"
 msgid "New environment"
 msgstr "Nové prostředí"
 
-msgid "New File"
-msgstr "Nový soubor"
+msgid "New file"
+msgstr ""
 
 msgid "New File..."
 msgstr "Nový soubor..."
 
-msgid "New Folder"
-msgstr "Nová složka"
+msgid "New folder"
+msgstr ""
 
 msgid "New Folder..."
 msgstr "Nová složka..."
@@ -9948,6 +10101,9 @@ msgstr "Žádné změny"
 
 msgid "No changes found."
 msgstr "No changes found."
+
+msgid "No changes in this staging filter"
+msgstr ""
 
 msgid "No changes on this branch yet."
 msgstr "V této větvi zatím nejsou žádné změny."
@@ -10467,6 +10623,9 @@ msgstr "Na tomto serveru není k dispozici"
 msgid "Not bound · configure in Settings → Links"
 msgstr "Nepřiřazeno · nastavte v Nastavení → Odkazy"
 
+msgid "Not compatible; this value will not be imported."
+msgstr ""
+
 msgid "Not configured"
 msgstr "Nenastaveno"
 
@@ -10646,11 +10805,17 @@ msgstr "Offline / local-first režim"
 msgid "Older"
 msgstr "Starší"
 
+msgid "On"
+msgstr ""
+
 msgid "on {offScopeHostName} — won't run here"
 msgstr "na {offScopeHostName} — tady nepoběží"
 
 msgid "On click"
 msgstr "Po kliknutí"
+
+msgid "On focus change"
+msgstr ""
 
 msgid "On our radar. Order and scope may change."
 msgstr "Máme to na radaru. Pořadí i rozsah se můžou změnit."
@@ -10663,6 +10828,9 @@ msgstr "Tímto tempem"
 
 msgid "On this page"
 msgstr "Na této stránce"
+
+msgid "On window change"
+msgstr ""
 
 msgid "On your machine. Repos, worktrees, terminal output, and agent sessions stay local by default; cloud sync covers account and organization metadata only. Superset doesn't proxy any API calls."
 msgstr "Na vašem počítači. Repozitáře, worktree, výstup terminálu i relace agentů zůstávají ve výchozím stavu lokálně; cloudová synchronizace se týká jen metadat účtu a organizace. Superset nepřeposílá žádná API volání."
@@ -11292,6 +11460,9 @@ msgstr "Ostatní aplikace"
 msgid "Other devices"
 msgstr "Ostatní zařízení"
 
+msgid "Other hints"
+msgstr ""
+
 msgid "Other Hosts"
 msgstr "Ostatní hosty"
 
@@ -11437,6 +11608,12 @@ msgstr "Kořen rozvržení panelů: vykresluje strom panelů pracovního prostor
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
 
+msgid "Panel indentation"
+msgstr ""
+
+msgid "Panel scrollbar"
+msgstr ""
+
 msgid "Paragraph"
 msgstr "Odstavec"
 
@@ -11452,6 +11629,9 @@ msgstr "Paralelní běh"
 msgid "Parallel sessions per developer doubling every seven months, crossing the Operator, Plant Manager and Henry Ford thresholds between August 2026 and August 2028"
 msgstr "Počet souběžných relací na vývojáře se každých sedm měsíců zdvojnásobuje a mezi srpnem 2026 a srpnem 2028 překračuje hranice Operátor, Vedoucí závodu a Henry Ford"
 
+msgid "Parameter hints"
+msgstr ""
+
 msgid "Parameters"
 msgstr "Parametry"
 
@@ -11466,6 +11646,9 @@ msgstr "Zčásti záznam, zčásti sázka. První dvě položky se už dějí. Z
 
 msgid "Partial"
 msgstr "Částečně"
+
+msgid "Partially staged; stage all changes in this file"
+msgstr ""
 
 msgid "Passed"
 msgstr "Prošlo"
@@ -11828,6 +12011,9 @@ msgstr "Předpovědi o AI jsou laciné, protože je nikdo nekontroluje. Tahle st
 msgid "Preferences"
 msgstr "Předvolby"
 
+msgid "Preferred line length"
+msgstr ""
+
 msgid "Prefix"
 msgstr "Prefix"
 
@@ -11857,6 +12043,12 @@ msgstr "Náhled"
 
 msgid "Preview {filename}"
 msgstr "Náhled {filename}"
+
+msgid "Preview compatible editor preferences before applying them. Unselected values remain unchanged."
+msgstr ""
+
+msgid "Preview import"
+msgstr ""
 
 msgid "Preview notice: blocking (update required)"
 msgstr "Náhled oznámení: blokující (vyžadována aktualizace)"
@@ -11981,11 +12173,17 @@ msgstr "Produktivita"
 msgid "Profile name"
 msgstr "Název profilu"
 
+msgid "Programming language"
+msgstr ""
+
 msgid "Progress · Spinner"
 msgstr "Průběh · Spinner"
 
 msgid "Project"
 msgstr "Projekt"
+
+msgid "Project actions"
+msgstr ""
 
 msgid "Project created."
 msgstr "Projekt vytvořen."
@@ -12016,6 +12214,9 @@ msgstr "Projekt nenalezen."
 
 msgid "Project not set up on this host"
 msgstr "Projekt není na tomto hostu nastaven"
+
+msgid "Project panel"
+msgstr ""
 
 msgid "Project ready — open it from the sidebar."
 msgstr "Projekt je připravený — otevřete ho v postranním panelu."
@@ -12501,6 +12702,9 @@ msgstr "Související články"
 msgid "Related work"
 msgstr "Related work"
 
+msgid "Relative"
+msgstr ""
+
 msgid "Relative path copied"
 msgstr "Relativní cesta zkopírována"
 
@@ -12847,6 +13051,9 @@ msgstr "Obnovit editor"
 msgid "Reset GitHub star nag state"
 msgstr "Obnovit stav připomínky hvězdičky na GitHubu"
 
+msgid "Reset language overrides"
+msgstr ""
+
 msgid "Reset layout"
 msgstr "Obnovit rozložení"
 
@@ -13097,6 +13304,9 @@ msgstr "Znovupoužitelné instrukce, které si agenti automaticky načtou"
 
 msgid "Reusable terminal launches. Click a script to edit or drag to reorder. Project setup, run, and teardown commands are lifecycle scripts."
 msgstr "Znovupoužitelná spuštění terminálu. Kliknutím skript upravíte, přetažením změníte pořadí. Příkazy pro setup, spuštění a teardown projektu jsou lifecycle skripty."
+
+msgid "Reveal active file"
+msgstr ""
 
 msgid "Reveal in Finder"
 msgstr "Zobrazit ve Finderu"
@@ -13406,6 +13616,9 @@ msgstr "Uložit předvolby"
 msgid "Save profile"
 msgstr "Uložit profil"
 
+msgid "Save settings"
+msgstr ""
+
 msgid "save the agent"
 msgstr "uložit agenta"
 
@@ -13424,6 +13637,12 @@ msgstr "\"{0}\" uloženo jako prostředí"
 
 msgid "Saved to Downloads"
 msgstr "Uloženo do Stažených souborů"
+
+msgid "Saved without formatting. Check the project formatter or language server."
+msgstr ""
+
+msgid "Saving and formatting"
+msgstr ""
 
 msgid "Saving as an environment..."
 msgstr "Ukládání jako prostředí..."
@@ -13907,6 +14126,9 @@ msgstr "Akce pro vybrané pracovní prostory"
 msgid "Selecting text in a terminal copies it to the clipboard right away, with trailing whitespace trimmed"
 msgstr "Výběr textu v terminálu ho hned zkopíruje do schránky, bez koncových mezer"
 
+msgid "Selection"
+msgstr ""
+
 msgid "Send"
 msgstr "Odeslat"
 
@@ -14223,6 +14445,9 @@ msgstr "Zobrazit v grafu"
 msgid "Show in folder"
 msgstr "Zobrazit ve složce"
 
+msgid "Show inlay hints"
+msgstr ""
+
 msgid "Show items in all states"
 msgstr "Zobrazit položky ve všech stavech"
 
@@ -14294,6 +14519,9 @@ msgstr "Zobrazit překlad"
 
 msgid "Show usage tab on sidebar"
 msgstr "Zobrazit kartu využití v postranním panelu"
+
+msgid "Show whitespace"
+msgstr ""
 
 msgid "Show Workspaces in sidebar"
 msgstr "Zobrazit Pracovní prostory na postranním panelu"
@@ -14738,6 +14966,12 @@ msgstr "Připravit soubor"
 msgid "Staged"
 msgstr "Připravené"
 
+msgid "Staged diff"
+msgstr ""
+
+msgid "Staging filter"
+msgstr ""
+
 msgid "Standard action strip for pane headers"
 msgstr "Standardní pruh akcí pro záhlaví panelů"
 
@@ -14911,6 +15145,9 @@ msgstr "Krok {0} ze 2"
 
 msgid "Step {step}: {name}"
 msgstr "Krok {step}: {name}"
+
+msgid "Sticky folders"
+msgstr ""
 
 msgid "Still can't reach the host."
 msgstr "Host je stále nedostupný."
@@ -15323,6 +15560,9 @@ msgstr "Karta"
 
 msgid "Tab per command"
 msgstr "Karta na příkaz"
+
+msgid "Tab size"
+msgstr ""
 
 msgid "Table"
 msgstr "Tabulka"
@@ -15933,6 +16173,9 @@ msgstr "Worktree a všechny necommitnuté změny budou odstraněny. Tuto akci ne
 msgid "The worktree has uncommitted edits from the agent session."
 msgstr "Worktree obsahuje necommitnuté úpravy z relace agenta."
 
+msgid "The Zed theme was not found. Other preferences can still be imported."
+msgstr ""
+
 msgid "Theme"
 msgstr "Motiv"
 
@@ -16059,6 +16302,9 @@ msgstr "tento soubor"
 
 msgid "This file is empty or was deleted."
 msgstr "Tento soubor je prázdný nebo byl smazán."
+
+msgid "This font is not installed. The editor will use its fallback font."
+msgstr ""
 
 msgid "This GitHub installation is already connected to another Superset organization. Disconnect it there, or uninstall the Superset GitHub App, then try again."
 msgstr "Tato instalace GitHubu je už připojená k jiné organizaci Superset. Odpojte ji tam, nebo odinstalujte Superset GitHub App, a zkuste to znovu."
@@ -16229,6 +16475,9 @@ msgstr "Tímto se změní veřejná URL vaší organizace. Nezapomeňte aktualiz
 #. placeholder {0}: team?.name
 msgid "This will delete <0>{0}</0> and remove all of its members. This can't be undone."
 msgstr "Tímto se smaže <0>{0}</0> a odeberou se všichni jeho členové. Nelze vrátit zpět."
+
+msgid "This will discard unstaged changes to this file. Staged changes will be preserved."
+msgstr ""
 
 msgid "This will disconnect GitHub from your organization. The GitHub App will remain installed but will no longer sync data. You can reconnect at any time."
 msgstr "Tímto odpojíte GitHub od své organizace. GitHub App zůstane nainstalovaná, ale přestane synchronizovat data. Kdykoli se můžete připojit znovu."
@@ -16582,6 +16831,9 @@ msgstr "Zadejte e-mail a stiskněte Enter"
 msgid "Type here to send to the terminal"
 msgstr "Sem pište, co se má odeslat do terminálu"
 
+msgid "Type hints"
+msgstr ""
+
 msgid "Type the organization name to confirm."
 msgstr "Pro potvrzení napište název organizace."
 
@@ -16808,6 +17060,9 @@ msgstr "Zrušit přípravu souboru"
 msgid "Unstaged"
 msgstr "Nepřipravené"
 
+msgid "Unstaged diff"
+msgstr ""
+
 #. placeholder {0}: item.kind
 msgid "Unsupported item \"{0}\""
 msgstr "Nepodporovaná položka „{0}“"
@@ -17018,6 +17273,9 @@ msgstr "Použít pro nové agenty"
 msgid "Use global default"
 msgstr "Použít globální výchozí"
 
+msgid "Use tabs instead of spaces"
+msgstr ""
+
 msgid "Use the Azure CLI session on this host for repositories, work items, and pipelines."
 msgstr "Používejte relaci Azure CLI na tomto hostiteli pro repozitáře, pracovní položky a kanály."
 
@@ -17222,8 +17480,14 @@ msgstr "Zobrazit poznámky k vydání"
 msgid "View releases on GitHub"
 msgstr "Zobrazit vydání na GitHubu"
 
+msgid "View staged diff"
+msgstr ""
+
 msgid "View Superset repository on GitHub"
 msgstr "Zobrazit repozitář Superset na GitHubu"
+
+msgid "View unstaged diff"
+msgstr ""
 
 msgid "View usage"
 msgstr "Zobrazit využití"
@@ -17990,6 +18254,9 @@ msgstr "Vaše verze: {currentVersion}"
 
 msgid "Zap"
 msgstr "Blesk"
+
+msgid "Zed settings file"
+msgstr ""
 
 msgid "Zero-edit majority on merged agent PRs"
 msgstr "Většina sloučených PR od agentů bez úprav"

@@ -15,7 +15,7 @@ export function useSidebarDiffRef(workspaceId: string): DiffRef {
 		[collections, workspaceId],
 	);
 	const sidebarState = rows[0]?.sidebarState;
-	const filter = sidebarState?.changesFilter ?? { kind: "all" };
+	const filter = sidebarState?.changesFilter ?? { kind: "uncommitted" };
 
 	const baseBranchQuery = workspaceTrpc.git.getBaseBranch.useQuery(
 		{ workspaceId },

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { useWorkspaceEvent } from "renderer/hooks/host-service/useWorkspaceEvent";
 import { useWorkspace } from "renderer/routes/_authenticated/_dashboard/v2-workspace/providers/WorkspaceProvider";
+import { EditorAutomation } from "../lsp/EditorAutomation";
 import { LspProvider } from "../lsp/LspProvider";
 import { dispatchFsEvent } from "./fileDocumentStore";
 
@@ -16,5 +17,9 @@ export function FileDocumentStoreProvider({
 		dispatchFsEvent(workspace.id, event);
 	});
 
-	return <LspProvider openFile={openFile}>{children}</LspProvider>;
+	return (
+		<LspProvider openFile={openFile}>
+			<EditorAutomation>{children}</EditorAutomation>
+		</LspProvider>
+	);
 }

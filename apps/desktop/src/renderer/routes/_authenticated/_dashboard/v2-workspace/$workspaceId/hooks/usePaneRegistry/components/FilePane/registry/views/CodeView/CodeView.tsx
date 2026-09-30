@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/react/macro";
 import { useCallback, useMemo, useState } from "react";
 import type { EditorLspStatus } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/coordinator";
 import { useLspCoordinator } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/LspProvider";
@@ -62,6 +63,14 @@ export function CodeView({
 					fillHeight
 				/>
 			</div>
+			{document.formatWarning && (
+				<output className="border-t px-3 py-1 text-xs text-muted-foreground">
+					<Trans>
+						Saved without formatting. Check the project formatter or language
+						server.
+					</Trans>
+				</output>
+			)}
 			{!readOnly && (
 				<LspStatus status={lspStatus} retry={() => void lsp?.retry(document)} />
 			)}

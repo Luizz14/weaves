@@ -140,6 +140,8 @@ in the commit message and the PR.
 
 - `.agents/skills/`: CDP UI verification, DB migrations, ticket format, and more. Read the matching
   `SKILL.md` when a task fits its description.
+- `.agents/skills/superset-code-editor/SKILL.md`: maintaining and extending the v2 editor, LSP,
+  editor preferences/Zed import, project panel, and local Git changes panel.
 - `docs/agent-tooling.md`: where commands, skills, and per-agent-CLI config live.
 - `docs/plugins.md`: authoring, publishing, and installing marketplace plugins — the manifest
   contract, the credential proxy, and which files are generated.

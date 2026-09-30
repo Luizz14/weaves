@@ -94,6 +94,7 @@ import {
 	acknowledgeCliTerminalScripts,
 	isPendingCliTerminalScript,
 } from "./cli-terminal-script-import";
+import { editorSettingsRouter } from "./editor/editor";
 import {
 	setFontSettingsSchema,
 	transformFontSettings,
@@ -286,6 +287,7 @@ export function getPresetsForTrigger(
 
 export const createSettingsRouter = () => {
 	return router({
+		editor: editorSettingsRouter,
 		getCodexChat: publicProcedure.query(() =>
 			codexChatSettingsSchema
 				.catch(DEFAULT_CODEX_CHAT_SETTINGS)

@@ -16,7 +16,7 @@
 	"scripts": {
 		"clean": "git clean -xdf .cache .turbo dist dist-electron release node_modules",
 		"start": "electron-vite preview",
-		"generate:icons": "bun run scripts/generate-file-icons.ts",
+		"generate:icons": "bun run scripts/generate-file-icons.ts && bun run scripts/generate-zed-icons.ts",
 		"bundle:cli": "bun run scripts/build-bundled-cli.ts",
 		"predev": "bun run --filter=@superset/i18n build && cross-env NODE_ENV=development bun run clean:dev && bun run generate:icons && bun run bundle:cli && cross-env NODE_ENV=development bun run scripts/clean-launch-services.ts && cross-env NODE_ENV=development bun run scripts/patch-dev-protocol.ts",
 		"dev": "bun scripts/dev.ts",
@@ -195,6 +195,7 @@
 		"http-proxy": "1.18.1",
 		"idb-keyval": "6.2.2",
 		"jose": "6.2.2",
+		"json5": "2.2.3",
 		"line-column-path": "3.0.0",
 		"lodash": "4.18.1",
 		"lowdb": "7.0.1",

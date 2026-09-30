@@ -1,0 +1,1 @@
+ALTER TABLE `settings` ADD `editor_settings` text;

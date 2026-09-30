@@ -163,7 +163,10 @@ export function FilePane({ context, workspaceId }: FilePaneProps) {
 	const ViewRenderer = activeView.Renderer;
 
 	return (
-		<div className="flex h-full w-full flex-col">
+		<div
+			className="flex h-full w-full flex-col"
+			data-editor-document-id={document.id}
+		>
 			{document.orphaned && (
 				<OrphanedBanner
 					dirty={document.dirty}

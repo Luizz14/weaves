@@ -1,3 +1,4 @@
+import { editorRouter } from "../../editor/format";
 import { router } from "../index";
 import { agentToolingRouter } from "./agent-tooling";
 import { agentsRouter } from "./agents";
@@ -32,6 +33,7 @@ import { workspaceCreationRouter } from "./workspace-creation";
 import { workspacesRouter } from "./workspaces";
 
 export const appRouter = router({
+	editor: editorRouter,
 	lsp: lspRouter,
 	branchIntegration: branchIntegrationRouter,
 	agents: agentsRouter,

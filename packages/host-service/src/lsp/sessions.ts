@@ -289,6 +289,11 @@ export class LspSessions {
 						textDocument: {
 							completion: textDocument.completion,
 							hover: textDocument.hover,
+							formatting: {},
+							inlayHint: {
+								dynamicRegistration: true,
+								resolveSupport: { properties: ["tooltip"] },
+							},
 							definition: textDocument.definition,
 							publishDiagnostics: { versionSupport: true },
 							diagnostic: {
@@ -358,6 +363,17 @@ export class LspSessions {
 				for (const registration of registrationSchema.parse(message.params)
 					.registrations) {
 					session.registrations.set(registration.id, registration.method);
+					if (
+						registration.method === "textDocument/inlayHint" ||
+						registration.method === "textDocument/formatting"
+					)
+						session.socket?.send(
+							JSON.stringify({
+								jsonrpc: "2.0",
+								method: "superset/editorCapability",
+								params: { method: registration.method, enabled: true },
+							}),
+						);
 					if (registration.method === "textDocument/diagnostic")
 						session.socket?.send(
 							JSON.stringify({
@@ -379,6 +395,18 @@ export class LspSessions {
 					.parse(message.params);
 				let diagnosticRemoved = false;
 				for (const registration of registrations.unregisterations) {
+					const method = session.registrations.get(registration.id);
+					if (
+						method === "textDocument/inlayHint" ||
+						method === "textDocument/formatting"
+					)
+						session.socket?.send(
+							JSON.stringify({
+								jsonrpc: "2.0",
+								method: "superset/editorCapability",
+								params: { method, enabled: false },
+							}),
+						);
 					if (
 						session.registrations.get(registration.id) ===
 						"textDocument/diagnostic"
@@ -431,6 +459,14 @@ export class LspSessions {
 					JSON.stringify({
 						jsonrpc: "2.0",
 						method: "superset/diagnosticRefresh",
+						params: {},
+					}),
+				);
+			} else if (message.method === "workspace/inlayHint/refresh") {
+				session.socket?.send(
+					JSON.stringify({
+						jsonrpc: "2.0",
+						method: "superset/inlayHintRefresh",
 						params: {},
 					}),
 				);

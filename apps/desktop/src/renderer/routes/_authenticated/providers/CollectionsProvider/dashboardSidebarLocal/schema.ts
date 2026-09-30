@@ -142,7 +142,7 @@ export const workspaceLocalStateSchema = z.object({
 		// Widened from uuid: may point at a tag-backed folder's composite
 		// `${projectId}:${tag}` key (written by move-into-derived-folder).
 		sectionId: z.string().min(1).nullable().default(null),
-		changesFilter: changesFilterSchema.default({ kind: "all" }),
+		changesFilter: changesFilterSchema.default({ kind: "uncommitted" }),
 		activeTab: WORKSPACE_SIDEBAR_TAB_SCHEMA.default("changes"),
 		isHidden: z.boolean().default(false),
 		// Epoch ms when the user pinned this workspace to the sidebar's Pinned
@@ -195,7 +195,7 @@ export const workspaceLocalStateSchema = z.object({
 const SIDEBAR_STATE_DEFAULTS = {
 	tabOrder: 0,
 	sectionId: null,
-	changesFilter: { kind: "all" },
+	changesFilter: { kind: "uncommitted" },
 	activeTab: "changes",
 	isHidden: false,
 	pinnedAt: null,
@@ -407,7 +407,7 @@ function isCompleteLinkTierMap(
 	);
 }
 
-const changesViewModeSchema = z.enum(["folders", "tree"]);
+const changesViewModeSchema = z.enum(["flat", "folders", "tree"]);
 
 export type ChangesViewMode = z.infer<typeof changesViewModeSchema>;
 
@@ -438,7 +438,8 @@ export const v2UserPreferencesSchema = z.object({
 	rightSidebarWidth: z.number().default(340),
 	deleteLocalBranch: z.boolean().default(false),
 	showPresetsBar: z.boolean().default(true),
-	changesViewMode: changesViewModeSchema.default("folders"),
+	changesViewMode: changesViewModeSchema.default("flat"),
+	gitPanelPresentationVersion: z.number().int().min(0).max(1).default(0),
 	// Ordering of the dashboard sidebar's Projects list; manual = drag order.
 	sidebarProjectSortMode: persistedSidebarProjectSortModeSchema,
 	// Built-in (synthetic, app-shipped) presets the user hid from the preset
@@ -478,7 +479,8 @@ export const DEFAULT_V2_USER_PREFERENCES: V2UserPreferencesRow = {
 	rightSidebarWidth: 340,
 	deleteLocalBranch: false,
 	showPresetsBar: true,
-	changesViewMode: "folders",
+	changesViewMode: "flat",
+	gitPanelPresentationVersion: 1,
 	sidebarProjectSortMode: "manual",
 	hiddenBuiltinPresetIds: [],
 	favoritePageIds: [],
@@ -558,6 +560,8 @@ export function healV2UserPreferences(raw: unknown): V2UserPreferencesRow {
 	return {
 		...DEFAULT_V2_USER_PREFERENCES,
 		...r,
+		gitPanelPresentationVersion:
+			r.gitPanelPresentationVersion ?? (Object.keys(r).length ? 0 : 1),
 		fileLinks: { ...DEFAULT_V2_USER_PREFERENCES.fileLinks, ...r.fileLinks },
 		urlLinks: shouldMigrateLegacyUrlLinks
 			? DEFAULT_V2_USER_PREFERENCES.urlLinks

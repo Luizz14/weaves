@@ -2,7 +2,7 @@ import { useLingui } from "@lingui/react/macro";
 import { errorMessage } from "@superset/i18n/errors";
 import { toast } from "@superset/ui/sonner";
 import { workspaceTrpc } from "@superset/workspace-client";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { LuGitCompareArrows } from "react-icons/lu";
 import { useV2UserPreferences } from "renderer/hooks/useV2UserPreferences";
 import { useChangeset } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/useChangeset";
@@ -14,6 +14,7 @@ import type { ChangesFilter } from "renderer/routes/_authenticated/providers/Col
 import { toAbsoluteWorkspacePath } from "shared/absolute-paths";
 import type { SidebarTabDefinition } from "../../types";
 import { ChangesTabContent } from "./components/ChangesTabContent";
+import { migrateGitPanelPreferences } from "./migrateGitPanelPreferences";
 
 export interface SelectedDiffTarget {
 	/** Worktree-relative path of the file the diff pane last navigated to. */
@@ -57,11 +58,21 @@ export function useChangesTab({
 	const utils = workspaceTrpc.useUtils();
 	const localState = collections.v2WorkspaceLocalState.get(workspaceId);
 	const filter: ChangesFilter = localState?.sidebarState?.changesFilter ?? {
-		kind: "all",
+		kind: "uncommitted",
 	};
 	const { preferences, setChangesViewMode: setViewMode } =
 		useV2UserPreferences();
 	const viewMode = preferences.changesViewMode;
+	useEffect(() => {
+		let cancelled = false;
+		void migrateGitPanelPreferences(collections, () => cancelled).catch(
+			(error) =>
+				console.error("[git-panel] Preference migration failed", error),
+		);
+		return () => {
+			cancelled = true;
+		};
+	}, [collections]);
 
 	const baseBranchQuery = workspaceTrpc.git.getBaseBranch.useQuery(
 		{ workspaceId },

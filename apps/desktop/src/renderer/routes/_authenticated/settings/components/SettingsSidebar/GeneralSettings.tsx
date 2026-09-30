@@ -56,6 +56,7 @@ type SettingsRoute =
 	| "/settings/organization"
 	| "/settings/teams"
 	| "/settings/appearance"
+	| "/settings/editor"
 	| "/settings/ringtones"
 	| "/settings/usage"
 	| "/settings/keyboard"
@@ -126,6 +127,7 @@ const SECTION_GROUPS: SectionGroup[] = [
 				}),
 				icon: <HiOutlinePaintBrush className="h-4 w-4" />,
 			},
+
 			{
 				id: "/settings/ringtones",
 				section: "ringtones",
@@ -150,6 +152,12 @@ const SECTION_GROUPS: SectionGroup[] = [
 			message: "Editor & Workflow",
 		}),
 		items: [
+			{
+				id: "/settings/editor",
+				section: "editor",
+				label: msg({ message: "Code Editor" }),
+				icon: <LuKeyboard className="h-4 w-4" />,
+			},
 			{
 				id: "/settings/behavior",
 				section: "behavior",

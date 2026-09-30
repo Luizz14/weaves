@@ -8,6 +8,7 @@ import {
 	useMemo,
 	useRef,
 } from "react";
+import { useEditorSettings } from "renderer/hooks/useEditorSettings";
 import { useWorkspace } from "renderer/routes/_authenticated/_dashboard/v2-workspace/providers/WorkspaceProvider";
 import { useLocalHostService } from "renderer/routes/_authenticated/providers/LocalHostServiceProvider";
 import { LspCoordinator } from "../coordinator";
@@ -22,6 +23,7 @@ export function LspProvider({
 	openFile: (path: string) => void;
 }) {
 	const connection = useWorkspaceClient();
+	const preferences = useEditorSettings();
 	const { workspace } = useWorkspace();
 	const { machineId } = useLocalHostService();
 	const openFileRef = useRef(openFile);
@@ -48,6 +50,9 @@ export function LspProvider({
 		],
 	);
 	useEffect(() => () => coordinator?.dispose(), [coordinator]);
+	useEffect(() => {
+		coordinator?.configure(preferences);
+	}, [coordinator, preferences]);
 	return (
 		<LspContext.Provider value={coordinator}>{children}</LspContext.Provider>
 	);

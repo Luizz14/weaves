@@ -1308,6 +1308,9 @@ msgstr "关于"
 msgid "About Superset"
 msgstr "关于Superset"
 
+msgid "Absolute"
+msgstr ""
+
 msgid "Absolutely. Superset doesn't proxy any API calls. You use your own API keys directly with whatever AI providers you choose. This means you have full control over costs and usage."
 msgstr "当然可以。Superset不代理任何API调用。你直接用自己的API密钥对接所选的AI提供商，成本和用量完全由你掌控。"
 
@@ -1601,6 +1604,9 @@ msgstr "高级选项"
 msgid "After"
 msgstr "变更后"
 
+msgid "After a delay"
+msgstr ""
+
 msgid "Against base"
 msgstr "对比基准分支"
 
@@ -1802,6 +1808,9 @@ msgstr "全部在当前标签页"
 msgid "All in current tab (split panes)"
 msgstr "全部在当前标签页（分屏窗格）"
 
+msgid "All local changes"
+msgstr ""
+
 msgid "All objectives cleared. Top rung, nothing left to reach for."
 msgstr "所有目标均已达成。已在最高一级，没有更高可追。"
 
@@ -1939,6 +1948,9 @@ msgstr "另有：@superset/ui/radio-group、@superset/ui/switch"
 
 msgid "Also: @superset/ui/spinner"
 msgstr "另有：@superset/ui/spinner"
+
+msgid "Always"
+msgstr ""
 
 msgid "Always know which agent needs you, with notifications that deep-link straight to the blocked agent."
 msgstr "随时知道哪个智能体需要你，通知可直接跳转到被阻塞的智能体。"
@@ -2126,8 +2138,14 @@ msgstr "应用显示语言。自动模式会跟随你的系统语言。"
 msgid "Appearance"
 msgstr "外观"
 
+msgid "Appearance, editing, project tools, and language preferences for the v2 editor."
+msgstr ""
+
 msgid "Apple logo"
 msgstr "Apple 标志"
+
+msgid "Application default"
+msgstr ""
 
 msgid "Application menu"
 msgstr "应用程序菜单"
@@ -2437,6 +2455,12 @@ msgstr "自动化任务"
 msgid "Automate workspace setup for {projectName}"
 msgstr "为{projectName}自动化工作区初始化"
 
+msgid "Automatic"
+msgstr ""
+
+msgid "Automatic (project tools first)"
+msgstr ""
+
 msgid "Automation"
 msgstr "自动化"
 
@@ -2469,6 +2493,12 @@ msgstr "自主"
 
 msgid "Autonomous ticket-to-PR pipeline"
 msgstr "工单到PR的自主流水线"
+
+msgid "Autosave"
+msgstr ""
+
+msgid "Autosave delay (ms)"
+msgstr ""
 
 msgid "Available"
 msgstr "可用"
@@ -2701,6 +2731,9 @@ msgstr "Bitrise 构建触发令牌"
 msgid "Bitrise token removed"
 msgstr "Bitrise 令牌已移除"
 
+msgid "Blinking cursor"
+msgstr ""
+
 msgid "Block"
 msgstr "方块"
 
@@ -2733,6 +2766,9 @@ msgstr "看板视图"
 
 msgid "Bold"
 msgstr "加粗"
+
+msgid "Bold folder labels"
+msgstr ""
 
 msgid "Border"
 msgstr "边框"
@@ -2839,6 +2875,9 @@ msgstr "将v1的项目、工作区和终端脚本迁移到v2。每一项单独�
 
 msgid "Bring your agents together."
 msgstr "把你的智能体聚到一起。"
+
+msgid "Browse"
+msgstr ""
 
 msgid "Browse and install skills, MCP servers, and agent configs shared by the community."
 msgstr "浏览并安装社区共享的技能、MCP服务器和智能体配置。"
@@ -3143,6 +3182,9 @@ msgstr "更改worktree位置"
 
 msgid "Change-failure rate at or below the human-era baseline for two consecutive quarters."
 msgstr "变更失败率连续两个季度不高于人类时代的基线。"
+
+msgid "Changed files"
+msgstr ""
 
 msgid "Changelog"
 msgstr "更新日志"
@@ -3690,6 +3732,9 @@ msgstr "代码块"
 msgid "Code Block"
 msgstr "代码块"
 
+msgid "Code Editor"
+msgstr ""
+
 msgid "Code intelligence for the local v2 editor. Servers start when you open a supported file and use your installed tools."
 msgstr ""
 
@@ -3710,9 +3755,6 @@ msgid "Collapse {0}"
 msgstr "收起{0}"
 
 msgid "Collapse all"
-msgstr "全部折叠"
-
-msgid "Collapse All"
 msgstr "全部折叠"
 
 msgid "Collapse all files"
@@ -3747,6 +3789,9 @@ msgstr "把所有提交合成一个"
 
 msgid "Combine sequences such as => and !==."
 msgstr "合并显示=>和!==等序列。"
+
+msgid "Comfortable"
+msgstr ""
 
 msgid "Coming soon"
 msgstr "即将推出"
@@ -3853,6 +3898,12 @@ msgstr "社区"
 
 msgid "Community size from the public invite, refreshed every half hour."
 msgstr "来自公开邀请链接的社区规模，每半小时刷新。"
+
+msgid "Compact"
+msgstr ""
+
+msgid "Compact folders"
+msgstr ""
 
 msgid "Company"
 msgstr "公司"
@@ -4495,6 +4546,9 @@ msgstr "无法忘记{domain}"
 msgid "Could not import from browser"
 msgstr "无法从浏览器导入"
 
+msgid "Could not import Zed preferences"
+msgstr ""
+
 msgid "Could not leave the queue"
 msgstr "无法移出队列"
 
@@ -4504,6 +4558,9 @@ msgstr "无法列出目录"
 #. placeholder {0}: host.name
 msgid "Could not load agents from {0}"
 msgstr "无法从{0}加载智能体"
+
+msgid "Could not load editor settings"
+msgstr ""
 
 msgid "Could not load environments"
 msgstr "无法加载环境"
@@ -4577,6 +4634,9 @@ msgstr "无法读取拖入的文件"
 msgid "Could not read the Google account. Please try again."
 msgstr "无法读取该Google账户。请重试。"
 
+msgid "Could not read Zed preferences"
+msgstr ""
+
 msgid "Could not record cloud workspace"
 msgstr "无法记录云端工作区"
 
@@ -4600,6 +4660,9 @@ msgstr "无法解决此评论"
 
 msgid "Could not restart the host service"
 msgstr "无法重启主机服务"
+
+msgid "Could not save editor settings"
+msgstr ""
 
 msgid "Could not send"
 msgstr "无法发送"
@@ -4799,6 +4862,9 @@ msgstr "无法取消暂存文件"
 
 msgid "Couldn't update pull request"
 msgstr "无法更新拉取请求"
+
+msgid "Couldn't update staging"
+msgstr ""
 
 msgid "Couldn't update thread"
 msgstr "无法更新讨论"
@@ -5488,6 +5554,9 @@ msgstr "已分离"
 msgid "Details"
 msgstr "详情"
 
+msgid "Detect installed Zed"
+msgstr ""
+
 msgid "Dev"
 msgstr "开发"
 
@@ -5523,6 +5592,12 @@ msgstr "设备：{selectedLabel}"
 
 msgid "DevTools"
 msgstr "DevTools"
+
+msgid "Diagnostic badges"
+msgstr ""
+
+msgid "Diagnostics"
+msgstr ""
 
 msgid "Dialog"
 msgstr "对话框"
@@ -5988,6 +6063,9 @@ msgctxt "github release action"
 msgid "Edited"
 msgstr "已编辑"
 
+msgid "Editing"
+msgstr ""
+
 msgid "Editing file..."
 msgstr "正在编辑文件..."
 
@@ -6000,8 +6078,26 @@ msgstr "编辑器"
 msgid "Editor & Workflow"
 msgstr "编辑器与工作流"
 
+msgid "Editor appearance"
+msgstr ""
+
+msgid "Editor preferences imported"
+msgstr ""
+
+msgid "Editor settings saved"
+msgstr ""
+
+msgid "Editor settings sections"
+msgstr ""
+
+msgid "Editor theme"
+msgstr ""
+
 msgid "Editor typography"
 msgstr "编辑器排版"
+
+msgid "Editor width"
+msgstr ""
 
 msgid "Efficient"
 msgstr "高效"
@@ -6117,6 +6213,9 @@ msgstr "按客户划分的企业版ARR"
 
 msgid "Entries by section"
 msgstr "按板块的进入量"
+
+msgid "Entry spacing"
+msgstr ""
 
 msgid "Environment"
 msgstr "环境"
@@ -6922,6 +7021,9 @@ msgstr "提一个工单，拿回一个已验证、可直接合并的PR，并附�
 msgid "File actions"
 msgstr "文件操作"
 
+msgid "File and folder icons"
+msgstr ""
+
 msgid "File changes"
 msgstr "文件更改"
 
@@ -7102,6 +7204,9 @@ msgstr "火焰"
 msgid "Flash balances speed and quality for short development tasks."
 msgstr "Flash 在短期开发任务中兼顾速度与质量。"
 
+msgid "Flat view"
+msgstr ""
+
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "成群的智能体规划、实现、审查并测试彼此的工作。人类定方向、裁决例外、把握品味。人类注意力的单位不再是拉取请求，而是决策。"
 
@@ -7149,9 +7254,6 @@ msgstr "文件夹"
 
 msgid "Folder links"
 msgstr "文件夹链接"
-
-msgid "Folder view"
-msgstr "文件夹视图"
 
 msgid "Folders to check out into new worktrees, one per line, relative to the repo root. Files at the root are always included. Empty checks out everything."
 msgstr "要检出到新worktree的文件夹，每行一个，相对于仓库根目录。根目录下的文件始终包含在内。留空则检出全部。"
@@ -7260,6 +7362,12 @@ msgstr "Fork"
 
 msgid "Form controls and field composition"
 msgstr "表单控件与字段组合"
+
+msgid "Format on save"
+msgstr ""
+
+msgid "Formatter"
+msgstr ""
 
 msgid "Forward"
 msgstr "前进"
@@ -7417,6 +7525,9 @@ msgstr "Git作者名"
 
 msgid "Git History"
 msgstr "Git 历史"
+
+msgid "Git indicators"
+msgstr ""
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Git 集成失败。请检查仓库并重试，或取消本次尝试。"
@@ -7650,6 +7761,12 @@ msgstr "从图表中隐藏"
 msgid "Hide from Sidebar"
 msgstr "从侧边栏隐藏"
 
+msgid "Hide Git-ignored files"
+msgstr ""
+
+msgid "Hide hidden files"
+msgstr ""
+
 msgid "Hide log"
 msgstr "隐藏日志"
 
@@ -7658,6 +7775,9 @@ msgstr "隐藏PR审查评论"
 
 msgid "Hide Preview"
 msgstr "隐藏预览"
+
+msgid "Hide project root"
+msgstr ""
 
 msgid "Hide pull request list"
 msgstr "隐藏拉取请求列表"
@@ -7686,6 +7806,9 @@ msgstr "高"
 
 msgid "High usage"
 msgstr "用量高"
+
+msgid "Highlight active line"
+msgstr ""
 
 msgid "history"
 msgstr "历史"
@@ -7970,6 +8093,12 @@ msgstr "从文件导入"
 msgid "Import from v1"
 msgstr "从v1导入"
 
+msgid "Import from Zed"
+msgstr ""
+
+msgid "Import selected preferences"
+msgstr ""
+
 msgid "Import settings from another browser"
 msgstr "从其他浏览器导入设置"
 
@@ -8050,6 +8179,9 @@ msgstr "包含Superset特有的box变体"
 msgid "Incognito Operator"
 msgstr "隐身操作员"
 
+msgid "Indent guides"
+msgstr ""
+
 msgid "Indigo"
 msgstr "靛蓝"
 
@@ -8061,6 +8193,12 @@ msgstr "信息"
 
 msgid "Information"
 msgstr "信息"
+
+msgid "Inherit application theme"
+msgstr ""
+
+msgid "Inherit global preference"
+msgstr ""
 
 msgid "Initialization options (JSON object)"
 msgstr ""
@@ -8079,6 +8217,9 @@ msgstr "正在初始化..."
 
 msgid "Initials fallback via getInitials, sizes xs → xl"
 msgstr "通过getInitials生成首字母兜底，尺寸xs→xl"
+
+msgid "Inlay hints"
+msgstr ""
 
 msgid "Inline"
 msgstr "行内"
@@ -8501,6 +8642,9 @@ msgstr "泳道"
 msgid "Language"
 msgstr "语言"
 
+msgid "Language overrides"
+msgstr ""
+
 msgid "Language saved on this device, but syncing it to your account failed."
 msgstr "语言已在此设备上保存，但同步到你的账户失败。"
 
@@ -8682,6 +8826,9 @@ msgstr "少"
 msgid "less than a minute ago"
 msgstr "不到一分钟前"
 
+msgid "Letter spacing"
+msgstr ""
+
 msgid "Letter spacing (px)"
 msgstr "字间距（px）"
 
@@ -8738,6 +8885,12 @@ msgstr "折线图：由智能体撰写且无任何人工修改的合并变更占
 
 msgid "Line height"
 msgstr "行高"
+
+msgid "Line numbers"
+msgstr ""
+
+msgid "Line wrapping"
+msgstr ""
 
 msgid "Linear"
 msgstr "Linear"
@@ -9721,14 +9874,14 @@ msgstr "新建 Codex 聊天"
 msgid "New environment"
 msgstr "新建环境"
 
-msgid "New File"
-msgstr "新建文件"
+msgid "New file"
+msgstr ""
 
 msgid "New File..."
 msgstr "新建文件..."
 
-msgid "New Folder"
-msgstr "新建文件夹"
+msgid "New folder"
+msgstr ""
 
 msgid "New Folder..."
 msgstr "新建文件夹..."
@@ -9948,6 +10101,9 @@ msgstr "没有更改"
 
 msgid "No changes found."
 msgstr "No changes found."
+
+msgid "No changes in this staging filter"
+msgstr ""
 
 msgid "No changes on this branch yet."
 msgstr "此分支上还没有改动。"
@@ -10467,6 +10623,9 @@ msgstr "此服务器不可用"
 msgid "Not bound · configure in Settings → Links"
 msgstr "未绑定 · 在设置→链接中配置"
 
+msgid "Not compatible; this value will not be imported."
+msgstr ""
+
 msgid "Not configured"
 msgstr "未配置"
 
@@ -10646,11 +10805,17 @@ msgstr "离线/本地优先模式"
 msgid "Older"
 msgstr "更早"
 
+msgid "On"
+msgstr ""
+
 msgid "on {offScopeHostName} — won't run here"
 msgstr "在{offScopeHostName}上，不会在这里运行"
 
 msgid "On click"
 msgstr "点击时"
+
+msgid "On focus change"
+msgstr ""
 
 msgid "On our radar. Order and scope may change."
 msgstr "在我们的视野内。顺序和范围可能会变。"
@@ -10663,6 +10828,9 @@ msgstr "按此速度"
 
 msgid "On this page"
 msgstr "本页内容"
+
+msgid "On window change"
+msgstr ""
 
 msgid "On your machine. Repos, worktrees, terminal output, and agent sessions stay local by default; cloud sync covers account and organization metadata only. Superset doesn't proxy any API calls."
 msgstr "在你自己的机器上。仓库、worktree、终端输出和智能体会话默认都留在本地；云端同步只涉及账户和组织的元数据。Superset不代理任何API调用。"
@@ -11292,6 +11460,9 @@ msgstr "其他应用"
 msgid "Other devices"
 msgstr "其他设备"
 
+msgid "Other hints"
+msgstr ""
+
 msgid "Other Hosts"
 msgstr "其他主机"
 
@@ -11437,6 +11608,12 @@ msgstr "面板布局根节点：渲染工作区的面板树"
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
 
+msgid "Panel indentation"
+msgstr ""
+
+msgid "Panel scrollbar"
+msgstr ""
+
 msgid "Paragraph"
 msgstr "段落"
 
@@ -11452,6 +11629,9 @@ msgstr "并行执行"
 msgid "Parallel sessions per developer doubling every seven months, crossing the Operator, Plant Manager and Henry Ford thresholds between August 2026 and August 2028"
 msgstr "每位开发者的并行会话数每七个月翻倍，在 2026 年 8 月至 2028 年 8 月期间跨越操作员、厂长和 Henry Ford 等级门槛"
 
+msgid "Parameter hints"
+msgstr ""
+
 msgid "Parameters"
 msgstr "参数"
 
@@ -11466,6 +11646,9 @@ msgstr "一半是记录，一半是下注。前两条已经在发生。其余的
 
 msgid "Partial"
 msgstr "部分开启"
+
+msgid "Partially staged; stage all changes in this file"
+msgstr ""
 
 msgid "Passed"
 msgstr "通过"
@@ -11828,6 +12011,9 @@ msgstr "关于AI的预测很廉价，因为没人回头核对。这个页面是�
 msgid "Preferences"
 msgstr "偏好设置"
 
+msgid "Preferred line length"
+msgstr ""
+
 msgid "Prefix"
 msgstr "前缀"
 
@@ -11857,6 +12043,12 @@ msgstr "预览"
 
 msgid "Preview {filename}"
 msgstr "预览{filename}"
+
+msgid "Preview compatible editor preferences before applying them. Unselected values remain unchanged."
+msgstr ""
+
+msgid "Preview import"
+msgstr ""
 
 msgid "Preview notice: blocking (update required)"
 msgstr "通知预览：阻塞（需要更新）"
@@ -11981,11 +12173,17 @@ msgstr "效率"
 msgid "Profile name"
 msgstr "配置文件名称"
 
+msgid "Programming language"
+msgstr ""
+
 msgid "Progress · Spinner"
 msgstr "进度条 · 加载指示器"
 
 msgid "Project"
 msgstr "项目"
+
+msgid "Project actions"
+msgstr ""
 
 msgid "Project created."
 msgstr "项目已创建。"
@@ -12016,6 +12214,9 @@ msgstr "找不到该项目。"
 
 msgid "Project not set up on this host"
 msgstr "项目未在此主机上设置"
+
+msgid "Project panel"
+msgstr ""
 
 msgid "Project ready — open it from the sidebar."
 msgstr "项目已就绪，可从侧边栏打开。"
@@ -12501,6 +12702,9 @@ msgstr "相关文章"
 msgid "Related work"
 msgstr "Related work"
 
+msgid "Relative"
+msgstr ""
+
 msgid "Relative path copied"
 msgstr "已复制相对路径"
 
@@ -12847,6 +13051,9 @@ msgstr "重置编辑器"
 msgid "Reset GitHub star nag state"
 msgstr "重置 GitHub 星标提醒状态"
 
+msgid "Reset language overrides"
+msgstr ""
+
 msgid "Reset layout"
 msgstr "重置布局"
 
@@ -13097,6 +13304,9 @@ msgstr "智能体会自动读取的可复用说明"
 
 msgid "Reusable terminal launches. Click a script to edit or drag to reorder. Project setup, run, and teardown commands are lifecycle scripts."
 msgstr "可复用的终端启动项。点击脚本可编辑，拖动可重新排序。项目的初始化、运行和清理命令属于生命周期脚本。"
+
+msgid "Reveal active file"
+msgstr ""
 
 msgid "Reveal in Finder"
 msgstr "在Finder中显示"
@@ -13406,6 +13616,9 @@ msgstr "保存偏好设置"
 msgid "Save profile"
 msgstr "保存资料"
 
+msgid "Save settings"
+msgstr ""
+
 msgid "save the agent"
 msgstr "保存智能体"
 
@@ -13424,6 +13637,12 @@ msgstr "已将“{0}”保存为环境"
 
 msgid "Saved to Downloads"
 msgstr "已保存到“下载”文件夹"
+
+msgid "Saved without formatting. Check the project formatter or language server."
+msgstr ""
+
+msgid "Saving and formatting"
+msgstr ""
 
 msgid "Saving as an environment..."
 msgstr "正在保存为环境..."
@@ -13907,6 +14126,9 @@ msgstr "选中工作区的操作"
 msgid "Selecting text in a terminal copies it to the clipboard right away, with trailing whitespace trimmed"
 msgstr "在终端中选中文本后立即复制到剪贴板，并去除行尾空白"
 
+msgid "Selection"
+msgstr ""
+
 msgid "Send"
 msgstr "发送"
 
@@ -14223,6 +14445,9 @@ msgstr "在图表中显示"
 msgid "Show in folder"
 msgstr "在文件夹中显示"
 
+msgid "Show inlay hints"
+msgstr ""
+
 msgid "Show items in all states"
 msgstr "显示所有状态的条目"
 
@@ -14294,6 +14519,9 @@ msgstr "显示译文"
 
 msgid "Show usage tab on sidebar"
 msgstr "在侧边栏显示用量选项卡"
+
+msgid "Show whitespace"
+msgstr ""
 
 msgid "Show Workspaces in sidebar"
 msgstr "在侧边栏显示工作区"
@@ -14738,6 +14966,12 @@ msgstr "暂存文件"
 msgid "Staged"
 msgstr "已暂存"
 
+msgid "Staged diff"
+msgstr ""
+
+msgid "Staging filter"
+msgstr ""
+
 msgid "Standard action strip for pane headers"
 msgstr "面板标题栏的标准操作条"
 
@@ -14911,6 +15145,9 @@ msgstr "第{0}步，共2步"
 
 msgid "Step {step}: {name}"
 msgstr "第{step}步：{name}"
+
+msgid "Sticky folders"
+msgstr ""
 
 msgid "Still can't reach the host."
 msgstr "仍然无法连接到主机。"
@@ -15323,6 +15560,9 @@ msgstr "标签页"
 
 msgid "Tab per command"
 msgstr "每条命令一个标签页"
+
+msgid "Tab size"
+msgstr ""
 
 msgid "Table"
 msgstr "表格"
@@ -15933,6 +16173,9 @@ msgstr "worktree及其中所有未提交的更改都会被移除。此操作无�
 msgid "The worktree has uncommitted edits from the agent session."
 msgstr "worktree中有智能体会话留下的未提交修改。"
 
+msgid "The Zed theme was not found. Other preferences can still be imported."
+msgstr ""
+
 msgid "Theme"
 msgstr "主题"
 
@@ -16059,6 +16302,9 @@ msgstr "该文件"
 
 msgid "This file is empty or was deleted."
 msgstr "这个文件为空或已被删除。"
+
+msgid "This font is not installed. The editor will use its fallback font."
+msgstr ""
 
 msgid "This GitHub installation is already connected to another Superset organization. Disconnect it there, or uninstall the Superset GitHub App, then try again."
 msgstr "这个GitHub安装已连接到另一个Superset组织。请先在那里断开连接，或卸载Superset GitHub App，然后重试。"
@@ -16229,6 +16475,9 @@ msgstr "这会更改组织的公开URL。请记得更新书签和已分享的链
 #. placeholder {0}: team?.name
 msgid "This will delete <0>{0}</0> and remove all of its members. This can't be undone."
 msgstr "这将删除<0>{0}</0>并移除其所有成员。此操作无法撤销。"
+
+msgid "This will discard unstaged changes to this file. Staged changes will be preserved."
+msgstr ""
 
 msgid "This will disconnect GitHub from your organization. The GitHub App will remain installed but will no longer sync data. You can reconnect at any time."
 msgstr "这会断开GitHub与你组织的连接。GitHub App仍会保持安装，但不再同步数据。你可以随时重新连接。"
@@ -16582,6 +16831,9 @@ msgstr "输入邮箱后按回车"
 msgid "Type here to send to the terminal"
 msgstr "在此输入以发送到终端"
 
+msgid "Type hints"
+msgstr ""
+
 msgid "Type the organization name to confirm."
 msgstr "输入组织名称以确认。"
 
@@ -16808,6 +17060,9 @@ msgstr "取消暂存文件"
 msgid "Unstaged"
 msgstr "未暂存"
 
+msgid "Unstaged diff"
+msgstr ""
+
 #. placeholder {0}: item.kind
 msgid "Unsupported item \"{0}\""
 msgstr "不支持的项目“{0}”"
@@ -17018,6 +17273,9 @@ msgstr "用于新智能体"
 msgid "Use global default"
 msgstr "使用全局默认值"
 
+msgid "Use tabs instead of spaces"
+msgstr ""
+
 msgid "Use the Azure CLI session on this host for repositories, work items, and pipelines."
 msgstr "使用此主机上的 Azure CLI 会话访问存储库、工作项和管道。"
 
@@ -17222,8 +17480,14 @@ msgstr "查看发布说明"
 msgid "View releases on GitHub"
 msgstr "在GitHub上查看发布"
 
+msgid "View staged diff"
+msgstr ""
+
 msgid "View Superset repository on GitHub"
 msgstr "在GitHub上查看Superset仓库"
+
+msgid "View unstaged diff"
+msgstr ""
 
 msgid "View usage"
 msgstr "查看用量"
@@ -17990,6 +18254,9 @@ msgstr "你的版本：{currentVersion}"
 
 msgid "Zap"
 msgstr "闪电"
+
+msgid "Zed settings file"
+msgstr ""
 
 msgid "Zero-edit majority on merged agent PRs"
 msgstr "多数已合并的智能体PR零修改"

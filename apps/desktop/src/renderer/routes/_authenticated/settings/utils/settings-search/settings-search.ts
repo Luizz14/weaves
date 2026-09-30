@@ -30,6 +30,7 @@ export const SETTING_ITEM_ID = {
 	APPEARANCE_CUSTOM_THEMES: "appearance-custom-themes",
 	APPEARANCE_EDITOR_FONT: "appearance-editor-font",
 	APPEARANCE_LSP: "appearance-lsp",
+	EDITOR_PREFERENCES: "editor-preferences",
 	APPEARANCE_TERMINAL_FONT: "appearance-terminal-font",
 
 	RINGTONES_NOTIFICATION: "ringtones-notification",
@@ -188,6 +189,7 @@ export const SETTING_ITEM_VARIANT: Record<SettingItemId, SettingVariant> = {
 	[SETTING_ITEM_ID.APPEARANCE_CUSTOM_THEMES]: "shared",
 	[SETTING_ITEM_ID.APPEARANCE_EDITOR_FONT]: "v2",
 	[SETTING_ITEM_ID.APPEARANCE_LSP]: "v2",
+	[SETTING_ITEM_ID.EDITOR_PREFERENCES]: "v2",
 	[SETTING_ITEM_ID.APPEARANCE_TERMINAL_FONT]: "v2",
 
 	[SETTING_ITEM_ID.RINGTONES_NOTIFICATION]: "shared",
@@ -356,6 +358,28 @@ const INTEGRATION_SEARCH_ITEMS: SettingsItem[] = INTEGRATIONS.map(
 );
 
 export const SETTINGS_ITEMS: SettingsItem[] = [
+	{
+		id: SETTING_ITEM_ID.EDITOR_PREFERENCES,
+		section: "editor",
+		title: "Code Editor",
+		description:
+			"Editor appearance, languages, project panel, autosave, formatting and import from Zed",
+		keywords: [
+			"editor",
+			"zed",
+			"project panel",
+			"icons",
+			"autosave",
+			"formatter",
+			"biome",
+			"prettier",
+			"inlay",
+			"indent",
+			"whitespace",
+			"language",
+			"theme",
+		],
+	},
 	{
 		id: SETTING_ITEM_ID.AI_FEATURES,
 		section: "ai",
@@ -627,7 +651,7 @@ export const SETTINGS_ITEMS: SettingsItem[] = [
 	},
 	{
 		id: SETTING_ITEM_ID.APPEARANCE_LSP,
-		section: "appearance",
+		section: "editor",
 		title: "Language servers",
 		description: "Code intelligence for the local v2 editor",
 		keywords: [
@@ -697,7 +721,7 @@ export const SETTINGS_ITEMS: SettingsItem[] = [
 	},
 	{
 		id: SETTING_ITEM_ID.APPEARANCE_EDITOR_FONT,
-		section: "appearance",
+		section: "editor",
 		title: "Editor Typography",
 		description: "Typography used in V2 diff views and file editors",
 		keywords: [

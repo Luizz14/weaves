@@ -1308,6 +1308,9 @@ msgstr "Giới thiệu"
 msgid "About Superset"
 msgstr "Về Superset"
 
+msgid "Absolute"
+msgstr ""
+
 msgid "Absolutely. Superset doesn't proxy any API calls. You use your own API keys directly with whatever AI providers you choose. This means you have full control over costs and usage."
 msgstr "Hoàn toàn được. Superset không proxy bất kỳ lệnh gọi API nào. Bạn dùng khóa API của chính mình trực tiếp với nhà cung cấp AI bạn chọn. Nghĩa là bạn hoàn toàn kiểm soát chi phí và mức sử dụng."
 
@@ -1601,6 +1604,9 @@ msgstr "Tùy chọn nâng cao"
 msgid "After"
 msgstr "Sau"
 
+msgid "After a delay"
+msgstr ""
+
 msgid "Against base"
 msgstr "So với nhánh gốc"
 
@@ -1802,6 +1808,9 @@ msgstr "Tất cả trong tab hiện tại"
 msgid "All in current tab (split panes)"
 msgstr "Tất cả trong tab hiện tại (chia khung)"
 
+msgid "All local changes"
+msgstr ""
+
 msgid "All objectives cleared. Top rung, nothing left to reach for."
 msgstr "Đã đạt mọi mục tiêu. Nấc cao nhất, không còn gì để với tới."
 
@@ -1939,6 +1948,9 @@ msgstr "Ngoài ra: @superset/ui/radio-group, @superset/ui/switch"
 
 msgid "Also: @superset/ui/spinner"
 msgstr "Ngoài ra: @superset/ui/spinner"
+
+msgid "Always"
+msgstr ""
 
 msgid "Always know which agent needs you, with notifications that deep-link straight to the blocked agent."
 msgstr "Luôn biết agent nào cần bạn, với thông báo dẫn thẳng tới agent đang bị chặn."
@@ -2126,8 +2138,14 @@ msgstr "Ngôn ngữ hiển thị của ứng dụng. Tự động sẽ theo ngô
 msgid "Appearance"
 msgstr "Giao diện"
 
+msgid "Appearance, editing, project tools, and language preferences for the v2 editor."
+msgstr ""
+
 msgid "Apple logo"
 msgstr "Biểu trưng Apple"
+
+msgid "Application default"
+msgstr ""
 
 msgid "Application menu"
 msgstr "Menu ứng dụng"
@@ -2437,6 +2455,12 @@ msgstr "Tự động hóa tác vụ"
 msgid "Automate workspace setup for {projectName}"
 msgstr "Tự động thiết lập workspace cho {projectName}"
 
+msgid "Automatic"
+msgstr ""
+
+msgid "Automatic (project tools first)"
+msgstr ""
+
 msgid "Automation"
 msgstr "Tự động hóa"
 
@@ -2469,6 +2493,12 @@ msgstr "Tự chủ"
 
 msgid "Autonomous ticket-to-PR pipeline"
 msgstr "Quy trình tự động từ ticket tới PR"
+
+msgid "Autosave"
+msgstr ""
+
+msgid "Autosave delay (ms)"
+msgstr ""
 
 msgid "Available"
 msgstr "Còn trống"
@@ -2701,6 +2731,9 @@ msgstr "Mã thông báo kích hoạt bản dựng Bitrise"
 msgid "Bitrise token removed"
 msgstr "Đã xóa mã thông báo Bitrise"
 
+msgid "Blinking cursor"
+msgstr ""
+
 msgid "Block"
 msgstr "Khối"
 
@@ -2733,6 +2766,9 @@ msgstr "Xem dạng bảng"
 
 msgid "Bold"
 msgstr "Đậm"
+
+msgid "Bold folder labels"
+msgstr ""
 
 msgid "Border"
 msgstr "Viền"
@@ -2839,6 +2875,9 @@ msgstr "Đưa dự án, workspace và script terminal từ v1 sang v2. Mỗi m�
 
 msgid "Bring your agents together."
 msgstr "Quy tụ các agent của bạn."
+
+msgid "Browse"
+msgstr ""
 
 msgid "Browse and install skills, MCP servers, and agent configs shared by the community."
 msgstr "Duyệt và cài skill, server MCP và cấu hình agent do cộng đồng chia sẻ."
@@ -3143,6 +3182,9 @@ msgstr "Đổi vị trí worktree"
 
 msgid "Change-failure rate at or below the human-era baseline for two consecutive quarters."
 msgstr "Tỷ lệ thay đổi gây lỗi bằng hoặc thấp hơn mức nền của thời con người trong hai quý liên tiếp."
+
+msgid "Changed files"
+msgstr ""
 
 msgid "Changelog"
 msgstr "Changelog"
@@ -3690,6 +3732,9 @@ msgstr "Khối mã"
 msgid "Code Block"
 msgstr "Code Block"
 
+msgid "Code Editor"
+msgstr ""
+
 msgid "Code intelligence for the local v2 editor. Servers start when you open a supported file and use your installed tools."
 msgstr ""
 
@@ -3710,9 +3755,6 @@ msgid "Collapse {0}"
 msgstr "Thu gọn {0}"
 
 msgid "Collapse all"
-msgstr "Thu gọn tất cả"
-
-msgid "Collapse All"
 msgstr "Thu gọn tất cả"
 
 msgid "Collapse all files"
@@ -3747,6 +3789,9 @@ msgstr "Gộp toàn bộ commit"
 
 msgid "Combine sequences such as => and !==."
 msgstr "Ghép các chuỗi như => và !==."
+
+msgid "Comfortable"
+msgstr ""
 
 msgid "Coming soon"
 msgstr "Sắp có"
@@ -3853,6 +3898,12 @@ msgstr "Cộng đồng"
 
 msgid "Community size from the public invite, refreshed every half hour."
 msgstr "Quy mô cộng đồng theo lời mời công khai, làm mới mỗi nửa giờ."
+
+msgid "Compact"
+msgstr ""
+
+msgid "Compact folders"
+msgstr ""
 
 msgid "Company"
 msgstr "Công ty"
@@ -4495,6 +4546,9 @@ msgstr "Không thể quên {domain}"
 msgid "Could not import from browser"
 msgstr "Không thể nhập từ trình duyệt"
 
+msgid "Could not import Zed preferences"
+msgstr ""
+
 msgid "Could not leave the queue"
 msgstr "Không thể rời hàng đợi"
 
@@ -4504,6 +4558,9 @@ msgstr "Không thể liệt kê thư mục"
 #. placeholder {0}: host.name
 msgid "Could not load agents from {0}"
 msgstr "Không thể tải agent từ {0}"
+
+msgid "Could not load editor settings"
+msgstr ""
 
 msgid "Could not load environments"
 msgstr "Không thể tải environment"
@@ -4577,6 +4634,9 @@ msgstr "Không thể đọc các tệp đã thả"
 msgid "Could not read the Google account. Please try again."
 msgstr "Không đọc được tài khoản Google. Vui lòng thử lại."
 
+msgid "Could not read Zed preferences"
+msgstr ""
+
 msgid "Could not record cloud workspace"
 msgstr "Không thể ghi nhận workspace trên cloud"
 
@@ -4600,6 +4660,9 @@ msgstr "Không thể giải quyết bình luận này"
 
 msgid "Could not restart the host service"
 msgstr "Không thể khởi động lại dịch vụ máy chủ"
+
+msgid "Could not save editor settings"
+msgstr ""
 
 msgid "Could not send"
 msgstr "Không thể gửi"
@@ -4799,6 +4862,9 @@ msgstr "Không thể bỏ stage tệp"
 
 msgid "Couldn't update pull request"
 msgstr "Không thể cập nhật pull request"
+
+msgid "Couldn't update staging"
+msgstr ""
 
 msgid "Couldn't update thread"
 msgstr "Không thể cập nhật luồng"
@@ -5488,6 +5554,9 @@ msgstr "Đã tách"
 msgid "Details"
 msgstr "Chi tiết"
 
+msgid "Detect installed Zed"
+msgstr ""
+
 msgid "Dev"
 msgstr "Dev"
 
@@ -5523,6 +5592,12 @@ msgstr "Thiết bị: {selectedLabel}"
 
 msgid "DevTools"
 msgstr "DevTools"
+
+msgid "Diagnostic badges"
+msgstr ""
+
+msgid "Diagnostics"
+msgstr ""
 
 msgid "Dialog"
 msgstr "Dialog"
@@ -5988,6 +6063,9 @@ msgctxt "github release action"
 msgid "Edited"
 msgstr "Đã chỉnh sửa"
 
+msgid "Editing"
+msgstr ""
+
 msgid "Editing file..."
 msgstr "Đang sửa tệp..."
 
@@ -6000,8 +6078,26 @@ msgstr "Editor"
 msgid "Editor & Workflow"
 msgstr "Trình soạn thảo & Quy trình"
 
+msgid "Editor appearance"
+msgstr ""
+
+msgid "Editor preferences imported"
+msgstr ""
+
+msgid "Editor settings saved"
+msgstr ""
+
+msgid "Editor settings sections"
+msgstr ""
+
+msgid "Editor theme"
+msgstr ""
+
 msgid "Editor typography"
 msgstr "Kiểu chữ trình soạn thảo"
+
+msgid "Editor width"
+msgstr ""
 
 msgid "Efficient"
 msgstr "Hiệu quả"
@@ -6117,6 +6213,9 @@ msgstr "ARR enterprise theo tài khoản"
 
 msgid "Entries by section"
 msgstr "Lượt vào theo mục"
+
+msgid "Entry spacing"
+msgstr ""
 
 msgid "Environment"
 msgstr "Môi trường"
@@ -6922,6 +7021,9 @@ msgstr "Tạo một ticket, nhận lại một PR đã kiểm chứng và sẵn 
 msgid "File actions"
 msgstr "Hành động tệp"
 
+msgid "File and folder icons"
+msgstr ""
+
 msgid "File changes"
 msgstr "Thay đổi tệp"
 
@@ -7102,6 +7204,9 @@ msgstr "Ngọn lửa"
 msgid "Flash balances speed and quality for short development tasks."
 msgstr "Flash cân bằng tốc độ và chất lượng cho các tác vụ phát triển ngắn."
 
+msgid "Flat view"
+msgstr ""
+
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Các đội agent lên kế hoạch, triển khai, review và kiểm thử công việc của nhau. Con người định hướng, phân xử ngoại lệ và giữ gu thẩm mỹ. Đơn vị chú ý của con người không còn là pull request. Đó là quyết định."
 
@@ -7149,9 +7254,6 @@ msgstr "Thư mục"
 
 msgid "Folder links"
 msgstr "Liên kết thư mục"
-
-msgid "Folder view"
-msgstr "Xem theo thư mục"
 
 msgid "Folders to check out into new worktrees, one per line, relative to the repo root. Files at the root are always included. Empty checks out everything."
 msgstr "Các thư mục sẽ được checkout vào worktree mới, mỗi dòng một thư mục, tính từ gốc repo. Tệp ở gốc luôn được đưa vào. Để trống sẽ checkout tất cả."
@@ -7260,6 +7362,12 @@ msgstr "Fork"
 
 msgid "Form controls and field composition"
 msgstr "Các điều khiển form và cách ghép trường"
+
+msgid "Format on save"
+msgstr ""
+
+msgid "Formatter"
+msgstr ""
 
 msgid "Forward"
 msgstr "Tiến"
@@ -7417,6 +7525,9 @@ msgstr "Tên tác giả Git"
 
 msgid "Git History"
 msgstr "Lịch sử Git"
+
+msgid "Git indicators"
+msgstr ""
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Tích hợp Git thất bại. Kiểm tra kho và thử lại hoặc hủy lần thử."
@@ -7650,6 +7761,12 @@ msgstr "Ẩn khỏi biểu đồ"
 msgid "Hide from Sidebar"
 msgstr "Ẩn khỏi thanh bên"
 
+msgid "Hide Git-ignored files"
+msgstr ""
+
+msgid "Hide hidden files"
+msgstr ""
+
 msgid "Hide log"
 msgstr "Ẩn log"
 
@@ -7658,6 +7775,9 @@ msgstr "Ẩn bình luận review PR"
 
 msgid "Hide Preview"
 msgstr "Ẩn xem trước"
+
+msgid "Hide project root"
+msgstr ""
 
 msgid "Hide pull request list"
 msgstr "Ẩn danh sách pull request"
@@ -7686,6 +7806,9 @@ msgstr "Cao"
 
 msgid "High usage"
 msgstr "Mức sử dụng rất cao"
+
+msgid "Highlight active line"
+msgstr ""
 
 msgid "history"
 msgstr "lịch sử"
@@ -7970,6 +8093,12 @@ msgstr "Nhập từ tệp"
 msgid "Import from v1"
 msgstr "Nhập từ v1"
 
+msgid "Import from Zed"
+msgstr ""
+
+msgid "Import selected preferences"
+msgstr ""
+
 msgid "Import settings from another browser"
 msgstr "Nhập cài đặt từ trình duyệt khác"
 
@@ -8050,6 +8179,9 @@ msgstr "Bao gồm biến thể box riêng của Superset"
 msgid "Incognito Operator"
 msgstr "Vận hành viên ẩn danh"
 
+msgid "Indent guides"
+msgstr ""
+
 msgid "Indigo"
 msgstr "Chàm"
 
@@ -8061,6 +8193,12 @@ msgstr "Thông tin"
 
 msgid "Information"
 msgstr "Thông tin"
+
+msgid "Inherit application theme"
+msgstr ""
+
+msgid "Inherit global preference"
+msgstr ""
 
 msgid "Initialization options (JSON object)"
 msgstr ""
@@ -8079,6 +8217,9 @@ msgstr "Đang khởi tạo..."
 
 msgid "Initials fallback via getInitials, sizes xs → xl"
 msgstr "Dự phòng bằng chữ cái đầu qua getInitials, cỡ xs → xl"
+
+msgid "Inlay hints"
+msgstr ""
 
 msgid "Inline"
 msgstr "Nội dòng"
@@ -8501,6 +8642,9 @@ msgstr "Làn"
 msgid "Language"
 msgstr "Ngôn ngữ"
 
+msgid "Language overrides"
+msgstr ""
+
 msgid "Language saved on this device, but syncing it to your account failed."
 msgstr "Đã lưu ngôn ngữ trên thiết bị này, nhưng không đồng bộ được lên tài khoản của bạn."
 
@@ -8682,6 +8826,9 @@ msgstr "Ít"
 msgid "less than a minute ago"
 msgstr "chưa đầy một phút trước"
 
+msgid "Letter spacing"
+msgstr ""
+
 msgid "Letter spacing (px)"
 msgstr "Giãn cách chữ (px)"
 
@@ -8738,6 +8885,12 @@ msgstr "Biểu đồ đường: tỷ lệ thay đổi được merge do agent vi
 
 msgid "Line height"
 msgstr "Chiều cao dòng"
+
+msgid "Line numbers"
+msgstr ""
+
+msgid "Line wrapping"
+msgstr ""
 
 msgid "Linear"
 msgstr "Linear"
@@ -9721,14 +9874,14 @@ msgstr "Trò chuyện Codex mới"
 msgid "New environment"
 msgstr "Environment mới"
 
-msgid "New File"
-msgstr "Tệp mới"
+msgid "New file"
+msgstr ""
 
 msgid "New File..."
 msgstr "Tệp mới..."
 
-msgid "New Folder"
-msgstr "Thư mục mới"
+msgid "New folder"
+msgstr ""
 
 msgid "New Folder..."
 msgstr "Thư mục mới..."
@@ -9948,6 +10101,9 @@ msgstr "Không có thay đổi"
 
 msgid "No changes found."
 msgstr "No changes found."
+
+msgid "No changes in this staging filter"
+msgstr ""
 
 msgid "No changes on this branch yet."
 msgstr "Chưa có thay đổi nào trên nhánh này."
@@ -10467,6 +10623,9 @@ msgstr "Không khả dụng trên máy chủ này"
 msgid "Not bound · configure in Settings → Links"
 msgstr "Chưa gán · cấu hình trong Cài đặt → Liên kết"
 
+msgid "Not compatible; this value will not be imported."
+msgstr ""
+
 msgid "Not configured"
 msgstr "Chưa cấu hình"
 
@@ -10646,11 +10805,17 @@ msgstr "Chế độ ngoại tuyến / ưu tiên cục bộ"
 msgid "Older"
 msgstr "Cũ hơn"
 
+msgid "On"
+msgstr ""
+
 msgid "on {offScopeHostName} — won't run here"
 msgstr "trên {offScopeHostName} — sẽ không chạy ở đây"
 
 msgid "On click"
 msgstr "Khi nhấp"
+
+msgid "On focus change"
+msgstr ""
 
 msgid "On our radar. Order and scope may change."
 msgstr "Đang trong tầm ngắm. Thứ tự và phạm vi có thể thay đổi."
@@ -10663,6 +10828,9 @@ msgstr "Với tốc độ này"
 
 msgid "On this page"
 msgstr "Trên trang này"
+
+msgid "On window change"
+msgstr ""
 
 msgid "On your machine. Repos, worktrees, terminal output, and agent sessions stay local by default; cloud sync covers account and organization metadata only. Superset doesn't proxy any API calls."
 msgstr "Trên máy của bạn. Repo, worktree, output terminal và phiên agent mặc định vẫn ở cục bộ; đồng bộ cloud chỉ gồm metadata tài khoản và tổ chức. Superset không proxy bất kỳ lệnh gọi API nào."
@@ -11292,6 +11460,9 @@ msgstr "Ứng dụng khác"
 msgid "Other devices"
 msgstr "Thiết bị khác"
 
+msgid "Other hints"
+msgstr ""
+
 msgid "Other Hosts"
 msgstr "Host khác"
 
@@ -11437,6 +11608,12 @@ msgstr "Gốc bố cục khung: dựng cây khung của một workspace"
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
 
+msgid "Panel indentation"
+msgstr ""
+
+msgid "Panel scrollbar"
+msgstr ""
+
 msgid "Paragraph"
 msgstr "Đoạn văn"
 
@@ -11452,6 +11629,9 @@ msgstr "Chạy song song"
 msgid "Parallel sessions per developer doubling every seven months, crossing the Operator, Plant Manager and Henry Ford thresholds between August 2026 and August 2028"
 msgstr "Số phiên song song trên mỗi nhà phát triển tăng gấp đôi sau mỗi bảy tháng, vượt các ngưỡng Người vận hành, Quản lý nhà máy và Henry Ford từ tháng 8 năm 2026 đến tháng 8 năm 2028"
 
+msgid "Parameter hints"
+msgstr ""
+
 msgid "Parameters"
 msgstr "Tham số"
 
@@ -11466,6 +11646,9 @@ msgstr "Một phần là ghi nhận, một phần là đặt cược. Hai mục 
 
 msgid "Partial"
 msgstr "Một phần"
+
+msgid "Partially staged; stage all changes in this file"
+msgstr ""
 
 msgid "Passed"
 msgstr "Đã qua"
@@ -11828,6 +12011,9 @@ msgstr "Dự đoán về AI rẻ tiền vì chẳng ai kiểm chứng. Trang nà
 msgid "Preferences"
 msgstr "Tùy chọn"
 
+msgid "Preferred line length"
+msgstr ""
+
 msgid "Prefix"
 msgstr "Tiền tố"
 
@@ -11857,6 +12043,12 @@ msgstr "Xem trước"
 
 msgid "Preview {filename}"
 msgstr "Xem trước {filename}"
+
+msgid "Preview compatible editor preferences before applying them. Unselected values remain unchanged."
+msgstr ""
+
+msgid "Preview import"
+msgstr ""
 
 msgid "Preview notice: blocking (update required)"
 msgstr "Xem trước thông báo: chặn (bắt buộc cập nhật)"
@@ -11981,11 +12173,17 @@ msgstr "Năng suất"
 msgid "Profile name"
 msgstr "Tên hồ sơ"
 
+msgid "Programming language"
+msgstr ""
+
 msgid "Progress · Spinner"
 msgstr "Progress · Spinner"
 
 msgid "Project"
 msgstr "Dự án"
+
+msgid "Project actions"
+msgstr ""
 
 msgid "Project created."
 msgstr "Đã tạo dự án."
@@ -12016,6 +12214,9 @@ msgstr "Không tìm thấy dự án."
 
 msgid "Project not set up on this host"
 msgstr "Dự án chưa được thiết lập trên host này"
+
+msgid "Project panel"
+msgstr ""
 
 msgid "Project ready — open it from the sidebar."
 msgstr "Dự án đã sẵn sàng — mở nó từ thanh bên."
@@ -12501,6 +12702,9 @@ msgstr "Bài viết liên quan"
 msgid "Related work"
 msgstr "Related work"
 
+msgid "Relative"
+msgstr ""
+
 msgid "Relative path copied"
 msgstr "Đã sao chép đường dẫn tương đối"
 
@@ -12847,6 +13051,9 @@ msgstr "Đặt lại trình soạn thảo"
 msgid "Reset GitHub star nag state"
 msgstr "Đặt lại trạng thái lời nhắc gắn sao GitHub"
 
+msgid "Reset language overrides"
+msgstr ""
+
 msgid "Reset layout"
 msgstr "Đặt lại bố cục"
 
@@ -13097,6 +13304,9 @@ msgstr "Hướng dẫn tái sử dụng mà agent của bạn tự nhận"
 
 msgid "Reusable terminal launches. Click a script to edit or drag to reorder. Project setup, run, and teardown commands are lifecycle scripts."
 msgstr "Các lệnh terminal dùng lại được. Nhấp vào một script để sửa hoặc kéo để sắp xếp lại. Lệnh thiết lập, chạy và dọn dẹp của dự án là script vòng đời."
+
+msgid "Reveal active file"
+msgstr ""
 
 msgid "Reveal in Finder"
 msgstr "Hiện trong Finder"
@@ -13406,6 +13616,9 @@ msgstr "Lưu tùy chọn"
 msgid "Save profile"
 msgstr "Lưu hồ sơ"
 
+msgid "Save settings"
+msgstr ""
+
 msgid "save the agent"
 msgstr "lưu agent"
 
@@ -13424,6 +13637,12 @@ msgstr "Đã lưu \"{0}\" thành một environment"
 
 msgid "Saved to Downloads"
 msgstr "Đã lưu vào Downloads"
+
+msgid "Saved without formatting. Check the project formatter or language server."
+msgstr ""
+
+msgid "Saving and formatting"
+msgstr ""
 
 msgid "Saving as an environment..."
 msgstr "Đang lưu làm môi trường..."
@@ -13907,6 +14126,9 @@ msgstr "Hành động cho workspace đã chọn"
 msgid "Selecting text in a terminal copies it to the clipboard right away, with trailing whitespace trimmed"
 msgstr "Chọn văn bản trong terminal sẽ sao chép ngay vào clipboard, đã cắt khoảng trắng ở cuối"
 
+msgid "Selection"
+msgstr ""
+
 msgid "Send"
 msgstr "Gửi"
 
@@ -14223,6 +14445,9 @@ msgstr "Hiện trên biểu đồ"
 msgid "Show in folder"
 msgstr "Hiện trong thư mục"
 
+msgid "Show inlay hints"
+msgstr ""
+
 msgid "Show items in all states"
 msgstr "Hiện mục ở mọi trạng thái"
 
@@ -14294,6 +14519,9 @@ msgstr "Xem bản dịch"
 
 msgid "Show usage tab on sidebar"
 msgstr "Hiển thị thẻ mức sử dụng trên thanh bên"
+
+msgid "Show whitespace"
+msgstr ""
 
 msgid "Show Workspaces in sidebar"
 msgstr "Hiển thị Không gian làm việc trên thanh bên"
@@ -14738,6 +14966,12 @@ msgstr "Stage tệp"
 msgid "Staged"
 msgstr "Đã stage"
 
+msgid "Staged diff"
+msgstr ""
+
+msgid "Staging filter"
+msgstr ""
+
 msgid "Standard action strip for pane headers"
 msgstr "Dải hành động chuẩn cho tiêu đề khung"
 
@@ -14911,6 +15145,9 @@ msgstr "Bước {0} / 2"
 
 msgid "Step {step}: {name}"
 msgstr "Bước {step}: {name}"
+
+msgid "Sticky folders"
+msgstr ""
 
 msgid "Still can't reach the host."
 msgstr "Vẫn không thể kết nối tới host."
@@ -15323,6 +15560,9 @@ msgstr "Tab"
 
 msgid "Tab per command"
 msgstr "Mỗi lệnh một tab"
+
+msgid "Tab size"
+msgstr ""
 
 msgid "Table"
 msgstr "Table"
@@ -15933,6 +16173,9 @@ msgstr "Worktree và mọi thay đổi chưa commit sẽ bị gỡ. Không thể
 msgid "The worktree has uncommitted edits from the agent session."
 msgstr "Worktree có các chỉnh sửa chưa commit từ phiên agent."
 
+msgid "The Zed theme was not found. Other preferences can still be imported."
+msgstr ""
+
 msgid "Theme"
 msgstr "Theme"
 
@@ -16059,6 +16302,9 @@ msgstr "tệp này"
 
 msgid "This file is empty or was deleted."
 msgstr "Tệp này rỗng hoặc đã bị xóa."
+
+msgid "This font is not installed. The editor will use its fallback font."
+msgstr ""
 
 msgid "This GitHub installation is already connected to another Superset organization. Disconnect it there, or uninstall the Superset GitHub App, then try again."
 msgstr "Bản cài đặt GitHub này đã kết nối với một tổ chức Superset khác. Hãy ngắt kết nối ở đó, hoặc gỡ Superset GitHub App, rồi thử lại."
@@ -16229,6 +16475,9 @@ msgstr "Thao tác này sẽ đổi URL công khai của tổ chức. Hãy nhớ 
 #. placeholder {0}: team?.name
 msgid "This will delete <0>{0}</0> and remove all of its members. This can't be undone."
 msgstr "Thao tác này sẽ xóa <0>{0}</0> và gỡ toàn bộ thành viên. Không thể hoàn tác."
+
+msgid "This will discard unstaged changes to this file. Staged changes will be preserved."
+msgstr ""
 
 msgid "This will disconnect GitHub from your organization. The GitHub App will remain installed but will no longer sync data. You can reconnect at any time."
 msgstr "Thao tác này sẽ ngắt kết nối GitHub khỏi tổ chức của bạn. GitHub App vẫn được cài nhưng sẽ không đồng bộ dữ liệu nữa. Bạn có thể kết nối lại bất cứ lúc nào."
@@ -16582,6 +16831,9 @@ msgstr "Nhập email, nhấn Enter"
 msgid "Type here to send to the terminal"
 msgstr "Nhập ở đây để gửi tới terminal"
 
+msgid "Type hints"
+msgstr ""
+
 msgid "Type the organization name to confirm."
 msgstr "Nhập tên tổ chức để xác nhận."
 
@@ -16808,6 +17060,9 @@ msgstr "Bỏ stage tệp"
 msgid "Unstaged"
 msgstr "Chưa stage"
 
+msgid "Unstaged diff"
+msgstr ""
+
 #. placeholder {0}: item.kind
 msgid "Unsupported item \"{0}\""
 msgstr "Mục không được hỗ trợ \"{0}\""
@@ -17018,6 +17273,9 @@ msgstr "Dùng cho agent mới"
 msgid "Use global default"
 msgstr "Dùng mặc định toàn cục"
 
+msgid "Use tabs instead of spaces"
+msgstr ""
+
 msgid "Use the Azure CLI session on this host for repositories, work items, and pipelines."
 msgstr "Sử dụng phiên Azure CLI trên máy chủ này cho kho lưu trữ, hạng mục công việc và pipeline."
 
@@ -17222,8 +17480,14 @@ msgstr "Xem ghi chú phát hành"
 msgid "View releases on GitHub"
 msgstr "Xem bản phát hành trên GitHub"
 
+msgid "View staged diff"
+msgstr ""
+
 msgid "View Superset repository on GitHub"
 msgstr "Xem repository Superset trên GitHub"
+
+msgid "View unstaged diff"
+msgstr ""
 
 msgid "View usage"
 msgstr "Xem mức sử dụng"
@@ -17990,6 +18254,9 @@ msgstr "Phiên bản của bạn: {currentVersion}"
 
 msgid "Zap"
 msgstr "Tia chớp"
+
+msgid "Zed settings file"
+msgstr ""
 
 msgid "Zero-edit majority on merged agent PRs"
 msgstr "Phần lớn PR agent được merge không cần chỉnh sửa"

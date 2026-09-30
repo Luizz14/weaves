@@ -6,6 +6,7 @@ export type SettingsSection =
 	| "organization"
 	| "teams"
 	| "appearance"
+	| "editor"
 	| "ringtones"
 	| "usage"
 	| "keyboard"

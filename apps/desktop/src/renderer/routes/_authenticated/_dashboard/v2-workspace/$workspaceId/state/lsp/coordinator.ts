@@ -3,6 +3,11 @@ import { LSPClient, LSPPlugin } from "@codemirror/lsp-client";
 import type { Compartment } from "@codemirror/state";
 import type { EditorView } from "@codemirror/view";
 import {
+	DEFAULT_EDITOR_SETTINGS,
+	type EditorSettings,
+	resolveEditorSettings,
+} from "@superset/shared/editor-settings";
+import {
 	detectLspLanguage,
 	filePathToLspUri,
 	type LspServerId,
@@ -10,12 +15,17 @@ import {
 } from "@superset/shared/lsp";
 import type { WorkspaceClientContextValue } from "@superset/workspace-client";
 import DOMPurify from "dompurify";
+import { detectLanguage } from "shared/detect-language";
 import type {
 	DocumentDiagnosticParams,
 	DocumentDiagnosticReport,
+	DocumentFormattingParams,
+	TextEdit,
 } from "vscode-languageserver-protocol";
 import type { SharedFileDocument } from "../fileDocumentStore";
 import { languageFeatures, publishDiagnostics } from "./extensions";
+import { applyFormatEdits } from "./formatEdits";
+import { inlayHints, refreshHints } from "./inlayHints";
 import { LspWorkspace } from "./LspWorkspace";
 import { LspTransport } from "./transport";
 
@@ -53,6 +63,73 @@ type Session = {
 };
 
 export class LspCoordinator {
+	private preferences = DEFAULT_EDITOR_SETTINGS;
+	private diagnosticListeners = new Set<() => void>();
+	private diagnosticCounts = new Map<
+		string,
+		{ errors: number; warnings: number }
+	>();
+	private diagnosticVersion = 0;
+	subscribeDiagnostics = (listener: () => void) => {
+		this.diagnosticListeners.add(listener);
+		return () => {
+			this.diagnosticListeners.delete(listener);
+		};
+	};
+	getDiagnosticVersion = () => this.diagnosticVersion;
+	getDiagnostics() {
+		return this.diagnosticCounts;
+	}
+	private diagnosticsChanged() {
+		this.diagnosticVersion++;
+		for (const listener of this.diagnosticListeners) listener();
+	}
+	configure(preferences: EditorSettings) {
+		const previous = this.preferences;
+		this.preferences = preferences;
+		for (const session of this.sessions.values())
+			for (const binding of session.bindings) {
+				if (!binding.active || !session.client) continue;
+				const language = detectLanguage(binding.document.absolutePath);
+				const before = resolveEditorSettings(previous, language);
+				const after = resolveEditorSettings(preferences, language);
+				if (
+					before.enableLanguageServer === after.enableLanguageServer &&
+					JSON.stringify(before.hints) === JSON.stringify(after.hints)
+				)
+					continue;
+				if (!after.enableLanguageServer) {
+					this.diagnosticCounts.delete(
+						filePathToLspUri(binding.document.absolutePath),
+					);
+					this.diagnosticsChanged();
+				}
+				binding.view.dispatch({ effects: binding.compartment.reconfigure([]) });
+				this.install(binding, session);
+			}
+	}
+	async formatDocument(
+		document: SharedFileDocument,
+		content: string,
+		editing: { tabSize: number; hardTabs: boolean },
+	): Promise<string> {
+		const binding = [...this.bindings].find(
+			(binding) => binding.document.id === document.id && binding.active,
+		);
+		const client = binding?.session?.client;
+		if (!client?.serverCapabilities?.documentFormattingProvider)
+			throw new Error("Formatting is not available");
+		client.sync();
+		const params: DocumentFormattingParams = {
+			textDocument: { uri: filePathToLspUri(document.absolutePath) },
+			options: { tabSize: editing.tabSize, insertSpaces: !editing.hardTabs },
+		};
+		const edits = await client.request<
+			DocumentFormattingParams,
+			TextEdit[] | null
+		>("textDocument/formatting", params);
+		return applyFormatEdits(content, edits ?? []);
+	}
 	private sessions = new Map<string, Session>();
 	private bindings = new Set<Binding>();
 	private views = new Map<string, Set<EditorView>>();
@@ -236,8 +313,45 @@ export class LspCoordinator {
 						() => this.pullDiagnostics(session),
 					),
 				notificationHandlers: {
-					"textDocument/publishDiagnostics": (instance, params: unknown) =>
-						publishDiagnostics(instance, params),
+					"superset/inlayHintRefresh": () => {
+						for (const binding of session.bindings)
+							if (binding.active)
+								binding.view.dispatch({ effects: refreshHints.of(null) });
+						return true;
+					},
+					"superset/editorCapability": (instance, input: unknown) => {
+						if (
+							instance.serverCapabilities &&
+							input &&
+							typeof input === "object"
+						) {
+							const method = Reflect.get(input, "method");
+							const enabled = Reflect.get(input, "enabled") === true;
+							if (method === "textDocument/formatting")
+								instance.serverCapabilities.documentFormattingProvider =
+									enabled;
+							if (method === "textDocument/inlayHint") {
+								instance.serverCapabilities.inlayHintProvider = enabled;
+								for (const binding of session.bindings)
+									if (binding.active)
+										binding.view.dispatch({ effects: refreshHints.of(null) });
+							}
+						}
+						return true;
+					},
+					"textDocument/publishDiagnostics": (instance, params: unknown) => {
+						if (params && typeof params === "object") {
+							const uri: unknown = Reflect.get(params, "uri");
+							const version: unknown = Reflect.get(params, "version");
+							const file =
+								typeof uri === "string"
+									? instance.workspace.getFile(uri)
+									: null;
+							if (!file || version === undefined || version === file.version)
+								this.recordDiagnostics(params);
+						}
+						return publishDiagnostics(instance, params);
+					},
 					"superset/diagnosticRefresh": () => {
 						session.diagnostics.clear();
 						this.pullDiagnostics(session);
@@ -302,6 +416,11 @@ export class LspCoordinator {
 		if (LSPPlugin.get(binding.view)?.client === session.client) return;
 		const language = detectLspLanguage(binding.document.absolutePath);
 		if (!language) return;
+		const preferences = resolveEditorSettings(
+			this.preferences,
+			detectLanguage(binding.document.absolutePath),
+		);
+		if (!preferences.enableLanguageServer) return;
 		session.workspace.register(binding.document);
 		binding.view.dispatch({
 			effects: binding.compartment.reconfigure([
@@ -310,9 +429,30 @@ export class LspCoordinator {
 					language.languageId,
 				),
 				languageFeatures((uri) => this.navigate(uri)),
+				inlayHints(preferences.hints),
 			]),
 		});
 		binding.status({ state: "running", serverId: session.serverId });
+	}
+	private recordDiagnostics(input: unknown) {
+		if (!input || typeof input !== "object") return;
+		const uri: unknown = Reflect.get(input, "uri");
+		const diagnostics: unknown = Reflect.get(input, "diagnostics");
+		if (typeof uri !== "string" || !Array.isArray(diagnostics)) return;
+		const counts = { errors: 0, warnings: 0 };
+		for (const diagnostic of diagnostics)
+			if (diagnostic && typeof diagnostic === "object") {
+				if (Reflect.get(diagnostic, "severity") === 2) counts.warnings++;
+				else if (
+					Reflect.get(diagnostic, "severity") === 1 ||
+					Reflect.get(diagnostic, "severity") === undefined
+				)
+					counts.errors++;
+			}
+		if (counts.errors || counts.warnings)
+			this.diagnosticCounts.set(uri, counts);
+		else this.diagnosticCounts.delete(uri);
+		this.diagnosticsChanged();
 	}
 
 	private pullDiagnostics(session: Session) {
@@ -361,12 +501,17 @@ export class LspCoordinator {
 						version,
 						resultId: report.resultId,
 					});
-					if (report.kind === "full")
+					if (report.kind === "full") {
+						this.recordDiagnostics({
+							uri: file.uri,
+							diagnostics: report.items,
+						});
 						publishDiagnostics(client, {
 							uri: file.uri,
 							version,
 							diagnostics: report.items,
 						});
+					}
 				})
 				.catch((error) => {
 					if (
@@ -396,6 +541,11 @@ export class LspCoordinator {
 		session.client = undefined;
 		session.workspace = undefined;
 		session.diagnostics.clear();
+		for (const binding of session.bindings)
+			this.diagnosticCounts.delete(
+				filePathToLspUri(binding.document.absolutePath),
+			);
+		this.diagnosticsChanged();
 		if (session.disposed || this.disposed) return;
 		this.updateStatus(session, "failed");
 		if (session.attempt >= 2 || !session.bindings.size) return;

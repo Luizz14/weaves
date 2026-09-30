@@ -66,7 +66,7 @@ describe("settings search - font settings", () => {
 			(r) => r.id === SETTING_ITEM_ID.APPEARANCE_TERMINAL_FONT,
 		);
 
-		expect(editorFont?.section).toBe("appearance");
+		expect(editorFont?.section).toBe("editor");
 		expect(terminalFont?.section).toBe("appearance");
 	});
 });

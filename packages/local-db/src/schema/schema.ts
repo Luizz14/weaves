@@ -185,6 +185,9 @@ export type InsertWorkspaceSection = typeof workspaceSections.$inferInsert;
 export type SelectWorkspaceSection = typeof workspaceSections.$inferSelect;
 
 export const settings = sqliteTable("settings", {
+	editorSettings: text("editor_settings", { mode: "json" }).$type<
+		import("@superset/shared/editor-settings").EditorSettings
+	>(),
 	codexChat: text("codex_chat", { mode: "json" }).$type<CodexChatSettings>(),
 	id: integer("id").primaryKey().default(1),
 	lastActiveWorkspaceId: text("last_active_workspace_id"),

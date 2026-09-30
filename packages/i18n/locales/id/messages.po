@@ -1308,6 +1308,9 @@ msgstr "Tentang"
 msgid "About Superset"
 msgstr "Tentang Superset"
 
+msgid "Absolute"
+msgstr ""
+
 msgid "Absolutely. Superset doesn't proxy any API calls. You use your own API keys directly with whatever AI providers you choose. This means you have full control over costs and usage."
 msgstr "Tentu. Superset tidak mem-proxy panggilan API apa pun. Anda memakai kunci API Anda sendiri langsung dengan penyedia AI mana pun yang Anda pilih. Artinya Anda punya kendali penuh atas biaya dan penggunaan."
 
@@ -1601,6 +1604,9 @@ msgstr "Opsi lanjutan"
 msgid "After"
 msgstr "Sesudah"
 
+msgid "After a delay"
+msgstr ""
+
 msgid "Against base"
 msgstr "Terhadap base"
 
@@ -1802,6 +1808,9 @@ msgstr "Semua di tab saat ini"
 msgid "All in current tab (split panes)"
 msgstr "Semua di tab saat ini (panel terbagi)"
 
+msgid "All local changes"
+msgstr ""
+
 msgid "All objectives cleared. Top rung, nothing left to reach for."
 msgstr "Semua sasaran tercapai. Anak tangga teratas, tidak ada lagi yang bisa dikejar."
 
@@ -1939,6 +1948,9 @@ msgstr "Juga: @superset/ui/radio-group, @superset/ui/switch"
 
 msgid "Also: @superset/ui/spinner"
 msgstr "Juga: @superset/ui/spinner"
+
+msgid "Always"
+msgstr ""
 
 msgid "Always know which agent needs you, with notifications that deep-link straight to the blocked agent."
 msgstr "Selalu tahu agen mana yang membutuhkan Anda, dengan notifikasi yang langsung menuju agen yang terhambat."
@@ -2126,8 +2138,14 @@ msgstr "Bahasa tampilan aplikasi. Otomatis mengikuti bahasa sistem Anda."
 msgid "Appearance"
 msgstr "Tampilan"
 
+msgid "Appearance, editing, project tools, and language preferences for the v2 editor."
+msgstr ""
+
 msgid "Apple logo"
 msgstr "Logo Apple"
+
+msgid "Application default"
+msgstr ""
 
 msgid "Application menu"
 msgstr "Menu aplikasi"
@@ -2437,6 +2455,12 @@ msgstr "Otomatiskan Tugas"
 msgid "Automate workspace setup for {projectName}"
 msgstr "Otomatiskan penyiapan workspace untuk {projectName}"
 
+msgid "Automatic"
+msgstr ""
+
+msgid "Automatic (project tools first)"
+msgstr ""
+
 msgid "Automation"
 msgstr "Otomatisasi"
 
@@ -2469,6 +2493,12 @@ msgstr "Otonom"
 
 msgid "Autonomous ticket-to-PR pipeline"
 msgstr "Pipeline otonom dari tiket ke PR"
+
+msgid "Autosave"
+msgstr ""
+
+msgid "Autosave delay (ms)"
+msgstr ""
 
 msgid "Available"
 msgstr "Tersedia"
@@ -2701,6 +2731,9 @@ msgstr "Token pemicu build Bitrise"
 msgid "Bitrise token removed"
 msgstr "Token Bitrise dihapus"
 
+msgid "Blinking cursor"
+msgstr ""
+
 msgid "Block"
 msgstr "Blok"
 
@@ -2733,6 +2766,9 @@ msgstr "Tampilan papan"
 
 msgid "Bold"
 msgstr "Tebal"
+
+msgid "Bold folder labels"
+msgstr ""
 
 msgid "Border"
 msgstr "Batas"
@@ -2839,6 +2875,9 @@ msgstr "Bawa proyek, workspace, dan skrip terminal v1 ke v2. Tiap item diimpor s
 
 msgid "Bring your agents together."
 msgstr "Satukan agen-agen Anda."
+
+msgid "Browse"
+msgstr ""
 
 msgid "Browse and install skills, MCP servers, and agent configs shared by the community."
 msgstr "Jelajahi dan pasang skill, server MCP, dan konfigurasi agen yang dibagikan komunitas."
@@ -3143,6 +3182,9 @@ msgstr "Ubah lokasi worktree"
 
 msgid "Change-failure rate at or below the human-era baseline for two consecutive quarters."
 msgstr "Tingkat kegagalan perubahan sama atau di bawah baseline era manusia selama dua kuartal berturut-turut."
+
+msgid "Changed files"
+msgstr ""
 
 msgid "Changelog"
 msgstr "Changelog"
@@ -3690,6 +3732,9 @@ msgstr "Blok kode"
 msgid "Code Block"
 msgstr "Blok Kode"
 
+msgid "Code Editor"
+msgstr ""
+
 msgid "Code intelligence for the local v2 editor. Servers start when you open a supported file and use your installed tools."
 msgstr ""
 
@@ -3711,9 +3756,6 @@ msgstr "Ciutkan {0}"
 
 msgid "Collapse all"
 msgstr "Ciutkan semua"
-
-msgid "Collapse All"
-msgstr "Ciutkan Semua"
 
 msgid "Collapse all files"
 msgstr "Ciutkan semua file"
@@ -3747,6 +3789,9 @@ msgstr "Gabungkan semua commit"
 
 msgid "Combine sequences such as => and !==."
 msgstr "Gabungkan urutan seperti => dan !==."
+
+msgid "Comfortable"
+msgstr ""
 
 msgid "Coming soon"
 msgstr "Segera hadir"
@@ -3853,6 +3898,12 @@ msgstr "Komunitas"
 
 msgid "Community size from the public invite, refreshed every half hour."
 msgstr "Ukuran komunitas dari undangan publik, diperbarui setiap setengah jam."
+
+msgid "Compact"
+msgstr ""
+
+msgid "Compact folders"
+msgstr ""
 
 msgid "Company"
 msgstr "Perusahaan"
@@ -4495,6 +4546,9 @@ msgstr "Tidak bisa melupakan {domain}"
 msgid "Could not import from browser"
 msgstr "Tidak bisa mengimpor dari browser"
 
+msgid "Could not import Zed preferences"
+msgstr ""
+
 msgid "Could not leave the queue"
 msgstr "Tidak bisa keluar dari antrean"
 
@@ -4504,6 +4558,9 @@ msgstr "Tidak bisa menampilkan isi direktori"
 #. placeholder {0}: host.name
 msgid "Could not load agents from {0}"
 msgstr "Tidak bisa memuat agen dari {0}"
+
+msgid "Could not load editor settings"
+msgstr ""
 
 msgid "Could not load environments"
 msgstr "Tidak dapat memuat environment"
@@ -4577,6 +4634,9 @@ msgstr "Tidak bisa membaca file yang dilepas"
 msgid "Could not read the Google account. Please try again."
 msgstr "Tidak bisa membaca akun Google. Silakan coba lagi."
 
+msgid "Could not read Zed preferences"
+msgstr ""
+
 msgid "Could not record cloud workspace"
 msgstr "Tidak bisa mencatat workspace cloud"
 
@@ -4600,6 +4660,9 @@ msgstr "Tidak dapat menyelesaikan komentar ini"
 
 msgid "Could not restart the host service"
 msgstr "Tidak dapat memulai ulang layanan host"
+
+msgid "Could not save editor settings"
+msgstr ""
 
 msgid "Could not send"
 msgstr "Tidak bisa mengirim"
@@ -4799,6 +4862,9 @@ msgstr "Tidak bisa meng-unstage file"
 
 msgid "Couldn't update pull request"
 msgstr "Tidak bisa memperbarui pull request"
+
+msgid "Couldn't update staging"
+msgstr ""
 
 msgid "Couldn't update thread"
 msgstr "Tidak bisa memperbarui thread"
@@ -5488,6 +5554,9 @@ msgstr "Terlepas"
 msgid "Details"
 msgstr "Detail"
 
+msgid "Detect installed Zed"
+msgstr ""
+
 msgid "Dev"
 msgstr "Dev"
 
@@ -5523,6 +5592,12 @@ msgstr "Perangkat: {selectedLabel}"
 
 msgid "DevTools"
 msgstr "DevTools"
+
+msgid "Diagnostic badges"
+msgstr ""
+
+msgid "Diagnostics"
+msgstr ""
 
 msgid "Dialog"
 msgstr "Dialog"
@@ -5988,6 +6063,9 @@ msgctxt "github release action"
 msgid "Edited"
 msgstr "Diedit"
 
+msgid "Editing"
+msgstr ""
+
 msgid "Editing file..."
 msgstr "Mengedit file..."
 
@@ -6000,8 +6078,26 @@ msgstr "Editor"
 msgid "Editor & Workflow"
 msgstr "Editor & Alur Kerja"
 
+msgid "Editor appearance"
+msgstr ""
+
+msgid "Editor preferences imported"
+msgstr ""
+
+msgid "Editor settings saved"
+msgstr ""
+
+msgid "Editor settings sections"
+msgstr ""
+
+msgid "Editor theme"
+msgstr ""
+
 msgid "Editor typography"
 msgstr "Tipografi editor"
+
+msgid "Editor width"
+msgstr ""
 
 msgid "Efficient"
 msgstr "Efisien"
@@ -6117,6 +6213,9 @@ msgstr "ARR enterprise per akun"
 
 msgid "Entries by section"
 msgstr "Masuk per bagian"
+
+msgid "Entry spacing"
+msgstr ""
 
 msgid "Environment"
 msgstr "Lingkungan"
@@ -6922,6 +7021,9 @@ msgstr "Buat tiket, dapatkan PR terverifikasi yang siap di-merge, lengkap dengan
 msgid "File actions"
 msgstr "Aksi file"
 
+msgid "File and folder icons"
+msgstr ""
+
 msgid "File changes"
 msgstr "Perubahan berkas"
 
@@ -7102,6 +7204,9 @@ msgstr "Api"
 msgid "Flash balances speed and quality for short development tasks."
 msgstr "Flash menyeimbangkan kecepatan dan kualitas untuk tugas pengembangan singkat."
 
+msgid "Flat view"
+msgstr ""
+
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Armada agen merencanakan, mengimplementasi, mereview, dan menguji pekerjaan satu sama lain. Manusia menetapkan arah, menengahi pengecualian, dan memegang selera. Satuan perhatian manusia bukan lagi pull request, melainkan keputusan."
 
@@ -7149,9 +7254,6 @@ msgstr "Folder"
 
 msgid "Folder links"
 msgstr "Tautan folder"
-
-msgid "Folder view"
-msgstr "Tampilan folder"
 
 msgid "Folders to check out into new worktrees, one per line, relative to the repo root. Files at the root are always included. Empty checks out everything."
 msgstr "Folder yang di-checkout ke worktree baru, satu per baris, relatif terhadap root repo. File di root selalu disertakan. Kosong berarti checkout semuanya."
@@ -7260,6 +7362,12 @@ msgstr "Fork"
 
 msgid "Form controls and field composition"
 msgstr "Kontrol form dan komposisi field"
+
+msgid "Format on save"
+msgstr ""
+
+msgid "Formatter"
+msgstr ""
 
 msgid "Forward"
 msgstr "Maju"
@@ -7417,6 +7525,9 @@ msgstr "Nama author Git"
 
 msgid "Git History"
 msgstr "Riwayat Git"
+
+msgid "Git indicators"
+msgstr ""
 
 msgid "Git integration failed. Check the repository and retry, or cancel the attempt."
 msgstr "Integrasi Git gagal. Periksa repositori dan coba lagi, atau batalkan percobaan."
@@ -7650,6 +7761,12 @@ msgstr "Sembunyikan dari grafik"
 msgid "Hide from Sidebar"
 msgstr "Sembunyikan dari Sidebar"
 
+msgid "Hide Git-ignored files"
+msgstr ""
+
+msgid "Hide hidden files"
+msgstr ""
+
 msgid "Hide log"
 msgstr "Sembunyikan log"
 
@@ -7658,6 +7775,9 @@ msgstr "Sembunyikan komentar review PR"
 
 msgid "Hide Preview"
 msgstr "Sembunyikan Pratinjau"
+
+msgid "Hide project root"
+msgstr ""
 
 msgid "Hide pull request list"
 msgstr "Sembunyikan daftar pull request"
@@ -7686,6 +7806,9 @@ msgstr "Tinggi"
 
 msgid "High usage"
 msgstr "Penggunaan tinggi"
+
+msgid "Highlight active line"
+msgstr ""
 
 msgid "history"
 msgstr "riwayat"
@@ -7970,6 +8093,12 @@ msgstr "Impor dari file"
 msgid "Import from v1"
 msgstr "Impor dari v1"
 
+msgid "Import from Zed"
+msgstr ""
+
+msgid "Import selected preferences"
+msgstr ""
+
 msgid "Import settings from another browser"
 msgstr "Impor pengaturan dari browser lain"
 
@@ -8050,6 +8179,9 @@ msgstr "Termasuk varian box khusus Superset"
 msgid "Incognito Operator"
 msgstr "Operator Samaran"
 
+msgid "Indent guides"
+msgstr ""
+
 msgid "Indigo"
 msgstr "Indigo"
 
@@ -8061,6 +8193,12 @@ msgstr "Info"
 
 msgid "Information"
 msgstr "Informasi"
+
+msgid "Inherit application theme"
+msgstr ""
+
+msgid "Inherit global preference"
+msgstr ""
 
 msgid "Initialization options (JSON object)"
 msgstr ""
@@ -8079,6 +8217,9 @@ msgstr "Menginisialisasi..."
 
 msgid "Initials fallback via getInitials, sizes xs → xl"
 msgstr "Fallback inisial lewat getInitials, ukuran xs → xl"
+
+msgid "Inlay hints"
+msgstr ""
 
 msgid "Inline"
 msgstr "Sebaris"
@@ -8501,6 +8642,9 @@ msgstr "Jalur"
 msgid "Language"
 msgstr "Bahasa"
 
+msgid "Language overrides"
+msgstr ""
+
 msgid "Language saved on this device, but syncing it to your account failed."
 msgstr "Bahasa tersimpan di perangkat ini, tapi sinkronisasi ke akun Anda gagal."
 
@@ -8682,6 +8826,9 @@ msgstr "Lebih sedikit"
 msgid "less than a minute ago"
 msgstr "kurang dari semenit lalu"
 
+msgid "Letter spacing"
+msgstr ""
+
 msgid "Letter spacing (px)"
 msgstr "Jarak huruf (px)"
 
@@ -8738,6 +8885,12 @@ msgstr "Grafik garis: porsi perubahan yang di-merge dan ditulis agen tanpa sunti
 
 msgid "Line height"
 msgstr "Tinggi baris"
+
+msgid "Line numbers"
+msgstr ""
+
+msgid "Line wrapping"
+msgstr ""
 
 msgid "Linear"
 msgstr "Linear"
@@ -9721,14 +9874,14 @@ msgstr "Chat Codex baru"
 msgid "New environment"
 msgstr "Environment baru"
 
-msgid "New File"
-msgstr "File Baru"
+msgid "New file"
+msgstr ""
 
 msgid "New File..."
 msgstr "File Baru..."
 
-msgid "New Folder"
-msgstr "Folder Baru"
+msgid "New folder"
+msgstr ""
 
 msgid "New Folder..."
 msgstr "Folder Baru..."
@@ -9948,6 +10101,9 @@ msgstr "Tidak ada perubahan"
 
 msgid "No changes found."
 msgstr "No changes found."
+
+msgid "No changes in this staging filter"
+msgstr ""
 
 msgid "No changes on this branch yet."
 msgstr "Belum ada perubahan di branch ini."
@@ -10467,6 +10623,9 @@ msgstr "Tidak tersedia di server ini"
 msgid "Not bound · configure in Settings → Links"
 msgstr "Tidak terikat · atur di Pengaturan → Tautan"
 
+msgid "Not compatible; this value will not be imported."
+msgstr ""
+
 msgid "Not configured"
 msgstr "Belum dikonfigurasi"
 
@@ -10646,11 +10805,17 @@ msgstr "Mode offline / local-first"
 msgid "Older"
 msgstr "Lebih lama"
 
+msgid "On"
+msgstr ""
+
 msgid "on {offScopeHostName} — won't run here"
 msgstr "di {offScopeHostName} — tidak akan berjalan di sini"
 
 msgid "On click"
 msgstr "Saat diklik"
+
+msgid "On focus change"
+msgstr ""
 
 msgid "On our radar. Order and scope may change."
 msgstr "Ada di radar kami. Urutan dan cakupannya bisa berubah."
@@ -10663,6 +10828,9 @@ msgstr "Dengan laju ini"
 
 msgid "On this page"
 msgstr "Di halaman ini"
+
+msgid "On window change"
+msgstr ""
 
 msgid "On your machine. Repos, worktrees, terminal output, and agent sessions stay local by default; cloud sync covers account and organization metadata only. Superset doesn't proxy any API calls."
 msgstr "Di mesin Anda. Repo, worktree, output terminal, dan sesi agen tetap lokal secara bawaan; sinkronisasi cloud hanya mencakup metadata akun dan organisasi. Superset tidak mem-proxy panggilan API apa pun."
@@ -11292,6 +11460,9 @@ msgstr "Aplikasi lain"
 msgid "Other devices"
 msgstr "Perangkat lain"
 
+msgid "Other hints"
+msgstr ""
+
 msgid "Other Hosts"
 msgstr "Host Lain"
 
@@ -11437,6 +11608,12 @@ msgstr "Root tata letak panel: merender pohon panel sebuah workspace"
 msgid "PaneHeaderActions.tsx"
 msgstr "PaneHeaderActions.tsx"
 
+msgid "Panel indentation"
+msgstr ""
+
+msgid "Panel scrollbar"
+msgstr ""
+
 msgid "Paragraph"
 msgstr "Paragraf"
 
@@ -11452,6 +11629,9 @@ msgstr "Eksekusi Paralel"
 msgid "Parallel sessions per developer doubling every seven months, crossing the Operator, Plant Manager and Henry Ford thresholds between August 2026 and August 2028"
 msgstr "Sesi paralel per pengembang berlipat ganda setiap tujuh bulan, melewati ambang Operator, Manajer Pabrik, dan Henry Ford antara Agustus 2026 dan Agustus 2028"
 
+msgid "Parameter hints"
+msgstr ""
+
 msgid "Parameters"
 msgstr "Parameter"
 
@@ -11466,6 +11646,9 @@ msgstr "Sebagian catatan, sebagian taruhan. Dua entri pertama sudah terjadi. Sis
 
 msgid "Partial"
 msgstr "Sebagian"
+
+msgid "Partially staged; stage all changes in this file"
+msgstr ""
 
 msgid "Passed"
 msgstr "Lulus"
@@ -11828,6 +12011,9 @@ msgstr "Prediksi soal AI itu murah karena tidak ada yang memeriksanya. Halaman i
 msgid "Preferences"
 msgstr "Preferensi"
 
+msgid "Preferred line length"
+msgstr ""
+
 msgid "Prefix"
 msgstr "Prefix"
 
@@ -11857,6 +12043,12 @@ msgstr "Pratinjau"
 
 msgid "Preview {filename}"
 msgstr "Pratinjau {filename}"
+
+msgid "Preview compatible editor preferences before applying them. Unselected values remain unchanged."
+msgstr ""
+
+msgid "Preview import"
+msgstr ""
 
 msgid "Preview notice: blocking (update required)"
 msgstr "Pratinjau pemberitahuan: memblokir (pembaruan diperlukan)"
@@ -11981,11 +12173,17 @@ msgstr "Produktivitas"
 msgid "Profile name"
 msgstr "Nama profil"
 
+msgid "Programming language"
+msgstr ""
+
 msgid "Progress · Spinner"
 msgstr "Progres · Spinner"
 
 msgid "Project"
 msgstr "Proyek"
+
+msgid "Project actions"
+msgstr ""
 
 msgid "Project created."
 msgstr "Proyek dibuat."
@@ -12016,6 +12214,9 @@ msgstr "Proyek tidak ditemukan."
 
 msgid "Project not set up on this host"
 msgstr "Proyek belum disiapkan di host ini"
+
+msgid "Project panel"
+msgstr ""
 
 msgid "Project ready — open it from the sidebar."
 msgstr "Proyek siap — buka dari sidebar."
@@ -12501,6 +12702,9 @@ msgstr "Tulisan Terkait"
 msgid "Related work"
 msgstr "Related work"
 
+msgid "Relative"
+msgstr ""
+
 msgid "Relative path copied"
 msgstr "Path relatif disalin"
 
@@ -12847,6 +13051,9 @@ msgstr "Reset editor"
 msgid "Reset GitHub star nag state"
 msgstr "Atur ulang status pengingat bintang GitHub"
 
+msgid "Reset language overrides"
+msgstr ""
+
 msgid "Reset layout"
 msgstr "Atur ulang tata letak"
 
@@ -13097,6 +13304,9 @@ msgstr "Instruksi pakai ulang yang otomatis diambil agen Anda"
 
 msgid "Reusable terminal launches. Click a script to edit or drag to reorder. Project setup, run, and teardown commands are lifecycle scripts."
 msgstr "Peluncuran terminal pakai ulang. Klik sebuah skrip untuk mengedit atau seret untuk mengurutkan ulang. Perintah setup, run, dan teardown proyek adalah skrip lifecycle."
+
+msgid "Reveal active file"
+msgstr ""
 
 msgid "Reveal in Finder"
 msgstr "Tampilkan di Finder"
@@ -13406,6 +13616,9 @@ msgstr "Simpan preferensi"
 msgid "Save profile"
 msgstr "Simpan profil"
 
+msgid "Save settings"
+msgstr ""
+
 msgid "save the agent"
 msgstr "menyimpan agen"
 
@@ -13424,6 +13637,12 @@ msgstr "\"{0}\" disimpan sebagai environment"
 
 msgid "Saved to Downloads"
 msgstr "Disimpan ke Downloads"
+
+msgid "Saved without formatting. Check the project formatter or language server."
+msgstr ""
+
+msgid "Saving and formatting"
+msgstr ""
 
 msgid "Saving as an environment..."
 msgstr "Menyimpan sebagai lingkungan..."
@@ -13907,6 +14126,9 @@ msgstr "Aksi workspace terpilih"
 msgid "Selecting text in a terminal copies it to the clipboard right away, with trailing whitespace trimmed"
 msgstr "Memilih teks di terminal langsung menyalinnya ke clipboard, tanpa spasi di akhir"
 
+msgid "Selection"
+msgstr ""
+
 msgid "Send"
 msgstr "Kirim"
 
@@ -14223,6 +14445,9 @@ msgstr "Tampilkan di grafik"
 msgid "Show in folder"
 msgstr "Tampilkan di folder"
 
+msgid "Show inlay hints"
+msgstr ""
+
 msgid "Show items in all states"
 msgstr "Tampilkan item di semua status"
 
@@ -14294,6 +14519,9 @@ msgstr "Tampilkan terjemahan"
 
 msgid "Show usage tab on sidebar"
 msgstr "Tampilkan tab penggunaan di bilah samping"
+
+msgid "Show whitespace"
+msgstr ""
 
 msgid "Show Workspaces in sidebar"
 msgstr "Tampilkan Ruang kerja di sidebar"
@@ -14738,6 +14966,12 @@ msgstr "Stage file"
 msgid "Staged"
 msgstr "Sudah di-stage"
 
+msgid "Staged diff"
+msgstr ""
+
+msgid "Staging filter"
+msgstr ""
+
 msgid "Standard action strip for pane headers"
 msgstr "Strip aksi standar untuk header panel"
 
@@ -14911,6 +15145,9 @@ msgstr "Langkah {0} dari 2"
 
 msgid "Step {step}: {name}"
 msgstr "Langkah {step}: {name}"
+
+msgid "Sticky folders"
+msgstr ""
 
 msgid "Still can't reach the host."
 msgstr "Host masih tidak dapat dijangkau."
@@ -15323,6 +15560,9 @@ msgstr "Tab"
 
 msgid "Tab per command"
 msgstr "Satu tab per perintah"
+
+msgid "Tab size"
+msgstr ""
 
 msgid "Table"
 msgstr "Tabel"
@@ -15933,6 +16173,9 @@ msgstr "Worktree beserta perubahan yang belum di-commit akan dihapus. Ini tidak 
 msgid "The worktree has uncommitted edits from the agent session."
 msgstr "Worktree punya suntingan yang belum di-commit dari sesi agen."
 
+msgid "The Zed theme was not found. Other preferences can still be imported."
+msgstr ""
+
 msgid "Theme"
 msgstr "Tema"
 
@@ -16059,6 +16302,9 @@ msgstr "file ini"
 
 msgid "This file is empty or was deleted."
 msgstr "File ini kosong atau sudah dihapus."
+
+msgid "This font is not installed. The editor will use its fallback font."
+msgstr ""
 
 msgid "This GitHub installation is already connected to another Superset organization. Disconnect it there, or uninstall the Superset GitHub App, then try again."
 msgstr "Instalasi GitHub ini sudah terhubung ke organisasi Superset lain. Putuskan di sana, atau copot GitHub App Superset, lalu coba lagi."
@@ -16229,6 +16475,9 @@ msgstr "Ini akan mengubah URL publik organisasi Anda. Pastikan memperbarui bookm
 #. placeholder {0}: team?.name
 msgid "This will delete <0>{0}</0> and remove all of its members. This can't be undone."
 msgstr "Ini akan menghapus <0>{0}</0> dan mengeluarkan semua anggotanya. Ini tidak bisa dibatalkan."
+
+msgid "This will discard unstaged changes to this file. Staged changes will be preserved."
+msgstr ""
 
 msgid "This will disconnect GitHub from your organization. The GitHub App will remain installed but will no longer sync data. You can reconnect at any time."
 msgstr "Ini akan memutuskan GitHub dari organisasi Anda. GitHub App tetap terpasang tapi tidak lagi menyinkronkan data. Anda bisa menghubungkan ulang kapan saja."
@@ -16582,6 +16831,9 @@ msgstr "Ketik email, tekan Enter"
 msgid "Type here to send to the terminal"
 msgstr "Ketik di sini untuk mengirim ke terminal"
 
+msgid "Type hints"
+msgstr ""
+
 msgid "Type the organization name to confirm."
 msgstr "Ketik nama organisasinya untuk konfirmasi."
 
@@ -16808,6 +17060,9 @@ msgstr "Unstage file"
 msgid "Unstaged"
 msgstr "Belum di-stage"
 
+msgid "Unstaged diff"
+msgstr ""
+
 #. placeholder {0}: item.kind
 msgid "Unsupported item \"{0}\""
 msgstr "Item tidak didukung \"{0}\""
@@ -17018,6 +17273,9 @@ msgstr "Pakai untuk agen baru"
 msgid "Use global default"
 msgstr "Pakai bawaan global"
 
+msgid "Use tabs instead of spaces"
+msgstr ""
+
 msgid "Use the Azure CLI session on this host for repositories, work items, and pipelines."
 msgstr "Gunakan sesi Azure CLI di host ini untuk repositori, item kerja, dan alur."
 
@@ -17222,8 +17480,14 @@ msgstr "Lihat catatan rilis"
 msgid "View releases on GitHub"
 msgstr "Lihat rilis di GitHub"
 
+msgid "View staged diff"
+msgstr ""
+
 msgid "View Superset repository on GitHub"
 msgstr "Lihat repositori Superset di GitHub"
+
+msgid "View unstaged diff"
+msgstr ""
 
 msgid "View usage"
 msgstr "Lihat penggunaan"
@@ -17990,6 +18254,9 @@ msgstr "Versi Anda: {currentVersion}"
 
 msgid "Zap"
 msgstr "Petir"
+
+msgid "Zed settings file"
+msgstr ""
 
 msgid "Zero-edit majority on merged agent PRs"
 msgstr "Mayoritas PR agen di-merge tanpa suntingan"

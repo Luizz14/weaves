@@ -30,6 +30,7 @@ export interface SharedFileDocument {
 
 	readonly pendingSave: boolean;
 	readonly saveError: Error | null;
+	readonly formatWarning?: string | null;
 	readonly conflict: ConflictState | null;
 	readonly orphaned: boolean;
 	readonly hasExternalChange: boolean;
@@ -38,7 +39,10 @@ export interface SharedFileDocument {
 	readonly byteSize: number | null;
 
 	setContent(next: string): void;
-	save(opts?: { force?: boolean }): Promise<SaveResult>;
+	save(opts?: {
+		force?: boolean;
+		skipFormatting?: boolean;
+	}): Promise<SaveResult>;
 	reload(): Promise<void>;
 	loadUnlimited(): Promise<void>;
 	resolveConflict(choice: ConflictResolution): Promise<void>;
