@@ -71,13 +71,14 @@ export const DashboardSidebarProjectRow = forwardRef<
 				)}
 				{...props}
 			>
-				<div className="flex min-w-0 flex-1 items-center gap-2">
-					<div className="flex size-4 shrink-0 items-center justify-center">
+				<div className="flex min-w-0 flex-1 items-center gap-1">
+					<div className="flex size-6 shrink-0 items-center justify-center">
 						<ProjectThumbnail
 							projectName={projectName}
 							iconUrl={iconUrl}
 							color={projectColor}
-							className="size-4 group-hover:hidden"
+							variant="bare"
+							className="size-5 text-sm group-hover:hidden"
 						/>
 						<HiChevronRight
 							className={cn(

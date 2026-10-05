@@ -5,6 +5,7 @@ import { i18n } from "@superset/i18n";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { cn } from "@superset/ui/utils";
 import { useNavigate } from "@tanstack/react-router";
+import { motion, useReducedMotion } from "motion/react";
 import {
 	type ComponentPropsWithoutRef,
 	forwardRef,
@@ -18,6 +19,7 @@ import { WorkspaceNameMarquee } from "renderer/components/WorkspaceNameMarquee";
 import type { DiffStats } from "renderer/hooks/host-service/useDiffStats";
 import { useFocusVisible } from "renderer/hooks/useFocusVisible";
 import { HotkeyLabel } from "renderer/hotkeys";
+import { SPRING_LAYOUT } from "renderer/lib/ease";
 import { navigateToV2Workspace } from "renderer/routes/_authenticated/_dashboard/utils/workspace-navigation";
 import { ProjectThumbnail } from "renderer/routes/_authenticated/components/ProjectThumbnail";
 import { RenameInput } from "renderer/screens/main/components/WorkspaceSidebar/RenameInput";
@@ -127,6 +129,7 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
 		const isPending = pendingTransaction?.type === "insert";
 		const localRef = useRef<HTMLDivElement>(null);
 		const navigate = useNavigate();
+		const reduceMotion = useReducedMotion();
 		// Drives the name's hover-reveal for keyboard users: the row, not the
 		// name span, is what's actually tabbable.
 		const {
@@ -163,20 +166,28 @@ export const DashboardSidebarExpandedWorkspaceRow = forwardRef<
 					else if (ref) ref.current = node;
 				}}
 				className={cn(
-					"relative mx-2 rounded-md text-left text-sm transition-colors",
-					isActive && "bg-fill-selected",
+					"relative isolate mx-2 py-1 rounded-md text-left rounded-lg text-sm transition-colors",
 					isSelected && "bg-fill-selected",
 					onClick &&
 						(isSelected
 							? "hover:bg-fill-selected"
-							: isActive
-								? "hover:bg-fill-selected"
-								: "hover:bg-fill-hover"),
+							: !isActive && "hover:bg-fill-hover"),
 					className,
 				)}
 				data-selected={isSelected || undefined}
 				{...props}
 			>
+				{isActive && !isSelected && (
+					<motion.div
+						layoutId={
+							pinnedContext
+								? "sidebar-active-workspace-pinned"
+								: "sidebar-active-workspace"
+						}
+						transition={reduceMotion ? { duration: 0 } : SPRING_LAYOUT}
+						className="surface-outline pointer-events-none absolute inset-0 -z-10 rounded-lg bg-background outline-[1.5px]"
+					/>
+				)}
 				{/* biome-ignore lint/a11y/useSemanticElements: The row contains nested action buttons, so it cannot be a native button. */}
 				<div
 					role="button"

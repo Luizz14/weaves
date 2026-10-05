@@ -1,11 +1,13 @@
 import { cn } from "@superset/ui/utils";
 import { useState } from "react";
+import { useBareIconUrl } from "./useBareIconUrl";
 
 interface ProjectThumbnailProps {
 	projectName: string;
 	iconUrl?: string | null;
 	/** Accent color as a `#rrggbb` hex; tints the border and letter fallback. */
 	color?: string | null;
+	variant?: "tile" | "bare";
 	className?: string;
 }
 
@@ -26,19 +28,49 @@ export function ProjectThumbnail({
 	projectName,
 	iconUrl,
 	color,
+	variant = "tile",
 	className,
 }: ProjectThumbnailProps) {
 	const [failedUrl, setFailedUrl] = useState<string | null>(null);
 
 	const firstLetter = projectName.charAt(0).toUpperCase();
 	const hasColor = isHexColor(color);
+	const bareIconUrl = useBareIconUrl(variant === "bare" ? iconUrl : null);
+
+	if (variant === "bare") {
+		if (iconUrl && failedUrl !== iconUrl) {
+			if (!bareIconUrl) {
+				return <div className={cn("size-6 flex-shrink-0", className)} />;
+			}
+			return (
+				<img
+					src={bareIconUrl}
+					alt={`${projectName} icon`}
+					className={cn("size-6 flex-shrink-0 object-contain", className)}
+					onError={() => setFailedUrl(iconUrl)}
+				/>
+			);
+		}
+
+		return (
+			<div
+				className={cn(
+					"size-6 flex flex-shrink-0 items-center justify-center text-xs font-semibold",
+					hasColor ? undefined : "text-muted-foreground",
+					className,
+				)}
+				style={hasColor ? { color } : undefined}
+			>
+				{firstLetter}
+			</div>
+		);
+	}
 
 	if (iconUrl && failedUrl !== iconUrl) {
 		return (
 			<div
 				className={cn(
-					"relative size-6 rounded-sm overflow-hidden flex-shrink-0 bg-muted border",
-					hasColor ? undefined : "border-foreground/10",
+					"relative size-6 rounded-sm overflow-hidden flex-shrink-0",
 					className,
 				)}
 				style={hasColor ? { borderColor: hexToRgba(color, 0.6) } : undefined}
@@ -58,16 +90,13 @@ export function ProjectThumbnail({
 			className={cn(
 				"size-6 rounded-sm flex items-center justify-center flex-shrink-0",
 				"text-xs font-medium border",
-				hasColor
-					? undefined
-					: "bg-muted text-muted-foreground border-foreground/10",
+				hasColor ? undefined : "text-muted-foreground border-foreground/10",
 				className,
 			)}
 			style={
 				hasColor
 					? {
 							borderColor: hexToRgba(color, 0.6),
-							backgroundColor: hexToRgba(color, 0.15),
 							color,
 						}
 					: undefined
