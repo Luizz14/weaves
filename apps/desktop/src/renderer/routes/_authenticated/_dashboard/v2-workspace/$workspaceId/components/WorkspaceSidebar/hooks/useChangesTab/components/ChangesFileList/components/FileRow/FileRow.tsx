@@ -1,5 +1,6 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import { errorMessage } from "@superset/i18n/errors";
+import { Checkbox } from "@superset/ui/checkbox";
 import {
 	ContextMenu,
 	ContextMenuContent,
@@ -36,7 +37,7 @@ import {
 	modifierLabel,
 	useChangesSidebarFilePolicy,
 } from "renderer/lib/clickPolicy";
-import { FileIcon } from "renderer/lib/fileIcons";
+import { ZedFileIcon } from "renderer/lib/zedProjectPanel/components/ZedFileIcon";
 import { DiscardConfirmDialog } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/DiscardConfirmDialog";
 import { StatusIndicator } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/StatusIndicator";
 import {
@@ -44,6 +45,7 @@ import {
 	getChangesetFileKey,
 } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/useChangeset";
 import { toAbsoluteWorkspacePath } from "shared/absolute-paths";
+import type { LocalChangeEntry } from "../../../LocalChangesList/localChanges";
 import { useFileDrag } from "../../hooks/useFileDrag";
 import { useStagingMutations } from "../../hooks/useStagingMutations";
 import { DiffStatText } from "../DiffStatText";
@@ -51,6 +53,7 @@ import { PathActionsMenuItems } from "../PathActionsMenuItems";
 import { StageToggleButton } from "../StageToggleButton";
 
 function splitPath(path: string): { dir: string; basename: string } {
+	path = path.replace(/\/$/, "");
 	const lastSlash = path.lastIndexOf("/");
 	if (lastSlash < 0) return { dir: "", basename: path };
 	return {
@@ -61,6 +64,9 @@ function splitPath(path: string): { dir: string; basename: string } {
 
 interface FileRowProps {
 	file: ChangesetFile;
+	staging?: LocalChangeEntry;
+	disabled?: boolean;
+	onToggleStage?: (staged: boolean) => void;
 	workspaceId: string;
 	worktreePath?: string;
 	/** Hide the directory prefix — used when the row sits under a folder group. */
@@ -74,6 +80,9 @@ interface FileRowProps {
 
 export const FileRow = memo(function FileRow({
 	file,
+	staging,
+	disabled = false,
+	onToggleStage,
 	workspaceId,
 	worktreePath,
 	hideDir,
@@ -93,11 +102,16 @@ export const FileRow = memo(function FileRow({
 		? toAbsoluteWorkspacePath(worktreePath, file.path)
 		: undefined;
 	const changeKey = getChangesetFileKey(file);
-	const canStage = file.source.kind === "unstaged";
-	const canUnstage = file.source.kind === "staged";
+	const canStage = staging
+		? !!staging.unstaged
+		: file.source.kind === "unstaged";
+	const canUnstage = staging ? !!staging.staged : file.source.kind === "staged";
 	const canDiscard = canStage;
 	const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
-	const isDeleteAction = file.status === "untracked" || file.status === "added";
+	const discardSource = staging?.unstaged ?? file;
+	const isDeleteAction =
+		discardSource.status === "untracked" ||
+		(discardSource.status === "added" && !staging?.staged);
 	const utils = workspaceTrpc.useUtils();
 	const discardMutation = workspaceTrpc.git.discardChanges.useMutation({
 		onSuccess: () => {
@@ -116,10 +130,37 @@ export const FileRow = memo(function FileRow({
 		},
 	});
 	const confirmDiscard = () => {
+		if (disabled || discardMutation.isPending) return;
 		setShowDiscardConfirm(false);
 		discardMutation.mutate({ workspaceId, filePath: file.path });
 	};
-	const { stageFile, unstageFile } = useStagingMutations(workspaceId);
+	const mutations = useStagingMutations(workspaceId);
+	const stageFile = (value: ChangesetFile) => {
+		if (disabled || discardMutation.isPending) return;
+		if (staging && onToggleStage) onToggleStage(true);
+		else void mutations.stageFile(value);
+	};
+	const unstageFile = (value: ChangesetFile) => {
+		if (disabled || discardMutation.isPending) return;
+		if (staging && onToggleStage) onToggleStage(false);
+		else void mutations.unstageFile(value);
+	};
+	const statusColor =
+		file.status === "added" || file.status === "untracked"
+			? "text-green-700 dark:text-green-400"
+			: file.status === "deleted"
+				? "text-muted-foreground line-through"
+				: file.status === "modified" || file.status === "changed"
+					? "text-orange-700 dark:text-orange-400"
+					: file.status === "renamed" || file.status === "copied"
+						? "text-blue-700 dark:text-blue-400"
+						: "text-foreground";
+	const stagedSource = staging?.staged;
+	const unstagedSource = staging?.unstaged;
+	const diffSide =
+		file.source.kind === "staged"
+			? t({ message: "Staged diff" })
+			: t({ message: "Unstaged diff" });
 
 	const policy = useChangesSidebarFilePolicy();
 	const diffNewTabTier = policy.tierForIntent("diffNewTab");
@@ -128,11 +169,19 @@ export const FileRow = memo(function FileRow({
 	const fileDrag = useFileDrag({ absolutePath });
 
 	const rowButton = (
-		<div className="group relative">
+		<div
+			className="group relative text-[15px]"
+			style={{ fontFamily: '"Project Plex Sans", "IBM Plex Sans", sans-serif' }}
+		>
 			<button
 				type="button"
+				data-change-navigation
+				data-change-path={file.path}
+				aria-label={file.path}
+				aria-current={isSelected ? "true" : undefined}
 				className={cn(
-					"flex w-full items-center gap-1.5 py-1 pr-3 pl-3 text-left text-xs hover:bg-accent/50",
+					"flex h-6 w-full items-center gap-2 pl-2 text-left hover:bg-accent/50 focus-visible:bg-accent/50",
+					staging ? "pr-8" : "pr-3",
 					isSelected && "bg-accent/70",
 				)}
 				{...fileDrag}
@@ -146,37 +195,78 @@ export const FileRow = memo(function FileRow({
 					else if (intent === "diff") onSelect?.(file.path, false, changeKey);
 				}}
 			>
-				<FileIcon fileName={basename} className="size-3.5 shrink-0" />
-				<span className="flex min-w-0 flex-1 items-baseline overflow-hidden">
-					{dir && <span className="truncate text-muted-foreground">{dir}</span>}
+				<ZedFileIcon fileName={basename} />
+				<span className="flex min-w-0 flex-1 items-baseline gap-2 overflow-hidden">
 					{oldBasename && (
 						<span className="truncate text-muted-foreground">
-							{oldBasename}
-							<span className="px-1">→</span>
+							{oldBasename} →
 						</span>
 					)}
-					<span className="min-w-[120px] truncate font-medium text-foreground">
+					<span className={cn("min-w-0 truncate", statusColor)}>
 						{basename}
 					</span>
-				</span>
-				<span className="ml-auto flex shrink-0 items-center gap-1.5 group-hover:invisible group-has-[[data-state=open]]:invisible">
-					{((file.additions ?? 0) > 0 || (file.deletions ?? 0) > 0) && (
-						<span className="text-[10px] text-muted-foreground">
-							<DiffStatText
-								additions={file.additions}
-								deletions={file.deletions}
-							/>
+					{dir && (
+						<span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
+							{dir.replace(/\/$/, "")}
 						</span>
 					)}
-					<StatusIndicator status={file.status} />
+				</span>
+				<span
+					className="ml-auto flex shrink-0 items-center gap-1 text-xs tabular-nums group-hover:invisible group-focus-within:invisible group-has-[[data-state=open]]:invisible"
+					title={staging ? diffSide : undefined}
+				>
+					<DiffStatText additions={file.additions} deletions={file.deletions} />
+					{!staging && <StatusIndicator status={file.status} />}
 				</span>
 			</button>
-			<div className="pointer-events-none absolute inset-y-0 right-2 flex items-center gap-0.5 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 has-[[data-state=open]]:pointer-events-auto has-[[data-state=open]]:opacity-100">
+			{staging && (
+				<div className="absolute inset-y-0 right-2 flex items-center">
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Checkbox
+								aria-label={
+									staging.state === "staged"
+										? t({ message: "Unstage file" })
+										: t({ message: "Stage file" })
+								}
+								checked={
+									staging.state === "partial"
+										? "indeterminate"
+										: staging.state === "staged"
+								}
+								disabled={disabled || discardMutation.isPending}
+								className="git-stage-checkbox relative size-3.5 border-muted-foreground/60"
+								onCheckedChange={() =>
+									staging.state === "staged"
+										? unstageFile(staging.staged ?? file)
+										: stageFile(staging.unstaged ?? file)
+								}
+							/>
+						</TooltipTrigger>
+						<TooltipContent>
+							{staging.state === "partial"
+								? t({
+										message: "Partially staged; stage all changes in this file",
+									})
+								: staging.state === "staged"
+									? t({ message: "Unstage file" })
+									: t({ message: "Stage file" })}
+						</TooltipContent>
+					</Tooltip>
+				</div>
+			)}
+			<div
+				className={cn(
+					"pointer-events-none absolute inset-y-0 flex items-center gap-0.5 bg-background opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 has-[[data-state=open]]:pointer-events-auto has-[[data-state=open]]:opacity-100",
+					staging ? "right-7" : "right-2",
+				)}
+			>
 				{canDiscard && (
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<button
 								type="button"
+								disabled={disabled || discardMutation.isPending}
 								aria-label={t({
 									message: "Discard changes",
 								})}
@@ -194,10 +284,10 @@ export const FileRow = memo(function FileRow({
 						</TooltipContent>
 					</Tooltip>
 				)}
-				{canStage && (
+				{!staging && canStage && (
 					<StageToggleButton action="stage" onClick={() => stageFile(file)} />
 				)}
-				{canUnstage && (
+				{!staging && canUnstage && (
 					<StageToggleButton
 						action="unstage"
 						onClick={() => unstageFile(file)}
@@ -223,6 +313,36 @@ export const FileRow = memo(function FileRow({
 							<GitCompare />
 							<Trans>Open Diff</Trans>
 						</DropdownMenuItem>
+						{stagedSource && unstagedSource && (
+							<DropdownMenuItem
+								onSelect={() =>
+									onSelect?.(
+										stagedSource.path,
+										false,
+										getChangesetFileKey(stagedSource),
+									)
+								}
+							>
+								<GitCompare />
+								<Trans>View staged diff</Trans>
+							</DropdownMenuItem>
+						)}
+						{stagedSource &&
+							unstagedSource &&
+							file.source.kind === "staged" && (
+								<DropdownMenuItem
+									onSelect={() =>
+										onSelect?.(
+											unstagedSource.path,
+											false,
+											getChangesetFileKey(unstagedSource),
+										)
+									}
+								>
+									<GitCompare />
+									<Trans>View unstaged diff</Trans>
+								</DropdownMenuItem>
+							)}
 						<DropdownMenuItem
 							onSelect={() => onSelect?.(file.path, true, changeKey)}
 						>
@@ -268,7 +388,10 @@ export const FileRow = memo(function FileRow({
 						{canStage && (
 							<>
 								<DropdownMenuSeparator />
-								<DropdownMenuItem onSelect={() => stageFile(file)}>
+								<DropdownMenuItem
+									disabled={disabled || discardMutation.isPending}
+									onSelect={() => stageFile(file)}
+								>
 									<Plus />
 									<Trans>Stage file</Trans>
 								</DropdownMenuItem>
@@ -277,7 +400,10 @@ export const FileRow = memo(function FileRow({
 						{canUnstage && (
 							<>
 								<DropdownMenuSeparator />
-								<DropdownMenuItem onSelect={() => unstageFile(file)}>
+								<DropdownMenuItem
+									disabled={disabled || discardMutation.isPending}
+									onSelect={() => unstageFile(file)}
+								>
 									<Minus />
 									<Trans>Unstage file</Trans>
 								</DropdownMenuItem>
@@ -304,6 +430,34 @@ export const FileRow = memo(function FileRow({
 					<GitCompare />
 					<Trans>Open Diff</Trans>
 				</ContextMenuItem>
+				{stagedSource && unstagedSource && (
+					<ContextMenuItem
+						onSelect={() =>
+							onSelect?.(
+								stagedSource.path,
+								false,
+								getChangesetFileKey(stagedSource),
+							)
+						}
+					>
+						<GitCompare />
+						<Trans>View staged diff</Trans>
+					</ContextMenuItem>
+				)}
+				{stagedSource && unstagedSource && file.source.kind === "staged" && (
+					<ContextMenuItem
+						onSelect={() =>
+							onSelect?.(
+								unstagedSource.path,
+								false,
+								getChangesetFileKey(unstagedSource),
+							)
+						}
+					>
+						<GitCompare />
+						<Trans>View unstaged diff</Trans>
+					</ContextMenuItem>
+				)}
 				<ContextMenuItem
 					onSelect={() => onSelect?.(file.path, true, changeKey)}
 				>
@@ -355,13 +509,19 @@ export const FileRow = memo(function FileRow({
 				)}
 				{(canStage || canUnstage) && <ContextMenuSeparator />}
 				{canStage && (
-					<ContextMenuItem onSelect={() => stageFile(file)}>
+					<ContextMenuItem
+						disabled={disabled || discardMutation.isPending}
+						onSelect={() => stageFile(file)}
+					>
 						<Plus />
 						<Trans>Stage file</Trans>
 					</ContextMenuItem>
 				)}
 				{canUnstage && (
-					<ContextMenuItem onSelect={() => unstageFile(file)}>
+					<ContextMenuItem
+						disabled={disabled || discardMutation.isPending}
+						onSelect={() => unstageFile(file)}
+					>
 						<Minus />
 						<Trans>Unstage file</Trans>
 					</ContextMenuItem>
@@ -369,6 +529,7 @@ export const FileRow = memo(function FileRow({
 				{canDiscard && (
 					<ContextMenuItem
 						variant="destructive"
+						disabled={disabled || discardMutation.isPending}
 						onSelect={() => setShowDiscardConfirm(true)}
 					>
 						{isDeleteAction ? <Trash2 /> : <Undo2 />}
@@ -400,7 +561,7 @@ export const FileRow = memo(function FileRow({
 							})
 						: t({
 								message:
-									"This will revert all changes to this file. This action cannot be undone.",
+									"This will discard unstaged changes to this file. Staged changes will be preserved.",
 							})
 				}
 				confirmLabel={

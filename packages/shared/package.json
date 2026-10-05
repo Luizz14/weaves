@@ -4,6 +4,18 @@
 	"private": true,
 	"type": "module",
 	"exports": {
+		"./zed-editor-import": {
+			"types": "./src/zed-editor-import.ts",
+			"default": "./src/zed-editor-import.ts"
+		},
+		"./editor-settings": {
+			"types": "./src/editor-settings.ts",
+			"default": "./src/editor-settings.ts"
+		},
+		"./lsp": {
+			"types": "./src/lsp.ts",
+			"default": "./src/lsp.ts"
+		},
 		"./connectors": {
 			"types": "./src/connectors/index.ts",
 			"default": "./src/connectors/index.ts"

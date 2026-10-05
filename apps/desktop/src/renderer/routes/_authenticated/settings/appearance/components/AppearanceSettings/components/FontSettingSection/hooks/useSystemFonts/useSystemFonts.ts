@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getCanvasCtx, isFontAvailable } from "renderer/lib/font-availability";
 
 export type FontCategory = "nerd" | "mono" | "other";
 
@@ -61,36 +62,6 @@ const KNOWN_MONO_SET = new Set([
 	...WELL_KNOWN_NERD,
 	...REGISTERED_FONTS.map((f) => f.family),
 ]);
-
-// Reuse a single canvas context for all font measurements
-let sharedCtx: CanvasRenderingContext2D | null = null;
-function getCanvasCtx(): CanvasRenderingContext2D | null {
-	if (!sharedCtx) {
-		sharedCtx = document.createElement("canvas").getContext("2d");
-	}
-	return sharedCtx;
-}
-
-function isFontAvailable(family: string): boolean {
-	const ctx = getCanvasCtx();
-	if (!ctx) return false;
-
-	const testString = "mmmmmmmmmmlli10OQ@#$%";
-	const fallbacks = ["monospace", "sans-serif"] as const;
-
-	for (const fallback of fallbacks) {
-		ctx.font = `72px ${fallback}`;
-		const fallbackWidth = ctx.measureText(testString).width;
-
-		ctx.font = `72px "${family}", ${fallback}`;
-		const testWidth = ctx.measureText(testString).width;
-
-		if (Math.abs(testWidth - fallbackWidth) > 0.5) {
-			return true;
-		}
-	}
-	return false;
-}
 
 function classifyFont(family: string): FontCategory {
 	if (/Nerd Font/i.test(family) || / NF$/i.test(family)) {

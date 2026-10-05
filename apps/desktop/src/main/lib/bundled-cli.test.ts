@@ -7,6 +7,8 @@ import {
 	readFileSync,
 	rmSync,
 	statSync,
+	symlinkSync,
+	utimesSync,
 	writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
@@ -83,6 +85,57 @@ describe("bundled CLI", () => {
 
 		expect(status).toBe("installed");
 		expect(readFileSync(shimPath, "utf-8")).toContain(bundledCliPath);
+	});
+
+	it.each([
+		"darwin",
+		"win32",
+	] as const)("keeps an identical managed %s shim untouched", (platform) => {
+		const options = { binDir, bundledCliPath, platform };
+		installBundledCliShim(options);
+		const shimPath = path.join(binDir, getBundledCliShimName(platform));
+		utimesSync(shimPath, 1234, 1234);
+		const before = statSync(shimPath);
+		expect(installBundledCliShim(options)).toBe("installed");
+		const after = statSync(shimPath);
+		expect(after.ino).toBe(before.ino);
+		expect(after.mtimeMs).toBe(before.mtimeMs);
+	});
+
+	it("repairs executable permissions without replacing an identical POSIX shim", () => {
+		const options = { binDir, bundledCliPath, platform: "darwin" as const };
+		installBundledCliShim(options);
+		const shimPath = path.join(binDir, "superset");
+		chmodSync(shimPath, 0o644);
+		const before = statSync(shimPath);
+		installBundledCliShim(options);
+		expect(statSync(shimPath).ino).toBe(before.ino);
+		expect(statSync(shimPath).mode & 0o777).toBe(0o755);
+	});
+
+	it("replaces a managed shim when the bundled executable changes location", () => {
+		installBundledCliShim({ binDir, bundledCliPath, platform: "darwin" });
+		const movedCliPath = path.join(tempDir, "moved cli");
+		writeFileSync(movedCliPath, "#!/bin/sh\n", { mode: 0o755 });
+		installBundledCliShim({
+			binDir,
+			bundledCliPath: movedCliPath,
+			platform: "darwin",
+		});
+		expect(readFileSync(path.join(binDir, "superset"), "utf-8")).toBe(
+			buildBundledCliShim(movedCliPath, "darwin"),
+		);
+	});
+
+	it("leaves an unmanaged symlink and its target untouched", () => {
+		mkdirSync(binDir, { recursive: true });
+		const target = path.join(tempDir, "external-cli");
+		writeFileSync(target, "custom-cli");
+		symlinkSync(target, path.join(binDir, "superset"));
+		expect(
+			installBundledCliShim({ binDir, bundledCliPath, platform: "darwin" }),
+		).toBe("skipped");
+		expect(readFileSync(target, "utf-8")).toBe("custom-cli");
 	});
 
 	it("does not overwrite an unmanaged superset executable", () => {

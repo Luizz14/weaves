@@ -14,6 +14,15 @@ import { renderToStaticMarkup } from "react-dom/server";
  * (the picker is never rendered); after wiring `IconUploadField` in, it passes.
  */
 
+mock.module("renderer/components/BranchIntegrationSettings", () => ({
+	BranchIntegrationSettings: () => null,
+}));
+
+let hasConfiguredBoard = true;
+mock.module("renderer/hooks/useAzureDevOpsBoardAvailability", () => ({
+	useAzureDevOpsBoardAvailability: () => ({ hasConfiguredBoard }),
+}));
+
 const project = {
 	projectKey: "project-1",
 	id: "project-1",
@@ -177,6 +186,18 @@ mock.module("./components/IconUploadField", () => ({
 const { V2ProjectSettings } = await import("./V2ProjectSettings");
 
 describe("V2ProjectSettings", () => {
+	test("hides Azure and mobile build settings without an organization integration", () => {
+		hasConfiguredBoard = false;
+		try {
+			const markup = renderToStaticMarkup(
+				<V2ProjectSettings projectId="project-1" hostId="host-1" />,
+			);
+			expect(markup).not.toContain('data-testid="azure-devops-section"');
+		} finally {
+			hasConfiguredBoard = true;
+		}
+	});
+
 	test("renders the project icon picker so users can set an icon (#5843)", () => {
 		const markup = renderToStaticMarkup(
 			<V2ProjectSettings projectId="project-1" hostId="host-1" />,

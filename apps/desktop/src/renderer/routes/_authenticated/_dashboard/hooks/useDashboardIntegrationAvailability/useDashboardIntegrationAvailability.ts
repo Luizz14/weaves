@@ -1,12 +1,11 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { useHostUrls } from "renderer/hooks/host-service/useHostTargetUrl";
 import { useActiveOrganizationId } from "renderer/hooks/useActiveOrganizationId";
+import { useAzureDevOpsBoardAvailability } from "renderer/hooks/useAzureDevOpsBoardAvailability";
 import { apiTrpcClient } from "renderer/lib/api-trpc-client";
 import { cloudTrpc } from "renderer/lib/cloud-trpc";
 import { getHostServiceClientByUrl } from "renderer/lib/host-service-client";
 import { useProjectQueryTargets } from "renderer/routes/_authenticated/_dashboard/hooks/useProjectQueryTargets";
-import { useWorkspaceHostOptions } from "renderer/routes/_authenticated/components/DashboardNewWorkspaceModal/components/DashboardNewWorkspaceForm/components/DevicePicker/hooks/useWorkspaceHostOptions";
 import {
 	getAvailablePullRequestProviders,
 	getAvailableTaskSources,
@@ -53,29 +52,7 @@ export function useDashboardIntegrationAvailability() {
 			retry: false,
 		});
 
-	const { localHostId, otherHosts } = useWorkspaceHostOptions();
-	const hostIds = useMemo(
-		() =>
-			[
-				...(localHostId ? [localHostId] : []),
-				...otherHosts.filter((host) => host.isOnline).map((host) => host.id),
-			].filter((hostId, index, all) => all.indexOf(hostId) === index),
-		[localHostId, otherHosts],
-	);
-	const hostTargets = useHostUrls(hostIds);
-	const boardConfigQueries = useQueries({
-		queries: hostTargets.map((target) => ({
-			queryKey: ["azure-devops", "board-config", target.hostId, target.url],
-			enabled: target.url !== null,
-			queryFn: () =>
-				target.url
-					? getHostServiceClientByUrl(
-							target.url,
-						).azureDevOps.getBoardConfig.query()
-					: null,
-			retry: false,
-		})),
-	});
+	const azureBoardAvailability = useAzureDevOpsBoardAvailability();
 
 	const {
 		projects,
@@ -140,15 +117,12 @@ export function useDashboardIntegrationAvailability() {
 	const taskSources = getAvailableTaskSources({
 		linear: linearConnected,
 		github: githubConnected,
-		azureDevOps: boardConfigQueries.some((query) => query.data != null),
+		azureDevOps: azureBoardAvailability.hasConfiguredBoard,
 	});
 	const pullRequestProviders = getAvailablePullRequestProviders({
 		githubRepositoryCount,
 		azureProjectCount: azureProjectIds.size,
 	});
-	const isHostQueryResolved = (index: number) =>
-		hostTargets[index]?.url == null ||
-		boardConfigQueries[index]?.isFetched === true;
 	const isProjectQueryResolved = (index: number) =>
 		allProjectTargets[index]?.hostUrl == null ||
 		projectConfigQueries[index]?.isFetched === true;
@@ -165,7 +139,7 @@ export function useDashboardIntegrationAvailability() {
 			areGithubRepositoriesFetched &&
 			isGithubInstallationFetched &&
 			areProjectsReady &&
-			hostTargets.every((_target, index) => isHostQueryResolved(index)) &&
+			azureBoardAvailability.isReady &&
 			allProjectTargets.every((_target, index) =>
 				isProjectQueryResolved(index),
 			),

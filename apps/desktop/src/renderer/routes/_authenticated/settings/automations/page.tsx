@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AutomationsPageContent } from "renderer/routes/_authenticated/_dashboard/automations/page";
+import { AutomationsPageContent } from "./components/AutomationsPageContent";
 
 export const Route = createFileRoute("/_authenticated/settings/automations/")({
 	component: AutomationsSettingsPage,

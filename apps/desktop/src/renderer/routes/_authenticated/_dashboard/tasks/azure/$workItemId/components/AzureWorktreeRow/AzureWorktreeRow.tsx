@@ -9,6 +9,7 @@ import { getHostServiceClientByUrl } from "renderer/lib/host-service-client";
 import { navigateToV2Workspace } from "renderer/routes/_authenticated/_dashboard/utils/workspace-navigation";
 import { useOptimisticActions } from "renderer/routes/_authenticated/hooks/useOptimisticActions";
 import type { HostWorkspaceItem } from "renderer/routes/_authenticated/providers/HostWorkspacesProvider";
+import { AzureBuildAction } from "../AzureBuildAction";
 import { CreateAzurePullRequestDialog } from "../CreateAzurePullRequestDialog";
 
 type AzureWorktreeRowProps = {
@@ -63,14 +64,19 @@ export function AzureWorktreeRow({
 
 	return (
 		<>
-			<div className="flex min-h-16 items-center gap-3 rounded-xl bg-muted/40 px-4 py-3 shadow-[0_0_0_1px_var(--border)]">
+			<div className="flex min-h-16 flex-wrap items-center gap-3 rounded-xl bg-muted/40 px-4 py-3 shadow-[0_0_0_1px_var(--border)]">
 				<LuGitBranch className="size-4 shrink-0 text-muted-foreground" />
-				<div className="min-w-0 flex-1">
+				<div className="min-w-40 flex-1">
 					<p className="truncate font-mono text-sm">{workspace.branch}</p>
 					<p className="mt-0.5 truncate text-xs text-muted-foreground">
 						{projectName}
 					</p>
 				</div>
+				<AzureBuildAction
+					workspace={workspace}
+					workItemId={workItemId}
+					projectName={projectName}
+				/>
 				{linkedPullRequest && workspace.projectId ? (
 					<Button
 						variant="outline"

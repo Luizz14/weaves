@@ -38,7 +38,7 @@ describe("healV2UserPreferences", () => {
 		expect(
 			healV2UserPreferences({ changesViewMode: "tree" }).changesViewMode,
 		).toBe("tree");
-		expect(healV2UserPreferences({}).changesViewMode).toBe("folders");
+		expect(healV2UserPreferences({}).changesViewMode).toBe("flat");
 	});
 
 	it("preserves the terminal presets initialization sentinel", () => {
@@ -260,7 +260,7 @@ describe("healWorkspaceLocalState", () => {
 		);
 		expect(healed.sidebarState.tabOrder).toBe(0);
 		expect(healed.sidebarState.sectionId).toBeNull();
-		expect(healed.sidebarState.changesFilter).toEqual({ kind: "all" });
+		expect(healed.sidebarState.changesFilter).toEqual({ kind: "uncommitted" });
 		expect(healed.sidebarState.activeTab).toBe("changes");
 		expect(healed.sidebarState.isHidden).toBe(false);
 		expect(healed.sidebarState.pinnedAt).toBeNull();

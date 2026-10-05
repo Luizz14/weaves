@@ -2,7 +2,7 @@ import type { DiffFileSource } from "renderer/routes/_authenticated/_dashboard/v
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
-export type V2ChangesSectionKey = DiffFileSource["kind"];
+export type V2ChangesSectionKey = DiffFileSource["kind"] | "local";
 
 interface V2ChangesSectionsState {
 	collapsed: Partial<Record<V2ChangesSectionKey, boolean>>;

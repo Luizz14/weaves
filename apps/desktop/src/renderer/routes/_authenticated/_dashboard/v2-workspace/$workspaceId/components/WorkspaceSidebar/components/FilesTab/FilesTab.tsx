@@ -6,56 +6,44 @@ import type {
 	ContextMenuItem as PierreContextMenuItem,
 	ContextMenuOpenContext as PierreContextMenuOpenContext,
 } from "@pierre/trees";
-import {
-	FileTree as PierreFileTree,
-	useFileTree as usePierreFileTree,
-} from "@pierre/trees/react";
+import { FileTree } from "@pierre/trees";
+import { FileTree as PierreFileTree } from "@pierre/trees/react";
 import type { AppRouter } from "@superset/host-service";
+import { formatNumber } from "@superset/i18n/format";
+import { filePathToLspUri } from "@superset/shared/lsp";
 import { workspaceTrpc } from "@superset/workspace-client";
 import type { inferRouterOutputs } from "@trpc/server";
-import {
-	FilePlus,
-	FolderPlus,
-	FoldVertical,
-	Loader2,
-	RefreshCw,
-	Search,
-} from "lucide-react";
-import { useCallback, useEffect, useRef } from "react";
+import { FilePlus, FolderPlus, Loader2 } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useGitStatusMap } from "renderer/hooks/host-service/useGitStatusMap";
+import { useEditorSettings } from "renderer/hooks/useEditorSettings";
 import {
 	ShadowClickHint,
 	usePierreRowClickPolicy,
 	useSidebarFilePolicy,
 } from "renderer/lib/clickPolicy";
-import { useFallthroughIcons } from "renderer/lib/fileIcons";
 import {
-	createPierreTreeStyle,
-	PIERRE_TREE_UNSAFE_CSS,
-} from "renderer/lib/pierreTree";
+	loadZedIcons,
+	visibleProjectPath,
+	ZED_PANEL_CSS,
+	zedPanelStyle,
+} from "renderer/lib/zedProjectPanel/zedProjectPanel";
 import { PierreRowContextMenu } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/PierreRowContextMenu";
 import { useOpenInExternalEditor } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/useOpenInExternalEditor";
+import { useLspCoordinator } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/LspProvider";
+import { useResolvedTheme } from "renderer/stores/theme";
 import { FileMenuItems } from "./components/FileMenuItems";
 import { FilesTabDropOverlay } from "./components/FilesTabDropOverlay";
 import { FilesTabHeaderButton } from "./components/FilesTabHeaderButton";
 import { FolderMenuItems } from "./components/FolderMenuItems";
-import {
-	FILE_EXPLORER_INDENT,
-	FILE_EXPLORER_OVERSCAN,
-	FILE_EXPLORER_ROW_HEIGHT,
-} from "./constants";
+import { ProjectPanelMenu } from "./components/ProjectPanelMenu";
+import { FILE_EXPLORER_OVERSCAN } from "./constants";
 import { useFilesTabActions } from "./hooks/useFilesTabActions";
 import { useFilesTabBridge } from "./hooks/useFilesTabBridge";
 import { useFilesTabDrop } from "./hooks/useFilesTabDrop";
 import { useFileTreeScrollFade } from "./hooks/useFileTreeScrollFade";
 import { buildPierreGitStatus } from "./utils/buildPierreGitStatus";
 import { stripTrailingSlash, toAbs, toRel } from "./utils/treePath";
-
-const TREE_STYLE = createPierreTreeStyle({
-	rowHeight: FILE_EXPLORER_ROW_HEIGHT,
-	levelIndent: FILE_EXPLORER_INDENT,
-	withSearchChrome: true,
-});
 
 type GitStatusData = inferRouterOutputs<AppRouter>["git"]["getStatus"];
 
@@ -80,6 +68,11 @@ export function FilesTab({
 	onSearch,
 }: FilesTabProps) {
 	const { t } = useLingui();
+	const panel = useEditorSettings().panel;
+	const theme = useResolvedTheme();
+	const lsp = useLspCoordinator();
+
+	const rowHeight = panel.density === "comfortable" ? 24 : 22;
 	// Shares the query cache with V2WorkspacePage's workspace.get query, so
 	// the first render after a workspace switch typically already has cached
 	// data from React Query (the parent route resolves it first). staleTime
@@ -123,20 +116,31 @@ export function FilesTab({
 		},
 	});
 
-	const { model } = usePierreFileTree({
+	const modelOptions = {
 		paths: [],
 		initialExpansion: "closed",
 		search: false,
-		unsafeCSS: PIERRE_TREE_UNSAFE_CSS,
+		unsafeCSS: `${ZED_PANEL_CSS}
+[data-file-tree-virtualized-root][data-scroll-at-top="true"] [data-file-tree-virtualized-sticky] {
+	position: relative;
+	top: auto !important;
+	bottom: auto !important;
+}
+${panel.icons ? '[data-item-type="folder"] [data-item-section="icon"] svg { transform: none !important; rotate: none !important; }' : ""}
+${panel.indentGuides ? "" : '[data-item-section="spacing-item"] { opacity: 0 !important; }'}
+${panel.boldFolders ? '[data-item-type="folder"] { font-weight: 600; }' : '[data-item-type="folder"] { font-weight: 400; }'}
+${panel.scrollbar === "never" ? "*::-webkit-scrollbar { display: none; }" : ""}
+${panel.icons ? "" : '[data-item-type="file"] [data-item-section="icon"] { visibility: hidden; }'}`,
 		renaming: {
 			onRename: (event) => handlersRef.current.onRename(event),
 			onError: (message) => handlersRef.current.onRenameError(message),
 		},
 		gitStatus: initialGitStatusEntriesRef.current,
-		icons: { set: "complete", colored: true },
-		itemHeight: FILE_EXPLORER_ROW_HEIGHT,
+		icons: { set: "minimal", colored: false },
+		itemHeight: rowHeight,
+		flattenEmptyDirectories: panel.compactFolders,
 		overscan: FILE_EXPLORER_OVERSCAN,
-		stickyFolders: true,
+		stickyFolders: panel.stickyScroll,
 		onSelectionChange: (paths) => {
 			const last = paths[paths.length - 1];
 			if (!last) return;
@@ -146,9 +150,74 @@ export function FilesTab({
 			handlersRef.current.onSelect(last);
 		},
 		renderRowDecoration: (ctx) => handlersRef.current.renderRowDecoration(ctx),
+	} satisfies ConstructorParameters<typeof FileTree>[0];
+	const [model, setModel] = useState(() => new FileTree(modelOptions));
+	const structure = `${rowHeight}:${panel.stickyScroll}:${panel.compactFolders}:${panel.indentGuides}:${panel.boldFolders}:${panel.scrollbar}:${panel.icons}`;
+	const optionsRef = useRef(modelOptions);
+	optionsRef.current = modelOptions;
+	const lastStructure = useRef(structure);
+	const scrollToRestore = useRef<{ top: number; left: number } | null>(null);
+	const bridge = useFilesTabBridge({
+		model,
+		workspaceId,
+		rootPath,
+		isVisible: (path) => visibleProjectPath(path, panel, ignoredPaths),
+		compactFolders: panel.compactFolders,
 	});
+	useEffect(() => {
+		if (structure === lastStructure.current) return;
+		const timer = setInterval(() => {
+			const host = model.getFileTreeContainer();
+			if (host?.shadowRoot?.querySelector('input[aria-label^="Rename"]'))
+				return;
+			const scroller = host?.shadowRoot?.querySelector<HTMLElement>(
+				"[data-file-tree-virtualized-scroll]",
+			);
+			if (scroller)
+				scrollToRestore.current = {
+					top: scroller.scrollTop,
+					left: scroller.scrollLeft,
+				};
+			const paths = [...bridge.knownPaths];
+			const expanded = paths.filter((path) => {
+				const item = model.getItem(path);
+				return !!item && "isExpanded" in item && item.isExpanded();
+			});
+			const next = new FileTree({
+				...optionsRef.current,
+				paths,
+				initialExpandedPaths: expanded,
+				initialSelectedPaths: [...model.getSelectedPaths()],
+			});
+			lastStructure.current = structure;
+			setModel(next);
+			clearInterval(timer);
+		}, 100);
+		return () => clearInterval(timer);
+	}, [structure, model, bridge.knownPaths]);
+	useEffect(() => {
+		if (!scrollToRestore.current) return;
+		const timer = setInterval(() => {
+			const scroller = model
+				.getFileTreeContainer()
+				?.shadowRoot?.querySelector<HTMLElement>(
+					"[data-file-tree-virtualized-scroll]",
+				);
+			if (!scroller || !scrollToRestore.current) return;
+			scroller.scrollTo(scrollToRestore.current);
+			scrollToRestore.current = null;
+			clearInterval(timer);
+		}, 30);
+		return () => clearInterval(timer);
+	}, [model]);
+	const filterSignature = `${workspaceId}:${panel.hideHidden}:${panel.hideIgnored}:${[...ignoredPaths].sort().join(";")}`;
+	const lastFilters = useRef(filterSignature);
+	useEffect(() => {
+		if (lastFilters.current === filterSignature) return;
+		lastFilters.current = filterSignature;
+		void bridge.doRefresh();
+	}, [filterSignature, bridge.doRefresh]);
 
-	const bridge = useFilesTabBridge({ model, workspaceId, rootPath });
 	const {
 		reveal,
 		startCreating,
@@ -197,15 +266,84 @@ export function FilesTab({
 	// Push live git status updates into Pierre.
 	useEffect(() => {
 		model.setGitStatus(
-			buildPierreGitStatus(fileStatusByPath, folderStatusByPath, ignoredPaths),
+			panel.gitStatus
+				? buildPierreGitStatus(
+						fileStatusByPath,
+						folderStatusByPath,
+						ignoredPaths,
+					)
+				: [],
 		);
-	}, [model, fileStatusByPath, folderStatusByPath, ignoredPaths]);
+	}, [
+		model,
+		fileStatusByPath,
+		folderStatusByPath,
+		ignoredPaths,
+		panel.gitStatus,
+	]);
 
-	useFallthroughIcons(model);
+	const gitEntriesRef = useRef(
+		buildPierreGitStatus(fileStatusByPath, folderStatusByPath, ignoredPaths),
+	);
+	gitEntriesRef.current = panel.gitStatus
+		? buildPierreGitStatus(fileStatusByPath, folderStatusByPath, ignoredPaths)
+		: [];
+	useEffect(
+		() =>
+			lsp?.subscribeDiagnostics(() =>
+				model.setGitStatus(gitEntriesRef.current),
+			),
+		[lsp, model],
+	);
+
+	useEffect(() => {
+		if (!panel.icons) return;
+		let cancelled = false;
+		void loadZedIcons(theme.type)
+			.then((icons) => {
+				if (!cancelled) model.setIcons(icons);
+			})
+			.catch((error) => console.error("[project-panel] Icons failed", error));
+		return () => {
+			cancelled = true;
+		};
+	}, [model, theme.type, panel.icons]);
+	useEffect(() => {
+		if (!rootPath || !panel.icons) return;
+		let observer: MutationObserver | undefined;
+		const timer = setInterval(() => {
+			const root = model.getFileTreeContainer()?.shadowRoot;
+			if (!root) return;
+			const update = () => {
+				for (const row of root.querySelectorAll('[data-item-type="folder"]')) {
+					const use = row.querySelector('[data-item-section="icon"] use');
+					const icon =
+						row.getAttribute("aria-expanded") === "true"
+							? "#zed-folder-open"
+							: "#zed-folder";
+					if (use && use.getAttribute("href") !== icon)
+						use.setAttribute("href", icon);
+				}
+			};
+			observer = new MutationObserver(update);
+			observer.observe(root, {
+				subtree: true,
+				childList: true,
+				attributes: true,
+				attributeFilter: ["aria-expanded"],
+			});
+			update();
+			clearInterval(timer);
+		}, 30);
+		return () => {
+			clearInterval(timer);
+			observer?.disconnect();
+		};
+	}, [model, rootPath, panel.icons]);
 
 	// Reflect external selection changes (e.g. tab switch) back into the model.
 	useEffect(() => {
-		if (!selectedFilePath || !rootPath) return;
+		if (!selectedFilePath || !rootPath || !panel.autoReveal) return;
 		if (lastSelectedFromUserRef.current === selectedFilePath) {
 			lastSelectedFromUserRef.current = null;
 			return;
@@ -213,12 +351,12 @@ export function FilesTab({
 		const rel = toRel(rootPath, selectedFilePath);
 		if (!bridge.knownPaths.has(rel)) return;
 		model.focusPath(rel);
-	}, [model, selectedFilePath, rootPath, bridge.knownPaths]);
+	}, [model, selectedFilePath, rootPath, bridge.knownPaths, panel.autoReveal]);
 
 	useEffect(() => {
-		if (!pendingReveal || !rootPath) return;
+		if (!pendingReveal || !rootPath || !panel.autoReveal) return;
 		void reveal(pendingReveal.path, pendingReveal.isDirectory);
-	}, [pendingReveal, rootPath, reveal]);
+	}, [pendingReveal, rootPath, reveal, panel.autoReveal]);
 
 	// Wire the ref-based handlers so Pierre's stable callbacks always reach
 	// the latest closures. Updated on every render — no diffing needed.
@@ -240,7 +378,21 @@ export function FilesTab({
 	// indicator (and tints the row text), so a custom decoration here would
 	// duplicate it. Kept the wiring in place in case we want to layer
 	// something Pierre doesn't show (e.g. lock icons, debug markers).
-	handlersRef.current.renderRowDecoration = () => null;
+	handlersRef.current.renderRowDecoration = (context) => {
+		if (!panel.diagnostics || !lsp) return null;
+		const uri = filePathToLspUri(toAbs(rootPath, context.item.path));
+		let count = 0;
+		for (const [path, diagnostics] of lsp.getDiagnostics())
+			if (
+				path === uri ||
+				(context.item.kind === "directory" &&
+					path.startsWith(uri.endsWith("/") ? uri : `${uri}/`))
+			)
+				count += diagnostics.errors + diagnostics.warnings;
+		return count
+			? { text: formatNumber(count), title: t({ message: "Diagnostics" }) }
+			: null;
+	};
 
 	// Hint tooltip uses ShadowClickHint to anchor a single shadcn Tooltip
 	// over the hovered row's bounding rect — Pierre owns the row DOM inside
@@ -331,67 +483,46 @@ export function FilesTab({
 		// biome-ignore lint/a11y/useKeyWithClickEvents: click target is the empty background below the rows, used only to clear the selection; keyboard users move between rows directly and never land on it
 		<div
 			ref={fadeContainerRef}
-			className="relative flex h-full min-h-0 flex-col overflow-hidden"
+			className="group/project-panel relative flex h-full min-h-0 flex-col overflow-hidden"
 			onClickCapture={handleClickCapture}
 			onClick={handleTreeBackgroundClick}
 			onDragOver={drop.onDragOver}
 			onDragLeave={drop.onDragLeave}
 			onDrop={drop.onDrop}
 		>
+			<ProjectPanelMenu
+				newFile={() => void startCreating("file")}
+				newFolder={() => void startCreating("folder")}
+				refresh={() => void bridge.doRefresh()}
+				collapse={collapseAll}
+				search={onSearch}
+			/>
 			<ShadowClickHint hint={filePolicy.hint} findRow={findFileRow}>
 				<PierreFileTree
 					model={model}
 					className="flex-1 min-h-0"
-					style={TREE_STYLE}
+					style={zedPanelStyle(panel, theme.type)}
 					header={
-						<div
-							data-file-tree-header="true"
-							className="group flex h-10 items-center gap-1 bg-background px-2"
-						>
-							{onSearch && (
-								<button
-									type="button"
-									onClick={onSearch}
-									className="flex h-8 min-w-0 flex-1 items-center gap-1.5 rounded-md px-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-								>
-									<Search className="size-3.5 shrink-0" />
-									<span className="truncate">
-										<Trans>Search files</Trans>
-									</span>
-								</button>
-							)}
-							<div className="ml-auto flex items-center gap-0.5">
+						panel.hideRoot ? undefined : (
+							<div
+								data-file-tree-header="true"
+								className="flex h-8 items-center gap-2 px-2 text-sm"
+							>
+								<span className="min-w-0 flex-1 truncate">
+									{rootPath.split(/[\\/]/).pop()}
+								</span>
 								<FilesTabHeaderButton
 									icon={FilePlus}
-									label={t({
-										message: "New File",
-									})}
+									label={t({ message: "New file" })}
 									onClick={() => void startCreating("file")}
 								/>
 								<FilesTabHeaderButton
 									icon={FolderPlus}
-									label={t({
-										message: "New Folder",
-									})}
+									label={t({ message: "New folder" })}
 									onClick={() => void startCreating("folder")}
 								/>
-								<FilesTabHeaderButton
-									icon={RefreshCw}
-									label={t({
-										message: "Refresh",
-									})}
-									loading={bridge.isRefreshing}
-									onClick={() => void bridge.doRefresh()}
-								/>
-								<FilesTabHeaderButton
-									icon={FoldVertical}
-									label={t({
-										message: "Collapse All",
-									})}
-									onClick={collapseAll}
-								/>
 							</div>
-						</div>
+						)
 					}
 					renderContextMenu={renderContextMenu}
 				/>

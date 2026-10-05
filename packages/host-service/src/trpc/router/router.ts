@@ -1,3 +1,4 @@
+import { editorRouter } from "../../editor/format";
 import { router } from "../index";
 import { agentToolingRouter } from "./agent-tooling";
 import { agentsRouter } from "./agents";
@@ -12,6 +13,7 @@ import { githubRouter } from "./github";
 import { healthRouter } from "./health";
 import { hostRouter } from "./host";
 import { issuesRouter } from "./issues";
+import { lspRouter } from "./lsp/lsp";
 import { notificationsRouter } from "./notifications";
 import { pageWatchRouter } from "./page-watch";
 import { portsRouter } from "./ports";
@@ -31,6 +33,8 @@ import { workspaceCreationRouter } from "./workspace-creation";
 import { workspacesRouter } from "./workspaces";
 
 export const appRouter = router({
+	editor: editorRouter,
+	lsp: lspRouter,
 	branchIntegration: branchIntegrationRouter,
 	agents: agentsRouter,
 	agentTooling: agentToolingRouter,

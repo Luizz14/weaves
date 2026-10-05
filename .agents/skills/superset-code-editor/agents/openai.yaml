@@ -1,0 +1,4 @@
+interface:
+  display_name: "Editor e painéis do Superset"
+  short_description: "Manutenção do editor, LSP e painéis de projeto/Git"
+  default_prompt: "Use $superset-code-editor para manter ou evoluir o editor e os painéis associados deste projeto."

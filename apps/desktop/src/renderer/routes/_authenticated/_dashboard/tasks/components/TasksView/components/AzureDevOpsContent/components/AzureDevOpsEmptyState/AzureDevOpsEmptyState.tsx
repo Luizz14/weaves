@@ -1,16 +1,9 @@
 import { Trans } from "@lingui/react/macro";
 import { Button } from "@superset/ui/button";
+import { Link } from "@tanstack/react-router";
 import { VscAzureDevops } from "react-icons/vsc";
 
-type AzureDevOpsEmptyStateProps = {
-	onConnect: () => void;
-	canConnect: boolean;
-};
-
-export function AzureDevOpsEmptyState({
-	onConnect,
-	canConnect,
-}: AzureDevOpsEmptyStateProps) {
+export function AzureDevOpsEmptyState() {
 	return (
 		<div className="flex min-h-0 flex-1 items-center justify-center p-8">
 			<div className="flex max-w-md flex-col items-center text-center">
@@ -26,14 +19,11 @@ export function AzureDevOpsEmptyState({
 						worktrees and pull requests together.
 					</Trans>
 				</p>
-				<Button
-					type="button"
-					className="mt-5 h-10 transition-[transform,background-color,box-shadow] duration-150 active:not-disabled:scale-[0.96]"
-					disabled={!canConnect}
-					onClick={onConnect}
-				>
-					<VscAzureDevops />
-					<Trans>Connect Azure DevOps</Trans>
+				<Button asChild className="mt-5 h-10">
+					<Link to="/settings/integrations">
+						<VscAzureDevops />
+						<Trans>Open Integrations settings</Trans>
+					</Link>
 				</Button>
 			</div>
 		</div>

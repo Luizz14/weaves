@@ -2,7 +2,10 @@ import { describe, expect, test } from "bun:test";
 import type { Branch, ChangedFile } from "../../types";
 import type { GitStatusSnapshot } from "../git-status";
 import type { GitStatusPartial } from "../git-status-partial";
-import { GitStatusStore } from "./git-status-store";
+import {
+	GitStatusStore,
+	MAX_GIT_BASE_VARIANTS_PER_WORKSPACE,
+} from "./git-status-store";
 
 const BRANCH: Branch = {
 	name: "main",
@@ -392,5 +395,217 @@ describe("GitStatusStore", () => {
 		]);
 		expect(h.calls.full).toBe(1);
 		expect(h.calls.partial).toBe(1);
+	});
+});
+
+describe("GitStatusStore variant LRU", () => {
+	test("50 bases retain only the last eight while the common cache is preserved", async () => {
+		const store = new GitStatusStore();
+		store.attach("w");
+		const h = harness();
+		const common = await store.read({
+			workspaceId: "w",
+			baseBranch: null,
+			...h,
+		});
+		for (let i = 0; i < 50; i++)
+			await store.read({ workspaceId: "w", baseBranch: `base-${i}`, ...h });
+		expect(h.calls.full).toBe(51);
+		for (let i = 50 - MAX_GIT_BASE_VARIANTS_PER_WORKSPACE; i < 50; i++)
+			await store.read({ workspaceId: "w", baseBranch: `base-${i}`, ...h });
+		expect(h.calls.full).toBe(51);
+		expect(await store.read({ workspaceId: "w", baseBranch: null, ...h })).toBe(
+			common,
+		);
+		await store.read({ workspaceId: "w", baseBranch: "base-0", ...h });
+		expect(h.calls.full).toBe(52);
+		await store.read({ workspaceId: "w", baseBranch: "base-42", ...h });
+		expect(h.calls.full).toBe(53);
+	});
+
+	test("cache hits promote recency and eviction stays local to the workspace", async () => {
+		const store = new GitStatusStore();
+		store.attach("a");
+		store.attach("b");
+		const h = harness();
+		const sibling = await store.read({
+			workspaceId: "b",
+			baseBranch: "main",
+			...h,
+		});
+		for (let i = 0; i < MAX_GIT_BASE_VARIANTS_PER_WORKSPACE; i++)
+			await store.read({ workspaceId: "a", baseBranch: `base-${i}`, ...h });
+		await store.read({ workspaceId: "a", baseBranch: "base-0", ...h });
+		await store.read({ workspaceId: "a", baseBranch: "new", ...h });
+		expect(h.calls.full).toBe(10);
+		await store.read({ workspaceId: "a", baseBranch: "base-0", ...h });
+		expect(h.calls.full).toBe(10);
+		await store.read({ workspaceId: "a", baseBranch: "base-1", ...h });
+		expect(h.calls.full).toBe(11);
+		expect(
+			await store.read({ workspaceId: "b", baseBranch: "main", ...h }),
+		).toBe(sibling);
+		expect(h.calls.full).toBe(11);
+	});
+
+	test("busy and queued readers survive pressure and keep changes arriving during the full read", async () => {
+		const store = new GitStatusStore();
+		store.attach("w");
+		let release!: () => void, started!: () => void;
+		const gate = new Promise<void>((resolve) => {
+			release = resolve;
+		});
+		const running = new Promise<void>((resolve) => {
+			started = resolve;
+		});
+		const h = harness({
+			full: () => snapshot([file("a.ts")]),
+			partial: (paths) => ({ paths, unstaged: [file("b.ts")] }),
+		});
+		const first = store.read({
+			workspaceId: "w",
+			baseBranch: "busy",
+			computeFull: async () => {
+				started();
+				await gate;
+				return h.computeFull();
+			},
+			computePartial: h.computePartial,
+		});
+		await running;
+		const queued = store.read({
+			workspaceId: "w",
+			baseBranch: "busy",
+			computeFull: h.computeFull,
+			computePartial: h.computePartial,
+		});
+		for (let i = 0; i < 20; i++)
+			await store.read({ workspaceId: "w", baseBranch: `base-${i}`, ...h });
+		store.recordChange("w", ["b.ts"]);
+		release();
+		await first;
+		expect((await queued).unstaged.map((row) => row.path)).toEqual([
+			"a.ts",
+			"b.ts",
+		]);
+		expect(h.calls.full).toBe(21);
+		expect(h.seen).toEqual([["b.ts"]]);
+		await store.read({ workspaceId: "w", baseBranch: "busy", ...h });
+		expect(h.calls.full).toBe(21);
+	});
+
+	test("temporary overflow settles to the cap while retained variants still receive partial updates", async () => {
+		const store = new GitStatusStore();
+		store.attach("w");
+		let release!: () => void,
+			started!: () => void,
+			running = 0;
+		const count = MAX_GIT_BASE_VARIANTS_PER_WORKSPACE + 4;
+		const gate = new Promise<void>((resolve) => {
+			release = resolve;
+		});
+		const allRunning = new Promise<void>((resolve) => {
+			started = resolve;
+		});
+		const h = harness();
+		const reads = Array.from({ length: count }, (_, i) =>
+			store.read({
+				workspaceId: "w",
+				baseBranch: `base-${i}`,
+				computeFull: async () => {
+					if (++running === count) started();
+					await gate;
+					return h.computeFull();
+				},
+				computePartial: h.computePartial,
+			}),
+		);
+		await allRunning;
+		store.recordChange("w", ["during.ts"]);
+		release();
+		await Promise.all(reads);
+		for (let i = count - MAX_GIT_BASE_VARIANTS_PER_WORKSPACE; i < count; i++)
+			await store.read({ workspaceId: "w", baseBranch: `base-${i}`, ...h });
+		expect(h.calls.full).toBe(count);
+		expect(h.calls.partial).toBe(MAX_GIT_BASE_VARIANTS_PER_WORKSPACE);
+		expect(
+			h.seen.every((paths) => paths.length === 1 && paths[0] === "during.ts"),
+		).toBe(true);
+		await store.read({ workspaceId: "w", baseBranch: "base-0", ...h });
+		expect(h.calls.full).toBe(count + 1);
+	});
+
+	test("failed reads release protection and do not break the common cache", async () => {
+		const store = new GitStatusStore();
+		store.attach("w");
+		const h = harness();
+		const common = await store.read({
+			workspaceId: "w",
+			baseBranch: null,
+			...h,
+		});
+		await expect(
+			store.read({
+				workspaceId: "w",
+				baseBranch: "failed",
+				computeFull: async () => {
+					throw new Error("failed walk");
+				},
+				computePartial: h.computePartial,
+			}),
+		).rejects.toThrow("failed walk");
+		for (let i = 0; i < MAX_GIT_BASE_VARIANTS_PER_WORKSPACE; i++)
+			await store.read({ workspaceId: "w", baseBranch: `base-${i}`, ...h });
+		for (let i = 0; i < MAX_GIT_BASE_VARIANTS_PER_WORKSPACE; i++) {
+			await store.read({ workspaceId: "w", baseBranch: `base-${i}`, ...h });
+		}
+		expect(h.calls.full).toBe(MAX_GIT_BASE_VARIANTS_PER_WORKSPACE + 1);
+		expect(await store.read({ workspaceId: "w", baseBranch: null, ...h })).toBe(
+			common,
+		);
+		store.recordChange("w", ["changed.ts"]);
+		await store.read({ workspaceId: "w", baseBranch: null, ...h });
+		expect(h.calls.full).toBe(MAX_GIT_BASE_VARIANTS_PER_WORKSPACE + 1);
+		expect(h.seen).toEqual([["changed.ts"]]);
+		await store.read({ workspaceId: "w", baseBranch: "failed", ...h });
+		expect(h.calls.full).toBe(MAX_GIT_BASE_VARIANTS_PER_WORKSPACE + 2);
+	});
+
+	test("drop and reattach during a read cannot replace the new workspace generation", async () => {
+		const store = new GitStatusStore();
+		store.attach("w");
+		let release!: () => void, started!: () => void;
+		const gate = new Promise<void>((resolve) => {
+			release = resolve;
+		});
+		const running = new Promise<void>((resolve) => {
+			started = resolve;
+		});
+		const h = harness();
+		const old = store.read({
+			workspaceId: "w",
+			baseBranch: "main",
+			computeFull: async () => {
+				started();
+				await gate;
+				return snapshot([file("old.ts")]);
+			},
+			computePartial: h.computePartial,
+		});
+		await running;
+		store.drop("w");
+		store.attach("w");
+		const current = await store.read({
+			workspaceId: "w",
+			baseBranch: "main",
+			computeFull: async () => snapshot([file("current.ts")]),
+			computePartial: h.computePartial,
+		});
+		release();
+		await old;
+		expect(
+			await store.read({ workspaceId: "w", baseBranch: "main", ...h }),
+		).toBe(current);
+		expect(h.calls.full).toBe(0);
 	});
 });

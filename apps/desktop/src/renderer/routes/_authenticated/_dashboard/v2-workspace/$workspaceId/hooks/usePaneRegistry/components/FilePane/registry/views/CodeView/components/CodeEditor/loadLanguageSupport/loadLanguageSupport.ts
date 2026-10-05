@@ -121,6 +121,11 @@ export async function loadLanguageSupport(
 				() => import("@codemirror/legacy-modes/mode/clike"),
 				"kotlin",
 			);
+		case "dart":
+			return loadLegacyLanguage(
+				() => import("@codemirror/legacy-modes/mode/clike"),
+				"dart",
+			);
 		default:
 			return null;
 	}

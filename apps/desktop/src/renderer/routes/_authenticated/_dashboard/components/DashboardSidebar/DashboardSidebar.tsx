@@ -354,6 +354,7 @@ export function DashboardSidebar({
 										className="flex min-h-0 flex-1 flex-col"
 									>
 										<OverflowFadeContainer
+											data-sidebar-scroll-container
 											fadeEdges={["top", "bottom"]}
 											className="flex-1 overflow-x-hidden overflow-y-auto hide-scrollbar"
 										>

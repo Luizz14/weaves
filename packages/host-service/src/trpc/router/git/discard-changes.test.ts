@@ -57,6 +57,69 @@ describe("gitRouter.discardChanges", () => {
 		rmSync(root, { recursive: true, force: true });
 	});
 
+	test("discarding a partially staged file preserves the index", async () => {
+		await writeFile(join(repo, "tracked.txt"), "staged content\n");
+		await git.add("tracked.txt");
+		const stagedBefore = await git.raw(["diff", "--cached"]);
+		await writeFile(join(repo, "tracked.txt"), "unstaged content\n");
+		await createCaller(repo).discardChanges({
+			workspaceId: "ws",
+			filePath: "tracked.txt",
+		});
+		expect(await readFile(join(repo, "tracked.txt"), "utf8")).toBe(
+			"staged content\n",
+		);
+		expect(await git.raw(["diff", "--cached"])).toBe(stagedBefore);
+		expect(await git.raw(["diff"])).toBe("");
+	});
+	test("discarding edits to a staged new file keeps the staged addition", async () => {
+		await writeFile(join(repo, "new.txt"), "staged new\n");
+		await git.add("new.txt");
+		const stagedBefore = await git.raw(["diff", "--cached"]);
+		await writeFile(join(repo, "new.txt"), "unstaged new\n");
+		await createCaller(repo).discardChanges({
+			workspaceId: "ws",
+			filePath: "new.txt",
+		});
+		expect(await readFile(join(repo, "new.txt"), "utf8")).toBe("staged new\n");
+		expect(await git.raw(["diff", "--cached"])).toBe(stagedBefore);
+	});
+	test("discarding edits after a staged rename preserves the rename", async () => {
+		await git.raw(["mv", "tracked.txt", "renamed.txt"]);
+		const stagedBefore = await git.raw(["diff", "--cached"]);
+		const indexed = await git.raw(["show", ":renamed.txt"]);
+		await writeFile(join(repo, "renamed.txt"), "unstaged rename edit\n");
+		await createCaller(repo).discardChanges({
+			workspaceId: "ws",
+			filePath: "renamed.txt",
+		});
+		expect(await readFile(join(repo, "renamed.txt"), "utf8")).toBe(indexed);
+		expect(await git.raw(["diff", "--cached"])).toBe(stagedBefore);
+	});
+
+	test("unmerged files reject discard without changing the conflict or index", async () => {
+		await git.checkoutLocalBranch("side");
+		await writeFile(join(repo, "tracked.txt"), "side change\n");
+		await git.add("tracked.txt");
+		await git.raw(["commit", "-m", "side"]);
+		await git.checkout("main");
+		await writeFile(join(repo, "tracked.txt"), "main change\n");
+		await git.add("tracked.txt");
+		await git.raw(["commit", "-m", "main"]);
+		await git.raw(["merge", "side"]).catch(() => "");
+		const conflict = await readFile(join(repo, "tracked.txt"), "utf8");
+		const index = await git.raw(["ls-files", "-u"]);
+		expect(index.length).toBeGreaterThan(0);
+		await expect(
+			createCaller(repo).discardChanges({
+				workspaceId: "ws",
+				filePath: "tracked.txt",
+			}),
+		).rejects.toThrow();
+		expect(await readFile(join(repo, "tracked.txt"), "utf8")).toBe(conflict);
+		expect(await git.raw(["ls-files", "-u"])).toBe(index);
+	});
+
 	test("forces the next status read to walk in full", async () => {
 		const workspaceId = "ws-discard-invalidates";
 		gitStatusStore.attach(workspaceId);
@@ -129,7 +192,7 @@ describe("gitRouter.discardChanges", () => {
 		expect(existsSync(join(repo, "scratch.txt"))).toBe(false);
 	});
 
-	test("restores a tracked file from HEAD instead of deleting it", async () => {
+	test("restores a tracked file from the index instead of deleting it", async () => {
 		await writeFile(join(repo, "tracked.txt"), "local edit\n");
 
 		await createCaller(repo).discardChanges({

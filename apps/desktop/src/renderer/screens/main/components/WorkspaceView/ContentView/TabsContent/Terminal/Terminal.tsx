@@ -355,6 +355,16 @@ export const Terminal = memo(function Terminal({
 		defaultRestartCommandRef,
 	});
 
+	const ensureSearchAddon = useCallback(() => {
+		const cached = v1TerminalCache.get(paneId);
+		if (!xtermInstance || cached?.xterm !== xtermInstance)
+			return Promise.resolve(null);
+		return (
+			cached?.ensureSearchAddon?.() ??
+			Promise.resolve(cached?.searchAddon ?? null)
+		);
+	}, [paneId, xtermInstance]);
+
 	// Stream event handler registration — the subscription itself lives in
 	// v1TerminalCache and stays alive across mount/unmount cycles so data
 	// keeps flowing to xterm even while the tab is hidden.
@@ -454,6 +464,7 @@ export const Terminal = memo(function Terminal({
 		>
 			<TerminalSearch
 				searchAddon={searchAddonRef.current}
+				ensureSearchAddon={ensureSearchAddon}
 				isOpen={isSearchOpen}
 				onClose={() => setIsSearchOpen(false)}
 			/>

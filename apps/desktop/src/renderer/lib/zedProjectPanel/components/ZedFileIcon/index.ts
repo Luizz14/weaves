@@ -1,0 +1,1 @@
+export { ZedFileIcon } from "./ZedFileIcon";

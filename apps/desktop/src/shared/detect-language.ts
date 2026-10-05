@@ -12,6 +12,8 @@ const languageByExtension = new Map(
 		// JavaScript/TypeScript
 		ts: "typescript",
 		tsx: "typescript",
+		mts: "typescript",
+		cts: "typescript",
 		js: "javascript",
 		jsx: "javascript",
 		mjs: "javascript",
@@ -27,9 +29,12 @@ const languageByExtension = new Map(
 
 		// Data formats
 		json: "json",
+		jsonc: "json",
 		yaml: "yaml",
 		yml: "yaml",
 		xml: "xml",
+		xsd: "xml",
+		xsl: "xml",
 		toml: "toml",
 
 		// Markdown/Documentation
@@ -53,6 +58,8 @@ const languageByExtension = new Map(
 		rs: "rust",
 		java: "java",
 		kt: "kotlin",
+		kts: "kotlin",
+		dart: "dart",
 		swift: "swift",
 		c: "c",
 		cpp: "cpp",

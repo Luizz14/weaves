@@ -14,6 +14,7 @@ import { useOpenNewWorkspace } from "renderer/hooks/useOpenNewWorkspace";
 import { useQuickCreateWorkspace } from "renderer/hooks/useQuickCreateWorkspace";
 import { useHotkey } from "renderer/hotkeys";
 import { electronTrpc } from "renderer/lib/electron-trpc";
+import { markRendererStartup } from "renderer/lib/startup-diagnostics";
 import { DashboardSidebar } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar";
 import { DashboardSidebarPortsProvider } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/providers/DashboardSidebarPortsProvider";
 import { PortForwardsProvider } from "renderer/routes/_authenticated/_dashboard/components/DashboardSidebar/providers/PortForwardsProvider";
@@ -53,6 +54,11 @@ type DeleteTarget = {
 };
 
 function DashboardLayout() {
+	useEffect(() => {
+		if (!window.App?.startupDiagnostics) return;
+		const timer = setTimeout(() => markRendererStartup("shell-interactive"), 0);
+		return () => clearTimeout(timer);
+	}, []);
 	const navigate = useNavigate();
 	const location = useLocation();
 	const openNewWorkspace = useOpenNewWorkspace();

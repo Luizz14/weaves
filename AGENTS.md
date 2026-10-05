@@ -65,6 +65,17 @@ Details: `docs/plugins.md`.
 
 ## Orchestrating agents and workspaces
 
+### UI delegation
+
+For every implementation that creates or changes UI, layout, styling, or visual interactions,
+the coordinating agent must read `.agents/skills/delegate-ui-to-claude/SKILL.md` and delegate the
+UI slice to Claude Code through Superset. The coordinator owns the full feature, architectural
+decisions, non-UI implementation, integration, and final verification. This applies to mixed
+features as well as UI-only tasks; read-only reviews and planning do not launch a worker.
+
+A worker explicitly assigned `ROLE: UI_WORKER` implements its assigned slice directly and must
+not delegate again. Honor explicit user overrides and runtime restrictions on spawning agents.
+
 When work wants a fresh isolated environment, a parallel agent, or a long-running job, reach for the
 `superset` CLI instead of hand-rolling git worktrees or doing it all serially in this one. It's
 already on `PATH` in Superset terminals, and we dogfood it.
@@ -144,6 +155,8 @@ in the commit message and the PR.
 
 - `.agents/skills/`: CDP UI verification, DB migrations, ticket format, and more. Read the matching
   `SKILL.md` when a task fits its description.
+- `.agents/skills/superset-code-editor/SKILL.md`: maintaining and extending the v2 editor, LSP,
+  editor preferences/Zed import, project panel, and local Git changes panel.
 - `docs/agent-tooling.md`: where commands, skills, and per-agent-CLI config live.
 - `docs/plugins.md`: authoring, publishing, and installing marketplace plugins — the manifest
   contract, the credential proxy, and which files are generated.

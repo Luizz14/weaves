@@ -7,7 +7,7 @@ import type { MarkdownEditorAdapter } from "renderer/components/MarkdownRenderer
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import { FileSaveConflictDialog } from "renderer/screens/main/components/WorkspaceView/components/FileSaveConflictDialog";
 import { useWorkspaceFileEvents } from "renderer/screens/main/components/WorkspaceView/hooks/useWorkspaceFileEvents";
-import { useChangesStore } from "renderer/stores/changes";
+import { useDiffDisplayPreferences } from "renderer/stores/changes";
 import {
 	applyLoadedDocumentContent,
 	bindFileViewerSession,
@@ -138,7 +138,7 @@ export function FileViewerPane({
 		setViewMode: setDiffViewMode,
 		hideUnchangedRegions,
 		toggleHideUnchangedRegions,
-	} = useChangesStore();
+	} = useDiffDisplayPreferences();
 
 	const editorRef = useRef<CodeEditorAdapter | null>(null);
 	const markdownEditorRef = useRef<MarkdownEditorAdapter | null>(null);

@@ -10,7 +10,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { cn } from "@superset/ui/utils";
 import { workspaceTrpc } from "@superset/workspace-client";
 import { ChevronRight, Minus, Plus } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { LuUndo2 } from "react-icons/lu";
 import { AnimatedNumber } from "renderer/components/AnimatedNumber";
 import { DiscardConfirmDialog } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/DiscardConfirmDialog";
@@ -31,6 +31,9 @@ interface ChangesSectionProps {
 	deletions?: number;
 	stagingActions?: { kind: SectionKind; workspaceId: string };
 	children: ReactNode;
+	disabled?: boolean;
+	onStagingToggle?: () => void;
+	onPendingChange?: (pending: boolean) => void;
 }
 
 export function ChangesSection({
@@ -41,6 +44,9 @@ export function ChangesSection({
 	deletions = 0,
 	stagingActions,
 	children,
+	disabled = false,
+	onStagingToggle,
+	onPendingChange,
 }: ChangesSectionProps) {
 	const { t } = useLingui();
 	const collapsed = useV2ChangesSectionsStore(
@@ -51,12 +57,12 @@ export function ChangesSection({
 	const [showConfirm, setShowConfirm] = useState(false);
 	const utils = workspaceTrpc.useUtils();
 
-	const invalidate = () => {
+	const invalidate = async () => {
 		if (!stagingActions) return;
-		void utils.git.getStatus.invalidate({
+		await utils.git.getStatus.invalidate({
 			workspaceId: stagingActions.workspaceId,
 		});
-		void utils.git.getDiff.invalidate({
+		await utils.git.getDiff.invalidate({
 			workspaceId: stagingActions.workspaceId,
 		});
 	};
@@ -112,9 +118,18 @@ export function ChangesSection({
 		},
 	});
 
-	if (count === 0) return null;
+	const pending =
+		discardAllUnstaged.isPending ||
+		discardAllStaged.isPending ||
+		stageAll.isPending ||
+		unstageAll.isPending;
+	useEffect(() => {
+		onPendingChange?.(pending);
+	}, [pending, onPendingChange]);
+	if (count === 0 && !stagingActions) return null;
 
 	const runDiscardAll = () => {
+		if (disabled || pending) return;
 		if (!stagingActions) return;
 		const { kind, workspaceId } = stagingActions;
 		if (kind === "unstaged") {
@@ -125,6 +140,11 @@ export function ChangesSection({
 	};
 
 	const runStagingToggle = () => {
+		if (disabled || pending) return;
+		if (onStagingToggle) {
+			onStagingToggle();
+			return;
+		}
 		if (!stagingActions) return;
 		const { kind, workspaceId } = stagingActions;
 		if (kind === "unstaged") {
@@ -167,7 +187,7 @@ export function ChangesSection({
 			onOpenChange={(next) => setCollapsed(sectionKey, !next)}
 		>
 			<div className="flex items-center">
-				<CollapsibleTrigger className="flex min-w-0 flex-1 items-center gap-1.5 px-2 py-1 text-left text-xs hover:bg-accent/30">
+				<CollapsibleTrigger className="flex min-w-0 flex-1 items-center gap-1.5 px-2 h-7 text-left text-[15px] hover:bg-accent/30">
 					<ChevronRight
 						className={cn(
 							"size-3 shrink-0 text-muted-foreground transition-transform duration-150",
@@ -175,7 +195,7 @@ export function ChangesSection({
 						)}
 					/>
 					<span className="truncate font-medium">{title}</span>
-					<span className="shrink-0 text-[10px] text-muted-foreground">
+					<span className="shrink-0 text-xs text-muted-foreground">
 						<AnimatedNumber value={count} />
 					</span>
 					{(additions > 0 || deletions > 0) && (
@@ -199,6 +219,7 @@ export function ChangesSection({
 													message: "Discard all staged changes",
 												})
 									}
+									disabled={disabled || pending}
 									onClick={() => setShowConfirm(true)}
 									className="flex size-5 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-destructive"
 								>
@@ -214,6 +235,7 @@ export function ChangesSection({
 								<button
 									type="button"
 									aria-label={stagingToggleLabel}
+									disabled={disabled || pending}
 									onClick={runStagingToggle}
 									className="flex size-5 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground"
 								>

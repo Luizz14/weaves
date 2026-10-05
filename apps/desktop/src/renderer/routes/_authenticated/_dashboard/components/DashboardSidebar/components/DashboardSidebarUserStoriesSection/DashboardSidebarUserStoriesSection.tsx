@@ -37,7 +37,7 @@ export function DashboardSidebarUserStoriesSection({
 				label={t({ message: "User Stories" })}
 				section="userStories"
 			/>
-			<SidebarRevealList open={!isSectionCollapsed}>
+			<SidebarRevealList itemCount={stories.length} open={!isSectionCollapsed}>
 				{stories.map((story) => (
 					<SidebarRevealItem key={story.workItemId}>
 						<DashboardSidebarUserStoryFolder

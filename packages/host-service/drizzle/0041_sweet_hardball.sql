@@ -1,0 +1,1 @@
+ALTER TABLE `host_settings` ADD `lsp_settings_json` text;

@@ -8,6 +8,7 @@ import { PiTextAa } from "react-icons/pi";
 
 interface TerminalSearchProps {
 	searchAddon: SearchAddon | null;
+	ensureSearchAddon?: () => Promise<SearchAddon | null>;
 	isOpen: boolean;
 	onClose: () => void;
 }
@@ -22,11 +23,38 @@ const SEARCH_DECORATIONS: ISearchOptions["decorations"] = {
 };
 
 export function TerminalSearch({
-	searchAddon,
+	searchAddon: currentSearchAddon,
+	ensureSearchAddon,
 	isOpen,
 	onClose,
 }: TerminalSearchProps) {
 	const { _: translate } = useTranslation();
+
+	const [loadedSearch, setLoadedSearch] = useState<{
+		loader: typeof ensureSearchAddon;
+		addon: SearchAddon | null;
+	} | null>(null);
+	const searchAddon =
+		currentSearchAddon ??
+		(loadedSearch?.loader === ensureSearchAddon ? loadedSearch?.addon : null) ??
+		null;
+	useEffect(() => {
+		setLoadedSearch((current) =>
+			current?.loader === ensureSearchAddon ? current : null,
+		);
+		if (!isOpen || !ensureSearchAddon) return;
+		let active = true;
+		void ensureSearchAddon()
+			.then((addon) => {
+				if (active) setLoadedSearch({ loader: ensureSearchAddon, addon });
+			})
+			.catch((error) =>
+				console.warn("[terminal] Search addon unavailable", error),
+			);
+		return () => {
+			active = false;
+		};
+	}, [isOpen, ensureSearchAddon]);
 
 	const inputRef = useRef<HTMLInputElement>(null);
 	const [query, setQuery] = useState("");
@@ -92,11 +120,11 @@ export function TerminalSearch({
 
 	// Re-run search when case sensitivity changes
 	useEffect(() => {
-		if (searchAddon && query) {
+		if (isOpen && searchAddon && query) {
 			const found = searchAddon.findNext(query, searchOptions);
 			setMatchCount(found ? 1 : 0);
 		}
-	}, [searchAddon, query, searchOptions]);
+	}, [isOpen, searchAddon, query, searchOptions]);
 
 	const handleKeyDown = (e: React.KeyboardEvent) => {
 		if (e.key === "Escape") {
@@ -131,7 +159,7 @@ export function TerminalSearch({
 				placeholder={translate(msg({ message: "Find" }))}
 				className="h-6 min-w-0 w-28 flex-shrink bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
 			/>
-			{matchCount === 0 && query && (
+			{searchAddon && matchCount === 0 && query && (
 				<span className="text-xs text-muted-foreground whitespace-nowrap px-1">
 					No results
 				</span>

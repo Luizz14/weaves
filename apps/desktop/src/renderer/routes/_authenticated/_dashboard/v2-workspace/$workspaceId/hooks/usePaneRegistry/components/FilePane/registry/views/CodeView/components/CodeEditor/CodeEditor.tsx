@@ -17,18 +17,22 @@ import {
 	drawSelection,
 	dropCursor,
 	EditorView,
-	highlightActiveLine,
-	highlightActiveLineGutter,
 	highlightSpecialChars,
 	keymap,
-	lineNumbers,
 } from "@codemirror/view";
 import { colorPicker } from "@replit/codemirror-css-color-picker";
+import { resolveEditorSettings } from "@superset/shared/editor-settings";
+import type { Theme } from "@superset/shared/themes";
 import { cn } from "@superset/ui/utils";
 import { useQuery } from "@tanstack/react-query";
-import { type MutableRefObject, useEffect, useRef } from "react";
+import { type MutableRefObject, useEffect, useMemo, useRef } from "react";
+import { useEditorSettings } from "renderer/hooks/useEditorSettings";
 import { FONT_SETTINGS_QUERY_KEY } from "renderer/lib/font-settings";
 import { electronTrpcClient } from "renderer/lib/trpc-client";
+import type { SharedFileDocument } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/fileDocumentStore";
+import type { EditorLspStatus } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/coordinator";
+import { editorPreferenceExtensions } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/editorExtensions";
+import { useLspCoordinator } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/LspProvider";
 import { useResolvedTheme } from "renderer/stores/theme";
 import {
 	type CodeEditorAdapter,
@@ -43,6 +47,8 @@ import { loadLanguageSupport } from "./loadLanguageSupport";
 import { getCodeSyntaxHighlighting } from "./syntax-highlighting";
 
 interface CodeEditorProps {
+	document?: SharedFileDocument;
+	onLspStatus?: (status: EditorLspStatus) => void;
 	value: string;
 	language: string;
 	readOnly?: boolean;
@@ -59,6 +65,8 @@ interface CodeEditorProps {
 }
 
 export function CodeEditor({
+	document,
+	onLspStatus,
 	value,
 	language,
 	readOnly = false,
@@ -75,6 +83,10 @@ export function CodeEditor({
 	const languageCompartment = useRef(new Compartment()).current;
 	const themeCompartment = useRef(new Compartment()).current;
 	const editableCompartment = useRef(new Compartment()).current;
+	const lspCompartment = useRef(new Compartment()).current;
+	const lsp = useLspCoordinator();
+	const onLspStatusRef = useRef(onLspStatus);
+	onLspStatusRef.current = onLspStatus;
 	const onChangeRef = useRef(onChange);
 	const onSaveRef = useRef(onSave);
 	const onScrollPositionChangeRef = useRef(onScrollPositionChange);
@@ -92,7 +104,25 @@ export function CodeEditor({
 	const editorLetterSpacing = fontSettings?.editorLetterSpacing ?? undefined;
 	const editorFontWeight = fontSettings?.editorFontWeight ?? undefined;
 	const editorLigatures = fontSettings?.editorLigatures ?? undefined;
-	const activeTheme = useResolvedTheme();
+	const applicationTheme = useResolvedTheme();
+	const settings = useEditorSettings();
+	const preferences = useMemo(
+		() => resolveEditorSettings(settings, language),
+		[settings, language],
+	);
+	const palette = preferences.appearance.palette;
+	const activeTheme: Theme = useMemo(
+		() =>
+			preferences.appearance.theme === "custom" && palette
+				? {
+						...applicationTheme,
+						type: palette.type,
+						editor: { colors: palette.colors, syntax: palette.syntax },
+					}
+				: applicationTheme,
+		[applicationTheme, palette, preferences.appearance.theme],
+	);
+	const preferencesCompartment = useRef(new Compartment()).current;
 
 	onChangeRef.current = onChange;
 	onSaveRef.current = onSave;
@@ -121,8 +151,9 @@ export function CodeEditor({
 		const state = EditorState.create({
 			doc: value,
 			extensions: [
-				lineNumbers(),
-				highlightActiveLineGutter(),
+				preferencesCompartment.of(
+					editorPreferenceExtensions(preferences.editing),
+				),
 				highlightSpecialChars(),
 				history(),
 				foldGutter({ markerDOM: buildFoldChevron }),
@@ -132,7 +163,6 @@ export function CodeEditor({
 				EditorState.allowMultipleSelections.of(true),
 				indentOnInput(),
 				bracketMatching(),
-				highlightActiveLine(),
 				highlightSelectionMatches(),
 				colorPicker,
 				contourSelectionLayer,
@@ -168,6 +198,7 @@ export function CodeEditor({
 					),
 				]),
 				languageCompartment.of([]),
+				lspCompartment.of([]),
 				updateListener,
 			],
 		});
@@ -214,6 +245,47 @@ export function CodeEditor({
 			viewRef.current = null;
 		};
 	}, []);
+
+	useEffect(() => {
+		const view = viewRef.current;
+		if (
+			!view ||
+			!document ||
+			!lsp ||
+			readOnly ||
+			!preferences.enableLanguageServer
+		) {
+			onLspStatusRef.current?.(null);
+			return;
+		}
+		const unregister = lsp.registerView(document.absolutePath, view);
+		const detach = lsp.attach(document, view, lspCompartment, (status) =>
+			onLspStatusRef.current?.(status),
+		);
+		return () => {
+			detach();
+			unregister();
+			if (viewRef.current === view)
+				view.dispatch({ effects: lspCompartment.reconfigure([]) });
+		};
+	}, [
+		document,
+		document?.absolutePath,
+		lsp,
+		lspCompartment,
+		readOnly,
+		preferences.enableLanguageServer,
+	]);
+
+	useEffect(() => {
+		const view = viewRef.current;
+		if (view)
+			view.dispatch({
+				effects: preferencesCompartment.reconfigure(
+					editorPreferenceExtensions(preferences.editing),
+				),
+			});
+	}, [preferences.editing, preferencesCompartment]);
 
 	useEffect(() => {
 		const view = viewRef.current;

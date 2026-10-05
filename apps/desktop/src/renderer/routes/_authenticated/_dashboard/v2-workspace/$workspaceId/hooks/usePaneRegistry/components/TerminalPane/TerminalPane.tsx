@@ -549,6 +549,19 @@ export function TerminalPane({
 		[terminalId, terminalInstanceId, connectionState],
 	);
 
+	const ensureSearchAddon = useCallback(() => {
+		if (
+			!terminal ||
+			terminalRuntimeRegistry.getTerminal(terminalId, terminalInstanceId) !==
+				terminal
+		)
+			return Promise.resolve(null);
+		return terminalRuntimeRegistry.ensureSearchAddon(
+			terminalId,
+			terminalInstanceId,
+		);
+	}, [terminalId, terminalInstanceId, terminal]);
+
 	const [isDropActive, setIsDropActive] = useState(false);
 	const dragCounterRef = useRef(0);
 
@@ -634,6 +647,7 @@ export function TerminalPane({
 			<div className="relative min-h-0 flex-1 overflow-hidden">
 				<TerminalSearch
 					searchAddon={searchAddon}
+					ensureSearchAddon={ensureSearchAddon}
 					isOpen={isSearchOpen}
 					onClose={() => setIsSearchOpen(false)}
 				/>

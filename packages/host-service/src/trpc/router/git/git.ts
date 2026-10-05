@@ -537,7 +537,7 @@ export const gitRouter = router({
 			if (isUntracked) {
 				await removeFromWorktree(worktreePath, input.filePath);
 			} else {
-				await git.raw(["checkout", "HEAD", "--", input.filePath]);
+				await git.raw(["restore", "--worktree", "--", input.filePath]);
 			}
 			invalidateStatus(input.workspaceId);
 			return { success: true };

@@ -20,6 +20,7 @@ interface DocumentEntry {
 	savedContentText: string | null;
 	pendingSave: boolean;
 	saveError: Error | null;
+	formatWarning: string | null;
 	conflict: ConflictState | null;
 	orphaned: boolean;
 	hasExternalChange: boolean;
@@ -28,12 +29,47 @@ interface DocumentEntry {
 	refCount: number;
 	version: number;
 	subscribers: Set<() => void>;
+	saveSubscribers: Set<(content: string) => void>;
 }
 
 const DEFAULT_MAX_BYTES = 10 * 1024 * 1024;
 const BINARY_CHECK_SIZE = 8192;
 
 const entries = new Map<string, DocumentEntry>();
+const referencedDocuments = new Set<string>();
+export function hasDocumentReference(id: string) {
+	return referencedDocuments.has(id);
+}
+const documentListeners = new Set<(document: SharedFileDocument) => void>();
+const saveTransforms = new Map<
+	string,
+	(
+		content: string,
+		path: string,
+	) => Promise<{ content: string; warning?: string }>
+>();
+const saveTasks = new Map<string, Promise<SaveResult>>();
+export function observeDocuments(
+	listener: (document: SharedFileDocument) => void,
+) {
+	documentListeners.add(listener);
+	for (const entry of entries.values()) listener(createHandle(entry));
+	return () => {
+		documentListeners.delete(listener);
+	};
+}
+export function registerSaveTransform(
+	id: string,
+	transform: (
+		content: string,
+		path: string,
+	) => Promise<{ content: string; warning?: string }>,
+) {
+	saveTransforms.set(id, transform);
+	return () => {
+		if (saveTransforms.get(id) === transform) saveTransforms.delete(id);
+	};
+}
 
 function key(workspaceId: string, absolutePath: string): string {
 	return `${workspaceId}:${absolutePath}`;
@@ -174,6 +210,101 @@ async function fetchCurrentDiskContent(
 	}
 }
 
+async function saveEntry(
+	entry: DocumentEntry,
+	opts?: { force?: boolean; skipFormatting?: boolean },
+): Promise<SaveResult> {
+	if (entry.content.kind !== "text") {
+		return {
+			status: "error",
+			error: new Error("Cannot save non-text content"),
+		};
+	}
+	const client = entry.trpcClient;
+	let currentValue = entry.content.value;
+	const currentRevision = entry.content.revision;
+	entry.pendingSave = true;
+	entry.saveError = null;
+	notify(entry);
+	try {
+		const before = currentValue;
+		const path = entry.absolutePath;
+		entry.formatWarning = null;
+		const transform = opts?.skipFormatting
+			? undefined
+			: saveTransforms.get(entry.id);
+		if (transform) {
+			try {
+				const formatted = await transform(before, path);
+				if (
+					entry.content.kind === "text" &&
+					entry.content.value === before &&
+					entry.absolutePath === path
+				) {
+					currentValue = formatted.content;
+					entry.content = { ...entry.content, value: currentValue };
+					entry.formatWarning = formatted.warning ?? null;
+					notify(entry);
+				} else if (entry.content.kind === "text") {
+					currentValue = entry.content.value;
+					entry.formatWarning = "stale-result";
+				}
+			} catch {
+				if (entry.content.kind === "text") currentValue = entry.content.value;
+				entry.formatWarning = "format-failed";
+			}
+		}
+		const result = await client.filesystem.writeFile.mutate({
+			workspaceId: entry.workspaceId,
+			absolutePath: entry.absolutePath,
+			content: currentValue,
+			encoding: "utf-8",
+			precondition:
+				opts?.force || !currentRevision
+					? undefined
+					: { ifMatch: currentRevision },
+		});
+
+		entry.pendingSave = false;
+
+		if (!result.ok) {
+			if (result.reason === "conflict") {
+				const diskContent = await fetchCurrentDiskContent(entry);
+				entry.conflict = { diskContent };
+				entry.hasExternalChange = true;
+				notify(entry);
+				return { status: "conflict", diskContent };
+			}
+			notify(entry);
+			return { status: result.reason };
+		}
+
+		if (entry.content.kind === "text") {
+			entry.content = {
+				...entry.content,
+				revision: result.revision,
+			};
+		}
+		entry.savedContentText = currentValue;
+		entry.conflict = null;
+		entry.hasExternalChange = false;
+		notify(entry);
+		for (const listener of entry.saveSubscribers) {
+			try {
+				listener(currentValue);
+			} catch (error) {
+				console.error("[file-document] Save listener failed", error);
+			}
+		}
+		return { status: "saved", revision: result.revision };
+	} catch (error) {
+		entry.pendingSave = false;
+		entry.saveError = error as Error;
+		notify(entry);
+		return { status: "error", error: error as Error };
+	}
+}
+
 function createHandle(entry: DocumentEntry): SharedFileDocument {
 	return {
 		get id() {
@@ -193,6 +324,9 @@ function createHandle(entry: DocumentEntry): SharedFileDocument {
 		},
 		get pendingSave() {
 			return entry.pendingSave;
+		},
+		get formatWarning() {
+			return entry.formatWarning;
 		},
 		get saveError() {
 			return entry.saveError;
@@ -219,60 +353,19 @@ function createHandle(entry: DocumentEntry): SharedFileDocument {
 			notify(entry);
 		},
 		async save(opts): Promise<SaveResult> {
-			if (entry.content.kind !== "text") {
-				return {
-					status: "error",
-					error: new Error("Cannot save non-text content"),
-				};
+			let previous = saveTasks.get(entry.id);
+			while (previous) {
+				await previous;
+				if (!computeDirty(entry) && entry.content.kind === "text")
+					return { status: "saved", revision: entry.content.revision };
+				previous = saveTasks.get(entry.id);
 			}
-			const client = entry.trpcClient;
-			const currentValue = entry.content.value;
-			const currentRevision = entry.content.revision;
-			entry.pendingSave = true;
-			entry.saveError = null;
-			notify(entry);
+			const task = saveEntry(entry, opts);
+			saveTasks.set(entry.id, task);
 			try {
-				const result = await client.filesystem.writeFile.mutate({
-					workspaceId: entry.workspaceId,
-					absolutePath: entry.absolutePath,
-					content: currentValue,
-					encoding: "utf-8",
-					precondition:
-						opts?.force || !currentRevision
-							? undefined
-							: { ifMatch: currentRevision },
-				});
-
-				entry.pendingSave = false;
-
-				if (!result.ok) {
-					if (result.reason === "conflict") {
-						const diskContent = await fetchCurrentDiskContent(entry);
-						entry.conflict = { diskContent };
-						entry.hasExternalChange = true;
-						notify(entry);
-						return { status: "conflict", diskContent };
-					}
-					notify(entry);
-					return { status: result.reason };
-				}
-
-				if (entry.content.kind === "text") {
-					entry.content = {
-						...entry.content,
-						revision: result.revision,
-					};
-				}
-				entry.savedContentText = currentValue;
-				entry.conflict = null;
-				entry.hasExternalChange = false;
-				notify(entry);
-				return { status: "saved", revision: result.revision };
-			} catch (error) {
-				entry.pendingSave = false;
-				entry.saveError = error as Error;
-				notify(entry);
-				return { status: "error", error: error as Error };
+				return await task;
+			} finally {
+				if (saveTasks.get(entry.id) === task) saveTasks.delete(entry.id);
 			}
 		},
 		async reload() {
@@ -315,6 +408,12 @@ function createHandle(entry: DocumentEntry): SharedFileDocument {
 		getVersion() {
 			return entry.version;
 		},
+		subscribeSaved(listener) {
+			entry.saveSubscribers.add(listener);
+			return () => {
+				entry.saveSubscribers.delete(listener);
+			};
+		},
 	};
 }
 
@@ -335,6 +434,7 @@ export function acquireDocument(
 			savedContentText: null,
 			pendingSave: false,
 			saveError: null,
+			formatWarning: null,
 			conflict: null,
 			orphaned: false,
 			hasExternalChange: false,
@@ -343,12 +443,16 @@ export function acquireDocument(
 			refCount: 0,
 			version: 0,
 			subscribers: new Set(),
+			saveSubscribers: new Set(),
 		};
 		entries.set(k, entry);
 		void loadEntry(entry);
 	}
 	entry.refCount += 1;
-	return createHandle(entry);
+	referencedDocuments.add(entry.id);
+	const handle = createHandle(entry);
+	for (const listener of documentListeners) listener(handle);
+	return handle;
 }
 
 export function releaseDocument(
@@ -359,6 +463,10 @@ export function releaseDocument(
 	const entry = entries.get(k);
 	if (!entry) return;
 	entry.refCount -= 1;
+	if (entry.refCount <= 0) {
+		referencedDocuments.delete(entry.id);
+		notify(entry);
+	}
 	if (entry.refCount <= 0 && !computeDirty(entry) && !entry.orphaned) {
 		entries.delete(k);
 	}

@@ -1,4 +1,4 @@
 export {
+	getSidebarRevealListVariants,
 	sidebarRevealItemVariants,
-	sidebarRevealListVariants,
 } from "./sidebarRevealVariants";
