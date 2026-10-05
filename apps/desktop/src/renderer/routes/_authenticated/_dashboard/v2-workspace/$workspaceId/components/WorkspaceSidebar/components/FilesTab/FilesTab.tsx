@@ -121,6 +121,11 @@ export function FilesTab({
 		initialExpansion: "closed",
 		search: false,
 		unsafeCSS: `${ZED_PANEL_CSS}
+[data-file-tree-virtualized-root][data-scroll-at-top="true"] [data-file-tree-virtualized-sticky] {
+	position: relative;
+	top: auto !important;
+	bottom: auto !important;
+}
 ${panel.icons ? '[data-item-type="folder"] [data-item-section="icon"] svg { transform: none !important; rotate: none !important; }' : ""}
 ${panel.indentGuides ? "" : '[data-item-section="spacing-item"] { opacity: 0 !important; }'}
 ${panel.boldFolders ? '[data-item-type="folder"] { font-weight: 600; }' : '[data-item-type="folder"] { font-weight: 400; }'}

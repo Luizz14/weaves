@@ -206,7 +206,7 @@ export const FileRow = memo(function FileRow({
 						{basename}
 					</span>
 					{dir && (
-						<span className="min-w-0 truncate text-xs text-muted-foreground">
+						<span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
 							{dir.replace(/\/$/, "")}
 						</span>
 					)}

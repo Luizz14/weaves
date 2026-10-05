@@ -5,15 +5,18 @@ import type * as React from "react";
 
 import { cn } from "../../lib/utils";
 
+const MIN_TOOLTIP_DELAY_DURATION = 1000;
+
 function TooltipProvider({
-	delayDuration = 0,
+	delayDuration = MIN_TOOLTIP_DELAY_DURATION,
 	...props
 }: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
 	return (
 		<TooltipPrimitive.Provider
 			data-slot="tooltip-provider"
-			delayDuration={delayDuration}
 			{...props}
+			delayDuration={Math.max(delayDuration, MIN_TOOLTIP_DELAY_DURATION)}
+			skipDelayDuration={0}
 		/>
 	);
 }
