@@ -5,7 +5,22 @@ import type {
 	FlutterSessionSnapshot,
 } from "@superset/shared/flutter";
 import { useWorkspaceClient, workspaceTrpc } from "@superset/workspace-client";
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
+import {
+	LuCode,
+	LuMousePointer2,
+	LuPlay,
+	LuRefreshCw,
+	LuRotateCcw,
+	LuScan,
+	LuScrollText,
+	LuSquare,
+	LuZap,
+} from "react-icons/lu";
+import {
+	PaneActionButton,
+	PaneActionLayoutContext,
+} from "renderer/components/PaneActionButton";
 import { useWorkspace } from "renderer/routes/_authenticated/_dashboard/v2-workspace/providers/WorkspaceProvider";
 import { useLocalHostService } from "renderer/routes/_authenticated/providers/LocalHostServiceProvider";
 import { useStore } from "zustand";
@@ -16,11 +31,14 @@ import {
 } from "../../state/fileDocumentStore/fileDocumentStore";
 import { useLspCoordinator } from "../../state/lsp/LspProvider";
 import type { FilePaneData, PaneViewerData } from "../../types";
+import { FlutterControlsContext } from "./FlutterControlsContext";
 
 export function FlutterControls({
 	store,
+	children,
 }: {
 	store: StoreApi<WorkspaceStore<PaneViewerData>>;
+	children: ReactNode;
 }) {
 	const { t } = useLingui();
 	const { workspace } = useWorkspace();
@@ -241,146 +259,154 @@ export function FlutterControls({
 		}
 		state.addTab({ panes: [{ kind, data: { sessionId: session.id } }] });
 	}
-	if (!local || (!profiles.data?.length && !session)) return null;
-	return (
-		<div className="flex flex-col items-center gap-1 p-2 text-xs">
-			<div className="flex max-w-full flex-wrap items-center gap-2 surface-outline rounded-xl border-none bg-background px-3 py-2 shadow-[0_8px_32px_#1a1a1a14]">
-				<select
-					aria-label={t({ message: "Flutter configuration" })}
-					className="max-w-56 bg-background"
-					value={active ? "active-session" : (selected?.id ?? "")}
-					disabled={!!active || busy}
-					onChange={(event) => setProfileId(event.target.value)}
-				>
-					{active && (
-						<option value="active-session">{session.profileName}</option>
-					)}
-					{profiles.data?.map((profile) => (
-						<option key={profile.id} value={profile.id}>
-							{profile.name}
-							{profile.diagnostics.length ? " ⚠" : ""}
-						</option>
-					))}
-				</select>
-				<select
-					aria-label={t({ message: "Flutter device" })}
-					className="max-w-40 bg-background"
-					value={active ? session.deviceId : (selected?.deviceId ?? deviceId)}
-					disabled={!!active || busy || !!selected?.deviceId}
-					onChange={(event) => setDeviceId(event.target.value)}
-				>
-					{active && (
-						<option value={session.deviceId}>{session.deviceId}</option>
-					)}
-					<option value="">
-						<Trans>Select device</Trans>
-					</option>
-					{devices.data?.map((device) => (
-						<option value={device.id} key={device.id}>
-							{device.name}
-						</option>
-					))}
-				</select>
-				<button
-					type="button"
-					onClick={() => void devices.refetch()}
-					disabled={!!active || busy}
-				>
-					<Trans>Refresh devices</Trans>
-				</button>
-				{active ? (
-					<>
-						<span>{phaseLabels[session.phase]}</span>
-						<button
-							type="button"
-							disabled={
-								busy || session.phase !== "running" || !session.canReload
+	const content =
+		!local || (!profiles.data?.length && !session) ? null : (
+			<PaneActionLayoutContext.Provider value={true}>
+				<div className="flex max-h-[60vh] min-w-0 flex-col gap-1 overflow-y-auto text-xs">
+					<div className="flex min-w-0 flex-col gap-0.5">
+						<select
+							aria-label={t({ message: "Flutter configuration" })}
+							className="mb-1 h-9 w-full min-w-0 rounded-lg border border-border bg-background px-3 text-xs disabled:opacity-50"
+							value={active ? "active-session" : (selected?.id ?? "")}
+							disabled={!!active || busy}
+							onChange={(event) => setProfileId(event.target.value)}
+						>
+							{active && (
+								<option value="active-session">{session.profileName}</option>
+							)}
+							{profiles.data?.map((profile) => (
+								<option key={profile.id} value={profile.id}>
+									{profile.name}
+									{profile.diagnostics.length ? " ⚠" : ""}
+								</option>
+							))}
+						</select>
+						<select
+							aria-label={t({ message: "Flutter device" })}
+							className="mb-1 h-9 w-full min-w-0 rounded-lg border border-border bg-background px-3 text-xs disabled:opacity-50"
+							value={
+								active ? session.deviceId : (selected?.deviceId ?? deviceId)
 							}
-							onClick={() => void run("reload")}
+							disabled={!!active || busy || !!selected?.deviceId}
+							onChange={(event) => setDeviceId(event.target.value)}
 						>
-							<Trans>Hot reload</Trans>
-						</button>
-						<button
-							type="button"
-							disabled={
-								busy || session.phase !== "running" || !session.canReload
-							}
-							onClick={() => void run("restart")}
+							{active && (
+								<option value={session.deviceId}>{session.deviceId}</option>
+							)}
+							<option value="">
+								<Trans>Select device</Trans>
+							</option>
+							{devices.data?.map((device) => (
+								<option value={device.id} key={device.id}>
+									{device.name}
+								</option>
+							))}
+						</select>
+						<PaneActionButton
+							label={t({ message: "Refresh devices" })}
+							icon={<LuRefreshCw className="size-4" />}
+							onClick={() => void devices.refetch()}
+							disabled={!!active || busy}
+						/>
+						{active ? (
+							<>
+								<output className="px-3 py-1.5 text-xs text-muted-foreground">
+									{phaseLabels[session.phase]}
+								</output>
+								<PaneActionButton
+									label={t({ message: "Hot reload" })}
+									icon={<LuZap className="size-4" />}
+									disabled={
+										busy || session.phase !== "running" || !session.canReload
+									}
+									onClick={() => void run("reload")}
+								/>
+								<PaneActionButton
+									label={t({ message: "Hot restart" })}
+									icon={<LuRotateCcw className="size-4" />}
+									disabled={
+										busy || session.phase !== "running" || !session.canReload
+									}
+									onClick={() => void run("restart")}
+								/>
+								<PaneActionButton
+									label={t({ message: "Stop" })}
+									icon={<LuSquare className="size-4" />}
+									disabled={busy}
+									onClick={() => void run("stop")}
+								/>
+								<PaneActionButton
+									label={t({ message: "Inspector" })}
+									icon={<LuScan className="size-4" />}
+									disabled={!session.canInspect}
+									onClick={() => open("flutter-inspector")}
+								/>
+								<PaneActionButton
+									label={t({ message: "Select widget" })}
+									icon={<LuMousePointer2 className="size-4" />}
+									aria-pressed={session.selectingWidget}
+									disabled={
+										busy || !session.canInspect || session.phase !== "running"
+									}
+									onClick={() => void run("select-widget")}
+								/>
+							</>
+						) : (
+							<PaneActionButton
+								label={t({ message: "Run Flutter" })}
+								icon={<LuPlay className="size-4" />}
+								disabled={
+									busy ||
+									!selected ||
+									!!selected.diagnostics.length ||
+									!(selected.deviceId ?? deviceId)
+								}
+								onClick={() => void run()}
+							/>
+						)}
+						{session && (
+							<PaneActionButton
+								label={t({ message: "Logs" })}
+								icon={<LuScrollText className="size-4" />}
+								onClick={() => open("flutter-output")}
+							/>
+						)}
+						{session?.location && (
+							<PaneActionButton
+								label={t({ message: "Open widget source" })}
+								icon={<LuCode className="size-4" />}
+								onClick={() => {
+									const target = session.location;
+									if (target)
+										void lsp?.revealFileLocation(
+											target.path,
+											target.line,
+											target.column,
+										);
+								}}
+							/>
+						)}
+					</div>
+					{error ||
+					devices.error ||
+					session?.error ||
+					selected?.diagnostics.length ? (
+						<div
+							role="alert"
+							className="break-words px-3 py-1.5 text-xs text-destructive"
 						>
-							<Trans>Hot restart</Trans>
-						</button>
-						<button
-							type="button"
-							disabled={busy}
-							onClick={() => void run("stop")}
-						>
-							<Trans>Stop</Trans>
-						</button>
-						<button
-							type="button"
-							disabled={!session.canInspect}
-							onClick={() => open("flutter-inspector")}
-						>
-							<Trans>Inspector</Trans>
-						</button>
-						<button
-							type="button"
-							aria-pressed={session.selectingWidget}
-							disabled={
-								busy || !session.canInspect || session.phase !== "running"
-							}
-							onClick={() => void run("select-widget")}
-						>
-							<Trans>Select widget</Trans>
-						</button>
-					</>
-				) : (
-					<button
-						type="button"
-						disabled={
-							busy ||
-							!selected ||
-							!!selected.diagnostics.length ||
-							!(selected.deviceId ?? deviceId)
-						}
-						onClick={() => void run()}
-					>
-						<Trans>Run Flutter</Trans>
-					</button>
-				)}
-				{session && (
-					<button type="button" onClick={() => open("flutter-output")}>
-						<Trans>Logs</Trans>
-					</button>
-				)}
-				{session?.location && (
-					<button
-						type="button"
-						onClick={() => {
-							const target = session.location;
-							if (target)
-								void lsp?.revealFileLocation(
-									target.path,
-									target.line,
-									target.column,
-								);
-						}}
-					>
-						<Trans>Open widget source</Trans>
-					</button>
-				)}
-			</div>
-			{error ||
-			devices.error ||
-			session?.error ||
-			selected?.diagnostics.length ? (
-				<div role="alert" className="max-w-full text-destructive">
-					{error ??
-						devices.error?.message ??
-						session?.error ??
-						selected?.diagnostics.join("; ")}
+							{error ??
+								devices.error?.message ??
+								session?.error ??
+								selected?.diagnostics.join("; ")}
+						</div>
+					) : null}
 				</div>
-			) : null}
-		</div>
+			</PaneActionLayoutContext.Provider>
+		);
+	return (
+		<FlutterControlsContext.Provider value={content}>
+			{children}
+		</FlutterControlsContext.Provider>
 	);
 }

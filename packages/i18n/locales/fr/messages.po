@@ -7215,6 +7215,9 @@ msgstr ""
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Des flottes d'agents planifient, implémentent, relisent et testent le travail des autres. Les humains fixent le cap, arbitrent les exceptions et portent le goût. L'unité d'attention humaine n'est plus la pull request. C'est la décision."
 
+msgid "Flutter"
+msgstr ""
+
 msgid "Flutter configuration"
 msgstr ""
 

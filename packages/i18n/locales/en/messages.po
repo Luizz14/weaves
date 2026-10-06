@@ -7215,6 +7215,9 @@ msgstr "Flat view"
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 
+msgid "Flutter"
+msgstr "Flutter"
+
 msgid "Flutter configuration"
 msgstr "Flutter configuration"
 

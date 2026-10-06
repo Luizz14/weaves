@@ -1,6 +1,6 @@
 # Flutter execution in desktop v2
 
-Flutter execution is available on local workspaces. Open a Flutter project (or a Dart file inside a nested Flutter project), select a launch configuration and a connected device, then choose **Run Flutter**. The toolbar provides hot reload, hot restart, stop, widget selection, Inspector and logs. Only one session can run per workspace.
+Flutter execution is available on local workspaces. Open a Flutter project (or a Dart file inside a nested Flutter project), select a launch configuration and a connected device, then choose **Run Flutter**. The Flutter tab in the workspace actions dock provides configuration/device selection, hot reload, hot restart, stop, widget selection, Inspector and logs. It is available when the local workspace has Flutter configurations or a session; closing the menu keeps session monitoring and save-triggered reload active. Only one session can run per workspace.
 
 ## Launch configurations
 
