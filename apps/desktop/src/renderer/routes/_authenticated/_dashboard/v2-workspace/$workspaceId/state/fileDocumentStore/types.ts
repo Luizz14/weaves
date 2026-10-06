@@ -20,6 +20,8 @@ export interface ConflictState {
 	diskContent: string | null;
 }
 
+export type SaveOrigin = "manual" | "autosave" | "flutter-action";
+
 export interface SharedFileDocument {
 	readonly id: string;
 	readonly workspaceId: string;
@@ -42,6 +44,7 @@ export interface SharedFileDocument {
 	save(opts?: {
 		force?: boolean;
 		skipFormatting?: boolean;
+		origin?: SaveOrigin;
 	}): Promise<SaveResult>;
 	reload(): Promise<void>;
 	loadUnlimited(): Promise<void>;

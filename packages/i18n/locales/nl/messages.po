@@ -7215,6 +7215,21 @@ msgstr ""
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Vloten van agents plannen, bouwen, reviewen en testen elkaars werk. Mensen bepalen de richting, beslechten uitzonderingen en bewaken de smaak. De eenheid van menselijke aandacht is niet langer de pull request. Het is de beslissing."
 
+msgid "Flutter configuration"
+msgstr ""
+
+msgid "Flutter device"
+msgstr ""
+
+msgid "Flutter Inspector"
+msgstr ""
+
+msgid "Flutter logs"
+msgstr ""
+
+msgid "Flutter session ended"
+msgstr ""
+
 msgid "Focus Chat Input"
 msgstr "Chatinvoer focussen"
 
@@ -7901,6 +7916,12 @@ msgstr "Gehost in de cloud"
 msgid "Hosts"
 msgstr "Hosts"
 
+msgid "Hot reload"
+msgstr ""
+
+msgid "Hot restart"
+msgstr ""
+
 msgid "Hotkey chip"
 msgstr "Sneltoetschip"
 
@@ -8256,6 +8277,12 @@ msgstr "Inzichten van het Superset-team over parallelle coding agents en product
 #. placeholder {0}: data.targetTitle
 msgid "Inspecting {0}"
 msgstr "{0} inspecteren"
+
+msgid "Inspector"
+msgstr ""
+
+msgid "Inspector is available for a running debug session"
+msgstr ""
 
 msgid "Install"
 msgstr "Installeren"
@@ -9185,6 +9212,9 @@ msgstr "Logoretentie — maandelijks"
 
 msgid "Logo updated"
 msgstr "Logo bijgewerkt"
+
+msgid "Logs"
+msgstr ""
 
 msgid "Long-horizon reliability crosses a threshold. Work assigned at 6pm is mergeable at 9am often enough that not scheduling the overnight shift feels like leaving a factory idle."
 msgstr "Betrouwbaarheid over lange horizon overschrijdt een drempel. Werk dat om 18.00 uur wordt toegewezen is om 9.00 uur zo vaak mergebaar dat het niet inplannen van de nachtploeg voelt als een fabriek stil laten staan."
@@ -11314,6 +11344,9 @@ msgstr "De werkruimte van de run openen"
 msgid "open the task in a workspace"
 msgstr "de taak in een werkruimte openen"
 
+msgid "Open widget source"
+msgstr ""
+
 msgid "Open work item"
 msgstr ""
 
@@ -12683,6 +12716,9 @@ msgstr "Vernieuwen"
 msgid "Refresh Azure DevOps board"
 msgstr "Refresh Azure DevOps board"
 
+msgid "Refresh devices"
+msgstr ""
+
 msgid "Refresh GitHub issues"
 msgstr "GitHub-issues vernieuwen"
 
@@ -12757,6 +12793,9 @@ msgstr "Herlaad Superset om de lijst met werkruimtes te verversen."
 
 msgid "Reload window"
 msgstr "Venster herladen"
+
+msgid "Reloading"
+msgstr ""
 
 msgid "Relocate"
 msgstr "Verplaatsen"
@@ -13153,6 +13192,9 @@ msgstr "Gesprek oplossen"
 msgid "Resolve Conversations to Merge"
 msgstr "Los gesprekken op om te mergen"
 
+msgid "Resolve file conflicts before running Flutter"
+msgstr ""
+
 msgid "resolve the workspace path"
 msgstr "het pad van de werkruimte bepalen"
 
@@ -13508,6 +13550,9 @@ msgstr "Voer automatiseringen uit wanneer Sentry-issues wijzigen."
 msgid "Run commands and navigate the application."
 msgstr "Opdrachten uitvoeren en door de app navigeren."
 
+msgid "Run Flutter"
+msgstr ""
+
 msgid "Run History"
 msgstr "Runs"
 
@@ -13621,6 +13666,9 @@ msgstr "Bespaar 25%"
 
 msgid "Save All"
 msgstr "Alles opslaan"
+
+msgid "Save all files before running Flutter"
+msgstr ""
 
 msgid "Save and test"
 msgstr "Opslaan en testen"
@@ -14072,6 +14120,9 @@ msgstr "Databronnen kiezen"
 msgid "Select default worktree location"
 msgstr "Standaardlocatie voor worktrees kiezen"
 
+msgid "Select device"
+msgstr ""
+
 msgid "Select Directory"
 msgstr "Kies map"
 
@@ -14137,6 +14188,9 @@ msgstr "Teams kiezen"
 
 msgid "Select terminal script directory"
 msgstr "Map voor terminalscript kiezen"
+
+msgid "Select widget"
+msgstr ""
 
 msgid "Select worktree location"
 msgstr "Locatie voor worktree kiezen"
@@ -15216,6 +15270,9 @@ msgstr "Run-commando van werkruimte stoppen"
 
 msgid "stopped"
 msgstr "gestopt"
+
+msgid "Stopping"
+msgstr ""
 
 msgid "Strikethrough"
 msgstr "Doorhalen"

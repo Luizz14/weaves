@@ -1,4 +1,5 @@
 import { editorRouter } from "../../editor/format";
+import { flutterRouter } from "../../flutter/router";
 import { ideContextRouter } from "../../ide-context/router";
 import { router } from "../index";
 import { agentToolingRouter } from "./agent-tooling";
@@ -36,6 +37,7 @@ import { workspacesRouter } from "./workspaces";
 export const appRouter = router({
 	ideContext: ideContextRouter,
 	editor: editorRouter,
+	flutter: flutterRouter,
 	lsp: lspRouter,
 	branchIntegration: branchIntegrationRouter,
 	agents: agentsRouter,

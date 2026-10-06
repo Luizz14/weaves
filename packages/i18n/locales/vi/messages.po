@@ -7215,6 +7215,21 @@ msgstr ""
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Các đội agent lên kế hoạch, triển khai, review và kiểm thử công việc của nhau. Con người định hướng, phân xử ngoại lệ và giữ gu thẩm mỹ. Đơn vị chú ý của con người không còn là pull request. Đó là quyết định."
 
+msgid "Flutter configuration"
+msgstr ""
+
+msgid "Flutter device"
+msgstr ""
+
+msgid "Flutter Inspector"
+msgstr ""
+
+msgid "Flutter logs"
+msgstr ""
+
+msgid "Flutter session ended"
+msgstr ""
+
 msgid "Focus Chat Input"
 msgstr "Focus ô nhập chat"
 
@@ -7901,6 +7916,12 @@ msgstr "Chạy trên cloud"
 msgid "Hosts"
 msgstr "Host"
 
+msgid "Hot reload"
+msgstr ""
+
+msgid "Hot restart"
+msgstr ""
+
 msgid "Hotkey chip"
 msgstr "Chip phím tắt"
 
@@ -8256,6 +8277,12 @@ msgstr "Góc nhìn từ đội ngũ Superset về coding agent chạy song song 
 #. placeholder {0}: data.targetTitle
 msgid "Inspecting {0}"
 msgstr "Đang kiểm tra {0}"
+
+msgid "Inspector"
+msgstr ""
+
+msgid "Inspector is available for a running debug session"
+msgstr ""
 
 msgid "Install"
 msgstr "Cài đặt"
@@ -9185,6 +9212,9 @@ msgstr "Giữ chân khách hàng — theo tháng"
 
 msgid "Logo updated"
 msgstr "Đã cập nhật logo"
+
+msgid "Logs"
+msgstr ""
 
 msgid "Long-horizon reliability crosses a threshold. Work assigned at 6pm is mergeable at 9am often enough that not scheduling the overnight shift feels like leaving a factory idle."
 msgstr "Độ tin cậy dài hạn vượt một ngưỡng. Việc giao lúc 6 giờ tối đủ thường xuyên là có thể merge lúc 9 giờ sáng, đến mức không xếp ca đêm giống như để nhà máy nằm không."
@@ -11314,6 +11344,9 @@ msgstr "Mở workspace của lần chạy"
 msgid "open the task in a workspace"
 msgstr "mở tác vụ trong một workspace"
 
+msgid "Open widget source"
+msgstr ""
+
 msgid "Open work item"
 msgstr ""
 
@@ -12683,6 +12716,9 @@ msgstr "Làm mới"
 msgid "Refresh Azure DevOps board"
 msgstr "Refresh Azure DevOps board"
 
+msgid "Refresh devices"
+msgstr ""
+
 msgid "Refresh GitHub issues"
 msgstr "Làm mới issue GitHub"
 
@@ -12757,6 +12793,9 @@ msgstr "Tải lại Superset để làm mới danh sách workspace."
 
 msgid "Reload window"
 msgstr "Tải lại cửa sổ"
+
+msgid "Reloading"
+msgstr ""
 
 msgid "Relocate"
 msgstr "Chuyển vị trí"
@@ -13153,6 +13192,9 @@ msgstr "Giải quyết cuộc thảo luận"
 msgid "Resolve Conversations to Merge"
 msgstr "Giải quyết thảo luận để merge"
 
+msgid "Resolve file conflicts before running Flutter"
+msgstr ""
+
 msgid "resolve the workspace path"
 msgstr "xác định đường dẫn workspace"
 
@@ -13508,6 +13550,9 @@ msgstr "Chạy tự động hóa khi issue Sentry thay đổi."
 msgid "Run commands and navigate the application."
 msgstr "Chạy lệnh và điều hướng trong ứng dụng."
 
+msgid "Run Flutter"
+msgstr ""
+
 msgid "Run History"
 msgstr "Lịch sử chạy"
 
@@ -13621,6 +13666,9 @@ msgstr "Tiết kiệm 25%"
 
 msgid "Save All"
 msgstr "Lưu tất cả"
+
+msgid "Save all files before running Flutter"
+msgstr ""
 
 msgid "Save and test"
 msgstr "Lưu và kiểm tra"
@@ -14072,6 +14120,9 @@ msgstr "Chọn nguồn dữ liệu"
 msgid "Select default worktree location"
 msgstr "Chọn vị trí worktree mặc định"
 
+msgid "Select device"
+msgstr ""
+
 msgid "Select Directory"
 msgstr "Chọn thư mục"
 
@@ -14137,6 +14188,9 @@ msgstr "Chọn nhóm"
 
 msgid "Select terminal script directory"
 msgstr "Chọn thư mục cho script terminal"
+
+msgid "Select widget"
+msgstr ""
 
 msgid "Select worktree location"
 msgstr "Chọn vị trí worktree"
@@ -15216,6 +15270,9 @@ msgstr "Dừng lệnh chạy của workspace"
 
 msgid "stopped"
 msgstr "đã dừng"
+
+msgid "Stopping"
+msgstr ""
 
 msgid "Strikethrough"
 msgstr "Gạch ngang"

@@ -42,7 +42,7 @@ export function EditorAutomation({ children }: { children: ReactNode }) {
 				)
 					return;
 				void document
-					.save({ skipFormatting: delayed })
+					.save({ skipFormatting: delayed, origin: "autosave" })
 					.catch((error) => console.error("[editor] Autosave failed", error));
 			};
 			const unregister = registerSaveTransform(

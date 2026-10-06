@@ -7215,6 +7215,21 @@ msgstr ""
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Ajan filoları planlar, uygular, birbirinin işini inceler ve test eder. İnsanlar yönü belirler, istisnalara hakemlik eder ve zevkin sahibi olur. İnsan dikkatinin birimi artık pull request değildir. Karardır."
 
+msgid "Flutter configuration"
+msgstr ""
+
+msgid "Flutter device"
+msgstr ""
+
+msgid "Flutter Inspector"
+msgstr ""
+
+msgid "Flutter logs"
+msgstr ""
+
+msgid "Flutter session ended"
+msgstr ""
+
 msgid "Focus Chat Input"
 msgstr "Sohbet girişine odaklan"
 
@@ -7901,6 +7916,12 @@ msgstr "Bulutta barındırılıyor"
 msgid "Hosts"
 msgstr "Host'lar"
 
+msgid "Hot reload"
+msgstr ""
+
+msgid "Hot restart"
+msgstr ""
+
 msgid "Hotkey chip"
 msgstr "Kısayol çipi"
 
@@ -8256,6 +8277,12 @@ msgstr "Superset ekibinden paralel kodlama ajanları ve geliştirici verimliliğ
 #. placeholder {0}: data.targetTitle
 msgid "Inspecting {0}"
 msgstr "{0} inceleniyor"
+
+msgid "Inspector"
+msgstr ""
+
+msgid "Inspector is available for a running debug session"
+msgstr ""
 
 msgid "Install"
 msgstr "Kur"
@@ -9185,6 +9212,9 @@ msgstr "Müşteri elde tutma — aylık"
 
 msgid "Logo updated"
 msgstr "Logo güncellendi"
+
+msgid "Logs"
+msgstr ""
 
 msgid "Long-horizon reliability crosses a threshold. Work assigned at 6pm is mergeable at 9am often enough that not scheduling the overnight shift feels like leaving a factory idle."
 msgstr "Uzun vadeli güvenilirlik bir eşiği aşar. Akşam 18.00'de verilen iş, sabah 09.00'da yeterince sık birleştirilebilir hâle gelir; gece vardiyasını planlamamak, fabrikayı boş bırakmak gibi hissettirir."
@@ -11314,6 +11344,9 @@ msgstr "Çalıştırmanın çalışma alanını aç"
 msgid "open the task in a workspace"
 msgstr "görevi çalışma alanında açma"
 
+msgid "Open widget source"
+msgstr ""
+
 msgid "Open work item"
 msgstr ""
 
@@ -12683,6 +12716,9 @@ msgstr "Yenile"
 msgid "Refresh Azure DevOps board"
 msgstr "Refresh Azure DevOps board"
 
+msgid "Refresh devices"
+msgstr ""
+
 msgid "Refresh GitHub issues"
 msgstr "GitHub issue'larını yenile"
 
@@ -12757,6 +12793,9 @@ msgstr "Çalışma alanı listesini yenilemek için Superset'i yeniden yükleyin
 
 msgid "Reload window"
 msgstr "Pencereyi yeniden yükle"
+
+msgid "Reloading"
+msgstr ""
 
 msgid "Relocate"
 msgstr "Taşı"
@@ -13153,6 +13192,9 @@ msgstr "Konuşmayı çöz"
 msgid "Resolve Conversations to Merge"
 msgstr "Birleştirmek için konuşmaları çözün"
 
+msgid "Resolve file conflicts before running Flutter"
+msgstr ""
+
 msgid "resolve the workspace path"
 msgstr "çalışma alanı yolunu çözümleme"
 
@@ -13508,6 +13550,9 @@ msgstr "Sentry issue'ları değiştiğinde otomasyon çalıştırın."
 msgid "Run commands and navigate the application."
 msgstr "Komutları çalıştırın ve uygulamada gezinin."
 
+msgid "Run Flutter"
+msgstr ""
+
 msgid "Run History"
 msgstr "Çalıştırma geçmişi"
 
@@ -13621,6 +13666,9 @@ msgstr "%25 tasarruf"
 
 msgid "Save All"
 msgstr "Tümünü kaydet"
+
+msgid "Save all files before running Flutter"
+msgstr ""
 
 msgid "Save and test"
 msgstr "Kaydet ve test et"
@@ -14072,6 +14120,9 @@ msgstr "Veri kaynaklarını seç"
 msgid "Select default worktree location"
 msgstr "Varsayılan worktree konumunu seçin"
 
+msgid "Select device"
+msgstr ""
+
 msgid "Select Directory"
 msgstr "Dizin seçin"
 
@@ -14137,6 +14188,9 @@ msgstr "Takımları seç"
 
 msgid "Select terminal script directory"
 msgstr "Terminal betiği dizinini seçin"
+
+msgid "Select widget"
+msgstr ""
 
 msgid "Select worktree location"
 msgstr "Worktree konumunu seçin"
@@ -15216,6 +15270,9 @@ msgstr "Çalışma alanı çalıştırma komutunu durdur"
 
 msgid "stopped"
 msgstr "durduruldu"
+
+msgid "Stopping"
+msgstr ""
 
 msgid "Strikethrough"
 msgstr "Üstü çizili"

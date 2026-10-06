@@ -7215,6 +7215,21 @@ msgstr ""
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "에이전트 플릿이 서로의 작업을 계획하고, 구현하고, 리뷰하고, 테스트합니다. 사람은 방향을 정하고, 예외를 중재하고, 안목을 책임집니다. 사람이 주의를 기울이는 단위는 더 이상 풀 리퀘스트가 아니라 의사 결정입니다."
 
+msgid "Flutter configuration"
+msgstr ""
+
+msgid "Flutter device"
+msgstr ""
+
+msgid "Flutter Inspector"
+msgstr ""
+
+msgid "Flutter logs"
+msgstr ""
+
+msgid "Flutter session ended"
+msgstr ""
+
 msgid "Focus Chat Input"
 msgstr "채팅 입력창 포커스"
 
@@ -7901,6 +7916,12 @@ msgstr "클라우드에서 호스팅됨"
 msgid "Hosts"
 msgstr "호스트"
 
+msgid "Hot reload"
+msgstr ""
+
+msgid "Hot restart"
+msgstr ""
+
 msgid "Hotkey chip"
 msgstr "단축키 칩"
 
@@ -8256,6 +8277,12 @@ msgstr "병렬 코딩 에이전트와 개발자 생산성에 대한 Superset 팀
 #. placeholder {0}: data.targetTitle
 msgid "Inspecting {0}"
 msgstr "{0} 검사 중"
+
+msgid "Inspector"
+msgstr ""
+
+msgid "Inspector is available for a running debug session"
+msgstr ""
 
 msgid "Install"
 msgstr "설치"
@@ -9185,6 +9212,9 @@ msgstr "고객사 리텐션 — 월별"
 
 msgid "Logo updated"
 msgstr "로고를 업데이트했습니다"
+
+msgid "Logs"
+msgstr ""
 
 msgid "Long-horizon reliability crosses a threshold. Work assigned at 6pm is mergeable at 9am often enough that not scheduling the overnight shift feels like leaving a factory idle."
 msgstr "장시간 작업의 신뢰성이 임계점을 넘습니다. 오후 6시에 맡긴 일이 오전 9시에 머지할 수 있는 상태로 나오는 경우가 충분히 잦아져서, 야간 근무를 잡지 않는 것이 공장을 놀리는 일처럼 느껴집니다."
@@ -11314,6 +11344,9 @@ msgstr "실행의 워크스페이스 열기"
 msgid "open the task in a workspace"
 msgstr "워크스페이스에서 작업을 열"
 
+msgid "Open widget source"
+msgstr ""
+
 msgid "Open work item"
 msgstr ""
 
@@ -12683,6 +12716,9 @@ msgstr "새로 고침"
 msgid "Refresh Azure DevOps board"
 msgstr "Refresh Azure DevOps board"
 
+msgid "Refresh devices"
+msgstr ""
+
 msgid "Refresh GitHub issues"
 msgstr "GitHub 이슈 새로 고침"
 
@@ -12757,6 +12793,9 @@ msgstr "워크스페이스 목록을 새로 고치려면 Superset을 다시 불�
 
 msgid "Reload window"
 msgstr "창 다시 로드"
+
+msgid "Reloading"
+msgstr ""
 
 msgid "Relocate"
 msgstr "이동"
@@ -13153,6 +13192,9 @@ msgstr "대화 해결"
 msgid "Resolve Conversations to Merge"
 msgstr "머지하려면 대화 해결"
 
+msgid "Resolve file conflicts before running Flutter"
+msgstr ""
+
 msgid "resolve the workspace path"
 msgstr "워크스페이스 경로를 확인할"
 
@@ -13508,6 +13550,9 @@ msgstr "Sentry 이슈가 바뀌면 자동화를 실행합니다."
 msgid "Run commands and navigate the application."
 msgstr "명령을 실행하고 앱을 탐색합니다."
 
+msgid "Run Flutter"
+msgstr ""
+
 msgid "Run History"
 msgstr "실행 기록"
 
@@ -13621,6 +13666,9 @@ msgstr "25% 절약"
 
 msgid "Save All"
 msgstr "모두 저장"
+
+msgid "Save all files before running Flutter"
+msgstr ""
 
 msgid "Save and test"
 msgstr "저장 및 테스트"
@@ -14072,6 +14120,9 @@ msgstr "데이터 소스 선택"
 msgid "Select default worktree location"
 msgstr "기본 worktree 위치 선택"
 
+msgid "Select device"
+msgstr ""
+
 msgid "Select Directory"
 msgstr "디렉터리 선택"
 
@@ -14137,6 +14188,9 @@ msgstr "팀 선택"
 
 msgid "Select terminal script directory"
 msgstr "터미널 스크립트 디렉터리 선택"
+
+msgid "Select widget"
+msgstr ""
 
 msgid "Select worktree location"
 msgstr "worktree 위치 선택"
@@ -15216,6 +15270,9 @@ msgstr "워크스페이스 실행 명령 중지"
 
 msgid "stopped"
 msgstr "중지됨"
+
+msgid "Stopping"
+msgstr ""
 
 msgid "Strikethrough"
 msgstr "취소선"

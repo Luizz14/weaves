@@ -7215,6 +7215,21 @@ msgstr ""
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Flotas de agentes planifican, implementan, revisan y prueban el trabajo de los demás. Las personas marcan el rumbo, arbitran las excepciones y aportan el criterio. La unidad de atención humana ya no es la pull request. Es la decisión."
 
+msgid "Flutter configuration"
+msgstr ""
+
+msgid "Flutter device"
+msgstr ""
+
+msgid "Flutter Inspector"
+msgstr ""
+
+msgid "Flutter logs"
+msgstr ""
+
+msgid "Flutter session ended"
+msgstr ""
+
 msgid "Focus Chat Input"
 msgstr "Enfocar el campo de chat"
 
@@ -7901,6 +7916,12 @@ msgstr "Alojado en la nube"
 msgid "Hosts"
 msgstr "Hosts"
 
+msgid "Hot reload"
+msgstr ""
+
+msgid "Hot restart"
+msgstr ""
+
 msgid "Hotkey chip"
 msgstr "Chip de atajo"
 
@@ -8256,6 +8277,12 @@ msgstr "Análisis del equipo de Superset sobre agentes de código en paralelo y 
 #. placeholder {0}: data.targetTitle
 msgid "Inspecting {0}"
 msgstr "Inspeccionando {0}"
+
+msgid "Inspector"
+msgstr ""
+
+msgid "Inspector is available for a running debug session"
+msgstr ""
 
 msgid "Install"
 msgstr "Instalar"
@@ -9185,6 +9212,9 @@ msgstr "Retención de clientes — mensual"
 
 msgid "Logo updated"
 msgstr "Logotipo actualizado"
+
+msgid "Logs"
+msgstr ""
 
 msgid "Long-horizon reliability crosses a threshold. Work assigned at 6pm is mergeable at 9am often enough that not scheduling the overnight shift feels like leaving a factory idle."
 msgstr "La fiabilidad a largo plazo cruza un umbral. El trabajo asignado a las 18:00 se puede fusionar a las 9:00 con la frecuencia suficiente como para que no programar el turno de noche se sienta como dejar una fábrica parada."
@@ -11314,6 +11344,9 @@ msgstr "Abrir el espacio de trabajo de la ejecución"
 msgid "open the task in a workspace"
 msgstr "abrir la tarea en un espacio de trabajo"
 
+msgid "Open widget source"
+msgstr ""
+
 msgid "Open work item"
 msgstr ""
 
@@ -12683,6 +12716,9 @@ msgstr "Actualizar"
 msgid "Refresh Azure DevOps board"
 msgstr "Refresh Azure DevOps board"
 
+msgid "Refresh devices"
+msgstr ""
+
 msgid "Refresh GitHub issues"
 msgstr "Actualizar los issues de GitHub"
 
@@ -12757,6 +12793,9 @@ msgstr "Recarga Superset para actualizar la lista de espacios de trabajo."
 
 msgid "Reload window"
 msgstr "Recargar la ventana"
+
+msgid "Reloading"
+msgstr ""
 
 msgid "Relocate"
 msgstr "Mover"
@@ -13153,6 +13192,9 @@ msgstr "Resolver la conversación"
 msgid "Resolve Conversations to Merge"
 msgstr "Resolver las conversaciones para fusionar"
 
+msgid "Resolve file conflicts before running Flutter"
+msgstr ""
+
 msgid "resolve the workspace path"
 msgstr "resolver la ruta del espacio de trabajo"
 
@@ -13508,6 +13550,9 @@ msgstr "Ejecuta automatizaciones cuando cambien los issues de Sentry."
 msgid "Run commands and navigate the application."
 msgstr "Ejecutar comandos y navegar por la aplicación."
 
+msgid "Run Flutter"
+msgstr ""
+
 msgid "Run History"
 msgstr "Historial de ejecuciones"
 
@@ -13621,6 +13666,9 @@ msgstr "Ahorra un 25%"
 
 msgid "Save All"
 msgstr "Guardar todo"
+
+msgid "Save all files before running Flutter"
+msgstr ""
 
 msgid "Save and test"
 msgstr "Guardar y probar"
@@ -14072,6 +14120,9 @@ msgstr "Seleccionar fuentes de datos"
 msgid "Select default worktree location"
 msgstr "Seleccionar la ubicación predeterminada del worktree"
 
+msgid "Select device"
+msgstr ""
+
 msgid "Select Directory"
 msgstr "Seleccionar directorio"
 
@@ -14137,6 +14188,9 @@ msgstr "Seleccionar equipos"
 
 msgid "Select terminal script directory"
 msgstr "Seleccionar el directorio del script de terminal"
+
+msgid "Select widget"
+msgstr ""
 
 msgid "Select worktree location"
 msgstr "Seleccionar la ubicación del worktree"
@@ -15216,6 +15270,9 @@ msgstr "Detener el comando de ejecución del espacio de trabajo"
 
 msgid "stopped"
 msgstr "detenido"
+
+msgid "Stopping"
+msgstr ""
 
 msgid "Strikethrough"
 msgstr "Tachado"

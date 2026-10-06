@@ -7215,6 +7215,21 @@ msgstr ""
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Des flottes d'agents planifient, implémentent, relisent et testent le travail des autres. Les humains fixent le cap, arbitrent les exceptions et portent le goût. L'unité d'attention humaine n'est plus la pull request. C'est la décision."
 
+msgid "Flutter configuration"
+msgstr ""
+
+msgid "Flutter device"
+msgstr ""
+
+msgid "Flutter Inspector"
+msgstr ""
+
+msgid "Flutter logs"
+msgstr ""
+
+msgid "Flutter session ended"
+msgstr ""
+
 msgid "Focus Chat Input"
 msgstr "Activer la saisie du chat"
 
@@ -7901,6 +7916,12 @@ msgstr "Hébergé dans le cloud"
 msgid "Hosts"
 msgstr "Hôtes"
 
+msgid "Hot reload"
+msgstr ""
+
+msgid "Hot restart"
+msgstr ""
+
 msgid "Hotkey chip"
 msgstr "Puce de raccourci"
 
@@ -8256,6 +8277,12 @@ msgstr "Le point de vue de l'équipe Superset sur les agents de code parallèles
 #. placeholder {0}: data.targetTitle
 msgid "Inspecting {0}"
 msgstr "Inspection de {0}"
+
+msgid "Inspector"
+msgstr ""
+
+msgid "Inspector is available for a running debug session"
+msgstr ""
 
 msgid "Install"
 msgstr "Installer"
@@ -9185,6 +9212,9 @@ msgstr "Rétention des logos — mensuelle"
 
 msgid "Logo updated"
 msgstr "Logo mis à jour"
+
+msgid "Logs"
+msgstr ""
 
 msgid "Long-horizon reliability crosses a threshold. Work assigned at 6pm is mergeable at 9am often enough that not scheduling the overnight shift feels like leaving a factory idle."
 msgstr "La fiabilité sur longue durée franchit un seuil. Le travail confié à 18 h est fusionnable à 9 h assez souvent pour que ne pas programmer l'équipe de nuit revienne à laisser une usine à l'arrêt."
@@ -11314,6 +11344,9 @@ msgstr "Ouvrir l'espace de travail de l'exécution"
 msgid "open the task in a workspace"
 msgstr "ouvrir la tâche dans un espace de travail"
 
+msgid "Open widget source"
+msgstr ""
+
 msgid "Open work item"
 msgstr ""
 
@@ -12683,6 +12716,9 @@ msgstr "Actualiser"
 msgid "Refresh Azure DevOps board"
 msgstr "Refresh Azure DevOps board"
 
+msgid "Refresh devices"
+msgstr ""
+
 msgid "Refresh GitHub issues"
 msgstr "Actualiser les issues GitHub"
 
@@ -12757,6 +12793,9 @@ msgstr "Rechargez Superset pour actualiser la liste des espaces de travail."
 
 msgid "Reload window"
 msgstr "Recharger la fenêtre"
+
+msgid "Reloading"
+msgstr ""
 
 msgid "Relocate"
 msgstr "Déplacer"
@@ -13153,6 +13192,9 @@ msgstr "Résoudre la conversation"
 msgid "Resolve Conversations to Merge"
 msgstr "Résolvez les conversations pour fusionner"
 
+msgid "Resolve file conflicts before running Flutter"
+msgstr ""
+
 msgid "resolve the workspace path"
 msgstr "résoudre le chemin de l'espace de travail"
 
@@ -13508,6 +13550,9 @@ msgstr "Exécutez des automatisations quand les issues Sentry changent."
 msgid "Run commands and navigate the application."
 msgstr "Exécuter des commandes et naviguer dans l'application."
 
+msgid "Run Flutter"
+msgstr ""
+
 msgid "Run History"
 msgstr "Historique des exécutions"
 
@@ -13621,6 +13666,9 @@ msgstr "Économisez 25 %"
 
 msgid "Save All"
 msgstr "Tout enregistrer"
+
+msgid "Save all files before running Flutter"
+msgstr ""
 
 msgid "Save and test"
 msgstr "Enregistrer et tester"
@@ -14072,6 +14120,9 @@ msgstr "Sélectionner des sources de données"
 msgid "Select default worktree location"
 msgstr "Sélectionner l'emplacement par défaut des worktrees"
 
+msgid "Select device"
+msgstr ""
+
 msgid "Select Directory"
 msgstr "Sélectionner un dossier"
 
@@ -14137,6 +14188,9 @@ msgstr "Sélectionner des équipes"
 
 msgid "Select terminal script directory"
 msgstr "Sélectionner le répertoire du script de terminal"
+
+msgid "Select widget"
+msgstr ""
 
 msgid "Select worktree location"
 msgstr "Sélectionner l'emplacement des worktrees"
@@ -15216,6 +15270,9 @@ msgstr "Arrêter la commande d'exécution de l'espace de travail"
 
 msgid "stopped"
 msgstr "arrêté"
+
+msgid "Stopping"
+msgstr ""
 
 msgid "Strikethrough"
 msgstr "Barré"

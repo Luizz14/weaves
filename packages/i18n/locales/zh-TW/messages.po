@@ -7215,6 +7215,21 @@ msgstr ""
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "成群的代理程式規劃、實現、審查並測試彼此的工作。人類定方向、裁決例外、把握品味。人類注意力的單位不再是拉取請求，而是決策。"
 
+msgid "Flutter configuration"
+msgstr ""
+
+msgid "Flutter device"
+msgstr ""
+
+msgid "Flutter Inspector"
+msgstr ""
+
+msgid "Flutter logs"
+msgstr ""
+
+msgid "Flutter session ended"
+msgstr ""
+
 msgid "Focus Chat Input"
 msgstr "聚焦聊天輸入框"
 
@@ -7901,6 +7916,12 @@ msgstr "託管在雲端"
 msgid "Hosts"
 msgstr "主機"
 
+msgid "Hot reload"
+msgstr ""
+
+msgid "Hot restart"
+msgstr ""
+
 msgid "Hotkey chip"
 msgstr "快速鍵標籤"
 
@@ -8256,6 +8277,12 @@ msgstr "來自Superset團隊的洞見，關於並行編碼代理程式與開發�
 #. placeholder {0}: data.targetTitle
 msgid "Inspecting {0}"
 msgstr "正在檢查{0}"
+
+msgid "Inspector"
+msgstr ""
+
+msgid "Inspector is available for a running debug session"
+msgstr ""
 
 msgid "Install"
 msgstr "安裝"
@@ -9185,6 +9212,9 @@ msgstr "客戶留存 — 按月"
 
 msgid "Logo updated"
 msgstr "Logo已更新"
+
+msgid "Logs"
+msgstr ""
 
 msgid "Long-horizon reliability crosses a threshold. Work assigned at 6pm is mergeable at 9am often enough that not scheduling the overnight shift feels like leaving a factory idle."
 msgstr "長週期可靠性越過了一個門檻。傍晚6點派出去的活兒，早上9點常常已經可以合併，以至於不排夜班就像讓工廠空轉。"
@@ -11314,6 +11344,9 @@ msgstr "開啟這次執行的工作區"
 msgid "open the task in a workspace"
 msgstr "在工作區中開啟任務"
 
+msgid "Open widget source"
+msgstr ""
+
 msgid "Open work item"
 msgstr ""
 
@@ -12683,6 +12716,9 @@ msgstr "重新整理"
 msgid "Refresh Azure DevOps board"
 msgstr "Refresh Azure DevOps board"
 
+msgid "Refresh devices"
+msgstr ""
+
 msgid "Refresh GitHub issues"
 msgstr "重新整理GitHub議題"
 
@@ -12757,6 +12793,9 @@ msgstr "重新載入Superset以重新整理工作區列表。"
 
 msgid "Reload window"
 msgstr "重新載入視窗"
+
+msgid "Reloading"
+msgstr ""
 
 msgid "Relocate"
 msgstr "遷移"
@@ -13153,6 +13192,9 @@ msgstr "標記為已解決"
 msgid "Resolve Conversations to Merge"
 msgstr "解決討論後才能合併"
 
+msgid "Resolve file conflicts before running Flutter"
+msgstr ""
+
 msgid "resolve the workspace path"
 msgstr "解析工作區路徑"
 
@@ -13508,6 +13550,9 @@ msgstr "在Sentry問題發生變化時執行自動化。"
 msgid "Run commands and navigate the application."
 msgstr "執行命令並在應用中導航。"
 
+msgid "Run Flutter"
+msgstr ""
+
 msgid "Run History"
 msgstr "執行歷史"
 
@@ -13621,6 +13666,9 @@ msgstr "省25%"
 
 msgid "Save All"
 msgstr "全部儲存"
+
+msgid "Save all files before running Flutter"
+msgstr ""
 
 msgid "Save and test"
 msgstr "儲存並測試"
@@ -14072,6 +14120,9 @@ msgstr "選擇資料來源"
 msgid "Select default worktree location"
 msgstr "選擇預設worktree位置"
 
+msgid "Select device"
+msgstr ""
+
 msgid "Select Directory"
 msgstr "選擇目錄"
 
@@ -14137,6 +14188,9 @@ msgstr "選擇團隊"
 
 msgid "Select terminal script directory"
 msgstr "選擇終端指令碼目錄"
+
+msgid "Select widget"
+msgstr ""
 
 msgid "Select worktree location"
 msgstr "選擇worktree位置"
@@ -15216,6 +15270,9 @@ msgstr "停止工作區執行命令"
 
 msgid "stopped"
 msgstr "已停止"
+
+msgid "Stopping"
+msgstr ""
 
 msgid "Strikethrough"
 msgstr "刪除線"

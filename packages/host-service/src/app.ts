@@ -18,6 +18,7 @@ import { createChatV3Mount, registerChatV3Routes } from "./chat-v3";
 import { createDb, type HostDb } from "./db";
 import { terminalSessions, workspaces } from "./db/schema";
 import { EventBus, GitWatcher, registerEventBusRoute } from "./events";
+import { FlutterSessions } from "./flutter/sessions";
 import { registerIdeContextRoutes } from "./ide-context/routes";
 import { IdeContextStore } from "./ide-context/store";
 import { registerLspRoutes } from "./lsp/routes";
@@ -274,14 +275,17 @@ export function createApp(options: CreateAppOptions): CreateAppResult {
 
 	const lsp = new LspSessions({ db, filesystem });
 	const ideContext = new IdeContextStore();
+	const flutter = new FlutterSessions({ db, filesystem });
 	eventBus.onWorkspaceChanged((event) => {
 		if (event.eventType === "deleted") {
 			ideContext.deleteWorkspace(event.workspaceId);
 			void lsp.stopWorkspace(event.workspaceId);
+			void flutter.stopWorkspace(event.workspaceId);
 		}
 	});
 	const runtime = {
 		ideContext,
+		flutter,
 		lsp,
 		filesystem,
 		pullRequests: pullRequestRuntime,
@@ -477,6 +481,11 @@ export function createApp(options: CreateAppOptions): CreateAppResult {
 	const ownsDb = options.db === undefined;
 	const dispose = async (): Promise<void> => {
 		ideContext.dispose();
+		try {
+			await flutter.dispose();
+		} catch (error) {
+			console.error("[flutter] Dispose failed", error);
+		}
 		try {
 			await lsp.dispose();
 		} catch (error) {

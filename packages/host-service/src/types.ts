@@ -3,6 +3,7 @@ import type { AppRouter } from "@superset/trpc";
 import type { TRPCClient } from "@trpc/client";
 import type { HostDb } from "./db";
 import type { EventBus } from "./events";
+import type { FlutterSessions } from "./flutter/sessions";
 import type { IdeContextStore } from "./ide-context/store";
 import type { LspSessions } from "./lsp/sessions";
 import type { PageWatchManager } from "./page-watch/index.ts";
@@ -18,6 +19,7 @@ export type ApiClient = TRPCClient<AppRouter>;
 export interface HostServiceRuntime {
 	ideContext?: IdeContextStore;
 	lsp?: LspSessions;
+	flutter?: FlutterSessions;
 	filesystem: WorkspaceFilesystemManager;
 	pullRequests: PullRequestRuntimeManager;
 	pageWatch: PageWatchManager;

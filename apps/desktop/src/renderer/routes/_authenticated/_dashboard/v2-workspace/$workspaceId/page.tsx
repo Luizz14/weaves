@@ -37,6 +37,7 @@ import { useWorkspace } from "../providers/WorkspaceProvider";
 import { AddTabMenu } from "./components/AddTabMenu";
 import { BackgroundTerminalsButton } from "./components/BackgroundTerminalsButton";
 import { ChangesControl } from "./components/ChangesControl";
+import { FlutterControls } from "./components/FlutterControls";
 import { V2NotificationStatusIndicator } from "./components/V2NotificationStatusIndicator";
 import { V2PresetsBar } from "./components/V2PresetsBar";
 import { V2WorkspaceOpenInButton } from "./components/V2WorkspaceOpenInButton";
@@ -430,6 +431,7 @@ function V2WorkspaceContent() {
 							className="flex min-h-0 min-w-[320px] flex-1 flex-col overflow-hidden"
 							data-workspace-id={workspaceId}
 						>
+							<FlutterControls store={store} />
 							<Workspace<PaneViewerData>
 								key={workspaceId}
 								registry={paneRegistry}
