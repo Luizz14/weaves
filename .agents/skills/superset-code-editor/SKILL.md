@@ -1,6 +1,6 @@
 ---
 name: superset-code-editor
-description: Manter, corrigir e evoluir o código do editor v2 do Superset, LSP, autosave/formatação, configurações e importação do Zed, painel de projeto e painel local de alterações Git. Use para implementar features ou investigar regressões nessas camadas deste monorepo. Não usar para Codex Chat, terminal, configuração pessoal via CLI ou gestão de PRs/Azure DevOps.
+description: Manter, corrigir e evoluir o código do editor v2 do Superset, LSP, autosave/formatação, configurações e importação do Zed, painel de projeto e painel local de alterações Git e execução/Inspector Flutter local. Use para implementar features ou investigar regressões nessas camadas deste monorepo. Não usar para Codex Chat, terminal, configuração pessoal via CLI ou gestão de PRs/Azure DevOps.
 ---
 
 # Editor e painéis do Superset
@@ -26,3 +26,14 @@ Skill local deste projeto para desenvolvimento sobre as features do editor e seu
 LSP e formatação estão implementados para hosts locais no desktop v2. Ampliar para remoto/v1 exige revisar resolução, autenticação e lifecycle; trocar apenas um guard visual não implementa esse suporte. Servidores/formatadores ausentes deixam o editor utilizável e não provocam downloads automáticos.
 
 Siga os AGENTS.md do repo/desktop para componentes, persistência, Lingui e migrations. Para UI, use a [skill de verificação](../cdp-verification/SKILL.md), confirme a instância/worktree e exercite interações reais. Mudanças Git devem ser verificadas em repositórios temporários, nunca usando stage/descarte no checkout com trabalho do usuário como fixture. Registre o que passou e eventuais lacunas; falhas antigas do monorepo precisam de evidência atual para serem classificadas como preexistentes.
+
+## Execução Flutter
+
+Consulte [docs/flutter.md](../../../docs/flutter.md) antes de alterar execução, toolbar, perfis VS Code ou Inspector. O runtime e os processos pertencem ao host, não à montagem da view. Preserve uma sessão por workspace e valide IDs antes de ações assíncronas.
+
+- Perfis e env files são relidos antes de iniciar; mantenha validação de fingerprint, variáveis e contenção real de caminhos. Não devolva ambiente ou credenciais ao renderer. Perfis incompatíveis devem explicar por que não executam.
+- Use o adapter DAP do SDK Flutter e DevTools/DTD oficiais. A seleção de widget exige o isolate atual, que muda no hot restart. Preserve navegação automática ToolEvent e o serviço DTD Editor.navigateToCode com coordenadas 1-based.
+- Start/reload/restart passam pelo buffer compartilhado. SaveOrigin distingue manual/autosave/flutter-action; só o manual bem-sucedido agenda reload da mesma sessão. Falhas e conflitos bloqueiam ações.
+- Pane data persiste apenas sessionId. URLs de VM/DTD/DevTools ficam em memória; não reutilize um browser hook que escreve URL em pane.data. Fechar Inspector ou navegar não encerra o app. Stop/delete/shutdown limpam processos, sockets e timers.
+- Escopo atual: Flutter launch no desktop v2 local. Attach, tasks, compounds, test runner, emuladores, debugger completo e Widget Previewer exigem novo escopo.
+- Rode testes de launch/DAP/sessões e documentos para mudanças nessas camadas. Para SDK real, use app temporário; para UI, confirme instância/worktree e exercite entradas reais. Diferencie smoke de protocolo, build e QA end-to-end.

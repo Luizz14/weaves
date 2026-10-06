@@ -7210,6 +7210,21 @@ msgstr ""
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "エージェントのフリートが計画し、実装し、互いの仕事をレビューしテストします。人間は方向を定め、例外を裁定し、審美眼を担います。人間の注意の単位はもうプルリクエストではありません。意思決定です。"
 
+msgid "Flutter configuration"
+msgstr ""
+
+msgid "Flutter device"
+msgstr ""
+
+msgid "Flutter Inspector"
+msgstr ""
+
+msgid "Flutter logs"
+msgstr ""
+
+msgid "Flutter session ended"
+msgstr ""
+
 msgid "Focus Chat Input"
 msgstr "チャット入力にフォーカス"
 
@@ -7896,6 +7911,12 @@ msgstr "クラウドでホスト"
 msgid "Hosts"
 msgstr "ホスト"
 
+msgid "Hot reload"
+msgstr ""
+
+msgid "Hot restart"
+msgstr ""
+
 msgid "Hotkey chip"
 msgstr "ホットキーチップ"
 
@@ -8251,6 +8272,12 @@ msgstr "並列コーディングエージェントと開発者の生産性につ
 #. placeholder {0}: data.targetTitle
 msgid "Inspecting {0}"
 msgstr "{0}を検査中"
+
+msgid "Inspector"
+msgstr ""
+
+msgid "Inspector is available for a running debug session"
+msgstr ""
 
 msgid "Install"
 msgstr "インストール"
@@ -9183,6 +9210,9 @@ msgstr "ロゴリテンション — 月次"
 
 msgid "Logo updated"
 msgstr "ロゴを更新しました"
+
+msgid "Logs"
+msgstr ""
 
 msgid "Long-horizon reliability crosses a threshold. Work assigned at 6pm is mergeable at 9am often enough that not scheduling the overnight shift feels like leaving a factory idle."
 msgstr "長時間にわたる信頼性がしきい値を超えます。18時に割り当てた作業が9時にはマージできる。それが十分な頻度で起きるようになり、夜間シフトを組まないことが工場を遊ばせているように感じられます。"
@@ -11306,6 +11336,9 @@ msgstr "実行のワークスペースを開く"
 msgid "open the task in a workspace"
 msgstr "タスクをワークスペースで開く"
 
+msgid "Open widget source"
+msgstr ""
+
 msgid "Open work item"
 msgstr ""
 
@@ -12663,6 +12696,9 @@ msgstr "更新"
 msgid "Refresh Azure DevOps board"
 msgstr "Refresh Azure DevOps board"
 
+msgid "Refresh devices"
+msgstr ""
+
 msgid "Refresh GitHub issues"
 msgstr "GitHub issueを更新"
 
@@ -12734,6 +12770,9 @@ msgstr "Supersetを再読み込みしてワークスペース一覧を更新し�
 
 msgid "Reload window"
 msgstr "ウィンドウを再読み込み"
+
+msgid "Reloading"
+msgstr ""
 
 msgid "Relocate"
 msgstr "移動"
@@ -13120,6 +13159,9 @@ msgstr "会話を解決"
 msgid "Resolve Conversations to Merge"
 msgstr "マージには会話の解決が必要"
 
+msgid "Resolve file conflicts before running Flutter"
+msgstr ""
+
 msgid "resolve the workspace path"
 msgstr "ワークスペースのパスを解決する"
 
@@ -13475,6 +13517,9 @@ msgstr "Sentryのissueが変化したときにオートメーションを実行�
 msgid "Run commands and navigate the application."
 msgstr "コマンドを実行し、アプリ内を移動します。"
 
+msgid "Run Flutter"
+msgstr ""
+
 msgid "Run History"
 msgstr "実行履歴"
 
@@ -13588,6 +13633,9 @@ msgstr "25%お得"
 
 msgid "Save All"
 msgstr "すべて保存"
+
+msgid "Save all files before running Flutter"
+msgstr ""
 
 msgid "Save and test"
 msgstr "保存してテスト"
@@ -14039,6 +14087,9 @@ msgstr "データソースを選択"
 msgid "Select default worktree location"
 msgstr "既定のワークツリーの場所を選択"
 
+msgid "Select device"
+msgstr ""
+
 msgid "Select Directory"
 msgstr "ディレクトリを選択"
 
@@ -14104,6 +14155,9 @@ msgstr "チームを選択"
 
 msgid "Select terminal script directory"
 msgstr "ターミナルスクリプトのディレクトリを選択"
+
+msgid "Select widget"
+msgstr ""
 
 msgid "Select worktree"
 msgstr "worktree を選択"
@@ -15186,6 +15240,9 @@ msgstr "ワークスペースの実行コマンドを停止"
 
 msgid "stopped"
 msgstr "停止"
+
+msgid "Stopping"
+msgstr ""
 
 msgid "Strikethrough"
 msgstr "取り消し線"

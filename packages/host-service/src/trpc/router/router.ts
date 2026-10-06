@@ -1,4 +1,5 @@
 import { editorRouter } from "../../editor/format";
+import { flutterRouter } from "../../flutter/router";
 import { router } from "../index";
 import { agentToolingRouter } from "./agent-tooling";
 import { agentsRouter } from "./agents";
@@ -34,6 +35,7 @@ import { workspacesRouter } from "./workspaces";
 
 export const appRouter = router({
 	editor: editorRouter,
+	flutter: flutterRouter,
 	lsp: lspRouter,
 	branchIntegration: branchIntegrationRouter,
 	agents: agentsRouter,

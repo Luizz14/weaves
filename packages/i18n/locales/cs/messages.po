@@ -7210,6 +7210,21 @@ msgstr ""
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Flotily agentů plánují, implementují, revidují a testují práci jeden druhého. Lidé určují směr, rozsuzují výjimky a vlastní vkus. Jednotkou lidské pozornosti už není pull request. Je jí rozhodnutí."
 
+msgid "Flutter configuration"
+msgstr ""
+
+msgid "Flutter device"
+msgstr ""
+
+msgid "Flutter Inspector"
+msgstr ""
+
+msgid "Flutter logs"
+msgstr ""
+
+msgid "Flutter session ended"
+msgstr ""
+
 msgid "Focus Chat Input"
 msgstr "Zaměřit vstup chatu"
 
@@ -7896,6 +7911,12 @@ msgstr "Hostováno v cloudu"
 msgid "Hosts"
 msgstr "Hosty"
 
+msgid "Hot reload"
+msgstr ""
+
+msgid "Hot restart"
+msgstr ""
+
 msgid "Hotkey chip"
 msgstr "Čip klávesové zkratky"
 
@@ -8251,6 +8272,12 @@ msgstr "Postřehy týmu Superset o paralelních kódovacích agentech a produkti
 #. placeholder {0}: data.targetTitle
 msgid "Inspecting {0}"
 msgstr "Zkoumám {0}"
+
+msgid "Inspector"
+msgstr ""
+
+msgid "Inspector is available for a running debug session"
+msgstr ""
 
 msgid "Install"
 msgstr "Nainstalovat"
@@ -9183,6 +9210,9 @@ msgstr "Retence zákazníků — měsíční"
 
 msgid "Logo updated"
 msgstr "Logo aktualizováno"
+
+msgid "Logs"
+msgstr ""
 
 msgid "Long-horizon reliability crosses a threshold. Work assigned at 6pm is mergeable at 9am often enough that not scheduling the overnight shift feels like leaving a factory idle."
 msgstr "Spolehlivost na dlouhém horizontu překročí práh. Práce zadaná v 18:00 je v 9:00 připravená ke sloučení tak často, že neplánovat noční směnu působí jako nechat továrnu stát."
@@ -11306,6 +11336,9 @@ msgstr "Otevřít pracovní prostor běhu"
 msgid "open the task in a workspace"
 msgstr "otevřít úkol v pracovním prostoru"
 
+msgid "Open widget source"
+msgstr ""
+
 msgid "Open work item"
 msgstr ""
 
@@ -12663,6 +12696,9 @@ msgstr "Obnovit"
 msgid "Refresh Azure DevOps board"
 msgstr "Refresh Azure DevOps board"
 
+msgid "Refresh devices"
+msgstr ""
+
 msgid "Refresh GitHub issues"
 msgstr "Obnovit GitHub issues"
 
@@ -12734,6 +12770,9 @@ msgstr "Načtěte Superset znovu, aby se seznam pracovních prostorů obnovil."
 
 msgid "Reload window"
 msgstr "Načíst okno znovu"
+
+msgid "Reloading"
+msgstr ""
 
 msgid "Relocate"
 msgstr "Přesunout"
@@ -13120,6 +13159,9 @@ msgstr "Vyřešit konverzaci"
 msgid "Resolve Conversations to Merge"
 msgstr "Pro sloučení vyřešte konverzace"
 
+msgid "Resolve file conflicts before running Flutter"
+msgstr ""
+
 msgid "resolve the workspace path"
 msgstr "určit cestu k pracovnímu prostoru"
 
@@ -13475,6 +13517,9 @@ msgstr "Spouštějte automatizace při změnách issues v Sentry."
 msgid "Run commands and navigate the application."
 msgstr "Spouštějte příkazy a procházejte aplikaci."
 
+msgid "Run Flutter"
+msgstr ""
+
 msgid "Run History"
 msgstr "Historie běhů"
 
@@ -13588,6 +13633,9 @@ msgstr "Ušetřete 25 %"
 
 msgid "Save All"
 msgstr "Uložit vše"
+
+msgid "Save all files before running Flutter"
+msgstr ""
 
 msgid "Save and test"
 msgstr "Uložit a otestovat"
@@ -14039,6 +14087,9 @@ msgstr "Vyberte zdroje dat"
 msgid "Select default worktree location"
 msgstr "Vyberte výchozí umístění worktree"
 
+msgid "Select device"
+msgstr ""
+
 msgid "Select Directory"
 msgstr "Vyberte adresář"
 
@@ -14104,6 +14155,9 @@ msgstr "Vyberte týmy"
 
 msgid "Select terminal script directory"
 msgstr "Vyberte adresář terminálového skriptu"
+
+msgid "Select widget"
+msgstr ""
 
 msgid "Select worktree"
 msgstr "Vyberte worktree"
@@ -15186,6 +15240,9 @@ msgstr "Zastavit spouštěcí příkaz pracovního prostoru"
 
 msgid "stopped"
 msgstr "zastaveno"
+
+msgid "Stopping"
+msgstr ""
 
 msgid "Strikethrough"
 msgstr "Přeškrtnuté"

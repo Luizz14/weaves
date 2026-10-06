@@ -339,6 +339,10 @@
 		"./codex-chat-settings": {
 			"types": "./src/codex-chat-settings.ts",
 			"default": "./src/codex-chat-settings.ts"
+		},
+		"./flutter": {
+			"types": "./src/flutter.ts",
+			"default": "./src/flutter.ts"
 		}
 	},
 	"scripts": {

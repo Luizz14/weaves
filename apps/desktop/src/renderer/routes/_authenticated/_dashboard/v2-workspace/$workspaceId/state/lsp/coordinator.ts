@@ -581,6 +581,21 @@ export class LspCoordinator {
 		await Promise.all(bindings.map((binding) => this.resolve(binding)));
 	}
 
+	async revealFileLocation(path: string, line: number, column: number) {
+		const view = await this.navigate(filePathToLspUri(path));
+		if (!view) return;
+		const target = view.state.doc.line(
+			Math.max(1, Math.min(line, view.state.doc.lines)),
+		);
+		view.dispatch({
+			selection: {
+				anchor: Math.min(target.to, target.from + Math.max(0, column - 1)),
+			},
+			scrollIntoView: true,
+		});
+		view.focus();
+	}
+
 	private async navigate(uri: string) {
 		const path = this.uriToPath(uri);
 		if (!path) return null;

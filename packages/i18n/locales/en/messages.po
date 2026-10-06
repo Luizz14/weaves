@@ -7210,6 +7210,21 @@ msgstr "Flat view"
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 
+msgid "Flutter configuration"
+msgstr "Flutter configuration"
+
+msgid "Flutter device"
+msgstr "Flutter device"
+
+msgid "Flutter Inspector"
+msgstr "Flutter Inspector"
+
+msgid "Flutter logs"
+msgstr "Flutter logs"
+
+msgid "Flutter session ended"
+msgstr "Flutter session ended"
+
 msgid "Focus Chat Input"
 msgstr "Focus Chat Input"
 
@@ -7896,6 +7911,12 @@ msgstr "Hosted in the cloud"
 msgid "Hosts"
 msgstr "Hosts"
 
+msgid "Hot reload"
+msgstr "Hot reload"
+
+msgid "Hot restart"
+msgstr "Hot restart"
+
 msgid "Hotkey chip"
 msgstr "Hotkey chip"
 
@@ -8251,6 +8272,12 @@ msgstr "Insights from the Superset team about parallel coding agents and develop
 #. placeholder {0}: data.targetTitle
 msgid "Inspecting {0}"
 msgstr "Inspecting {0}"
+
+msgid "Inspector"
+msgstr "Inspector"
+
+msgid "Inspector is available for a running debug session"
+msgstr "Inspector is available for a running debug session"
 
 msgid "Install"
 msgstr "Install"
@@ -9183,6 +9210,9 @@ msgstr "Logo retention — monthly"
 
 msgid "Logo updated"
 msgstr "Logo updated"
+
+msgid "Logs"
+msgstr "Logs"
 
 msgid "Long-horizon reliability crosses a threshold. Work assigned at 6pm is mergeable at 9am often enough that not scheduling the overnight shift feels like leaving a factory idle."
 msgstr "Long-horizon reliability crosses a threshold. Work assigned at 6pm is mergeable at 9am often enough that not scheduling the overnight shift feels like leaving a factory idle."
@@ -11306,6 +11336,9 @@ msgstr "Open the run's workspace"
 msgid "open the task in a workspace"
 msgstr "open the task in a workspace"
 
+msgid "Open widget source"
+msgstr "Open widget source"
+
 msgid "Open work item"
 msgstr "Open work item"
 
@@ -12663,6 +12696,9 @@ msgstr "Refresh"
 msgid "Refresh Azure DevOps board"
 msgstr "Refresh Azure DevOps board"
 
+msgid "Refresh devices"
+msgstr "Refresh devices"
+
 msgid "Refresh GitHub issues"
 msgstr "Refresh GitHub issues"
 
@@ -12734,6 +12770,9 @@ msgstr "Reload Superset to refresh the workspace list."
 
 msgid "Reload window"
 msgstr "Reload window"
+
+msgid "Reloading"
+msgstr "Reloading"
 
 msgid "Relocate"
 msgstr "Relocate"
@@ -13120,6 +13159,9 @@ msgstr "Resolve conversation"
 msgid "Resolve Conversations to Merge"
 msgstr "Resolve Conversations to Merge"
 
+msgid "Resolve file conflicts before running Flutter"
+msgstr "Resolve file conflicts before running Flutter"
+
 msgid "resolve the workspace path"
 msgstr "resolve the workspace path"
 
@@ -13475,6 +13517,9 @@ msgstr "Run automations when Sentry issues change."
 msgid "Run commands and navigate the application."
 msgstr "Run commands and navigate the application."
 
+msgid "Run Flutter"
+msgstr "Run Flutter"
+
 msgid "Run History"
 msgstr "Run History"
 
@@ -13588,6 +13633,9 @@ msgstr "Save 25%"
 
 msgid "Save All"
 msgstr "Save All"
+
+msgid "Save all files before running Flutter"
+msgstr "Save all files before running Flutter"
 
 msgid "Save and test"
 msgstr "Save and test"
@@ -14039,6 +14087,9 @@ msgstr "Select data sources"
 msgid "Select default worktree location"
 msgstr "Select default worktree location"
 
+msgid "Select device"
+msgstr "Select device"
+
 msgid "Select Directory"
 msgstr "Select Directory"
 
@@ -14104,6 +14155,9 @@ msgstr "Select teams"
 
 msgid "Select terminal script directory"
 msgstr "Select terminal script directory"
+
+msgid "Select widget"
+msgstr "Select widget"
 
 msgid "Select worktree"
 msgstr "Select worktree"
@@ -15186,6 +15240,9 @@ msgstr "Stop workspace run command"
 
 msgid "stopped"
 msgstr "stopped"
+
+msgid "Stopping"
+msgstr "Stopping"
 
 msgid "Strikethrough"
 msgstr "Strikethrough"

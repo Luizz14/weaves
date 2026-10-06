@@ -7210,6 +7210,21 @@ msgstr "Lista plana"
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Frotas de agentes planejam, implementam, revisam e testam o trabalho umas das outras. As pessoas definem a direção, arbitram exceções e são donas do bom gosto. A unidade de atenção humana já não é o pull request. É a decisão."
 
+msgid "Flutter configuration"
+msgstr "Configuração Flutter"
+
+msgid "Flutter device"
+msgstr "Dispositivo Flutter"
+
+msgid "Flutter Inspector"
+msgstr "Inspector Flutter"
+
+msgid "Flutter logs"
+msgstr "Logs do Flutter"
+
+msgid "Flutter session ended"
+msgstr "Sessão Flutter encerrada"
+
 msgid "Focus Chat Input"
 msgstr "Focar o campo do chat"
 
@@ -7896,6 +7911,12 @@ msgstr "Hospedada na nuvem"
 msgid "Hosts"
 msgstr "Hosts"
 
+msgid "Hot reload"
+msgstr "Hot reload"
+
+msgid "Hot restart"
+msgstr "Hot restart"
+
 msgid "Hotkey chip"
 msgstr "Chip de atalho"
 
@@ -8251,6 +8272,12 @@ msgstr "O que o time do Superset tem a dizer sobre agentes de código em paralel
 #. placeholder {0}: data.targetTitle
 msgid "Inspecting {0}"
 msgstr "Inspecionando {0}"
+
+msgid "Inspector"
+msgstr "Inspector"
+
+msgid "Inspector is available for a running debug session"
+msgstr "O Inspector está disponível durante uma execução em modo debug"
 
 msgid "Install"
 msgstr "Instalar"
@@ -9183,6 +9210,9 @@ msgstr "Retenção de logos — mensal"
 
 msgid "Logo updated"
 msgstr "Logo atualizado"
+
+msgid "Logs"
+msgstr "Logs"
 
 msgid "Long-horizon reliability crosses a threshold. Work assigned at 6pm is mergeable at 9am often enough that not scheduling the overnight shift feels like leaving a factory idle."
 msgstr "A confiabilidade em horizontes longos cruza um limiar. O trabalho atribuído às 18h está pronto para merge às 9h com frequência suficiente para que não agendar o turno da noite pareça deixar uma fábrica parada."
@@ -11306,6 +11336,9 @@ msgstr "Abrir a área de trabalho da execução"
 msgid "open the task in a workspace"
 msgstr "abrir a tarefa em uma área de trabalho"
 
+msgid "Open widget source"
+msgstr "Abrir código do widget"
+
 msgid "Open work item"
 msgstr "Abrir work item"
 
@@ -12663,6 +12696,9 @@ msgstr "Atualizar"
 msgid "Refresh Azure DevOps board"
 msgstr "Atualizar quadro do Azure DevOps"
 
+msgid "Refresh devices"
+msgstr "Atualizar dispositivos"
+
 msgid "Refresh GitHub issues"
 msgstr "Atualizar as issues do GitHub"
 
@@ -12734,6 +12770,9 @@ msgstr "Recarregue o Superset para atualizar a lista de áreas de trabalho."
 
 msgid "Reload window"
 msgstr "Recarregar a janela"
+
+msgid "Reloading"
+msgstr "Recarregando"
 
 msgid "Relocate"
 msgstr "Mover"
@@ -13120,6 +13159,9 @@ msgstr "Resolver conversa"
 msgid "Resolve Conversations to Merge"
 msgstr "Resolva as conversas para fazer o merge"
 
+msgid "Resolve file conflicts before running Flutter"
+msgstr "Resolva os conflitos de arquivos antes de executar o Flutter"
+
 msgid "resolve the workspace path"
 msgstr "resolver o caminho da área de trabalho"
 
@@ -13475,6 +13517,9 @@ msgstr "Rode automações quando issues do Sentry mudarem."
 msgid "Run commands and navigate the application."
 msgstr "Execute comandos e navegue pelo aplicativo."
 
+msgid "Run Flutter"
+msgstr "Executar Flutter"
+
 msgid "Run History"
 msgstr "Histórico de execuções"
 
@@ -13588,6 +13633,9 @@ msgstr "Economize 25%"
 
 msgid "Save All"
 msgstr "Salvar tudo"
+
+msgid "Save all files before running Flutter"
+msgstr "Salve todos os arquivos antes de executar o Flutter"
 
 msgid "Save and test"
 msgstr "Salvar e testar"
@@ -14039,6 +14087,9 @@ msgstr "Selecionar fontes de dados"
 msgid "Select default worktree location"
 msgstr "Selecionar o local padrão das worktrees"
 
+msgid "Select device"
+msgstr "Selecionar dispositivo"
+
 msgid "Select Directory"
 msgstr "Selecionar diretório"
 
@@ -14104,6 +14155,9 @@ msgstr "Selecionar equipes"
 
 msgid "Select terminal script directory"
 msgstr "Selecionar o diretório do script de terminal"
+
+msgid "Select widget"
+msgstr "Selecionar widget"
 
 msgid "Select worktree"
 msgstr "Selecione um worktree"
@@ -15186,6 +15240,9 @@ msgstr "Parar o comando de execução da área de trabalho"
 
 msgid "stopped"
 msgstr "parado"
+
+msgid "Stopping"
+msgstr "Encerrando"
 
 msgid "Strikethrough"
 msgstr "Tachado"

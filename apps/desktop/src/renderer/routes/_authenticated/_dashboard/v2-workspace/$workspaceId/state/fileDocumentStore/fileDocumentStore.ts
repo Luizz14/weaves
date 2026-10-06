@@ -5,6 +5,7 @@ import type {
 	ConflictResolution,
 	ConflictState,
 	ContentState,
+	SaveOrigin,
 	SaveResult,
 	SharedFileDocument,
 } from "./types";
@@ -39,6 +40,43 @@ const entries = new Map<string, DocumentEntry>();
 const referencedDocuments = new Set<string>();
 export function hasDocumentReference(id: string) {
 	return referencedDocuments.has(id);
+}
+export interface DocumentSaveEvent {
+	requestId: string;
+	phase: "start" | "complete";
+	document: SharedFileDocument;
+	origin: SaveOrigin;
+	result?: SaveResult;
+}
+const saveObservers = new Set<(event: DocumentSaveEvent) => void>();
+export function observeDocumentSaves(
+	listener: (event: DocumentSaveEvent) => void,
+) {
+	saveObservers.add(listener);
+	return () => {
+		saveObservers.delete(listener);
+	};
+}
+export function getWorkspaceDocuments(workspaceId: string) {
+	return [...entries.values()]
+		.filter(
+			(entry) =>
+				entry.workspaceId === workspaceId &&
+				(referencedDocuments.has(entry.id) ||
+					computeDirty(entry) ||
+					entry.pendingSave ||
+					entry.conflict),
+		)
+		.map(createHandle);
+}
+function saveEvent(event: DocumentSaveEvent) {
+	for (const listener of saveObservers) {
+		try {
+			listener(event);
+		} catch (error) {
+			console.error("[file-document] Save observer failed", error);
+		}
+	}
 }
 const documentListeners = new Set<(document: SharedFileDocument) => void>();
 const saveTransforms = new Map<
@@ -305,6 +343,26 @@ async function saveEntry(
 	}
 }
 
+async function performSave(
+	entry: DocumentEntry,
+	opts?: Parameters<SharedFileDocument["save"]>[0],
+): Promise<SaveResult> {
+	let previous = saveTasks.get(entry.id);
+	while (previous) {
+		await previous;
+		if (!computeDirty(entry) && entry.content.kind === "text")
+			return { status: "saved", revision: entry.content.revision };
+		previous = saveTasks.get(entry.id);
+	}
+	const task = saveEntry(entry, opts);
+	saveTasks.set(entry.id, task);
+	try {
+		return await task;
+	} finally {
+		if (saveTasks.get(entry.id) === task) saveTasks.delete(entry.id);
+	}
+}
+
 function createHandle(entry: DocumentEntry): SharedFileDocument {
 	return {
 		get id() {
@@ -353,19 +411,23 @@ function createHandle(entry: DocumentEntry): SharedFileDocument {
 			notify(entry);
 		},
 		async save(opts): Promise<SaveResult> {
-			let previous = saveTasks.get(entry.id);
-			while (previous) {
-				await previous;
-				if (!computeDirty(entry) && entry.content.kind === "text")
-					return { status: "saved", revision: entry.content.revision };
-				previous = saveTasks.get(entry.id);
-			}
-			const task = saveEntry(entry, opts);
-			saveTasks.set(entry.id, task);
+			const requestId = crypto.randomUUID();
+			const origin = opts?.origin ?? "manual";
+			const document = createHandle(entry);
+			saveEvent({ requestId, phase: "start", origin, document });
 			try {
-				return await task;
-			} finally {
-				if (saveTasks.get(entry.id) === task) saveTasks.delete(entry.id);
+				const result = await performSave(entry, opts);
+				saveEvent({ requestId, phase: "complete", origin, document, result });
+				return result;
+			} catch (error) {
+				saveEvent({
+					requestId,
+					phase: "complete",
+					origin,
+					document,
+					result: { status: "error", error: error as Error },
+				});
+				throw error;
 			}
 		},
 		async reload() {

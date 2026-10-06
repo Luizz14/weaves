@@ -7210,6 +7210,21 @@ msgstr ""
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Flotten von Agenten planen, implementieren, reviewen und testen die Arbeit der anderen. Menschen geben die Richtung vor, entscheiden Ausnahmen und verantworten den Geschmack. Die Einheit menschlicher Aufmerksamkeit ist nicht mehr der Pull Request. Sie ist die Entscheidung."
 
+msgid "Flutter configuration"
+msgstr ""
+
+msgid "Flutter device"
+msgstr ""
+
+msgid "Flutter Inspector"
+msgstr ""
+
+msgid "Flutter logs"
+msgstr ""
+
+msgid "Flutter session ended"
+msgstr ""
+
 msgid "Focus Chat Input"
 msgstr "Chat-Eingabe fokussieren"
 
@@ -7896,6 +7911,12 @@ msgstr "In der Cloud gehostet"
 msgid "Hosts"
 msgstr "Hosts"
 
+msgid "Hot reload"
+msgstr ""
+
+msgid "Hot restart"
+msgstr ""
+
 msgid "Hotkey chip"
 msgstr "Hotkey-Chip"
 
@@ -8251,6 +8272,12 @@ msgstr "Einblicke vom Superset-Team zu parallelen Coding-Agenten und Entwicklerp
 #. placeholder {0}: data.targetTitle
 msgid "Inspecting {0}"
 msgstr "{0} wird untersucht"
+
+msgid "Inspector"
+msgstr ""
+
+msgid "Inspector is available for a running debug session"
+msgstr ""
 
 msgid "Install"
 msgstr "Installieren"
@@ -9183,6 +9210,9 @@ msgstr "Logo-Retention — monatlich"
 
 msgid "Logo updated"
 msgstr "Logo aktualisiert"
+
+msgid "Logs"
+msgstr ""
 
 msgid "Long-horizon reliability crosses a threshold. Work assigned at 6pm is mergeable at 9am often enough that not scheduling the overnight shift feels like leaving a factory idle."
 msgstr "Die Zuverlässigkeit über lange Zeiträume überschreitet eine Schwelle. Arbeit, die um 18 Uhr vergeben wird, ist um 9 Uhr so oft mergebar, dass es sich wie eine stillstehende Fabrik anfühlt, die Nachtschicht nicht einzuplanen."
@@ -11306,6 +11336,9 @@ msgstr "Arbeitsbereich des Laufs öffnen"
 msgid "open the task in a workspace"
 msgstr "die Aufgabe in einem Arbeitsbereich öffnen"
 
+msgid "Open widget source"
+msgstr ""
+
 msgid "Open work item"
 msgstr ""
 
@@ -12663,6 +12696,9 @@ msgstr "Aktualisieren"
 msgid "Refresh Azure DevOps board"
 msgstr "Refresh Azure DevOps board"
 
+msgid "Refresh devices"
+msgstr ""
+
 msgid "Refresh GitHub issues"
 msgstr "GitHub-Issues aktualisieren"
 
@@ -12734,6 +12770,9 @@ msgstr "Lade Superset neu, um die Liste der Arbeitsbereiche zu aktualisieren."
 
 msgid "Reload window"
 msgstr "Fenster neu laden"
+
+msgid "Reloading"
+msgstr ""
 
 msgid "Relocate"
 msgstr "Verschieben"
@@ -13120,6 +13159,9 @@ msgstr "Unterhaltung auflösen"
 msgid "Resolve Conversations to Merge"
 msgstr "Unterhaltungen auflösen, um zusammenzuführen"
 
+msgid "Resolve file conflicts before running Flutter"
+msgstr ""
+
 msgid "resolve the workspace path"
 msgstr "den Pfad des Arbeitsbereichs auflösen"
 
@@ -13475,6 +13517,9 @@ msgstr "Automatisierungen ausführen, wenn sich Sentry-Issues ändern."
 msgid "Run commands and navigate the application."
 msgstr "Befehle ausführen und durch die Anwendung navigieren."
 
+msgid "Run Flutter"
+msgstr ""
+
 msgid "Run History"
 msgstr "Ausführungsverlauf"
 
@@ -13588,6 +13633,9 @@ msgstr "25 % sparen"
 
 msgid "Save All"
 msgstr "Alle speichern"
+
+msgid "Save all files before running Flutter"
+msgstr ""
 
 msgid "Save and test"
 msgstr "Speichern und testen"
@@ -14039,6 +14087,9 @@ msgstr "Datenquellen auswählen"
 msgid "Select default worktree location"
 msgstr "Standard-Worktree-Speicherort wählen"
 
+msgid "Select device"
+msgstr ""
+
 msgid "Select Directory"
 msgstr "Verzeichnis wählen"
 
@@ -14104,6 +14155,9 @@ msgstr "Teams auswählen"
 
 msgid "Select terminal script directory"
 msgstr "Verzeichnis für Terminal-Skript wählen"
+
+msgid "Select widget"
+msgstr ""
 
 msgid "Select worktree"
 msgstr "Worktree auswählen"
@@ -15186,6 +15240,9 @@ msgstr "Run-Befehl des Arbeitsbereichs stoppen"
 
 msgid "stopped"
 msgstr "gestoppt"
+
+msgid "Stopping"
+msgstr ""
 
 msgid "Strikethrough"
 msgstr "Durchgestrichen"

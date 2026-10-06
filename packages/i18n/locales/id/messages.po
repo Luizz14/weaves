@@ -7210,6 +7210,21 @@ msgstr ""
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Armada agen merencanakan, mengimplementasi, mereview, dan menguji pekerjaan satu sama lain. Manusia menetapkan arah, menengahi pengecualian, dan memegang selera. Satuan perhatian manusia bukan lagi pull request, melainkan keputusan."
 
+msgid "Flutter configuration"
+msgstr ""
+
+msgid "Flutter device"
+msgstr ""
+
+msgid "Flutter Inspector"
+msgstr ""
+
+msgid "Flutter logs"
+msgstr ""
+
+msgid "Flutter session ended"
+msgstr ""
+
 msgid "Focus Chat Input"
 msgstr "Fokus ke Input Chat"
 
@@ -7896,6 +7911,12 @@ msgstr "Dihosting di cloud"
 msgid "Hosts"
 msgstr "Host"
 
+msgid "Hot reload"
+msgstr ""
+
+msgid "Hot restart"
+msgstr ""
+
 msgid "Hotkey chip"
 msgstr "Chip hotkey"
 
@@ -8251,6 +8272,12 @@ msgstr "Wawasan dari tim Superset tentang agen coding paralel dan produktivitas 
 #. placeholder {0}: data.targetTitle
 msgid "Inspecting {0}"
 msgstr "Memeriksa {0}"
+
+msgid "Inspector"
+msgstr ""
+
+msgid "Inspector is available for a running debug session"
+msgstr ""
 
 msgid "Install"
 msgstr "Instal"
@@ -9183,6 +9210,9 @@ msgstr "Retensi logo — bulanan"
 
 msgid "Logo updated"
 msgstr "Logo diperbarui"
+
+msgid "Logs"
+msgstr ""
 
 msgid "Long-horizon reliability crosses a threshold. Work assigned at 6pm is mergeable at 9am often enough that not scheduling the overnight shift feels like leaving a factory idle."
 msgstr "Keandalan jangka panjang melewati ambang batas. Pekerjaan yang diberikan jam 6 sore cukup sering bisa di-merge jam 9 pagi sehingga tidak menjadwalkan shift malam terasa seperti membiarkan pabrik menganggur."
@@ -11306,6 +11336,9 @@ msgstr "Buka workspace run ini"
 msgid "open the task in a workspace"
 msgstr "membuka tugas di workspace"
 
+msgid "Open widget source"
+msgstr ""
+
 msgid "Open work item"
 msgstr ""
 
@@ -12663,6 +12696,9 @@ msgstr "Segarkan"
 msgid "Refresh Azure DevOps board"
 msgstr "Refresh Azure DevOps board"
 
+msgid "Refresh devices"
+msgstr ""
+
 msgid "Refresh GitHub issues"
 msgstr "Segarkan issue GitHub"
 
@@ -12734,6 +12770,9 @@ msgstr "Muat ulang Superset untuk menyegarkan daftar workspace."
 
 msgid "Reload window"
 msgstr "Muat ulang jendela"
+
+msgid "Reloading"
+msgstr ""
 
 msgid "Relocate"
 msgstr "Pindahkan"
@@ -13120,6 +13159,9 @@ msgstr "Selesaikan percakapan"
 msgid "Resolve Conversations to Merge"
 msgstr "Selesaikan Percakapan untuk Merge"
 
+msgid "Resolve file conflicts before running Flutter"
+msgstr ""
+
 msgid "resolve the workspace path"
 msgstr "menentukan path workspace"
 
@@ -13475,6 +13517,9 @@ msgstr "Jalankan otomatisasi saat issue Sentry berubah."
 msgid "Run commands and navigate the application."
 msgstr "Jalankan perintah dan navigasi aplikasi."
 
+msgid "Run Flutter"
+msgstr ""
+
 msgid "Run History"
 msgstr "Riwayat Run"
 
@@ -13588,6 +13633,9 @@ msgstr "Hemat 25%"
 
 msgid "Save All"
 msgstr "Simpan Semua"
+
+msgid "Save all files before running Flutter"
+msgstr ""
 
 msgid "Save and test"
 msgstr "Simpan dan uji"
@@ -14039,6 +14087,9 @@ msgstr "Pilih sumber data"
 msgid "Select default worktree location"
 msgstr "Pilih lokasi worktree bawaan"
 
+msgid "Select device"
+msgstr ""
+
 msgid "Select Directory"
 msgstr "Pilih Direktori"
 
@@ -14104,6 +14155,9 @@ msgstr "Pilih tim"
 
 msgid "Select terminal script directory"
 msgstr "Pilih direktori skrip terminal"
+
+msgid "Select widget"
+msgstr ""
 
 msgid "Select worktree"
 msgstr "Pilih worktree"
@@ -15186,6 +15240,9 @@ msgstr "Hentikan perintah run workspace"
 
 msgid "stopped"
 msgstr "berhenti"
+
+msgid "Stopping"
+msgstr ""
 
 msgid "Strikethrough"
 msgstr "Coret"

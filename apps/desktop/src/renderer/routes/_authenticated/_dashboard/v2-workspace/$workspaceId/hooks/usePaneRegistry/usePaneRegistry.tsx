@@ -47,6 +47,7 @@ import { useWorkspace } from "renderer/routes/_authenticated/_dashboard/v2-works
 import { useCollections } from "renderer/routes/_authenticated/providers/CollectionsProvider";
 import { getV2NotificationSourcesForPane } from "renderer/stores/v2-notifications";
 import type { StoreApi } from "zustand/vanilla";
+import { FlutterPane } from "../../components/FlutterPane";
 import { V2NotificationStatusIndicator } from "../../components/V2NotificationStatusIndicator";
 import {
 	getDocument,
@@ -970,6 +971,18 @@ export function usePaneRegistry({
 						},
 					}
 				: {}),
+			"flutter-inspector": {
+				getTitle: () => t({ message: "Flutter Inspector" }),
+				renderPane: (ctx: RendererContext<PaneViewerData>) => (
+					<FlutterPane ctx={ctx} />
+				),
+			},
+			"flutter-output": {
+				getTitle: () => t({ message: "Flutter logs" }),
+				renderPane: (ctx: RendererContext<PaneViewerData>) => (
+					<FlutterPane ctx={ctx} />
+				),
+			},
 			devtools: {
 				getTitle: () =>
 					t({
