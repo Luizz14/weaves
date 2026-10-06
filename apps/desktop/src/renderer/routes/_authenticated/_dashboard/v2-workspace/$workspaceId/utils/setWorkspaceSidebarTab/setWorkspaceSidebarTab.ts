@@ -5,7 +5,7 @@ import { useRowlessSidebarTabStore } from "../../state/rowlessSidebarTabStore";
 type Collections = ReturnType<typeof useCollections>;
 
 /** The tab a workspace's sidebar shows before anything has been chosen. */
-export const DEFAULT_WORKSPACE_SIDEBAR_TAB: WorkspaceSidebarTab = "changes";
+export const DEFAULT_WORKSPACE_SIDEBAR_TAB: WorkspaceSidebarTab = "files";
 
 /**
  * The tab a workspace's sidebar is on: its local-state row, else the

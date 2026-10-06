@@ -121,7 +121,7 @@ export const workspaceRunTerminalStateSchema = z.object({
 	stopRequestedAt: z.number().optional(),
 });
 
-// "pages" is a retired tab; persisted rows on it heal to "changes" below.
+// "pages" is a retired tab; persisted rows on it heal to "files" below.
 export const WORKSPACE_SIDEBAR_TABS = ["changes", "files", "review"] as const;
 
 const WORKSPACE_SIDEBAR_TAB_SCHEMA = z.enum(WORKSPACE_SIDEBAR_TABS);
@@ -143,7 +143,7 @@ export const workspaceLocalStateSchema = z.object({
 		// `${projectId}:${tag}` key (written by move-into-derived-folder).
 		sectionId: z.string().min(1).nullable().default(null),
 		changesFilter: changesFilterSchema.default({ kind: "uncommitted" }),
-		activeTab: WORKSPACE_SIDEBAR_TAB_SCHEMA.default("changes"),
+		activeTab: WORKSPACE_SIDEBAR_TAB_SCHEMA.default("files"),
 		isHidden: z.boolean().default(false),
 		// Epoch ms when the user pinned this workspace to the sidebar's Pinned
 		// section; null = not pinned. Ordering is pinnedAt ascending.
@@ -196,7 +196,7 @@ const SIDEBAR_STATE_DEFAULTS = {
 	tabOrder: 0,
 	sectionId: null,
 	changesFilter: { kind: "uncommitted" },
-	activeTab: "changes",
+	activeTab: "files",
 	isHidden: false,
 	pinnedAt: null,
 	suppressedPullRequestUrl: null,
@@ -424,6 +424,22 @@ export type SidebarProjectSortMode = z.infer<
 const persistedSidebarProjectSortModeSchema =
 	sidebarProjectSortModeSchema.catch("manual");
 
+export const DEFAULT_SIDEBAR_SECTIONS_COLLAPSED = {
+	workspaces: false,
+	sessions: false,
+	userStories: false,
+};
+
+export const sidebarSectionsCollapsedSchema = z.object({
+	workspaces: z.boolean().catch(false),
+	sessions: z.boolean().catch(false),
+	userStories: z.boolean().catch(false),
+});
+
+export type OrganizationSidebarSectionKey = keyof z.infer<
+	typeof sidebarSectionsCollapsedSchema
+>;
+
 export const v2UserPreferencesSchema = z.object({
 	id: z.literal("preferences"),
 	fileLinks: linkTierMapSchema.default(DEFAULT_LINK_TIER_MAP),
@@ -434,7 +450,7 @@ export const v2UserPreferencesSchema = z.object({
 	pageOpenAction: linkActionSchema.default(DEFAULT_PAGE_OPEN_ACTION),
 	terminalPresetsInitialized: z.boolean().default(false),
 	rightSidebarOpen: z.boolean().default(true),
-	rightSidebarTab: z.enum(["changes", "files"]).default("changes"),
+	rightSidebarTab: z.enum(["changes", "files"]).default("files"),
 	rightSidebarWidth: z.number().default(340),
 	deleteLocalBranch: z.boolean().default(false),
 	showPresetsBar: z.boolean().default(true),
@@ -442,6 +458,10 @@ export const v2UserPreferencesSchema = z.object({
 	gitPanelPresentationVersion: z.number().int().min(0).max(1).default(0),
 	// Ordering of the dashboard sidebar's Projects list; manual = drag order.
 	sidebarProjectSortMode: persistedSidebarProjectSortModeSchema,
+	sidebarSectionsCollapsed: sidebarSectionsCollapsedSchema.default(
+		DEFAULT_SIDEBAR_SECTIONS_COLLAPSED,
+	),
+	sidebarSectionsCollapseInitialized: z.boolean().default(false),
 	// Built-in (synthetic, app-shipped) presets the user hid from the preset
 	// bar. Synthetic presets have no v2TerminalPresets row, so visibility can't
 	// live on the row's pinnedToBar like user presets. Pruned against
@@ -475,13 +495,15 @@ export const DEFAULT_V2_USER_PREFERENCES: V2UserPreferencesRow = {
 	pageOpenAction: DEFAULT_PAGE_OPEN_ACTION,
 	terminalPresetsInitialized: false,
 	rightSidebarOpen: true,
-	rightSidebarTab: "changes",
+	rightSidebarTab: "files",
 	rightSidebarWidth: 340,
 	deleteLocalBranch: false,
 	showPresetsBar: true,
 	changesViewMode: "flat",
 	gitPanelPresentationVersion: 1,
 	sidebarProjectSortMode: "manual",
+	sidebarSectionsCollapsed: DEFAULT_SIDEBAR_SECTIONS_COLLAPSED,
+	sidebarSectionsCollapseInitialized: false,
 	hiddenBuiltinPresetIds: [],
 	favoritePageIds: [],
 	hiddenTagFolders: {},
@@ -523,7 +545,7 @@ export function healWorkspaceLocalState(raw: unknown): WorkspaceLocalStateRow {
 		sidebarState: {
 			...SIDEBAR_STATE_DEFAULTS,
 			...sidebar,
-			activeTab: WORKSPACE_SIDEBAR_TAB_SCHEMA.catch("changes").parse(
+			activeTab: WORKSPACE_SIDEBAR_TAB_SCHEMA.catch("files").parse(
 				sidebar.activeTab,
 			),
 		} as WorkspaceLocalStateRow["sidebarState"],
@@ -560,6 +582,9 @@ export function healV2UserPreferences(raw: unknown): V2UserPreferencesRow {
 	return {
 		...DEFAULT_V2_USER_PREFERENCES,
 		...r,
+		rightSidebarTab: v2UserPreferencesSchema.shape.rightSidebarTab
+			.catch("files")
+			.parse(r.rightSidebarTab),
 		gitPanelPresentationVersion:
 			r.gitPanelPresentationVersion ?? (Object.keys(r).length ? 0 : 1),
 		fileLinks: { ...DEFAULT_V2_USER_PREFERENCES.fileLinks, ...r.fileLinks },
@@ -576,6 +601,21 @@ export function healV2UserPreferences(raw: unknown): V2UserPreferencesRow {
 		sidebarProjectSortMode: persistedSidebarProjectSortModeSchema.parse(
 			r.sidebarProjectSortMode,
 		),
+		sidebarSectionsCollapsed: sidebarSectionsCollapsedSchema.parse(
+			r.sidebarSectionsCollapsed &&
+				typeof r.sidebarSectionsCollapsed === "object"
+				? r.sidebarSectionsCollapsed
+				: {},
+		),
+		sidebarSectionsCollapseInitialized:
+			typeof r.sidebarSectionsCollapseInitialized === "boolean"
+				? r.sidebarSectionsCollapseInitialized
+				: Object.keys(DEFAULT_SIDEBAR_SECTIONS_COLLAPSED).some(
+						(section) =>
+							typeof r.sidebarSectionsCollapsed?.[
+								section as OrganizationSidebarSectionKey
+							] === "boolean",
+					),
 		// Prune retired/stray built-in ids so the array stays bounded.
 		hiddenBuiltinPresetIds: (Array.isArray(r.hiddenBuiltinPresetIds)
 			? r.hiddenBuiltinPresetIds

@@ -18,7 +18,7 @@ import {
 import { useV2UserPreferences } from "renderer/hooks/useV2UserPreferences";
 import { useDashboardSidebarState } from "renderer/routes/_authenticated/hooks/useDashboardSidebarState";
 import { useLocalHostService } from "renderer/routes/_authenticated/providers/LocalHostServiceProvider";
-import { useSidebarSectionsCollapseStore } from "renderer/stores/sidebar-sections-collapse";
+import { useSidebarSectionCollapse } from "renderer/stores/sidebar-sections-collapse";
 import { DashboardSidebarBulkActions } from "./components/DashboardSidebarBulkActions";
 import { DashboardSidebarBulkDeleteMount } from "./components/DashboardSidebarBulkDeleteMount";
 import { DashboardSidebarCloudSection } from "./components/DashboardSidebarCloudSection";
@@ -160,9 +160,8 @@ export function DashboardSidebar({
 	const { activeHostUrl } = useLocalHostService();
 	const v2RouteMatch = matchRoute({ to: "/v2-workspace/$workspaceId" });
 	const activeV2WorkspaceId = v2RouteMatch ? v2RouteMatch.workspaceId : null;
-	const workspacesListCollapsed = useSidebarSectionsCollapseStore(
-		(s) => s.collapsed.workspaces,
-	);
+	const { isCollapsed: workspacesListCollapsed } =
+		useSidebarSectionCollapse("workspaces");
 	const { preferences, setSidebarProjectSortMode } = useV2UserPreferences();
 	const sortMode = preferences.sidebarProjectSortMode;
 	const [projectFilterQuery, setProjectFilterQuery] = useState("");
@@ -347,7 +346,10 @@ export function DashboardSidebar({
 								isChildDragDisabled={isChildDragDisabled}
 							>
 								<div className="flex h-full flex-col border-r border-border bg-sidebar dark:bg-muted/35">
-									<DashboardSidebarHeader isCollapsed={isCollapsed} />
+									<DashboardSidebarHeader
+										isCollapsed={isCollapsed}
+										organizationSwipe={organizationSwipe}
+									/>
 
 									<div
 										ref={swipeTargetRef}

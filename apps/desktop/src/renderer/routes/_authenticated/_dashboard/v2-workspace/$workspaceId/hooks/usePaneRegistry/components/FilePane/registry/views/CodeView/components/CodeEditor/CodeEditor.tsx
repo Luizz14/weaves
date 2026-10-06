@@ -30,6 +30,7 @@ import { useEditorSettings } from "renderer/hooks/useEditorSettings";
 import { FONT_SETTINGS_QUERY_KEY } from "renderer/lib/font-settings";
 import { electronTrpcClient } from "renderer/lib/trpc-client";
 import type { SharedFileDocument } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/fileDocumentStore";
+import { useIdeContext } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/ideContext";
 import type { EditorLspStatus } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/coordinator";
 import { editorPreferenceExtensions } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/editorExtensions";
 import { useLspCoordinator } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/LspProvider";
@@ -47,6 +48,7 @@ import { loadLanguageSupport } from "./loadLanguageSupport";
 import { getCodeSyntaxHighlighting } from "./syntax-highlighting";
 
 interface CodeEditorProps {
+	paneId?: string;
 	document?: SharedFileDocument;
 	onLspStatus?: (status: EditorLspStatus) => void;
 	value: string;
@@ -65,6 +67,7 @@ interface CodeEditorProps {
 }
 
 export function CodeEditor({
+	paneId,
 	document,
 	onLspStatus,
 	value,
@@ -78,6 +81,9 @@ export function CodeEditor({
 	initialScrollPosition,
 	onScrollPositionChange,
 }: CodeEditorProps) {
+	const ideContext = useIdeContext();
+	const ideCaptureRef = useRef({ ideContext, document, paneId, readOnly });
+	ideCaptureRef.current = { ideContext, document, paneId, readOnly };
 	const containerRef = useRef<HTMLDivElement | null>(null);
 	const viewRef = useRef<EditorView | null>(null);
 	const languageCompartment = useRef(new Compartment()).current;
@@ -133,9 +139,22 @@ export function CodeEditor({
 		if (!containerRef.current) return;
 
 		const updateListener = EditorView.updateListener.of((update) => {
-			if (!update.docChanged) return;
-			if (isExternalUpdateRef.current) return;
-			onChangeRef.current?.(update.state.doc.toString());
+			if (update.docChanged && !isExternalUpdateRef.current) {
+				onChangeRef.current?.(update.state.doc.toString());
+			}
+			const capture = ideCaptureRef.current;
+			if (
+				(update.docChanged || update.selectionSet) &&
+				capture.document &&
+				capture.paneId &&
+				!capture.readOnly
+			) {
+				capture.ideContext?.capture(
+					capture.document,
+					update.view,
+					capture.paneId,
+				);
+			}
 		});
 
 		const saveKeymap = keymap.of([
@@ -245,6 +264,12 @@ export function CodeEditor({
 			viewRef.current = null;
 		};
 	}, []);
+
+	useEffect(() => {
+		const view = viewRef.current;
+		if (!view || !ideContext || !document || !paneId || readOnly) return;
+		return ideContext.attachEditor(document, view, paneId);
+	}, [ideContext, document, paneId, readOnly]);
 
 	useEffect(() => {
 		const view = viewRef.current;

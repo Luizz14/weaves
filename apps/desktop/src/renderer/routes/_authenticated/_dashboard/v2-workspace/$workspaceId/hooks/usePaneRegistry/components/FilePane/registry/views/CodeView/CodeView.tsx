@@ -1,7 +1,5 @@
 import { Trans } from "@lingui/react/macro";
-import { useCallback, useMemo, useState } from "react";
-import type { EditorLspStatus } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/coordinator";
-import { useLspCoordinator } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/LspProvider";
+import { useCallback, useMemo } from "react";
 import {
 	createPaneScrollStateKey,
 	getPaneScrollState,
@@ -10,16 +8,14 @@ import {
 import { detectLanguage } from "shared/detect-language";
 import type { ViewProps } from "../../types";
 import { CodeEditor } from "./components/CodeEditor";
-import { LspStatus } from "./components/LspStatus";
 
 export function CodeView({
+	paneId,
 	document,
 	filePath,
 	workspaceId,
 	readOnly = false,
 }: ViewProps) {
-	const lsp = useLspCoordinator();
-	const [lspStatus, setLspStatus] = useState<EditorLspStatus>(null);
 	// Quick Open replaces preview panes with new pane IDs, so the file path is
 	// the stable editor identity when a user switches away and back.
 	const scrollStateKey = useMemo(
@@ -50,8 +46,8 @@ export function CodeView({
 		<div className="flex h-full min-h-0 flex-col">
 			<div className="min-h-0 flex-1">
 				<CodeEditor
+					paneId={paneId}
 					document={readOnly ? undefined : document}
-					onLspStatus={setLspStatus}
 					key={document.id}
 					value={document.content.value}
 					readOnly={readOnly}
@@ -70,9 +66,6 @@ export function CodeView({
 						server.
 					</Trans>
 				</output>
-			)}
-			{!readOnly && (
-				<LspStatus status={lspStatus} retry={() => void lsp?.retry(document)} />
 			)}
 		</div>
 	);

@@ -10,6 +10,7 @@ import { toast } from "@superset/ui/sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { cn } from "@superset/ui/utils";
 import { useMatchRoute, useNavigate } from "@tanstack/react-router";
+import { type MotionStyle, motion } from "motion/react";
 import { useFeatureFlagEnabled } from "posthog-js/react";
 import { useRef } from "react";
 import { GoGitPullRequest } from "react-icons/go";
@@ -68,10 +69,12 @@ import {
 
 interface DashboardSidebarHeaderProps {
 	isCollapsed?: boolean;
+	organizationSwipe?: MotionStyle;
 }
 
 export function DashboardSidebarHeader({
 	isCollapsed = false,
+	organizationSwipe,
 }: DashboardSidebarHeaderProps) {
 	const { t } = useLingui();
 	const openNewWorkspace = useOpenNewWorkspace();
@@ -293,125 +296,132 @@ export function DashboardSidebarHeader({
 						</TooltipContent>
 					</Tooltip>
 
-					{isWorkspacesInSidebarEnabled !== false && (
-						<Tooltip delayDuration={300}>
-							<TooltipTrigger asChild>
-								<button
-									type="button"
-									onClick={handleWorkspacesClick}
-									className={cn(
-										"flex size-7 items-center justify-center rounded-md transition-colors",
-										isWorkspacesListOpen
-											? "bg-fill-selected text-muted-foreground"
-											: "text-muted-foreground hover:bg-fill-hover",
-									)}
-								>
-									<LuLayers className="size-3.5" strokeWidth={1.5} />
-								</button>
-							</TooltipTrigger>
-							<TooltipContent side="right">
-								<Trans>Workspaces</Trans>
-							</TooltipContent>
-						</Tooltip>
-					)}
+					<div className="w-full overflow-hidden">
+						<motion.div
+							className="flex flex-col items-center gap-1"
+							style={organizationSwipe}
+						>
+							{isWorkspacesInSidebarEnabled !== false && (
+								<Tooltip delayDuration={300}>
+									<TooltipTrigger asChild>
+										<button
+											type="button"
+											onClick={handleWorkspacesClick}
+											className={cn(
+												"flex size-7 items-center justify-center rounded-md transition-colors",
+												isWorkspacesListOpen
+													? "bg-fill-selected text-muted-foreground"
+													: "text-muted-foreground hover:bg-fill-hover",
+											)}
+										>
+											<LuLayers className="size-3.5" strokeWidth={1.5} />
+										</button>
+									</TooltipTrigger>
+									<TooltipContent side="right">
+										<Trans>Workspaces</Trans>
+									</TooltipContent>
+								</Tooltip>
+							)}
 
-					{areIntegrationsReady && taskSources.length > 0 && (
-						<Tooltip delayDuration={300}>
-							<TooltipTrigger asChild>
-								<button
-									type="button"
-									onClick={handleTasksClick}
-									aria-label={t({
-										message: "Tasks",
-									})}
-									aria-current={isTasksOpen ? "page" : undefined}
-									className={cn(
-										"flex size-7 items-center justify-center rounded-md transition-colors",
-										isTasksOpen
-											? "bg-fill-selected text-muted-foreground"
-											: "text-muted-foreground hover:bg-fill-hover",
-									)}
-								>
-									<HiOutlineClipboardDocumentList className="size-3.5" />
-								</button>
-							</TooltipTrigger>
-							<TooltipContent side="right">
-								<Trans>Tasks</Trans>
-							</TooltipContent>
-						</Tooltip>
-					)}
+							{areIntegrationsReady && taskSources.length > 0 && (
+								<Tooltip delayDuration={300}>
+									<TooltipTrigger asChild>
+										<button
+											type="button"
+											onClick={handleTasksClick}
+											aria-label={t({
+												message: "Tasks",
+											})}
+											aria-current={isTasksOpen ? "page" : undefined}
+											className={cn(
+												"flex size-7 items-center justify-center rounded-md transition-colors",
+												isTasksOpen
+													? "bg-fill-selected text-muted-foreground"
+													: "text-muted-foreground hover:bg-fill-hover",
+											)}
+										>
+											<HiOutlineClipboardDocumentList className="size-3.5" />
+										</button>
+									</TooltipTrigger>
+									<TooltipContent side="right">
+										<Trans>Tasks</Trans>
+									</TooltipContent>
+								</Tooltip>
+							)}
 
-					{areIntegrationsReady && pullRequestProviders.length > 0 && (
-						<Tooltip delayDuration={300}>
-							<TooltipTrigger asChild>
-								<button
-									type="button"
-									onClick={handlePullRequestsClick}
-									aria-label={t({
-										message: "Pull requests",
-									})}
-									aria-current={isPullRequestsOpen ? "page" : undefined}
-									className={cn(
-										"flex size-7 items-center justify-center rounded-md transition-colors",
-										isPullRequestsOpen
-											? "bg-fill-selected text-muted-foreground"
-											: "text-muted-foreground hover:bg-fill-hover",
-									)}
-								>
-									<GoGitPullRequest className="size-3.5" />
-								</button>
-							</TooltipTrigger>
-							<TooltipContent side="right">
-								<Trans>Pull requests</Trans>
-							</TooltipContent>
-						</Tooltip>
-					)}
+							{areIntegrationsReady && pullRequestProviders.length > 0 && (
+								<Tooltip delayDuration={300}>
+									<TooltipTrigger asChild>
+										<button
+											type="button"
+											onClick={handlePullRequestsClick}
+											aria-label={t({
+												message: "Pull requests",
+											})}
+											aria-current={isPullRequestsOpen ? "page" : undefined}
+											className={cn(
+												"flex size-7 items-center justify-center rounded-md transition-colors",
+												isPullRequestsOpen
+													? "bg-fill-selected text-muted-foreground"
+													: "text-muted-foreground hover:bg-fill-hover",
+											)}
+										>
+											<GoGitPullRequest className="size-3.5" />
+										</button>
+									</TooltipTrigger>
+									<TooltipContent side="right">
+										<Trans>Pull requests</Trans>
+									</TooltipContent>
+								</Tooltip>
+							)}
 
-					{isUsageInSidebarEnabled && (
-						<Tooltip delayDuration={300}>
-							<TooltipTrigger asChild>
-								<button
-									type="button"
-									onClick={handleUsageClick}
-									aria-label={t({
-										message: "Usage",
-									})}
-									className="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-fill-hover"
-								>
-									<LuGauge className="size-3.5" strokeWidth={1.5} />
-								</button>
-							</TooltipTrigger>
-							<TooltipContent side="right">
-								<Trans>Usage</Trans>
-							</TooltipContent>
-						</Tooltip>
-					)}
+							{isUsageInSidebarEnabled && (
+								<Tooltip delayDuration={300}>
+									<TooltipTrigger asChild>
+										<button
+											type="button"
+											onClick={handleUsageClick}
+											aria-label={t({
+												message: "Usage",
+											})}
+											className="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-fill-hover"
+										>
+											<LuGauge className="size-3.5" strokeWidth={1.5} />
+										</button>
+									</TooltipTrigger>
+									<TooltipContent side="right">
+										<Trans>Usage</Trans>
+									</TooltipContent>
+								</Tooltip>
+							)}
 
-					{isPagesEnabled && (
-						<Tooltip delayDuration={300}>
-							<TooltipTrigger asChild>
-								<button
-									type="button"
-									onClick={handlePagesClick}
-									aria-label={t({
-										message: "Pages",
-									})}
-									aria-current={isPagesOpen ? "page" : undefined}
-									className={cn(
-										"flex size-7 items-center justify-center rounded-md transition-colors",
-										isPagesOpen
-											? "bg-fill-selected text-muted-foreground"
-											: "text-muted-foreground hover:bg-fill-hover",
-									)}
-								>
-									<LuFileText className="size-3.5" strokeWidth={1.5} />
-								</button>
-							</TooltipTrigger>
-							<TooltipContent side="right">
-								<Trans>Pages</Trans>
-							</TooltipContent>
-						</Tooltip>
-					)}
+							{isPagesEnabled && (
+								<Tooltip delayDuration={300}>
+									<TooltipTrigger asChild>
+										<button
+											type="button"
+											onClick={handlePagesClick}
+											aria-label={t({
+												message: "Pages",
+											})}
+											aria-current={isPagesOpen ? "page" : undefined}
+											className={cn(
+												"flex size-7 items-center justify-center rounded-md transition-colors",
+												isPagesOpen
+													? "bg-fill-selected text-muted-foreground"
+													: "text-muted-foreground hover:bg-fill-hover",
+											)}
+										>
+											<LuFileText className="size-3.5" strokeWidth={1.5} />
+										</button>
+									</TooltipTrigger>
+									<TooltipContent side="right">
+										<Trans>Pages</Trans>
+									</TooltipContent>
+								</Tooltip>
+							)}
+						</motion.div>
+					</div>
 
 					<DropdownMenu>
 						<Tooltip delayDuration={700}>
@@ -533,114 +543,118 @@ export function DashboardSidebarHeader({
 				)}
 			</button>
 
-			{isWorkspacesInSidebarEnabled !== false && (
-				<button
-					type="button"
-					onClick={handleWorkspacesClick}
-					className={cn(
-						"flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium transition-colors",
-						isWorkspacesListOpen
-							? "bg-fill-selected text-foreground"
-							: "text-muted-foreground hover:bg-fill-hover hover:text-foreground",
+			<div className="w-full overflow-hidden">
+				<motion.div className="flex flex-col gap-px" style={organizationSwipe}>
+					{isWorkspacesInSidebarEnabled !== false && (
+						<button
+							type="button"
+							onClick={handleWorkspacesClick}
+							className={cn(
+								"flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium transition-colors",
+								isWorkspacesListOpen
+									? "bg-fill-selected text-foreground"
+									: "text-muted-foreground hover:bg-fill-hover hover:text-foreground",
+							)}
+						>
+							<LuLayers
+								className="size-4 shrink-0 text-muted-foreground"
+								strokeWidth={1.5}
+							/>
+							<span className="flex-1 text-left">
+								<Trans>Workspaces</Trans>
+							</span>
+						</button>
 					)}
-				>
-					<LuLayers
-						className="size-4 shrink-0 text-muted-foreground"
-						strokeWidth={1.5}
-					/>
-					<span className="flex-1 text-left">
-						<Trans>Workspaces</Trans>
-					</span>
-				</button>
-			)}
 
-			{areIntegrationsReady && taskSources.length > 0 && (
-				<button
-					type="button"
-					onClick={handleTasksClick}
-					aria-label={t({
-						message: "Tasks",
-					})}
-					aria-current={isTasksOpen ? "page" : undefined}
-					className={cn(
-						"flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium transition-colors",
-						isTasksOpen
-							? "bg-fill-selected text-foreground"
-							: "text-muted-foreground hover:bg-fill-hover hover:text-foreground",
+					{areIntegrationsReady && taskSources.length > 0 && (
+						<button
+							type="button"
+							onClick={handleTasksClick}
+							aria-label={t({
+								message: "Tasks",
+							})}
+							aria-current={isTasksOpen ? "page" : undefined}
+							className={cn(
+								"flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium transition-colors",
+								isTasksOpen
+									? "bg-fill-selected text-foreground"
+									: "text-muted-foreground hover:bg-fill-hover hover:text-foreground",
+							)}
+						>
+							<HiOutlineClipboardDocumentList className="size-4 shrink-0 text-muted-foreground" />
+							<span className="flex-1 text-left">
+								<Trans>Tasks</Trans>
+							</span>
+						</button>
 					)}
-				>
-					<HiOutlineClipboardDocumentList className="size-4 shrink-0 text-muted-foreground" />
-					<span className="flex-1 text-left">
-						<Trans>Tasks</Trans>
-					</span>
-				</button>
-			)}
 
-			{areIntegrationsReady && pullRequestProviders.length > 0 && (
-				<button
-					type="button"
-					onClick={handlePullRequestsClick}
-					aria-label={t({
-						message: "Pull requests",
-					})}
-					aria-current={isPullRequestsOpen ? "page" : undefined}
-					className={cn(
-						"flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium transition-colors",
-						isPullRequestsOpen
-							? "bg-fill-selected text-foreground"
-							: "text-muted-foreground hover:bg-fill-hover hover:text-foreground",
+					{areIntegrationsReady && pullRequestProviders.length > 0 && (
+						<button
+							type="button"
+							onClick={handlePullRequestsClick}
+							aria-label={t({
+								message: "Pull requests",
+							})}
+							aria-current={isPullRequestsOpen ? "page" : undefined}
+							className={cn(
+								"flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium transition-colors",
+								isPullRequestsOpen
+									? "bg-fill-selected text-foreground"
+									: "text-muted-foreground hover:bg-fill-hover hover:text-foreground",
+							)}
+						>
+							<GoGitPullRequest className="size-4 shrink-0 text-muted-foreground" />
+							<span className="flex-1 text-left">
+								<Trans>Pull requests</Trans>
+							</span>
+						</button>
 					)}
-				>
-					<GoGitPullRequest className="size-4 shrink-0 text-muted-foreground" />
-					<span className="flex-1 text-left">
-						<Trans>Pull requests</Trans>
-					</span>
-				</button>
-			)}
 
-			{isUsageInSidebarEnabled && (
-				<button
-					type="button"
-					onClick={handleUsageClick}
-					aria-label={t({
-						message: "Usage",
-					})}
-					className="flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-fill-hover hover:text-foreground"
-				>
-					<LuGauge
-						className="size-4 shrink-0 text-muted-foreground"
-						strokeWidth={1.5}
-					/>
-					<span className="flex-1 text-left">
-						<Trans>Usage</Trans>
-					</span>
-				</button>
-			)}
-
-			{isPagesEnabled && (
-				<button
-					type="button"
-					onClick={handlePagesClick}
-					aria-label={t({
-						message: "Pages",
-					})}
-					aria-current={isPagesOpen ? "page" : undefined}
-					className={cn(
-						"flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium transition-colors",
-						isPagesOpen
-							? "bg-fill-selected text-foreground"
-							: "text-muted-foreground hover:bg-fill-hover hover:text-foreground",
+					{isUsageInSidebarEnabled && (
+						<button
+							type="button"
+							onClick={handleUsageClick}
+							aria-label={t({
+								message: "Usage",
+							})}
+							className="flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-fill-hover hover:text-foreground"
+						>
+							<LuGauge
+								className="size-4 shrink-0 text-muted-foreground"
+								strokeWidth={1.5}
+							/>
+							<span className="flex-1 text-left">
+								<Trans>Usage</Trans>
+							</span>
+						</button>
 					)}
-				>
-					<LuFileText
-						className="size-4 shrink-0 text-muted-foreground"
-						strokeWidth={1.5}
-					/>
-					<span className="flex-1 text-left">
-						<Trans>Pages</Trans>
-					</span>
-				</button>
-			)}
+
+					{isPagesEnabled && (
+						<button
+							type="button"
+							onClick={handlePagesClick}
+							aria-label={t({
+								message: "Pages",
+							})}
+							aria-current={isPagesOpen ? "page" : undefined}
+							className={cn(
+								"flex h-7 w-full items-center gap-2 rounded-md px-2 text-[13px] font-medium transition-colors",
+								isPagesOpen
+									? "bg-fill-selected text-foreground"
+									: "text-muted-foreground hover:bg-fill-hover hover:text-foreground",
+							)}
+						>
+							<LuFileText
+								className="size-4 shrink-0 text-muted-foreground"
+								strokeWidth={1.5}
+							/>
+							<span className="flex-1 text-left">
+								<Trans>Pages</Trans>
+							</span>
+						</button>
+					)}
+				</motion.div>
+			</div>
 		</div>
 	);
 }

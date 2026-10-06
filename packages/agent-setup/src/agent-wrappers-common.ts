@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { SUPERSET_MANAGED_BINARIES } from "./agent-setup-targets";
 import { ARTIFACT_GUARD_SCRIPT_NAME } from "./artifact-guard-hook";
+import { IDE_CONTEXT_SCRIPT_NAME } from "./ide-context-hook";
 import { NOTIFY_SCRIPT_NAME } from "./notify-hook";
 import { getBinDir } from "./paths";
 
@@ -33,6 +34,19 @@ export const DYNAMIC_NOTIFY_PATH_MARKER = `$SUPERSET_HOME_DIR/${MANAGED_NOTIFY_R
  */
 export function getManagedNotifyHookCommand(agentId: string): string {
 	return `[ -n "$SUPERSET_HOME_DIR" ] && [ -x "$SUPERSET_HOME_DIR/${MANAGED_NOTIFY_RELATIVE_PATH}" ] && SUPERSET_HOOK_HARNESS=${agentId} "$SUPERSET_HOME_DIR/${MANAGED_NOTIFY_RELATIVE_PATH}" || true`;
+}
+
+export function getManagedIdeContextCommand(agentId: string): string {
+	return `[ -n "$SUPERSET_HOME_DIR" ] && [ -f "$SUPERSET_HOME_DIR/hooks/${IDE_CONTEXT_SCRIPT_NAME}" ] && command -v node >/dev/null 2>&1 && SUPERSET_HOOK_HARNESS=${agentId} node "$SUPERSET_HOME_DIR/hooks/${IDE_CONTEXT_SCRIPT_NAME}" || true`;
+}
+
+export function isManagedIdeContextCommand(
+	command: string | undefined,
+): boolean {
+	return Boolean(
+		command?.includes(`$SUPERSET_HOME_DIR/hooks/${IDE_CONTEXT_SCRIPT_NAME}`) ||
+			isSupersetManagedHookCommand(command, IDE_CONTEXT_SCRIPT_NAME),
+	);
 }
 
 export const MANAGED_ARTIFACT_GUARD_RELATIVE_PATH = `hooks/${ARTIFACT_GUARD_SCRIPT_NAME}`;

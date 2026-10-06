@@ -9,13 +9,17 @@ const MAX_DISPLAY_BUFFER_BYTES = 32 * 1024 * 1024;
 const MAX_DISPLAY_PENDING = 64;
 
 import { TRPCError } from "@trpc/server";
+import { eq } from "drizzle-orm";
 import type { MiddlewareHandler } from "hono";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { createApiClient } from "./api";
 import { createChatV3Mount, registerChatV3Routes } from "./chat-v3";
 import { createDb, type HostDb } from "./db";
+import { terminalSessions, workspaces } from "./db/schema";
 import { EventBus, GitWatcher, registerEventBusRoute } from "./events";
+import { registerIdeContextRoutes } from "./ide-context/routes";
+import { IdeContextStore } from "./ide-context/store";
 import { registerLspRoutes } from "./lsp/routes";
 import { LspSessions } from "./lsp/sessions";
 import { agentIsBusy, PageWatchManager } from "./page-watch/index.ts";
@@ -269,11 +273,15 @@ export function createApp(options: CreateAppOptions): CreateAppResult {
 	pageWatch.subscribeToTerminalEvents(eventBus);
 
 	const lsp = new LspSessions({ db, filesystem });
+	const ideContext = new IdeContextStore();
 	eventBus.onWorkspaceChanged((event) => {
-		if (event.eventType === "deleted")
+		if (event.eventType === "deleted") {
+			ideContext.deleteWorkspace(event.workspaceId);
 			void lsp.stopWorkspace(event.workspaceId);
+		}
 	});
 	const runtime = {
+		ideContext,
 		lsp,
 		filesystem,
 		pullRequests: pullRequestRuntime,
@@ -405,6 +413,30 @@ export function createApp(options: CreateAppOptions): CreateAppResult {
 		upgradeWebSocket,
 	});
 	registerChatV3Routes({ app, db, mount: chatV3, upgradeWebSocket });
+	registerIdeContextRoutes({
+		app,
+		organizationId: config.organizationId,
+		store: ideContext,
+		resolveTerminal: (terminalId) => {
+			const terminal = db.query.terminalSessions
+				.findFirst({ where: eq(terminalSessions.id, terminalId) })
+				.sync();
+			if (!terminal?.originWorkspaceId) return null;
+			const workspace = db.query.workspaces
+				.findFirst({ where: eq(workspaces.id, terminal.originWorkspaceId) })
+				.sync();
+			if (!workspace || workspace.archivedAt !== null) return null;
+			return {
+				workspaceId: terminal.originWorkspaceId,
+				workspacePath: workspace.worktreePath,
+				live:
+					terminal.status === "active" &&
+					terminal.endedAt === null &&
+					terminal.disposeRequestedAt === null &&
+					isLiveTerminalSession(terminalId),
+			};
+		},
+	});
 
 	app.use(
 		"/trpc/*",
@@ -444,6 +476,7 @@ export function createApp(options: CreateAppOptions): CreateAppResult {
 
 	const ownsDb = options.db === undefined;
 	const dispose = async (): Promise<void> => {
+		ideContext.dispose();
 		try {
 			await lsp.dispose();
 		} catch (error) {

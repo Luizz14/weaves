@@ -202,6 +202,7 @@ interface BuildV2TerminalEnvParams {
 	 * forward-only). See the router for rationale.
 	 */
 	hostAgentHookUrl?: string;
+	ideContextToken?: string;
 }
 
 /**
@@ -263,6 +264,8 @@ export function buildV2TerminalEnv(
 		env.SUPERSET_ORGANIZATION_ID = organizationId;
 	}
 	env.SUPERSET_WORKSPACE_ID = workspaceId;
+	if (params.ideContextToken)
+		env.SUPERSET_IDE_CONTEXT_TOKEN = params.ideContextToken;
 	// In a cloud workspace, say so and say which: `superset` here authenticates
 	// as the workspace rather than a person, and an agent asked to reach its
 	// own box needs the id it was provisioned for.

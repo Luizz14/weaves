@@ -269,6 +269,18 @@ export function applyWorkspaceChangedEvent(
 		type: normalizeServedWorkspaceRow(snapshot).type,
 		createdByUserId: snapshot.createdByUserId,
 		taskId: snapshot.taskId,
+		externalWorkItemProvider:
+			snapshot.externalWorkItemProvider !== undefined
+				? snapshot.externalWorkItemProvider
+				: existing?.externalWorkItemProvider,
+		externalWorkItemId:
+			snapshot.externalWorkItemId !== undefined
+				? snapshot.externalWorkItemId
+				: existing?.externalWorkItemId,
+		externalWorkItemUrl:
+			snapshot.externalWorkItemUrl !== undefined
+				? snapshot.externalWorkItemUrl
+				: existing?.externalWorkItemUrl,
 		// Runtime-optional despite the payload type: an older host's events
 		// carry no tags — keep the row's last known set rather than wiping it.
 		// A host that predates tag creators sends only the union and can't

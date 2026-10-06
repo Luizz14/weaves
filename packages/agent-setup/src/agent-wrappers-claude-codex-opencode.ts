@@ -6,8 +6,10 @@ import {
 	buildWrapperScript,
 	createWrapper,
 	getManagedArtifactGuardHookCommand,
+	getManagedIdeContextCommand,
 	getManagedNotifyHookCommand,
 	isManagedArtifactGuardCommand,
+	isManagedIdeContextCommand,
 	isManagedNotifyCommand,
 	writeFileIfChanged,
 } from "./agent-wrappers-common";
@@ -96,6 +98,15 @@ function claudeHooksSpec(
 		CLAUDE_MANAGED_EVENTS,
 		getClaudeManagedHookCommand(),
 	);
+	desiredEntriesByEvent.UserPromptSubmit?.push({
+		hooks: [
+			{
+				type: "command",
+				command: getManagedIdeContextCommand("claude"),
+				timeout: 2,
+			},
+		],
+	});
 	desiredEntriesByEvent[CLAUDE_ARTIFACT_GUARD_EVENT] = [
 		...(desiredEntriesByEvent[CLAUDE_ARTIFACT_GUARD_EVENT] ?? []),
 		{
@@ -116,6 +127,7 @@ function claudeHooksSpec(
 				definition,
 				(command) =>
 					isManagedNotifyCommand(command, notifyScriptPath) ||
+					isManagedIdeContextCommand(command) ||
 					isManagedArtifactGuardCommand(command, artifactGuardScriptPath),
 			),
 		dropEmptyContainerOnRemove: true,
@@ -197,6 +209,20 @@ const CODEX_MANAGED_EVENTS: Record<string, { matcher?: string }> = {
 function codexHooksSpec(
 	notifyScriptPath: string,
 ): ManagedJsonHooksSpec<ClaudeHookDefinition> {
+	const desiredEntriesByEvent = buildNestedDesiredEntries<ClaudeHookDefinition>(
+		CODEX_MANAGED_EVENTS,
+		getManagedNotifyHookCommand("codex"),
+	);
+	desiredEntriesByEvent.UserPromptSubmit?.push({
+		hooks: [
+			{
+				type: "command",
+				command: getManagedIdeContextCommand("codex"),
+				timeout: 2,
+				additionalContextLimit: 0,
+			},
+		],
+	});
 	return {
 		fileLabel: "Codex hooks.json",
 		agentLabel: "Codex",
@@ -206,13 +232,13 @@ function codexHooksSpec(
 		// launched outside Superset terminals. Superset terminals without the
 		// PATH wrapper still export SUPERSET_HOME_DIR, so the outside-wrapper
 		// fallback this file provides keeps working.
-		desiredEntriesByEvent: buildNestedDesiredEntries(
-			CODEX_MANAGED_EVENTS,
-			getManagedNotifyHookCommand("codex"),
-		),
+		desiredEntriesByEvent,
 		cleanEntry: (definition) =>
-			cleanNestedHookDefinition(definition, (command) =>
-				isManagedNotifyCommand(command, notifyScriptPath),
+			cleanNestedHookDefinition(
+				definition,
+				(command) =>
+					isManagedNotifyCommand(command, notifyScriptPath) ||
+					isManagedIdeContextCommand(command),
 			),
 		dropEmptyContainerOnRemove: true,
 	};

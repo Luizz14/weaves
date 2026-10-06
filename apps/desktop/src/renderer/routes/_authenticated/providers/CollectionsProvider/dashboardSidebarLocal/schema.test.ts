@@ -22,6 +22,101 @@ describe("healV2UserPreferences", () => {
 		);
 	});
 
+	it("defaults missing and invalid sidebar tabs to Files without changing visibility", () => {
+		expect(DEFAULT_V2_USER_PREFERENCES.rightSidebarTab).toBe("files");
+		expect(
+			v2UserPreferencesSchema.parse({ id: "preferences" }).rightSidebarTab,
+		).toBe("files");
+		for (const rightSidebarTab of [undefined, null, "invalid", 42]) {
+			for (const rightSidebarOpen of [false, true]) {
+				const healed = healV2UserPreferences({
+					rightSidebarTab,
+					rightSidebarOpen,
+				});
+				expect(healed.rightSidebarTab).toBe("files");
+				expect(healed.rightSidebarOpen).toBe(rightSidebarOpen);
+			}
+		}
+	});
+
+	it("preserves valid saved global sidebar tabs", () => {
+		for (const rightSidebarTab of ["changes", "files"] as const) {
+			const stored = {
+				id: "preferences",
+				rightSidebarTab,
+				rightSidebarOpen: false,
+			};
+			expect(healV2UserPreferences(stored).rightSidebarTab).toBe(
+				rightSidebarTab,
+			);
+			expect(v2UserPreferencesSchema.parse(stored).rightSidebarTab).toBe(
+				rightSidebarTab,
+			);
+		}
+	});
+
+	it("defaults organization section collapse for existing rows", () => {
+		const existing = { id: "preferences", rightSidebarWidth: 500 };
+		const healed = healV2UserPreferences(existing);
+		expect(healed.sidebarSectionsCollapsed).toEqual({
+			workspaces: false,
+			sessions: false,
+			userStories: false,
+		});
+		expect(
+			v2UserPreferencesSchema.parse(existing).sidebarSectionsCollapsed,
+		).toEqual(healed.sidebarSectionsCollapsed);
+		expect(healed.rightSidebarWidth).toBe(500);
+	});
+
+	it("heals partial and malformed section collapse without losing valid choices", () => {
+		for (const raw of [undefined, null, "invalid"]) {
+			expect(
+				healV2UserPreferences({ sidebarSectionsCollapsed: raw })
+					.sidebarSectionsCollapsed,
+			).toEqual(DEFAULT_V2_USER_PREFERENCES.sidebarSectionsCollapsed);
+		}
+		expect(
+			healV2UserPreferences({
+				sidebarSectionsCollapsed: {
+					workspaces: true,
+					sessions: "invalid",
+					extra: true,
+				},
+			}).sidebarSectionsCollapsed,
+		).toEqual({ workspaces: true, sessions: false, userStories: false });
+	});
+
+	it("distinguishes read-healed defaults from already saved organization collapse", () => {
+		expect(healV2UserPreferences({}).sidebarSectionsCollapseInitialized).toBe(
+			false,
+		);
+		for (const collapsed of [
+			{ workspaces: false, sessions: false, userStories: false },
+			{ sessions: true },
+		]) {
+			expect(
+				healV2UserPreferences({ sidebarSectionsCollapsed: collapsed })
+					.sidebarSectionsCollapseInitialized,
+			).toBe(true);
+		}
+		expect(
+			healV2UserPreferences({
+				sidebarSectionsCollapsed: { workspaces: "invalid" },
+			}).sidebarSectionsCollapseInitialized,
+		).toBe(false);
+		expect(
+			healV2UserPreferences({
+				sidebarSectionsCollapsed: { workspaces: false },
+				sidebarSectionsCollapseInitialized: false,
+			}).sidebarSectionsCollapseInitialized,
+		).toBe(false);
+		expect(
+			healV2UserPreferences({ sidebarSectionsCollapseInitialized: true })
+				.sidebarSectionsCollapseInitialized,
+		).toBe(true);
+	});
+
 	it("preserves stored top-level fields and fills missing ones", () => {
 		const stored = { rightSidebarOpen: false, rightSidebarWidth: 500 };
 		const healed = healV2UserPreferences(stored);
@@ -261,7 +356,7 @@ describe("healWorkspaceLocalState", () => {
 		expect(healed.sidebarState.tabOrder).toBe(0);
 		expect(healed.sidebarState.sectionId).toBeNull();
 		expect(healed.sidebarState.changesFilter).toEqual({ kind: "uncommitted" });
-		expect(healed.sidebarState.activeTab).toBe("changes");
+		expect(healed.sidebarState.activeTab).toBe("files");
 		expect(healed.sidebarState.isHidden).toBe(false);
 		expect(healed.sidebarState.pinnedAt).toBeNull();
 	});
@@ -424,19 +519,35 @@ describe("workspaceLocalStateSchema projectId nullability", () => {
 
 describe("workspace sidebar activeTab retirement", () => {
 	const stored = {
-		workspaceId: "11111111-1111-1111-1111-111111111111",
+		workspaceId: "11111111-1111-4111-8111-111111111111",
 		createdAt: new Date("2026-01-01T00:00:00.000Z"),
 		paneLayout: { version: 1, tabs: [], activeTabId: null },
 		sidebarState: {
-			projectId: "22222222-2222-2222-2222-222222222222",
+			projectId: "22222222-2222-4222-8222-222222222222",
 			activeTab: "pages",
 		},
 	};
 
-	it("prunes a row persisted on the retired pages tab back to changes", () => {
+	it("prunes a row persisted on the retired pages tab back to files", () => {
 		expect(healWorkspaceLocalState(stored).sidebarState.activeTab).toBe(
-			"changes",
+			"files",
 		);
+	});
+
+	it("defaults new rows and heals missing or invalid workspace tab choices to Files", () => {
+		const sidebarState = { projectId: stored.sidebarState.projectId };
+		expect(
+			workspaceLocalStateSchema.parse({ ...stored, sidebarState }).sidebarState
+				.activeTab,
+		).toBe("files");
+		for (const activeTab of [undefined, null, "invalid", 42]) {
+			expect(
+				healWorkspaceLocalState({
+					...stored,
+					sidebarState: { ...sidebarState, activeTab },
+				}).sidebarState.activeTab,
+			).toBe("files");
+		}
 	});
 
 	it("leaves a surviving tab untouched", () => {

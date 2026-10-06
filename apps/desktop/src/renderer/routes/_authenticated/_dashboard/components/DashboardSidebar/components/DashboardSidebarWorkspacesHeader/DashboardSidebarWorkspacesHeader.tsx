@@ -23,7 +23,7 @@ import {
 	useOpenNewProjectModal,
 	useOpenTemplateGalleryModal,
 } from "renderer/stores/add-repository-modal";
-import { useSidebarSectionsCollapseStore } from "renderer/stores/sidebar-sections-collapse";
+import { useSidebarSectionCollapse } from "renderer/stores/sidebar-sections-collapse";
 import { DashboardSidebarSectionHeader } from "../DashboardSidebarSectionHeader";
 import { DashboardSidebarProjectsFilterInput } from "./components/DashboardSidebarProjectsFilterInput";
 import { DashboardSidebarProjectsSortMenu } from "./components/DashboardSidebarProjectsSortMenu";
@@ -43,12 +43,8 @@ export function DashboardSidebarWorkspacesHeader({
 	onFilterQueryChange,
 }: DashboardSidebarWorkspacesHeaderProps) {
 	const { t } = useLingui();
-	const isSectionCollapsed = useSidebarSectionsCollapseStore(
-		(s) => s.collapsed.workspaces,
-	);
-	const toggleSectionCollapsed = useSidebarSectionsCollapseStore(
-		(s) => s.toggle,
-	);
+	const { isCollapsed: isSectionCollapsed, toggle: toggleSectionCollapsed } =
+		useSidebarSectionCollapse("workspaces");
 	// The query lives in DashboardSidebar (it clears it when the sidebar
 	// collapses to the icon rail); only the open/closed flag is local, and
 	// the hook keeps the input open whenever a query is active because this
@@ -58,7 +54,7 @@ export function DashboardSidebarWorkspacesHeader({
 	const handleFilterExpandedChange = (expanded: boolean) => {
 		setIsFilterExpanded(expanded);
 		// Filtering a hidden list is useless — reveal it when the search opens.
-		if (expanded && isSectionCollapsed) toggleSectionCollapsed("workspaces");
+		if (expanded && isSectionCollapsed) toggleSectionCollapsed();
 	};
 	// The converse: collapsing the section while the input is open would leave
 	// a filter running against a hidden list (and no chevron to say the rows

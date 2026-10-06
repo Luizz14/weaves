@@ -1,3 +1,4 @@
+import { buildHostRoutingKey } from "@superset/shared/host-routing";
 import { useQueries, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -156,16 +157,17 @@ export function useHostWorkspacesSource(
 	useEffect(() => {
 		let cancelled = false;
 		for (const target of targets) {
-			if (snapshots.has(target.machineId)) continue;
+			const key = buildHostRoutingKey(target.organizationId, target.machineId);
+			if (snapshots.has(key)) continue;
 			void loadHostWorkspacesSnapshot(
 				target.organizationId,
 				target.machineId,
 			).then((rows) => {
 				if (cancelled || !rows) return;
 				setSnapshots((prev) => {
-					if (prev.has(target.machineId)) return prev;
+					if (prev.has(key)) return prev;
 					const next = new Map(prev);
-					next.set(target.machineId, rows);
+					next.set(key, rows);
 					return next;
 				});
 			});
@@ -367,7 +369,11 @@ export function useHostWorkspacesSource(
 				const live = query?.data;
 				return {
 					target,
-					rows: live ?? snapshots.get(target.machineId),
+					rows:
+						live ??
+						snapshots.get(
+							buildHostRoutingKey(target.organizationId, target.machineId),
+						),
 					reachable: live !== undefined && !query?.isError,
 				};
 			}),
@@ -409,7 +415,13 @@ export function useHostWorkspacesSource(
 				query.isSuccess ||
 				query.isError ||
 				targets[index]?.hostUrl === null ||
-				snapshots.has(targets[index]?.machineId ?? ""),
+				(targets[index] !== undefined &&
+					snapshots.has(
+						buildHostRoutingKey(
+							targets[index].organizationId,
+							targets[index].machineId,
+						),
+					)),
 		) &&
 		// Tombstones count toward settlement too: an archived-only host must
 		// not read as a settled empty view while its archived query loads.

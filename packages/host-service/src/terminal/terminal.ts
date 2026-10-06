@@ -40,6 +40,7 @@ import {
 	workspaces,
 } from "../db/schema.ts";
 import type { EventBus } from "../events/index.ts";
+import { issueIdeContextToken } from "../ide-context/auth.ts";
 import { portManager } from "../ports/port-manager.ts";
 import { issueAttributionToken } from "../terminal-agents/attribution-token.ts";
 import { sweepAgentBindingsAfterDaemonLoss } from "../terminal-agents/daemon-loss-sweep.ts";
@@ -2961,6 +2962,11 @@ export async function createTerminalSessionInternal({
 			agentHookPort: process.env.SUPERSET_AGENT_HOOK_PORT || "",
 			agentHookVersion: process.env.SUPERSET_AGENT_HOOK_VERSION || "",
 			hostAgentHookUrl: getHostAgentHookUrl(),
+			ideContextToken: issueIdeContextToken(
+				process.env.ORGANIZATION_ID || "",
+				workspaceId,
+				terminalId,
+			),
 		}),
 		// Usage-tab default account: provider CLIs typed or preset-launched in
 		// this terminal run on the selected login. Baked at spawn as the fast

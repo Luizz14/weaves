@@ -2,7 +2,7 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@superset/ui/tooltip";
 import { LuPlus } from "react-icons/lu";
 import { useOpenNewSession } from "renderer/hooks/useOpenNewWorkspace";
-import { useSidebarSectionsCollapseStore } from "renderer/stores/sidebar-sections-collapse";
+import { useSidebarSectionCollapse } from "renderer/stores/sidebar-sections-collapse";
 import {
 	dropZoneId,
 	SESSIONS_CONTAINER,
@@ -48,9 +48,8 @@ export function DashboardSidebarSessionsSection({
 	const { t } = useLingui();
 	const openNewSession = useOpenNewSession();
 	const { sessionItems, activeWorkspaceHome } = useDashboardSidebarDnd();
-	const isSectionCollapsed = useSidebarSectionsCollapseStore(
-		(s) => s.collapsed.sessions,
-	);
+	const { isCollapsed: isSectionCollapsed } =
+		useSidebarSectionCollapse("sessions");
 	// The expanded list owns its own drop zone; a collapsed section still
 	// needs one so a pinned session can always land back home.
 	const collapsedDropZoneEligible =

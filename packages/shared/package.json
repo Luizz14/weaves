@@ -4,6 +4,10 @@
 	"private": true,
 	"type": "module",
 	"exports": {
+		"./ide-context": {
+			"types": "./src/ide-context.ts",
+			"default": "./src/ide-context.ts"
+		},
 		"./zed-editor-import": {
 			"types": "./src/zed-editor-import.ts",
 			"default": "./src/zed-editor-import.ts"

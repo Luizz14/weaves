@@ -54,9 +54,21 @@ describe("setWorkspaceSidebarTab", () => {
 		});
 
 		expect(getWorkspaceSidebarTab(collections, "ws-1")).toBe("review");
-		expect(getWorkspaceSidebarTab(collections, "main-ws")).toBe("changes");
+		expect(getWorkspaceSidebarTab(collections, "main-ws")).toBe("files");
 		setWorkspaceSidebarTab(collections, "main-ws", "files");
 		expect(getWorkspaceSidebarTab(collections, "main-ws")).toBe("files");
+	});
+
+	it("preserves every valid stored and rowless tab choice", () => {
+		for (const tab of ["changes", "files", "review"] as const) {
+			const collections = stubCollections({
+				"saved-ws": { sidebarState: { activeTab: tab } },
+			});
+			setWorkspaceSidebarTab(collections, "rowless-ws", tab);
+
+			expect(getWorkspaceSidebarTab(collections, "saved-ws")).toBe(tab);
+			expect(getWorkspaceSidebarTab(collections, "rowless-ws")).toBe(tab);
+		}
 	});
 
 	it("keeps rowless choices per workspace", () => {
