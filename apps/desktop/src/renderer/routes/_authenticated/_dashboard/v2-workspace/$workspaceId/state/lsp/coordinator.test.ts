@@ -8,7 +8,11 @@ import {
 	lspSettingsSchema,
 	lspUriToFilePath,
 } from "@superset/shared/lsp";
-import { acquireDocument, releaseDocument } from "../fileDocumentStore";
+import {
+	acquireDocument,
+	prefetchDocument,
+	releaseDocument,
+} from "../fileDocumentStore";
 import { type EditorLspStatus, LspCoordinator } from "./coordinator";
 
 const registered = GlobalRegistrator.isRegistered;
@@ -480,6 +484,69 @@ test("a hidden tab's file is open on the server and its diagnostics paint on att
 	expect(
 		sockets[0].messages.filter(
 			(message) => message.method === "textDocument/didClose",
+		),
+	).toHaveLength(1);
+	releaseDocument(workspaceId, path);
+});
+
+test("a prefetched file is open on the server before its editor and adds no tree counts until opened", async () => {
+	const workspaceId = crypto.randomUUID();
+	const path = "/workspace/next.kt";
+	prefetchDocument(workspaceId, path, {
+		filesystem: {
+			readFile: {
+				query: async () => ({
+					kind: "text",
+					content: "val a = 1",
+					revision: "1",
+					byteLength: 9,
+				}),
+			},
+		},
+	} as unknown as Parameters<typeof acquireDocument>[2]);
+	const connection = statusConnection("starting");
+	Reflect.set(connection.trpcClient.lsp.resolve, "mutate", async () => ({
+		sessionId: "session",
+		serverId: "kotlin",
+		languageId: "kotlin",
+		rootUri: "file:///workspace",
+		state: "starting",
+	}));
+	const coordinator = new LspCoordinator(
+		workspaceId,
+		connection,
+		() => {},
+		lspUriToFilePath,
+	);
+	coordinators.push(coordinator);
+	await coordinator.prefetch(path);
+	await waitFor(
+		() =>
+			sockets[0]?.messages.some(
+				(message) => message.method === "textDocument/diagnostic",
+			) ?? false,
+	);
+	await new Promise((resolve) => setTimeout(resolve, 20));
+	expect(coordinator.getDiagnostics().size).toBe(0);
+	const document = acquireDocument(
+		workspaceId,
+		path,
+		{} as Parameters<typeof acquireDocument>[2],
+	);
+	const compartment = new Compartment();
+	const view = new EditorView({
+		doc: "val a = 1",
+		extensions: compartment.of([]),
+	});
+	views.push(view);
+	coordinator.attach(document, view, compartment);
+	expect(diagnosticCount(view.state)).toBe(1);
+	expect(coordinator.getDiagnostics().size).toBe(1);
+	await Promise.resolve();
+	await Promise.resolve();
+	expect(
+		sockets[0].messages.filter(
+			(message) => message.method === "textDocument/didOpen",
 		),
 	).toHaveLength(1);
 	releaseDocument(workspaceId, path);

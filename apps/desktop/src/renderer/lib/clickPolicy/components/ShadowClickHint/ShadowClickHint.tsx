@@ -13,6 +13,7 @@ interface ShadowClickHintProps {
 	 * host, so this needs to use composedPath() to cross the boundary.
 	 */
 	findRow: (e: React.MouseEvent) => HTMLElement | null;
+	onHoverRowChange?: (row: HTMLElement | null) => void;
 	children: React.ReactNode;
 }
 
@@ -27,11 +28,14 @@ export function ShadowClickHint({
 	side = "right",
 	delayMs = DEFAULT_HINT_DELAY_MS,
 	findRow,
+	onHoverRowChange,
 	children,
 }: ShadowClickHintProps) {
 	const [hoverRect, setHoverRect] = useState<DOMRect | null>(null);
 	const hoverRowRef = useRef<HTMLElement | null>(null);
 	const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const onHoverRowChangeRef = useRef(onHoverRowChange);
+	onHoverRowChangeRef.current = onHoverRowChange;
 
 	const clearTimer = useCallback(() => {
 		if (timerRef.current) {
@@ -48,11 +52,13 @@ export function ShadowClickHint({
 					hoverRowRef.current = null;
 					clearTimer();
 					setHoverRect(null);
+					onHoverRowChangeRef.current?.(null);
 				}
 				return;
 			}
 			if (hoverRowRef.current === row) return;
 			hoverRowRef.current = row;
+			onHoverRowChangeRef.current?.(row);
 			clearTimer();
 			setHoverRect(null);
 			timerRef.current = setTimeout(() => {
@@ -65,6 +71,7 @@ export function ShadowClickHint({
 	);
 
 	const handleMouseLeave = useCallback(() => {
+		if (hoverRowRef.current) onHoverRowChangeRef.current?.(null);
 		hoverRowRef.current = null;
 		clearTimer();
 		setHoverRect(null);

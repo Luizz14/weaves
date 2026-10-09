@@ -73,6 +73,9 @@ type Session = {
 const UNAVAILABLE_TTL_MS = 60_000;
 const BACKGROUND_FILE_LIMIT = 20;
 const SESSION_IDLE_MS = 10 * 60_000;
+const PREFETCH_LEASE_MS = 30_000;
+const PREFETCH_LIMIT = 2;
+const PREFETCH_LOAD_TIMEOUT_MS = 5_000;
 const internedStatuses = new Map<string, EditorLspStatus>();
 
 function internStatus(state: LspState, serverId: LspServerId): EditorLspStatus {
@@ -87,6 +90,23 @@ function internStatus(state: LspState, serverId: LspServerId): EditorLspStatus {
 
 function availabilityKey(serverId: LspServerId, path: string): string {
 	return `${serverId}:${path.replace(/[\\/][^\\/]*$/, "")}`;
+}
+
+async function loadedDocument(workspaceId: string, path: string) {
+	const document = getDocument(workspaceId, path);
+	if (!document || document.content.kind !== "loading") return document;
+	await new Promise<void>((resolve) => {
+		const finish = () => {
+			clearTimeout(timer);
+			unsubscribe();
+			resolve();
+		};
+		const timer = setTimeout(finish, PREFETCH_LOAD_TIMEOUT_MS);
+		const unsubscribe = document.subscribe(() => {
+			if (document.content.kind !== "loading") finish();
+		});
+	});
+	return document;
 }
 
 export class LspCoordinator {
@@ -104,6 +124,8 @@ export class LspCoordinator {
 		{ doc: Text; items: LspDiagnostic[] }
 	>();
 	private backgroundPaths = new Set<string>();
+	private prefetchLeases = new Map<string, ReturnType<typeof setTimeout>>();
+	private prefetchOnly = new Set<string>();
 	private rememberDiagnostics = (
 		uri: string,
 		doc: Text,
@@ -324,6 +346,66 @@ export class LspCoordinator {
 			if (!next.has(path)) this.releaseBackground(path);
 		this.backgroundPaths = next;
 		for (const path of next) void this.openBackground(path);
+	}
+
+	/**
+	 * Opens a file the user is about to open on its server, so diagnostics
+	 * are ready by the time its editor mounts. Kept for 30 s, two at a time.
+	 */
+	async prefetch(path: string): Promise<void> {
+		const language = detectLspLanguage(path);
+		const uri = filePathToLspUri(path);
+		if (
+			!language ||
+			this.disposed ||
+			this.views.has(uri) ||
+			this.backgroundPaths.has(path) ||
+			this.disabledServers.has(language.serverId) ||
+			!resolveEditorSettings(this.preferences, detectLanguage(path))
+				.enableLanguageServer
+		)
+			return;
+		const document = await loadedDocument(this.workspaceId, path);
+		if (!document || document.content.kind !== "text") return;
+		try {
+			const session = await this.sessionFor(path, language.serverId);
+			if (!session) return;
+			if (session.workspace && !this.disposed && !this.views.has(uri)) {
+				if (!session.workspace.files.some((file) => file.uri === uri))
+					this.prefetchOnly.add(uri);
+				session.workspace.openWithoutView(document, language.languageId);
+				this.leasePrefetch(uri);
+			}
+			this.maybeIdle(session);
+		} catch {}
+	}
+
+	private leasePrefetch(uri: string) {
+		const previous = this.prefetchLeases.get(uri);
+		if (previous) clearTimeout(previous);
+		this.prefetchLeases.delete(uri);
+		this.prefetchLeases.set(
+			uri,
+			setTimeout(() => this.endPrefetch(uri), PREFETCH_LEASE_MS),
+		);
+		for (const oldest of [...this.prefetchLeases.keys()].slice(
+			0,
+			Math.max(0, this.prefetchLeases.size - PREFETCH_LIMIT),
+		))
+			this.endPrefetch(oldest);
+	}
+
+	private endPrefetch(uri: string) {
+		const timer = this.prefetchLeases.get(uri);
+		if (timer) clearTimeout(timer);
+		this.prefetchLeases.delete(uri);
+		const path = this.uriToPath(uri);
+		if (path && this.backgroundPaths.has(path)) return;
+		for (const session of this.sessions.values()) {
+			session.workspace?.release(uri);
+			this.maybeIdle(session);
+		}
+		this.prefetchOnly.delete(uri);
 	}
 
 	private releaseBackground(path: string) {
@@ -717,6 +799,11 @@ export class LspCoordinator {
 				inlayHints(preferences.hints, uri),
 			]),
 		});
+		if (this.prefetchOnly.delete(uri)) {
+			const prefetched = this.latestDiagnostics.get(uri);
+			if (prefetched)
+				this.recordDiagnostics({ uri, diagnostics: prefetched.items });
+		}
 		const latest = this.latestDiagnostics.get(uri);
 		if (latest?.doc.eq(binding.view.state.doc))
 			binding.view.dispatch(
@@ -732,6 +819,7 @@ export class LspCoordinator {
 		const uri: unknown = Reflect.get(input, "uri");
 		const diagnostics: unknown = Reflect.get(input, "diagnostics");
 		if (typeof uri !== "string" || !Array.isArray(diagnostics)) return;
+		if (this.prefetchOnly.has(uri)) return;
 		const counts = { errors: 0, warnings: 0 };
 		for (const diagnostic of diagnostics)
 			if (diagnostic && typeof diagnostic === "object") {
@@ -926,6 +1014,8 @@ export class LspCoordinator {
 
 	dispose() {
 		this.disposed = true;
+		for (const timer of this.prefetchLeases.values()) clearTimeout(timer);
+		this.prefetchLeases.clear();
 		for (const session of this.sessions.values()) this.stop(session);
 		this.views.clear();
 	}

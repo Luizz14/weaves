@@ -30,6 +30,7 @@ import {
 } from "renderer/lib/zedProjectPanel/zedProjectPanel";
 import { PierreRowContextMenu } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/components/PierreRowContextMenu";
 import { useOpenInExternalEditor } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/useOpenInExternalEditor";
+import { usePrefetchFile } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/usePrefetchFile";
 import { useLspCoordinator } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/LspProvider";
 import { useResolvedTheme } from "renderer/stores/theme";
 import { FileMenuItems } from "./components/FileMenuItems";
@@ -262,6 +263,14 @@ ${panel.icons ? "" : '[data-item-type="file"] [data-item-section="icon"] { visib
 	);
 
 	const drop = useFilesTabDrop({ model, bridge, rootPath, workspaceId });
+	const prefetchFile = usePrefetchFile(workspaceId);
+	const handleHoverRowChange = useCallback(
+		(row: HTMLElement | null) => {
+			const treePath = row?.getAttribute("data-item-path");
+			prefetchFile(rootPath && treePath ? toAbs(rootPath, treePath) : null);
+		},
+		[prefetchFile, rootPath],
+	);
 
 	// Push live git status updates into Pierre.
 	useEffect(() => {
@@ -497,7 +506,11 @@ ${panel.icons ? "" : '[data-item-type="file"] [data-item-section="icon"] { visib
 				collapse={collapseAll}
 				search={onSearch}
 			/>
-			<ShadowClickHint hint={filePolicy.hint} findRow={findFileRow}>
+			<ShadowClickHint
+				hint={filePolicy.hint}
+				findRow={findFileRow}
+				onHoverRowChange={handleHoverRowChange}
+			>
 				<PierreFileTree
 					model={model}
 					className="flex-1 min-h-0"

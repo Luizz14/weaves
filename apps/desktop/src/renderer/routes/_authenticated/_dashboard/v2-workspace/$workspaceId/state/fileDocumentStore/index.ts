@@ -4,6 +4,7 @@ export {
 	decodeBase64,
 	dispatchFsEvent,
 	getDocument,
+	prefetchDocument,
 	releaseDocument,
 	setPinnedDocuments,
 } from "./fileDocumentStore";

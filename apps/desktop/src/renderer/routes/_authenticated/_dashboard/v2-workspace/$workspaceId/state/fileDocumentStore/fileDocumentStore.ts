@@ -542,6 +542,64 @@ function createHandle(entry: DocumentEntry): SharedFileDocument {
 	};
 }
 
+function createEntry(
+	workspaceId: string,
+	absolutePath: string,
+	trpcClient: WorkspaceTrpcClient,
+): DocumentEntry {
+	return {
+		id: crypto.randomUUID(),
+		workspaceId,
+		absolutePath,
+		trpcClient,
+		content: { kind: "loading" },
+		savedContentText: null,
+		pendingSave: false,
+		saveError: null,
+		formatWarning: null,
+		conflict: null,
+		orphaned: false,
+		hasExternalChange: false,
+		isBinary: null,
+		byteSize: null,
+		refCount: 0,
+		version: 0,
+		subscribers: new Set(),
+		saveSubscribers: new Set(),
+		retainedAt: null,
+		stale: false,
+		loadToken: 0,
+		unlimited: false,
+	};
+}
+
+/**
+ * Loads a document the user is about to open (a highlighted Quick Open result,
+ * a hovered tree row) without referencing it, so it expires like any other
+ * retained document if it is never opened.
+ */
+export function prefetchDocument(
+	workspaceId: string,
+	absolutePath: string,
+	trpcClient: WorkspaceTrpcClient,
+): void {
+	const k = key(workspaceId, absolutePath);
+	if (entries.has(k)) return;
+	const entry = createEntry(workspaceId, absolutePath, trpcClient);
+	entry.retainedAt = Date.now();
+	entries.set(k, entry);
+	void loadEntry(entry).then(() => {
+		if (
+			entry.refCount <= 0 &&
+			entry.content.kind !== "text" &&
+			entry.content.kind !== "bytes" &&
+			entries.get(k) === entry
+		)
+			entries.delete(k);
+	});
+	sweepRetained();
+}
+
 export function acquireDocument(
 	workspaceId: string,
 	absolutePath: string,
@@ -550,30 +608,7 @@ export function acquireDocument(
 	const k = key(workspaceId, absolutePath);
 	let entry = entries.get(k);
 	if (!entry) {
-		entry = {
-			id: crypto.randomUUID(),
-			workspaceId,
-			absolutePath,
-			trpcClient,
-			content: { kind: "loading" },
-			savedContentText: null,
-			pendingSave: false,
-			saveError: null,
-			formatWarning: null,
-			conflict: null,
-			orphaned: false,
-			hasExternalChange: false,
-			isBinary: null,
-			byteSize: null,
-			refCount: 0,
-			version: 0,
-			subscribers: new Set(),
-			saveSubscribers: new Set(),
-			retainedAt: null,
-			stale: false,
-			loadToken: 0,
-			unlimited: false,
-		};
+		entry = createEntry(workspaceId, absolutePath, trpcClient);
 		entries.set(k, entry);
 		void loadEntry(entry);
 	} else {

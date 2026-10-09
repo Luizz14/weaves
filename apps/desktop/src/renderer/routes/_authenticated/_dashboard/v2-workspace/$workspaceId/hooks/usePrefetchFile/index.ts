@@ -1,0 +1,1 @@
+export { usePrefetchFile } from "./usePrefetchFile";

@@ -9,6 +9,7 @@ import type { RecentFile } from "renderer/routes/_authenticated/_dashboard/v2-wo
 import { RECENT_DISPLAY_LIMIT } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/useRecentlyViewedFiles";
 import { useFileSearch } from "renderer/screens/main/components/WorkspaceView/RightSidebar/FilesView/hooks/useFileSearch/useFileSearch";
 import { FileResultItem } from "./components/FileResultItem";
+import { HighlightedFileWatcher } from "./components/HighlightedFileWatcher";
 import { useV2FileSearch } from "./hooks/useV2FileSearch";
 
 // 48px input + 10 * 40px items
@@ -23,6 +24,8 @@ export interface CommandPaletteProps {
 	variant?: "v1" | "v2";
 	recentlyViewedFiles?: RecentFile[];
 	openFilePaths?: Set<string>;
+	onHighlightFile?: (absolutePath: string | null) => void;
+	onOpenIntent?: () => void;
 }
 
 function getFileName(relativePath: string): string {
@@ -38,6 +41,8 @@ export function CommandPalette({
 	variant = "v1",
 	recentlyViewedFiles,
 	openFilePaths,
+	onHighlightFile,
+	onOpenIntent,
 }: CommandPaletteProps) {
 	const { _: translate } = useTranslation();
 
@@ -120,6 +125,10 @@ export function CommandPalette({
 		if (open) requestAnimationFrame(() => inputRef.current?.focus());
 	}, [open]);
 
+	useEffect(() => {
+		if (open) onOpenIntent?.();
+	}, [open, onOpenIntent]);
+
 	const showHeading = showRecentSection && filteredRecent.length > 0;
 	const showSeparator =
 		showRecentSection && filteredRecent.length > 0 && dedupedResults.length > 0;
@@ -145,6 +154,9 @@ export function CommandPalette({
 						shouldFilter={false}
 						className="bg-popover text-popover-foreground flex h-full w-full flex-col overflow-hidden rounded-md"
 					>
+						{onHighlightFile && (
+							<HighlightedFileWatcher onChange={onHighlightFile} />
+						)}
 						<div className="flex h-12 items-center gap-2 border-b px-3">
 							<SearchIcon className="size-5 shrink-0 opacity-50" />
 							<CommandPrimitive.Input

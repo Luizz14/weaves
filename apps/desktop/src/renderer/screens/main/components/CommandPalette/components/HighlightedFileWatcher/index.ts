@@ -1,0 +1,1 @@
+export { HighlightedFileWatcher } from "./HighlightedFileWatcher";

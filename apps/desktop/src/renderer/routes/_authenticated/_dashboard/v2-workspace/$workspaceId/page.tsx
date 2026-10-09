@@ -24,7 +24,6 @@ import {
 	parseSubagentSearch,
 	readSubagentSearch,
 } from "renderer/routes/_authenticated/_dashboard/utils/workspace-navigation";
-import { CommandPalette } from "renderer/screens/main/components/CommandPalette";
 import { ResizablePanel } from "renderer/screens/main/components/ResizablePanel";
 import { getV2NotificationSourcesForTab } from "renderer/stores/v2-notifications";
 import {
@@ -45,6 +44,7 @@ import { WorkspaceCommandsPanel } from "./components/WorkspaceCommandsPanel";
 import { WorkspaceEmptyState } from "./components/WorkspaceEmptyState";
 import { WorkspaceGitActions } from "./components/WorkspaceGitActions";
 import { WorkspaceMissingWorktreeState } from "./components/WorkspaceMissingWorktreeState";
+import { WorkspaceQuickOpen } from "./components/WorkspaceQuickOpen";
 import { WorkspaceSidebar } from "./components/WorkspaceSidebar";
 import { WorkspaceActionDock } from "./components/WorkspaceSidebar/components/WorkspaceActionDock";
 import { useAutoAdoptBackgroundSessions } from "./hooks/useAutoAdoptBackgroundSessions";
@@ -620,7 +620,7 @@ function V2WorkspaceContent() {
 						sidebarSlotEl,
 					)}
 			</WorkspaceGitStatusProvider>
-			<CommandPalette
+			<WorkspaceQuickOpen
 				workspaceId={workspaceId}
 				open={quickOpenOpen}
 				onOpenChange={handleQuickOpenChange}

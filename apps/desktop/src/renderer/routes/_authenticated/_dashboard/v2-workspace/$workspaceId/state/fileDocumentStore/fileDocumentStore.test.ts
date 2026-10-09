@@ -3,6 +3,7 @@ import {
 	__resetDocumentStoreForTesting,
 	acquireDocument,
 	getDocument,
+	prefetchDocument,
 	releaseDocument,
 	setPinnedDocuments,
 } from "./fileDocumentStore";
@@ -169,4 +170,30 @@ test("reacquiring with a new host client uses it for later reads", async () => {
 	await settle();
 	expect(old.disk.reads).toBe(1);
 	expect(fresh.disk.reads).toBe(1);
+});
+
+test("a prefetched document opens with its text and expires if never opened", async () => {
+	const { disk, client } = fakeDisk({ content: "a", revision: "1" });
+	const workspaceId = crypto.randomUUID();
+	setSystemTime(new Date("2026-10-09T12:00:00Z"));
+	prefetchDocument(workspaceId, "/w/opened.ts", client);
+	prefetchDocument(workspaceId, "/w/opened.ts", client);
+	prefetchDocument(workspaceId, "/w/skipped.ts", client);
+	await settle();
+	expect(disk.reads).toBe(2);
+	const opened = acquireDocument(workspaceId, "/w/opened.ts", client);
+	expect(opened.content).toMatchObject({ kind: "text", value: "a" });
+	setSystemTime(new Date("2026-10-09T12:11:00Z"));
+	acquireDocument(workspaceId, "/w/other.ts", client);
+	expect(getDocument(workspaceId, "/w/opened.ts")).not.toBeNull();
+	expect(getDocument(workspaceId, "/w/skipped.ts")).toBeNull();
+});
+
+test("a prefetch that fails to read leaves nothing behind", async () => {
+	const { disk, client } = fakeDisk({ content: "a", revision: "1" });
+	disk.missing = true;
+	const workspaceId = crypto.randomUUID();
+	prefetchDocument(workspaceId, "/w/gone.ts", client);
+	await settle();
+	expect(getDocument(workspaceId, "/w/gone.ts")).toBeNull();
 });
