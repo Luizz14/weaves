@@ -1,0 +1,1330 @@
+{
+  "schemaVersion": 1,
+  "run": {
+    "runId": "20261009-053108",
+    "pilot": false,
+    "gitHead": "a51870dff449416a9e8cd1aaed4decf57f12c26d",
+    "gitDirty": true,
+    "appVersion": "1.29.0",
+    "benchAsarSha256": "16cf20051a673e0af63dae61f7675db6dd4bf7a7c599450518e9449799198c33",
+    "hardware": "Mac17,3",
+    "cpuBrand": "Apple M5",
+    "memoryGiB": 16,
+    "macos": "27.0.1",
+    "locale": "pt-BR",
+    "frameIntervalMs": 16.699999999999818,
+    "acPowerAtStart": true,
+    "acPowerAtEnd": true,
+    "thermalAtStart": "Note: No thermal warning level has been recorded; Note: No performance warning level has been recorded",
+    "thermalAtEnd": "Note: No thermal warning level has been recorded; Note: No performance warning level has been recorded",
+    "switchTargets": [
+      "ws#1",
+      "ws#2",
+      "ws#3"
+    ],
+    "chatWorkspace": null,
+    "acceptedRun": true,
+    "verification": {
+      "installedAppRunning": true,
+      "ptyDaemonsUnchanged": true,
+      "leftoverBranches": 0,
+      "leftoverWorktrees": 0,
+      "installedAsarUnchanged": true,
+      "fixtureReverted": true,
+      "confirmOnQuitDefault": true
+    }
+  },
+  "summary": {
+    "journeys": [
+      {
+        "journey": "new-terminal",
+        "variant": "warm",
+        "distribution": {
+          "n": 30,
+          "p50": 144,
+          "p75": 147.1,
+          "p95": 152.6,
+          "min": 118.9,
+          "max": 164.1,
+          "p95IsMax": false
+        },
+        "attempts": 32,
+        "timeouts": 0,
+        "invalid": 2,
+        "invalidReasons": {
+          "dialog-open": 2
+        },
+        "markMediansMs": {
+          "socket-created": 60.7,
+          "attached": 118.4,
+          "synced": 124.5,
+          "first-bytes": 124.5
+        },
+        "loafMedianBlockingMs": 0
+      },
+      {
+        "journey": "keystroke-echo",
+        "variant": "terminal",
+        "distribution": {
+          "n": 102,
+          "p50": 20.7,
+          "p75": 28.7,
+          "p95": 41.3,
+          "min": 7.4,
+          "max": 51.7,
+          "p95IsMax": false
+        },
+        "attempts": 102,
+        "timeouts": 0,
+        "invalid": 0,
+        "invalidReasons": {},
+        "markMediansMs": {
+          "input-sent": 0.9,
+          "echo-bytes": 7.3
+        },
+        "loafMedianBlockingMs": 0
+      },
+      {
+        "journey": "codex-composer-keystroke",
+        "variant": "textarea",
+        "distribution": {
+          "n": 51,
+          "p50": 9.8,
+          "p75": 10.6,
+          "p95": 11.5,
+          "min": 2.3,
+          "max": 12.3,
+          "p95IsMax": false
+        },
+        "attempts": 51,
+        "timeouts": 0,
+        "invalid": 0,
+        "invalidReasons": {},
+        "markMediansMs": {
+          "value-updated": 3.1
+        },
+        "loafMedianBlockingMs": 0
+      },
+      {
+        "journey": "codex-chat-composer",
+        "variant": "warm",
+        "distribution": {
+          "n": 30,
+          "p50": 40.5,
+          "p75": 46.5,
+          "p95": 50.2,
+          "min": 17.1,
+          "max": 53,
+          "p95IsMax": false
+        },
+        "attempts": 30,
+        "timeouts": 0,
+        "invalid": 0,
+        "invalidReasons": {},
+        "markMediansMs": {
+          "ready": 25.4
+        },
+        "loafMedianBlockingMs": 0
+      },
+      {
+        "journey": "quick-open-palette",
+        "variant": "open",
+        "distribution": {
+          "n": 30,
+          "p50": 33.8,
+          "p75": 49.7,
+          "p95": 56.2,
+          "min": 22.8,
+          "max": 61.2,
+          "p95IsMax": false
+        },
+        "attempts": 30,
+        "timeouts": 0,
+        "invalid": 0,
+        "invalidReasons": {},
+        "markMediansMs": {
+          "ready": 24.6
+        },
+        "loafMedianBlockingMs": 0
+      },
+      {
+        "journey": "quick-open-file",
+        "variant": "code-editor",
+        "distribution": {
+          "n": 30,
+          "p50": 89,
+          "p75": 93.1,
+          "p95": 100.1,
+          "min": 60.9,
+          "max": 101.1,
+          "p95IsMax": false
+        },
+        "attempts": 30,
+        "timeouts": 0,
+        "invalid": 0,
+        "invalidReasons": {},
+        "markMediansMs": {
+          "ready": 84.9
+        },
+        "loafMedianBlockingMs": 0
+      },
+      {
+        "journey": "changes-panel",
+        "variant": "warm",
+        "distribution": {
+          "n": 30,
+          "p50": 44.2,
+          "p75": 49.6,
+          "p95": 57.7,
+          "min": 24.8,
+          "max": 59.7,
+          "p95IsMax": false
+        },
+        "attempts": 30,
+        "timeouts": 0,
+        "invalid": 0,
+        "invalidReasons": {},
+        "markMediansMs": {
+          "ready": 34.2
+        },
+        "loafMedianBlockingMs": 0
+      },
+      {
+        "journey": "switch-workspace",
+        "variant": "revisit",
+        "distribution": {
+          "n": 30,
+          "p50": 73.3,
+          "p75": 78.3,
+          "p95": 95.9,
+          "min": 62.3,
+          "max": 96.2,
+          "p95IsMax": false
+        },
+        "attempts": 30,
+        "timeouts": 0,
+        "invalid": 0,
+        "invalidReasons": {},
+        "markMediansMs": {
+          "terminal-visible": 50.7,
+          "no-redial": 57.5
+        },
+        "loafMedianBlockingMs": 0
+      },
+      {
+        "journey": "changes-panel",
+        "variant": "cold",
+        "distribution": {
+          "n": 10,
+          "p50": 84.2,
+          "p75": 105.3,
+          "p95": 150.1,
+          "min": 65.2,
+          "max": 150.1,
+          "p95IsMax": true
+        },
+        "attempts": 10,
+        "timeouts": 0,
+        "invalid": 0,
+        "invalidReasons": {},
+        "markMediansMs": {
+          "ready": 83.7
+        },
+        "loafMedianBlockingMs": 0
+      },
+      {
+        "journey": "switch-workspace",
+        "variant": "first-visit",
+        "distribution": {
+          "n": 29,
+          "p50": 126.6,
+          "p75": 150.8,
+          "p95": 168.2,
+          "min": 99.5,
+          "max": 170,
+          "p95IsMax": false
+        },
+        "attempts": 30,
+        "timeouts": 1,
+        "invalid": 0,
+        "invalidReasons": {},
+        "markMediansMs": {
+          "terminal-visible": 80.7,
+          "no-redial": 94.5
+        },
+        "loafMedianBlockingMs": 0
+      },
+      {
+        "journey": "codex-chat-composer",
+        "variant": "cold-catalog",
+        "distribution": {
+          "n": 5,
+          "p50": 48.3,
+          "p75": 52.8,
+          "p95": 132.7,
+          "min": 43.8,
+          "max": 132.7,
+          "p95IsMax": true
+        },
+        "attempts": 6,
+        "timeouts": 0,
+        "invalid": 1,
+        "invalidReasons": {
+          "dialog-open": 1
+        },
+        "markMediansMs": {
+          "ready": 32.8
+        },
+        "loafMedianBlockingMs": 0
+      },
+      {
+        "journey": "claude-session",
+        "variant": "shell",
+        "distribution": {
+          "n": 10,
+          "p50": 399,
+          "p75": 400.2,
+          "p95": 406.9,
+          "min": 383.2,
+          "max": 406.9,
+          "p95IsMax": true
+        },
+        "attempts": 10,
+        "timeouts": 0,
+        "invalid": 0,
+        "invalidReasons": {},
+        "markMediansMs": {
+          "input-sent": 0.9,
+          "first-bytes": 3.4
+        },
+        "loafMedianBlockingMs": 0
+      },
+      {
+        "journey": "create-workspace",
+        "variant": "worktree-no-setup",
+        "distribution": {
+          "n": 10,
+          "p50": 1271.1,
+          "p75": 1286.9,
+          "p95": 1317.6,
+          "min": 1213.7,
+          "max": 1317.6,
+          "p95IsMax": true
+        },
+        "attempts": 10,
+        "timeouts": 0,
+        "invalid": 0,
+        "invalidReasons": {},
+        "markMediansMs": {
+          "workspace:create-settled": 1221.9,
+          "ready": 1244.2
+        },
+        "loafMedianBlockingMs": 26
+      }
+    ],
+    "launch": {
+      "launches": 31,
+      "accepted": 30,
+      "frontmostConfirmed": 30,
+      "markers": [
+        {
+          "marker": "process-start",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 0,
+            "p75": 0,
+            "p95": 0,
+            "min": 0,
+            "max": 0,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 119.790708,
+            "p75": 124.832125,
+            "p95": 130.98725,
+            "min": 115.072416,
+            "max": 137.418291,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "bootstrap-imports-end",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 145.571541,
+            "p75": 146.414708,
+            "p95": 146.676791,
+            "min": 143.949333,
+            "max": 147.165416,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 265.453374,
+            "p75": 271.84425,
+            "p95": 275.676333,
+            "min": 259.757208,
+            "max": 284.09508200000005,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "shell-env-ready",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 935.721666,
+            "p75": 947.722542,
+            "p95": 1043.174709,
+            "min": 919.915834,
+            "max": 1065.704958,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 1057.318124,
+            "p75": 1071.892458,
+            "p95": 1170.0465,
+            "min": 1038.19675,
+            "max": 1188.920084,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "app-ready",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 197.362624,
+            "p75": 198.083083,
+            "p95": 201.177584,
+            "min": 195.055792,
+            "max": 203.173458,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 317.87595999999996,
+            "p75": 322.063166,
+            "p95": 330.918875,
+            "min": 310.128208,
+            "max": 336.141291,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "i18n-ready",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 200.559541,
+            "p75": 201.245333,
+            "p95": 204.414459,
+            "min": 198.234042,
+            "max": 206.574292,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 321.026002,
+            "p75": 325.307375,
+            "p95": 334.319709,
+            "min": 313.306458,
+            "max": 339.269249,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "app-state-ready",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 251.18875,
+            "p75": 251.471958,
+            "p95": 259.571334,
+            "min": 248.094042,
+            "max": 261.4525,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 372.004541,
+            "p75": 375.286291,
+            "p95": 388.89024900000004,
+            "min": 363.16645800000003,
+            "max": 389.19791699999996,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "webview-extension-ready",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 251.383417,
+            "p75": 251.666625,
+            "p95": 259.782334,
+            "min": 248.299458,
+            "max": 261.661083,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 372.196124,
+            "p75": 375.484666,
+            "p95": 389.084916,
+            "min": 363.371874,
+            "max": 389.40650000000005,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "v1-terminal-reconciled",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 252.696375,
+            "p75": 252.917625,
+            "p95": 261.102668,
+            "min": 249.65125,
+            "max": 262.912708,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 373.377666,
+            "p75": 376.754125,
+            "p95": 390.335916,
+            "min": 364.723666,
+            "max": 390.65812500000004,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "bridge-ready",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 336.901917,
+            "p75": 338.286459,
+            "p95": 346.105626,
+            "min": 333.076417,
+            "max": 354.66075,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 458.170042,
+            "p75": 462.277666,
+            "p95": 475.905624,
+            "min": 448.14883299999997,
+            "max": 482.406167,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "host-reconcile-start",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 417.944417,
+            "p75": 419.030917,
+            "p95": 426.603251,
+            "min": 412.492167,
+            "max": 435.509625,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 538.287918,
+            "p75": 544.884167,
+            "p95": 555.607291,
+            "min": 527.564583,
+            "max": 563.255042,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "active-host-spawned",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 420.134416,
+            "p75": 421.354292,
+            "p95": 428.724626,
+            "min": 414.641042,
+            "max": 437.635458,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 540.358752,
+            "p75": 547.005542,
+            "p95": 557.698707,
+            "min": 529.7134580000001,
+            "max": 565.3808750000001,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "host-process-start",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 453.759958,
+            "p75": 455.82925,
+            "p95": 471.523542,
+            "min": 447.303,
+            "max": 477.506666,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 574.655124,
+            "p75": 584.747208,
+            "p95": 598.395333,
+            "min": 562.375416,
+            "max": 605.252083,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "host-imports-end",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 676.970875,
+            "p75": 678.949708,
+            "p95": 706.480083,
+            "min": 668.822083,
+            "max": 735.576624,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 796.88,
+            "p75": 807.99675,
+            "p95": 834.2255,
+            "min": 783.894499,
+            "max": 855.367332,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "host-db-ready",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 686.4215,
+            "p75": 690.492459,
+            "p95": 716.897417,
+            "min": 676.866375,
+            "max": 747.441166,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 807.392791,
+            "p75": 818.393542,
+            "p95": 844.642834,
+            "min": 791.9387909999999,
+            "max": 867.231874,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "host-app-created",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 693.00075,
+            "p75": 697.235125,
+            "p95": 724.426042,
+            "min": 684.351667,
+            "max": 754.806416,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 813.1520830000001,
+            "p75": 823.662625,
+            "p95": 852.171459,
+            "min": 799.424083,
+            "max": 874.597124,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "host-listening",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 700.042957,
+            "p75": 703.065375,
+            "p95": 728.702583,
+            "min": 694.579083,
+            "max": 758.886958,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 819.864333,
+            "p75": 829.308542,
+            "p95": 856.448,
+            "min": 810.940666,
+            "max": 878.677666,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "host-terminal-env-ready",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 1696.742666,
+            "p75": 1725.56025,
+            "p95": 1762.990125,
+            "min": 1623.695416,
+            "max": 1771.272875,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 1819.5335,
+            "p75": 1848.775376,
+            "p95": 1881.5993330000001,
+            "min": 1748.527541,
+            "max": 1898.1446660000001,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "host-daemon-ready",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 706.022582,
+            "p75": 709.3465,
+            "p95": 734.728167,
+            "min": 699.289,
+            "max": 764.267499,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 826.125958,
+            "p75": 835.740125,
+            "p95": 862.473584,
+            "min": 817.1007079999999,
+            "max": 884.058207,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "active-host-healthy",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 714.718333,
+            "p75": 718.8605,
+            "p95": 744.357,
+            "min": 707.819875,
+            "max": 772.248583,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 836.276708,
+            "p75": 845.3613760000001,
+            "p95": 872.102417,
+            "min": 827.374958,
+            "max": 892.039291,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "host-start-cancelled",
+          "nodeOrigin": {
+            "n": 0,
+            "p50": null,
+            "p75": null,
+            "p95": null,
+            "min": null,
+            "max": null,
+            "p95IsMax": true
+          },
+          "spawnOrigin": {
+            "n": 0,
+            "p50": null,
+            "p75": null,
+            "p95": null,
+            "min": null,
+            "max": null,
+            "p95IsMax": true
+          },
+          "missing": 20
+        },
+        {
+          "marker": "agent-setup-end",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 268.327666,
+            "p75": 268.6735,
+            "p95": 276.890459,
+            "min": 265.25575,
+            "max": 279.212917,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 388.828416,
+            "p75": 392.755959,
+            "p95": 406.603582,
+            "min": 380.328166,
+            "max": 406.95833400000004,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "window-created",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 321.838917,
+            "p75": 322.649625,
+            "p95": 329.921668,
+            "min": 318.860417,
+            "max": 337.945333,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 442.241792,
+            "p75": 447.659,
+            "p95": 460.88433200000003,
+            "min": 433.93283299999996,
+            "max": 465.69075,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "ready-to-show",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 549.844667,
+            "p75": 551.115124,
+            "p95": 557.75075,
+            "min": 544.830958,
+            "max": 569.951917,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 669.900752,
+            "p75": 675.821542,
+            "p95": 687.6431660000001,
+            "min": 659.903374,
+            "max": 697.697334,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "window-show",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 431.557833,
+            "p75": 434.113751,
+            "p95": 443.546,
+            "min": 425.501375,
+            "max": 450.019,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 552.202791,
+            "p75": 557.897834,
+            "p95": 570.417791,
+            "min": 540.573791,
+            "max": 577.764417,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "did-finish-load",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 549.987833,
+            "p75": 551.265083,
+            "p95": 557.914291,
+            "min": 544.973417,
+            "max": 570.106542,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 670.062627,
+            "p75": 675.979334,
+            "p95": 687.7874569999999,
+            "min": 660.045833,
+            "max": 697.851959,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "react-commit",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 561.374333,
+            "p75": 562.535,
+            "p95": 568.9305,
+            "min": 556.456542,
+            "max": 582.267167,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 681.516502,
+            "p75": 686.8832500000001,
+            "p95": 699.202749,
+            "min": 671.528958,
+            "max": 710.012584,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "router-ready",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 750.471082,
+            "p75": 755.453126,
+            "p95": 760.018792,
+            "min": 743.303875,
+            "max": 775.309125,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 871.665707,
+            "p75": 877.7885,
+            "p95": 890.7796659999999,
+            "min": 862.342541,
+            "max": 903.054542,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "query-cache-restored",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 568.685625,
+            "p75": 569.815375,
+            "p95": 576.108833,
+            "min": 563.710542,
+            "max": 589.872333,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 689.156168,
+            "p75": 693.993875,
+            "p95": 706.164082,
+            "min": 678.782958,
+            "max": 717.61775,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "renderer-i18n-ready",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 745.657666,
+            "p75": 750.678543,
+            "p95": 755.046459,
+            "min": 738.751791,
+            "max": 770.55375,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 865.448374,
+            "p75": 873.17975,
+            "p95": 886.2082069999999,
+            "min": 856.964208,
+            "max": 898.299167,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "auth-hydrated",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 751.833374,
+            "p75": 756.546293,
+            "p95": 761.19975,
+            "min": 744.358208,
+            "max": 776.440083,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 872.704999,
+            "p75": 878.926958,
+            "p95": 891.986416,
+            "min": 863.477082,
+            "max": 904.1854999999999,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "session-resolved",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 1294.783291,
+            "p75": 1476.135333,
+            "p95": 1539.630583,
+            "min": 1219.447041,
+            "max": 1829.357625,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 1413.8219569999999,
+            "p75": 1596.5969989999999,
+            "p95": 1667.376,
+            "min": 1342.662167,
+            "max": 1954.18975,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "org-resolved",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 752.218999,
+            "p75": 757.350959,
+            "p95": 761.886209,
+            "min": 745.078666,
+            "max": 777.166875,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 873.507707,
+            "p75": 879.670875,
+            "p95": 892.556707,
+            "min": 864.194666,
+            "max": 904.912292,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "collections-ready",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 762.453832,
+            "p75": 767.076126,
+            "p95": 772.366875,
+            "min": 754.802875,
+            "max": 787.451625,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 883.075457,
+            "p75": 889.92675,
+            "p95": 902.8203739999999,
+            "min": 873.841541,
+            "max": 915.197042,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "host-url-ready",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 812.76725,
+            "p75": 816.969291,
+            "p95": 837.226042,
+            "min": 802.540083,
+            "max": 954.429624,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 932.183083,
+            "p75": 938.680583,
+            "p95": 964.971459,
+            "min": 921.578749,
+            "max": 1074.2203319999999,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "shell-interactive",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 828.967958,
+            "p75": 834.010916,
+            "p95": 838.194,
+            "min": 819.264875,
+            "max": 854.729958,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 947.8070829999999,
+            "p75": 955.0632499999999,
+            "p95": 971.4292069999999,
+            "min": 938.303541,
+            "max": 982.475375,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "terminal-ws-open",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 1115.588957,
+            "p75": 1124.20325,
+            "p95": 1143.139042,
+            "min": 1104.153333,
+            "max": 1145.289541,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 1236.550291,
+            "p75": 1247.418376,
+            "p95": 1265.080249,
+            "min": 1223.191999,
+            "max": 1270.884459,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "host-first-attach-start",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 1022.653291,
+            "p75": 1030.576293,
+            "p95": 1048.809583,
+            "min": 1014.090666,
+            "max": 1059.390791,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 1146.366624,
+            "p75": 1153.739917,
+            "p95": 1176.555,
+            "min": 1133.129332,
+            "max": 1179.181499,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "host-first-attach-ready",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 1145.815208,
+            "p75": 1173.731708,
+            "p95": 1212.479625,
+            "min": 1129.02375,
+            "max": 1268.844417,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 1272.833582,
+            "p75": 1296.946834,
+            "p95": 1337.3117499999998,
+            "min": 1247.4802499999998,
+            "max": 1388.5871670000001,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "terminal-attached",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 1170.561875,
+            "p75": 1184.448541,
+            "p95": 1216.500542,
+            "min": 1152.221458,
+            "max": 1269.609875,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 1291.023541,
+            "p75": 1307.663667,
+            "p95": 1339.6152909999998,
+            "min": 1272.092042,
+            "max": 1389.352625,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "terminal-first-bytes",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 1185.802918,
+            "p75": 1200.164624,
+            "p95": 1223.101792,
+            "min": 1171.326625,
+            "max": 1275.616875,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 1306.591417,
+            "p75": 1319.955332,
+            "p95": 1345.9544999999998,
+            "min": 1290.3652909999998,
+            "max": 1395.359625,
+            "p95IsMax": false
+          },
+          "missing": 0
+        },
+        {
+          "marker": "terminal-usable",
+          "nodeOrigin": {
+            "n": 20,
+            "p50": 1186.484043,
+            "p75": 1202.883749,
+            "p95": 1223.737917,
+            "min": 1172.922833,
+            "max": 1277.26875,
+            "p95IsMax": false
+          },
+          "spawnOrigin": {
+            "n": 20,
+            "p50": 1307.541375,
+            "p75": 1322.674457,
+            "p95": 1346.510333,
+            "min": 1291.961499,
+            "max": 1397.0115,
+            "p95IsMax": false
+          },
+          "missing": 0
+        }
+      ],
+      "spans": [
+        {
+          "from": "window-created",
+          "to": "window-show",
+          "distribution": {
+            "n": 30,
+            "p50": 109.71891600000004,
+            "p75": 111.95104200000003,
+            "p95": 117.93099999999998,
+            "min": 104.72104100000001,
+            "max": 122.75879099999997,
+            "p95IsMax": false
+          }
+        },
+        {
+          "from": "react-commit",
+          "to": "shell-interactive",
+          "distribution": {
+            "n": 30,
+            "p50": 265.16645800000003,
+            "p75": 271.79283399999997,
+            "p95": 273.56729200000007,
+            "min": 259.60470899999996,
+            "max": 277.00970900000004,
+            "p95IsMax": false
+          }
+        },
+        {
+          "from": "shell-interactive",
+          "to": "terminal-usable",
+          "distribution": {
+            "n": 30,
+            "p50": 354.1125830000001,
+            "p75": 365.5280829999999,
+            "p95": 400.92833300000007,
+            "min": 344.2349169999999,
+            "max": 441.58841599999994,
+            "p95IsMax": false
+          }
+        },
+        {
+          "from": "active-host-spawned",
+          "to": "active-host-healthy",
+          "distribution": {
+            "n": 30,
+            "p50": 295.421542,
+            "p75": 297.6615,
+            "p95": 306.72154199999994,
+            "min": 284.987958,
+            "max": 352.67625000000004,
+            "p95IsMax": false
+          }
+        },
+        {
+          "from": "active-host-healthy",
+          "to": "host-url-ready",
+          "distribution": {
+            "n": 30,
+            "p50": 94.580917,
+            "p75": 97.30533300000002,
+            "p95": 110.854334,
+            "min": 89.593209,
+            "max": 182.18104099999994,
+            "p95IsMax": false
+          }
+        },
+        {
+          "from": "host-url-ready",
+          "to": "terminal-usable",
+          "distribution": {
+            "n": 30,
+            "p50": 371.37299999999993,
+            "p75": 381.10754099999997,
+            "p95": 418.33333300000004,
+            "min": 248.4541250000001,
+            "max": 458.59454099999994,
+            "p95IsMax": false
+          }
+        }
+      ],
+      "preNode": {
+        "n": 20,
+        "p50": 119.790708,
+        "p75": 124.832125,
+        "p95": 130.98725,
+        "min": 115.072416,
+        "max": 137.418291,
+        "p95IsMax": false
+      },
+      "perturbation": {
+        "marker": "shell-interactive",
+        "withInspectP50": 828.967958,
+        "withoutInspectP50": 825.945459,
+        "deltaPct": 0.36594413917589264
+      }
+    }
+  }
+}

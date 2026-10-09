@@ -130,7 +130,44 @@ terminal is dominated by shell startup: the socket is created at a median of
 Not measured: loading an existing Codex conversation (no visited workspace had
 an open Codex Chat tab) and sending a message to a model (not approved).
 
-## Caveats
+## Results after startup wave 3 (2026-10-09)
+
+Run `20261009-053108`: branch `perf/startup-wave-3` at `a51870dff` plus the
+uncommitted local-build packaging changes, same machine and protocol, on AC
+power. Evidence: `evidence/journeys-2026-10-09.json`. What changed is in
+`startup-wave-3.md`.
+
+| Journey | Before p50 / p75 / p95 | After p50 / p75 / p95 |
+| --- | --- | --- |
+| Window visible, from `open -a` | 702 / 707 / 712 | 552 / 558 / 570 |
+| Shell interactive, from `open -a` | 2,299 / 2,348 / 2,899 | 948 / 955 / 971 |
+| Terminal usable, from `open -a` | 2,926 / 3,695 / 3,936 | 1,308 / 1,323 / 1,347 |
+| New terminal (⌘J → first output) | 591 / 615 / 749 | 144 / 147 / 153 |
+| New Codex Chat, warm catalog | 43 / 49 / 52 | 41 / 47 / 50 |
+| New Codex Chat, cold catalog | 56 / 63 / 146 (max) | 48 / 53 / 133 (max) |
+| Claude Code (`claude` in a shell → CLI ready) | 406 / 415 / 476 (max) | 399 / 400 / 407 (max) |
+| Create workspace, worktree without setup | 1,290 / 1,327 / 1,937 (max) | 1,271 / 1,287 / 1,318 (max) |
+| Switch workspace, revisit | 82 / 86 / 103 | 73 / 78 / 96 |
+| Switch workspace, first visit after reload | 129 / 151 / 209 | 127 / 151 / 168 |
+| Quick open palette (⌘P) | 43 / 48 / 61 | 34 / 50 / 56 |
+| Open file from quick open | 97 / 104 / 133 | 89 / 93 / 100 |
+| Changes panel, warm | 46 / 52 / 60 | 44 / 50 / 58 |
+| Changes panel, cold after reload | 112 / 133 / 208 (max) | 84 / 105 / 150 (max) |
+| Terminal keystroke → echo | 22 / 28 / 41 | 21 / 29 / 41 |
+| Codex composer keystroke | 8.8 / 9.6 / 13.9 | 9.8 / 10.6 / 11.5 |
+
+From Node start, p50: window visible 574 → 432 ms, shell interactive
+2,173 → 829 ms, terminal usable 2,807 → 1,186 ms. Process creation to Node
+start took p50 120 ms. All 30 accepted launches confirmed the app frontmost;
+the inspector changed the shell-interactive p50 by +0.4%.
+
+New terminals now open on a shell started ahead of time; the 30 samples all
+landed on one. One first-visit workspace switch timed out waiting for its
+terminal socket to sync (the baseline had none); that sample is excluded from
+the distribution above and not explained yet. The composer keystroke moved by
+1 ms at p50 with a lower p95, which is within this journey's spread.
+
+## Caveats (2026-10-08 run)
 
 - The run was on battery with Low Power Mode off; the AC gate therefore marks it
   `acceptedRun: false`.
