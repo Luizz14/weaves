@@ -315,6 +315,7 @@ export class HostServiceCoordinator extends EventEmitter {
 	private killEscalations = new Map<number, ReturnType<typeof setTimeout>>();
 	private startGeneration = 0;
 	private reconciledMembershipKey: string | null = null;
+	private deferredStartDelayMs = 3_000;
 	private startupDiagnostics: StartupDiagnosticsHooks | null = null;
 	private configProvider: (() => Promise<SpawnConfig | null>) | null = null;
 	/**
@@ -621,6 +622,7 @@ export class HostServiceCoordinator extends EventEmitter {
 	async reconcile(
 		organizationIds: Iterable<string>,
 		config: SpawnConfig,
+		{ priority = [] }: { priority?: Iterable<string> } = {},
 	): Promise<void> {
 		const desiredOrganizationIds = new Set(
 			[...organizationIds].filter(isSafeOrganizationId),
@@ -640,23 +642,45 @@ export class HostServiceCoordinator extends EventEmitter {
 		this.desiredOrganizationIds = desiredOrganizationIds;
 		this.stopUndesiredOrganizations();
 
-		await Promise.all(
-			[...this.desiredOrganizationIds].map(async (organizationId) => {
-				try {
-					await this.start(organizationId, config);
-				} catch (error) {
-					if (this.startGeneration !== reconciliationGeneration) return;
-					if (!this.desiredOrganizationIds.has(organizationId)) return;
-					log.warn(
-						`[host-service-coordinator] start failed for org ${organizationId}:`,
-						error,
-					);
-					if (!this.respawns.has(organizationId)) {
-						this.scheduleRespawn(organizationId, "initial start failed");
-					}
+		const startDesired = async (organizationId: string) => {
+			try {
+				await this.start(organizationId, config);
+			} catch (error) {
+				if (this.startGeneration !== reconciliationGeneration) return;
+				if (!this.desiredOrganizationIds.has(organizationId)) return;
+				log.warn(
+					`[host-service-coordinator] start failed for org ${organizationId}:`,
+					error,
+				);
+				if (!this.respawns.has(organizationId)) {
+					this.scheduleRespawn(organizationId, "initial start failed");
 				}
-			}),
+			}
+		};
+		// Hosts for organizations no window shows yet boot after the ones the
+		// open windows wait on, so they do not compete with them for the CPU.
+		const prioritySet = new Set(priority);
+		const first = [...desiredOrganizationIds].filter((id) =>
+			prioritySet.has(id),
 		);
+		const rest = [...desiredOrganizationIds].filter(
+			(id) => !prioritySet.has(id),
+		);
+		const firstStarts = Promise.all(first.map(startDesired));
+		if (first.length > 0 && rest.length > 0) {
+			await Promise.race([
+				firstStarts,
+				new Promise((resolve) =>
+					setTimeout(resolve, this.deferredStartDelayMs),
+				),
+			]);
+		}
+		await Promise.all([
+			firstStarts,
+			...(this.startGeneration === reconciliationGeneration
+				? rest.map(startDesired)
+				: []),
+		]);
 
 		// A newer reconciliation can replace the desired set while an older start
 		// is in flight. Re-check after every start settles so the older call cannot

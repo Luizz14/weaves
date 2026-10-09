@@ -528,6 +528,59 @@ describe("HostServiceCoordinator.reconcile", () => {
 		expect(internals.respawns.has("org-1")).toBe(false);
 	});
 
+	test("starts organizations no window shows after the prioritized ones settle", async () => {
+		const order: string[] = [];
+		let releasePriority: () => void = () => {};
+		coordinator.start = mock(async (organizationId: string) => {
+			order.push(`start:${organizationId}`);
+			if (organizationId === "window-org") {
+				await new Promise<void>((resolve) => {
+					releasePriority = resolve;
+				});
+			}
+			order.push(`ready:${organizationId}`);
+			return { port: 60_000, secret: "secret", machineId: "host-1" };
+		});
+
+		const reconciliation = coordinator.reconcile(
+			["other-org", "window-org"],
+			spawnConfig,
+			{ priority: ["window-org"] },
+		);
+		await new Promise((resolve) => setTimeout(resolve, 0));
+		expect(order).toEqual(["start:window-org"]);
+
+		releasePriority();
+		await reconciliation;
+		expect(order).toEqual([
+			"start:window-org",
+			"ready:window-org",
+			"start:other-org",
+			"ready:other-org",
+		]);
+	});
+
+	test("starts deferred organizations after the delay when a prioritized start hangs", async () => {
+		(
+			coordinator as unknown as { deferredStartDelayMs: number }
+		).deferredStartDelayMs = 5;
+		const started: string[] = [];
+		coordinator.start = mock(async (organizationId: string) => {
+			started.push(organizationId);
+			if (organizationId === "window-org") {
+				await new Promise(() => {});
+			}
+			return { port: 60_000, secret: "secret", machineId: "host-1" };
+		});
+
+		void coordinator.reconcile(["other-org", "window-org"], spawnConfig, {
+			priority: ["window-org"],
+		});
+		await new Promise((resolve) => setTimeout(resolve, 30));
+
+		expect(started).toEqual(["window-org", "other-org"]);
+	});
+
 	test("re-confirming the same membership keeps the in-flight start", async () => {
 		let releaseStart: () => void = () => {};
 		const startOrAdoptMock = mock(async (organizationId: string) => {

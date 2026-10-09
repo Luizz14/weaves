@@ -464,6 +464,86 @@ if (!gotTheLock) {
 		focusMainWindow();
 	});
 
+	// Started as soon as the first window exists: forking host processes
+	// earlier delayed the window, and the restored terminal cannot attach before
+	// its host listens, so nothing else may gate this either.
+	const startHostServices = async () => {
+		// Must be listening before any host-service spawns: the child learns the
+		// bridge endpoint/secret from its env, so a late bridge means browser
+		// control stays dark until the next respawn.
+		try {
+			await startBrowserBridge();
+		} catch (error) {
+			console.error("[main] Failed to start browser bridge:", error);
+		}
+		markStartup("bridge-ready");
+
+		const hostServiceCoordinator = getHostServiceCoordinator();
+		hostServiceCoordinator.setConfigProvider(async () => {
+			const { token } = await loadToken();
+			if (!token) return null;
+			return { authToken: token, cloudApiUrl: mainEnv.NEXT_PUBLIC_API_URL };
+		});
+
+		// The authenticated session's cached membership is the source of truth.
+		// Host data on disk can outlive membership and must never resurrect an
+		// obsolete service. This cache keeps subsequent launches offline-capable.
+		let authGeneration = 0;
+		const reconcileHostServices = async (providedAuth?: {
+			token: string;
+			organizationIds: string[];
+		}) => {
+			const generation = authGeneration;
+			try {
+				const storedAuth = providedAuth ?? (await loadToken());
+				if (generation !== authGeneration) return;
+				if (!storedAuth.token || !storedAuth.organizationIds) return;
+				markStartup("host-reconcile-start");
+				await hostServiceCoordinator.reconcile(
+					storedAuth.organizationIds,
+					{
+						authToken: storedAuth.token,
+						cloudApiUrl: mainEnv.NEXT_PUBLIC_API_URL,
+					},
+					{
+						priority: loadWindows().flatMap((window) =>
+							window.orgId ? [window.orgId] : [],
+						),
+					},
+				);
+			} catch (error) {
+				console.error("[main] host-service reconcile failed:", error);
+			}
+		};
+		if (startupDiagnosticsEnabled) {
+			hostServiceCoordinator.setStartupDiagnostics({
+				organizationId:
+					loadWindows().find((window) => window.orgId)?.orgId ?? null,
+				mark: markStartup,
+				markAtHrtime: markStartupAtHrtime,
+			});
+		}
+		void reconcileHostServices();
+		// A new token can belong to a different account. Stop immediately and wait
+		// for that account's session membership before starting anything.
+		authEvents.on("token-saved", () => {
+			authGeneration++;
+			hostServiceCoordinator.stopAll();
+		});
+		authEvents.on("token-cleared", () => {
+			authGeneration++;
+			hostServiceCoordinator.stopAll();
+		});
+		authEvents.on(
+			"organization-ids-saved",
+			(data: { token: string; organizationIds: string[] }) => {
+				authGeneration++;
+				void reconcileHostServices(data);
+			},
+		);
+		return hostServiceCoordinator;
+	};
+
 	(async () => {
 		await app.whenReady();
 		markStartup("app-ready");
@@ -536,72 +616,7 @@ if (!gotTheLock) {
 		markStartup("v1-terminal-reconciled");
 		prewarmTerminalRuntime();
 
-		// Must be listening before any host-service spawns: the child learns the
-		// bridge endpoint/secret from its env, so a late bridge means browser
-		// control stays dark until the next respawn.
-		try {
-			await startBrowserBridge();
-		} catch (error) {
-			console.error("[main] Failed to start browser bridge:", error);
-		}
-		markStartup("bridge-ready");
 		downloadManager.start();
-
-		const hostServiceCoordinator = getHostServiceCoordinator();
-		hostServiceCoordinator.setConfigProvider(async () => {
-			const { token } = await loadToken();
-			if (!token) return null;
-			return { authToken: token, cloudApiUrl: mainEnv.NEXT_PUBLIC_API_URL };
-		});
-
-		// The authenticated session's cached membership is the source of truth.
-		// Host data on disk can outlive membership and must never resurrect an
-		// obsolete service. This cache keeps subsequent launches offline-capable.
-		let authGeneration = 0;
-		const reconcileHostServices = async (providedAuth?: {
-			token: string;
-			organizationIds: string[];
-		}) => {
-			const generation = authGeneration;
-			try {
-				const storedAuth = providedAuth ?? (await loadToken());
-				if (generation !== authGeneration) return;
-				if (!storedAuth.token || !storedAuth.organizationIds) return;
-				markStartup("host-reconcile-start");
-				await hostServiceCoordinator.reconcile(storedAuth.organizationIds, {
-					authToken: storedAuth.token,
-					cloudApiUrl: mainEnv.NEXT_PUBLIC_API_URL,
-				});
-			} catch (error) {
-				console.error("[main] host-service reconcile failed:", error);
-			}
-		};
-		if (startupDiagnosticsEnabled) {
-			hostServiceCoordinator.setStartupDiagnostics({
-				organizationId:
-					loadWindows().find((window) => window.orgId)?.orgId ?? null,
-				mark: markStartup,
-				markAtHrtime: markStartupAtHrtime,
-			});
-		}
-		void reconcileHostServices();
-		// A new token can belong to a different account. Stop immediately and wait
-		// for that account's session membership before starting anything.
-		authEvents.on("token-saved", () => {
-			authGeneration++;
-			hostServiceCoordinator.stopAll();
-		});
-		authEvents.on("token-cleared", () => {
-			authGeneration++;
-			hostServiceCoordinator.stopAll();
-		});
-		authEvents.on(
-			"organization-ids-saved",
-			(data: { token: string; organizationIds: string[] }) => {
-				authGeneration++;
-				void reconcileHostServices(data);
-			},
-		);
 
 		try {
 			// The vite build copies @superset/agent-setup's templates (plus the
@@ -636,7 +651,7 @@ if (!gotTheLock) {
 		markStartup("agent-setup-end");
 
 		if (IS_DEV) {
-			hostServiceCoordinator.enableDevReload(async () => {
+			getHostServiceCoordinator().enableDevReload(async () => {
 				const { token } = await loadToken();
 				if (!token) return null;
 				return { authToken: token, cloudApiUrl: mainEnv.NEXT_PUBLIC_API_URL };
@@ -648,6 +663,7 @@ if (!gotTheLock) {
 			() => createPlatformWindow({ orgId: null }),
 			restoreWindows,
 		);
+		void startHostServices();
 		scheduleStartupMaintenance(firstWindow, () => {
 			sweepNetworkLogs();
 			sweepDevAppProfiles();
