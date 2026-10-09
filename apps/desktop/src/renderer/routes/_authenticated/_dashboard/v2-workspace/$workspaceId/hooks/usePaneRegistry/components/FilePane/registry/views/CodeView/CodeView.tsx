@@ -1,10 +1,14 @@
 import { Trans } from "@lingui/react/macro";
+import {
+	DEFAULT_EDITOR_SETTINGS,
+	resolveEditorSettings,
+} from "@superset/shared/editor-settings";
+import { detectLspLanguage } from "@superset/shared/lsp";
 import { useQuery } from "@tanstack/react-query";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useSyncExternalStore } from "react";
 import { editorSettingsQueryOptions } from "renderer/hooks/useEditorSettings";
 import { fontSettingsQueryOptions } from "renderer/lib/font-settings";
 import { useLanguageSupport } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/hooks/useLanguageSupport";
-import type { EditorLspStatus } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/coordinator";
 import { useLspCoordinator } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/LspProvider";
 import {
 	createPaneScrollStateKey,
@@ -16,6 +20,10 @@ import type { ViewProps } from "../../types";
 import { CodeEditor } from "./components/CodeEditor";
 import { LspStatus } from "./components/LspStatus";
 
+function subscribeNothing() {
+	return () => {};
+}
+
 export function CodeView({
 	document,
 	filePath,
@@ -23,7 +31,6 @@ export function CodeView({
 	readOnly = false,
 }: ViewProps) {
 	const lsp = useLspCoordinator();
-	const [lspStatus, setLspStatus] = useState<EditorLspStatus>(null);
 	const language = detectLanguage(filePath);
 	const languageSupport = useLanguageSupport(language);
 	const editorSettings = useQuery(editorSettingsQueryOptions);
@@ -32,6 +39,25 @@ export function CodeView({
 		languageSupport !== undefined &&
 		!editorSettings.isPending &&
 		!fontSettings.isPending;
+	const lspEligible =
+		!!lsp &&
+		!readOnly &&
+		detectLspLanguage(document.absolutePath) !== null &&
+		resolveEditorSettings(
+			editorSettings.data ?? DEFAULT_EDITOR_SETTINGS,
+			language,
+		).enableLanguageServer;
+	const lspStatus = useSyncExternalStore(
+		lsp?.subscribeStatus ?? subscribeNothing,
+		() =>
+			lspEligible && lsp
+				? lsp.getStatus(document.id, document.absolutePath)
+				: null,
+	);
+	const reserveLintGutter =
+		lspStatus !== null &&
+		lspStatus.state !== "missing" &&
+		lspStatus.state !== "disabled";
 	// Quick Open replaces preview panes with new pane IDs, so the file path is
 	// the stable editor identity when a user switches away and back.
 	const scrollStateKey = useMemo(
@@ -64,7 +90,7 @@ export function CodeView({
 				{editorReady && (
 					<CodeEditor
 						document={readOnly ? undefined : document}
-						onLspStatus={setLspStatus}
+						lintGutter={reserveLintGutter}
 						key={document.id}
 						value={document.content.value}
 						readOnly={readOnly}

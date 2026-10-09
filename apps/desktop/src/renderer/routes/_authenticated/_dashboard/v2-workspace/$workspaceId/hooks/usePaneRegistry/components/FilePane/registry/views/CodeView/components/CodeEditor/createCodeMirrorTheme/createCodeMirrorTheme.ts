@@ -91,9 +91,11 @@ function buildCodeMirrorTheme(
 				border: "none",
 			},
 			// Line numbers: more breathing room on the left edge, tighter on the
-			// right since the gutter/content separator is gone.
+			// right since the gutter/content separator is gone. Three digits stay
+			// reserved so text keeps its column across files of different length.
 			".cm-lineNumbers .cm-gutterElement": {
 				padding: "0 2px 0 8px",
+				minWidth: "calc(3ch + 10px)",
 			},
 			// Fold placeholder (Lucide MoreHorizontal rendered when a block is
 			// collapsed). Reset button defaults, match our rounded / theme look,

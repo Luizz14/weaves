@@ -3,7 +3,11 @@ import { diagnosticCount } from "@codemirror/lint";
 import { Compartment } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
 import { GlobalRegistrator } from "@happy-dom/global-registrator";
-import { filePathToLspUri, lspUriToFilePath } from "@superset/shared/lsp";
+import {
+	filePathToLspUri,
+	lspSettingsSchema,
+	lspUriToFilePath,
+} from "@superset/shared/lsp";
 import { acquireDocument, releaseDocument } from "../fileDocumentStore";
 import { type EditorLspStatus, LspCoordinator } from "./coordinator";
 
@@ -116,6 +120,9 @@ test("shares a server across splits, pulls diagnostics and clears them on discon
 		hostUrl: "http://localhost:1234",
 		getWsToken: () => "test",
 		trpcClient: {
+			settings: {
+				lsp: { get: { query: async () => lspSettingsSchema.parse({}) } },
+			},
 			lsp: {
 				resolve: {
 					mutate: async () => ({
@@ -215,3 +222,94 @@ async function waitFor(predicate: () => boolean) {
 	}
 	throw new Error("Coordinator did not reach the expected state");
 }
+
+function statusConnection(
+	resolveState: "starting" | "missing" | "disabled",
+	disabled: string[] = [],
+) {
+	const settings = lspSettingsSchema.parse({});
+	for (const serverId of disabled)
+		settings.servers[serverId as keyof typeof settings.servers].enabled = false;
+	return {
+		hostUrl: "http://localhost:1234",
+		getWsToken: () => "test",
+		trpcClient: {
+			settings: { lsp: { get: { query: async () => settings } } },
+			lsp: {
+				resolve: {
+					mutate: async () => ({
+						sessionId: resolveState === "starting" ? "session" : null,
+						serverId: "typescript",
+						languageId: "typescript",
+						rootUri: "file:///workspace",
+						state: resolveState,
+					}),
+				},
+				release: { mutate: async () => {} },
+			},
+		},
+	} as unknown as ConstructorParameters<typeof LspCoordinator>[1];
+}
+
+function statusCoordinator(connection: ReturnType<typeof statusConnection>) {
+	const coordinator = new LspCoordinator(
+		crypto.randomUUID(),
+		connection,
+		() => {},
+		lspUriToFilePath,
+	);
+	coordinators.push(coordinator);
+	return coordinator;
+}
+
+test("predicts a stable status before a file attaches", () => {
+	const coordinator = statusCoordinator(statusConnection("starting"));
+	const first = coordinator.getStatus("doc", "/workspace/src/a.ts");
+	expect(first).toEqual({ state: "starting", serverId: "typescript" });
+	expect(coordinator.getStatus("doc", "/workspace/src/a.ts")).toBe(first);
+	expect(coordinator.getStatus("doc", "/workspace/README.md")).toBeNull();
+});
+
+test("remembers a missing server for the directory it was resolved in", async () => {
+	const workspaceId = crypto.randomUUID();
+	const path = "/workspace/src/a.ts";
+	const document = acquireDocument(workspaceId, path, {
+		filesystem: {
+			readFile: {
+				query: async () => ({
+					kind: "text",
+					content: "const a = 1",
+					revision: "1",
+					byteLength: 11,
+				}),
+			},
+		},
+	} as unknown as Parameters<typeof acquireDocument>[2]);
+	const coordinator = statusCoordinator(statusConnection("missing"));
+	const view = new EditorView({ doc: "const a = 1" });
+	views.push(view);
+	const detach = coordinator.attach(document, view, new Compartment());
+	await waitFor(
+		() => coordinator.getStatus(document.id, path)?.state === "missing",
+	);
+	detach();
+	expect(coordinator.getStatus("other", "/workspace/src/b.ts")?.state).toBe(
+		"missing",
+	);
+	expect(coordinator.getStatus("other", "/workspace/lib/c.ts")?.state).toBe(
+		"starting",
+	);
+	releaseDocument(workspaceId, path);
+});
+
+test("servers disabled in the host settings are predicted disabled", async () => {
+	const coordinator = statusCoordinator(
+		statusConnection("starting", ["typescript"]),
+	);
+	await waitFor(
+		() => coordinator.getStatus("doc", "/workspace/a.ts")?.state === "disabled",
+	);
+	expect(coordinator.getStatus("doc", "/workspace/a.json")?.state).toBe(
+		"starting",
+	);
+});

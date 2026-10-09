@@ -1,5 +1,5 @@
 import { autocompletion, completionKeymap } from "@codemirror/autocomplete";
-import { type Diagnostic, lintGutter, setDiagnostics } from "@codemirror/lint";
+import { type Diagnostic, setDiagnostics } from "@codemirror/lint";
 import {
 	hoverTooltips,
 	LSPPlugin,
@@ -187,7 +187,6 @@ export function languageFeatures(
 		autocompletion(),
 		serverCompletion(),
 		hoverTooltips(),
-		lintGutter(),
 		keymap.of([...completionKeymap, { key: "F12", run: definition }]),
 		EditorView.domEventHandlers({
 			click(event, view) {

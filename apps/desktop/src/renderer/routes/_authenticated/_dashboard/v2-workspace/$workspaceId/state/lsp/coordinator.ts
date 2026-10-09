@@ -10,6 +10,7 @@ import {
 import {
 	detectLspLanguage,
 	filePathToLspUri,
+	LSP_SERVER_IDS,
 	type LspServerId,
 	type LspState,
 } from "@superset/shared/lsp";
@@ -62,8 +63,81 @@ type Session = {
 	>;
 };
 
+const UNAVAILABLE_TTL_MS = 60_000;
+const internedStatuses = new Map<string, EditorLspStatus>();
+
+function internStatus(state: LspState, serverId: LspServerId): EditorLspStatus {
+	const key = `${serverId}:${state}`;
+	let status = internedStatuses.get(key);
+	if (!status) {
+		status = { state, serverId };
+		internedStatuses.set(key, status);
+	}
+	return status;
+}
+
+function availabilityKey(serverId: LspServerId, path: string): string {
+	return `${serverId}:${path.replace(/[\\/][^\\/]*$/, "")}`;
+}
+
 export class LspCoordinator {
 	private preferences = DEFAULT_EDITOR_SETTINGS;
+	private statusByDocument = new Map<string, EditorLspStatus>();
+	private statusListeners = new Set<() => void>();
+	private unavailable = new Map<
+		string,
+		{ state: "missing" | "disabled"; at: number }
+	>();
+	private disabledServers = new Set<LspServerId>();
+	subscribeStatus = (listener: () => void) => {
+		this.statusListeners.add(listener);
+		return () => {
+			this.statusListeners.delete(listener);
+		};
+	};
+	getStatus = (documentId: string, path: string): EditorLspStatus =>
+		this.statusByDocument.has(documentId)
+			? (this.statusByDocument.get(documentId) ?? null)
+			: this.predictStatus(path);
+	private predictStatus(path: string): EditorLspStatus {
+		const language = detectLspLanguage(path);
+		if (!language) return null;
+		const { serverId } = language;
+		if (this.disabledServers.has(serverId))
+			return internStatus("disabled", serverId);
+		const unavailable = this.unavailable.get(availabilityKey(serverId, path));
+		if (unavailable && Date.now() - unavailable.at < UNAVAILABLE_TTL_MS)
+			return internStatus(unavailable.state, serverId);
+		for (const session of this.sessions.values())
+			if (
+				session.serverId === serverId &&
+				session.client &&
+				!session.connecting &&
+				!session.disposed
+			)
+				return internStatus("running", serverId);
+		return internStatus("starting", serverId);
+	}
+	private setStatus(documentId: string, status: EditorLspStatus) {
+		const next =
+			status && !status.error
+				? internStatus(status.state, status.serverId)
+				: status;
+		if (
+			this.statusByDocument.has(documentId) &&
+			this.statusByDocument.get(documentId) === next
+		)
+			return;
+		this.statusByDocument.set(documentId, next);
+		this.notifyStatus();
+	}
+	private clearStatus(documentId: string) {
+		if (!this.statusByDocument.delete(documentId)) return;
+		this.notifyStatus();
+	}
+	private notifyStatus() {
+		for (const listener of this.statusListeners) listener();
+	}
 	private diagnosticListeners = new Set<() => void>();
 	private diagnosticCounts = new Map<
 		string,
@@ -140,7 +214,17 @@ export class LspCoordinator {
 		private connection: WorkspaceClientContextValue,
 		private openFile: (path: string) => void,
 		private uriToPath: (uri: string) => string | null,
-	) {}
+	) {
+		void connection.trpcClient.settings.lsp.get
+			.query()
+			.then((settings) => {
+				for (const serverId of LSP_SERVER_IDS)
+					if (!settings.servers[serverId].enabled)
+						this.disabledServers.add(serverId);
+				if (this.disabledServers.size) this.notifyStatus();
+			})
+			.catch(() => {});
+	}
 
 	registerView(path: string, view: EditorView) {
 		const uri = filePathToLspUri(path);
@@ -157,13 +241,16 @@ export class LspCoordinator {
 		document: SharedFileDocument,
 		view: EditorView,
 		compartment: Compartment,
-		status: Binding["status"],
+		onStatus?: Binding["status"],
 	) {
 		const binding: Binding = {
 			document,
 			view,
 			compartment,
-			status,
+			status: (status) => {
+				this.setStatus(document.id, status);
+				onStatus?.(status);
+			},
 			active: true,
 		};
 		this.bindings.add(binding);
@@ -171,6 +258,10 @@ export class LspCoordinator {
 		return () => {
 			binding.active = false;
 			this.bindings.delete(binding);
+			if (
+				![...this.bindings].some((other) => other.document.id === document.id)
+			)
+				this.clearStatus(document.id);
 			const session = binding.session;
 			if (!session) return;
 			session.bindings.delete(binding);
@@ -202,9 +293,20 @@ export class LspCoordinator {
 				return;
 			}
 			if (!resolved.sessionId) {
+				if (resolved.state === "missing" || resolved.state === "disabled")
+					this.unavailable.set(
+						availabilityKey(language.serverId, binding.document.absolutePath),
+						{ state: resolved.state, at: Date.now() },
+					);
+				if (resolved.state === "disabled")
+					this.disabledServers.add(language.serverId);
 				binding.status({ state: resolved.state, serverId: language.serverId });
 				return;
 			}
+			this.unavailable.delete(
+				availabilityKey(language.serverId, binding.document.absolutePath),
+			);
+			this.disabledServers.delete(language.serverId);
 			const key = `${resolved.serverId}:${resolved.rootUri}`;
 			let session = this.sessions.get(key);
 			const existingSession = !!session;
@@ -566,6 +668,13 @@ export class LspCoordinator {
 	}
 
 	async retry(document: SharedFileDocument) {
+		const language = detectLspLanguage(document.absolutePath);
+		if (language) {
+			this.disabledServers.delete(language.serverId);
+			for (const key of this.unavailable.keys())
+				if (key.startsWith(`${language.serverId}:`))
+					this.unavailable.delete(key);
+		}
 		const bindings = [...this.bindings].filter(
 			(binding) => binding.document.id === document.id,
 		);

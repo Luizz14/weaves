@@ -11,6 +11,10 @@ import {
 	foldKeymap,
 	indentOnInput,
 } from "@codemirror/language";
+import {
+	lintGutter as createLintGutter,
+	setDiagnostics,
+} from "@codemirror/lint";
 import { highlightSelectionMatches, searchKeymap } from "@codemirror/search";
 import { Compartment, EditorState, type Extension } from "@codemirror/state";
 import {
@@ -35,7 +39,6 @@ import {
 import { useEditorSettings } from "renderer/hooks/useEditorSettings";
 import { fontSettingsQueryOptions } from "renderer/lib/font-settings";
 import type { SharedFileDocument } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/fileDocumentStore";
-import type { EditorLspStatus } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/coordinator";
 import { editorPreferenceExtensions } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/editorExtensions";
 import { useLspCoordinator } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/LspProvider";
 import {
@@ -56,6 +59,8 @@ import { viewportSyntax } from "./extensions/viewportSyntax";
 import { getCodeSyntaxHighlighting } from "./syntax-highlighting";
 
 const NO_LANGUAGE: Extension = [];
+const LINT_GUTTER = createLintGutter();
+const NO_LINT_GUTTER: Extension = [];
 
 const editability = {
 	editable: [EditorState.readOnly.of(false), EditorView.editable.of(true)],
@@ -92,7 +97,7 @@ function reconfigure(
 
 interface CodeEditorProps {
 	document?: SharedFileDocument;
-	onLspStatus?: (status: EditorLspStatus) => void;
+	lintGutter?: boolean;
 	value: string;
 	language: string;
 	readOnly?: boolean;
@@ -110,7 +115,7 @@ interface CodeEditorProps {
 
 export function CodeEditor({
 	document,
-	onLspStatus,
+	lintGutter = false,
 	value,
 	language,
 	readOnly = false,
@@ -129,8 +134,7 @@ export function CodeEditor({
 	const editableCompartment = useRef(new Compartment()).current;
 	const lspCompartment = useRef(new Compartment()).current;
 	const lsp = useLspCoordinator();
-	const onLspStatusRef = useRef(onLspStatus);
-	onLspStatusRef.current = onLspStatus;
+	const lintGutterCompartment = useRef(new Compartment()).current;
 	const onChangeRef = useRef(onChange);
 	const onSaveRef = useRef(onSave);
 	const onScrollPositionChangeRef = useRef(onScrollPositionChange);
@@ -215,6 +219,7 @@ export function CodeEditor({
 				history(),
 				foldGutter({ markerDOM: buildFoldChevron }),
 				codeFolding({ placeholderDOM: buildFoldPlaceholder }),
+				lintGutterCompartment.of(lintGutter ? LINT_GUTTER : NO_LINT_GUTTER),
 				drawSelection(),
 				dropCursor(),
 				EditorState.allowMultipleSelections.of(true),
@@ -298,19 +303,16 @@ export function CodeEditor({
 			!lsp ||
 			readOnly ||
 			!preferences.enableLanguageServer
-		) {
-			onLspStatusRef.current?.(null);
+		)
 			return;
-		}
 		const unregister = lsp.registerView(document.absolutePath, view);
-		const detach = lsp.attach(document, view, lspCompartment, (status) =>
-			onLspStatusRef.current?.(status),
-		);
+		const detach = lsp.attach(document, view, lspCompartment);
 		return () => {
 			detach();
 			unregister();
-			if (viewRef.current === view)
-				view.dispatch({ effects: lspCompartment.reconfigure([]) });
+			if (viewRef.current !== view) return;
+			view.dispatch({ effects: lspCompartment.reconfigure([]) });
+			view.dispatch(setDiagnostics(view.state, []));
 		};
 	}, [
 		document,
@@ -320,6 +322,16 @@ export function CodeEditor({
 		readOnly,
 		preferences.enableLanguageServer,
 	]);
+
+	useLayoutEffect(() => {
+		const view = viewRef.current;
+		if (view)
+			reconfigure(
+				view,
+				lintGutterCompartment,
+				lintGutter ? LINT_GUTTER : NO_LINT_GUTTER,
+			);
+	}, [lintGutter, lintGutterCompartment]);
 
 	useEffect(() => {
 		const view = viewRef.current;
