@@ -72,6 +72,7 @@ type Session = {
 
 const UNAVAILABLE_TTL_MS = 60_000;
 const BACKGROUND_FILE_LIMIT = 20;
+const SESSION_IDLE_MS = 10 * 60_000;
 const internedStatuses = new Map<string, EditorLspStatus>();
 
 function internStatus(state: LspState, serverId: LspServerId): EditorLspStatus {
@@ -247,6 +248,10 @@ export class LspCoordinator {
 			.catch(() => {});
 	}
 
+	setOpenFile(openFile: (path: string) => void) {
+		this.openFile = openFile;
+	}
+
 	registerView(path: string, view: EditorView) {
 		const uri = filePathToLspUri(path);
 		const views = this.views.get(uri) ?? new Set();
@@ -302,7 +307,7 @@ export class LspCoordinator {
 		)
 			return;
 		if (session.timer) clearTimeout(session.timer);
-		session.timer = setTimeout(() => this.stop(session), 60_000);
+		session.timer = setTimeout(() => this.stop(session), SESSION_IDLE_MS);
 	}
 
 	/**

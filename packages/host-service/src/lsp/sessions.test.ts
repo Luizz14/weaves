@@ -1,5 +1,5 @@
 import { Database } from "bun:sqlite";
-import { expect, test } from "bun:test";
+import { expect, spyOn, test } from "bun:test";
 import { mkdir, mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
@@ -101,6 +101,21 @@ test("migrations, stdio framing, initialization, diagnostics and shutdown work t
 				(message) => message.method === "textDocument/publishDiagnostics",
 			),
 		);
+		const timers = spyOn(globalThis, "setTimeout");
+		await sessions.receive(
+			session.sessionId,
+			JSON.stringify({
+				jsonrpc: "2.0",
+				method: "textDocument/didClose",
+				params: {
+					textDocument: { uri: filePathToLspUri(join(root, "src/a.ts")) },
+				},
+			}),
+		);
+		expect(timers.mock.calls.some(([, delay]) => delay === 10 * 60_000)).toBe(
+			true,
+		);
+		timers.mockRestore();
 		await sessions.receive(
 			session.sessionId,
 			JSON.stringify({

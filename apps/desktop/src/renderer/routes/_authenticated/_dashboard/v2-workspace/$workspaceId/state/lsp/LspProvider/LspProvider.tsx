@@ -12,6 +12,11 @@ import { useEditorSettings } from "renderer/hooks/useEditorSettings";
 import { useWorkspace } from "renderer/routes/_authenticated/_dashboard/v2-workspace/providers/WorkspaceProvider";
 import { useLocalHostService } from "renderer/routes/_authenticated/providers/LocalHostServiceProvider";
 import { LspCoordinator } from "../coordinator";
+import {
+	acquireCoordinator,
+	getCoordinator,
+	releaseCoordinator,
+} from "./coordinatorRegistry";
 
 const LspContext = createContext<LspCoordinator | null>(null);
 
@@ -31,27 +36,33 @@ export function LspProvider({
 	const openFileRef = useRef(openFile);
 	openFileRef.current = openFile;
 	const { hostUrl, trpcClient, getWsToken, queryClient } = connection;
+	const key =
+		workspace.hostId === machineId ? `${workspace.id}\n${hostUrl}` : null;
 	const coordinator = useMemo(
 		() =>
-			workspace.hostId === machineId
-				? new LspCoordinator(
-						workspace.id,
-						{ hostUrl, trpcClient, getWsToken, queryClient },
-						(path) => openFileRef.current(path),
-						lspUriToFilePath,
+			key
+				? getCoordinator(
+						key,
+						() =>
+							new LspCoordinator(
+								workspace.id,
+								{ hostUrl, trpcClient, getWsToken, queryClient },
+								() => {},
+								lspUriToFilePath,
+							),
 					)
 				: null,
-		[
-			workspace.id,
-			workspace.hostId,
-			machineId,
-			hostUrl,
-			trpcClient,
-			getWsToken,
-			queryClient,
-		],
+		[key, workspace.id, hostUrl, trpcClient, getWsToken, queryClient],
 	);
-	useEffect(() => () => coordinator?.dispose(), [coordinator]);
+	useEffect(() => {
+		if (!key || !coordinator) return;
+		acquireCoordinator(key);
+		coordinator.setOpenFile((path) => openFileRef.current(path));
+		return () => {
+			coordinator.setOpenFile(() => {});
+			releaseCoordinator(key);
+		};
+	}, [key, coordinator]);
 	useEffect(() => {
 		coordinator?.configure(preferences);
 	}, [coordinator, preferences]);

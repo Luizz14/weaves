@@ -25,6 +25,7 @@ import { type LspLaunch, resolveLspLaunch } from "./adapters";
 import { readLspSettings } from "./settings";
 
 const IDLE_MS = 60_000;
+const NO_DOCUMENTS_IDLE_MS = 10 * 60_000;
 const SHUTDOWN_MS = 5_000;
 const MAX_SESSIONS = 128;
 const MAX_MESSAGE_BYTES = 16 * 1024 * 1024;
@@ -331,7 +332,8 @@ export class LspSessions {
 			else session.documents.delete(uri);
 			if (session.documents.size > 0 && session.idle)
 				clearTimeout(session.idle);
-			if (session.documents.size === 0) this.scheduleIdle(session);
+			if (session.documents.size === 0)
+				this.scheduleIdle(session, NO_DOCUMENTS_IDLE_MS);
 		}
 		await writeMessage(session.writer, parsed);
 	}
