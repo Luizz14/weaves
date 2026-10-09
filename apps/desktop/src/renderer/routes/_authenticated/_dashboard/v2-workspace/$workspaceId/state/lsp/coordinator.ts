@@ -76,6 +76,9 @@ const SESSION_IDLE_MS = 10 * 60_000;
 const PREFETCH_LEASE_MS = 30_000;
 const PREFETCH_LIMIT = 2;
 const PREFETCH_LOAD_TIMEOUT_MS = 5_000;
+// Mirrors resolveLspLaunch in host-service: every other server is rooted at
+// the worktree, so one session covers every file of that server.
+const SERVERS_ROOTED_BY_MANIFEST = new Set<LspServerId>(["dart", "kotlin"]);
 const internedStatuses = new Map<string, EditorLspStatus>();
 
 function internStatus(state: LspState, serverId: LspServerId): EditorLspStatus {
@@ -492,7 +495,13 @@ export class LspCoordinator {
 	}
 
 	private knownSession(serverId: LspServerId, path: string) {
-		const key = this.sessionByDirectory.get(availabilityKey(serverId, path));
+		const key =
+			this.sessionByDirectory.get(availabilityKey(serverId, path)) ??
+			(SERVERS_ROOTED_BY_MANIFEST.has(serverId)
+				? undefined
+				: [...this.sessions.values()].find(
+						(session) => session.serverId === serverId && !session.disposed,
+					)?.key);
 		const session = key ? this.sessions.get(key) : undefined;
 		if (!session || session.disposed) return undefined;
 		if (session.connecting) return session;

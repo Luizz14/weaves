@@ -318,7 +318,11 @@ test("servers disabled in the host settings are predicted disabled", async () =>
 	);
 });
 
-test("a second file in a resolved directory attaches without resolving again", async () => {
+async function attachSecondFile(
+	server: { serverId: string; languageId: string },
+	firstPath: string,
+	secondPath: string,
+) {
 	const workspaceId = crypto.randomUUID();
 	const client = {
 		filesystem: {
@@ -332,8 +336,8 @@ test("a second file in a resolved directory attaches without resolving again", a
 			},
 		},
 	} as unknown as Parameters<typeof acquireDocument>[2];
-	const first = acquireDocument(workspaceId, "/workspace/a.kt", client);
-	const second = acquireDocument(workspaceId, "/workspace/b.kt", client);
+	const first = acquireDocument(workspaceId, firstPath, client);
+	const second = acquireDocument(workspaceId, secondPath, client);
 	await Promise.resolve();
 	let resolves = 0;
 	const connection = {
@@ -347,8 +351,7 @@ test("a second file in a resolved directory attaches without resolving again", a
 				resolve: {
 					mutate: async () => ({
 						sessionId: `session-${++resolves}`,
-						serverId: "kotlin",
-						languageId: "kotlin",
+						...server,
 						rootUri: "file:///workspace",
 						state: "starting",
 					}),
@@ -386,21 +389,46 @@ test("a second file in a resolved directory attaches without resolving again", a
 		secondView,
 		secondCompartment,
 	);
-	expect(coordinator.getStatus(second.id, second.absolutePath)?.state).toBe(
-		"running",
-	);
-	expect(resolves).toBe(1);
+	const status = coordinator.getStatus(second.id, second.absolutePath)?.state;
 	await Promise.resolve();
 	await Promise.resolve();
-	expect(
-		sockets[0].messages.filter(
-			(message) => message.method === "textDocument/didOpen",
-		),
-	).toHaveLength(2);
+	const didOpens = sockets[0].messages.filter(
+		(message) => message.method === "textDocument/didOpen",
+	).length;
 	detachSecond();
 	detachFirst();
-	releaseDocument(workspaceId, "/workspace/a.kt");
-	releaseDocument(workspaceId, "/workspace/b.kt");
+	releaseDocument(workspaceId, firstPath);
+	releaseDocument(workspaceId, secondPath);
+	return { status, resolves, didOpens };
+}
+
+test("a second file in a resolved directory attaches without resolving again", async () => {
+	expect(
+		await attachSecondFile(
+			{ serverId: "kotlin", languageId: "kotlin" },
+			"/workspace/a.kt",
+			"/workspace/b.kt",
+		),
+	).toEqual({ status: "running", resolves: 1, didOpens: 2 });
+});
+
+test("a worktree-rooted server attaches files from any directory without resolving again", async () => {
+	expect(
+		await attachSecondFile(
+			{ serverId: "typescript", languageId: "typescript" },
+			"/workspace/a.ts",
+			"/workspace/src/nested/b.ts",
+		),
+	).toEqual({ status: "running", resolves: 1, didOpens: 2 });
+});
+
+test("a manifest-rooted server resolves a file in a new directory", async () => {
+	const result = await attachSecondFile(
+		{ serverId: "kotlin", languageId: "kotlin" },
+		"/workspace/a.kt",
+		"/workspace/other/b.kt",
+	);
+	expect(result.resolves).toBe(2);
 });
 
 test("a hidden tab's file is open on the server and its diagnostics paint on attach", async () => {
