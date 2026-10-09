@@ -7,8 +7,13 @@ import {
 	defaultShouldDehydrateQuery,
 	focusManager,
 	QueryClient,
+	QueryClientProvider,
 } from "@tanstack/react-query";
-import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
+import {
+	type PersistQueryClientOptions,
+	persistQueryClientRestore,
+	persistQueryClientSubscribe,
+} from "@tanstack/react-query-persist-client";
 import { del, get, set } from "idb-keyval";
 import {
 	CLOUD_TRPC_ROUTER_ROOTS,
@@ -97,8 +102,38 @@ const PERSIST_KEY_PREFIXES = new Set([
 // fans out to remote hosts on a cold or offline boot before the cloud answers.
 const PERSIST_TRPC_PATHS = new Set(["host.roster"]);
 
-function markQueryCacheRestored() {
-	markRendererStartup("query-cache-restored");
+const persistOptions: PersistQueryClientOptions = {
+	queryClient,
+	persister,
+	maxAge: 24 * 60 * 60 * 1000, // 24h
+	buster: PERSIST_BUSTER,
+	dehydrateOptions: {
+		shouldDehydrateQuery: (query) => {
+			if (!defaultShouldDehydrateQuery(query)) return false;
+			const head = query.queryKey[0];
+			if (typeof head === "string") {
+				return PERSIST_KEY_PREFIXES.has(head);
+			}
+			return Array.isArray(head) && PERSIST_TRPC_PATHS.has(head.join("."));
+		},
+	},
+};
+
+// Restored at module load rather than behind an IsRestoring gate: the gate
+// held every IPC query of the boot path (stored token, window org) until
+// IndexedDB answered. hydrate() never replaces data fetched in the meantime.
+let unsubscribePersistence: (() => void) | null = null;
+if (typeof indexedDB !== "undefined") {
+	void persistQueryClientRestore(persistOptions)
+		.catch(() => {})
+		.then(() => {
+			markRendererStartup("query-cache-restored");
+			unsubscribePersistence = persistQueryClientSubscribe(persistOptions);
+		});
+}
+
+if (import.meta.hot) {
+	import.meta.hot.dispose(() => unsubscribePersistence?.());
 }
 
 export function ElectronTRPCProvider({
@@ -112,32 +147,11 @@ export function ElectronTRPCProvider({
 			queryClient={queryClient}
 		>
 			<cloudTrpc.Provider client={cloudTrpcClient} queryClient={queryClient}>
-				<PersistQueryClientProvider
-					client={queryClient}
-					onSuccess={markQueryCacheRestored}
-					onError={markQueryCacheRestored}
-					persistOptions={{
-						persister,
-						maxAge: 24 * 60 * 60 * 1000, // 24h
-						buster: PERSIST_BUSTER,
-						dehydrateOptions: {
-							shouldDehydrateQuery: (query) => {
-								if (!defaultShouldDehydrateQuery(query)) return false;
-								const head = query.queryKey[0];
-								if (typeof head === "string") {
-									return PERSIST_KEY_PREFIXES.has(head);
-								}
-								return (
-									Array.isArray(head) && PERSIST_TRPC_PATHS.has(head.join("."))
-								);
-							},
-						},
-					}}
-				>
+				<QueryClientProvider client={queryClient}>
 					<CloudClientProvider client={cloudTrpcClient}>
 						{children}
 					</CloudClientProvider>
-				</PersistQueryClientProvider>
+				</QueryClientProvider>
 			</cloudTrpc.Provider>
 		</electronTrpc.Provider>
 	);
