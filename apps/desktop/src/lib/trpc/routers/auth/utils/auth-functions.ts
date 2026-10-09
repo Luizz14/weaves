@@ -305,6 +305,18 @@ export async function saveOrganizationIds({
 		}
 
 		const currentRevision = storedAuth.organizationIdsRevision ?? 0;
+		const normalizedIds = [...new Set(organizationIds)].sort();
+		if (
+			storedAuth.organizationIds &&
+			storedAuth.organizationIds.length === normalizedIds.length &&
+			storedAuth.organizationIds.every((id, i) => id === normalizedIds[i])
+		) {
+			authEvents.emit("organization-ids-saved", {
+				token: storedAuth.token,
+				organizationIds: normalizedIds,
+			});
+			return { status: "saved" as const, revision: currentRevision };
+		}
 		if (expectedRevision !== currentRevision) {
 			return { status: "conflict" as const, revision: currentRevision };
 		}
@@ -312,7 +324,6 @@ export async function saveOrganizationIds({
 			throw new Error("Organization membership revision exhausted");
 		}
 
-		const normalizedIds = [...new Set(organizationIds)].sort();
 		const revision = currentRevision + 1;
 		await writeStoredAuth({
 			token: storedAuth.token,

@@ -518,11 +518,44 @@ describe("HostServiceCoordinator.reconcile", () => {
 
 		const oldReconciliation = coordinator.reconcile(["org-1"], spawnConfig);
 		await Promise.resolve();
-		await coordinator.reconcile(["org-1"], spawnConfig);
+		await coordinator.reconcile(["org-1"], {
+			...spawnConfig,
+			authToken: "rotated-token",
+		});
 		rejectOldStart(new Error("superseded start"));
 		await oldReconciliation;
 
 		expect(internals.respawns.has("org-1")).toBe(false);
+	});
+
+	test("re-confirming the same membership keeps the in-flight start", async () => {
+		let releaseStart: () => void = () => {};
+		const startOrAdoptMock = mock(async (organizationId: string) => {
+			await new Promise<void>((resolve) => {
+				releaseStart = resolve;
+			});
+			internals.instances.set(organizationId, {
+				pid: 5001,
+				port: 60_000,
+				secret: "secret",
+				status: "running",
+				owned: true,
+			});
+			return { port: 60_000, secret: "secret", machineId: "host-1" };
+		});
+		(
+			coordinator as unknown as { startOrAdopt: typeof startOrAdoptMock }
+		).startOrAdopt = startOrAdoptMock;
+
+		const first = coordinator.reconcile(["org-1"], spawnConfig);
+		await Promise.resolve();
+		const second = coordinator.reconcile(["org-1"], spawnConfig);
+		releaseStart();
+		await Promise.all([first, second]);
+
+		expect(startOrAdoptMock).toHaveBeenCalledTimes(1);
+		expect(internals.instances.get("org-1")?.pid).toBe(5001);
+		expect(killedPids).not.toContainEqual({ pid: 5001, signal: "SIGTERM" });
 	});
 });
 

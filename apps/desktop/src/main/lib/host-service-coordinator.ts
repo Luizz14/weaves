@@ -308,6 +308,7 @@ export class HostServiceCoordinator extends EventEmitter {
 	 */
 	private killEscalations = new Map<number, ReturnType<typeof setTimeout>>();
 	private startGeneration = 0;
+	private reconciledMembershipKey: string | null = null;
 	private startupDiagnostics: StartupDiagnosticsHooks | null = null;
 	private configProvider: (() => Promise<SpawnConfig | null>) | null = null;
 	/**
@@ -496,6 +497,7 @@ export class HostServiceCoordinator extends EventEmitter {
 
 	stopAll(): void {
 		this.startGeneration++;
+		this.reconciledMembershipKey = null;
 		this.desiredOrganizationIds.clear();
 		for (const [id] of this.instances) {
 			this.stop(id);
@@ -614,11 +616,22 @@ export class HostServiceCoordinator extends EventEmitter {
 		organizationIds: Iterable<string>,
 		config: SpawnConfig,
 	): Promise<void> {
-		this.startGeneration++;
-		const reconciliationGeneration = this.startGeneration;
-		this.desiredOrganizationIds = new Set(
+		const desiredOrganizationIds = new Set(
 			[...organizationIds].filter(isSafeOrganizationId),
 		);
+		const membershipKey = JSON.stringify([
+			[...desiredOrganizationIds].sort(),
+			config.authToken,
+			config.cloudApiUrl,
+		]);
+		// Re-confirming the same membership must not cancel starts already in
+		// flight for it: a cancelled start SIGTERMs a host that is mid-boot.
+		if (membershipKey !== this.reconciledMembershipKey) {
+			this.startGeneration++;
+			this.reconciledMembershipKey = membershipKey;
+		}
+		const reconciliationGeneration = this.startGeneration;
+		this.desiredOrganizationIds = desiredOrganizationIds;
 		this.stopUndesiredOrganizations();
 
 		await Promise.all(

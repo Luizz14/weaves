@@ -346,16 +346,18 @@ describe("cached organization membership", () => {
 		const membershipSaved = mock(() => {});
 		authEvents.once("organization-ids-saved", membershipSaved);
 
-		await saveOrganizationIds({
+		const result = await saveOrganizationIds({
 			token: "token",
 			organizationIds: ["org-2", "org-1"],
-			expectedRevision: 1,
+			expectedRevision: 0,
 		});
 
+		expect(result).toEqual({ status: "saved", revision: 1 });
 		expect(membershipSaved).toHaveBeenCalledWith({
 			token: "token",
 			organizationIds: ["org-1", "org-2"],
 		});
+		expect((await loadToken()).organizationIdsRevision).toBe(1);
 	});
 
 	test("clears cached membership when a different token is saved", async () => {
