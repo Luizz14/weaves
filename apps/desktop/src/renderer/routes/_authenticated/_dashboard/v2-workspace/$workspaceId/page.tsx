@@ -61,6 +61,7 @@ import { usePagePaneIntentOpener } from "./hooks/usePagePaneIntentOpener";
 import { usePanelActionTab } from "./hooks/usePanelActionTab";
 import { usePaneRegistry } from "./hooks/usePaneRegistry";
 import { usePullRequestPaneIntentOpener } from "./hooks/usePullRequestPaneIntentOpener";
+import { useRetainOpenDocuments } from "./hooks/useRetainOpenDocuments";
 import { useRunWorkspaceCreationPresets } from "./hooks/useRunWorkspaceCreationPresets";
 import { useShellInteractionPassthrough } from "./hooks/useShellInteractionPassthrough";
 import { useSlotElement } from "./hooks/useSlotElement";
@@ -240,6 +241,7 @@ function V2WorkspaceContent() {
 		setRightSidebarOpen,
 	});
 	useEditorWarmup(openFilePaths);
+	useRetainOpenDocuments(workspaceId, openFilePaths);
 
 	const {
 		openDiffPane,

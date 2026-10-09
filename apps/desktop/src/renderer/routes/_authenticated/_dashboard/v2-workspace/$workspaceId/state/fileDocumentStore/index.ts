@@ -5,6 +5,7 @@ export {
 	dispatchFsEvent,
 	getDocument,
 	releaseDocument,
+	setPinnedDocuments,
 } from "./fileDocumentStore";
 export type {
 	ConflictResolution,

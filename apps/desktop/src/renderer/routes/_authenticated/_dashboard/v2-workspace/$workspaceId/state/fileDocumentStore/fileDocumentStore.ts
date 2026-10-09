@@ -30,12 +30,20 @@ interface DocumentEntry {
 	version: number;
 	subscribers: Set<() => void>;
 	saveSubscribers: Set<(content: string) => void>;
+	retainedAt: number | null;
+	stale: boolean;
+	loadToken: number;
+	unlimited: boolean;
 }
 
 const DEFAULT_MAX_BYTES = 10 * 1024 * 1024;
 const BINARY_CHECK_SIZE = 8192;
+const RETAINED_LIMIT = 30;
+const RETAINED_TTL_MS = 10 * 60_000;
+const RETAINED_MAX_BYTES = 32 * 1024 * 1024;
 
 const entries = new Map<string, DocumentEntry>();
+const pinnedPaths = new Map<string, Set<string>>();
 const referencedDocuments = new Set<string>();
 export function hasDocumentReference(id: string) {
 	return referencedDocuments.has(id);
@@ -126,6 +134,8 @@ async function loadEntry(
 	entry: DocumentEntry,
 	options: { unlimited?: boolean } = {},
 ): Promise<void> {
+	const token = ++entry.loadToken;
+	entry.unlimited = options.unlimited === true;
 	const client = entry.trpcClient;
 	const readAsBinary =
 		isImageFile(entry.absolutePath) ||
@@ -139,6 +149,7 @@ async function loadEntry(
 			encoding: readAsBinary ? undefined : "utf-8",
 			maxBytes,
 		});
+		if (token !== entry.loadToken) return;
 
 		entry.byteSize = result.byteLength;
 		entry.isBinary = readAsBinary ? true : entry.isBinary;
@@ -171,12 +182,126 @@ async function loadEntry(
 		entry.savedContentText = result.content;
 		notify(entry);
 	} catch (error) {
+		if (token !== entry.loadToken) return;
 		const isNotFound = isEnoentLikeError(error);
 		entry.content = isNotFound
 			? { kind: "not-found" }
 			: { kind: "error", error: error as Error };
 		notify(entry);
 	}
+}
+
+async function revalidateEntry(entry: DocumentEntry): Promise<void> {
+	const content = entry.content;
+	if (content.kind !== "text" && content.kind !== "bytes") return;
+	const token = ++entry.loadToken;
+	try {
+		const result = await entry.trpcClient.filesystem.readFile.query({
+			workspaceId: entry.workspaceId,
+			absolutePath: entry.absolutePath,
+			encoding: content.kind === "bytes" ? undefined : "utf-8",
+			maxBytes: DEFAULT_MAX_BYTES,
+		});
+		if (token !== entry.loadToken) return;
+		const current = entry.content;
+		if (
+			(current.kind === "text" || current.kind === "bytes") &&
+			current.revision === result.revision
+		)
+			return;
+		if (current !== content || computeDirty(entry)) {
+			entry.hasExternalChange = true;
+			notify(entry);
+			return;
+		}
+		if (result.exceededLimit) {
+			void loadEntry(entry);
+			return;
+		}
+		entry.byteSize = result.byteLength;
+		entry.orphaned = false;
+		if (result.kind === "bytes") {
+			entry.content = {
+				kind: "bytes",
+				value: toBytes(result.content),
+				revision: result.revision,
+			};
+		} else {
+			entry.isBinary = isBinaryText(result.content);
+			entry.content = {
+				kind: "text",
+				value: result.content,
+				revision: result.revision,
+			};
+			entry.savedContentText = result.content;
+		}
+		notify(entry);
+	} catch (error) {
+		if (token !== entry.loadToken || entry.content !== content) return;
+		if (isEnoentLikeError(error)) {
+			entry.orphaned = true;
+			notify(entry);
+		}
+	}
+}
+
+function isPinned(entry: DocumentEntry): boolean {
+	return pinnedPaths.get(entry.workspaceId)?.has(entry.absolutePath) === true;
+}
+
+function retainedBytes(entry: DocumentEntry): number {
+	if (entry.content.kind === "text") return entry.content.value.length * 2;
+	if (entry.content.kind === "bytes") return entry.content.value.byteLength;
+	return 0;
+}
+
+function canEvict(entry: DocumentEntry): boolean {
+	return (
+		entry.refCount <= 0 &&
+		entry.retainedAt !== null &&
+		!isPinned(entry) &&
+		!computeDirty(entry) &&
+		!entry.pendingSave &&
+		!entry.conflict &&
+		!saveTasks.has(entry.id)
+	);
+}
+
+function sweepRetained(now = Date.now()): void {
+	const retained = [...entries.values()]
+		.filter(canEvict)
+		.sort((a, b) => (a.retainedAt ?? 0) - (b.retainedAt ?? 0));
+	let count = retained.length;
+	let bytes = retained.reduce(
+		(total, entry) => total + retainedBytes(entry),
+		0,
+	);
+	for (const entry of retained) {
+		const expired = now - (entry.retainedAt ?? now) > RETAINED_TTL_MS;
+		if (!expired && count <= RETAINED_LIMIT && bytes <= RETAINED_MAX_BYTES)
+			continue;
+		entries.delete(key(entry.workspaceId, entry.absolutePath));
+		count -= 1;
+		bytes -= retainedBytes(entry);
+	}
+}
+
+/**
+ * Documents whose file panes still exist in the workspace layout stay loaded
+ * while their tab is hidden, like editor models of background tabs.
+ */
+export function setPinnedDocuments(
+	workspaceId: string,
+	absolutePaths: Iterable<string>,
+): void {
+	pinnedPaths.set(workspaceId, new Set(absolutePaths));
+	sweepRetained();
+}
+
+export function __resetDocumentStoreForTesting(): void {
+	entries.clear();
+	pinnedPaths.clear();
+	referencedDocuments.clear();
 }
 
 function isEnoentLikeError(error: unknown): boolean {
@@ -444,12 +569,26 @@ export function acquireDocument(
 			version: 0,
 			subscribers: new Set(),
 			saveSubscribers: new Set(),
+			retainedAt: null,
+			stale: false,
+			loadToken: 0,
+			unlimited: false,
 		};
 		entries.set(k, entry);
 		void loadEntry(entry);
+	} else {
+		entry.trpcClient = trpcClient;
+		if (entry.retainedAt !== null) {
+			entry.retainedAt = null;
+			if (entry.stale) {
+				entry.stale = false;
+				void revalidateEntry(entry);
+			}
+		}
 	}
 	entry.refCount += 1;
 	referencedDocuments.add(entry.id);
+	sweepRetained();
 	const handle = createHandle(entry);
 	for (const listener of documentListeners) listener(handle);
 	return handle;
@@ -463,13 +602,20 @@ export function releaseDocument(
 	const entry = entries.get(k);
 	if (!entry) return;
 	entry.refCount -= 1;
-	if (entry.refCount <= 0) {
-		referencedDocuments.delete(entry.id);
-		notify(entry);
-	}
-	if (entry.refCount <= 0 && !computeDirty(entry) && !entry.orphaned) {
+	if (entry.refCount > 0) return;
+	referencedDocuments.delete(entry.id);
+	notify(entry);
+	if (computeDirty(entry) || entry.orphaned) return;
+	const retainable =
+		(entry.content.kind === "text" || entry.content.kind === "bytes") &&
+		!entry.unlimited;
+	if (!retainable) {
 		entries.delete(k);
+		return;
 	}
+	entry.retainedAt = Date.now();
+	entry.stale = true;
+	sweepRetained();
 }
 
 export function getDocument(
