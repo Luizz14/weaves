@@ -56,6 +56,7 @@ import { useCreatePendingMigratedTerminals } from "./hooks/useCreatePendingMigra
 import { useDefaultContextMenuActions } from "./hooks/useDefaultContextMenuActions";
 import { useDefaultPaneActions } from "./hooks/useDefaultPaneActions";
 import { useDiffPaneTarget } from "./hooks/useDiffPaneTarget";
+import { useEditorWarmup } from "./hooks/useEditorWarmup";
 import { usePagePaneIntentOpener } from "./hooks/usePagePaneIntentOpener";
 import { usePanelActionTab } from "./hooks/usePanelActionTab";
 import { usePaneRegistry } from "./hooks/usePaneRegistry";
@@ -238,6 +239,7 @@ function V2WorkspaceContent() {
 		store,
 		setRightSidebarOpen,
 	});
+	useEditorWarmup(openFilePaths);
 
 	const {
 		openDiffPane,

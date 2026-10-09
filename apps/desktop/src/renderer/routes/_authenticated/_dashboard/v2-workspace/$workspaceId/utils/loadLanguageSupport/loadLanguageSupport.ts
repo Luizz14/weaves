@@ -13,7 +13,51 @@ async function loadLegacyLanguage(
 	return StreamLanguage.define(languageModule[key] as StreamParser<unknown>);
 }
 
-export async function loadLanguageSupport(
+const loaded = new Map<string, Extension | null>();
+const loading = new Map<string, Promise<Extension | null>>();
+const listeners = new Set<() => void>();
+
+export function peekLanguageSupport(
+	language: string,
+): Extension | null | undefined {
+	return loaded.has(language) ? (loaded.get(language) ?? null) : undefined;
+}
+
+export function subscribeLanguageSupport(listener: () => void): () => void {
+	listeners.add(listener);
+	return () => {
+		listeners.delete(listener);
+	};
+}
+
+export function loadLanguageSupport(
+	language: string,
+): Promise<Extension | null> {
+	if (loaded.has(language))
+		return Promise.resolve(loaded.get(language) ?? null);
+	let pending = loading.get(language);
+	if (!pending) {
+		const settle = (extension: Extension | null) => {
+			loaded.set(language, extension);
+			loading.delete(language);
+			for (const listener of listeners) listener();
+		};
+		pending = importLanguageSupport(language).then(
+			(extension) => {
+				settle(extension);
+				return extension;
+			},
+			(error: unknown) => {
+				settle(null);
+				throw error;
+			},
+		);
+		loading.set(language, pending);
+	}
+	return pending;
+}
+
+async function importLanguageSupport(
 	language: string,
 ): Promise<Extension | null> {
 	switch (language) {

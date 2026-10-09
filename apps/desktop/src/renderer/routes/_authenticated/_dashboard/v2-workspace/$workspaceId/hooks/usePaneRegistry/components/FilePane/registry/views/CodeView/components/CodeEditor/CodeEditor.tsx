@@ -27,12 +27,15 @@ import { cn } from "@superset/ui/utils";
 import { useQuery } from "@tanstack/react-query";
 import { type MutableRefObject, useEffect, useMemo, useRef } from "react";
 import { useEditorSettings } from "renderer/hooks/useEditorSettings";
-import { FONT_SETTINGS_QUERY_KEY } from "renderer/lib/font-settings";
-import { electronTrpcClient } from "renderer/lib/trpc-client";
+import { fontSettingsQueryOptions } from "renderer/lib/font-settings";
 import type { SharedFileDocument } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/fileDocumentStore";
 import type { EditorLspStatus } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/coordinator";
 import { editorPreferenceExtensions } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/editorExtensions";
 import { useLspCoordinator } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/LspProvider";
+import {
+	loadLanguageSupport,
+	peekLanguageSupport,
+} from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/utils/loadLanguageSupport";
 import { useResolvedTheme } from "renderer/stores/theme";
 import {
 	type CodeEditorAdapter,
@@ -43,8 +46,9 @@ import { contourSelectionLayer } from "./extensions/contourSelectionLayer";
 import { buildFoldChevron } from "./extensions/foldChevron";
 import { buildFoldPlaceholder } from "./extensions/foldPlaceholder";
 import { selectionClassTogglePlugin } from "./extensions/selectionClassTogglePlugin";
-import { loadLanguageSupport } from "./loadLanguageSupport";
 import { getCodeSyntaxHighlighting } from "./syntax-highlighting";
+
+const NO_LANGUAGE: Extension = [];
 
 const editability = {
 	editable: [EditorState.readOnly.of(false), EditorView.editable.of(true)],
@@ -126,11 +130,7 @@ export function CodeEditor({
 	const initialScrollPositionRef = useRef(initialScrollPosition);
 	// Guards against re-entrant onChange calls triggered by the value-sync effect's own dispatch.
 	const isExternalUpdateRef = useRef(false);
-	const { data: fontSettings } = useQuery({
-		queryKey: FONT_SETTINGS_QUERY_KEY,
-		queryFn: () => electronTrpcClient.settings.getFontSettings.query(),
-		staleTime: 30_000,
-	});
+	const { data: fontSettings } = useQuery(fontSettingsQueryOptions);
 	const editorFontFamily = fontSettings?.editorFontFamily ?? undefined;
 	const editorFontSize = fontSettings?.editorFontSize ?? undefined;
 	const editorLineHeight = fontSettings?.editorLineHeight ?? undefined;
@@ -230,7 +230,7 @@ export function CodeEditor({
 				]),
 				saveKeymap,
 				themeCompartment.of(themeExtension),
-				languageCompartment.of([]),
+				languageCompartment.of(peekLanguageSupport(language) ?? NO_LANGUAGE),
 				lspCompartment.of([]),
 				updateListener,
 			],
@@ -354,11 +354,8 @@ export function CodeEditor({
 			.then((extension) => {
 				if (cancelled) return;
 				const view = viewRef.current;
-				if (!view) return;
-
-				view.dispatch({
-					effects: languageCompartment.reconfigure(extension ?? []),
-				});
+				if (view)
+					reconfigure(view, languageCompartment, extension ?? NO_LANGUAGE);
 			})
 			.catch((error) => {
 				if (cancelled) return;
@@ -369,9 +366,7 @@ export function CodeEditor({
 					error,
 					language,
 				});
-				view.dispatch({
-					effects: languageCompartment.reconfigure([]),
-				});
+				reconfigure(view, languageCompartment, NO_LANGUAGE);
 			});
 
 		return () => {

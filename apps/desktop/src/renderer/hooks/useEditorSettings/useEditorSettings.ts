@@ -2,7 +2,7 @@ import {
 	DEFAULT_EDITOR_SETTINGS,
 	type EditorSettings,
 } from "@superset/shared/editor-settings";
-import { useQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { electronTrpcClient } from "renderer/lib/trpc-client";
 
 export const EDITOR_SETTINGS_QUERY_KEY = [
@@ -10,11 +10,13 @@ export const EDITOR_SETTINGS_QUERY_KEY = [
 	"settings",
 	"editor",
 ] as const;
+export const editorSettingsQueryOptions = queryOptions({
+	queryKey: EDITOR_SETTINGS_QUERY_KEY,
+	queryFn: () => electronTrpcClient.settings.editor.get.query(),
+	staleTime: 5000,
+});
+
 export function useEditorSettings(): EditorSettings {
-	const query = useQuery({
-		queryKey: EDITOR_SETTINGS_QUERY_KEY,
-		queryFn: () => electronTrpcClient.settings.editor.get.query(),
-		staleTime: 5000,
-	});
+	const query = useQuery(editorSettingsQueryOptions);
 	return query.data ?? DEFAULT_EDITOR_SETTINGS;
 }
