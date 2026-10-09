@@ -13,7 +13,9 @@ import {
 	authEvents,
 	clearToken,
 	loadToken,
+	MAX_SESSION_SNAPSHOT_LENGTH,
 	saveOrganizationIds,
+	saveSessionSnapshot,
 	saveToken,
 	stateStore,
 } from "./utils/auth-functions";
@@ -50,6 +52,17 @@ export const createAuthRouter = () => {
 			)
 			.mutation(async ({ input }) => {
 				return await writeAuth(() => saveOrganizationIds(input));
+			}),
+
+		persistSessionSnapshot: publicProcedure
+			.input(
+				z.object({
+					token: z.string(),
+					snapshot: z.string().max(MAX_SESSION_SNAPSHOT_LENGTH).nullable(),
+				}),
+			)
+			.mutation(async ({ input }) => {
+				return await writeAuth(() => saveSessionSnapshot(input));
 			}),
 
 		/**

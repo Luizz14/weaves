@@ -18,6 +18,7 @@ import {
 	setCloudOrganizationId,
 } from "renderer/lib/cloud-trpc";
 import { electronTrpc } from "renderer/lib/electron-trpc";
+import { useSessionConfirmed } from "renderer/lib/session-snapshot";
 import { markRendererStartup } from "renderer/lib/startup-diagnostics";
 import { electronTrpcClient } from "renderer/lib/trpc-client";
 import { electronQueryClient } from "renderer/providers/ElectronTRPCProvider/ElectronTRPCProvider";
@@ -114,6 +115,8 @@ export function CollectionsProvider({ children }: { children: ReactNode }) {
 	// default org. Seed the registry from the session only when the window has no
 	// org yet (the first window of an existing user).
 	const initializedRef = useRef(false);
+	const sessionConfirmed = useSessionConfirmed();
+	const resolvedBeforeConfirmRef = useRef(false);
 	useEffect(() => {
 		if (initializedRef.current) return;
 		if (windowOrgPending) return;
@@ -135,6 +138,7 @@ export function CollectionsProvider({ children }: { children: ReactNode }) {
 			(registryOrgIsStillMine ? windowOrgId : sessionOrgId) ?? null;
 		if (!resolved) return;
 		initializedRef.current = true;
+		resolvedBeforeConfirmRef.current = !sessionConfirmed;
 		markRendererStartup("org-resolved");
 		setActiveOrganizationId(resolved);
 	}, [
@@ -143,6 +147,27 @@ export function CollectionsProvider({ children }: { children: ReactNode }) {
 		sessionOrgId,
 		sessionOrganizationIds,
 		organizations,
+		sessionConfirmed,
+	]);
+
+	// Membership checked against the last launch's session can be stale: once
+	// the server answers, leave an organization the user no longer belongs to.
+	useEffect(() => {
+		if (!resolvedBeforeConfirmRef.current || !sessionConfirmed) return;
+		resolvedBeforeConfirmRef.current = false;
+		if (
+			activeOrganizationId &&
+			sessionOrganizationIds &&
+			!sessionOrganizationIds.includes(activeOrganizationId) &&
+			sessionOrgId
+		) {
+			setActiveOrganizationId(sessionOrgId);
+		}
+	}, [
+		sessionConfirmed,
+		activeOrganizationId,
+		sessionOrganizationIds,
+		sessionOrgId,
 	]);
 
 	// Scope this window's cloud reads to its own org, during render rather than

@@ -32,6 +32,7 @@ const {
 	loadToken,
 	parseAuthDeepLink,
 	saveOrganizationIds,
+	saveSessionSnapshot,
 	saveToken,
 	stateStore,
 } = await import("./auth-functions");
@@ -89,6 +90,7 @@ describe("auth token storage", () => {
 			expiresAt: "2099-01-01",
 			organizationIds: null,
 			organizationIdsRevision: 0,
+			sessionSnapshot: null,
 		});
 	});
 
@@ -103,6 +105,7 @@ describe("auth token storage", () => {
 				expiresAt: null,
 				organizationIds: null,
 				organizationIdsRevision: 0,
+				sessionSnapshot: null,
 			});
 			expect(errorSpy).not.toHaveBeenCalled();
 		} finally {
@@ -134,6 +137,7 @@ describe("auth token storage", () => {
 			expiresAt: null,
 			organizationIds: null,
 			organizationIdsRevision: 0,
+			sessionSnapshot: null,
 		});
 		expect(fs.existsSync(tokenFile)).toBe(false);
 		const [quarantinedPath] = quarantinedTokenPaths();
@@ -308,6 +312,7 @@ describe("auth token storage", () => {
 			expiresAt: "2099-01-01",
 			organizationIds: null,
 			organizationIdsRevision: 0,
+			sessionSnapshot: null,
 		});
 	});
 });
@@ -329,6 +334,7 @@ describe("cached organization membership", () => {
 			expiresAt: "2099-01-01",
 			organizationIds: ["org-1", "org-2"],
 			organizationIdsRevision: 1,
+			sessionSnapshot: null,
 		});
 		expect(membershipSaved).toHaveBeenCalledWith({
 			token: "token",
@@ -375,6 +381,7 @@ describe("cached organization membership", () => {
 			expiresAt: "2099-02-01",
 			organizationIds: null,
 			organizationIdsRevision: 0,
+			sessionSnapshot: null,
 		});
 	});
 
@@ -392,6 +399,7 @@ describe("cached organization membership", () => {
 			expiresAt: "2099-02-01",
 			organizationIds: null,
 			organizationIdsRevision: 0,
+			sessionSnapshot: null,
 		});
 	});
 
@@ -410,6 +418,7 @@ describe("cached organization membership", () => {
 			expiresAt: null,
 			organizationIds: null,
 			organizationIdsRevision: 0,
+			sessionSnapshot: null,
 		});
 	});
 
@@ -433,6 +442,45 @@ describe("cached organization membership", () => {
 			expiresAt: "2099-01-01",
 			organizationIds: ["current-org"],
 			organizationIdsRevision: 1,
+			sessionSnapshot: null,
+		});
+	});
+
+	test("keeps the session snapshot across membership saves and drops it with a new token", async () => {
+		await saveToken({ token: "token", expiresAt: "2099-01-01" });
+		expect(
+			await saveSessionSnapshot({ token: "token", snapshot: '{"user":{}}' }),
+		).toEqual({ status: "saved" });
+		expect(
+			await saveSessionSnapshot({ token: "token", snapshot: '{"user":{}}' }),
+		).toEqual({ status: "unchanged" });
+
+		await saveOrganizationIds({
+			token: "token",
+			organizationIds: ["org-1"],
+			expectedRevision: 0,
+		});
+		expect((await loadToken()).sessionSnapshot).toBe('{"user":{}}');
+
+		await saveToken({ token: "new-token", expiresAt: "2099-02-01" });
+		expect((await loadToken()).sessionSnapshot).toBeNull();
+	});
+
+	test("ignores a session snapshot for another token and clears with null", async () => {
+		await saveToken({ token: "token", expiresAt: "2099-01-01" });
+		expect(
+			await saveSessionSnapshot({ token: "old-token", snapshot: "{}" }),
+		).toEqual({ status: "token-mismatch" });
+		expect((await loadToken()).sessionSnapshot).toBeNull();
+
+		await saveSessionSnapshot({ token: "token", snapshot: "{}" });
+		await saveSessionSnapshot({ token: "token", snapshot: null });
+		expect(await loadToken()).toEqual({
+			token: "token",
+			expiresAt: "2099-01-01",
+			organizationIds: null,
+			organizationIdsRevision: 0,
+			sessionSnapshot: null,
 		});
 	});
 

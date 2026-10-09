@@ -16,6 +16,8 @@ interface StoredAuth {
 	expiresAt: string;
 	organizationIds?: string[];
 	organizationIdsRevision?: number;
+	/** The last session the server confirmed for `token`, as JSON. */
+	sessionSnapshot?: string;
 }
 
 interface LoadedAuth {
@@ -23,14 +25,17 @@ interface LoadedAuth {
 	expiresAt: string | null;
 	organizationIds: string[] | null;
 	organizationIdsRevision: number;
+	sessionSnapshot: string | null;
 }
 
 const TOKEN_FILE_NAME = "auth-token.enc";
+export const MAX_SESSION_SNAPSHOT_LENGTH = 64 * 1024;
 const EMPTY_LOADED_AUTH: LoadedAuth = {
 	token: null,
 	expiresAt: null,
 	organizationIds: null,
 	organizationIdsRevision: 0,
+	sessionSnapshot: null,
 };
 
 type InspectedTokenStorage =
@@ -100,6 +105,11 @@ function parseStoredAuth(data: Buffer): StoredAuth {
 			Number.isSafeInteger(candidate.organizationIdsRevision) &&
 			candidate.organizationIdsRevision >= 0
 				? candidate.organizationIdsRevision
+				: undefined,
+		sessionSnapshot:
+			typeof candidate.sessionSnapshot === "string" &&
+			candidate.sessionSnapshot.length <= MAX_SESSION_SNAPSHOT_LENGTH
+				? candidate.sessionSnapshot
 				: undefined,
 	};
 }
@@ -246,6 +256,7 @@ export async function loadToken(): Promise<LoadedAuth> {
 			expiresAt: storedAuth.expiresAt,
 			organizationIds: storedAuth.organizationIds ?? null,
 			organizationIdsRevision: storedAuth.organizationIdsRevision ?? 0,
+			sessionSnapshot: storedAuth.sessionSnapshot ?? null,
 		};
 	} catch (error) {
 		console.error("[auth] Failed to inspect auth token storage", error);
@@ -326,8 +337,7 @@ export async function saveOrganizationIds({
 
 		const revision = currentRevision + 1;
 		await writeStoredAuth({
-			token: storedAuth.token,
-			expiresAt: storedAuth.expiresAt,
+			...storedAuth,
 			organizationIds: normalizedIds,
 			organizationIdsRevision: revision,
 		});
@@ -336,6 +346,36 @@ export async function saveOrganizationIds({
 			organizationIds: normalizedIds,
 		});
 		return { status: "saved" as const, revision };
+	});
+}
+
+/**
+ * Cache the session the server confirmed for `token`, so the next launch can
+ * render before get-session answers. `null` drops it.
+ */
+export async function saveSessionSnapshot({
+	token,
+	snapshot,
+}: {
+	token: string;
+	snapshot: string | null;
+}): Promise<{ status: "saved" | "unchanged" | "token-mismatch" }> {
+	if (snapshot !== null && snapshot.length > MAX_SESSION_SNAPSHOT_LENGTH) {
+		throw new Error("Session snapshot is too large");
+	}
+	return await serializeAuthWrite(async () => {
+		const storedAuth = await readStoredAuth();
+		if (!storedAuth || storedAuth.token !== token) {
+			return { status: "token-mismatch" as const };
+		}
+		if ((storedAuth.sessionSnapshot ?? null) === snapshot) {
+			return { status: "unchanged" as const };
+		}
+		const { sessionSnapshot: _previous, ...rest } = storedAuth;
+		await writeStoredAuth(
+			snapshot === null ? rest : { ...rest, sessionSnapshot: snapshot },
+		);
+		return { status: "saved" as const };
 	});
 }
 
