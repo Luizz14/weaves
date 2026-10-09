@@ -223,6 +223,13 @@ export function CodeEditor({
 				},
 			});
 		}
+		if (saved?.scroll || savedScrollPosition) {
+			// Reading layout runs CodeMirror's pending measure now, so the restored
+			// offset is applied before the first paint even when this effect runs
+			// inside an animation frame and the scheduled measure would land on the
+			// next one.
+			view.lineBlockAtHeight(0);
+		}
 
 		viewRef.current = view;
 		if (editorRef) {
