@@ -62,6 +62,7 @@ import {
 	buildV2TerminalEnv,
 	getShellLaunchArgs,
 	getTerminalBaseEnv,
+	peekTerminalBaseEnv,
 	resolveLaunchShell,
 	shellLaunchExpectsReadyMarker,
 	waitForTerminalBaseEnv,
@@ -2934,41 +2935,13 @@ export async function createTerminalSessionInternal({
 		DEFAULT_TERMINAL_ROWS,
 	);
 
-	// Use the preserved shell snapshot — never live process.env. Resolution
-	// runs in the background at startup so the server can listen immediately;
-	// wait for it here before the first PTY needs the snapshot.
-	await waitForTerminalBaseEnv();
-	const baseEnv = getTerminalBaseEnv();
 	// Fallback matters for hosts not spawned by the desktop (CLI/systemd):
 	// without it the wrapper paths, hook guard env, and shell bootstrap all
 	// silently disable (#6254).
 	const supersetHomeDir = resolveSupersetHomeDir();
-	const shell = resolveLaunchShell(baseEnv);
-	const shellArgs = getShellLaunchArgs({ shell, supersetHomeDir });
-	const ptyEnv = {
-		...buildV2TerminalEnv({
-			baseEnv,
-			shell,
-			supersetHomeDir,
-			organizationId: process.env.ORGANIZATION_ID || "",
-			themeType,
-			cwd,
-			terminalId,
-			workspaceId,
-			workspacePath: workspace.worktreePath,
-			rootPath,
-			supersetEnv:
-				process.env.NODE_ENV === "development" ? "development" : "production",
-			agentHookPort: process.env.SUPERSET_AGENT_HOOK_PORT || "",
-			agentHookVersion: process.env.SUPERSET_AGENT_HOOK_VERSION || "",
-			hostAgentHookUrl: getHostAgentHookUrl(),
-		}),
-		// Usage-tab default account: provider CLIs typed or preset-launched in
-		// this terminal run on the selected login. Baked at spawn as the fast
-		// path; the agent wrappers re-resolve later switches at launch time.
-		...resolveDefaultAccountTerminalEnv(db),
-		SUPERSET_ACCOUNT_ATTRIBUTION_TOKEN: issueAttributionToken(terminalId),
-	};
+	// Adoption spawns nothing and must not wait on the login-shell probe; the
+	// shell only names the session there. A new PTY waits below.
+	let shell = resolveLaunchShell(peekTerminalBaseEnv() ?? process.env);
 
 	let daemon: DaemonClient;
 	try {
@@ -3008,10 +2981,42 @@ export async function createTerminalSessionInternal({
 				`[terminal] adopted existing daemon session ${terminalId} pid=${found.pid}`,
 			);
 		} else {
+			// A new PTY's environment is the preserved shell snapshot — never
+			// live process.env. Resolution runs in the background at startup so
+			// the server can listen immediately.
+			await waitForTerminalBaseEnv();
+			const baseEnv = getTerminalBaseEnv();
+			shell = resolveLaunchShell(baseEnv);
+			const ptyEnv = {
+				...buildV2TerminalEnv({
+					baseEnv,
+					shell,
+					supersetHomeDir,
+					organizationId: process.env.ORGANIZATION_ID || "",
+					themeType,
+					cwd,
+					terminalId,
+					workspaceId,
+					workspacePath: workspace.worktreePath,
+					rootPath,
+					supersetEnv:
+						process.env.NODE_ENV === "development"
+							? "development"
+							: "production",
+					agentHookPort: process.env.SUPERSET_AGENT_HOOK_PORT || "",
+					agentHookVersion: process.env.SUPERSET_AGENT_HOOK_VERSION || "",
+					hostAgentHookUrl: getHostAgentHookUrl(),
+				}),
+				// Usage-tab default account: provider CLIs typed or preset-launched in
+				// this terminal run on the selected login. Baked at spawn as the fast
+				// path; the agent wrappers re-resolve later switches at launch time.
+				...resolveDefaultAccountTerminalEnv(db),
+				SUPERSET_ACCOUNT_ATTRIBUTION_TOKEN: issueAttributionToken(terminalId),
+			};
 			try {
 				openResult = await daemon.open(terminalId, {
 					shell,
-					argv: shellArgs,
+					argv: getShellLaunchArgs({ shell, supersetHomeDir }),
 					cwd,
 					cols,
 					rows,

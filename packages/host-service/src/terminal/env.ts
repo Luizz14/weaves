@@ -123,6 +123,10 @@ export function getTerminalBaseEnv(): Record<string, string> {
 	return { ..._terminalBaseEnv };
 }
 
+export function peekTerminalBaseEnv(): Record<string, string> | null {
+	return _terminalBaseEnv ? { ..._terminalBaseEnv } : null;
+}
+
 let _terminalBaseEnvReady: Promise<void> | null = null;
 
 /**

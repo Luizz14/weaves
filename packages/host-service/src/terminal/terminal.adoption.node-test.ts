@@ -28,7 +28,12 @@ import {
 	disposeDaemonClient,
 	getDaemonClient,
 } from "./daemon-client-singleton.ts";
-import { initTerminalBaseEnv } from "./env.ts";
+import {
+	initTerminalBaseEnv,
+	resetTerminalBaseEnvForTests,
+	startTerminalBaseEnvResolution,
+	waitForTerminalBaseEnv,
+} from "./env.ts";
 import {
 	__resetSessionsForTesting,
 	createTerminalSessionInternal,
@@ -51,6 +56,14 @@ let otherWorkspaceId: string;
 let worktreePath: string;
 let otherWorktreePath: string;
 
+function testBaseEnv(): Record<string, string> {
+	return {
+		PATH: process.env.PATH ?? "/usr/bin:/bin",
+		HOME: process.env.HOME ?? TEST_HOME,
+		SHELL: "/bin/sh",
+	};
+}
+
 before(async () => {
 	fs.mkdirSync(TEST_HOME, { recursive: true });
 	worktreePath = path.join(TEST_HOME, "worktree");
@@ -70,11 +83,7 @@ before(async () => {
 	process.env.NODE_ENV = "development";
 
 	__setAccountShellForTesting("/bin/sh");
-	initTerminalBaseEnv({
-		PATH: process.env.PATH ?? "/usr/bin:/bin",
-		HOME: process.env.HOME ?? TEST_HOME,
-		SHELL: "/bin/sh",
-	});
+	initTerminalBaseEnv(testBaseEnv());
 
 	db = createDb(path.join(TEST_HOME, "host.db"), MIGRATIONS);
 
@@ -442,6 +451,51 @@ describe("createTerminalSessionInternal — host-service restart adoption", () =
 		disposer.dispose();
 
 		await disposeSessionAndWait(terminalId, db);
+	});
+
+	test("adoptOnly does not wait for the login-shell snapshot", async () => {
+		const terminalId = `e2e-adopt-env-${randomUUID().slice(0, 8)}`;
+		const first = await createTerminalSessionInternal({
+			terminalId,
+			workspaceId,
+			db,
+			listed: true,
+		});
+		assert.ok(!("error" in first));
+		if ("error" in first) return;
+		const originalPid = first.pty.pid;
+
+		__resetSessionsForTesting();
+		await disposeDaemonClient();
+
+		const slowShell = path.join(TEST_HOME, "slow-shell");
+		fs.writeFileSync(slowShell, '#!/bin/sh\nsleep 3\nexec /bin/sh "$@"\n', {
+			mode: 0o755,
+		});
+		resetTerminalBaseEnvForTests();
+		__setAccountShellForTesting(slowShell);
+		startTerminalBaseEnvResolution();
+		try {
+			const startedAt = Date.now();
+			const adopted = await createTerminalSessionInternal({
+				terminalId,
+				workspaceId,
+				db,
+				adoptOnly: true,
+			});
+			assert.ok(!("error" in adopted));
+			if ("error" in adopted) return;
+			assert.equal(adopted.pty.pid, originalPid);
+			assert.ok(
+				Date.now() - startedAt < 2000,
+				"adoption waited on the login-shell probe",
+			);
+		} finally {
+			await waitForTerminalBaseEnv();
+			__setAccountShellForTesting("/bin/sh");
+			initTerminalBaseEnv(testBaseEnv());
+			await disposeSessionAndWait(terminalId, db);
+		}
 	});
 
 	test("restoredNotice delivers the separator ahead of shell output on first replay only", async () => {

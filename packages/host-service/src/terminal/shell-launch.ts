@@ -17,7 +17,7 @@ import {
 
 /** Does not default to /bin/zsh — falls back to /bin/sh (POSIX-guaranteed). */
 export function resolveLaunchShell(
-	baseEnv: Record<string, string>,
+	baseEnv: Record<string, string | undefined>,
 	options?: ResolveConfiguredShellOptions,
 ): string {
 	return resolveConfiguredShell(baseEnv, options);
