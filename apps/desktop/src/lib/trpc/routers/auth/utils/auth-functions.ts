@@ -9,7 +9,7 @@ import {
 } from "main/lib/app-environment";
 import { lock } from "proper-lockfile";
 import { PROTOCOL_SCHEME } from "shared/constants";
-import { decrypt, encrypt } from "./crypto-storage";
+import { decrypt, encrypt, primeKeyFor } from "./crypto-storage";
 
 interface StoredAuth {
 	token: string;
@@ -236,6 +236,21 @@ function serializeAuthWrite<Result>(
  * - "token-cleared": (no data) - Token deleted (sign-out)
  */
 export const authEvents = new EventEmitter();
+
+/** Starts deriving the token file's key off the main thread. */
+export async function primeAuthTokenKey(): Promise<void> {
+	let handle: Awaited<ReturnType<typeof fs.open>> | null = null;
+	try {
+		handle = await fs.open(getTokenFile(), "r");
+		const header = Buffer.alloc(64);
+		const { bytesRead } = await handle.read(header, 0, header.length, 0);
+		await primeKeyFor(header.subarray(0, bytesRead));
+	} catch {
+		// No token file yet, or unreadable: the first read derives the key itself.
+	} finally {
+		await handle?.close().catch(() => {});
+	}
+}
 
 /**
  * Load token from encrypted disk storage.

@@ -22,6 +22,7 @@ import {
 	handleAuthCallback,
 	loadToken,
 	parseAuthDeepLink,
+	primeAuthTokenKey,
 } from "lib/trpc/routers/auth/utils/auth-functions";
 import { applyShellEnvToProcess } from "lib/trpc/routers/workspaces/utils/shell-env";
 import { env as mainEnv } from "main/env.main";
@@ -93,6 +94,7 @@ void applyShellEnvToProcess()
 	.catch((error) => {
 		console.error("[main] Failed to apply shell environment:", error);
 	});
+void primeAuthTokenKey();
 
 // Keep the readable dock label separate from the stable storage identity.
 if (IS_DEV) {

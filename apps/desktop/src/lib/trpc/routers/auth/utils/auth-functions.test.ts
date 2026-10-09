@@ -23,6 +23,7 @@ const tokenFile = path.join(testSupersetHomeDir, "auth-token.enc");
 mock.module("./crypto-storage", () => ({
 	encrypt: (plaintext: string) => Buffer.from(plaintext),
 	decrypt: (data: Buffer) => data.toString("utf8"),
+	primeKeyFor: async () => {},
 }));
 
 const {
