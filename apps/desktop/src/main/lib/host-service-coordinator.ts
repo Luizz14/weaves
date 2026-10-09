@@ -23,7 +23,7 @@ import type { StartupMarker } from "shared/startup-diagnostics";
 import {
 	augmentPathForMacOS,
 	getProcessEnvWithShellPath,
-	getShellEnvironmentIfReady,
+	hasResolvedShellEnvironment,
 } from "../../lib/trpc/routers/workspaces/utils/shell-env";
 import { env as mainEnv } from "../env.main";
 import { SUPERSET_HOME_DIR } from "./app-environment";
@@ -1192,7 +1192,7 @@ export class HostServiceCoordinator extends EventEmitter {
 		// held every host spawn for a full `zsh -il`. The child merges the shell
 		// env itself once its own probe (which it runs anyway) resolves.
 		let childEnv: Record<string, string>;
-		if (getShellEnvironmentIfReady()) {
+		if (hasResolvedShellEnvironment()) {
 			childEnv = await getProcessEnvWithShellPath(baseEnv);
 		} else {
 			childEnv = { ...baseEnv, [HOST_LOGIN_SHELL_MERGE_ENV]: "1" };
