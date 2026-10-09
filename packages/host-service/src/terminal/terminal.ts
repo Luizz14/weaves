@@ -41,6 +41,7 @@ import {
 } from "../db/schema.ts";
 import type { EventBus } from "../events/index.ts";
 import { portManager } from "../ports/port-manager.ts";
+import { markHostStartup } from "../runtime/startup-markers/index.ts";
 import { issueAttributionToken } from "../terminal-agents/attribution-token.ts";
 import { sweepAgentBindingsAfterDaemonLoss } from "../terminal-agents/daemon-loss-sweep.ts";
 import { markTerminalAgentBindingEnded } from "../terminal-agents/persistence.ts";
@@ -3600,6 +3601,7 @@ export function registerWorkspaceTerminalRoute({
 					}
 
 					void (async () => {
+						markHostStartup("host-first-attach-start");
 						const session = await resolveSessionForAttach();
 						if ("error" in session) {
 							const transient = !session.code && session.transient;
@@ -3621,6 +3623,7 @@ export function registerWorkspaceTerminalRoute({
 						// every other case.
 						await session.adoptionReplaySettled;
 						if (ws.readyState !== SOCKET_OPEN) return;
+						markHostStartup("host-first-attach-ready");
 						attachSocketToSession(session, ws);
 					})().catch((error) => {
 						console.error("[terminal] unexpected error during attach", error);

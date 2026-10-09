@@ -39,6 +39,7 @@ import {
 	readSandboxIdentity,
 	runSandboxSelfSeed,
 } from "./runtime/sandbox-self-seed";
+import { markHostStartup } from "./runtime/startup-markers";
 import {
 	isLiveTerminalSession,
 	registerWorkspaceTerminalRoute,
@@ -127,6 +128,7 @@ export function createApp(options: CreateAppOptions): CreateAppResult {
 		options.api ??
 		createApiClient(config.cloudApiUrl, providers.auth, config.organizationId);
 	const db = options.db ?? createDb(config.dbPath, config.migrationsFolder);
+	markHostStartup("host-db-ready");
 	// A sandbox is provisioned for exactly one workspace, and the env says
 	// which. Seeding it here rather than from the API keeps the schema in one
 	// place and leaves provisioning with nothing to orchestrate.

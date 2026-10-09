@@ -7,6 +7,7 @@
 import { existsSync } from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
+import { markHostStartup } from "../runtime/startup-markers/index.ts";
 import { DaemonSupervisor } from "./DaemonSupervisor.ts";
 
 let supervisor: DaemonSupervisor | null = null;
@@ -67,6 +68,7 @@ export function startDaemonBootstrap(organizationId: string): void {
 	bootstrapPromise = sup
 		.ensure(organizationId)
 		.then((inst) => {
+			markHostStartup("host-daemon-ready");
 			console.log(
 				`[supervisor] bootstrap OK for org=${organizationId} pid=${inst.pid} version=${inst.runningVersion}${inst.updatePending ? " (update pending)" : ""}`,
 			);

@@ -5,6 +5,7 @@ import {
 	setAuthToken,
 	setJwt,
 } from "renderer/lib/auth-client";
+import { markRendererStartup } from "renderer/lib/startup-diagnostics";
 import { SupersetLogo } from "renderer/routes/sign-in/components/SupersetLogo/SupersetLogo";
 import { electronTrpc } from "../../lib/electron-trpc";
 
@@ -34,6 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 					err,
 				);
 			}
+			markRendererStartup("session-resolved");
 			try {
 				const res = await authClient.token();
 				// A response outliving the hydration timeout must not resurrect a
@@ -106,6 +108,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 	useEffect(() => {
 		if (!isHydrated) return;
+		markRendererStartup("auth-hydrated");
 
 		const refreshJwt = () =>
 			authClient

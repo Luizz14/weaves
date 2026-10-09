@@ -24,6 +24,10 @@
 			"types": "./src/page-zoom.ts",
 			"default": "./src/page-zoom.ts"
 		},
+		"./startup-markers": {
+			"types": "./src/startup-markers.ts",
+			"default": "./src/startup-markers.ts"
+		},
 		"./usercontent": {
 			"types": "./src/usercontent/index.ts",
 			"default": "./src/usercontent/index.ts"

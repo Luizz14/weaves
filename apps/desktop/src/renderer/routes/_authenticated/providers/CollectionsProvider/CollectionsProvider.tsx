@@ -9,6 +9,7 @@ import {
 	useRef,
 	useState,
 } from "react";
+import { StartupMark } from "renderer/components/StartupMark";
 import { env } from "renderer/env.renderer";
 import { authClient } from "renderer/lib/auth-client";
 import {
@@ -17,6 +18,7 @@ import {
 	setCloudOrganizationId,
 } from "renderer/lib/cloud-trpc";
 import { electronTrpc } from "renderer/lib/electron-trpc";
+import { markRendererStartup } from "renderer/lib/startup-diagnostics";
 import { electronTrpcClient } from "renderer/lib/trpc-client";
 import { electronQueryClient } from "renderer/providers/ElectronTRPCProvider/ElectronTRPCProvider";
 import { useLastActiveV2Workspace } from "renderer/stores/last-active-v2-workspace";
@@ -127,6 +129,7 @@ export function CollectionsProvider({ children }: { children: ReactNode }) {
 			(registryOrgIsStillMine ? windowOrgId : sessionOrgId) ?? null;
 		if (!resolved) return;
 		initializedRef.current = true;
+		markRendererStartup("org-resolved");
 		setActiveOrganizationId(resolved);
 	}, [windowOrgPending, windowOrgId, sessionOrgId, organizations]);
 
@@ -250,6 +253,7 @@ export function CollectionsProvider({ children }: { children: ReactNode }) {
 
 	return (
 		<CollectionsContext.Provider value={contextValue}>
+			<StartupMark marker="collections-ready" />
 			{children}
 		</CollectionsContext.Provider>
 	);

@@ -20,20 +20,26 @@ function createRecorder() {
 	stream.on("error", () => {
 		console.error("[startup-diagnostics] Could not write diagnostic durations");
 	});
-	return createStartupRecorder({
+	const mark = createStartupRecorder({
 		now: () => Number(process.hrtime.bigint() - origin) / 1e6,
 		write: (record) => stream.write(`${JSON.stringify(record)}\n`),
 	});
+	return { mark, origin };
 }
 
-const record = createRecorder();
+const recorder = createRecorder();
 
 export function markStartup(marker: StartupMarker) {
-	record?.(marker);
+	recorder?.mark(marker);
+}
+
+export function markStartupAtHrtime(marker: StartupMarker, hrtimeNs: bigint) {
+	if (!recorder) return;
+	recorder.mark(marker, Number(hrtimeNs - recorder.origin) / 1e6);
 }
 
 export function observeRendererStartup(webContents: WebContents) {
-	if (!record) return;
+	if (!recorder) return;
 	const onMark = (event: Electron.IpcMainEvent, marker: unknown) => {
 		if (
 			event.sender !== webContents ||
@@ -41,7 +47,7 @@ export function observeRendererStartup(webContents: WebContents) {
 		)
 			return;
 		for (const allowed of RENDERER_STARTUP_MARKERS) {
-			if (marker === allowed) record(allowed);
+			if (marker === allowed) recorder.mark(allowed);
 		}
 	};
 	ipcMain.on(STARTUP_DIAGNOSTICS_CHANNEL, onMark);

@@ -1,6 +1,7 @@
 import { I18nProvider } from "@superset/i18n/react";
 import type { ReactNode } from "react";
 import { PostHogLocaleTagger } from "renderer/components/PostHogLocaleTagger";
+import { StartupMark } from "renderer/components/StartupMark";
 import { electronTrpc } from "renderer/lib/electron-trpc";
 import { PostHogReady } from "renderer/providers/PostHogProvider/components/PostHogReady";
 
@@ -39,6 +40,7 @@ export function LanguageAwareI18nProvider({
 	// wrong language beats showing nothing.
 	return (
 		<I18nProvider locale={language ?? undefined} deferUntilReady>
+			<StartupMark marker="renderer-i18n-ready" />
 			<PostHogReady>
 				<PostHogLocaleTagger />
 			</PostHogReady>

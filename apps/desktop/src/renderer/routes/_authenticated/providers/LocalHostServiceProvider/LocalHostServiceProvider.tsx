@@ -17,6 +17,7 @@ import {
 	setHostServiceSecret,
 } from "renderer/lib/host-service-auth";
 import type { HostServiceAvailabilityStatus } from "renderer/lib/host-service-unavailable";
+import { markRendererStartup } from "renderer/lib/startup-diagnostics";
 import { useCollections } from "renderer/routes/_authenticated/providers/CollectionsProvider";
 import { MOCK_ORG_ID } from "shared/constants";
 
@@ -204,6 +205,7 @@ export function LocalHostServiceProvider({
 	// during the same render, before any effect runs.
 	useEffect(() => {
 		if (!activeConnection?.port) return;
+		markRendererStartup("host-url-ready");
 		reconnectEventBusIfDown(`http://127.0.0.1:${activeConnection.port}`);
 	}, [activeConnection]);
 

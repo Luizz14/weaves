@@ -56,7 +56,11 @@ import { portForwardManager } from "./lib/port-forward";
 import { ensureProjectIconsDir, getProjectIconPath } from "./lib/project-icons";
 import { runQuitCleanup } from "./lib/quit-sequence";
 import { initSentry } from "./lib/sentry";
-import { markStartup } from "./lib/startup-diagnostics/startup-diagnostics";
+import {
+	markStartup,
+	markStartupAtHrtime,
+	startupDiagnosticsEnabled,
+} from "./lib/startup-diagnostics/startup-diagnostics";
 import { scheduleStartupMaintenance } from "./lib/startup-maintenance/startup-maintenance";
 import {
 	prewarmTerminalRuntime,
@@ -68,6 +72,7 @@ import {
 } from "./lib/terminal-host/client";
 import { disposeTray, initTray } from "./lib/tray";
 import { getFocusedOrLastWindow } from "./lib/window-registry/window-registry";
+import { loadWindows } from "./lib/window-state";
 import { sweepNetworkLogs } from "./network-logger-sweep";
 import {
 	createPlatformWindow,
@@ -83,9 +88,11 @@ markStartup("bootstrap-imports-end");
 console.log("[main] Local database ready:", !!localDb);
 const IS_DEV = process.env.NODE_ENV === "development";
 
-void applyShellEnvToProcess().catch((error) => {
-	console.error("[main] Failed to apply shell environment:", error);
-});
+void applyShellEnvToProcess()
+	.then(() => markStartup("shell-env-ready"))
+	.catch((error) => {
+		console.error("[main] Failed to apply shell environment:", error);
+	});
 
 // Keep the readable dock label separate from the stable storage identity.
 if (IS_DEV) {
@@ -462,6 +469,7 @@ if (!gotTheLock) {
 		// (plans/20260826-i18n-strategy.md). Menus are built later in
 		// initAppServices/initTray, so a plain activate is enough here.
 		await initI18nAsync(resolveAppLocale(getLanguageSetting()));
+		markStartup("i18n-ready");
 		registerWithMacOSNotificationCenter();
 		requestAppleEventsAccess();
 		requestLocalNetworkAccess();
@@ -515,12 +523,15 @@ if (!gotTheLock) {
 		setWorkspaceDockIcon();
 		initSentry();
 		await initAppState();
+		markStartup("app-state-ready");
 		initTanstackDbPersistence();
 
 		await loadWebviewBrowserExtension();
+		markStartup("webview-extension-ready");
 
 		// Must happen before renderer restore runs
 		await reconcileDaemonSessions();
+		markStartup("v1-terminal-reconciled");
 		prewarmTerminalRuntime();
 
 		// Must be listening before any host-service spawns: the child learns the
@@ -531,6 +542,7 @@ if (!gotTheLock) {
 		} catch (error) {
 			console.error("[main] Failed to start browser bridge:", error);
 		}
+		markStartup("bridge-ready");
 		downloadManager.start();
 
 		const hostServiceCoordinator = getHostServiceCoordinator();
@@ -553,6 +565,7 @@ if (!gotTheLock) {
 				const storedAuth = providedAuth ?? (await loadToken());
 				if (generation !== authGeneration) return;
 				if (!storedAuth.token || !storedAuth.organizationIds) return;
+				markStartup("host-reconcile-start");
 				await hostServiceCoordinator.reconcile(storedAuth.organizationIds, {
 					authToken: storedAuth.token,
 					cloudApiUrl: mainEnv.NEXT_PUBLIC_API_URL,
@@ -561,6 +574,14 @@ if (!gotTheLock) {
 				console.error("[main] host-service reconcile failed:", error);
 			}
 		};
+		if (startupDiagnosticsEnabled) {
+			hostServiceCoordinator.setStartupDiagnostics({
+				organizationId:
+					loadWindows().find((window) => window.orgId)?.orgId ?? null,
+				mark: markStartup,
+				markAtHrtime: markStartupAtHrtime,
+			});
+		}
 		void reconcileHostServices();
 		// A new token can belong to a different account. Stop immediately and wait
 		// for that account's session membership before starting anything.
@@ -610,6 +631,7 @@ if (!gotTheLock) {
 		} catch (error) {
 			console.error("[main] Failed to install bundled CLI shim:", error);
 		}
+		markStartup("agent-setup-end");
 
 		if (IS_DEV) {
 			hostServiceCoordinator.enableDevReload(async () => {

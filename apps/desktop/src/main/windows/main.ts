@@ -447,6 +447,10 @@ export async function createPlatformWindow({
 	markStartup("window-created");
 	observeRendererStartup(window.webContents);
 	if (startupDiagnosticsEnabled) {
+		window.once("ready-to-show", () => markStartup("ready-to-show"));
+		window.webContents.once("did-finish-load", () =>
+			markStartup("did-finish-load"),
+		);
 		window.once("show", () => markStartup("window-show"));
 	}
 

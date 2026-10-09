@@ -8,12 +8,16 @@ export function createStartupRecorder({
 	write: (record: { marker: StartupMarker; durationMs: number }) => void;
 }) {
 	const recorded = new Set<StartupMarker>();
-	return (marker: StartupMarker) => {
+	return (marker: StartupMarker, durationMs?: number) => {
 		if (recorded.has(marker)) return;
+		const value =
+			marker === "process-start"
+				? 0
+				: durationMs === undefined
+					? now()
+					: durationMs;
+		if (!Number.isFinite(value) || value < 0) return;
 		recorded.add(marker);
-		write({
-			marker,
-			durationMs: marker === "process-start" ? 0 : now(),
-		});
+		write({ marker, durationMs: value });
 	};
 }

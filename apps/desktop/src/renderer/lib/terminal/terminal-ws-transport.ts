@@ -692,6 +692,11 @@ function attachSocketListeners(
 	terminal: XTerm,
 	socket: RelaySocket,
 ): void {
+	if (window.App?.startupDiagnostics) {
+		socket.addEventListener("open", () =>
+			markRendererStartup("terminal-ws-open"),
+		);
+	}
 	socket.addEventListener("message", (event) => {
 		// Ignore events from a socket we've detached (teardown nulls _socket).
 		if (transport._socket !== socket) return;
@@ -709,6 +714,9 @@ function attachSocketListeners(
 			// never wedge the shell.
 			if (transport._seqCounting && transport.seqAnchor) {
 				transport.seqAnchor.seq += data.byteLength;
+			}
+			if (!transport._hasReceivedBytes) {
+				markRendererStartup("terminal-first-bytes");
 			}
 			transport._writeCoalescer?.push(new Uint8Array(data));
 			transport._hasReceivedBytes = true;
@@ -736,6 +744,7 @@ function attachSocketListeners(
 		}
 
 		if (message.type === "attached") {
+			markRendererStartup("terminal-attached");
 			transport.lastDiagnosis = null;
 			transport._diagnosisLogged = false;
 			// Only a real attach ends the failure streak — WS opens don't count

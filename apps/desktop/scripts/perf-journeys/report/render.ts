@@ -132,10 +132,19 @@ const SECTIONS: Section[] = [
 const MARKER_LABELS: Record<string, string> = {
 	"bootstrap-imports-end": "Imports do main",
 	"app-ready": "app.whenReady",
+	"bridge-ready": "Bridge do navegador pronto",
+	"active-host-spawned": "Host-service iniciado",
+	"host-listening": "Host-service escutando",
+	"active-host-healthy": "Host-service saudável",
 	"window-created": "Janela criada",
 	"window-show": "Janela visível",
 	"react-commit": "Primeiro commit React",
+	"router-ready": "Rotas montadas",
+	"auth-hydrated": "Sessão hidratada",
+	"host-url-ready": "URL do host no renderer",
 	"shell-interactive": "Shell interativo",
+	"terminal-attached": "Terminal anexado",
+	"terminal-first-bytes": "Primeiros bytes do terminal",
 	"terminal-usable": "Terminal utilizável",
 };
 

@@ -15,7 +15,9 @@ import {
 	installUpgradeSocketGuard,
 	JwtApiAuthProvider,
 	LocalGitCredentialProvider,
+	markHostStartup,
 	PskHostAuthProvider,
+	processStartHrtime,
 	resolveBrowserBridgeFromEnv,
 	startTerminalReaper,
 } from "@superset/host-service";
@@ -42,6 +44,8 @@ const MANIFEST_RECLAIM_INTERVAL_MS = 15_000;
 type Server = ReturnType<typeof serve>;
 
 async function main(): Promise<void> {
+	markHostStartup("host-process-start", processStartHrtime());
+	markHostStartup("host-imports-end");
 	initSentry({ organizationId: env.ORGANIZATION_ID });
 
 	// Whatever directory the app was launched from can be deleted while this
@@ -88,6 +92,7 @@ async function main(): Promise<void> {
 
 	const terminalBaseEnv = await resolveTerminalBaseEnv();
 	initTerminalBaseEnv(terminalBaseEnv);
+	markHostStartup("host-terminal-env-ready");
 
 	const authProvider = new JwtApiAuthProvider({
 		// Read fresh from disk every time we need to mint a new JWT, so that
@@ -120,11 +125,13 @@ async function main(): Promise<void> {
 		},
 	});
 	disposeRef.current = dispose;
+	markHostStartup("host-app-created");
 
 	const startedAt = Date.now();
 	const server = serve(
 		{ fetch: app.fetch, port: env.HOST_SERVICE_PORT, hostname: "127.0.0.1" },
 		(info: { port: number }) => {
+			markHostStartup("host-listening");
 			// Install only after the server is listening so startup throws still
 			// reach `main().catch(...)` and exit with a non-zero code.
 			installProcessSafetyNet();

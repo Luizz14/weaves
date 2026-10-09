@@ -20,6 +20,7 @@ import {
 	hostServiceQueryRetry,
 	hostServiceQueryRetryDelay,
 } from "renderer/lib/host-service-client";
+import { markRendererStartup } from "renderer/lib/startup-diagnostics";
 import { electronReactClient } from "../../lib/trpc-client";
 
 // In Electron, blurring the BrowserWindow keeps document.visibilityState
@@ -96,6 +97,10 @@ const PERSIST_KEY_PREFIXES = new Set([
 // fans out to remote hosts on a cold or offline boot before the cloud answers.
 const PERSIST_TRPC_PATHS = new Set(["host.roster"]);
 
+function markQueryCacheRestored() {
+	markRendererStartup("query-cache-restored");
+}
+
 export function ElectronTRPCProvider({
 	children,
 }: {
@@ -109,6 +114,8 @@ export function ElectronTRPCProvider({
 			<cloudTrpc.Provider client={cloudTrpcClient} queryClient={queryClient}>
 				<PersistQueryClientProvider
 					client={queryClient}
+					onSuccess={markQueryCacheRestored}
+					onError={markQueryCacheRestored}
 					persistOptions={{
 						persister,
 						maxAge: 24 * 60 * 60 * 1000, // 24h

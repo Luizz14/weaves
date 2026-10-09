@@ -1,22 +1,26 @@
+import {
+	ALL_STARTUP_MARKERS,
+	type StartupMarker,
+} from "../../../src/shared/startup-diagnostics";
 import type { SampleRecord } from "./session";
 import { type DistributionSummary, summarizeDistribution } from "./stats";
 
-export const P00_MARKERS = [
-	"process-start",
-	"bootstrap-imports-end",
-	"app-ready",
-	"window-created",
-	"window-show",
-	"react-commit",
-	"shell-interactive",
-	"terminal-usable",
-] as const;
+export const P00_MARKERS: readonly StartupMarker[] = ALL_STARTUP_MARKERS;
+
+export const LAUNCH_SPANS: ReadonlyArray<[StartupMarker, StartupMarker]> = [
+	["window-created", "window-show"],
+	["react-commit", "shell-interactive"],
+	["shell-interactive", "terminal-usable"],
+	["active-host-spawned", "active-host-healthy"],
+	["active-host-healthy", "host-url-ready"],
+	["host-url-ready", "terminal-usable"],
+];
 
 export interface LaunchRecord {
 	index: number;
 	phase: "warmup" | "measured";
 	inspect: boolean;
-	markersMs: Partial<Record<(typeof P00_MARKERS)[number], number>>;
+	markersMs: Partial<Record<StartupMarker, number>>;
 	preNodeMs: number | null;
 	bracketOk: boolean | null;
 	frontmost: boolean;
@@ -50,6 +54,11 @@ export interface RunSummary {
 		launches: number;
 		accepted: number;
 		frontmostConfirmed: number;
+		spans: Array<{
+			from: StartupMarker;
+			to: StartupMarker;
+			distribution: DistributionSummary;
+		}>;
 		markers: LaunchMarkerSummary[];
 		preNode: DistributionSummary;
 		perturbation: {
@@ -149,11 +158,27 @@ export function summarizeLaunches(
 			.map((l) => l.markersMs[perturbationMarker])
 			.filter((v): v is number => v !== undefined),
 	);
+	const spans = LAUNCH_SPANS.map(([from, to]) => ({
+		from,
+		to,
+		distribution: summarizeDistribution(
+			accepted
+				.map((l) => {
+					const start = l.markersMs[from];
+					const end = l.markersMs[to];
+					return start === undefined || end === undefined
+						? undefined
+						: end - start;
+				})
+				.filter((v): v is number => v !== undefined),
+		),
+	}));
 	return {
 		launches: launches.length,
 		accepted: accepted.length,
 		frontmostConfirmed: accepted.filter((l) => l.frontmost).length,
 		markers,
+		spans,
 		preNode: summarizeDistribution(
 			inspected
 				.filter((l) => l.bracketOk && l.preNodeMs !== null)

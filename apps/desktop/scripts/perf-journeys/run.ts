@@ -9,6 +9,7 @@ import {
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { parseArgs } from "node:util";
+import type { StartupMarker } from "../../src/shared/startup-diagnostics";
 import { runChangesPanelWarm } from "./journeys/changes-panel";
 import { runClaudeSession } from "./journeys/claude-session";
 import { runCodexChat } from "./journeys/codex-chat";
@@ -481,8 +482,7 @@ function readP00(path: string): LaunchRecord["markersMs"] {
 	for (const line of readFileSync(path, "utf8").split("\n").filter(Boolean)) {
 		const record = JSON.parse(line) as { marker: string; durationMs: number };
 		if ((P00_MARKERS as readonly string[]).includes(record.marker)) {
-			markers[record.marker as (typeof P00_MARKERS)[number]] =
-				record.durationMs;
+			markers[record.marker as StartupMarker] = record.durationMs;
 		}
 	}
 	return markers;

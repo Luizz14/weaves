@@ -9,10 +9,15 @@ import { i18n } from "@superset/i18n";
 import { organizations, settings } from "@superset/local-db";
 import { getHostId, getHostName } from "@superset/shared/host-info";
 import { HOST_INSTALL_SOURCE_ENV } from "@superset/shared/host-version";
+import {
+	parseStartupMarkerLines,
+	STARTUP_DIAGNOSTICS_CHILD_ENV,
+} from "@superset/shared/startup-markers";
 import { eq } from "drizzle-orm";
 import { app, dialog } from "electron";
 import log from "electron-log/main";
 import { env as sharedEnv } from "shared/env.shared";
+import type { StartupMarker } from "shared/startup-diagnostics";
 import { getProcessEnvWithShellPath } from "../../lib/trpc/routers/workspaces/utils/shell-env";
 import { env as mainEnv } from "../env.main";
 import { SUPERSET_HOME_DIR } from "./app-environment";
@@ -280,6 +285,12 @@ function isValidPort(port: number | null | undefined): port is number {
  * layer host-service supervises, not via host-service itself. Manifests
  * are still written by the child for the CLI's benefit.
  */
+export interface StartupDiagnosticsHooks {
+	organizationId: string | null;
+	mark: (marker: StartupMarker) => void;
+	markAtHrtime: (marker: StartupMarker, hrtimeNs: bigint) => void;
+}
+
 export class HostServiceCoordinator extends EventEmitter {
 	private instances = new Map<string, HostServiceProcess>();
 	private pendingStarts = new Map<string, PendingStart>();
@@ -297,6 +308,7 @@ export class HostServiceCoordinator extends EventEmitter {
 	 */
 	private killEscalations = new Map<number, ReturnType<typeof setTimeout>>();
 	private startGeneration = 0;
+	private startupDiagnostics: StartupDiagnosticsHooks | null = null;
 	private configProvider: (() => Promise<SpawnConfig | null>) | null = null;
 	/**
 	 * Seam for the respawn delay. Production uses `setTimeout`; tests replace it so
@@ -379,6 +391,7 @@ export class HostServiceCoordinator extends EventEmitter {
 			isStartAllowed,
 		).then((connection) => {
 			if (!isStartAllowed()) {
+				this.startupDiagnostics?.mark("host-start-cancelled");
 				this.stop(organizationId);
 				throw new Error("Host service start cancelled");
 			}
@@ -839,6 +852,7 @@ export class HostServiceCoordinator extends EventEmitter {
 		// the adopted instance.
 		this.stableSecrets.set(organizationId, manifest.authToken);
 		this.emitStatus(organizationId, "running", previous?.status ?? null);
+		this.markDiagnosticsOrganization(organizationId, "active-host-healthy");
 
 		log.info(
 			`[host-service:${organizationId}] adopted existing host on port ${port} (pid ${manifest.pid})`,
@@ -881,6 +895,7 @@ export class HostServiceCoordinator extends EventEmitter {
 
 		const childEnv = await this.buildEnv(organizationId, port, secret, config);
 		if (!isStartAllowed()) {
+			this.startupDiagnostics?.mark("host-start-cancelled");
 			if (this.instances.get(organizationId) === instance) {
 				this.instances.delete(organizationId);
 			}
@@ -943,6 +958,17 @@ export class HostServiceCoordinator extends EventEmitter {
 				logStream?.write(chunk);
 			});
 		}
+		const diagnostics = this.startupDiagnostics;
+		if (diagnostics && this.isDiagnosticsOrganization(organizationId)) {
+			let carry = "";
+			child.stdout?.on("data", (chunk: Buffer) => {
+				const parsed = parseStartupMarkerLines(carry, chunk.toString("utf8"));
+				carry = parsed.carry;
+				for (const { marker, hrtimeNs } of parsed.markers) {
+					diagnostics.markAtHrtime(marker, hrtimeNs);
+				}
+			});
+		}
 		child.once("close", () => logStream?.end());
 
 		// In dev, fan child output through to parent stdout/stderr with a
@@ -961,6 +987,7 @@ export class HostServiceCoordinator extends EventEmitter {
 		}
 
 		instance.pid = childPid;
+		this.markDiagnosticsOrganization(organizationId, "active-host-spawned");
 		let childExited = false;
 		child.on("exit", (code, signal) => {
 			childExited = true;
@@ -977,6 +1004,8 @@ export class HostServiceCoordinator extends EventEmitter {
 			() => childExited || !isStartAllowed(),
 		);
 		if (!healthy || !isStartAllowed()) {
+			if (!isStartAllowed())
+				this.startupDiagnostics?.mark("host-start-cancelled");
 			if (!childExited) child.kill("SIGTERM");
 			if (this.instances.get(organizationId) === instance) {
 				this.instances.delete(organizationId);
@@ -1000,7 +1029,30 @@ export class HostServiceCoordinator extends EventEmitter {
 
 		log.info(`[host-service:${organizationId}] listening on port ${port}`);
 		this.emitStatus(organizationId, "running", "starting");
+		this.markDiagnosticsOrganization(organizationId, "active-host-healthy");
 		return { port, secret, machineId: this.machineId };
+	}
+
+	setStartupDiagnostics(hooks: StartupDiagnosticsHooks | null): void {
+		this.startupDiagnostics = hooks;
+	}
+
+	private isDiagnosticsOrganization(organizationId: string): boolean {
+		const diagnostics = this.startupDiagnostics;
+		if (!diagnostics) return false;
+		if (diagnostics.organizationId === null) {
+			diagnostics.organizationId = organizationId;
+		}
+		return diagnostics.organizationId === organizationId;
+	}
+
+	private markDiagnosticsOrganization(
+		organizationId: string,
+		marker: StartupMarker,
+	): void {
+		if (this.isDiagnosticsOrganization(organizationId)) {
+			this.startupDiagnostics?.mark(marker);
+		}
 	}
 
 	private async buildEnv(
@@ -1096,6 +1148,13 @@ export class HostServiceCoordinator extends EventEmitter {
 		} else {
 			delete childEnv.BROWSER_BRIDGE_URL;
 			delete childEnv.BROWSER_BRIDGE_SECRET;
+		}
+
+		delete childEnv.SUPERSET_STARTUP_DIAGNOSTICS;
+		if (this.isDiagnosticsOrganization(organizationId)) {
+			childEnv[STARTUP_DIAGNOSTICS_CHILD_ENV] = "1";
+		} else {
+			delete childEnv[STARTUP_DIAGNOSTICS_CHILD_ENV];
 		}
 
 		return childEnv;
