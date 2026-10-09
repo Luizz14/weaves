@@ -25,7 +25,13 @@ import { resolveEditorSettings } from "@superset/shared/editor-settings";
 import type { Theme } from "@superset/shared/themes";
 import { cn } from "@superset/ui/utils";
 import { useQuery } from "@tanstack/react-query";
-import { type MutableRefObject, useEffect, useMemo, useRef } from "react";
+import {
+	type MutableRefObject,
+	useEffect,
+	useLayoutEffect,
+	useMemo,
+	useRef,
+} from "react";
 import { useEditorSettings } from "renderer/hooks/useEditorSettings";
 import { fontSettingsQueryOptions } from "renderer/lib/font-settings";
 import type { SharedFileDocument } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/fileDocumentStore";
@@ -46,6 +52,7 @@ import { contourSelectionLayer } from "./extensions/contourSelectionLayer";
 import { buildFoldChevron } from "./extensions/foldChevron";
 import { buildFoldPlaceholder } from "./extensions/foldPlaceholder";
 import { selectionClassTogglePlugin } from "./extensions/selectionClassTogglePlugin";
+import { viewportSyntax } from "./extensions/viewportSyntax";
 import { getCodeSyntaxHighlighting } from "./syntax-highlighting";
 
 const NO_LANGUAGE: Extension = [];
@@ -181,7 +188,7 @@ export function CodeEditor({
 	onScrollPositionChangeRef.current = onScrollPositionChange;
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: Editor instance is created once and reconfigured via dedicated effects below
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!containerRef.current) return;
 
 		const updateListener = EditorView.updateListener.of((update) => {
@@ -231,6 +238,7 @@ export function CodeEditor({
 				saveKeymap,
 				themeCompartment.of(themeExtension),
 				languageCompartment.of(peekLanguageSupport(language) ?? NO_LANGUAGE),
+				viewportSyntax,
 				lspCompartment.of([]),
 				updateListener,
 			],
@@ -257,6 +265,9 @@ export function CodeEditor({
 				write: (position) => {
 					view.scrollDOM.scrollTop = position.scrollTop;
 					view.scrollDOM.scrollLeft = position.scrollLeft;
+					// Without a pending request the measure loop stops here and the
+					// lines for the restored offset only render on the next frame.
+					view.requestMeasure({ read: () => null });
 				},
 			});
 		}
@@ -279,7 +290,7 @@ export function CodeEditor({
 		};
 	}, []);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const view = viewRef.current;
 		if (
 			!view ||
