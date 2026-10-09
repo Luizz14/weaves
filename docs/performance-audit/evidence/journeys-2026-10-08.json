@@ -1,528 +1,524 @@
 {
-  "schemaVersion": 1,
-  "run": {
-    "runId": "20261009-013614",
-    "pilot": false,
-    "gitHead": "34a638019e62a517dbfdab26d67051cbc0675c29",
-    "gitDirty": true,
-    "appVersion": "1.29.0",
-    "benchAsarSha256": "57dcad4b3257b20d1dbcf6f7d4cc194705b476674358953cbb372db435742aa5",
-    "hardware": "Mac17,3",
-    "cpuBrand": "Apple M5",
-    "memoryGiB": 16,
-    "macos": "27.0.1",
-    "locale": "pt-BR",
-    "frameIntervalMs": 16.699999999999818,
-    "acPowerAtStart": false,
-    "acPowerAtEnd": false,
-    "thermalAtStart": "Note: No thermal warning level has been recorded; Note: No performance warning level has been recorded",
-    "thermalAtEnd": "Note: No thermal warning level has been recorded; Note: No performance warning level has been recorded",
-    "switchTargets": [
-      "ws#1",
-      "ws#2",
-      "ws#3"
-    ],
-    "chatWorkspace": null,
-    "acceptedRun": false,
-    "verification": {
-      "installedAppRunning": true,
-      "ptyDaemonsUnchanged": true,
-      "leftoverBranches": 0,
-      "leftoverWorktrees": 0,
-      "installedAsarUnchanged": true,
-      "fixtureReverted": true,
-      "confirmOnQuitDefault": true
-    }
-  },
-  "summary": {
-    "journeys": [
-      {
-        "journey": "new-terminal",
-        "variant": "warm",
-        "distribution": {
-          "n": 30,
-          "p50": 590.7,
-          "p75": 614.8,
-          "p95": 748.7,
-          "min": 567.7,
-          "max": 779.1,
-          "p95IsMax": false
-        },
-        "attempts": 33,
-        "timeouts": 0,
-        "invalid": 3,
-        "invalidReasons": {
-          "focus-lost": 1,
-          "dialog-open": 2
-        },
-        "markMediansMs": {
-          "socket-created": 53.7,
-          "attached": 64.2,
-          "synced": 70.9,
-          "first-bytes": 569.1
-        },
-        "loafMedianBlockingMs": 0
-      },
-      {
-        "journey": "keystroke-echo",
-        "variant": "terminal",
-        "distribution": {
-          "n": 102,
-          "p50": 22,
-          "p75": 27.6,
-          "p95": 41,
-          "min": 9,
-          "max": 51.8,
-          "p95IsMax": false
-        },
-        "attempts": 102,
-        "timeouts": 0,
-        "invalid": 0,
-        "invalidReasons": {},
-        "markMediansMs": {
-          "input-sent": 0.8,
-          "echo-bytes": 6.5
-        },
-        "loafMedianBlockingMs": 0
-      },
-      {
-        "journey": "codex-composer-keystroke",
-        "variant": "textarea",
-        "distribution": {
-          "n": 51,
-          "p50": 8.8,
-          "p75": 9.6,
-          "p95": 13.9,
-          "min": 2.2,
-          "max": 17.4,
-          "p95IsMax": false
-        },
-        "attempts": 51,
-        "timeouts": 0,
-        "invalid": 0,
-        "invalidReasons": {},
-        "markMediansMs": {
-          "value-updated": 2.8
-        },
-        "loafMedianBlockingMs": 0
-      },
-      {
-        "journey": "codex-chat-composer",
-        "variant": "warm",
-        "distribution": {
-          "n": 30,
-          "p50": 42.6,
-          "p75": 48.5,
-          "p95": 52.1,
-          "min": 27.5,
-          "max": 55.1,
-          "p95IsMax": false
-        },
-        "attempts": 30,
-        "timeouts": 0,
-        "invalid": 0,
-        "invalidReasons": {},
-        "markMediansMs": {
-          "ready": 26
-        },
-        "loafMedianBlockingMs": 0
-      },
-      {
-        "journey": "quick-open-palette",
-        "variant": "open",
-        "distribution": {
-          "n": 30,
-          "p50": 42.5,
-          "p75": 48.3,
-          "p95": 60.7,
-          "min": 23.9,
-          "max": 62.7,
-          "p95IsMax": false
-        },
-        "attempts": 30,
-        "timeouts": 0,
-        "invalid": 0,
-        "invalidReasons": {},
-        "markMediansMs": {
-          "ready": 32.1
-        },
-        "loafMedianBlockingMs": 0
-      },
-      {
-        "journey": "quick-open-file",
-        "variant": "code-editor",
-        "distribution": {
-          "n": 30,
-          "p50": 96.6,
-          "p75": 104.3,
-          "p95": 132.6,
-          "min": 63.3,
-          "max": 192.7,
-          "p95IsMax": false
-        },
-        "attempts": 30,
-        "timeouts": 0,
-        "invalid": 0,
-        "invalidReasons": {},
-        "markMediansMs": {
-          "ready": 90.3
-        },
-        "loafMedianBlockingMs": 0
-      },
-      {
-        "journey": "changes-panel",
-        "variant": "warm",
-        "distribution": {
-          "n": 30,
-          "p50": 46.4,
-          "p75": 52.2,
-          "p95": 60.4,
-          "min": 26.1,
-          "max": 60.5,
-          "p95IsMax": false
-        },
-        "attempts": 30,
-        "timeouts": 0,
-        "invalid": 0,
-        "invalidReasons": {},
-        "markMediansMs": {
-          "ready": 34.9
-        },
-        "loafMedianBlockingMs": 0
-      },
-      {
-        "journey": "switch-workspace",
-        "variant": "revisit",
-        "distribution": {
-          "n": 30,
-          "p50": 82.3,
-          "p75": 86.4,
-          "p95": 102.8,
-          "min": 68.3,
-          "max": 105.4,
-          "p95IsMax": false
-        },
-        "attempts": 30,
-        "timeouts": 0,
-        "invalid": 0,
-        "invalidReasons": {},
-        "markMediansMs": {
-          "terminal-visible": 55.4,
-          "no-redial": 62.2
-        },
-        "loafMedianBlockingMs": 0
-      },
-      {
-        "journey": "changes-panel",
-        "variant": "cold",
-        "distribution": {
-          "n": 10,
-          "p50": 111.8,
-          "p75": 133.3,
-          "p95": 207.7,
-          "min": 65.4,
-          "max": 207.7,
-          "p95IsMax": true
-        },
-        "attempts": 10,
-        "timeouts": 0,
-        "invalid": 0,
-        "invalidReasons": {},
-        "markMediansMs": {
-          "ready": 111.4
-        },
-        "loafMedianBlockingMs": 0
-      },
-      {
-        "journey": "switch-workspace",
-        "variant": "first-visit",
-        "distribution": {
-          "n": 30,
-          "p50": 129,
-          "p75": 151.1,
-          "p95": 209.3,
-          "min": 93.2,
-          "max": 228.1,
-          "p95IsMax": false
-        },
-        "attempts": 30,
-        "timeouts": 0,
-        "invalid": 0,
-        "invalidReasons": {},
-        "markMediansMs": {
-          "terminal-visible": 76.4,
-          "socket-created": 124.1,
-          "attached": 154.5,
-          "synced": 167.7,
-          "no-redial": 88.2
-        },
-        "loafMedianBlockingMs": 0
-      },
-      {
-        "journey": "codex-chat-composer",
-        "variant": "cold-catalog",
-        "distribution": {
-          "n": 5,
-          "p50": 55.5,
-          "p75": 63,
-          "p95": 145.8,
-          "min": 20.5,
-          "max": 145.8,
-          "p95IsMax": true
-        },
-        "attempts": 6,
-        "timeouts": 0,
-        "invalid": 1,
-        "invalidReasons": {
-          "dialog-open": 1
-        },
-        "markMediansMs": {
-          "ready": 35.6
-        },
-        "loafMedianBlockingMs": 0
-      },
-      {
-        "journey": "claude-session",
-        "variant": "shell",
-        "distribution": {
-          "n": 10,
-          "p50": 406,
-          "p75": 415,
-          "p95": 476,
-          "min": 392.2,
-          "max": 476,
-          "p95IsMax": true
-        },
-        "attempts": 10,
-        "timeouts": 0,
-        "invalid": 0,
-        "invalidReasons": {},
-        "markMediansMs": {
-          "input-sent": 0.7,
-          "first-bytes": 3
-        },
-        "loafMedianBlockingMs": 0
-      },
-      {
-        "journey": "create-workspace",
-        "variant": "worktree-no-setup",
-        "distribution": {
-          "n": 10,
-          "p50": 1290.3,
-          "p75": 1327.3,
-          "p95": 1936.6,
-          "min": 1263.4,
-          "max": 1936.6,
-          "p95IsMax": true
-        },
-        "attempts": 10,
-        "timeouts": 0,
-        "invalid": 0,
-        "invalidReasons": {},
-        "markMediansMs": {
-          "workspace:create-settled": 1229.4,
-          "ready": 1254.2
-        },
-        "loafMedianBlockingMs": 24
-      }
-    ],
-    "launch": {
-      "launches": 31,
-      "accepted": 30,
-      "frontmostConfirmed": 0,
-      "markers": [
-        {
-          "marker": "process-start",
-          "nodeOrigin": {
-            "n": 20,
-            "p50": 0,
-            "p75": 0,
-            "p95": 0,
-            "min": 0,
-            "max": 0,
-            "p95IsMax": false
-          },
-          "spawnOrigin": {
-            "n": 20,
-            "p50": 126.079791,
-            "p75": 132.892541,
-            "p95": 134.450625,
-            "min": 110.379334,
-            "max": 134.869709,
-            "p95IsMax": false
-          },
-          "missing": 0
-        },
-        {
-          "marker": "bootstrap-imports-end",
-          "nodeOrigin": {
-            "n": 20,
-            "p50": 165.633083,
-            "p75": 167.420459,
-            "p95": 169.260708,
-            "min": 164.649001,
-            "max": 175.604917,
-            "p95IsMax": false
-          },
-          "spawnOrigin": {
-            "n": 20,
-            "p50": 293.41546,
-            "p75": 298.236791,
-            "p95": 302.290168,
-            "min": 276.31879200000003,
-            "max": 309.663792,
-            "p95IsMax": false
-          },
-          "missing": 0
-        },
-        {
-          "marker": "app-ready",
-          "nodeOrigin": {
-            "n": 20,
-            "p50": 220.081792,
-            "p75": 223.201125,
-            "p95": 227.069916,
-            "min": 216.158375,
-            "max": 234.900125,
-            "p95IsMax": false
-          },
-          "spawnOrigin": {
-            "n": 20,
-            "p50": 347.030959,
-            "p75": 354.156585,
-            "p95": 358.070834,
-            "min": 328.606834,
-            "max": 368.959,
-            "p95IsMax": false
-          },
-          "missing": 0
-        },
-        {
-          "marker": "window-created",
-          "nodeOrigin": {
-            "n": 20,
-            "p50": 386.374417,
-            "p75": 389.400459,
-            "p95": 394.648041,
-            "min": 380.176458,
-            "max": 406.761292,
-            "p95IsMax": false
-          },
-          "spawnOrigin": {
-            "n": 20,
-            "p50": 515.7816250000001,
-            "p75": 520.02246,
-            "p95": 526.453124,
-            "min": 493.26079100000004,
-            "max": 540.8201670000001,
-            "p95IsMax": false
-          },
-          "missing": 0
-        },
-        {
-          "marker": "window-show",
-          "nodeOrigin": {
-            "n": 20,
-            "p50": 574.406166,
-            "p75": 576.321167,
-            "p95": 579.528542,
-            "min": 564.983166,
-            "max": 602.162542,
-            "p95IsMax": false
-          },
-          "spawnOrigin": {
-            "n": 20,
-            "p50": 701.579126,
-            "p75": 707.328751,
-            "p95": 712.421083,
-            "min": 678.067499,
-            "max": 736.221417,
-            "p95IsMax": false
-          },
-          "missing": 0
-        },
-        {
-          "marker": "react-commit",
-          "nodeOrigin": {
-            "n": 20,
-            "p50": 584.033083,
-            "p75": 586.381583,
-            "p95": 588.630333,
-            "min": 576.895958,
-            "max": 611.820375,
-            "p95IsMax": false
-          },
-          "spawnOrigin": {
-            "n": 20,
-            "p50": 710.761667,
-            "p75": 716.58821,
-            "p95": 721.522874,
-            "min": 690.279083,
-            "max": 745.87925,
-            "p95IsMax": false
-          },
-          "missing": 0
-        },
-        {
-          "marker": "shell-interactive",
-          "nodeOrigin": {
-            "n": 20,
-            "p50": 2173.059584,
-            "p75": 2233.217167,
-            "p95": 2776.497624,
-            "min": 1971.414125,
-            "max": 3178.246499,
-            "p95IsMax": false
-          },
-          "spawnOrigin": {
-            "n": 20,
-            "p50": 2299.139375,
-            "p75": 2348.184084,
-            "p95": 2898.84825,
-            "min": 2105.473,
-            "max": 3312.697124,
-            "p95IsMax": false
-          },
-          "missing": 0
-        },
-        {
-          "marker": "terminal-usable",
-          "nodeOrigin": {
-            "n": 20,
-            "p50": 2806.513,
-            "p75": 3564.09175,
-            "p95": 3818.4815,
-            "min": 2596.446584,
-            "max": 3847.638333,
-            "p95IsMax": false
-          },
-          "spawnOrigin": {
-            "n": 20,
-            "p50": 2926.212,
-            "p75": 3694.567917,
-            "p95": 3936.324168,
-            "min": 2729.308459,
-            "max": 3981.697208,
-            "p95IsMax": false
-          },
-          "missing": 0
-        }
-      ],
-      "preNode": {
-        "n": 20,
-        "p50": 126.079791,
-        "p75": 132.892541,
-        "p95": 134.450625,
-        "min": 110.379334,
-        "max": 134.869709,
-        "p95IsMax": false
-      },
-      "perturbation": {
-        "marker": "shell-interactive",
-        "withInspectP50": 2173.059584,
-        "withoutInspectP50": 2197.768458,
-        "deltaPct": -1.1242710263703275
-      }
-    }
-  }
+	"schemaVersion": 1,
+	"run": {
+		"runId": "20261009-013614",
+		"pilot": false,
+		"gitHead": "34a638019e62a517dbfdab26d67051cbc0675c29",
+		"gitDirty": true,
+		"appVersion": "1.29.0",
+		"benchAsarSha256": "57dcad4b3257b20d1dbcf6f7d4cc194705b476674358953cbb372db435742aa5",
+		"hardware": "Mac17,3",
+		"cpuBrand": "Apple M5",
+		"memoryGiB": 16,
+		"macos": "27.0.1",
+		"locale": "pt-BR",
+		"frameIntervalMs": 16.699999999999818,
+		"acPowerAtStart": false,
+		"acPowerAtEnd": false,
+		"thermalAtStart": "Note: No thermal warning level has been recorded; Note: No performance warning level has been recorded",
+		"thermalAtEnd": "Note: No thermal warning level has been recorded; Note: No performance warning level has been recorded",
+		"switchTargets": ["ws#1", "ws#2", "ws#3"],
+		"chatWorkspace": null,
+		"acceptedRun": false,
+		"verification": {
+			"installedAppRunning": true,
+			"ptyDaemonsUnchanged": true,
+			"leftoverBranches": 0,
+			"leftoverWorktrees": 0,
+			"installedAsarUnchanged": true,
+			"fixtureReverted": true,
+			"confirmOnQuitDefault": true
+		}
+	},
+	"summary": {
+		"journeys": [
+			{
+				"journey": "new-terminal",
+				"variant": "warm",
+				"distribution": {
+					"n": 30,
+					"p50": 590.7,
+					"p75": 614.8,
+					"p95": 748.7,
+					"min": 567.7,
+					"max": 779.1,
+					"p95IsMax": false
+				},
+				"attempts": 33,
+				"timeouts": 0,
+				"invalid": 3,
+				"invalidReasons": {
+					"focus-lost": 1,
+					"dialog-open": 2
+				},
+				"markMediansMs": {
+					"socket-created": 53.7,
+					"attached": 64.2,
+					"synced": 70.9,
+					"first-bytes": 569.1
+				},
+				"loafMedianBlockingMs": 0
+			},
+			{
+				"journey": "keystroke-echo",
+				"variant": "terminal",
+				"distribution": {
+					"n": 102,
+					"p50": 22,
+					"p75": 27.6,
+					"p95": 41,
+					"min": 9,
+					"max": 51.8,
+					"p95IsMax": false
+				},
+				"attempts": 102,
+				"timeouts": 0,
+				"invalid": 0,
+				"invalidReasons": {},
+				"markMediansMs": {
+					"input-sent": 0.8,
+					"echo-bytes": 6.5
+				},
+				"loafMedianBlockingMs": 0
+			},
+			{
+				"journey": "codex-composer-keystroke",
+				"variant": "textarea",
+				"distribution": {
+					"n": 51,
+					"p50": 8.8,
+					"p75": 9.6,
+					"p95": 13.9,
+					"min": 2.2,
+					"max": 17.4,
+					"p95IsMax": false
+				},
+				"attempts": 51,
+				"timeouts": 0,
+				"invalid": 0,
+				"invalidReasons": {},
+				"markMediansMs": {
+					"value-updated": 2.8
+				},
+				"loafMedianBlockingMs": 0
+			},
+			{
+				"journey": "codex-chat-composer",
+				"variant": "warm",
+				"distribution": {
+					"n": 30,
+					"p50": 42.6,
+					"p75": 48.5,
+					"p95": 52.1,
+					"min": 27.5,
+					"max": 55.1,
+					"p95IsMax": false
+				},
+				"attempts": 30,
+				"timeouts": 0,
+				"invalid": 0,
+				"invalidReasons": {},
+				"markMediansMs": {
+					"ready": 26
+				},
+				"loafMedianBlockingMs": 0
+			},
+			{
+				"journey": "quick-open-palette",
+				"variant": "open",
+				"distribution": {
+					"n": 30,
+					"p50": 42.5,
+					"p75": 48.3,
+					"p95": 60.7,
+					"min": 23.9,
+					"max": 62.7,
+					"p95IsMax": false
+				},
+				"attempts": 30,
+				"timeouts": 0,
+				"invalid": 0,
+				"invalidReasons": {},
+				"markMediansMs": {
+					"ready": 32.1
+				},
+				"loafMedianBlockingMs": 0
+			},
+			{
+				"journey": "quick-open-file",
+				"variant": "code-editor",
+				"distribution": {
+					"n": 30,
+					"p50": 96.6,
+					"p75": 104.3,
+					"p95": 132.6,
+					"min": 63.3,
+					"max": 192.7,
+					"p95IsMax": false
+				},
+				"attempts": 30,
+				"timeouts": 0,
+				"invalid": 0,
+				"invalidReasons": {},
+				"markMediansMs": {
+					"ready": 90.3
+				},
+				"loafMedianBlockingMs": 0
+			},
+			{
+				"journey": "changes-panel",
+				"variant": "warm",
+				"distribution": {
+					"n": 30,
+					"p50": 46.4,
+					"p75": 52.2,
+					"p95": 60.4,
+					"min": 26.1,
+					"max": 60.5,
+					"p95IsMax": false
+				},
+				"attempts": 30,
+				"timeouts": 0,
+				"invalid": 0,
+				"invalidReasons": {},
+				"markMediansMs": {
+					"ready": 34.9
+				},
+				"loafMedianBlockingMs": 0
+			},
+			{
+				"journey": "switch-workspace",
+				"variant": "revisit",
+				"distribution": {
+					"n": 30,
+					"p50": 82.3,
+					"p75": 86.4,
+					"p95": 102.8,
+					"min": 68.3,
+					"max": 105.4,
+					"p95IsMax": false
+				},
+				"attempts": 30,
+				"timeouts": 0,
+				"invalid": 0,
+				"invalidReasons": {},
+				"markMediansMs": {
+					"terminal-visible": 55.4,
+					"no-redial": 62.2
+				},
+				"loafMedianBlockingMs": 0
+			},
+			{
+				"journey": "changes-panel",
+				"variant": "cold",
+				"distribution": {
+					"n": 10,
+					"p50": 111.8,
+					"p75": 133.3,
+					"p95": 207.7,
+					"min": 65.4,
+					"max": 207.7,
+					"p95IsMax": true
+				},
+				"attempts": 10,
+				"timeouts": 0,
+				"invalid": 0,
+				"invalidReasons": {},
+				"markMediansMs": {
+					"ready": 111.4
+				},
+				"loafMedianBlockingMs": 0
+			},
+			{
+				"journey": "switch-workspace",
+				"variant": "first-visit",
+				"distribution": {
+					"n": 30,
+					"p50": 129,
+					"p75": 151.1,
+					"p95": 209.3,
+					"min": 93.2,
+					"max": 228.1,
+					"p95IsMax": false
+				},
+				"attempts": 30,
+				"timeouts": 0,
+				"invalid": 0,
+				"invalidReasons": {},
+				"markMediansMs": {
+					"terminal-visible": 76.4,
+					"socket-created": 124.1,
+					"attached": 154.5,
+					"synced": 167.7,
+					"no-redial": 88.2
+				},
+				"loafMedianBlockingMs": 0
+			},
+			{
+				"journey": "codex-chat-composer",
+				"variant": "cold-catalog",
+				"distribution": {
+					"n": 5,
+					"p50": 55.5,
+					"p75": 63,
+					"p95": 145.8,
+					"min": 20.5,
+					"max": 145.8,
+					"p95IsMax": true
+				},
+				"attempts": 6,
+				"timeouts": 0,
+				"invalid": 1,
+				"invalidReasons": {
+					"dialog-open": 1
+				},
+				"markMediansMs": {
+					"ready": 35.6
+				},
+				"loafMedianBlockingMs": 0
+			},
+			{
+				"journey": "claude-session",
+				"variant": "shell",
+				"distribution": {
+					"n": 10,
+					"p50": 406,
+					"p75": 415,
+					"p95": 476,
+					"min": 392.2,
+					"max": 476,
+					"p95IsMax": true
+				},
+				"attempts": 10,
+				"timeouts": 0,
+				"invalid": 0,
+				"invalidReasons": {},
+				"markMediansMs": {
+					"input-sent": 0.7,
+					"first-bytes": 3
+				},
+				"loafMedianBlockingMs": 0
+			},
+			{
+				"journey": "create-workspace",
+				"variant": "worktree-no-setup",
+				"distribution": {
+					"n": 10,
+					"p50": 1290.3,
+					"p75": 1327.3,
+					"p95": 1936.6,
+					"min": 1263.4,
+					"max": 1936.6,
+					"p95IsMax": true
+				},
+				"attempts": 10,
+				"timeouts": 0,
+				"invalid": 0,
+				"invalidReasons": {},
+				"markMediansMs": {
+					"workspace:create-settled": 1229.4,
+					"ready": 1254.2
+				},
+				"loafMedianBlockingMs": 24
+			}
+		],
+		"launch": {
+			"launches": 31,
+			"accepted": 30,
+			"frontmostConfirmed": 0,
+			"markers": [
+				{
+					"marker": "process-start",
+					"nodeOrigin": {
+						"n": 20,
+						"p50": 0,
+						"p75": 0,
+						"p95": 0,
+						"min": 0,
+						"max": 0,
+						"p95IsMax": false
+					},
+					"spawnOrigin": {
+						"n": 20,
+						"p50": 126.079791,
+						"p75": 132.892541,
+						"p95": 134.450625,
+						"min": 110.379334,
+						"max": 134.869709,
+						"p95IsMax": false
+					},
+					"missing": 0
+				},
+				{
+					"marker": "bootstrap-imports-end",
+					"nodeOrigin": {
+						"n": 20,
+						"p50": 165.633083,
+						"p75": 167.420459,
+						"p95": 169.260708,
+						"min": 164.649001,
+						"max": 175.604917,
+						"p95IsMax": false
+					},
+					"spawnOrigin": {
+						"n": 20,
+						"p50": 293.41546,
+						"p75": 298.236791,
+						"p95": 302.290168,
+						"min": 276.31879200000003,
+						"max": 309.663792,
+						"p95IsMax": false
+					},
+					"missing": 0
+				},
+				{
+					"marker": "app-ready",
+					"nodeOrigin": {
+						"n": 20,
+						"p50": 220.081792,
+						"p75": 223.201125,
+						"p95": 227.069916,
+						"min": 216.158375,
+						"max": 234.900125,
+						"p95IsMax": false
+					},
+					"spawnOrigin": {
+						"n": 20,
+						"p50": 347.030959,
+						"p75": 354.156585,
+						"p95": 358.070834,
+						"min": 328.606834,
+						"max": 368.959,
+						"p95IsMax": false
+					},
+					"missing": 0
+				},
+				{
+					"marker": "window-created",
+					"nodeOrigin": {
+						"n": 20,
+						"p50": 386.374417,
+						"p75": 389.400459,
+						"p95": 394.648041,
+						"min": 380.176458,
+						"max": 406.761292,
+						"p95IsMax": false
+					},
+					"spawnOrigin": {
+						"n": 20,
+						"p50": 515.7816250000001,
+						"p75": 520.02246,
+						"p95": 526.453124,
+						"min": 493.26079100000004,
+						"max": 540.8201670000001,
+						"p95IsMax": false
+					},
+					"missing": 0
+				},
+				{
+					"marker": "window-show",
+					"nodeOrigin": {
+						"n": 20,
+						"p50": 574.406166,
+						"p75": 576.321167,
+						"p95": 579.528542,
+						"min": 564.983166,
+						"max": 602.162542,
+						"p95IsMax": false
+					},
+					"spawnOrigin": {
+						"n": 20,
+						"p50": 701.579126,
+						"p75": 707.328751,
+						"p95": 712.421083,
+						"min": 678.067499,
+						"max": 736.221417,
+						"p95IsMax": false
+					},
+					"missing": 0
+				},
+				{
+					"marker": "react-commit",
+					"nodeOrigin": {
+						"n": 20,
+						"p50": 584.033083,
+						"p75": 586.381583,
+						"p95": 588.630333,
+						"min": 576.895958,
+						"max": 611.820375,
+						"p95IsMax": false
+					},
+					"spawnOrigin": {
+						"n": 20,
+						"p50": 710.761667,
+						"p75": 716.58821,
+						"p95": 721.522874,
+						"min": 690.279083,
+						"max": 745.87925,
+						"p95IsMax": false
+					},
+					"missing": 0
+				},
+				{
+					"marker": "shell-interactive",
+					"nodeOrigin": {
+						"n": 20,
+						"p50": 2173.059584,
+						"p75": 2233.217167,
+						"p95": 2776.497624,
+						"min": 1971.414125,
+						"max": 3178.246499,
+						"p95IsMax": false
+					},
+					"spawnOrigin": {
+						"n": 20,
+						"p50": 2299.139375,
+						"p75": 2348.184084,
+						"p95": 2898.84825,
+						"min": 2105.473,
+						"max": 3312.697124,
+						"p95IsMax": false
+					},
+					"missing": 0
+				},
+				{
+					"marker": "terminal-usable",
+					"nodeOrigin": {
+						"n": 20,
+						"p50": 2806.513,
+						"p75": 3564.09175,
+						"p95": 3818.4815,
+						"min": 2596.446584,
+						"max": 3847.638333,
+						"p95IsMax": false
+					},
+					"spawnOrigin": {
+						"n": 20,
+						"p50": 2926.212,
+						"p75": 3694.567917,
+						"p95": 3936.324168,
+						"min": 2729.308459,
+						"max": 3981.697208,
+						"p95IsMax": false
+					},
+					"missing": 0
+				}
+			],
+			"preNode": {
+				"n": 20,
+				"p50": 126.079791,
+				"p75": 132.892541,
+				"p95": 134.450625,
+				"min": 110.379334,
+				"max": 134.869709,
+				"p95IsMax": false
+			},
+			"perturbation": {
+				"marker": "shell-interactive",
+				"withInspectP50": 2173.059584,
+				"withoutInspectP50": 2197.768458,
+				"deltaPct": -1.1242710263703275
+			}
+		}
+	}
 }
