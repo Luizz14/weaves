@@ -33,6 +33,7 @@ def summarize(paths):
             'observed': len(values),
             'missing': len(paths) - len(values),
             'p50Ms': percentile(values, .5) if values else None,
+            'p75Ms': percentile(values, .75) if values else None,
             'p95Ms': percentile(values, .95) if values else None,
             'samplesMs': values,
         } for marker, values in samples.items()

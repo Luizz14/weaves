@@ -25,6 +25,8 @@
 		"check:pty-daemon-bundle": "bun run scripts/check-pty-daemon-bundle.ts",
 		"check:diff-worker-pool": "bun run scripts/check-diff-worker-pool.ts",
 		"profile:terminal-flood": "bun run scripts/cdp-terminal-flood-profile.ts",
+		"perf:journeys": "bun run scripts/perf-journeys/run.ts",
+		"perf:journeys:report": "bun run scripts/perf-journeys/run.ts --report",
 		"copy:native-modules": "bun run scripts/copy-native-modules.ts",
 		"validate:native-runtime": "bun run scripts/validate-native-runtime.ts",
 		"prebuild": "bun run clean:dev && bun run generate:icons && bun run compile:app && bun run copy:native-modules && bun run validate:native-runtime",
