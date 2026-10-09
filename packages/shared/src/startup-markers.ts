@@ -16,6 +16,7 @@ export const STARTUP_MARKER_LINE_PREFIX = "@@superset-startup ";
 export const STARTUP_DIAGNOSTICS_CHILD_ENV =
 	"SUPERSET_STARTUP_DIAGNOSTICS_CHILD";
 export const HOST_READY_LINE = "@@superset-host-ready";
+export const HOST_LOGIN_SHELL_MERGE_ENV = "SUPERSET_HOST_LOGIN_SHELL_MERGE";
 
 const MAX_CARRY_LENGTH = 4096;
 

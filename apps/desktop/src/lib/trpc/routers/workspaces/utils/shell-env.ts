@@ -72,6 +72,12 @@ export async function getShellEnvironment(
 	return { ...(await inFlightShellEnv) };
 }
 
+/** The cached shell env, or null while no probe has finished. Never probes. */
+export function getShellEnvironmentIfReady(): Record<string, string> | null {
+	const ttl = isFallbackCache ? fallbackCacheTtlMs : CACHE_TTL_MS;
+	return cachedEnv && Date.now() - cacheTime < ttl ? { ...cachedEnv } : null;
+}
+
 async function resolveShellEnvironment(): Promise<Record<string, string>> {
 	const now = Date.now();
 	try {

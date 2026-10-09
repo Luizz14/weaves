@@ -7,6 +7,7 @@
 
 import { serve } from "@hono/node-server";
 import {
+	applyLoginShellEnvToProcess,
 	captureFatalStartupError,
 	createApp,
 	detachFromLaunchDirectory,
@@ -27,7 +28,10 @@ import {
 	waitForTerminalBaseEnv,
 } from "@superset/host-service/terminal-env";
 import { connectRelay } from "@superset/host-service/tunnel";
-import { HOST_READY_LINE } from "@superset/shared/startup-markers";
+import {
+	HOST_LOGIN_SHELL_MERGE_ENV,
+	HOST_READY_LINE,
+} from "@superset/shared/startup-markers";
 import { loadToken } from "lib/trpc/routers/auth/utils/auth-functions";
 import {
 	type HostServiceManifest,
@@ -98,6 +102,10 @@ async function main(): Promise<void> {
 	void waitForTerminalBaseEnv().then(() =>
 		markHostStartup("host-terminal-env-ready"),
 	);
+	if (process.env[HOST_LOGIN_SHELL_MERGE_ENV] === "1") {
+		delete process.env[HOST_LOGIN_SHELL_MERGE_ENV];
+		void applyLoginShellEnvToProcess(process.env, { pathPrecedence: "shell" });
+	}
 	void waitForDaemonReady(env.ORGANIZATION_ID).catch(() => {});
 
 	const authProvider = new JwtApiAuthProvider({

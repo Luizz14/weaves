@@ -16,6 +16,7 @@ export type { HostAuthProvider } from "./providers/host-auth";
 export { PskHostAuthProvider } from "./providers/host-auth";
 export { resolveBrowserBridgeFromEnv } from "./runtime/browser-bridge/env";
 export type { GitCredentialProvider, GitFactory } from "./runtime/git";
+export { applyLoginShellEnvToProcess } from "./runtime/login-shell-env";
 export {
 	markHostStartup,
 	processStartHrtime,

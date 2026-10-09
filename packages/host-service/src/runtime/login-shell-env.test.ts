@@ -71,6 +71,35 @@ describe("applyLoginShellEnvToProcess", () => {
 		expect(target.EDITOR).toBe("vim");
 	});
 
+	it("puts the shell PATH first when asked to, keeping launcher-only entries", async () => {
+		initTerminalBaseEnv({
+			PATH: "/Users/u/.nvm/versions/node/v24/bin:/opt/homebrew/bin:/usr/bin",
+		});
+		const target = { PATH: "/opt/homebrew/bin:/usr/bin:/bin" };
+
+		await applyLoginShellEnvToProcess(target, { pathPrecedence: "shell" });
+
+		expect(target.PATH).toBe(
+			"/Users/u/.nvm/versions/node/v24/bin:/opt/homebrew/bin:/usr/bin:/bin",
+		);
+	});
+
+	it("never imports the relay or browser bridge endpoints from the shell", async () => {
+		initTerminalBaseEnv({
+			PATH: "/usr/bin",
+			RELAY_URL: "wss://relay.example",
+			BROWSER_BRIDGE_URL: "http://127.0.0.1:1",
+			BROWSER_BRIDGE_SECRET: "shell-secret",
+		});
+		const target: NodeJS.ProcessEnv = { PATH: "/usr/bin" };
+
+		await applyLoginShellEnvToProcess(target);
+
+		expect(target.RELAY_URL).toBeUndefined();
+		expect(target.BROWSER_BRIDGE_URL).toBeUndefined();
+		expect(target.BROWSER_BRIDGE_SECRET).toBeUndefined();
+	});
+
 	it("adopts the shell PATH when the launcher has none", async () => {
 		initTerminalBaseEnv({ PATH: "/opt/homebrew/bin:/usr/bin" });
 		const target: NodeJS.ProcessEnv = {};

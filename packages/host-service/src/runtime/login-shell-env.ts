@@ -13,6 +13,10 @@ const MERGE_DENYLIST = new Set([
 	"NODE_OPTIONS",
 	"ELECTRON_RUN_AS_NODE",
 	"SUPERSET_HOST_INSTALL_SOURCE",
+	// The desktop strips these on purpose when relay or the bridge is off.
+	"RELAY_URL",
+	"BROWSER_BRIDGE_URL",
+	"BROWSER_BRIDGE_SECRET",
 ]);
 
 /**
@@ -32,6 +36,9 @@ const MERGE_DENYLIST = new Set([
  */
 export async function applyLoginShellEnvToProcess(
 	targetEnv: NodeJS.ProcessEnv = process.env,
+	{
+		pathPrecedence = "launcher",
+	}: { pathPrecedence?: "launcher" | "shell" } = {},
 ): Promise<void> {
 	try {
 		await waitForTerminalBaseEnv();
@@ -49,11 +56,18 @@ export async function applyLoginShellEnvToProcess(
 			.split(path.delimiter)
 			.filter(Boolean);
 		const currentSet = new Set(current);
-		const missing = shellPath
-			.split(path.delimiter)
-			.filter((entry) => entry && !currentSet.has(entry));
+		const shellEntries = shellPath.split(path.delimiter).filter(Boolean);
+		const missing = shellEntries.filter((entry) => !currentSet.has(entry));
 		if (missing.length === 0) return;
-		targetEnv.PATH = [...current, ...missing].join(path.delimiter);
+		if (pathPrecedence === "shell") {
+			const shellSet = new Set(shellEntries);
+			targetEnv.PATH = [
+				...shellEntries,
+				...current.filter((entry) => !shellSet.has(entry)),
+			].join(path.delimiter);
+		} else {
+			targetEnv.PATH = [...current, ...missing].join(path.delimiter);
+		}
 		console.log(
 			`[host-service] merged ${missing.length} login-shell PATH entries into process env`,
 		);

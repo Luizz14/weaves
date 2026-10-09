@@ -10,6 +10,7 @@ import { organizations, settings } from "@superset/local-db";
 import { getHostId, getHostName } from "@superset/shared/host-info";
 import { HOST_INSTALL_SOURCE_ENV } from "@superset/shared/host-version";
 import {
+	HOST_LOGIN_SHELL_MERGE_ENV,
 	HOST_READY_LINE,
 	parseStartupMarkerLines,
 	STARTUP_DIAGNOSTICS_CHILD_ENV,
@@ -19,7 +20,11 @@ import { app, dialog } from "electron";
 import log from "electron-log/main";
 import { env as sharedEnv } from "shared/env.shared";
 import type { StartupMarker } from "shared/startup-diagnostics";
-import { getProcessEnvWithShellPath } from "../../lib/trpc/routers/workspaces/utils/shell-env";
+import {
+	augmentPathForMacOS,
+	getProcessEnvWithShellPath,
+	getShellEnvironmentIfReady,
+} from "../../lib/trpc/routers/workspaces/utils/shell-env";
 import { env as mainEnv } from "../env.main";
 import { SUPERSET_HOME_DIR } from "./app-environment";
 import { getBrowserBridgeInfo } from "./browser/browser-bridge-info";
@@ -1094,7 +1099,7 @@ export class HostServiceCoordinator extends EventEmitter {
 		const exposeViaRelay = row?.exposeHostServiceViaRelay ?? false;
 		const browserBridge = getBrowserBridgeInfo();
 
-		const childEnv = await getProcessEnvWithShellPath({
+		const baseEnv: Record<string, string> = {
 			...(process.env as Record<string, string>),
 			ELECTRON_RUN_AS_NODE: "1",
 			NODE_ENV: app.isPackaged
@@ -1153,7 +1158,17 @@ export class HostServiceCoordinator extends EventEmitter {
 			// Read by the child's parent watchdog so it can self-exit if
 			// Electron crashes without sending SIGTERM (orphan reparenting).
 			HOST_PARENT_PID: String(process.pid),
-		});
+		};
+		// At launch main's own login-shell probe is still running; waiting for it
+		// held every host spawn for a full `zsh -il`. The child merges the shell
+		// env itself once its own probe (which it runs anyway) resolves.
+		let childEnv: Record<string, string>;
+		if (getShellEnvironmentIfReady()) {
+			childEnv = await getProcessEnvWithShellPath(baseEnv);
+		} else {
+			childEnv = { ...baseEnv, [HOST_LOGIN_SHELL_MERGE_ENV]: "1" };
+			augmentPathForMacOS(childEnv);
+		}
 
 		// `getProcessEnvWithShellPath` merges in the user's interactive shell env,
 		// which in dev has `RELAY_URL` set. Enforce the toggle *after* that merge
