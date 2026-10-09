@@ -27,6 +27,7 @@ import {
 	waitForTerminalBaseEnv,
 } from "@superset/host-service/terminal-env";
 import { connectRelay } from "@superset/host-service/tunnel";
+import { HOST_READY_LINE } from "@superset/shared/startup-markers";
 import { loadToken } from "lib/trpc/routers/auth/utils/auth-functions";
 import {
 	type HostServiceManifest,
@@ -137,6 +138,7 @@ async function main(): Promise<void> {
 		{ fetch: app.fetch, port: env.HOST_SERVICE_PORT, hostname: "127.0.0.1" },
 		(info: { port: number }) => {
 			markHostStartup("host-listening");
+			process.stdout.write(`${HOST_READY_LINE}\n`);
 			// Install only after the server is listening so startup throws still
 			// reach `main().catch(...)` and exit with a non-zero code.
 			installProcessSafetyNet();

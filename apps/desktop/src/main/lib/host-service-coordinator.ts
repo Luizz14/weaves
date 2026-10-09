@@ -10,6 +10,7 @@ import { organizations, settings } from "@superset/local-db";
 import { getHostId, getHostName } from "@superset/shared/host-info";
 import { HOST_INSTALL_SOURCE_ENV } from "@superset/shared/host-version";
 import {
+	HOST_READY_LINE,
 	parseStartupMarkerLines,
 	STARTUP_DIAGNOSTICS_CHILD_ENV,
 } from "@superset/shared/startup-markers";
@@ -971,6 +972,19 @@ export class HostServiceCoordinator extends EventEmitter {
 				logStream?.write(chunk);
 			});
 		}
+		const listening = new Promise<void>((resolve) => {
+			let carry = "";
+			const onData = (chunk: Buffer) => {
+				const text = carry + chunk.toString("utf8");
+				if (text.includes(HOST_READY_LINE)) {
+					child.stdout?.off("data", onData);
+					resolve();
+					return;
+				}
+				carry = text.slice(-HOST_READY_LINE.length);
+			};
+			child.stdout?.on("data", onData);
+		});
 		const diagnostics = this.startupDiagnostics;
 		if (diagnostics && this.isDiagnosticsOrganization(organizationId)) {
 			let carry = "";
@@ -1015,6 +1029,7 @@ export class HostServiceCoordinator extends EventEmitter {
 			secret,
 			HEALTH_POLL_TIMEOUT_MS,
 			() => childExited || !isStartAllowed(),
+			listening,
 		);
 		if (!healthy || !isStartAllowed()) {
 			if (!isStartAllowed())

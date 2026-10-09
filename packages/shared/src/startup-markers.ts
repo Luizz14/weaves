@@ -15,6 +15,7 @@ export type HostStartupMarker = (typeof HOST_STARTUP_MARKERS)[number];
 export const STARTUP_MARKER_LINE_PREFIX = "@@superset-startup ";
 export const STARTUP_DIAGNOSTICS_CHILD_ENV =
 	"SUPERSET_STARTUP_DIAGNOSTICS_CHILD";
+export const HOST_READY_LINE = "@@superset-host-ready";
 
 const MAX_CARRY_LENGTH = 4096;
 

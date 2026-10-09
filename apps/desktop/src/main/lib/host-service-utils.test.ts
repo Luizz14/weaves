@@ -1,5 +1,10 @@
 import { describe, expect, test } from "bun:test";
-import { redactCrashTail } from "./host-service-utils";
+import { createServer } from "node:http";
+import {
+	findFreePort,
+	pollHealthCheck,
+	redactCrashTail,
+} from "./host-service-utils";
 
 /**
  * A tail shaped like the ones host-service crashes actually attach: worktree
@@ -136,5 +141,29 @@ describe("redactCrashTail", () => {
 
 			expect(redacted).toBe("~/x told [redacted] to ~/y");
 		});
+	});
+});
+
+describe("pollHealthCheck", () => {
+	test("retries as soon as the child reports it is listening", async () => {
+		const port = await findFreePort();
+		const server = createServer((_req, res) => res.end("ok"));
+		const listening = new Promise<void>((resolve) => {
+			setTimeout(() => server.listen(port, "127.0.0.1", resolve), 60);
+		});
+		try {
+			const startedAt = performance.now();
+			const healthy = await pollHealthCheck(
+				`http://127.0.0.1:${port}`,
+				"secret",
+				5_000,
+				undefined,
+				listening,
+			);
+			expect(healthy).toBe(true);
+			expect(performance.now() - startedAt).toBeLessThan(150);
+		} finally {
+			server.close();
+		}
 	});
 });

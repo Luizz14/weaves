@@ -75,8 +75,15 @@ export async function pollHealthCheck(
 	// crash-on-startup would stall the caller for the full (now generous)
 	// timeout instead of failing fast.
 	shouldAbort?: () => boolean,
+	listening?: Promise<void>,
 ): Promise<boolean> {
 	const deadline = Date.now() + timeoutMs;
+	let wakePending = false;
+	let wake: (() => void) | null = null;
+	void listening?.then(() => {
+		wakePending = true;
+		wake?.();
+	});
 	while (Date.now() < deadline) {
 		if (shouldAbort?.()) return false;
 		const controller = new AbortController();
@@ -92,7 +99,18 @@ export async function pollHealthCheck(
 		} finally {
 			clearTimeout(timeout);
 		}
-		await new Promise((r) => setTimeout(r, HEALTH_POLL_INTERVAL_MS));
+		if (wakePending) {
+			wakePending = false;
+			continue;
+		}
+		await new Promise<void>((resolve) => {
+			const timer = setTimeout(resolve, HEALTH_POLL_INTERVAL_MS);
+			wake = () => {
+				clearTimeout(timer);
+				resolve();
+			};
+		});
+		wake = null;
 	}
 	return false;
 }
