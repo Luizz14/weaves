@@ -3,6 +3,7 @@ import {
 	__resetDocumentStoreForTesting,
 	acquireDocument,
 	getDocument,
+	observeDocumentSaves,
 	prefetchDocument,
 	releaseDocument,
 	setPinnedDocuments,
@@ -196,4 +197,57 @@ test("a prefetch that fails to read leaves nothing behind", async () => {
 	prefetchDocument(workspaceId, "/w/gone.ts", client);
 	await settle();
 	expect(getDocument(workspaceId, "/w/gone.ts")).toBeNull();
+});
+
+test("save observers distinguish manual, autosave and Flutter saves and report failures", async () => {
+	const events: Array<{ origin: string; phase: string; status?: string }> = [];
+	let fail = false;
+	const client = {
+		filesystem: {
+			readFile: {
+				query: async () => ({
+					kind: "text",
+					content: "old",
+					revision: "1",
+					byteLength: 3,
+				}),
+			},
+			writeFile: {
+				mutate: async () => {
+					if (fail) throw new Error("offline");
+					return { ok: true, revision: "2" };
+				},
+			},
+		},
+	} as unknown as Parameters<typeof acquireDocument>[2];
+	const workspaceId = crypto.randomUUID(),
+		path = "/workspace/save-origin.dart";
+	const document = acquireDocument(workspaceId, path, client);
+	await Promise.resolve();
+	const unsubscribe = observeDocumentSaves((event) => {
+		if (event.document.id === document.id)
+			events.push({
+				origin: event.origin,
+				phase: event.phase,
+				status: event.result?.status,
+			});
+	});
+	try {
+		document.setContent("manual");
+		await document.save();
+		document.setContent("auto");
+		await document.save({ origin: "autosave" });
+		fail = true;
+		document.setContent("flutter");
+		await document.save({ origin: "flutter-action" });
+		expect(events.filter((event) => event.phase === "complete")).toEqual([
+			{ origin: "manual", phase: "complete", status: "saved" },
+			{ origin: "autosave", phase: "complete", status: "saved" },
+			{ origin: "flutter-action", phase: "complete", status: "error" },
+		]);
+		expect(document.dirty).toBe(true);
+	} finally {
+		unsubscribe();
+		releaseDocument(workspaceId, path);
+	}
 });

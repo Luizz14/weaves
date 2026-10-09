@@ -7215,6 +7215,24 @@ msgstr ""
 msgid "Fleets of agents plan, implement, review, and test each other's work. Humans set direction, arbitrate exceptions, and own taste. The unit of human attention is no longer the pull request. It is the decision."
 msgstr "Флоты агентов планируют, реализуют, проверяют и тестируют работу друг друга. Люди задают направление, разбирают исключения и отвечают за вкус. Единица человеческого внимания — уже не пул-реквест, а решение."
 
+msgid "Flutter"
+msgstr ""
+
+msgid "Flutter configuration"
+msgstr ""
+
+msgid "Flutter device"
+msgstr ""
+
+msgid "Flutter Inspector"
+msgstr ""
+
+msgid "Flutter logs"
+msgstr ""
+
+msgid "Flutter session ended"
+msgstr ""
+
 msgid "Focus Chat Input"
 msgstr "Фокус на поле чата"
 
@@ -7901,6 +7919,12 @@ msgstr "Размещена в облаке"
 msgid "Hosts"
 msgstr "Хосты"
 
+msgid "Hot reload"
+msgstr ""
+
+msgid "Hot restart"
+msgstr ""
+
 msgid "Hotkey chip"
 msgstr "Чип горячей клавиши"
 
@@ -8256,6 +8280,12 @@ msgstr "Мысли команды Superset о параллельных кодо�
 #. placeholder {0}: data.targetTitle
 msgid "Inspecting {0}"
 msgstr "Инспектируем {0}"
+
+msgid "Inspector"
+msgstr ""
+
+msgid "Inspector is available for a running debug session"
+msgstr ""
 
 msgid "Install"
 msgstr "Установить"
@@ -9185,6 +9215,9 @@ msgstr "Удержание клиентов — по месяцам"
 
 msgid "Logo updated"
 msgstr "Логотип обновлён"
+
+msgid "Logs"
+msgstr ""
 
 msgid "Long-horizon reliability crosses a threshold. Work assigned at 6pm is mergeable at 9am often enough that not scheduling the overnight shift feels like leaving a factory idle."
 msgstr "Надёжность на длинной дистанции переходит порог. Работа, выданная в 18:00, достаточно часто готова к объединению в 9:00, чтобы не поставить ночную смену казалось простоем фабрики."
@@ -11314,6 +11347,9 @@ msgstr "Открыть рабочую область запуска"
 msgid "open the task in a workspace"
 msgstr "открыть задачу в рабочей области"
 
+msgid "Open widget source"
+msgstr ""
+
 msgid "Open work item"
 msgstr ""
 
@@ -12683,6 +12719,9 @@ msgstr "Обновить"
 msgid "Refresh Azure DevOps board"
 msgstr "Refresh Azure DevOps board"
 
+msgid "Refresh devices"
+msgstr ""
+
 msgid "Refresh GitHub issues"
 msgstr "Обновить задачи GitHub"
 
@@ -12757,6 +12796,9 @@ msgstr "Перезагрузите Superset, чтобы обновить спи�
 
 msgid "Reload window"
 msgstr "Перезагрузить окно"
+
+msgid "Reloading"
+msgstr ""
 
 msgid "Relocate"
 msgstr "Переместить"
@@ -13153,6 +13195,9 @@ msgstr "Закрыть обсуждение"
 msgid "Resolve Conversations to Merge"
 msgstr "Закройте обсуждения для слияния"
 
+msgid "Resolve file conflicts before running Flutter"
+msgstr ""
+
 msgid "resolve the workspace path"
 msgstr "определить путь к рабочей области"
 
@@ -13508,6 +13553,9 @@ msgstr "Запускайте автоматизации при изменени�
 msgid "Run commands and navigate the application."
 msgstr "Выполняйте команды и перемещайтесь по приложению."
 
+msgid "Run Flutter"
+msgstr ""
+
 msgid "Run History"
 msgstr "История запусков"
 
@@ -13621,6 +13669,9 @@ msgstr "Экономия 25%"
 
 msgid "Save All"
 msgstr "Сохранить всё"
+
+msgid "Save all files before running Flutter"
+msgstr ""
 
 msgid "Save and test"
 msgstr "Сохранить и проверить"
@@ -14072,6 +14123,9 @@ msgstr "Выбрать источники данных"
 msgid "Select default worktree location"
 msgstr "Выберите расположение worktree по умолчанию"
 
+msgid "Select device"
+msgstr ""
+
 msgid "Select Directory"
 msgstr "Выберите папку"
 
@@ -14137,6 +14191,9 @@ msgstr "Выбрать команды"
 
 msgid "Select terminal script directory"
 msgstr "Выберите папку скрипта терминала"
+
+msgid "Select widget"
+msgstr ""
 
 msgid "Select worktree location"
 msgstr "Выберите расположение worktree"
@@ -15216,6 +15273,9 @@ msgstr "Остановить команду запуска рабочей обл
 
 msgid "stopped"
 msgstr "остановлена"
+
+msgid "Stopping"
+msgstr ""
 
 msgid "Strikethrough"
 msgstr "Зачёркнутый"

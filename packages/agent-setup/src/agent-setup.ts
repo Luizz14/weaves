@@ -55,6 +55,7 @@ import {
 } from "./agent-wrappers";
 import { createArtifactGuardScript } from "./artifact-guard-hook";
 import { resolveDisabledSkillIds } from "./disabled-skills";
+import { createIdeContextHook } from "./ide-context-hook";
 import { createManagedSkills } from "./managed-skills";
 import { createNotifyScript } from "./notify-hook";
 
@@ -64,6 +65,7 @@ type LabeledAction = readonly [label: string, action: () => void];
 const BOOTSTRAP_SETUP: readonly LabeledAction[] = [
 	["cleanup-global-opencode-plugin", cleanupGlobalOpenCodePlugin],
 	["notify-script", createNotifyScript],
+	["ide-context-script", createIdeContextHook],
 	["artifact-guard-script", createArtifactGuardScript],
 ];
 

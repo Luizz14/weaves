@@ -2,7 +2,7 @@ import { cn } from "@superset/ui/utils";
 import type { ReactNode } from "react";
 import { HiChevronRight } from "react-icons/hi2";
 import type { SidebarSectionKey } from "renderer/stores/sidebar-sections-collapse";
-import { useSidebarSectionsCollapseStore } from "renderer/stores/sidebar-sections-collapse";
+import { useSidebarSectionCollapse } from "renderer/stores/sidebar-sections-collapse";
 
 interface DashboardSidebarSectionHeaderProps {
 	label: string;
@@ -29,10 +29,7 @@ export function DashboardSidebarSectionHeader({
 	labelHidden = false,
 	children,
 }: DashboardSidebarSectionHeaderProps) {
-	const isCollapsed = useSidebarSectionsCollapseStore(
-		(s) => s.collapsed[section],
-	);
-	const toggle = useSidebarSectionsCollapseStore((s) => s.toggle);
+	const { isCollapsed, toggle } = useSidebarSectionCollapse(section);
 
 	return (
 		// biome-ignore lint/a11y/useSemanticElements: can't be a native <button> — it may nest action buttons
@@ -42,11 +39,11 @@ export function DashboardSidebarSectionHeader({
 			// The visible label is the accessible name; keep it when the label is
 			// hidden so the toggle is never an unnamed button.
 			aria-label={label}
-			onClick={() => toggle(section)}
+			onClick={() => toggle()}
 			onKeyDown={(event) => {
 				if (event.key === "Enter" || event.key === " ") {
 					event.preventDefault();
-					toggle(section);
+					toggle();
 				}
 			}}
 			className="group flex h-7 w-full shrink-0 items-center gap-1.5 pl-4 pr-2 text-[10px] font-semibold uppercase tracking-[0.075em] text-muted-foreground transition-colors"

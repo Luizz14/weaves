@@ -8,7 +8,6 @@ import { electronTrpc } from "renderer/lib/electron-trpc";
 import { AUTO_UPDATE_STATUS } from "shared/auto-update";
 import { CountdownBorder } from "./CountdownBorder";
 import { PreUpdateConfirmPopover } from "./components/PreUpdateConfirmPopover";
-import { DownloadRing } from "./DownloadRing";
 import { useAutoUpdateStatus } from "./useAutoUpdateStatus";
 
 const STROKE_WIDTH = 1.5;
@@ -66,10 +65,9 @@ interface UpdatesPillProps {
 
 /**
  * Compact auto-update indicator that lives in the sidebar's bottom
- * settings cluster: a progress ring while downloading, a quiet
- * "↑ update" pill with a green ready dot (click to install), a micro
- * ASCII loader while installing, and a red "↻ retry" pill on failure.
- * Renders nothing while the app is up to date.
+ * settings cluster: a quiet "↑ update" pill with a green ready dot
+ * (click to install), a micro ASCII loader while installing, and a red
+ * "↻ retry" pill on failure. Renders nothing while downloading or up to date.
  */
 export function UpdatesPill({ isCollapsed = false }: UpdatesPillProps) {
 	const event = useAutoUpdateStatus();
@@ -118,7 +116,6 @@ export function UpdatesPill({ isCollapsed = false }: UpdatesPillProps) {
 	const isDissolving = isUpdated && isLeaving;
 
 	if (
-		status !== AUTO_UPDATE_STATUS.DOWNLOADING &&
 		status !== AUTO_UPDATE_STATUS.READY &&
 		status !== AUTO_UPDATE_STATUS.ERROR &&
 		!isUpdated
@@ -126,12 +123,10 @@ export function UpdatesPill({ isCollapsed = false }: UpdatesPillProps) {
 		return null;
 	}
 
-	const isDownloading = status === AUTO_UPDATE_STATUS.DOWNLOADING;
 	const isError = status === AUTO_UPDATE_STATUS.ERROR;
 	const isReady = status === AUTO_UPDATE_STATUS.READY;
-	const isBusy = isDownloading || isInstalling || isUpdated;
+	const isBusy = isInstalling || isUpdated;
 	const version = event?.version;
-	const percent = event?.progress?.percent ?? null;
 	const spinnerGlyph = SPINNER_FRAMES[frame % SPINNER_FRAMES.length];
 
 	const startInstall = () => {
@@ -156,13 +151,11 @@ export function UpdatesPill({ isCollapsed = false }: UpdatesPillProps) {
 	const shortVersion = version ? ` v${tooltipVersion(version)}` : "";
 	const tooltip = isInstalling
 		? "Installing update…"
-		: isDownloading
-			? `Downloading${shortVersion || " update"}`
-			: isError
-				? `${event?.error ?? "Update failed"} — click to retry`
-				: isUpdated
-					? `Updated${shortVersion ? ` to${shortVersion}` : ""}`
-					: `Install${shortVersion || " update"} — sessions keep running`;
+		: isError
+			? `${event?.error ?? "Update failed"} — click to retry`
+			: isUpdated
+				? `Updated${shortVersion ? ` to${shortVersion}` : ""}`
+				: `Install${shortVersion || " update"} — sessions keep running`;
 
 	const pill = isCollapsed ? (
 		<Tooltip delayDuration={1000}>
@@ -186,9 +179,7 @@ export function UpdatesPill({ isCollapsed = false }: UpdatesPillProps) {
 					}
 				>
 					{isUpdated && <CountdownBorder durationMs={CONFIRM_MS} radius={5} />}
-					{isDownloading ? (
-						<DownloadRing percent={percent} className="size-3.5" />
-					) : isInstalling ? (
+					{isInstalling ? (
 						<span className="font-mono text-xs leading-none text-orange-600 dark:text-orange-300">
 							{spinnerGlyph}
 						</span>
@@ -227,9 +218,9 @@ export function UpdatesPill({ isCollapsed = false }: UpdatesPillProps) {
 						"font-mono text-[10px] tabular-nums leading-none",
 						"ring-1 ring-inset animate-in fade-in slide-in-from-bottom-1 duration-300",
 						isBusy && "cursor-default",
-						(isDownloading || isInstalling || isUpdated || isReady) &&
+						(isInstalling || isUpdated || isReady) &&
 							"bg-foreground/[0.045] ring-foreground/[0.06]",
-						(isDownloading || isUpdated) && "text-muted-foreground",
+						isUpdated && "text-muted-foreground",
 						isInstalling && "text-orange-600 dark:text-orange-300",
 						isReady &&
 							!isInstalling &&
@@ -252,11 +243,6 @@ export function UpdatesPill({ isCollapsed = false }: UpdatesPillProps) {
 								{spinnerGlyph}
 							</span>
 							<span className="tracking-tighter">{asciiBar(frame)}</span>
-						</>
-					) : isDownloading ? (
-						<>
-							<DownloadRing percent={percent} className="size-3" />
-							<span>{percent !== null ? `${Math.floor(percent)}%` : "…"}</span>
 						</>
 					) : isUpdated ? (
 						<>

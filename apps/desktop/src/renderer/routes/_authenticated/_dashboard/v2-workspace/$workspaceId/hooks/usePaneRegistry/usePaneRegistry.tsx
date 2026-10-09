@@ -20,6 +20,7 @@ import {
 	Globe,
 	MessageSquare,
 	Monitor,
+	ScrollText,
 } from "lucide-react";
 import { useFeatureFlagEnabled } from "posthog-js/react";
 import { useCallback, useMemo } from "react";
@@ -33,6 +34,7 @@ import {
 	LuLink,
 	LuPower,
 } from "react-icons/lu";
+import { SiFlutter } from "react-icons/si";
 import { useWorkspaceHostTarget } from "renderer/hooks/host-service/useWorkspaceHostUrl";
 import { useHotkeyDisplay } from "renderer/hotkeys";
 import { FileIcon } from "renderer/lib/fileIcons";
@@ -47,6 +49,7 @@ import { useWorkspace } from "renderer/routes/_authenticated/_dashboard/v2-works
 import { useCollections } from "renderer/routes/_authenticated/providers/CollectionsProvider";
 import { getV2NotificationSourcesForPane } from "renderer/stores/v2-notifications";
 import type { StoreApi } from "zustand/vanilla";
+import { FlutterPane } from "../../components/FlutterPane";
 import { V2NotificationStatusIndicator } from "../../components/V2NotificationStatusIndicator";
 import {
 	getDocument,
@@ -1051,6 +1054,22 @@ export function usePaneRegistry({
 						},
 					}
 				: {}),
+			"flutter-inspector": {
+				hideHeaderWhenSolo: true,
+				getIcon: () => <SiFlutter className="size-4 text-sky-500" />,
+				getTitle: () => t({ message: "Flutter Inspector" }),
+				renderPane: (ctx: RendererContext<PaneViewerData>) => (
+					<FlutterPane ctx={ctx} />
+				),
+			},
+			"flutter-output": {
+				hideHeaderWhenSolo: true,
+				getIcon: () => <ScrollText className="size-4" />,
+				getTitle: () => t({ message: "Flutter logs" }),
+				renderPane: (ctx: RendererContext<PaneViewerData>) => (
+					<FlutterPane ctx={ctx} />
+				),
+			},
 			devtools: {
 				hideHeaderWhenSolo: true,
 				getTitle: () =>

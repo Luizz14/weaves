@@ -8,7 +8,9 @@ import {
 	type FolderTierMap,
 	type LinkAction,
 	type LinkTierMap,
+	type OrganizationSidebarSectionKey,
 	type SidebarProjectSortMode,
+	sidebarSectionsCollapsedSchema,
 	V2_USER_PREFERENCES_ID,
 	type V2UserPreferencesRow,
 } from "renderer/routes/_authenticated/providers/CollectionsProvider/dashboardSidebarLocal/schema";
@@ -28,6 +30,12 @@ export interface V2UserPreferencesApi {
 	toggleShowPresetsBar: () => void;
 	setChangesViewMode: (next: ChangesViewMode) => void;
 	setSidebarProjectSortMode: (next: SidebarProjectSortMode) => void;
+	toggleSidebarSectionCollapsed: (
+		section: OrganizationSidebarSectionKey,
+	) => void;
+	importLegacySidebarSectionsCollapsed: (
+		collapsed: V2UserPreferencesRow["sidebarSectionsCollapsed"],
+	) => void;
 	setBuiltinPresetHidden: (presetId: string, hidden: boolean) => void;
 	/** Hide/show a tag folder in one project without touching anyone's tags. */
 	setTagFolderHidden: (projectId: string, tag: string, hidden: boolean) => void;
@@ -40,11 +48,18 @@ export function useV2UserPreferences(): V2UserPreferencesApi {
 		(query) =>
 			query
 				.from({ prefs: collections.v2UserPreferences })
-				.where(({ prefs }) => eq(prefs.id, V2_USER_PREFERENCES_ID)),
+				.where(({ prefs }) => eq(prefs.id, V2_USER_PREFERENCES_ID))
+				.select(({ prefs }) => ({
+					preferences: prefs,
+					organizationId: collections.activeOrganizationId,
+				})),
 		[collections],
 	);
 
-	const preferences = rows[0] ?? DEFAULT_V2_USER_PREFERENCES;
+	const preferences =
+		rows[0]?.organizationId === collections.activeOrganizationId
+			? rows[0].preferences
+			: DEFAULT_V2_USER_PREFERENCES;
 
 	const upsertTierMap = useCallback(
 		(key: "fileLinks" | "urlLinks" | "sidebarFileLinks", next: LinkTierMap) => {
@@ -264,6 +279,53 @@ export function useV2UserPreferences(): V2UserPreferencesApi {
 		[collections],
 	);
 
+	const toggleSidebarSectionCollapsed = useCallback(
+		(section: OrganizationSidebarSectionKey) => {
+			const existing = collections.v2UserPreferences.get(
+				V2_USER_PREFERENCES_ID,
+			);
+			const previous = sidebarSectionsCollapsedSchema.parse(
+				existing?.sidebarSectionsCollapsed ?? {},
+			);
+			const next = { ...previous, [section]: !previous[section] };
+			if (!existing) {
+				collections.v2UserPreferences.insert({
+					...DEFAULT_V2_USER_PREFERENCES,
+					sidebarSectionsCollapsed: next,
+					sidebarSectionsCollapseInitialized: true,
+				});
+				return;
+			}
+			collections.v2UserPreferences.update(V2_USER_PREFERENCES_ID, (draft) => {
+				draft.sidebarSectionsCollapsed = next;
+				draft.sidebarSectionsCollapseInitialized = true;
+			});
+		},
+		[collections],
+	);
+
+	const importLegacySidebarSectionsCollapsed = useCallback(
+		(collapsed: V2UserPreferencesRow["sidebarSectionsCollapsed"]) => {
+			const existing = collections.v2UserPreferences.get(
+				V2_USER_PREFERENCES_ID,
+			);
+			if (existing?.sidebarSectionsCollapseInitialized) return;
+			if (!existing) {
+				collections.v2UserPreferences.insert({
+					...DEFAULT_V2_USER_PREFERENCES,
+					sidebarSectionsCollapsed: collapsed,
+					sidebarSectionsCollapseInitialized: true,
+				});
+				return;
+			}
+			collections.v2UserPreferences.update(V2_USER_PREFERENCES_ID, (draft) => {
+				draft.sidebarSectionsCollapsed = collapsed;
+				draft.sidebarSectionsCollapseInitialized = true;
+			});
+		},
+		[collections],
+	);
+
 	const setBuiltinPresetHidden = useCallback(
 		(presetId: string, hidden: boolean) => {
 			const existing = collections.v2UserPreferences.get(
@@ -343,6 +405,8 @@ export function useV2UserPreferences(): V2UserPreferencesApi {
 		toggleShowPresetsBar,
 		setChangesViewMode,
 		setSidebarProjectSortMode,
+		toggleSidebarSectionCollapsed,
+		importLegacySidebarSectionsCollapsed,
 		setBuiltinPresetHidden,
 		setTagFolderHidden,
 	};

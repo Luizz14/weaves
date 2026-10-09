@@ -1,7 +1,7 @@
 import { useLingui } from "@lingui/react/macro";
 import { useMemo } from "react";
 import { useHostWorkspaces } from "renderer/routes/_authenticated/providers/HostWorkspacesProvider";
-import { useSidebarSectionsCollapseStore } from "renderer/stores/sidebar-sections-collapse";
+import { useSidebarSectionCollapse } from "renderer/stores/sidebar-sections-collapse";
 import { buildDashboardSidebarUserStories } from "../../utils/buildDashboardSidebarUserStories";
 import { DashboardSidebarSectionHeader } from "../DashboardSidebarSectionHeader";
 import { SidebarRevealItem } from "../SidebarRevealItem";
@@ -26,9 +26,8 @@ export function DashboardSidebarUserStoriesSection({
 		() => buildDashboardSidebarUserStories(workspaces),
 		[workspaces],
 	);
-	const isSectionCollapsed = useSidebarSectionsCollapseStore(
-		(s) => s.collapsed.userStories,
-	);
+	const { isCollapsed: isSectionCollapsed } =
+		useSidebarSectionCollapse("userStories");
 	if (stories.length === 0) return null;
 
 	return (

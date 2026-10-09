@@ -18,13 +18,13 @@ import {
 import { detectLanguage } from "shared/detect-language";
 import type { ViewProps } from "../../types";
 import { CodeEditor } from "./components/CodeEditor";
-import { LspStatus } from "./components/LspStatus";
 
 function subscribeNothing() {
 	return () => {};
 }
 
 export function CodeView({
+	paneId,
 	document,
 	filePath,
 	workspaceId,
@@ -89,6 +89,7 @@ export function CodeView({
 			<div className="min-h-0 flex-1">
 				{editorReady && (
 					<CodeEditor
+						paneId={paneId}
 						document={readOnly ? undefined : document}
 						lintGutter={reserveLintGutter}
 						key={document.id}
@@ -110,9 +111,6 @@ export function CodeView({
 						server.
 					</Trans>
 				</output>
-			)}
-			{!readOnly && (
-				<LspStatus status={lspStatus} retry={() => void lsp?.retry(document)} />
 			)}
 		</div>
 	);

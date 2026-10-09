@@ -24,6 +24,7 @@ import {
 	EditorView,
 	highlightSpecialChars,
 	keymap,
+	type ViewUpdate,
 } from "@codemirror/view";
 import { colorPicker } from "@replit/codemirror-css-color-picker";
 import { documentChanges } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/LspWorkspace";
@@ -51,6 +52,7 @@ interface ViewHandlers {
 	onChange(value: string): void;
 	onSave(): void;
 	isExternalUpdate(): boolean;
+	onUpdate?(update: ViewUpdate): void;
 }
 
 const viewHandlers = new WeakMap<EditorView, ViewHandlers>();
@@ -101,10 +103,12 @@ const inputExtensions: Extension = [
 ];
 
 const changeListener = EditorView.updateListener.of((update) => {
-	if (!update.docChanged) return;
 	const handlers = viewHandlers.get(update.view);
-	if (!handlers || handlers.isExternalUpdate()) return;
-	handlers.onChange(update.state.doc.toString());
+	if (!handlers) return;
+	if (update.docChanged && !handlers.isExternalUpdate()) {
+		handlers.onChange(update.state.doc.toString());
+	}
+	handlers.onUpdate?.(update);
 });
 
 export function createEditorState(

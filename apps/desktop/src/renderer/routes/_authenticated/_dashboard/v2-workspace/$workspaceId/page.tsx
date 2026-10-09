@@ -36,6 +36,7 @@ import { useWorkspace } from "../providers/WorkspaceProvider";
 import { AddTabMenu } from "./components/AddTabMenu";
 import { BackgroundTerminalsButton } from "./components/BackgroundTerminalsButton";
 import { ChangesControl } from "./components/ChangesControl";
+import { FlutterControls } from "./components/FlutterControls";
 import { V2NotificationStatusIndicator } from "./components/V2NotificationStatusIndicator";
 import { V2PresetsBar } from "./components/V2PresetsBar";
 import { V2WorkspaceOpenInButton } from "./components/V2WorkspaceOpenInButton";
@@ -76,6 +77,7 @@ import { useWorkspaceHotkeys } from "./hooks/useWorkspaceHotkeys";
 import { useWorkspacePaneOpeners } from "./hooks/useWorkspacePaneOpeners";
 import { WorkspaceGitStatusProvider } from "./providers/WorkspaceGitStatusProvider";
 import { FileDocumentStoreProvider } from "./state/fileDocumentStore";
+import { IdeContextProvider } from "./state/ideContext";
 import type { PaneViewerData } from "./types";
 import { findVisibleChangesPane } from "./utils/openChangesPaneInStore";
 import type { V2WorkspaceUrlOpenTarget } from "./utils/openUrlInV2Workspace";
@@ -435,200 +437,204 @@ function V2WorkspaceContent() {
 	);
 
 	return (
-		<FileDocumentStoreProvider
-			openFile={openFilePane}
-			openFilePaths={openFilePaths}
-		>
-			<WorkspaceGitStatusProvider workspaceId={workspaceId}>
-				<V2WorkspaceOpenInButton workspaceId={workspaceId} hidden />
-				<div className="flex min-h-0 min-w-0 flex-1">
-					<div
-						className="flex min-h-0 min-w-[320px] flex-1 flex-col overflow-hidden"
-						data-workspace-id={workspaceId}
-					>
-						<Workspace<PaneViewerData>
-							key={workspaceId}
-							registry={paneRegistry}
-							paneActions={defaultPaneActions}
-							contextMenuActions={defaultContextMenuActions}
-							renderTabAccessory={(tab) => (
-								<V2NotificationStatusIndicator
-									sources={getV2NotificationSourcesForTab(tab)}
-								/>
-							)}
-							renderBelowTabBar={() =>
-								showPresetsBar ? (
-									<V2PresetsBar
-										matchedPresets={matchedPresets}
-										executePreset={executePreset}
-										showPresetsBar={showPresetsBar}
-										onToggleShowPresetsBar={setShowPresetsBar}
-									/>
-								) : null
-							}
-							renderAddTabMenu={() => (
-								<AddTabMenu
-									onAddTerminal={addTerminalTab}
-									onAddCodexChat={addCodexChatTab}
-									workspaceId={workspaceId}
-									onOpenCodexSession={openCodexChatSession}
-									onAddChatV3={isChatV3Enabled ? addChatV3Tab : undefined}
-									onAddBrowser={addBrowserTab}
-									onAddChanges={openChangesPane}
-									onAddGitHistory={openGitHistory}
-									onAddDesktop={isSandbox ? addDesktopTab : undefined}
-									showPresetsBar={showPresetsBar}
-									onToggleShowPresetsBar={setShowPresetsBar}
-								/>
-							)}
-							renderTabBarLeading={
-								tabBarHostsChrome
-									? () => (
-											<div className="flex h-full items-center">
-												{isMac && (
-													<div
-														className="drag h-full shrink-0"
-														style={{
-															width: `${Math.max(
-																80 / zoomFactor -
-																	COLLAPSED_WORKSPACE_SIDEBAR_WIDTH,
-																0,
-															)}px`,
-														}}
-													/>
-												)}
-												<ZoomStable
-													enabled={isMac}
-													className="flex items-center gap-1.5 px-1"
-												>
-													{!isMac && <AppMenuButton />}
-													<SidebarToggle />
-													<NavigationControls />
-												</ZoomStable>
-											</div>
-										)
-									: undefined
-							}
-							renderTabBarTrailing={() => (
-								<div className="flex items-center gap-1">
-									{/* The expanded sidebar's header owns the ports pill; the
+		<IdeContextProvider store={store} ready={isLayoutReady}>
+			<FileDocumentStoreProvider
+				openFile={openFilePane}
+				openFilePaths={openFilePaths}
+			>
+				<FlutterControls key={workspaceId} store={store}>
+					<WorkspaceGitStatusProvider workspaceId={workspaceId}>
+						<V2WorkspaceOpenInButton workspaceId={workspaceId} hidden />
+						<div className="flex min-h-0 min-w-0 flex-1">
+							<div
+								className="flex min-h-0 min-w-[320px] flex-1 flex-col overflow-hidden"
+								data-workspace-id={workspaceId}
+							>
+								<Workspace<PaneViewerData>
+									key={workspaceId}
+									registry={paneRegistry}
+									paneActions={defaultPaneActions}
+									contextMenuActions={defaultContextMenuActions}
+									renderTabAccessory={(tab) => (
+										<V2NotificationStatusIndicator
+											sources={getV2NotificationSourcesForTab(tab)}
+										/>
+									)}
+									renderBelowTabBar={() =>
+										showPresetsBar ? (
+											<V2PresetsBar
+												matchedPresets={matchedPresets}
+												executePreset={executePreset}
+												showPresetsBar={showPresetsBar}
+												onToggleShowPresetsBar={setShowPresetsBar}
+											/>
+										) : null
+									}
+									renderAddTabMenu={() => (
+										<AddTabMenu
+											onAddTerminal={addTerminalTab}
+											onAddCodexChat={addCodexChatTab}
+											workspaceId={workspaceId}
+											onOpenCodexSession={openCodexChatSession}
+											onAddChatV3={isChatV3Enabled ? addChatV3Tab : undefined}
+											onAddBrowser={addBrowserTab}
+											onAddChanges={openChangesPane}
+											onAddGitHistory={openGitHistory}
+											onAddDesktop={isSandbox ? addDesktopTab : undefined}
+											showPresetsBar={showPresetsBar}
+											onToggleShowPresetsBar={setShowPresetsBar}
+										/>
+									)}
+									renderTabBarLeading={
+										tabBarHostsChrome
+											? () => (
+													<div className="flex h-full items-center">
+														{isMac && (
+															<div
+																className="drag h-full shrink-0"
+																style={{
+																	width: `${Math.max(
+																		80 / zoomFactor -
+																			COLLAPSED_WORKSPACE_SIDEBAR_WIDTH,
+																		0,
+																	)}px`,
+																}}
+															/>
+														)}
+														<ZoomStable
+															enabled={isMac}
+															className="flex items-center gap-1.5 px-1"
+														>
+															{!isMac && <AppMenuButton />}
+															<SidebarToggle />
+															<NavigationControls />
+														</ZoomStable>
+													</div>
+												)
+											: undefined
+									}
+									renderTabBarTrailing={() => (
+										<div className="flex items-center gap-1">
+											{/* The expanded sidebar's header owns the ports pill; the
 									    tab bar only hosts it for the collapsed rail, where
 									    neither the header cluster nor the TopBar is visible. */}
-									{tabBarHostsChrome && <TopBarPortsDropdown />}
-									{/* Until the pane layout hydrates, tabs read as empty and
+											{tabBarHostsChrome && <TopBarPortsDropdown />}
+											{/* Until the pane layout hydrates, tabs read as empty and
 									    every running terminal miscounts as "background", so the
 									    button would flash a bogus count on navigation. */}
-									{isLayoutReady && (
-										<BackgroundTerminalsButton
-											workspaceId={workspaceId}
-											store={store}
+											{isLayoutReady && (
+												<BackgroundTerminalsButton
+													workspaceId={workspaceId}
+													store={store}
+												/>
+											)}
+											{isLayoutReady && (
+												<ChangesControl
+													workspaceId={workspaceId}
+													isChangesOpen={isChangesPaneOpen}
+													onToggleChanges={toggleChangesPane}
+												/>
+											)}
+											{!sidebarOpen && (
+												<WorkspaceActionDock
+													isCollapsed
+													compactPlacement="tabbar"
+													gitContent={gitActionContent}
+													openInContent={openInActionContent}
+													commandsContent={commandsActionContent}
+													panelTab={panelActionTab}
+												/>
+											)}
+											<RightSidebarToggle />
+											{!isMac && !sidebarOpen && <WindowControlsInset />}
+										</div>
+									)}
+									renderEmptyState={() => (
+										<WorkspaceEmptyState
+											onOpenBrowser={addBrowserTab}
+											onOpenChanges={openChangesPane}
+											onOpenCodexChat={addCodexChatTab}
+											onOpenChatV3={isChatV3Enabled ? addChatV3Tab : undefined}
+											onOpenQuickOpen={handleQuickOpen}
+											onOpenTerminal={addTerminalTab}
 										/>
 									)}
-									{isLayoutReady && (
-										<ChangesControl
-											workspaceId={workspaceId}
-											isChangesOpen={isChangesPaneOpen}
-											onToggleChanges={toggleChangesPane}
-										/>
-									)}
-									{!sidebarOpen && (
-										<WorkspaceActionDock
-											isCollapsed
-											compactPlacement="tabbar"
-											gitContent={gitActionContent}
-											openInContent={openInActionContent}
-											commandsContent={commandsActionContent}
-											panelTab={panelActionTab}
-										/>
-									)}
-									<RightSidebarToggle />
-									{!isMac && !sidebarOpen && <WindowControlsInset />}
-								</div>
-							)}
-							renderEmptyState={() => (
-								<WorkspaceEmptyState
-									onOpenBrowser={addBrowserTab}
-									onOpenChanges={openChangesPane}
-									onOpenCodexChat={addCodexChatTab}
-									onOpenChatV3={isChatV3Enabled ? addChatV3Tab : undefined}
-									onOpenQuickOpen={handleQuickOpen}
-									onOpenTerminal={addTerminalTab}
+									onBeforeCloseTab={onBeforeCloseTab}
+									onInteractionStateChange={onWorkspaceInteractionStateChange}
+									store={store}
 								/>
+							</div>
+						</div>
+						{sidebarSlotEl &&
+							createPortal(
+								// The panel keeps its own width, so the wrapper is what opens and
+								// closes: it clips the panel to nothing rather than resizing it,
+								// which keeps the sidebar's layout stable while it slides away.
+								// Clipping is lifted once it settles, or it would cut off the
+								// resize handle that overhangs the panel's edge.
+								<AnimatePresence initial={false}>
+									{sidebarOpen && (
+										<motion.div
+											className={
+												sidebarSliding
+													? "flex h-full shrink-0 overflow-hidden"
+													: "flex h-full shrink-0"
+											}
+											initial={{ width: 0, opacity: 0 }}
+											animate={{ width: "auto", opacity: 1 }}
+											exit={{ width: 0, opacity: 0 }}
+											onAnimationStart={() => setSidebarSliding(true)}
+											onAnimationComplete={() => setSidebarSliding(false)}
+											transition={
+												reduceMotion
+													? { duration: 0 }
+													: { ...SPRING_LAYOUT, opacity: { duration: 0.12 } }
+											}
+										>
+											<ResizablePanel
+												width={sidebarWidth}
+												onWidthChange={setRightSidebarWidth}
+												isResizing={isSidebarResizing}
+												onResizingChange={handleSidebarResizingChange}
+												minWidth={240}
+												maxWidth={640}
+												handleSide="left"
+												onDoubleClickHandle={() => setRightSidebarWidth(340)}
+											>
+												<WorkspaceSidebar
+													workspaceId={workspaceId}
+													gitActionContent={gitActionContent}
+													openInActionContent={openInActionContent}
+													commandsActionContent={commandsActionContent}
+													panelActionTab={panelActionTab}
+													showActionDock={sidebarOpen}
+													onSelectFile={openFilePaneFromTreeClick}
+													onSelectDiffFile={openDiffPane}
+													onOpenComment={openCommentPane}
+													onOpenPullRequest={openPullRequestPane}
+													onSearch={handleQuickOpen}
+													selectedFilePath={selectedFilePath}
+													selectedDiffTarget={diffPaneTarget}
+													pendingReveal={pendingReveal}
+												/>
+											</ResizablePanel>
+										</motion.div>
+									)}
+								</AnimatePresence>,
+								sidebarSlotEl,
 							)}
-							onBeforeCloseTab={onBeforeCloseTab}
-							onInteractionStateChange={onWorkspaceInteractionStateChange}
-							store={store}
-						/>
-					</div>
-				</div>
-				{sidebarSlotEl &&
-					createPortal(
-						// The panel keeps its own width, so the wrapper is what opens and
-						// closes: it clips the panel to nothing rather than resizing it,
-						// which keeps the sidebar's layout stable while it slides away.
-						// Clipping is lifted once it settles, or it would cut off the
-						// resize handle that overhangs the panel's edge.
-						<AnimatePresence initial={false}>
-							{sidebarOpen && (
-								<motion.div
-									className={
-										sidebarSliding
-											? "flex h-full shrink-0 overflow-hidden"
-											: "flex h-full shrink-0"
-									}
-									initial={{ width: 0, opacity: 0 }}
-									animate={{ width: "auto", opacity: 1 }}
-									exit={{ width: 0, opacity: 0 }}
-									onAnimationStart={() => setSidebarSliding(true)}
-									onAnimationComplete={() => setSidebarSliding(false)}
-									transition={
-										reduceMotion
-											? { duration: 0 }
-											: { ...SPRING_LAYOUT, opacity: { duration: 0.12 } }
-									}
-								>
-									<ResizablePanel
-										width={sidebarWidth}
-										onWidthChange={setRightSidebarWidth}
-										isResizing={isSidebarResizing}
-										onResizingChange={handleSidebarResizingChange}
-										minWidth={240}
-										maxWidth={640}
-										handleSide="left"
-										onDoubleClickHandle={() => setRightSidebarWidth(340)}
-									>
-										<WorkspaceSidebar
-											workspaceId={workspaceId}
-											gitActionContent={gitActionContent}
-											openInActionContent={openInActionContent}
-											commandsActionContent={commandsActionContent}
-											panelActionTab={panelActionTab}
-											showActionDock={sidebarOpen}
-											onSelectFile={openFilePaneFromTreeClick}
-											onSelectDiffFile={openDiffPane}
-											onOpenComment={openCommentPane}
-											onOpenPullRequest={openPullRequestPane}
-											onSearch={handleQuickOpen}
-											selectedFilePath={selectedFilePath}
-											selectedDiffTarget={diffPaneTarget}
-											pendingReveal={pendingReveal}
-										/>
-									</ResizablePanel>
-								</motion.div>
-							)}
-						</AnimatePresence>,
-						sidebarSlotEl,
-					)}
-			</WorkspaceGitStatusProvider>
-			<WorkspaceQuickOpen
-				workspaceId={workspaceId}
-				open={quickOpenOpen}
-				onOpenChange={handleQuickOpenChange}
-				onSelectFile={handleQuickOpenSelectFile}
-				variant="v2"
-				recentlyViewedFiles={recentFiles}
-				openFilePaths={openFilePaths}
-			/>
-		</FileDocumentStoreProvider>
+					</WorkspaceGitStatusProvider>
+				</FlutterControls>
+				<WorkspaceQuickOpen
+					workspaceId={workspaceId}
+					open={quickOpenOpen}
+					onOpenChange={handleQuickOpenChange}
+					onSelectFile={handleQuickOpenSelectFile}
+					variant="v2"
+					recentlyViewedFiles={recentFiles}
+					openFilePaths={openFilePaths}
+				/>
+			</FileDocumentStoreProvider>
+		</IdeContextProvider>
 	);
 }

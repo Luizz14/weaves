@@ -91,6 +91,8 @@ or the value arrives empty.
 
 ## Launcher-owned runtime values
 
+`SUPERSET_IDE_CONTEXT_TOKEN` is issued by the owning host for each new terminal. It authorizes only that live terminal's editor context in its origin workspace and organization; it is independent of host authentication and account attribution. It is a runtime credential, not a deployment setting, and must not be added to secret stores or `.env` templates. A host restart invalidates it. Already-running or adopted PTYs retain their original environment and receive no IDE context until a new terminal is created. The hook resolves the current endpoint from that organization's host manifest; a missing, stale, or invalid token leaves the user prompt unchanged.
+
 `SUPERSET_HOST_INSTALL_SOURCE` is set by the desktop coordinator (`desktop`) or standalone CLI spawner (`cli`) on the host child process. A checkout may set `dev`; absent/unrecognized values report `unknown`. This is install provenance, not an API deployment setting: do not put it in shared `.env` templates or deployment secrets. The host ignores login-shell values for this key. In-place updates additionally require a standalone entrypoint and a valid install layout.
 
 `SUPERSET_AGENT_LAUNCH_ID` is set by the outer agent wrapper to a process-and-start-time identifier. Hook children inherit it so a new launch in the same terminal cannot inherit the previous login attribution. It is runtime metadata, not a deployment secret or user setting; it does not belong in `.env` templates or deploy workflows.

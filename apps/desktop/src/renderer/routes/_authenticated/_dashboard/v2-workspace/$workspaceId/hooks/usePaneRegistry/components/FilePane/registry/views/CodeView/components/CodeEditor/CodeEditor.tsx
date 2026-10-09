@@ -22,6 +22,7 @@ import {
 import { useEditorSettings } from "renderer/hooks/useEditorSettings";
 import { fontSettingsQueryOptions } from "renderer/lib/font-settings";
 import type { SharedFileDocument } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/fileDocumentStore";
+import { useIdeContext } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/ideContext";
 import { editorPreferenceExtensions } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/editorExtensions";
 import { useLspCoordinator } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/state/lsp/LspProvider";
 import {
@@ -81,6 +82,7 @@ function reconfigure(
 }
 
 interface CodeEditorProps {
+	paneId?: string;
 	document?: SharedFileDocument;
 	lintGutter?: boolean;
 	value: string;
@@ -99,6 +101,7 @@ interface CodeEditorProps {
 }
 
 export function CodeEditor({
+	paneId,
 	document,
 	lintGutter = false,
 	value,
@@ -112,6 +115,9 @@ export function CodeEditor({
 	initialScrollPosition,
 	onScrollPositionChange,
 }: CodeEditorProps) {
+	const ideContext = useIdeContext();
+	const ideCaptureRef = useRef({ ideContext, document, paneId, readOnly });
+	ideCaptureRef.current = { ideContext, document, paneId, readOnly };
 	const containerRef = useRef<HTMLDivElement | null>(null);
 	const viewRef = useRef<EditorView | null>(null);
 	const lsp = useLspCoordinator();
@@ -197,6 +203,21 @@ export function CodeEditor({
 			onChange: (next) => onChangeRef.current?.(next),
 			onSave: () => onSaveRef.current?.(),
 			isExternalUpdate: () => isExternalUpdateRef.current,
+			onUpdate: (update) => {
+				const capture = ideCaptureRef.current;
+				if (
+					(update.docChanged || update.selectionSet) &&
+					capture.document &&
+					capture.paneId &&
+					!capture.readOnly
+				) {
+					capture.ideContext?.capture(
+						capture.document,
+						update.view,
+						capture.paneId,
+					);
+				}
+			},
 		});
 		const adapter = createCodeMirrorAdapter(view);
 		let scrollSnapshot = saved?.scroll ?? view.scrollSnapshot();
@@ -254,6 +275,12 @@ export function CodeEditor({
 			viewRef.current = null;
 		};
 	}, []);
+
+	useEffect(() => {
+		const view = viewRef.current;
+		if (!view || !ideContext || !document || !paneId || readOnly) return;
+		return ideContext.attachEditor(document, view, paneId);
+	}, [ideContext, document, paneId, readOnly]);
 
 	useLayoutEffect(() => {
 		const view = viewRef.current;

@@ -24,6 +24,7 @@ import { Server } from "@superset/pty-daemon";
 import { eq } from "drizzle-orm";
 import { createDb, type HostDb } from "../db/index.ts";
 import { projects, terminalSessions, workspaces } from "../db/schema.ts";
+import { verifyIdeContextToken } from "../ide-context/auth.ts";
 import {
 	disposeDaemonClient,
 	getDaemonClient,
@@ -148,6 +149,59 @@ describe("createTerminalSessionInternal — host-service restart adoption", () =
 		assert.equal(daemonSession.rows, 27);
 
 		await disposeSessionAndWait(terminalId, db);
+	});
+
+	test("fresh and spare shells receive an IDE token bound to their terminal", async () => {
+		for (const spare of [false, true]) {
+			const terminalId = `e2e-ide-${randomUUID().slice(0, 8)}`;
+			const tokenFile = path.join(TEST_HOME, `ide-token-${terminalId}`);
+			if (spare) {
+				assert.equal(
+					await startSpareShell({
+						terminalId,
+						workspaceId,
+						db,
+						themeType: "dark",
+					}),
+					true,
+				);
+			}
+			const result = await createTerminalSessionInternal({
+				terminalId,
+				workspaceId,
+				db,
+				listed: true,
+				adoptOnly: spare,
+			});
+			assert.ok(!("error" in result));
+			if ("error" in result) return;
+			try {
+				result.pty.write(
+					`printf '%s' "$SUPERSET_IDE_CONTEXT_TOKEN" > "${tokenFile}"\n`,
+				);
+				await waitFor(
+					() => fs.existsSync(tokenFile) && fs.statSync(tokenFile).size > 0,
+					5000,
+				);
+				const token = fs.readFileSync(tokenFile, "utf8");
+				const organizationId = process.env.ORGANIZATION_ID || "";
+				assert.equal(
+					verifyIdeContextToken(organizationId, workspaceId, terminalId, token),
+					true,
+				);
+				assert.equal(
+					verifyIdeContextToken(
+						organizationId,
+						workspaceId,
+						"other-terminal",
+						token,
+					),
+					false,
+				);
+			} finally {
+				await disposeSessionAndWait(terminalId, db);
+			}
+		}
 	});
 
 	test("existing session accepts a not-yet-queued initialCommand", async () => {

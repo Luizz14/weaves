@@ -24,6 +24,9 @@ function makeSnapshot(
 		updatedAt: 1_700_000_000_000,
 		lastActivityAt: 1_700_000_050_000,
 		tags: [],
+		externalWorkItemProvider: null,
+		externalWorkItemId: null,
+		externalWorkItemUrl: null,
 		...overrides,
 	};
 }
@@ -124,6 +127,82 @@ describe("applyWorkspaceChangedEvent lastActivityAt", () => {
 			null,
 		);
 		expect(updated?.[0]?.lastActivityAt).toBe(1_700_000_050_000);
+	});
+});
+
+describe("applyWorkspaceChangedEvent external work item links", () => {
+	const link = {
+		externalWorkItemProvider: "azure-devops",
+		externalWorkItemId: "42",
+		externalWorkItemUrl: "https://dev.azure.com/x/42",
+	};
+
+	it("carries a link on creation and replaces it on update", () => {
+		const initial = applyWorkspaceChangedEvent(
+			undefined,
+			{ eventType: "created", workspace: makeSnapshot({ id: "w1", ...link }) },
+			HOST,
+			"w1",
+			null,
+		);
+		expect(initial?.[0]).toMatchObject(link);
+		const nextLink = {
+			...link,
+			externalWorkItemId: "7",
+			externalWorkItemUrl: "https://dev.azure.com/x/7",
+		};
+		const updated = applyWorkspaceChangedEvent(
+			initial,
+			{
+				eventType: "updated",
+				workspace: makeSnapshot({ id: "w1", ...nextLink }),
+			},
+			HOST,
+			"w1",
+			null,
+		);
+		expect(updated).toHaveLength(1);
+		expect(updated?.[0]).toMatchObject(nextLink);
+	});
+
+	it("preserves each omitted link field but accepts explicit null", () => {
+		const [row] =
+			applyWorkspaceChangedEvent(
+				undefined,
+				{ eventType: "created", workspace: makeSnapshot({ id: "w1" }) },
+				HOST,
+				"w1",
+				null,
+			) ?? [];
+		if (!row) throw new Error("expected a row");
+		const rows = [{ ...row, ...link }];
+		for (const field of Object.keys(link) as Array<keyof typeof link>) {
+			const snapshot = makeSnapshot({ id: "w1", ...link });
+			delete snapshot[field];
+			const updated = applyWorkspaceChangedEvent(
+				rows,
+				{ eventType: "updated", workspace: snapshot },
+				HOST,
+				"w1",
+				null,
+			);
+			expect(updated?.[0]).toMatchObject(link);
+		}
+		const updated = applyWorkspaceChangedEvent(
+			rows,
+			{
+				eventType: "updated",
+				workspace: makeSnapshot({
+					id: "w1",
+					...link,
+					externalWorkItemUrl: null,
+				}),
+			},
+			HOST,
+			"w1",
+			null,
+		);
+		expect(updated?.[0]).toMatchObject({ ...link, externalWorkItemUrl: null });
 	});
 });
 

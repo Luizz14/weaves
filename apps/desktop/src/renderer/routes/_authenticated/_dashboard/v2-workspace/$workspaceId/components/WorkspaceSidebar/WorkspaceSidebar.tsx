@@ -1,6 +1,7 @@
 import { useLingui } from "@lingui/react/macro";
 import { eq } from "@tanstack/db";
 import { useLiveQuery } from "@tanstack/react-db";
+import { motion, useReducedMotion } from "motion/react";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { LuFile } from "react-icons/lu";
 import { useWorkspaceGitStatus } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/providers/WorkspaceGitStatusProvider";
@@ -18,7 +19,6 @@ import {
 	setWorkspaceSidebarTab,
 } from "../../utils/setWorkspaceSidebarTab";
 import { FilesTab } from "./components/FilesTab";
-import { PRActionHeader } from "./components/PRActionHeader";
 import { SidebarHeader } from "./components/SidebarHeader";
 import {
 	WorkspaceActionDock,
@@ -84,6 +84,7 @@ export function WorkspaceSidebar({
 	showActionDock,
 }: WorkspaceSidebarProps) {
 	const { t } = useLingui();
+	const reduceMotion = useReducedMotion();
 	const gitStatus = useWorkspaceGitStatus();
 	const isSidebarCollapsed = useWorkspaceSidebarStore((s) => s.isCollapsed());
 	const collections = useCollections();
@@ -185,16 +186,21 @@ export function WorkspaceSidebar({
 			ref={containerRef}
 			className="isolate flex h-full w-full min-h-0 flex-col overflow-hidden bg-background"
 		>
-			<PRActionHeader />
 			<SidebarHeader
 				tabs={tabs}
 				activeTab={activeTabDef?.id ?? activeTab}
 				onTabChange={setActiveTab}
 				compact={compact}
 			/>
-			<div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+			<motion.div
+				key={activeTabDef?.id}
+				initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.18, ease: "easeOut" }}
+				className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden"
+			>
 				{activeTabDef?.content}
-			</div>
+			</motion.div>
 			{showActionDock && (
 				<WorkspaceActionDock
 					key={workspaceId}

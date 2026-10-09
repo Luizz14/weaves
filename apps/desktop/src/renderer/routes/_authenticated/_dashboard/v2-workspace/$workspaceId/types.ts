@@ -104,7 +104,12 @@ export interface SubagentPaneData {
 	agentType?: string;
 }
 
+export interface FlutterPaneData {
+	sessionId: string;
+}
+
 export type PaneViewerData =
+	| FlutterPaneData
 	| FilePaneData
 	| TerminalPaneData
 	| ChatV3PaneData

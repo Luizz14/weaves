@@ -95,8 +95,14 @@ export function useWorkspaceFileNavigation({
 		[openFilePathsKey],
 	);
 
+	const openFilesSidebar = useCallback(() => {
+		setRightSidebarOpen(true);
+		setWorkspaceSidebarTab(collections, workspace.id, "files");
+	}, [setRightSidebarOpen, collections, workspace.id]);
+
 	const openFilePane = useCallback(
 		(filePath: string, openInNewTab?: boolean) => {
+			openFilesSidebar();
 			const absoluteFilePath = worktreePath
 				? toAbsoluteWorkspacePath(worktreePath, filePath)
 				: filePath;
@@ -152,7 +158,7 @@ export function useWorkspaceFileNavigation({
 				},
 			});
 		},
-		[store, worktreePath, recordView],
+		[store, worktreePath, recordView, openFilesSidebar],
 	);
 
 	// User-facing file opens from the workspace sidebar layer the VS-Code-style
@@ -172,12 +178,13 @@ export function useWorkspaceFileNavigation({
 				active?.pane.kind === "file" &&
 				(active.pane.data as FilePaneData).filePath === absoluteFilePath
 			) {
+				openFilesSidebar();
 				state.setPanePinned({ paneId: active.pane.id, pinned: true });
 				return;
 			}
 			openFilePane(filePath);
 		},
-		[openFilePane, store, worktreePath],
+		[openFilePane, store, worktreePath, openFilesSidebar],
 	);
 
 	const revealPath = useCallback(

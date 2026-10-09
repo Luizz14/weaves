@@ -18,8 +18,11 @@ import {
 	LuSquareTerminal,
 } from "react-icons/lu";
 
+import { SiFlutter } from "react-icons/si";
+import { useFlutterControlsContent } from "../../../FlutterControls";
+
 interface WorkspaceActionTab {
-	id: "git" | "open" | "commands" | "panel";
+	id: "git" | "open" | "commands" | "panel" | "flutter";
 	contentKey?: string;
 	label: string;
 	icon: ReactNode;
@@ -53,6 +56,7 @@ export function WorkspaceActionDock({
 	panelTab,
 }: WorkspaceActionDockProps) {
 	const { t } = useLingui();
+	const flutterContent = useFlutterControlsContent();
 	const reduceMotion = useReducedMotion();
 	const rootRef = useRef<HTMLDivElement>(null);
 	const insideInteractionRef = useRef<{
@@ -100,13 +104,24 @@ export function WorkspaceActionDock({
 						},
 					]
 				: []),
+			...(flutterContent
+				? [
+						{
+							id: "flutter" as const,
+							label: t({ message: "Flutter" }),
+							icon: <SiFlutter className="size-4" />,
+							content: flutterContent,
+						},
+					]
+				: []),
 		],
-		[t, gitContent, openInContent, commandsContent, panelTab],
+		[t, gitContent, openInContent, commandsContent, panelTab, flutterContent],
 	);
-	const selectedTabId = activeTab === "panel" && !panelTab ? "git" : activeTab;
+	const selectedTabId =
+		activeTab && !tabs.some((tab) => tab.id === activeTab) ? "git" : activeTab;
 	const active = tabs.find((tab) => tab.id === selectedTabId) ?? null;
 	useEffect(() => {
-		if (activeTab === "panel" && !panelTab) {
+		if (activeTab && !tabs.some((tab) => tab.id === activeTab)) {
 			setActiveTab("git");
 			const previousFocus = insideInteractionRef.current.focus?.target;
 			if (
@@ -118,14 +133,7 @@ export function WorkspaceActionDock({
 				tabRefs.current[0]?.focus();
 		}
 		if (focusedIndex >= tabs.length) setFocusedIndex(0);
-	}, [
-		activeTab,
-		panelTab,
-		focusedIndex,
-		tabs.length,
-		compactOpen,
-		isCollapsed,
-	]);
+	}, [activeTab, tabs, focusedIndex, tabs.length, compactOpen, isCollapsed]);
 	const activeHeight = active ? (contentHeights[active.id] ?? 0) : 0;
 	const rootHeight = active
 		? Math.max(BAR_HEIGHT, activeHeight + 60)
@@ -323,11 +331,13 @@ export function WorkspaceActionDock({
 								"flex h-10 min-w-10 flex-1 items-center justify-center gap-2 rounded-xl px-3 text-xs font-medium outline-none transition-[background-color,color,transform] duration-150 active:scale-[0.96]",
 								"focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card",
 								selected
-									? "min-w-0 flex-auto bg-muted text-foreground shadow-sm"
+									? "min-w-0 flex-auto bg-muted px-2 text-foreground shadow-sm"
 									: "text-muted-foreground hover:bg-muted/70 hover:text-foreground",
 							)}
 						>
-							{tab.icon}
+							<span className="flex size-4 shrink-0 items-center justify-center">
+								{tab.icon}
+							</span>
 							<AnimatePresence initial={false}>
 								{selected && (
 									<motion.span

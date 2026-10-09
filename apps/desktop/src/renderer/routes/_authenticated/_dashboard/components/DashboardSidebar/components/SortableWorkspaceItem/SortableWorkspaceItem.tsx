@@ -120,7 +120,9 @@ export function SortableWorkspaceItem({
 				)}
 				inert={collapsed}
 			>
-				<div className="min-h-0 overflow-hidden">{row}</div>
+				<div className={cn("min-h-0", collapsed && "overflow-hidden")}>
+					{row}
+				</div>
 			</div>
 		</div>
 	);
