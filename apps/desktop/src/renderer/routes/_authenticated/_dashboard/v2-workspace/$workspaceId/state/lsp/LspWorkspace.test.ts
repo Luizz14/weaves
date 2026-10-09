@@ -137,3 +137,82 @@ test("minimal document changes preserve UTF-16 offsets and reload replacement", 
 		"reloaded",
 	);
 });
+
+async function connectedWorkspace() {
+	const messages: { method?: string }[] = [];
+	const handlers = new Set<(message: string) => void>();
+	const transport: Transport = {
+		subscribe(handler) {
+			handlers.add(handler);
+		},
+		unsubscribe(handler) {
+			handlers.delete(handler);
+		},
+		send(message) {
+			const parsed = JSON.parse(message);
+			messages.push(parsed);
+			if (parsed.method === "initialize")
+				queueMicrotask(() => {
+					for (const handler of handlers)
+						handler(
+							JSON.stringify({
+								jsonrpc: "2.0",
+								id: parsed.id,
+								result: {
+									capabilities: {
+										textDocumentSync: { openClose: true, change: 2 },
+									},
+								},
+							}),
+						);
+				});
+		},
+	};
+	const client = new LSPClient({
+		workspace: (instance) => new LspWorkspace(instance, async () => null),
+	}).connect(transport);
+	await client.initializing;
+	const workspace = client.workspace;
+	if (!(workspace instanceof LspWorkspace))
+		throw new Error("Expected shared workspace");
+	const count = (method: string) =>
+		messages.filter((message) => message.method === method).length;
+	return { client, workspace, count };
+}
+
+test("a file kept for a hidden tab stays open on the server", async () => {
+	const path = "/workspace/kept.ts";
+	const workspaceId = crypto.randomUUID();
+	const document = acquireDocument(workspaceId, path, {
+		filesystem: {
+			readFile: {
+				query: async () => ({
+					kind: "text",
+					content: "const kept = 1;\n",
+					revision: "1",
+					byteLength: 16,
+				}),
+			},
+		},
+	} as unknown as Parameters<typeof acquireDocument>[2]);
+	await Promise.resolve();
+	const { client, workspace, count } = await connectedWorkspace();
+	const uri = filePathToLspUri(path);
+	expect(workspace.openWithoutView(document, "typescript")).toBe(true);
+	await Promise.resolve();
+	expect(count("textDocument/didOpen")).toBe(1);
+	const view = new EditorView({
+		doc: "const kept = 1;\n",
+		extensions: client.plugin(uri, "typescript"),
+	});
+	view.destroy();
+	await Promise.resolve();
+	expect(count("textDocument/didOpen")).toBe(1);
+	expect(count("textDocument/didClose")).toBe(0);
+	workspace.release(uri);
+	await Promise.resolve();
+	expect(count("textDocument/didClose")).toBe(1);
+	workspace.dispose();
+	client.disconnect();
+	releaseDocument(workspaceId, path);
+});

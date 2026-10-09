@@ -5,6 +5,7 @@ import {
 	LSPPlugin,
 	serverCompletion,
 } from "@codemirror/lsp-client";
+import type { Text } from "@codemirror/state";
 import { EditorView, keymap, showDialog } from "@codemirror/view";
 import { msg } from "@lingui/core/macro";
 import { i18n } from "@superset/i18n";
@@ -31,9 +32,41 @@ const diagnosticsSchema = z.object({
 	),
 });
 
+export type LspDiagnostic = z.infer<
+	typeof diagnosticsSchema
+>["diagnostics"][number];
+
+function clampedOffset(doc: Text, position: z.infer<typeof positionSchema>) {
+	const line = doc.line(Math.min(position.line + 1, doc.lines));
+	return Math.min(line.from + position.character, line.to);
+}
+
+function severityOf(item: LspDiagnostic): Diagnostic["severity"] {
+	return item.severity === 2
+		? "warning"
+		: item.severity === 3
+			? "info"
+			: item.severity === 4
+				? "hint"
+				: "error";
+}
+
+export function editorDiagnostics(
+	doc: Text,
+	items: LspDiagnostic[],
+): Diagnostic[] {
+	return items.map((item) => ({
+		from: clampedOffset(doc, item.range.start),
+		to: clampedOffset(doc, item.range.end),
+		message: item.message,
+		severity: severityOf(item),
+	}));
+}
+
 export function publishDiagnostics(
 	client: import("@codemirror/lsp-client").LSPClient,
 	input: unknown,
+	remember?: (uri: string, doc: Text, items: LspDiagnostic[]) => void,
 ) {
 	const parsed = diagnosticsSchema.safeParse(input);
 	if (!parsed.success) return true;
@@ -44,6 +77,7 @@ export function publishDiagnostics(
 		(params.version !== undefined && params.version !== file.version)
 	)
 		return true;
+	remember?.(params.uri, file.doc, params.diagnostics);
 	const views =
 		"views" in file && file.views instanceof Set
 			? file.views
@@ -52,22 +86,13 @@ export function publishDiagnostics(
 		if (!(view instanceof EditorView)) continue;
 		const plugin = LSPPlugin.get(view);
 		if (!plugin) continue;
-		const diagnostics: Diagnostic[] = params.diagnostics.map((item) => ({
-			from: plugin.unsyncedChanges.mapPos(
-				plugin.fromPosition(item.range.start, plugin.syncedDoc),
-			),
-			to: plugin.unsyncedChanges.mapPos(
-				plugin.fromPosition(item.range.end, plugin.syncedDoc),
-			),
-			message: item.message,
-			severity:
-				item.severity === 2
-					? "warning"
-					: item.severity === 3
-						? "info"
-						: item.severity === 4
-							? "hint"
-							: "error",
+		const diagnostics: Diagnostic[] = editorDiagnostics(
+			plugin.syncedDoc,
+			params.diagnostics,
+		).map((diagnostic) => ({
+			...diagnostic,
+			from: plugin.unsyncedChanges.mapPos(diagnostic.from),
+			to: plugin.unsyncedChanges.mapPos(diagnostic.to),
 		}));
 		view.dispatch(setDiagnostics(view.state, diagnostics));
 	}

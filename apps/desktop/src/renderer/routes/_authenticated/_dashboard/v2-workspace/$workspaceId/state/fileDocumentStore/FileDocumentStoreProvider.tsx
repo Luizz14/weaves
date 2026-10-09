@@ -8,9 +8,11 @@ import { dispatchFsEvent } from "./fileDocumentStore";
 export function FileDocumentStoreProvider({
 	children,
 	openFile,
+	openFilePaths,
 }: {
 	children: ReactNode;
 	openFile: (path: string) => void;
+	openFilePaths: Set<string>;
 }) {
 	const { workspace } = useWorkspace();
 	useWorkspaceEvent("fs:events", workspace.id, (event) => {
@@ -18,7 +20,7 @@ export function FileDocumentStoreProvider({
 	});
 
 	return (
-		<LspProvider openFile={openFile}>
+		<LspProvider openFile={openFile} openFilePaths={openFilePaths}>
 			<EditorAutomation>{children}</EditorAutomation>
 		</LspProvider>
 	);

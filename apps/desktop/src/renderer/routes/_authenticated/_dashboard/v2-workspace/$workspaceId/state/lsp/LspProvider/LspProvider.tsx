@@ -18,9 +18,11 @@ const LspContext = createContext<LspCoordinator | null>(null);
 export function LspProvider({
 	children,
 	openFile,
+	openFilePaths,
 }: {
 	children: ReactNode;
 	openFile: (path: string) => void;
+	openFilePaths: Set<string>;
 }) {
 	const connection = useWorkspaceClient();
 	const preferences = useEditorSettings();
@@ -53,6 +55,9 @@ export function LspProvider({
 	useEffect(() => {
 		coordinator?.configure(preferences);
 	}, [coordinator, preferences]);
+	useEffect(() => {
+		coordinator?.setBackgroundFiles(openFilePaths);
+	}, [coordinator, openFilePaths]);
 	return (
 		<LspContext.Provider value={coordinator}>{children}</LspContext.Provider>
 	);

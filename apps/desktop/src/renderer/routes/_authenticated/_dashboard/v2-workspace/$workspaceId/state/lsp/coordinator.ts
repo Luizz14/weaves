@@ -1,6 +1,6 @@
 import { setDiagnostics } from "@codemirror/lint";
 import { LSPClient, LSPPlugin } from "@codemirror/lsp-client";
-import type { Compartment } from "@codemirror/state";
+import type { Compartment, Text } from "@codemirror/state";
 import type { EditorView } from "@codemirror/view";
 import {
 	DEFAULT_EDITOR_SETTINGS,
@@ -23,8 +23,13 @@ import type {
 	DocumentFormattingParams,
 	TextEdit,
 } from "vscode-languageserver-protocol";
-import type { SharedFileDocument } from "../fileDocumentStore";
-import { languageFeatures, publishDiagnostics } from "./extensions";
+import { getDocument, type SharedFileDocument } from "../fileDocumentStore";
+import {
+	editorDiagnostics,
+	type LspDiagnostic,
+	languageFeatures,
+	publishDiagnostics,
+} from "./extensions";
 import { applyFormatEdits } from "./formatEdits";
 import { inlayHints, refreshHints } from "./inlayHints";
 import { LspWorkspace } from "./LspWorkspace";
@@ -66,6 +71,7 @@ type Session = {
 };
 
 const UNAVAILABLE_TTL_MS = 60_000;
+const BACKGROUND_FILE_LIMIT = 20;
 const internedStatuses = new Map<string, EditorLspStatus>();
 
 function internStatus(state: LspState, serverId: LspServerId): EditorLspStatus {
@@ -92,6 +98,18 @@ export class LspCoordinator {
 	>();
 	private disabledServers = new Set<LspServerId>();
 	private sessionByDirectory = new Map<string, string>();
+	private latestDiagnostics = new Map<
+		string,
+		{ doc: Text; items: LspDiagnostic[] }
+	>();
+	private backgroundPaths = new Set<string>();
+	private rememberDiagnostics = (
+		uri: string,
+		doc: Text,
+		items: LspDiagnostic[],
+	) => {
+		this.latestDiagnostics.set(uri, { doc, items });
+	};
 	subscribeStatus = (listener: () => void) => {
 		this.statusListeners.add(listener);
 		return () => {
@@ -272,11 +290,118 @@ export class LspCoordinator {
 			const session = binding.session;
 			if (!session) return;
 			session.bindings.delete(binding);
-			if (!session.bindings.size) {
-				if (session.timer) clearTimeout(session.timer);
-				session.timer = setTimeout(() => this.stop(session), 60_000);
-			}
+			this.maybeIdle(session);
 		};
+	}
+
+	private maybeIdle(session: Session) {
+		if (
+			session.disposed ||
+			session.bindings.size ||
+			session.workspace?.hasRetainedFiles()
+		)
+			return;
+		if (session.timer) clearTimeout(session.timer);
+		session.timer = setTimeout(() => this.stop(session), 60_000);
+	}
+
+	/**
+	 * Files whose panes still exist in the layout stay open on the server while
+	 * their tab is hidden, as VS Code keeps the text models of background tabs.
+	 */
+	setBackgroundFiles(paths: Iterable<string>) {
+		const next = new Set(
+			[...paths]
+				.filter((path) => detectLspLanguage(path) !== null)
+				.slice(0, BACKGROUND_FILE_LIMIT),
+		);
+		for (const path of this.backgroundPaths)
+			if (!next.has(path)) this.releaseBackground(path);
+		this.backgroundPaths = next;
+		for (const path of next) void this.openBackground(path);
+	}
+
+	private releaseBackground(path: string) {
+		const uri = filePathToLspUri(path);
+		for (const session of this.sessions.values()) {
+			session.workspace?.release(uri);
+			this.maybeIdle(session);
+		}
+	}
+
+	private async openBackground(path: string) {
+		const language = detectLspLanguage(path);
+		const document = getDocument(this.workspaceId, path);
+		if (
+			!language ||
+			!document ||
+			document.content.kind !== "text" ||
+			this.disabledServers.has(language.serverId) ||
+			!resolveEditorSettings(this.preferences, detectLanguage(path))
+				.enableLanguageServer
+		)
+			return;
+		const uri = filePathToLspUri(path);
+		for (const session of this.sessions.values())
+			if (session.workspace?.files.some((file) => file.uri === uri)) {
+				session.workspace.retain(uri);
+				return;
+			}
+		try {
+			const session = await this.sessionFor(path, language.serverId);
+			if (!session) return;
+			if (session.workspace && this.backgroundPaths.has(path) && !this.disposed)
+				session.workspace.openWithoutView(document, language.languageId);
+			this.maybeIdle(session);
+		} catch {}
+	}
+
+	private async sessionFor(
+		path: string,
+		serverId: LspServerId,
+	): Promise<Session | undefined> {
+		const known = this.knownSession(serverId, path);
+		if (known) {
+			await known.connecting;
+			return known.client ? known : undefined;
+		}
+		const resolved = await this.connection.trpcClient.lsp.resolve.mutate({
+			workspaceId: this.workspaceId,
+			absolutePath: path,
+		});
+		if (!resolved?.sessionId) return undefined;
+		const release = (sessionId: string) =>
+			void this.connection.trpcClient.lsp.release
+				.mutate({ sessionId })
+				.catch(() => {});
+		if (this.disposed) {
+			release(resolved.sessionId);
+			return undefined;
+		}
+		const key = `${resolved.serverId}:${resolved.rootUri}`;
+		this.sessionByDirectory.set(availabilityKey(serverId, path), key);
+		let session = this.sessions.get(key);
+		if (session) {
+			release(resolved.sessionId);
+			if (session.timer) clearTimeout(session.timer);
+			session.timer = undefined;
+			if (!session.client && !session.connecting)
+				session.connecting = this.connect(session);
+		} else {
+			session = {
+				key,
+				serverId: resolved.serverId,
+				rootUri: resolved.rootUri,
+				bindings: new Set(),
+				attempt: 0,
+				disposed: false,
+				diagnostics: new Map(),
+			};
+			this.sessions.set(key, session);
+			session.connecting = this.connect(session, resolved.sessionId);
+		}
+		await session.connecting;
+		return session.client ? session : undefined;
 	}
 
 	private knownSession(serverId: LspServerId, path: string) {
@@ -457,6 +582,7 @@ export class LspCoordinator {
 						instance,
 						(uri) => this.navigate(uri),
 						() => this.pullDiagnostics(session),
+						(uri) => this.latestDiagnostics.delete(uri),
 					),
 				notificationHandlers: {
 					"superset/inlayHintRefresh": () => {
@@ -496,7 +622,11 @@ export class LspCoordinator {
 							if (!file || version === undefined || version === file.version)
 								this.recordDiagnostics(params);
 						}
-						return publishDiagnostics(instance, params);
+						return publishDiagnostics(
+							instance,
+							params,
+							this.rememberDiagnostics,
+						);
 					},
 					"superset/diagnosticRefresh": () => {
 						session.diagnostics.clear();
@@ -507,6 +637,8 @@ export class LspCoordinator {
 						if (instance.serverCapabilities)
 							instance.serverCapabilities.diagnosticProvider = undefined;
 						session.diagnostics.clear();
+						for (const file of instance.workspace.files)
+							this.latestDiagnostics.delete(file.uri);
 						for (const binding of session.bindings)
 							if (binding.active)
 								binding.view.dispatch(setDiagnostics(binding.view.state, []));
@@ -571,6 +703,8 @@ export class LspCoordinator {
 		if (!preferences.enableLanguageServer) return;
 		session.workspace.register(binding.document);
 		const uri = filePathToLspUri(binding.document.absolutePath);
+		if (this.backgroundPaths.has(binding.document.absolutePath))
+			session.workspace.retain(uri);
 		binding.view.dispatch({
 			effects: binding.compartment.reconfigure([
 				session.client.plugin(uri, language.languageId),
@@ -578,6 +712,14 @@ export class LspCoordinator {
 				inlayHints(preferences.hints, uri),
 			]),
 		});
+		const latest = this.latestDiagnostics.get(uri);
+		if (latest?.doc.eq(binding.view.state.doc))
+			binding.view.dispatch(
+				setDiagnostics(
+					binding.view.state,
+					editorDiagnostics(latest.doc, latest.items),
+				),
+			);
 		binding.status({ state: "running", serverId: session.serverId });
 	}
 	private recordDiagnostics(input: unknown) {
@@ -652,11 +794,15 @@ export class LspCoordinator {
 							uri: file.uri,
 							diagnostics: report.items,
 						});
-						publishDiagnostics(client, {
-							uri: file.uri,
-							version,
-							diagnostics: report.items,
-						});
+						publishDiagnostics(
+							client,
+							{
+								uri: file.uri,
+								version,
+								diagnostics: report.items,
+							},
+							this.rememberDiagnostics,
+						);
 					}
 				})
 				.catch((error) => {
@@ -684,6 +830,7 @@ export class LspCoordinator {
 				binding.view.dispatch({ effects: binding.compartment.reconfigure([]) });
 				binding.view.dispatch(setDiagnostics(binding.view.state, []));
 			}
+		this.forgetFiles(session);
 		session.workspace?.dispose();
 		session.client = undefined;
 		session.workspace = undefined;
@@ -748,10 +895,19 @@ export class LspCoordinator {
 		return null;
 	}
 
+	private forgetFiles(session: Session) {
+		for (const file of session.workspace?.files ?? []) {
+			this.diagnosticCounts.delete(file.uri);
+			this.latestDiagnostics.delete(file.uri);
+		}
+	}
+
 	private stop(session: Session) {
 		session.disposed = true;
 		this.forgetSessionDirectories(session);
 		if (session.timer) clearTimeout(session.timer);
+		this.forgetFiles(session);
+		this.diagnosticsChanged();
 		session.transport?.dispose();
 		session.client?.disconnect();
 		session.workspace?.dispose();

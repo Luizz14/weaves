@@ -435,7 +435,10 @@ function V2WorkspaceContent() {
 	);
 
 	return (
-		<FileDocumentStoreProvider openFile={openFilePane}>
+		<FileDocumentStoreProvider
+			openFile={openFilePane}
+			openFilePaths={openFilePaths}
+		>
 			<WorkspaceGitStatusProvider workspaceId={workspaceId}>
 				<V2WorkspaceOpenInButton workspaceId={workspaceId} hidden />
 				<div className="flex min-h-0 min-w-0 flex-1">

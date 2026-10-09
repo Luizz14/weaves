@@ -398,3 +398,89 @@ test("a second file in a resolved directory attaches without resolving again", a
 	releaseDocument(workspaceId, "/workspace/a.kt");
 	releaseDocument(workspaceId, "/workspace/b.kt");
 });
+
+test("a hidden tab's file is open on the server and its diagnostics paint on attach", async () => {
+	const workspaceId = crypto.randomUUID();
+	const path = "/workspace/hidden.kt";
+	const document = acquireDocument(workspaceId, path, {
+		filesystem: {
+			readFile: {
+				query: async () => ({
+					kind: "text",
+					content: "val a = 1",
+					revision: "1",
+					byteLength: 9,
+				}),
+			},
+		},
+	} as unknown as Parameters<typeof acquireDocument>[2]);
+	await Promise.resolve();
+	const connection = {
+		hostUrl: "http://localhost:1234",
+		getWsToken: () => "test",
+		trpcClient: {
+			settings: {
+				lsp: { get: { query: async () => lspSettingsSchema.parse({}) } },
+			},
+			lsp: {
+				resolve: {
+					mutate: async () => ({
+						sessionId: "session",
+						serverId: "kotlin",
+						languageId: "kotlin",
+						rootUri: "file:///workspace",
+						state: "starting",
+					}),
+				},
+				release: { mutate: async () => {} },
+			},
+		},
+	} as unknown as ConstructorParameters<typeof LspCoordinator>[1];
+	const coordinator = new LspCoordinator(
+		workspaceId,
+		connection,
+		() => {},
+		lspUriToFilePath,
+	);
+	coordinators.push(coordinator);
+	coordinator.setBackgroundFiles([path]);
+	await waitFor(
+		() =>
+			sockets[0]?.messages.some(
+				(message) => message.method === "textDocument/diagnostic",
+			) ?? false,
+	);
+	await new Promise((resolve) => setTimeout(resolve, 20));
+	const compartment = new Compartment();
+	const view = new EditorView({
+		doc: "val a = 1",
+		extensions: compartment.of([]),
+	});
+	views.push(view);
+	const detach = coordinator.attach(document, view, compartment);
+	expect(diagnosticCount(view.state)).toBe(1);
+	await Promise.resolve();
+	await Promise.resolve();
+	expect(
+		sockets[0].messages.filter(
+			(message) => message.method === "textDocument/didOpen",
+		),
+	).toHaveLength(1);
+	detach();
+	view.dispatch({ effects: compartment.reconfigure([]) });
+	await Promise.resolve();
+	expect(
+		sockets[0].messages.filter(
+			(message) => message.method === "textDocument/didClose",
+		),
+	).toHaveLength(0);
+	coordinator.setBackgroundFiles([]);
+	await Promise.resolve();
+	await Promise.resolve();
+	expect(
+		sockets[0].messages.filter(
+			(message) => message.method === "textDocument/didClose",
+		),
+	).toHaveLength(1);
+	releaseDocument(workspaceId, path);
+});

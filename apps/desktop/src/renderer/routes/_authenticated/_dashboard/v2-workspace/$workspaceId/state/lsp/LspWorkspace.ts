@@ -9,7 +9,7 @@ import {
 	Workspace,
 	type WorkspaceFile,
 } from "@codemirror/lsp-client";
-import { ChangeSet, type Text } from "@codemirror/state";
+import { ChangeSet, Text } from "@codemirror/state";
 import type { EditorView } from "@codemirror/view";
 import { filePathToLspUri } from "@superset/shared/lsp";
 import type { SharedFileDocument } from "../fileDocumentStore";
@@ -49,6 +49,7 @@ export function documentChanges(previous: Text, next: string): ChangeSet {
 export class LspWorkspace extends Workspace {
 	files: OpenFile[] = [];
 	private documents = new Map<string, SharedFileDocument>();
+	private retained = new Set<string>();
 	private version = 0;
 	private syncTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -56,6 +57,7 @@ export class LspWorkspace extends Workspace {
 		client: LSPClient,
 		private navigate: (uri: string) => Promise<EditorView | null>,
 		private onSync: () => void = () => {},
+		private onClose: (uri: string) => void = () => {},
 	) {
 		super(client);
 	}
@@ -65,11 +67,16 @@ export class LspWorkspace extends Workspace {
 	}
 
 	openFile(uri: string, languageId: string, view: EditorView) {
+		const document = this.documents.get(uri);
+		const stale = this.files.find((file) => file.uri === uri);
+		if (stale && document && stale.document.id !== document.id)
+			this.close(stale);
 		const existing = this.files.find((file) => file.uri === uri);
 		if (existing) {
 			existing.views.add(view);
 			queueMicrotask(() => {
 				if (!existing.views.has(view)) return;
+				if (!existing.doc.eq(view.state.doc)) this.client.sync();
 				const source = [...existing.views].find(
 					(candidate) => candidate !== view,
 				);
@@ -82,15 +89,61 @@ export class LspWorkspace extends Workspace {
 			});
 			return;
 		}
-		const document = this.documents.get(uri);
 		if (!document) throw new Error("LSP document was not registered");
+		const file = this.track(uri, languageId, document, view.state.doc, [view]);
+		this.client.didOpen(file);
+		this.scheduleSync();
+	}
+
+	/** Opens a document on the server without an editor, like a hidden tab. */
+	openWithoutView(document: SharedFileDocument, languageId: string): boolean {
+		if (document.content.kind !== "text") return false;
+		const uri = filePathToLspUri(document.absolutePath);
+		this.register(document);
+		this.retained.add(uri);
+		const existing = this.files.find((file) => file.uri === uri);
+		if (existing?.document.id === document.id) return true;
+		if (existing) this.close(existing);
+		const file = this.track(
+			uri,
+			languageId,
+			document,
+			Text.of(document.content.value.split(/\r\n?|\n/)),
+			[],
+		);
+		this.client.didOpen(file);
+		this.scheduleSync();
+		return true;
+	}
+
+	retain(uri: string) {
+		this.retained.add(uri);
+	}
+
+	release(uri: string) {
+		this.retained.delete(uri);
+		const file = this.files.find((entry) => entry.uri === uri);
+		if (file && !file.views.size) this.close(file);
+	}
+
+	hasRetainedFiles() {
+		return this.retained.size > 0;
+	}
+
+	private track(
+		uri: string,
+		languageId: string,
+		document: SharedFileDocument,
+		doc: Text,
+		views: EditorView[],
+	): OpenFile {
 		const file: OpenFile = {
 			uri,
 			languageId,
 			version: this.nextVersion(),
-			doc: view.state.doc,
+			doc,
 			document,
-			views: new Set([view]),
+			views: new Set(views),
 			getView(main) {
 				return main && this.views.has(main)
 					? main
@@ -122,8 +175,7 @@ export class LspWorkspace extends Workspace {
 			});
 		});
 		this.files.push(file);
-		this.client.didOpen(file);
-		this.scheduleSync();
+		return file;
 	}
 
 	private nextVersion() {
@@ -160,12 +212,18 @@ export class LspWorkspace extends Workspace {
 		const file = this.files.find((entry) => entry.uri === uri);
 		if (!file) return;
 		file.views.delete(view);
-		if (file.views.size) return;
+		if (file.views.size || this.retained.has(uri)) return;
+		this.close(file);
+	}
+
+	private close(file: OpenFile) {
 		file.unsubscribe();
 		file.unsubscribeSaved();
 		this.files = this.files.filter((entry) => entry !== file);
-		this.documents.delete(uri);
-		this.client.didClose(uri);
+		if (this.documents.get(file.uri) === file.document)
+			this.documents.delete(file.uri);
+		this.client.didClose(file.uri);
+		this.onClose(file.uri);
 	}
 
 	displayFile(uri: string) {
@@ -180,5 +238,6 @@ export class LspWorkspace extends Workspace {
 		}
 		this.files = [];
 		this.documents.clear();
+		this.retained.clear();
 	}
 }
