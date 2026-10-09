@@ -4,6 +4,7 @@ import { terminalSessions } from "../../db/schema.ts";
 import { portManager } from "../../ports/port-manager.ts";
 import { markTerminalAgentBindingEnded } from "../../terminal-agents/persistence.ts";
 import { getDaemonClient } from "../daemon-client-singleton.ts";
+import { isSpareShell } from "../spare-shells.ts";
 import { disposeSessionAndWait, isLiveTerminalSession } from "../terminal.ts";
 
 interface ReapResult {
@@ -326,6 +327,7 @@ async function reapOrphanedSessions(
 	for (const session of liveSessions) {
 		const row = rowById.get(session.id);
 		if (!row) {
+			if (isSpareShell(session.id)) continue;
 			if (rowlessPendingSecondPass.has(session.id)) {
 				orphans.push({ id: session.id, rowless: true });
 			} else {

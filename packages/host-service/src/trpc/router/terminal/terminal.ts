@@ -6,6 +6,10 @@ import { z } from "zod";
 import { getSupervisor, waitForDaemonReady } from "../../../daemon";
 import { terminalSessions, workspaces } from "../../../db/schema";
 import {
+	prepareSpareShell,
+	releaseSpareShell,
+} from "../../../terminal/spare-shells";
+import {
 	createTerminalSessionInternal,
 	disposeSessionAndWait,
 	disposeSessionsByWorkspaceId,
@@ -15,7 +19,10 @@ import {
 	renameTerminalSession,
 	sessionHasRunningProcess,
 	snapshotSession,
+	spareShellFingerprint,
+	startSpareShell,
 	transcriptSession,
+	workspaceWorktreePath,
 	writeFramedInputToSession,
 	writeInputToSession,
 } from "../../../terminal/terminal";
@@ -120,6 +127,42 @@ export const terminalRouter = router({
 	createSession: protectedProcedure
 		.input(createSessionInputSchema)
 		.mutation(createTerminalSessionFromInput),
+
+	/**
+	 * Starts a shell for the workspace's next new terminal and returns the id
+	 * that terminal must use; null when no spare could be started. An attach
+	 * with that id adopts the spare when it still matches a fresh spawn.
+	 */
+	prepareSpare: protectedProcedure
+		.input(
+			z.object({ workspaceId: z.string(), themeType: z.string().optional() }),
+		)
+		.mutation(async ({ ctx, input }) => {
+			const worktreePath = workspaceWorktreePath(ctx.db, input.workspaceId);
+			if (!worktreePath) return { terminalId: null };
+			await waitForDaemonReady(ctx.organizationId);
+			const themeType = parseThemeType(input.themeType);
+			const terminalId = await prepareSpareShell({
+				workspaceId: input.workspaceId,
+				themeType,
+				fingerprint: spareShellFingerprint(ctx.db, worktreePath),
+				spawn: (id) =>
+					startSpareShell({
+						terminalId: id,
+						workspaceId: input.workspaceId,
+						themeType,
+						db: ctx.db,
+					}),
+			});
+			return { terminalId };
+		}),
+
+	releaseSpare: protectedProcedure
+		.input(z.object({ terminalId: z.string() }))
+		.mutation(async ({ input }) => {
+			await releaseSpareShell(input.terminalId);
+			return { released: true };
+		}),
 
 	launchSession: protectedProcedure
 		.input(

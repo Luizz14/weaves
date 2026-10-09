@@ -40,6 +40,7 @@ import {
 	disposeSessionAndWait,
 	listTerminalSessions,
 	replayBuffer,
+	startSpareShell,
 } from "./terminal.ts";
 import { __setAccountShellForTesting } from "./user-shell.ts";
 
@@ -496,6 +497,44 @@ describe("createTerminalSessionInternal — host-service restart adoption", () =
 			initTerminalBaseEnv(testBaseEnv());
 			await disposeSessionAndWait(terminalId, db);
 		}
+	});
+
+	test("a spare shell started ahead of time is adopted as the new terminal", async () => {
+		const terminalId = `e2e-spare-${randomUUID().slice(0, 8)}`;
+
+		assert.equal(
+			await startSpareShell({
+				terminalId,
+				workspaceId,
+				themeType: undefined,
+				db,
+			}),
+			true,
+		);
+		const spare = (await (await getDaemonClient()).list()).find(
+			(session) => session.id === terminalId,
+		);
+		assert.ok(spare?.alive);
+		assert.equal(
+			listTerminalSessions().some(
+				(session) => session.terminalId === terminalId,
+			),
+			false,
+		);
+
+		const adopted = await createTerminalSessionInternal({
+			terminalId,
+			workspaceId,
+			db,
+			adoptOnly: true,
+		});
+		assert.ok(!("error" in adopted));
+		if ("error" in adopted) return;
+		assert.equal(adopted.pty.pid, spare.pid);
+
+		adopted.pty.write("echo spare-ok\n");
+		await waitForOutput(adopted.pty, "spare-ok", 3000);
+		await disposeSessionAndWait(terminalId, db);
 	});
 
 	test("restoredNotice delivers the separator ahead of shell output on first replay only", async () => {

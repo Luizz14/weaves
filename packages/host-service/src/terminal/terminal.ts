@@ -73,6 +73,7 @@ import {
 	getShellReadyMarkerEvidence,
 	recordShellReadyMarkerEvidence,
 } from "./shell-ready-evidence.ts";
+import { claimSpareShell, computeSpareFingerprint } from "./spare-shells.ts";
 import {
 	createModeTracker,
 	type ModeTracker,
@@ -2852,6 +2853,146 @@ function getTerminalWorkspaceMismatchError({
 
 type CreateSessionError = TerminalSessionError;
 
+type TerminalThemeType = CreateTerminalSessionOptions["themeType"];
+
+interface PtyLaunchOptions {
+	terminalId: string;
+	workspaceId: string;
+	workspacePath: string;
+	rootPath: string;
+	cwd: string;
+	themeType: TerminalThemeType;
+	db: HostDb;
+	supersetHomeDir: string;
+}
+
+/**
+ * Shell, argv and environment for a new PTY. The environment is the preserved
+ * login-shell snapshot — never live process.env — which resolves in the
+ * background at startup so the server can listen immediately.
+ */
+async function resolvePtyLaunch({
+	terminalId,
+	workspaceId,
+	workspacePath,
+	rootPath,
+	cwd,
+	themeType,
+	db,
+	supersetHomeDir,
+}: PtyLaunchOptions): Promise<{
+	shell: string;
+	argv: string[];
+	env: Record<string, string>;
+}> {
+	await waitForTerminalBaseEnv();
+	const baseEnv = getTerminalBaseEnv();
+	const shell = resolveLaunchShell(baseEnv);
+	return {
+		shell,
+		argv: getShellLaunchArgs({ shell, supersetHomeDir }),
+		env: {
+			...buildV2TerminalEnv({
+				baseEnv,
+				shell,
+				supersetHomeDir,
+				organizationId: process.env.ORGANIZATION_ID || "",
+				themeType,
+				cwd,
+				terminalId,
+				workspaceId,
+				workspacePath,
+				rootPath,
+				supersetEnv:
+					process.env.NODE_ENV === "development" ? "development" : "production",
+				agentHookPort: process.env.SUPERSET_AGENT_HOOK_PORT || "",
+				agentHookVersion: process.env.SUPERSET_AGENT_HOOK_VERSION || "",
+				hostAgentHookUrl: getHostAgentHookUrl(),
+			}),
+			// Usage-tab default account: provider CLIs typed or preset-launched in
+			// this terminal run on the selected login. Baked at spawn as the fast
+			// path; the agent wrappers re-resolve later switches at launch time.
+			...resolveDefaultAccountTerminalEnv(db),
+			SUPERSET_ACCOUNT_ATTRIBUTION_TOKEN: issueAttributionToken(terminalId),
+		},
+	};
+}
+
+function resolveWorkspaceRoots(
+	db: HostDb,
+	workspaceId: string,
+): { worktreePath: string; rootPath: string } | null {
+	const workspace = db.query.workspaces
+		.findFirst({ where: eq(workspaces.id, workspaceId) })
+		.sync();
+	if (!workspace || !existsSync(workspace.worktreePath)) return null;
+	const project = workspace.projectId
+		? db.query.projects
+				.findFirst({ where: eq(projects.id, workspace.projectId) })
+				.sync()
+		: undefined;
+	return {
+		worktreePath: workspace.worktreePath,
+		rootPath: project?.repoPath ?? "",
+	};
+}
+
+/** What a spare must still match to stand in for a fresh spawn here. */
+export function spareShellFingerprint(
+	db: HostDb,
+	worktreePath: string,
+): string {
+	return computeSpareFingerprint({
+		worktreePath,
+		launchEnv: JSON.stringify(resolveDefaultAccountTerminalEnv(db)),
+	});
+}
+
+export function workspaceWorktreePath(
+	db: HostDb,
+	workspaceId: string,
+): string | null {
+	return resolveWorkspaceRoots(db, workspaceId)?.worktreePath ?? null;
+}
+
+/**
+ * Starts a shell in the daemon under `terminalId` at the workspace root,
+ * exactly as a new terminal would, without registering it anywhere: the
+ * attach that claims it adopts it like a session that survived a restart.
+ */
+export async function startSpareShell({
+	terminalId,
+	workspaceId,
+	themeType,
+	db,
+}: {
+	terminalId: string;
+	workspaceId: string;
+	themeType: TerminalThemeType;
+	db: HostDb;
+}): Promise<boolean> {
+	const roots = resolveWorkspaceRoots(db, workspaceId);
+	if (!roots) return false;
+	const launch = await resolvePtyLaunch({
+		terminalId,
+		workspaceId,
+		workspacePath: roots.worktreePath,
+		rootPath: roots.rootPath,
+		cwd: roots.worktreePath,
+		themeType,
+		db,
+		supersetHomeDir: resolveSupersetHomeDir(),
+	});
+	const daemon = await getDaemonClient();
+	await daemon.open(terminalId, {
+		...launch,
+		cwd: roots.worktreePath,
+		cols: DEFAULT_TERMINAL_COLS,
+		rows: DEFAULT_TERMINAL_ROWS,
+	});
+	return true;
+}
+
 export async function createTerminalSessionInternal({
 	terminalId,
 	workspaceId,
@@ -2981,46 +3122,23 @@ export async function createTerminalSessionInternal({
 				`[terminal] adopted existing daemon session ${terminalId} pid=${found.pid}`,
 			);
 		} else {
-			// A new PTY's environment is the preserved shell snapshot — never
-			// live process.env. Resolution runs in the background at startup so
-			// the server can listen immediately.
-			await waitForTerminalBaseEnv();
-			const baseEnv = getTerminalBaseEnv();
-			shell = resolveLaunchShell(baseEnv);
-			const ptyEnv = {
-				...buildV2TerminalEnv({
-					baseEnv,
-					shell,
-					supersetHomeDir,
-					organizationId: process.env.ORGANIZATION_ID || "",
-					themeType,
-					cwd,
-					terminalId,
-					workspaceId,
-					workspacePath: workspace.worktreePath,
-					rootPath,
-					supersetEnv:
-						process.env.NODE_ENV === "development"
-							? "development"
-							: "production",
-					agentHookPort: process.env.SUPERSET_AGENT_HOOK_PORT || "",
-					agentHookVersion: process.env.SUPERSET_AGENT_HOOK_VERSION || "",
-					hostAgentHookUrl: getHostAgentHookUrl(),
-				}),
-				// Usage-tab default account: provider CLIs typed or preset-launched in
-				// this terminal run on the selected login. Baked at spawn as the fast
-				// path; the agent wrappers re-resolve later switches at launch time.
-				...resolveDefaultAccountTerminalEnv(db),
-				SUPERSET_ACCOUNT_ATTRIBUTION_TOKEN: issueAttributionToken(terminalId),
-			};
+			const launch = await resolvePtyLaunch({
+				terminalId,
+				workspaceId,
+				workspacePath: workspace.worktreePath,
+				rootPath,
+				cwd,
+				themeType,
+				db,
+				supersetHomeDir,
+			});
+			shell = launch.shell;
 			try {
 				openResult = await daemon.open(terminalId, {
-					shell,
-					argv: getShellLaunchArgs({ shell, supersetHomeDir }),
+					...launch,
 					cwd,
 					cols,
 					rows,
-					env: ptyEnv,
 				});
 			} catch (err) {
 				// After host-service restart the daemon may already own this
@@ -3513,13 +3631,39 @@ export function registerWorkspaceTerminalRoute({
 							if (mismatchError) return { error: mismatchError };
 							return shared;
 						}
-						const createPromise = createTerminalSessionInternal({
-							terminalId,
-							workspaceId: requestedWorkspaceId,
-							themeType: requestedThemeType,
-							db,
-							eventBus,
-						});
+						const createPromise = (async () => {
+							const roots = resolveWorkspaceRoots(db, requestedWorkspaceId);
+							const claimed =
+								roots !== null &&
+								(await claimSpareShell({
+									terminalId,
+									workspaceId: requestedWorkspaceId,
+									themeType: requestedThemeType,
+									fingerprint: () =>
+										spareShellFingerprint(db, roots.worktreePath),
+								}));
+							if (claimed) {
+								const adopted = await createTerminalSessionInternal({
+									terminalId,
+									workspaceId: requestedWorkspaceId,
+									themeType: requestedThemeType,
+									db,
+									eventBus,
+									adoptOnly: true,
+								});
+								if (!("error" in adopted)) {
+									await adopted.adoptionReplaySettled;
+									return adopted;
+								}
+							}
+							return createTerminalSessionInternal({
+								terminalId,
+								workspaceId: requestedWorkspaceId,
+								themeType: requestedThemeType,
+								db,
+								eventBus,
+							});
+						})();
 						inflightCreates.set(terminalId, createPromise);
 						try {
 							return await createPromise;
