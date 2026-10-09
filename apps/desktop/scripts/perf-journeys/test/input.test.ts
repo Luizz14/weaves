@@ -30,6 +30,14 @@ describe("parseChord", () => {
 		});
 	});
 
+	test("maps arrow chords used by tab switching", () => {
+		expect(parseChord("meta+alt+right")).toMatchObject({
+			code: "ArrowRight",
+			keyCode: 39,
+			modifiers: ["meta", "alt"],
+		});
+	});
+
 	test("drops the carriage return from modified Enter", () => {
 		expect(parseChord("meta+enter").text).toBeUndefined();
 		expect(parseChord("enter").text).toBe("\r");

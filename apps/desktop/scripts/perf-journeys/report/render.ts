@@ -6,6 +6,7 @@ interface CardSpec {
 	variant: string;
 	title: string;
 	subtitle: string;
+	detail?: (journey: JourneySummary) => string | null;
 }
 
 interface Section {
@@ -19,6 +20,14 @@ const LAUNCH_CARDS: Array<{ marker: string; title: string }> = [
 	{ marker: "shell-interactive", title: "Shell interativo" },
 	{ marker: "terminal-usable", title: "Terminal utilizável" },
 ];
+
+function editorDetail(journey: JourneySummary): string | null {
+	const share = journey.markShare;
+	if (!share) return null;
+	const percent = (name: string) =>
+		`${integer.format(Math.round((share[name] ?? 0) * 100))}%`;
+	return `layout mudou em ${percent("lateLayout")} · cores em ${percent("lateColors")} · status em ${percent("lateStatus")} · carregando em ${percent("loadingFrames")}`;
+}
 
 const SECTIONS: Section[] = [
 	{
@@ -110,6 +119,40 @@ const SECTIONS: Section[] = [
 		],
 	},
 	{
+		label: "Editor",
+		note: "até a tela parar de mudar",
+		cards: [
+			{
+				journey: "editor-switch",
+				variant: "first",
+				title: "Trocar de arquivo",
+				subtitle: "⌘P · primeira abertura",
+				detail: editorDetail,
+			},
+			{
+				journey: "editor-switch",
+				variant: "revisit",
+				title: "Trocar de arquivo",
+				subtitle: "⌘P · revisita",
+				detail: editorDetail,
+			},
+			{
+				journey: "editor-switch",
+				variant: "revisit-scrolled",
+				title: "Trocar de arquivo",
+				subtitle: "⌘P · revisita com scroll",
+				detail: editorDetail,
+			},
+			{
+				journey: "editor-switch",
+				variant: "tab-switch",
+				title: "Trocar de aba",
+				subtitle: "aba de arquivo",
+				detail: editorDetail,
+			},
+		],
+	},
+	{
 		label: "Digitando",
 		note: "fatia client-side",
 		cards: [
@@ -193,7 +236,12 @@ function card(
 	title: string,
 	subtitle: string,
 	distribution: DistributionSummary,
-	extra: { timeouts?: number; attempts?: number; missing?: number } = {},
+	extra: {
+		timeouts?: number;
+		attempts?: number;
+		missing?: number;
+		detail?: string | null;
+	} = {},
 ): string {
 	const headline = splitValue(distribution.p75);
 	const p95Label = distribution.p95IsMax ? "máx" : "p95";
@@ -210,6 +258,7 @@ function card(
 		${bar(distribution)}
 		<p class="range">p50 <strong>${escapeHtml(formatMs(distribution.p50))}</strong> · ${p95Label} <strong>${escapeHtml(formatMs(distribution.p95))}</strong></p>
 		<p class="meta">n = ${distribution.n}${flags.length ? ` · ${escapeHtml(flags.join(" · "))}` : ""}</p>
+		${extra.detail ? `<p class="meta">${escapeHtml(extra.detail)}</p>` : ""}
 	</article>`;
 }
 
@@ -335,6 +384,7 @@ export function renderReport(input: {
 				return card(spec.title, spec.subtitle, journey.distribution, {
 					timeouts: journey.timeouts,
 					attempts: journey.attempts,
+					detail: spec.detail?.(journey) ?? null,
 				});
 			})
 			.join("");

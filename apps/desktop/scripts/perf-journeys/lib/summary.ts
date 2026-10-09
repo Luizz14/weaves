@@ -38,6 +38,7 @@ export interface JourneySummary {
 	invalid: number;
 	invalidReasons: Record<string, number>;
 	markMediansMs: Record<string, number>;
+	markShare?: Record<string, number>;
 	loafMedianBlockingMs: number | null;
 }
 
@@ -102,6 +103,11 @@ export function summarizeJourneys(records: SampleRecord[]): JourneySummary[] {
 			);
 			if (value !== null) markMediansMs[name] = value;
 		}
+		const markShare: Record<string, number> = {};
+		for (const name of markNames) {
+			const positive = ok.filter((r) => (r.marks[name] ?? 0) > 0).length;
+			markShare[name] = ok.length ? positive / ok.length : 0;
+		}
 		return {
 			journey,
 			variant,
@@ -113,6 +119,7 @@ export function summarizeJourneys(records: SampleRecord[]): JourneySummary[] {
 			invalid: list.filter((r) => r.status === "invalid").length,
 			invalidReasons,
 			markMediansMs,
+			markShare,
 			loafMedianBlockingMs: median(ok.map((r) => r.loafBlockingMs)),
 		};
 	});

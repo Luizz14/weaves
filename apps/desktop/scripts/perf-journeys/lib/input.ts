@@ -1,7 +1,7 @@
 import type { Cdp } from "./cdp";
 
 const MODIFIER_BITS = { alt: 1, ctrl: 2, meta: 4, shift: 8 } as const;
-type Modifier = keyof typeof MODIFIER_BITS;
+export type Modifier = keyof typeof MODIFIER_BITS;
 
 const MODIFIER_KEYS: Record<
 	Modifier,
@@ -22,6 +22,8 @@ const NAMED_KEYS: Record<
 	escape: { key: "Escape", code: "Escape", keyCode: 27 },
 	up: { key: "ArrowUp", code: "ArrowUp", keyCode: 38 },
 	down: { key: "ArrowDown", code: "ArrowDown", keyCode: 40 },
+	left: { key: "ArrowLeft", code: "ArrowLeft", keyCode: 37 },
+	right: { key: "ArrowRight", code: "ArrowRight", keyCode: 39 },
 	tab: { key: "Tab", code: "Tab", keyCode: 9 },
 };
 
@@ -179,8 +181,19 @@ export async function insertText(cdp: Cdp, text: string): Promise<void> {
 	await cdp.send("Input.insertText", { text });
 }
 
-export async function click(cdp: Cdp, x: number, y: number): Promise<void> {
-	await cdp.send("Input.dispatchMouseEvent", { type: "mouseMoved", x, y });
+export async function click(
+	cdp: Cdp,
+	x: number,
+	y: number,
+	modifiers: Modifier[] = [],
+): Promise<void> {
+	const bits = modifiers.reduce((all, m) => all | MODIFIER_BITS[m], 0);
+	await cdp.send("Input.dispatchMouseEvent", {
+		type: "mouseMoved",
+		x,
+		y,
+		modifiers: bits,
+	});
 	await cdp.send("Input.dispatchMouseEvent", {
 		type: "mousePressed",
 		x,
@@ -188,6 +201,7 @@ export async function click(cdp: Cdp, x: number, y: number): Promise<void> {
 		button: "left",
 		buttons: 1,
 		clickCount: 1,
+		modifiers: bits,
 	});
 	await cdp.send("Input.dispatchMouseEvent", {
 		type: "mouseReleased",
@@ -196,5 +210,6 @@ export async function click(cdp: Cdp, x: number, y: number): Promise<void> {
 		button: "left",
 		buttons: 0,
 		clickCount: 1,
+		modifiers: bits,
 	});
 }

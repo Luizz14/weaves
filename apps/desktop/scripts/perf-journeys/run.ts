@@ -18,6 +18,7 @@ import {
 	openNewWorkspaceScreen,
 	runCreateWorkspace,
 } from "./journeys/create-workspace";
+import { runEditorSwitch } from "./journeys/editor-switch";
 import { runKeystrokeEcho } from "./journeys/keystroke-echo";
 import { runNewTerminal } from "./journeys/new-terminal";
 import { runQuickOpen } from "./journeys/quick-open";
@@ -75,6 +76,7 @@ const ALL_JOURNEYS = [
 	"keystroke-echo",
 	"codex-chat",
 	"quick-open",
+	"editor-switch",
 	"changes-panel",
 	"switch-workspace",
 	"reload-cycles",
@@ -1018,6 +1020,7 @@ async function main(): Promise<number> {
 					["keystroke-echo", runKeystrokeEcho],
 					["codex-chat", (ctx) => runCodexChat(ctx, { coldSamples: 0 })],
 					["quick-open", runQuickOpen],
+					["editor-switch", runEditorSwitch],
 					["changes-panel", runChangesPanelWarm],
 					["switch-workspace", runSwitchRevisits],
 				];

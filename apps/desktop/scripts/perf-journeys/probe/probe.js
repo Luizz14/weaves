@@ -230,6 +230,107 @@
 		"g",
 	);
 
+	function hashText(text) {
+		let hash = 2166136261;
+		for (let i = 0; i < text.length; i++) {
+			hash ^= text.charCodeAt(i);
+			hash = Math.imul(hash, 16777619);
+		}
+		return hash >>> 0;
+	}
+
+	function cssRuleCount() {
+		let total = 0;
+		for (const sheet of [
+			...document.styleSheets,
+			...(document.adoptedStyleSheets ?? []),
+		]) {
+			try {
+				total += sheet.cssRules.length;
+			} catch {}
+		}
+		return total;
+	}
+
+	function editorLines(root) {
+		const scroller = root.querySelector(".cm-scroller");
+		if (!scroller) return [];
+		const box = scroller.getBoundingClientRect();
+		const lines = [];
+		for (const line of root.querySelectorAll(".cm-content .cm-line")) {
+			const rect = line.getBoundingClientRect();
+			if (rect.bottom <= box.top || rect.top >= box.bottom) continue;
+			lines.push(line);
+			if (lines.length >= 150) break;
+		}
+		return lines;
+	}
+
+	function highlightSignature(line) {
+		let signature = "";
+		const walker = document.createTreeWalker(line, NodeFilter.SHOW_TEXT);
+		for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+			const classes = [];
+			for (
+				let el = node.parentElement;
+				el && el !== line;
+				el = el.parentElement
+			) {
+				for (const name of el.classList)
+					if (name.startsWith("\u037c")) classes.push(name);
+			}
+			signature += `${node.length}:${classes.sort().join(".")};`;
+		}
+		return signature;
+	}
+
+	function editorSnapshot(root, readyText) {
+		const content = root.querySelector(".cm-content");
+		const scroller = root.querySelector(".cm-scroller");
+		const gutters = root.querySelector(".cm-gutters");
+		const half = (value) => Math.round(value * 2) / 2;
+		const status = [...root.querySelectorAll("output")]
+			.map((el) => el.textContent ?? "")
+			.join("|");
+		let colors = "";
+		let text = "";
+		for (const line of editorLines(root)) {
+			text += `${line.textContent}\n`;
+			colors += `${highlightSignature(line)}\n`;
+		}
+		const scrollerRect = scroller?.getBoundingClientRect();
+		return {
+			contentLeft: content ? half(content.getBoundingClientRect().left) : null,
+			scrollerTop: scrollerRect ? half(scrollerRect.top) : null,
+			scrollerHeight: scrollerRect ? half(scrollerRect.height) : null,
+			scrollerWidth: scrollerRect ? half(scrollerRect.width) : null,
+			scrollTop: scroller ? Math.round(scroller.scrollTop) : null,
+			gutterWidth: gutters ? half(gutters.getBoundingClientRect().width) : null,
+			lintGutter: !!root.querySelector(".cm-gutter-lint"),
+			status,
+			ready: readyText ? status.includes(readyText) : false,
+			colors: hashText(colors),
+			text: hashText(text),
+			diagnostics: root.querySelectorAll(".cm-lintRange").length,
+			hints: root.querySelectorAll(".cm-editor-inlay-hint").length,
+		};
+	}
+
+	const LAYOUT_KEYS = [
+		"contentLeft",
+		"scrollerTop",
+		"scrollerHeight",
+		"scrollerWidth",
+		"scrollTop",
+		"gutterWidth",
+		"lintGutter",
+	];
+
+	function containsText(root, text) {
+		if (!root || !text) return false;
+		return (root.textContent ?? "").includes(text);
+	}
+
 	const endConditions = {
 		selector(params, ctx) {
 			const existing = new WeakSet();
@@ -314,6 +415,137 @@
 				});
 				ctx.onStart(check);
 				ctx.cleanup.push(() => observer.disconnect());
+			});
+		},
+
+		editorSettled(params, ctx) {
+			const observeMs = params.observeMs ?? 2500;
+			const readyText = params.readyText ?? null;
+			const loadingText = params.loadingText ?? null;
+			const existing = new Set(
+				[...document.querySelectorAll("[data-editor-document-id]")].map((el) =>
+					el.getAttribute("data-editor-document-id"),
+				),
+			);
+			const rulesBefore = cssRuleCount();
+			return new Promise((resolve) => {
+				let target = null;
+				let paintAt = null;
+				let previous = null;
+				let lastVisual = null;
+				let framesBeforePaint = 0;
+				let loadingFrames = 0;
+				let shift = 0;
+				const late = {
+					layout: 0,
+					colors: 0,
+					status: 0,
+					diagnostics: 0,
+					hints: 0,
+				};
+				let shiftObserver = null;
+				try {
+					shiftObserver = new PerformanceObserver((list) => {
+						if (!target) return;
+						for (const entry of list.getEntries()) {
+							if (
+								(entry.sources ?? []).some(
+									(source) => source.node && target.contains(source.node),
+								)
+							)
+								shift += entry.value;
+						}
+					});
+					shiftObserver.observe({ type: "layout-shift" });
+				} catch {}
+				ctx.cleanup.push(() => shiftObserver?.disconnect());
+				const since = () => now() - ctx.startTs;
+				const set = (name, value) => {
+					ctx.marks[name] = value;
+				};
+				const finish = () => {
+					set("paint", paintAt);
+					set("framesBeforePaint", framesBeforePaint);
+					set("loadingFrames", loadingFrames);
+					set("lateLayout", late.layout);
+					set("lateColors", late.colors);
+					set("lateStatus", late.status);
+					set("lateDiagnostics", late.diagnostics);
+					set("lateHints", late.hints);
+					set("layoutShift", Math.round(shift * 10000) / 10000);
+					set("cssRulesAdded", cssRuleCount() - rulesBefore);
+					resolve(ctx.startTs + (lastVisual ?? paintAt));
+				};
+				const frame = () => {
+					if (ctx.done) return;
+					if (!ctx.started) {
+						requestAnimationFrame(frame);
+						return;
+					}
+					const scopeRoot = scope(params.within);
+					if (!target) {
+						for (const el of scopeRoot?.querySelectorAll(
+							"[data-editor-document-id]",
+						) ?? []) {
+							if (existing.has(el.getAttribute("data-editor-document-id")))
+								continue;
+							const line = el.querySelector(".cm-content .cm-line");
+							if (line && isVisible(line)) {
+								target = el;
+								break;
+							}
+						}
+						if (!target) {
+							framesBeforePaint++;
+							if (containsText(scopeRoot, loadingText)) loadingFrames++;
+							requestAnimationFrame(frame);
+							return;
+						}
+						paintAt = since();
+						previous = editorSnapshot(target, readyText);
+						if (previous.ready) set("lspReady", paintAt);
+						if (previous.diagnostics > 0) set("diagnostics", paintAt);
+						requestAnimationFrame(frame);
+						return;
+					}
+					const current = editorSnapshot(target, readyText);
+					const at = since();
+					if (LAYOUT_KEYS.some((key) => current[key] !== previous[key])) {
+						late.layout++;
+						set("layoutStable", at);
+						lastVisual = at;
+					}
+					if (
+						current.text === previous.text &&
+						current.colors !== previous.colors
+					) {
+						late.colors++;
+						set("colorsStable", at);
+						lastVisual = at;
+					}
+					if (current.status !== previous.status) {
+						late.status++;
+						set("statusStable", at);
+						lastVisual = at;
+					}
+					if (current.hints !== previous.hints) {
+						late.hints++;
+						lastVisual = at;
+					}
+					if (current.diagnostics !== previous.diagnostics) {
+						late.diagnostics++;
+						if (!("diagnostics" in ctx.marks) && current.diagnostics > 0)
+							set("diagnostics", at);
+					}
+					if (current.ready && !("lspReady" in ctx.marks)) set("lspReady", at);
+					previous = current;
+					if (at - paintAt >= observeMs || !target.isConnected) {
+						finish();
+						return;
+					}
+					requestAnimationFrame(frame);
+				};
+				requestAnimationFrame(frame);
 			});
 		},
 
