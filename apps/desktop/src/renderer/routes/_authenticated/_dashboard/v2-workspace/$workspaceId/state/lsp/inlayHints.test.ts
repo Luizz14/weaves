@@ -34,12 +34,15 @@ test("inlay hints filter categories, leave the buffer intact, and reject respons
 	try {
 		const view = new EditorView({
 			doc: "value",
-			extensions: inlayHints({
-				enabled: true,
-				types: true,
-				parameters: false,
-				other: false,
-			}),
+			extensions: inlayHints(
+				{
+					enabled: true,
+					types: true,
+					parameters: false,
+					other: false,
+				},
+				"file:///example.ts",
+			),
 		});
 		views.push(view);
 		await new Promise((resolve) => setTimeout(resolve, 180));
@@ -55,7 +58,7 @@ test("inlay hints filter categories, leave the buffer intact, and reject respons
 		);
 		expect(view.state.doc.toString()).toBe("value");
 		view.dispatch({ changes: { from: 5, insert: "!" } });
-		await new Promise((resolve) => setTimeout(resolve, 180));
+		await new Promise((resolve) => setTimeout(resolve, 700));
 		view.dispatch({ changes: { from: 6, insert: "!" } });
 		responses[1]?.([
 			{ position: { line: 0, character: 5 }, label: "stale", kind: 1 },
@@ -65,6 +68,56 @@ test("inlay hints filter categories, leave the buffer intact, and reject respons
 		expect(cancelled).toBeGreaterThan(0);
 		expect(view.dom.querySelector(".cm-editor-inlay-hint")).toBeNull();
 		expect(view.state.doc.toString()).toBe("value!!");
+	} finally {
+		for (const view of views.splice(0)) view.destroy();
+		get.mockRestore();
+	}
+});
+
+test("no plugin is installed when every hint category is off", () => {
+	expect(
+		inlayHints(
+			{ enabled: true, types: false, parameters: false, other: false },
+			"file:///off.ts",
+		),
+	).toEqual([]);
+});
+
+test("a reopened document paints its last hints before the server answers", async () => {
+	const responses: Array<(value: unknown) => void> = [];
+	const plugin = {
+		uri: "file:///cached.ts",
+		client: {
+			serverCapabilities: { inlayHintProvider: true },
+			sync() {},
+			cancelRequest() {},
+			request: () => new Promise((resolve) => responses.push(resolve)),
+		},
+		toPosition: (character: number) => ({ line: 0, character }),
+		fromPosition: (position: { character: number }) => position.character,
+	} as unknown as ReturnType<typeof LSPPlugin.get>;
+	const get = spyOn(LSPPlugin, "get").mockReturnValue(plugin);
+	const options = { enabled: true, types: true, parameters: true, other: true };
+	try {
+		const first = new EditorView({
+			doc: "value",
+			extensions: inlayHints(options, "file:///cached.ts"),
+		});
+		await new Promise((resolve) => setTimeout(resolve, 20));
+		responses[0]?.([
+			{ position: { line: 0, character: 5 }, label: ": number", kind: 1 },
+		]);
+		await Promise.resolve();
+		await Promise.resolve();
+		first.destroy();
+		const second = new EditorView({
+			doc: "value",
+			extensions: inlayHints(options, "file:///cached.ts"),
+		});
+		views.push(second);
+		expect(second.dom.querySelector(".cm-editor-inlay-hint")?.textContent).toBe(
+			": number",
+		);
 	} finally {
 		for (const view of views.splice(0)) view.destroy();
 		get.mockRestore();

@@ -158,9 +158,9 @@ test("shares a server across splits, pulls diagnostics and clears them on discon
 		});
 		views.push(view);
 		detach.push(
-			coordinator.attach(document, view, compartment, (status) =>
-				statuses.push(status),
-			),
+			coordinator.attach(document, view, compartment, {
+				onStatus: (status) => statuses.push(status),
+			}),
 		);
 	}
 	await waitFor(
@@ -182,9 +182,9 @@ test("shares a server across splits, pulls diagnostics and clears them on discon
 	});
 	views.push(lateView);
 	detach.push(
-		coordinator.attach(document, lateView, lateCompartment, (status) =>
-			statuses.push(status),
-		),
+		coordinator.attach(document, lateView, lateCompartment, {
+			onStatus: (status) => statuses.push(status),
+		}),
 	);
 	await waitFor(() => diagnosticCount(lateView.state) === 1);
 	expect(sockets).toHaveLength(1);
@@ -312,4 +312,89 @@ test("servers disabled in the host settings are predicted disabled", async () =>
 	expect(coordinator.getStatus("doc", "/workspace/a.json")?.state).toBe(
 		"starting",
 	);
+});
+
+test("a second file in a resolved directory attaches without resolving again", async () => {
+	const workspaceId = crypto.randomUUID();
+	const client = {
+		filesystem: {
+			readFile: {
+				query: async () => ({
+					kind: "text",
+					content: "val a = 1",
+					revision: "1",
+					byteLength: 9,
+				}),
+			},
+		},
+	} as unknown as Parameters<typeof acquireDocument>[2];
+	const first = acquireDocument(workspaceId, "/workspace/a.kt", client);
+	const second = acquireDocument(workspaceId, "/workspace/b.kt", client);
+	await Promise.resolve();
+	let resolves = 0;
+	const connection = {
+		hostUrl: "http://localhost:1234",
+		getWsToken: () => "test",
+		trpcClient: {
+			settings: {
+				lsp: { get: { query: async () => lspSettingsSchema.parse({}) } },
+			},
+			lsp: {
+				resolve: {
+					mutate: async () => ({
+						sessionId: `session-${++resolves}`,
+						serverId: "kotlin",
+						languageId: "kotlin",
+						rootUri: "file:///workspace",
+						state: "starting",
+					}),
+				},
+				release: { mutate: async () => {} },
+			},
+		},
+	} as unknown as ConstructorParameters<typeof LspCoordinator>[1];
+	const coordinator = new LspCoordinator(
+		workspaceId,
+		connection,
+		() => {},
+		lspUriToFilePath,
+	);
+	coordinators.push(coordinator);
+	const firstCompartment = new Compartment();
+	const firstView = new EditorView({
+		doc: "val a = 1",
+		extensions: firstCompartment.of([]),
+	});
+	views.push(firstView);
+	const detachFirst = coordinator.attach(first, firstView, firstCompartment);
+	await waitFor(
+		() =>
+			coordinator.getStatus(first.id, first.absolutePath)?.state === "running",
+	);
+	const secondCompartment = new Compartment();
+	const secondView = new EditorView({
+		doc: "val a = 1",
+		extensions: secondCompartment.of([]),
+	});
+	views.push(secondView);
+	const detachSecond = coordinator.attach(
+		second,
+		secondView,
+		secondCompartment,
+	);
+	expect(coordinator.getStatus(second.id, second.absolutePath)?.state).toBe(
+		"running",
+	);
+	expect(resolves).toBe(1);
+	await Promise.resolve();
+	await Promise.resolve();
+	expect(
+		sockets[0].messages.filter(
+			(message) => message.method === "textDocument/didOpen",
+		),
+	).toHaveLength(2);
+	detachSecond();
+	detachFirst();
+	releaseDocument(workspaceId, "/workspace/a.kt");
+	releaseDocument(workspaceId, "/workspace/b.kt");
 });

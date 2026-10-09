@@ -35,11 +35,13 @@ export type EditorLspStatus = {
 	serverId: LspServerId;
 	error?: string;
 } | null;
+type EditorPreferences = ReturnType<typeof resolveEditorSettings>;
 type Binding = {
 	document: SharedFileDocument;
 	view: EditorView;
 	compartment: Compartment;
 	status: (status: EditorLspStatus) => void;
+	preferences?: () => EditorPreferences;
 	session?: Session;
 	active: boolean;
 };
@@ -89,6 +91,7 @@ export class LspCoordinator {
 		{ state: "missing" | "disabled"; at: number }
 	>();
 	private disabledServers = new Set<LspServerId>();
+	private sessionByDirectory = new Map<string, string>();
 	subscribeStatus = (listener: () => void) => {
 		this.statusListeners.add(listener);
 		return () => {
@@ -241,7 +244,10 @@ export class LspCoordinator {
 		document: SharedFileDocument,
 		view: EditorView,
 		compartment: Compartment,
-		onStatus?: Binding["status"],
+		options: {
+			onStatus?: Binding["status"];
+			preferences?: () => EditorPreferences;
+		} = {},
 	) {
 		const binding: Binding = {
 			document,
@@ -249,8 +255,9 @@ export class LspCoordinator {
 			compartment,
 			status: (status) => {
 				this.setStatus(document.id, status);
-				onStatus?.(status);
+				options.onStatus?.(status);
 			},
+			preferences: options.preferences,
 			active: true,
 		};
 		this.bindings.add(binding);
@@ -272,9 +279,42 @@ export class LspCoordinator {
 		};
 	}
 
+	private knownSession(serverId: LspServerId, path: string) {
+		const key = this.sessionByDirectory.get(availabilityKey(serverId, path));
+		const session = key ? this.sessions.get(key) : undefined;
+		if (!session || session.disposed) return undefined;
+		if (session.connecting) return session;
+		if (
+			!session.client ||
+			!session.workspace ||
+			session.socket?.readyState !== WebSocket.OPEN
+		)
+			return undefined;
+		return session;
+	}
+
+	private forgetSessionDirectories(session: Session) {
+		for (const [directory, key] of this.sessionByDirectory)
+			if (key === session.key) this.sessionByDirectory.delete(directory);
+	}
+
 	private async resolve(binding: Binding) {
 		const language = detectLspLanguage(binding.document.absolutePath);
 		if (!language || this.disposed) return;
+		const known = this.knownSession(
+			language.serverId,
+			binding.document.absolutePath,
+		);
+		if (known) {
+			binding.session = known;
+			known.bindings.add(binding);
+			if (known.timer) clearTimeout(known.timer);
+			known.timer = undefined;
+			if (known.connecting)
+				binding.status({ state: "starting", serverId: language.serverId });
+			else this.install(binding, known);
+			return;
+		}
 		binding.status({ state: "starting", serverId: language.serverId });
 		try {
 			const resolved = await this.connection.trpcClient.lsp.resolve.mutate({
@@ -308,6 +348,10 @@ export class LspCoordinator {
 			);
 			this.disabledServers.delete(language.serverId);
 			const key = `${resolved.serverId}:${resolved.rootUri}`;
+			this.sessionByDirectory.set(
+				availabilityKey(language.serverId, binding.document.absolutePath),
+				key,
+			);
 			let session = this.sessions.get(key);
 			const existingSession = !!session;
 			if (session) {
@@ -518,20 +562,20 @@ export class LspCoordinator {
 		if (LSPPlugin.get(binding.view)?.client === session.client) return;
 		const language = detectLspLanguage(binding.document.absolutePath);
 		if (!language) return;
-		const preferences = resolveEditorSettings(
-			this.preferences,
-			detectLanguage(binding.document.absolutePath),
-		);
+		const preferences =
+			binding.preferences?.() ??
+			resolveEditorSettings(
+				this.preferences,
+				detectLanguage(binding.document.absolutePath),
+			);
 		if (!preferences.enableLanguageServer) return;
 		session.workspace.register(binding.document);
+		const uri = filePathToLspUri(binding.document.absolutePath);
 		binding.view.dispatch({
 			effects: binding.compartment.reconfigure([
-				session.client.plugin(
-					filePathToLspUri(binding.document.absolutePath),
-					language.languageId,
-				),
-				languageFeatures((uri) => this.navigate(uri)),
-				inlayHints(preferences.hints),
+				session.client.plugin(uri, language.languageId),
+				languageFeatures((target) => this.navigate(target)),
+				inlayHints(preferences.hints, uri),
 			]),
 		});
 		binding.status({ state: "running", serverId: session.serverId });
@@ -629,6 +673,7 @@ export class LspCoordinator {
 
 	private disconnected(session: Session) {
 		if (!session.client && session.timer) return;
+		this.forgetSessionDirectories(session);
 		const socket = session.socket;
 		session.socket = undefined;
 		socket?.close();
@@ -705,6 +750,7 @@ export class LspCoordinator {
 
 	private stop(session: Session) {
 		session.disposed = true;
+		this.forgetSessionDirectories(session);
 		if (session.timer) clearTimeout(session.timer);
 		session.transport?.dispose();
 		session.client?.disconnect();

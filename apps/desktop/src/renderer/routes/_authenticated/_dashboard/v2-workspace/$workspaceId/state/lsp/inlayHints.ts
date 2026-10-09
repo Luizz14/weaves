@@ -1,5 +1,5 @@
 import { LSPPlugin } from "@codemirror/lsp-client";
-import { StateEffect } from "@codemirror/state";
+import { StateEffect, type Text } from "@codemirror/state";
 import {
 	Decoration,
 	type DecorationSet,
@@ -15,6 +15,22 @@ import type {
 } from "vscode-languageserver-protocol";
 
 const hintsReady = StateEffect.define<DecorationSet>();
+const CACHED_DOCUMENTS = 50;
+const MIN_DELAY_MS = 25;
+const MAX_DELAY_MS = 625;
+const RECENT_DURATIONS = 6;
+const cachedHints = new Map<
+	string,
+	{ doc: Text; decorations: DecorationSet }
+>();
+
+function rememberHints(uri: string, doc: Text, decorations: DecorationSet) {
+	cachedHints.delete(uri);
+	cachedHints.set(uri, { doc, decorations });
+	if (cachedHints.size <= CACHED_DOCUMENTS) return;
+	const oldest = cachedHints.keys().next().value;
+	if (oldest !== undefined) cachedHints.delete(oldest);
+}
 export const refreshHints = StateEffect.define<null>();
 class HintWidget extends WidgetType {
 	constructor(
@@ -41,8 +57,12 @@ class HintWidget extends WidgetType {
 	}
 }
 
-export function inlayHints(options: EditorSettings["hints"]) {
-	if (!options.enabled) return [];
+export function inlayHints(options: EditorSettings["hints"], uri: string) {
+	if (
+		!options.enabled ||
+		!(options.types || options.parameters || options.other)
+	)
+		return [];
 	return [
 		ViewPlugin.fromClass(
 			class {
@@ -51,8 +71,19 @@ export function inlayHints(options: EditorSettings["hints"]) {
 				private pending: InlayHintParams | null = null;
 				private request = 0;
 				private destroyed = false;
+				private durations: number[] = [];
 				constructor(private view: EditorView) {
-					this.schedule();
+					const cached = cachedHints.get(uri);
+					if (cached?.doc.eq(view.state.doc))
+						this.decorations = cached.decorations;
+					this.schedule(0);
+				}
+				private delay() {
+					if (!this.durations.length) return MIN_DELAY_MS * 1.5;
+					const average =
+						this.durations.reduce((total, value) => total + value, 0) /
+						this.durations.length;
+					return Math.min(MAX_DELAY_MS, Math.max(MIN_DELAY_MS, average));
 				}
 				update(update: ViewUpdate) {
 					if (
@@ -69,7 +100,7 @@ export function inlayHints(options: EditorSettings["hints"]) {
 						this.schedule();
 					} else if (update.viewportChanged) this.schedule();
 				}
-				private schedule() {
+				private schedule(delay = this.delay()) {
 					this.request++;
 					if (this.pending) {
 						LSPPlugin.get(this.view)?.client.cancelRequest(this.pending);
@@ -79,7 +110,7 @@ export function inlayHints(options: EditorSettings["hints"]) {
 					this.timer = setTimeout(() => {
 						this.timer = null;
 						void this.fetch();
-					}, 150);
+					}, delay);
 				}
 				private async fetch() {
 					const plugin = LSPPlugin.get(this.view);
@@ -100,6 +131,7 @@ export function inlayHints(options: EditorSettings["hints"]) {
 						},
 					};
 					this.pending = params;
+					const startedAt = performance.now();
 					try {
 						const hints = await plugin.client.request<
 							InlayHintParams,
@@ -111,6 +143,9 @@ export function inlayHints(options: EditorSettings["hints"]) {
 							this.view.state.doc !== document
 						)
 							return;
+						this.durations.push(performance.now() - startedAt);
+						if (this.durations.length > RECENT_DURATIONS)
+							this.durations.shift();
 						const decorations = (hints ?? [])
 							.filter((hint) =>
 								hint.kind === 1
@@ -143,6 +178,7 @@ export function inlayHints(options: EditorSettings["hints"]) {
 				}
 				destroy() {
 					this.destroyed = true;
+					rememberHints(uri, this.view.state.doc, this.decorations);
 					this.request++;
 					if (this.timer) clearTimeout(this.timer);
 					const plugin = LSPPlugin.get(this.view);

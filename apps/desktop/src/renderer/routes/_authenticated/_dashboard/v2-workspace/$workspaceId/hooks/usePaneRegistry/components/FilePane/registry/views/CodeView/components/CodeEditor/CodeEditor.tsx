@@ -134,6 +134,8 @@ export function CodeEditor({
 		() => resolveEditorSettings(settings, language),
 		[settings, language],
 	);
+	const preferencesRef = useRef(preferences);
+	preferencesRef.current = preferences;
 	const palette = preferences.appearance.palette;
 	const activeTheme: Theme = useMemo(
 		() =>
@@ -257,7 +259,9 @@ export function CodeEditor({
 		)
 			return;
 		const unregister = lsp.registerView(document.absolutePath, view);
-		const detach = lsp.attach(document, view, editorCompartments.lsp);
+		const detach = lsp.attach(document, view, editorCompartments.lsp, {
+			preferences: () => preferencesRef.current,
+		});
 		return () => {
 			detach();
 			unregister();
