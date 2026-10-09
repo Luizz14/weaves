@@ -100,8 +100,8 @@ export function CodexChatPane({
 		setError(null);
 		commandId.current ??= crypto.randomUUID();
 		creationAttempts.current += 1;
-		const selectedLinkedWorkspaceIds = preSessionLinkedWorkspaceIds.filter((id) =>
-			linkable.workspaces.some((workspace) => workspace.id === id),
+		const selectedLinkedWorkspaceIds = preSessionLinkedWorkspaceIds.filter(
+			(id) => linkable.workspaces.some((workspace) => workspace.id === id),
 		);
 		try {
 			const selected = asGoal
@@ -221,11 +221,13 @@ export function CodexChatPane({
 							linkableLoading={linkable.isLoading}
 							{...(wiring.transport.setLinkedWorkspaces
 								? {
-										onLinkedWorkspacesChange: async (workspaceIds: string[]) => {
+										onLinkedWorkspacesChange: async (
+											workspaceIds: string[],
+										) => {
 											setPreSessionLinkedWorkspaceIds(workspaceIds);
 											return true;
 										},
-								  }
+									}
 								: {})}
 							onSend={unavailable ? () => false : createSession}
 						/>

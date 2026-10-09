@@ -1,5 +1,9 @@
 import { useLingui } from "@lingui/react/macro";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@superset/ui/hover-card";
+import {
+	HoverCard,
+	HoverCardContent,
+	HoverCardTrigger,
+} from "@superset/ui/hover-card";
 import { cn } from "@superset/ui/utils";
 import { useMemo } from "react";
 import { computeChecksRollup } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/utils/computeChecksStatus";

@@ -12,6 +12,7 @@
 		"./src",
 		"electron.vite.config.ts",
 		"electron-builder.ts",
+		"electron-builder.local-macos.ts",
 		"index.d.ts"
 	],
 	"exclude": [

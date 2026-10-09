@@ -64,7 +64,9 @@ export function PRStatusActions({
 	const markReadyMutation =
 		workspaceTrpc.github.markPullRequestReady.useMutation({
 			onMutate: () => {
-				const toastId = toast.loading(t({ message: "Marking ready for review..." }));
+				const toastId = toast.loading(
+					t({ message: "Marking ready for review..." }),
+				);
 				return { toastId };
 			},
 			onSuccess: async (_data, _variables, context) => {
@@ -86,9 +88,12 @@ export function PRStatusActions({
 				}
 			},
 			onError: (error, _variables, context) => {
-				toast.error(t({ message: `Ready for review failed: ${error.message}` }), {
-					id: context?.toastId,
-				});
+				toast.error(
+					t({ message: `Ready for review failed: ${error.message}` }),
+					{
+						id: context?.toastId,
+					},
+				);
 			},
 		});
 
@@ -138,11 +143,13 @@ export function PRStatusActions({
 					<div className="px-3 pb-1 pt-2 text-[11px] font-medium text-muted-foreground">
 						<Trans>Merge</Trans>
 					</div>
-					{([
-						["squash", t({ message: "Squash and merge" })],
-						["merge", t({ message: "Create merge commit" })],
-						["rebase", t({ message: "Rebase and merge" })],
-					] as const).map(([method, label]) => (
+					{(
+						[
+							["squash", t({ message: "Squash and merge" })],
+							["merge", t({ message: "Create merge commit" })],
+							["rebase", t({ message: "Rebase and merge" })],
+						] as const
+					).map(([method, label]) => (
 						<button
 							key={method}
 							type="button"

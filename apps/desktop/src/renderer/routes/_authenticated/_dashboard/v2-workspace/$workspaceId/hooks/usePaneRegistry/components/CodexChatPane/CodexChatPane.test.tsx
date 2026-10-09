@@ -17,12 +17,12 @@ mock.module("../../hooks/useSessionClient", () => ({
 		return {
 			client: id ? { sessionId: id } : null,
 			wiring: {
-			transport: {
-				createSession,
-				async setLinkedWorkspaces() {
-					return [];
-				},
-				async configureCodex(input: { execution: unknown }) {
+				transport: {
+					createSession,
+					async setLinkedWorkspaces() {
+						return [];
+					},
+					async configureCodex(input: { execution: unknown }) {
 						return input.execution;
 					},
 					async setMode() {},

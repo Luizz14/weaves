@@ -115,7 +115,9 @@ export function BranchIntegrationControl({
 		<>
 			<div
 				className={
-					dockMode ? "flex shrink-0 flex-col gap-0.5" : "flex h-7 shrink-0 items-center gap-1"
+					dockMode
+						? "flex shrink-0 flex-col gap-0.5"
+						: "flex h-7 shrink-0 items-center gap-1"
 				}
 			>
 				{active ? (
@@ -167,7 +169,9 @@ export function BranchIntegrationControl({
 				)}
 			</div>
 			<Dialog open={configurationOpen} onOpenChange={setConfigurationOpen}>
-				<DialogContent data-workspace-action-dock-portal={dockMode ? "true" : undefined}>
+				<DialogContent
+					data-workspace-action-dock-portal={dockMode ? "true" : undefined}
+				>
 					<DialogHeader>
 						<DialogTitle>
 							<Trans>Branch integration</Trans>

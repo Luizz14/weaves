@@ -15,8 +15,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 ENV_FILE="$ROOT_DIR/.env"
 ENV_BACKUP=""
-APP_BUNDLE="$ROOT_DIR/apps/desktop/release/mac-arm64/Superset.app"
+APP_BUNDLE="$ROOT_DIR/apps/desktop/release-local-macos/mac-arm64/Superset.app"
 APPLICATIONS_APP="/Applications/Superset.app"
+
+if [ "$(uname -s)" != "Darwin" ] || [ "$(uname -m)" != "arm64" ]; then
+  echo "Este empacotamento local requer macOS Apple Silicon (arm64)." >&2
+  exit 1
+fi
 
 restore_env() {
   if [ -n "$ENV_BACKUP" ] && [ -f "$ENV_BACKUP" ]; then
@@ -35,14 +40,19 @@ fi
 
 cd "$ROOT_DIR"
 
-NEXT_PUBLIC_API_URL=https://api.superset.sh \
-NEXT_PUBLIC_WEB_URL=https://app.superset.sh \
-NEXT_PUBLIC_MARKETING_URL=https://superset.sh \
-NEXT_PUBLIC_DOCS_URL=https://docs.superset.sh \
-NEXT_PUBLIC_STREAMS_URL=https://streams.superset.sh \
-RELAY_URL=https://relay.superset.sh \
-REALTIME_URL=https://realtime.superset.sh \
-bun run build --force
+export NEXT_PUBLIC_API_URL=https://api.superset.sh
+export NEXT_PUBLIC_WEB_URL=https://app.superset.sh
+export NEXT_PUBLIC_MARKETING_URL=https://superset.sh
+export NEXT_PUBLIC_DOCS_URL=https://docs.superset.sh
+export NEXT_PUBLIC_STREAMS_URL=https://streams.superset.sh
+export RELAY_URL=https://relay.superset.sh
+export REALTIME_URL=https://realtime.superset.sh
+export TARGET_PLATFORM=darwin
+export TARGET_ARCH=arm64
+export CSC_IDENTITY_AUTO_DISCOVERY=false
+
+bun run --cwd apps/desktop prebuild
+bun run --cwd apps/desktop package -- --config electron-builder.local-macos.ts --mac --arm64 --publish never
 
 if [ ! -d "$APP_BUNDLE" ]; then
   echo "Bundle não encontrado em $APP_BUNDLE" >&2
