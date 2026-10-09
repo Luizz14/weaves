@@ -1,30 +1,13 @@
 import {
-	defaultKeymap,
-	history,
-	historyKeymap,
-	indentWithTab,
-} from "@codemirror/commands";
-import {
-	bracketMatching,
-	codeFolding,
-	foldGutter,
-	foldKeymap,
-	indentOnInput,
-} from "@codemirror/language";
-import {
 	lintGutter as createLintGutter,
 	setDiagnostics,
 } from "@codemirror/lint";
-import { highlightSelectionMatches, searchKeymap } from "@codemirror/search";
-import { Compartment, EditorState, type Extension } from "@codemirror/state";
 import {
-	drawSelection,
-	dropCursor,
-	EditorView,
-	highlightSpecialChars,
-	keymap,
-} from "@codemirror/view";
-import { colorPicker } from "@replit/codemirror-css-color-picker";
+	type Compartment,
+	EditorState,
+	type Extension,
+} from "@codemirror/state";
+import { EditorView } from "@codemirror/view";
 import { resolveEditorSettings } from "@superset/shared/editor-settings";
 import type { Theme } from "@superset/shared/themes";
 import { cn } from "@superset/ui/utils";
@@ -51,11 +34,13 @@ import {
 	createCodeMirrorAdapter,
 } from "./CodeEditorAdapter";
 import { createCodeMirrorTheme } from "./createCodeMirrorTheme";
-import { contourSelectionLayer } from "./extensions/contourSelectionLayer";
-import { buildFoldChevron } from "./extensions/foldChevron";
-import { buildFoldPlaceholder } from "./extensions/foldPlaceholder";
-import { selectionClassTogglePlugin } from "./extensions/selectionClassTogglePlugin";
-import { viewportSyntax } from "./extensions/viewportSyntax";
+import {
+	createEditorState,
+	editorCompartments,
+	restoreEditorState,
+	setViewHandlers,
+} from "./editorSetup";
+import { saveEditorState, takeEditorState } from "./editorStateCache";
 import { getCodeSyntaxHighlighting } from "./syntax-highlighting";
 
 const NO_LANGUAGE: Extension = [];
@@ -129,12 +114,7 @@ export function CodeEditor({
 }: CodeEditorProps) {
 	const containerRef = useRef<HTMLDivElement | null>(null);
 	const viewRef = useRef<EditorView | null>(null);
-	const languageCompartment = useRef(new Compartment()).current;
-	const themeCompartment = useRef(new Compartment()).current;
-	const editableCompartment = useRef(new Compartment()).current;
-	const lspCompartment = useRef(new Compartment()).current;
 	const lsp = useLspCoordinator();
-	const lintGutterCompartment = useRef(new Compartment()).current;
 	const onChangeRef = useRef(onChange);
 	const onSaveRef = useRef(onSave);
 	const onScrollPositionChangeRef = useRef(onScrollPositionChange);
@@ -166,7 +146,6 @@ export function CodeEditor({
 				: applicationTheme,
 		[applicationTheme, palette, preferences.appearance.theme],
 	);
-	const preferencesCompartment = useRef(new Compartment()).current;
 	const preferenceExtension = editorPreferenceExtensions(preferences.editing);
 	const themeExtension = editorThemeExtension(
 		getCodeSyntaxHighlighting(activeTheme),
@@ -186,6 +165,7 @@ export function CodeEditor({
 	const editableExtension = readOnly
 		? editability.readOnly
 		: editability.editable;
+	const lintGutterExtension = lintGutter ? LINT_GUTTER : NO_LINT_GUTTER;
 
 	onChangeRef.current = onChange;
 	onSaveRef.current = onSave;
@@ -195,66 +175,31 @@ export function CodeEditor({
 	useLayoutEffect(() => {
 		if (!containerRef.current) return;
 
-		const updateListener = EditorView.updateListener.of((update) => {
-			if (!update.docChanged) return;
-			if (isExternalUpdateRef.current) return;
-			onChangeRef.current?.(update.state.doc.toString());
-		});
-
-		const saveKeymap = keymap.of([
-			{
-				key: "Mod-s",
-				run: () => {
-					onSaveRef.current?.();
-					return true;
-				},
-			},
-		]);
-
-		const state = EditorState.create({
-			doc: value,
-			extensions: [
-				preferencesCompartment.of(preferenceExtension),
-				highlightSpecialChars(),
-				history(),
-				foldGutter({ markerDOM: buildFoldChevron }),
-				codeFolding({ placeholderDOM: buildFoldPlaceholder }),
-				lintGutterCompartment.of(lintGutter ? LINT_GUTTER : NO_LINT_GUTTER),
-				drawSelection(),
-				dropCursor(),
-				EditorState.allowMultipleSelections.of(true),
-				indentOnInput(),
-				bracketMatching(),
-				highlightSelectionMatches(),
-				colorPicker,
-				contourSelectionLayer,
-				selectionClassTogglePlugin,
-				editableCompartment.of(editableExtension),
-				EditorView.contentAttributes.of({
-					spellcheck: "false",
-				}),
-				keymap.of([
-					indentWithTab,
-					...defaultKeymap,
-					...historyKeymap,
-					...searchKeymap,
-					...foldKeymap,
-				]),
-				saveKeymap,
-				themeCompartment.of(themeExtension),
-				languageCompartment.of(peekLanguageSupport(language) ?? NO_LANGUAGE),
-				viewportSyntax,
-				lspCompartment.of([]),
-				updateListener,
-			],
-		});
-
+		const configured = {
+			preferences: preferenceExtension,
+			lintGutter: lintGutterExtension,
+			editable: editableExtension,
+			theme: themeExtension,
+			language: peekLanguageSupport(language) ?? NO_LANGUAGE,
+		};
+		const restorable = document && !readOnly ? document : null;
+		const saved = restorable ? takeEditorState(restorable.id) : undefined;
 		const view = new EditorView({
-			state,
+			state: saved
+				? restoreEditorState(saved.state, value, configured)
+				: createEditorState(value, configured),
 			parent: containerRef.current,
+			scrollTo: saved?.scroll,
+		});
+		setViewHandlers(view, {
+			onChange: (next) => onChangeRef.current?.(next),
+			onSave: () => onSaveRef.current?.(),
+			isExternalUpdate: () => isExternalUpdateRef.current,
 		});
 		const adapter = createCodeMirrorAdapter(view);
+		let scrollSnapshot = saved?.scroll ?? view.scrollSnapshot();
 		const reportScrollPosition = () => {
+			scrollSnapshot = view.scrollSnapshot();
 			onScrollPositionChangeRef.current?.({
 				scrollTop: view.scrollDOM.scrollTop,
 				scrollLeft: view.scrollDOM.scrollLeft,
@@ -264,7 +209,7 @@ export function CodeEditor({
 			passive: true,
 		});
 		const savedScrollPosition = initialScrollPositionRef.current;
-		if (savedScrollPosition) {
+		if (!saved && savedScrollPosition) {
 			view.requestMeasure({
 				read: () => savedScrollPosition,
 				write: (position) => {
@@ -283,10 +228,16 @@ export function CodeEditor({
 		}
 
 		return () => {
-			// The passive effect cleanup can run after the editor DOM has been
-			// detached and its scroll offset clamped to zero. The scroll listener
-			// already saved the last real position, so do not overwrite it here.
+			// The cleanup can run after the editor DOM has been detached and its
+			// scroll offset clamped to zero. The scroll listener already saved the
+			// last real position, so do not overwrite it here.
 			view.scrollDOM.removeEventListener("scroll", reportScrollPosition);
+			if (restorable)
+				saveEditorState(
+					restorable.id,
+					view,
+					view.dom.isConnected ? view.scrollSnapshot() : scrollSnapshot,
+				);
 			if (editorRef?.current === adapter) {
 				editorRef.current = null;
 			}
@@ -306,19 +257,18 @@ export function CodeEditor({
 		)
 			return;
 		const unregister = lsp.registerView(document.absolutePath, view);
-		const detach = lsp.attach(document, view, lspCompartment);
+		const detach = lsp.attach(document, view, editorCompartments.lsp);
 		return () => {
 			detach();
 			unregister();
 			if (viewRef.current !== view) return;
-			view.dispatch({ effects: lspCompartment.reconfigure([]) });
+			view.dispatch({ effects: editorCompartments.lsp.reconfigure([]) });
 			view.dispatch(setDiagnostics(view.state, []));
 		};
 	}, [
 		document,
 		document?.absolutePath,
 		lsp,
-		lspCompartment,
 		readOnly,
 		preferences.enableLanguageServer,
 	]);
@@ -326,17 +276,14 @@ export function CodeEditor({
 	useLayoutEffect(() => {
 		const view = viewRef.current;
 		if (view)
-			reconfigure(
-				view,
-				lintGutterCompartment,
-				lintGutter ? LINT_GUTTER : NO_LINT_GUTTER,
-			);
-	}, [lintGutter, lintGutterCompartment]);
+			reconfigure(view, editorCompartments.lintGutter, lintGutterExtension);
+	}, [lintGutterExtension]);
 
 	useEffect(() => {
 		const view = viewRef.current;
-		if (view) reconfigure(view, preferencesCompartment, preferenceExtension);
-	}, [preferenceExtension, preferencesCompartment]);
+		if (view)
+			reconfigure(view, editorCompartments.preferences, preferenceExtension);
+	}, [preferenceExtension]);
 
 	useEffect(() => {
 		const view = viewRef.current;
@@ -362,13 +309,13 @@ export function CodeEditor({
 
 	useEffect(() => {
 		const view = viewRef.current;
-		if (view) reconfigure(view, themeCompartment, themeExtension);
-	}, [themeExtension, themeCompartment]);
+		if (view) reconfigure(view, editorCompartments.theme, themeExtension);
+	}, [themeExtension]);
 
 	useEffect(() => {
 		const view = viewRef.current;
-		if (view) reconfigure(view, editableCompartment, editableExtension);
-	}, [editableCompartment, editableExtension]);
+		if (view) reconfigure(view, editorCompartments.editable, editableExtension);
+	}, [editableExtension]);
 
 	useEffect(() => {
 		let cancelled = false;
@@ -378,7 +325,11 @@ export function CodeEditor({
 				if (cancelled) return;
 				const view = viewRef.current;
 				if (view)
-					reconfigure(view, languageCompartment, extension ?? NO_LANGUAGE);
+					reconfigure(
+						view,
+						editorCompartments.language,
+						extension ?? NO_LANGUAGE,
+					);
 			})
 			.catch((error) => {
 				if (cancelled) return;
@@ -389,13 +340,13 @@ export function CodeEditor({
 					error,
 					language,
 				});
-				reconfigure(view, languageCompartment, NO_LANGUAGE);
+				reconfigure(view, editorCompartments.language, NO_LANGUAGE);
 			});
 
 		return () => {
 			cancelled = true;
 		};
-	}, [language, languageCompartment]);
+	}, [language]);
 
 	return (
 		<div
