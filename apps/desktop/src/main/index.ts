@@ -48,10 +48,6 @@ import { resolveAppLocale } from "./lib/language";
 import { localDb } from "./lib/local-db";
 import { requestLocalNetworkAccess } from "./lib/local-network-permission";
 import { menuEmitter } from "./lib/menu-events";
-import {
-	initTanstackDbPersistence,
-	shutdownTanstackDbPersistence,
-} from "./lib/persistence/persistence";
 import { syncInstalledPluginMcpServers } from "./lib/plugin-installs";
 import { portForwardManager } from "./lib/port-forward";
 import { ensureProjectIconsDir, getProjectIconPath } from "./lib/project-icons";
@@ -356,7 +352,6 @@ app.on("before-quit", async (event) => {
 		stopHostServices: () => getHostServiceCoordinator().stopAll(),
 		teardownTerminalHost,
 		disposeTerminalHostClient,
-		shutdownPersistence: shutdownTanstackDbPersistence,
 		disposeTray,
 		forceExit: (code) => app.exit(code),
 	});
@@ -552,9 +547,6 @@ if (!gotTheLock) {
 		// initAppServices/initTray, so a plain activate is enough here.
 		await initI18nAsync(resolveAppLocale(getLanguageSetting()));
 		markStartup("i18n-ready");
-		registerWithMacOSNotificationCenter();
-		requestAppleEventsAccess();
-		requestLocalNetworkAccess();
 
 		// Must register on both default session and the app's custom partition
 		const iconProtocolHandler = (request: Request) => {
@@ -602,11 +594,9 @@ if (!gotTheLock) {
 		}
 
 		ensureProjectIconsDir();
-		setWorkspaceDockIcon();
 		initSentry();
 		await initAppState();
 		markStartup("app-state-ready");
-		initTanstackDbPersistence();
 
 		await loadWebviewBrowserExtension();
 		markStartup("webview-extension-ready");
@@ -665,6 +655,10 @@ if (!gotTheLock) {
 		);
 		void startHostServices();
 		scheduleStartupMaintenance(firstWindow, () => {
+			registerWithMacOSNotificationCenter();
+			requestAppleEventsAccess();
+			requestLocalNetworkAccess();
+			setWorkspaceDockIcon();
 			sweepNetworkLogs();
 			sweepDevAppProfiles();
 		});
