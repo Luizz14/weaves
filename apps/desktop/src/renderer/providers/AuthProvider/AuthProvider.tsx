@@ -1,7 +1,7 @@
 import { type ReactNode, useEffect, useState } from "react";
 import {
 	authClient,
-	getAuthToken,
+	ensureFreshJwt,
 	setAuthToken,
 	setJwt,
 } from "renderer/lib/auth-client";
@@ -26,7 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 		let cancelled = false;
 
-		async function fetchSessionAndJwt(tokenAtStart: string) {
+		async function fetchSession() {
 			try {
 				await refetchSession();
 			} catch (err) {
@@ -36,16 +36,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 				);
 			}
 			markRendererStartup("session-resolved");
-			try {
-				const res = await authClient.token();
-				// A response outliving the hydration timeout must not resurrect a
-				// JWT after sign-out or a token change.
-				if (res.data?.token && getAuthToken() === tokenAtStart) {
-					setJwt(res.data.token);
-				}
-			} catch (err) {
-				console.warn("[AuthProvider] JWT fetch failed during hydration", err);
-			}
 		}
 
 		async function hydrate() {
@@ -56,7 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 					// A hung session fetch must not hold boot on the splash forever —
 					// proceed after a bound; the routes show session-pending UI (#5729).
 					await Promise.race([
-						fetchSessionAndJwt(storedToken.token),
+						fetchSession(),
 						new Promise((resolve) =>
 							window.setTimeout(resolve, HYDRATION_TIMEOUT_MS),
 						),
@@ -122,7 +112,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 					console.warn("[AuthProvider] JWT refresh failed", err);
 				});
 
-		refreshJwt();
+		// get-session already delivered a JWT in its set-auth-jwt header; mint
+		// one only when it did not.
+		void ensureFreshJwt();
 		const interval = setInterval(refreshJwt, 50 * 60 * 1000);
 		return () => clearInterval(interval);
 	}, [isHydrated]);
