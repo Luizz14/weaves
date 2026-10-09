@@ -270,6 +270,7 @@ function spawnCleanShellEnv(): Promise<Record<string, string>> {
 
 let cache: Record<string, string> | null = null;
 let cacheTime = 0;
+let inFlight: Promise<Record<string, string>> | null = null;
 
 export async function getStrictShellEnvironment(): Promise<
 	Record<string, string>
@@ -278,10 +279,16 @@ export async function getStrictShellEnvironment(): Promise<
 		return { ...cache };
 	}
 
-	const env = await spawnCleanShellEnv();
-	cache = env;
-	cacheTime = Date.now();
-	return { ...cache };
+	inFlight ??= spawnCleanShellEnv()
+		.then((env) => {
+			cache = env;
+			cacheTime = Date.now();
+			return env;
+		})
+		.finally(() => {
+			inFlight = null;
+		});
+	return { ...(await inFlight) };
 }
 
 /**
@@ -304,4 +311,5 @@ export async function getToolEnvironment(): Promise<Record<string, string>> {
 export function clearStrictShellEnvCache(): void {
 	cache = null;
 	cacheTime = 0;
+	inFlight = null;
 }

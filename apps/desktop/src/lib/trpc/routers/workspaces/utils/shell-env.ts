@@ -11,6 +11,7 @@ const execFileAsync = promisify(execFile);
 let cachedEnv: Record<string, string> | null = null;
 let cacheTime = 0;
 let isFallbackCache = false;
+let inFlightShellEnv: Promise<Record<string, string>> | null = null;
 const CACHE_TTL_MS = 60_000; // 1 minute cache
 const FALLBACK_CACHE_TTL_MS = 10_000; // 10 second cache for fallback (retry sooner)
 const TIMEOUT_FALLBACK_CACHE_TTL_MS = 60_000; // 1 minute fallback when shell startup hangs
@@ -60,19 +61,26 @@ interface GetShellEnvironmentOptions {
 export async function getShellEnvironment(
 	options?: GetShellEnvironmentOptions,
 ): Promise<Record<string, string>> {
-	const now = Date.now();
 	const ttl = isFallbackCache ? fallbackCacheTtlMs : CACHE_TTL_MS;
-	if (!options?.forceRefresh && cachedEnv && now - cacheTime < ttl) {
+	if (!options?.forceRefresh && cachedEnv && Date.now() - cacheTime < ttl) {
 		return { ...cachedEnv };
 	}
 
+	inFlightShellEnv ??= resolveShellEnvironment().finally(() => {
+		inFlightShellEnv = null;
+	});
+	return { ...(await inFlightShellEnv) };
+}
+
+async function resolveShellEnvironment(): Promise<Record<string, string>> {
+	const now = Date.now();
 	try {
 		const env = await getShellEnvWithTimeout();
 		cachedEnv = env as Record<string, string>;
 		cacheTime = now;
 		isFallbackCache = false;
 		fallbackCacheTtlMs = FALLBACK_CACHE_TTL_MS;
-		return { ...cachedEnv };
+		return cachedEnv;
 	} catch (error) {
 		const isTimeout = error instanceof ShellEnvTimeoutError;
 		console.warn(
@@ -91,7 +99,7 @@ export async function getShellEnvironment(
 		fallbackCacheTtlMs = isTimeout
 			? TIMEOUT_FALLBACK_CACHE_TTL_MS
 			: FALLBACK_CACHE_TTL_MS;
-		return { ...fallback };
+		return fallback;
 	}
 }
 
@@ -129,6 +137,7 @@ export function clearShellEnvCache(): void {
 	cachedEnv = null;
 	cacheTime = 0;
 	isFallbackCache = false;
+	inFlightShellEnv = null;
 	fallbackCacheTtlMs = FALLBACK_CACHE_TTL_MS;
 	pathFixAttempted = false;
 	pathFixSucceeded = false;

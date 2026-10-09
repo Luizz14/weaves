@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import {
 	existsSync,
 	mkdtempSync,
+	readFileSync,
 	realpathSync,
 	rmSync,
 	writeFileSync,
@@ -118,6 +119,48 @@ describe("shell env cache", () => {
 
 			const refreshedEnv = await getShellEnvironment({ forceRefresh: true });
 			expect(refreshedEnv.__SUPERSET_SHELL_ENV_REFRESH_TEST__).toBe("second");
+		} finally {
+			if (origZDOTDIR !== undefined) process.env.ZDOTDIR = origZDOTDIR;
+			else delete process.env.ZDOTDIR;
+			if (origShell !== undefined) process.env.SHELL = origShell;
+			else delete process.env.SHELL;
+			clearShellEnvCache();
+			rmSync(tmpDir, { recursive: true, force: true });
+		}
+	});
+
+	test("concurrent callers share one shell probe", async () => {
+		const { clearShellEnvCache, getShellEnvironment } = await import(
+			"./shell-env"
+		);
+		const zshPath = ["/bin/zsh", "/usr/bin/zsh"].find((candidate) =>
+			existsSync(candidate),
+		);
+		if (!zshPath) {
+			return;
+		}
+
+		const tmpDir = mkdtempSync(
+			join(realpathSync(tmpdir()), "shell-env-inflight-test-"),
+		);
+		const probeLog = join(tmpDir, "probes");
+		writeFileSync(join(tmpDir, ".zshrc"), `echo probe >> "${probeLog}"\n`);
+
+		const origZDOTDIR = process.env.ZDOTDIR;
+		const origShell = process.env.SHELL;
+		process.env.SHELL = zshPath;
+		process.env.ZDOTDIR = tmpDir;
+		clearShellEnvCache();
+
+		try {
+			const [first, second] = await Promise.all([
+				getShellEnvironment(),
+				getShellEnvironment(),
+			]);
+
+			expect(first).toEqual(second);
+			expect(first).not.toBe(second);
+			expect(readFileSync(probeLog, "utf8").trim().split("\n")).toHaveLength(1);
 		} finally {
 			if (origZDOTDIR !== undefined) process.env.ZDOTDIR = origZDOTDIR;
 			else delete process.env.ZDOTDIR;

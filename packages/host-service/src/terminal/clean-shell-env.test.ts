@@ -186,3 +186,41 @@ describe.skipIf(!canRunRealShell)(
 		}, 15_000);
 	},
 );
+
+describe.skipIf(!canRunRealShell)(
+	"getStrictShellEnvironment with concurrent callers",
+	() => {
+		let home: string;
+		let originalHome: string | undefined;
+
+		beforeEach(() => {
+			home = mkdtempSync(join(tmpdir(), "clean-shell-env-inflight-"));
+			writeFileSync(join(home, ".zshrc"), `echo probe >> "${home}/probes"\n`);
+			originalHome = process.env.HOME;
+			process.env.HOME = home;
+			__setAccountShellForTesting("/bin/zsh");
+			clearStrictShellEnvCache();
+		});
+
+		afterEach(() => {
+			__setAccountShellForTesting(undefined);
+			if (originalHome === undefined) delete process.env.HOME;
+			else process.env.HOME = originalHome;
+			rmSync(home, { recursive: true, force: true });
+			clearStrictShellEnvCache();
+		});
+
+		test("share one login-shell probe", async () => {
+			const [first, second] = await Promise.all([
+				getStrictShellEnvironment(),
+				getStrictShellEnvironment(),
+			]);
+
+			expect(first).toEqual(second);
+			expect(first).not.toBe(second);
+			expect(
+				readFileSync(join(home, "probes"), "utf8").trim().split("\n"),
+			).toHaveLength(1);
+		}, 15_000);
+	},
+);
