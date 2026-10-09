@@ -133,6 +133,7 @@ export default defineConfig({
 			sourcemap: "hidden",
 			rollupOptions: {
 				input: {
+					bootstrap: resolve("src/main/bootstrap.ts"),
 					index: resolve("src/main/index.ts"),
 					// Terminal host daemon process - runs separately for terminal persistence
 					"terminal-host": resolve("src/main/terminal-host/index.ts"),

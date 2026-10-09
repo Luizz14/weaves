@@ -1182,6 +1182,11 @@ export class HostServiceCoordinator extends EventEmitter {
 			// Read by the child's parent watchdog so it can self-exit if
 			// Electron crashes without sending SIGTERM (orphan reparenting).
 			HOST_PARENT_PID: String(process.pid),
+			// The child removes it at startup so its own children never inherit it.
+			NODE_COMPILE_CACHE: path.join(
+				app.getPath("userData"),
+				"node-compile-cache",
+			),
 		};
 		// At launch main's own login-shell probe is still running; waiting for it
 		// held every host spawn for a full `zsh -il`. The child merges the shell

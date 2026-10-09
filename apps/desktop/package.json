@@ -3,7 +3,7 @@
 	"productName": "Superset",
 	"description": "The last developer tool you'll ever need",
 	"version": "1.29.0",
-	"main": "./dist/main/index.js",
+	"main": "./dist/main/bootstrap.js",
 	"resources": "src/resources",
 	"repository": {
 		"type": "git",

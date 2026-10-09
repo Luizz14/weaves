@@ -50,6 +50,7 @@ const MANIFEST_RECLAIM_INTERVAL_MS = 15_000;
 type Server = ReturnType<typeof serve>;
 
 async function main(): Promise<void> {
+	delete process.env.NODE_COMPILE_CACHE;
 	markHostStartup("host-process-start", processStartHrtime());
 	markHostStartup("host-imports-end");
 	initSentry({ organizationId: env.ORGANIZATION_ID });
