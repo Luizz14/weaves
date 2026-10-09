@@ -3,10 +3,16 @@ import { useCallback, useMemo } from "react";
 import { useWorkspace } from "renderer/routes/_authenticated/_dashboard/v2-workspace/providers/WorkspaceProvider";
 import { useTheme } from "renderer/stores/theme";
 import { resolveTerminalThemeType } from "renderer/stores/theme/utils";
+import {
+	ensureSpareLease,
+	takeSpareLease,
+} from "../../utils/terminalSpareLeases";
 
 /** Worst-case legitimate create ≈ daemon bootstrap (5s connect + 15s open) +
  * shell env probe (8s); anything past this is a wedged transport, not work. */
 const CREATE_SESSION_TIMEOUT_MS = 30_000;
+/** Lets the terminal just opened paint before the next spare's shell starts. */
+const SPARE_REPLENISH_DELAY_MS = 1_000;
 
 interface CreateOptions {
 	/**
@@ -31,7 +37,9 @@ export interface TerminalLauncher {
 	 */
 	create(options?: CreateOptions): Promise<string>;
 	/**
-	 * Mints a terminalId with no network call, for optimistic pane insertion.
+	 * Mints a terminalId with no network call, for optimistic pane insertion —
+	 * the id of a shell the host already started for this workspace when one
+	 * is ready, so the pane attaches to a prompt instead of a cold shell.
 	 * Pair with `createOnAttach: true` in the pane data: the pane's WS attach
 	 * creates the session host-side, so plain terminal creation can't queue
 	 * behind Chromium's 6-per-origin HTTP socket pool under load.
@@ -69,7 +77,20 @@ export function useV2TerminalLauncher(): TerminalLauncher {
 		[trpcClient, workspaceId, themeType],
 	);
 
-	const mint = useCallback((): string => crypto.randomUUID(), []);
+	const mint = useCallback((): string => {
+		const spareId = takeSpareLease(workspaceId, themeType);
+		window.setTimeout(() => {
+			void ensureSpareLease({
+				workspaceId,
+				themeType,
+				prepare: () =>
+					trpcClient.terminal.prepareSpare.mutate({ workspaceId, themeType }),
+				release: (terminalId) =>
+					trpcClient.terminal.releaseSpare.mutate({ terminalId }),
+			});
+		}, SPARE_REPLENISH_DELAY_MS);
+		return spareId ?? crypto.randomUUID();
+	}, [trpcClient, workspaceId, themeType]);
 
 	// Memoize so the launcher reference is stable across renders — every
 	// consumer lists `launcher` in a deps array (preset hook, hotkeys, pane

@@ -64,6 +64,7 @@ import { useRunWorkspaceCreationPresets } from "./hooks/useRunWorkspaceCreationP
 import { useShellInteractionPassthrough } from "./hooks/useShellInteractionPassthrough";
 import { useSlotElement } from "./hooks/useSlotElement";
 import { useTabCloseGuard } from "./hooks/useTabCloseGuard";
+import { useTerminalSparePrewarm } from "./hooks/useTerminalSparePrewarm";
 import { useV2PresetExecution } from "./hooks/useV2PresetExecution";
 import { useV2TerminalLauncher } from "./hooks/useV2TerminalLauncher";
 import { useV2WorkspacePaneLayout } from "./hooks/useV2WorkspacePaneLayout";
@@ -172,6 +173,7 @@ function V2WorkspaceContent() {
 	const { store, isLayoutReady } = useV2WorkspacePaneLayout();
 	useClearActivePaneAttention({ store });
 	const launcher = useV2TerminalLauncher();
+	useTerminalSparePrewarm();
 	const {
 		matchedPresets,
 		newTabPresets,
