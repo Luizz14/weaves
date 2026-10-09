@@ -94,6 +94,9 @@ export function CollectionsProvider({ children }: { children: ReactNode }) {
 	const sessionOrgId = env.SKIP_ENV_VALIDATION
 		? MOCK_ORG_ID
 		: session?.session?.activeOrganizationId;
+	const sessionOrganizationIds = env.SKIP_ENV_VALIDATION
+		? undefined
+		: session?.session?.organizationIds;
 
 	const [activeOrganizationId, setActiveOrganizationId] = useState<
 		string | null
@@ -117,21 +120,30 @@ export function CollectionsProvider({ children }: { children: ReactNode }) {
 		// The registry's org is only preferred while it is still one the user
 		// belongs to. Leaving an organization (or having membership revoked
 		// elsewhere) leaves a dead id in the registry, and adopting it would pin
-		// the window to an org whose every read now fails. Until the membership
-		// list has loaded we cannot tell stale from valid, so wait rather than
-		// guess — the window is showing nothing yet either way.
+		// the window to an org whose every read now fails. The session carries
+		// the membership; until it or the membership list has loaded we cannot
+		// tell stale from valid, so wait rather than guess.
+		const memberOrganizationIds =
+			sessionOrganizationIds ??
+			organizations?.map((organization) => organization.id);
 		const registryOrgIsStillMine =
 			windowOrgId != null &&
-			organizations != null &&
-			organizations.some((organization) => organization.id === windowOrgId);
-		if (windowOrgId != null && organizations == null) return;
+			memberOrganizationIds != null &&
+			memberOrganizationIds.includes(windowOrgId);
+		if (windowOrgId != null && memberOrganizationIds == null) return;
 		const resolved =
 			(registryOrgIsStillMine ? windowOrgId : sessionOrgId) ?? null;
 		if (!resolved) return;
 		initializedRef.current = true;
 		markRendererStartup("org-resolved");
 		setActiveOrganizationId(resolved);
-	}, [windowOrgPending, windowOrgId, sessionOrgId, organizations]);
+	}, [
+		windowOrgPending,
+		windowOrgId,
+		sessionOrgId,
+		sessionOrganizationIds,
+		organizations,
+	]);
 
 	// Scope this window's cloud reads to its own org, during render rather than
 	// in an effect: children below issue their first queries while this render
