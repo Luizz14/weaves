@@ -712,6 +712,17 @@ describe("HostServiceCoordinator single-flight / adoption", () => {
 		expect(conn.port).toBe(60000);
 	});
 
+	test("spawns without polling a manifest whose holder is dead", async () => {
+		manifestStore.current = baseManifest(4321, "http://127.0.0.1:55555");
+		isProcessAliveMock.mockImplementation(() => false);
+
+		const conn = await coordinator.start("org-1", spawnConfig);
+
+		expect(pollHealthCheckMock).not.toHaveBeenCalled();
+		expect(spawnMock).toHaveBeenCalledTimes(1);
+		expect(conn.port).toBe(60000);
+	});
+
 	/** A live process that looks like the host-service that wrote the manifest. */
 	function stubHolderIdentity(
 		identity: { elapsedMs: number; command: string } | null = {

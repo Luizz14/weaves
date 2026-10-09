@@ -829,7 +829,7 @@ export class HostServiceCoordinator extends EventEmitter {
 	): Promise<Connection | null> {
 		if (!isStartAllowed()) throw new Error("Host service start cancelled");
 		const manifest = readManifest(organizationId);
-		if (!manifest) return null;
+		if (!manifest || !isProcessAlive(manifest.pid)) return null;
 
 		let port: number;
 		try {
