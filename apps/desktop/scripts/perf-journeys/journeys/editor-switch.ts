@@ -1,4 +1,4 @@
-import { click, insertText, pressChord } from "../lib/input";
+import { insertText, pressChord } from "../lib/input";
 import type { ArmSpec, Phase } from "../lib/session";
 import { sleep, waitFor } from "../lib/system";
 import { type BenchContext, phaseFor, workspaceScope } from "./context";
@@ -215,12 +215,6 @@ async function waitForLanguageServer(
 	);
 }
 
-async function tabIds(ctx: BenchContext, scope: string): Promise<string[]> {
-	return ctx.session.eval<string[]>(
-		`[...document.querySelectorAll(${JSON.stringify(`${scope} [data-tab-id]`)})].map((el) => el.getAttribute("data-tab-id"))`,
-	);
-}
-
 async function clickTab(
 	ctx: BenchContext,
 	state: EditorSwitchState,
@@ -236,33 +230,23 @@ async function createFileTab(
 	state: EditorSwitchState,
 ): Promise<void> {
 	const { session } = ctx;
-	const tabsBefore = await tabIds(ctx, state.scope);
 	if (!(await openUnmeasured(ctx, state, TAB_FILE))) return;
 	await sleep(500);
-	const point = await session.eval<{ x: number; y: number } | null>(`(() => {
-		for (const host of document.querySelectorAll("*")) {
-			const row = host.shadowRoot?.querySelector(${JSON.stringify(`[data-item-path="${TAB_FILE}"]`)});
-			if (!row) continue;
-			row.scrollIntoView({ block: "center" });
-			const rect = row.getBoundingClientRect();
-			if (rect.width === 0 || rect.height === 0) return null;
-			return { x: rect.left + Math.min(rect.width / 2, 80), y: rect.top + rect.height / 2 };
-		}
-		return null;
-	})()`);
-	if (!point) {
-		ctx.log("  editor-switch: tree row for the tab file not found");
+	const tabs = await session.eval<Array<{ id: string; title: string }>>(
+		`[...document.querySelectorAll(${JSON.stringify(`${state.scope} [data-tab-id]`)})].map((el) => ({ id: el.getAttribute("data-tab-id"), title: el.textContent ?? "" }))`,
+	);
+	const name = TAB_FILE.split("/").pop() as string;
+	state.fileTabId = tabs.find((tab) => tab.title.includes(name))?.id ?? null;
+	state.terminalTabId =
+		tabs.find((tab) => tab.id !== state.fileTabId)?.id ?? null;
+	if (!state.fileTabId || !state.terminalTabId) {
+		ctx.log(
+			`  editor-switch: tab switch needs the tab file's tab and another (${tabs.length} tabs)`,
+		);
+		state.fileTabId = null;
 		return;
 	}
-	await click(session.cdp, point.x, point.y, ["shift"]);
-	await waitFor(
-		async () => (await tabIds(ctx, state.scope)).length > tabsBefore.length,
-		{ timeoutMs: 5_000, intervalMs: 50, label: "file tab" },
-	).catch(() => undefined);
-	const tabsAfter = await tabIds(ctx, state.scope);
-	state.fileTabId = tabsAfter.find((id) => !tabsBefore.includes(id)) ?? null;
-	state.terminalTabId = tabsBefore[0] ?? null;
-	if (state.terminalTabId) await clickTab(ctx, state, state.terminalTabId);
+	await clickTab(ctx, state, state.terminalTabId);
 	await sleep(500);
 }
 

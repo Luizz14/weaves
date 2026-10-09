@@ -511,6 +511,18 @@
 					const current = editorSnapshot(target, readyText);
 					const at = since();
 					if (LAYOUT_KEYS.some((key) => current[key] !== previous[key])) {
+						for (const key of LAYOUT_KEYS)
+							if (
+								current[key] !== previous[key] &&
+								!(`layoutDelta_${key}` in ctx.marks)
+							)
+								set(
+									`layoutDelta_${key}`,
+									typeof current[key] === "number" &&
+										typeof previous[key] === "number"
+										? current[key] - previous[key]
+										: 1,
+								);
 						late.layout++;
 						set("layoutStable", at);
 						lastVisual = at;
