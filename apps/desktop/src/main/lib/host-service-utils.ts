@@ -6,8 +6,8 @@ export {
 	openRotatingLogFd,
 } from "@superset/shared/rotating-log";
 
-// Before the server becomes reachable, startup must still clear DB migrate and
-// the daemon bootstrap (the shell-env snapshot now runs in the background, off
+// Before the server becomes reachable, startup must still clear DB migrate (the
+// shell-env snapshot and the pty-daemon bootstrap run in the background, off
 // the critical path). At boot every known org starts at once, and multiple app
 // instances sharing one $SUPERSET_HOME_DIR compound the contention, so a
 // healthy-but-slow child can need well over 10s. Give it generous headroom; a

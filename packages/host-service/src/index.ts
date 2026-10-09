@@ -1,5 +1,6 @@
 export { createApiClient } from "./api";
 export { type CreateAppOptions, type CreateAppResult, createApp } from "./app";
+export { waitForDaemonReady } from "./daemon";
 export type { HostDb } from "./db";
 export type {
 	ClientMessage as EventBusClientMessage,

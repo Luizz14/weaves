@@ -20,10 +20,11 @@ import {
 	processStartHrtime,
 	resolveBrowserBridgeFromEnv,
 	startTerminalReaper,
+	waitForDaemonReady,
 } from "@superset/host-service";
 import {
-	initTerminalBaseEnv,
-	resolveTerminalBaseEnv,
+	startTerminalBaseEnvResolution,
+	waitForTerminalBaseEnv,
 } from "@superset/host-service/terminal-env";
 import { connectRelay } from "@superset/host-service/tunnel";
 import { loadToken } from "lib/trpc/routers/auth/utils/auth-functions";
@@ -90,9 +91,13 @@ async function main(): Promise<void> {
 		interval.unref();
 	}
 
-	const terminalBaseEnv = await resolveTerminalBaseEnv();
-	initTerminalBaseEnv(terminalBaseEnv);
-	markHostStartup("host-terminal-env-ready");
+	// Neither the login-shell probe (up to 8s on a slow rc) nor the pty-daemon
+	// adopt may gate the listen: PTY creation awaits both on its own.
+	startTerminalBaseEnvResolution();
+	void waitForTerminalBaseEnv().then(() =>
+		markHostStartup("host-terminal-env-ready"),
+	);
+	void waitForDaemonReady(env.ORGANIZATION_ID).catch(() => {});
 
 	const authProvider = new JwtApiAuthProvider({
 		// Read fresh from disk every time we need to mint a new JWT, so that
