@@ -38,6 +38,16 @@ test("relative gutter tracks the cursor without modifying document content", () 
 	expect(view.state.doc.toString()).toBe("one\ntwo\nthree\nfour");
 });
 
+test("equal editing preferences reuse the same extensions", () => {
+	const editing = editorSettingsSchema.parse({}).editing;
+	expect(editorPreferenceExtensions({ ...editing })).toBe(
+		editorPreferenceExtensions(editing),
+	);
+	expect(
+		editorPreferenceExtensions({ ...editing, tabSize: editing.tabSize + 2 }),
+	).not.toBe(editorPreferenceExtensions(editing));
+});
+
 test("format edits use UTF-16 positions and reject out-of-bounds edits", () => {
 	const content = "🐟 value\nnext";
 	expect(

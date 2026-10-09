@@ -1,11 +1,19 @@
 import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
 import type { Extension } from "@codemirror/state";
 import { tags } from "@lezer/highlight";
-import { getEditorTheme, type Theme } from "shared/themes";
+import { memoizeByKey } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/utils/memoizeByKey";
+import { type EditorTheme, getEditorTheme, type Theme } from "shared/themes";
+
+const highlightingBySyntax = memoizeByKey<Extension>(16);
 
 export function getCodeSyntaxHighlighting(theme: Theme): Extension {
 	const editorTheme = getEditorTheme(theme);
+	return highlightingBySyntax(JSON.stringify(editorTheme.syntax), () =>
+		createSyntaxHighlighting(editorTheme),
+	);
+}
 
+function createSyntaxHighlighting(editorTheme: EditorTheme): Extension {
 	return syntaxHighlighting(
 		HighlightStyle.define([
 			{

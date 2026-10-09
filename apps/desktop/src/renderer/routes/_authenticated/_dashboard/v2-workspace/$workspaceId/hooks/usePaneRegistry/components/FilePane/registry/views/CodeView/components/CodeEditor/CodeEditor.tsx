@@ -12,7 +12,7 @@ import {
 	indentOnInput,
 } from "@codemirror/language";
 import { highlightSelectionMatches, searchKeymap } from "@codemirror/search";
-import { Compartment, EditorState } from "@codemirror/state";
+import { Compartment, EditorState, type Extension } from "@codemirror/state";
 import {
 	drawSelection,
 	dropCursor,
@@ -45,6 +45,39 @@ import { buildFoldPlaceholder } from "./extensions/foldPlaceholder";
 import { selectionClassTogglePlugin } from "./extensions/selectionClassTogglePlugin";
 import { loadLanguageSupport } from "./loadLanguageSupport";
 import { getCodeSyntaxHighlighting } from "./syntax-highlighting";
+
+const editability = {
+	editable: [EditorState.readOnly.of(false), EditorView.editable.of(true)],
+	readOnly: [EditorState.readOnly.of(true), EditorView.editable.of(false)],
+};
+
+const themePairs = new WeakMap<object, WeakMap<object, Extension>>();
+
+function editorThemeExtension(
+	highlighting: Extension,
+	theme: Extension,
+): Extension {
+	let byTheme = themePairs.get(highlighting);
+	if (!byTheme) {
+		byTheme = new WeakMap();
+		themePairs.set(highlighting, byTheme);
+	}
+	let pair = byTheme.get(theme);
+	if (!pair) {
+		pair = [highlighting, theme];
+		byTheme.set(theme, pair);
+	}
+	return pair;
+}
+
+function reconfigure(
+	view: EditorView,
+	compartment: Compartment,
+	extension: Extension,
+) {
+	if (compartment.get(view.state) === extension) return;
+	view.dispatch({ effects: compartment.reconfigure(extension) });
+}
 
 interface CodeEditorProps {
 	document?: SharedFileDocument;
@@ -123,6 +156,25 @@ export function CodeEditor({
 		[applicationTheme, palette, preferences.appearance.theme],
 	);
 	const preferencesCompartment = useRef(new Compartment()).current;
+	const preferenceExtension = editorPreferenceExtensions(preferences.editing);
+	const themeExtension = editorThemeExtension(
+		getCodeSyntaxHighlighting(activeTheme),
+		createCodeMirrorTheme(
+			activeTheme,
+			{
+				fontFamily: editorFontFamily,
+				fontSize: editorFontSize,
+				lineHeight: editorLineHeight,
+				letterSpacing: editorLetterSpacing,
+				fontWeight: editorFontWeight,
+				ligatures: editorLigatures,
+			},
+			fillHeight,
+		),
+	);
+	const editableExtension = readOnly
+		? editability.readOnly
+		: editability.editable;
 
 	onChangeRef.current = onChange;
 	onSaveRef.current = onSave;
@@ -151,9 +203,7 @@ export function CodeEditor({
 		const state = EditorState.create({
 			doc: value,
 			extensions: [
-				preferencesCompartment.of(
-					editorPreferenceExtensions(preferences.editing),
-				),
+				preferencesCompartment.of(preferenceExtension),
 				highlightSpecialChars(),
 				history(),
 				foldGutter({ markerDOM: buildFoldChevron }),
@@ -167,10 +217,7 @@ export function CodeEditor({
 				colorPicker,
 				contourSelectionLayer,
 				selectionClassTogglePlugin,
-				editableCompartment.of([
-					EditorState.readOnly.of(readOnly),
-					EditorView.editable.of(!readOnly),
-				]),
+				editableCompartment.of(editableExtension),
 				EditorView.contentAttributes.of({
 					spellcheck: "false",
 				}),
@@ -182,21 +229,7 @@ export function CodeEditor({
 					...foldKeymap,
 				]),
 				saveKeymap,
-				themeCompartment.of([
-					getCodeSyntaxHighlighting(activeTheme),
-					createCodeMirrorTheme(
-						activeTheme,
-						{
-							fontFamily: editorFontFamily,
-							fontSize: editorFontSize,
-							lineHeight: editorLineHeight,
-							letterSpacing: editorLetterSpacing,
-							fontWeight: editorFontWeight,
-							ligatures: editorLigatures,
-						},
-						fillHeight,
-					),
-				]),
+				themeCompartment.of(themeExtension),
 				languageCompartment.of([]),
 				lspCompartment.of([]),
 				updateListener,
@@ -279,13 +312,8 @@ export function CodeEditor({
 
 	useEffect(() => {
 		const view = viewRef.current;
-		if (view)
-			view.dispatch({
-				effects: preferencesCompartment.reconfigure(
-					editorPreferenceExtensions(preferences.editing),
-				),
-			});
-	}, [preferences.editing, preferencesCompartment]);
+		if (view) reconfigure(view, preferencesCompartment, preferenceExtension);
+	}, [preferenceExtension, preferencesCompartment]);
 
 	useEffect(() => {
 		const view = viewRef.current;
@@ -311,48 +339,13 @@ export function CodeEditor({
 
 	useEffect(() => {
 		const view = viewRef.current;
-		if (!view) return;
-
-		view.dispatch({
-			effects: themeCompartment.reconfigure([
-				getCodeSyntaxHighlighting(activeTheme),
-				createCodeMirrorTheme(
-					activeTheme,
-					{
-						fontFamily: editorFontFamily,
-						fontSize: editorFontSize,
-						lineHeight: editorLineHeight,
-						letterSpacing: editorLetterSpacing,
-						fontWeight: editorFontWeight,
-						ligatures: editorLigatures,
-					},
-					fillHeight,
-				),
-			]),
-		});
-	}, [
-		activeTheme,
-		editorFontFamily,
-		editorFontWeight,
-		editorFontSize,
-		editorLetterSpacing,
-		editorLigatures,
-		editorLineHeight,
-		fillHeight,
-		themeCompartment,
-	]);
+		if (view) reconfigure(view, themeCompartment, themeExtension);
+	}, [themeExtension, themeCompartment]);
 
 	useEffect(() => {
 		const view = viewRef.current;
-		if (!view) return;
-
-		view.dispatch({
-			effects: editableCompartment.reconfigure([
-				EditorState.readOnly.of(readOnly),
-				EditorView.editable.of(!readOnly),
-			]),
-		});
-	}, [editableCompartment, readOnly]);
+		if (view) reconfigure(view, editableCompartment, editableExtension);
+	}, [editableCompartment, editableExtension]);
 
 	useEffect(() => {
 		let cancelled = false;

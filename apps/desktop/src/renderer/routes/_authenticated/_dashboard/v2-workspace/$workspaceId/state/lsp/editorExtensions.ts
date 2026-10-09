@@ -1,5 +1,5 @@
 import { indentUnit } from "@codemirror/language";
-import { EditorState, type Range } from "@codemirror/state";
+import { EditorState, type Extension, type Range } from "@codemirror/state";
 import {
 	Decoration,
 	type DecorationSet,
@@ -13,6 +13,7 @@ import {
 	type ViewUpdate,
 } from "@codemirror/view";
 import type { EditorSettings } from "@superset/shared/editor-settings";
+import { memoizeByKey } from "../../utils/memoizeByKey";
 
 class RelativeNumber extends GutterMarker {
 	constructor(
@@ -49,7 +50,17 @@ function relativeNumbers() {
 	});
 }
 
-export function editorPreferenceExtensions(editing: EditorSettings["editing"]) {
+const extensionsByPreferences = memoizeByKey<Extension>(16);
+
+export function editorPreferenceExtensions(
+	editing: EditorSettings["editing"],
+): Extension {
+	return extensionsByPreferences(JSON.stringify(editing), () =>
+		buildPreferenceExtensions(editing),
+	);
+}
+
+function buildPreferenceExtensions(editing: EditorSettings["editing"]) {
 	const markers = ViewPlugin.fromClass(
 		class {
 			decorations: DecorationSet;

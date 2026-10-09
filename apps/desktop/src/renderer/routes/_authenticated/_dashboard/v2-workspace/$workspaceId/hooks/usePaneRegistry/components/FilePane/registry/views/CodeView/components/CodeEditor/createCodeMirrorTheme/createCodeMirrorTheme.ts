@@ -1,9 +1,16 @@
+import type { Extension } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
 import {
 	resolveEditorLineHeight,
 	resolveFontVariantLigatures,
 } from "renderer/lib/editor-typography";
-import { getEditorTheme, type Theme, withAlpha } from "shared/themes";
+import { memoizeByKey } from "renderer/routes/_authenticated/_dashboard/v2-workspace/$workspaceId/utils/memoizeByKey";
+import {
+	type EditorTheme,
+	getEditorTheme,
+	type Theme,
+	withAlpha,
+} from "shared/themes";
 import {
 	DEFAULT_CODE_EDITOR_FONT_FAMILY,
 	DEFAULT_CODE_EDITOR_FONT_SIZE,
@@ -18,14 +25,34 @@ interface CodeEditorFontSettings {
 	ligatures?: boolean;
 }
 
+const themesByInput = memoizeByKey<Extension>(16);
+
 export function createCodeMirrorTheme(
 	theme: Theme,
 	fontSettings: CodeEditorFontSettings,
 	fillHeight: boolean,
-) {
+): Extension {
+	const editorTheme = getEditorTheme(theme);
+	return themesByInput(
+		JSON.stringify([
+			editorTheme,
+			theme.ui.accent,
+			theme.type,
+			fontSettings,
+			fillHeight,
+		]),
+		() => buildCodeMirrorTheme(theme, editorTheme, fontSettings, fillHeight),
+	);
+}
+
+function buildCodeMirrorTheme(
+	theme: Theme,
+	editorTheme: EditorTheme,
+	fontSettings: CodeEditorFontSettings,
+	fillHeight: boolean,
+): Extension {
 	const fontSize = fontSettings.fontSize ?? DEFAULT_CODE_EDITOR_FONT_SIZE;
 	const lineHeight = resolveEditorLineHeight(fontSize, fontSettings.lineHeight);
-	const editorTheme = getEditorTheme(theme);
 	const accentOverlay = withAlpha(theme.ui.accent, 0.5);
 	const activeLineBackground = accentOverlay;
 	const selectionBackground = accentOverlay;
