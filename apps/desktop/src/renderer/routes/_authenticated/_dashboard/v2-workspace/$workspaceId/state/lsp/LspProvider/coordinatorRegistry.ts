@@ -5,6 +5,7 @@ const MAX_IDLE_COORDINATORS = 2;
 
 interface Entry {
 	coordinator: LspCoordinator;
+	scope: string | null;
 	holders: number;
 	releasedAt: number;
 	timer: ReturnType<typeof setTimeout> | null;
@@ -27,12 +28,14 @@ function disposeCoordinator(key: string) {
 
 export function getCoordinator(
 	key: string,
+	scope: string | null,
 	create: () => LspCoordinator,
 ): LspCoordinator {
 	let entry = entries.get(key);
 	if (!entry) {
 		entry = {
 			coordinator: create(),
+			scope,
 			holders: 0,
 			releasedAt: Date.now(),
 			timer: null,
@@ -65,6 +68,11 @@ export function releaseCoordinator(key: string): void {
 		const oldest = idle.shift();
 		if (oldest) disposeCoordinator(oldest[0]);
 	}
+}
+
+export function disposeIdleCoordinatorsOutside(scope: string | null): void {
+	for (const [key, entry] of [...entries])
+		if (entry.holders <= 0 && entry.scope !== scope) disposeCoordinator(key);
 }
 
 export function disposeAllCoordinators(): void {

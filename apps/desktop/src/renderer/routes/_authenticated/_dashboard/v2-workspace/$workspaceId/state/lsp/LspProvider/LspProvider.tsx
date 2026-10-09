@@ -8,12 +8,14 @@ import {
 	useMemo,
 	useRef,
 } from "react";
+import { useActiveOrganizationId } from "renderer/hooks/useActiveOrganizationId";
 import { useEditorSettings } from "renderer/hooks/useEditorSettings";
 import { useWorkspace } from "renderer/routes/_authenticated/_dashboard/v2-workspace/providers/WorkspaceProvider";
 import { useLocalHostService } from "renderer/routes/_authenticated/providers/LocalHostServiceProvider";
 import { LspCoordinator } from "../coordinator";
 import {
 	acquireCoordinator,
+	disposeIdleCoordinatorsOutside,
 	getCoordinator,
 	releaseCoordinator,
 } from "./coordinatorRegistry";
@@ -33,6 +35,7 @@ export function LspProvider({
 	const preferences = useEditorSettings();
 	const { workspace } = useWorkspace();
 	const { machineId } = useLocalHostService();
+	const organizationId = useActiveOrganizationId();
 	const openFileRef = useRef(openFile);
 	openFileRef.current = openFile;
 	const { hostUrl, trpcClient, getWsToken, queryClient } = connection;
@@ -43,6 +46,7 @@ export function LspProvider({
 			key
 				? getCoordinator(
 						key,
+						organizationId,
 						() =>
 							new LspCoordinator(
 								workspace.id,
@@ -52,8 +56,19 @@ export function LspProvider({
 							),
 					)
 				: null,
-		[key, workspace.id, hostUrl, trpcClient, getWsToken, queryClient],
+		[
+			key,
+			organizationId,
+			workspace.id,
+			hostUrl,
+			trpcClient,
+			getWsToken,
+			queryClient,
+		],
 	);
+	useEffect(() => {
+		disposeIdleCoordinatorsOutside(organizationId);
+	}, [organizationId]);
 	useEffect(() => {
 		if (!key || !coordinator) return;
 		acquireCoordinator(key);

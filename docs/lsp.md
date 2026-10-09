@@ -49,7 +49,17 @@ The renderer shares one session across panes of the same server/root. Different 
 
 `SharedFileDocument` is the source of text for the custom CodeMirror LSP workspace. Splits emit one didOpen/didChange stream, with monotonically increasing UTF-16 document versions. Successful saves emit didSave when supported. Reloads and external changes use the same synchronization path. Read-only snapshots do not attach language servers.
 
-Connections retry twice, after one and five seconds, and replay current buffers. Diagnostics clear on disconnect and versioned stale results are ignored. Sessions stop after 60 seconds without documents, on workspace deletion, or host shutdown. Shutdown sends the protocol request and exit notification, then terminates the process tree if necessary. Initialization has a 120-second limit; interactive requests have a ten-second limit.
+Connections retry twice, after one and five seconds, and replay current buffers. Diagnostics clear on disconnect and versioned stale results are ignored. A resolved session that never connects stops after 60 seconds, and one whose socket connects stops after 120 seconds unless a document opens. Sessions stop ten minutes after their last document closes, on workspace deletion, or on host shutdown.
+
+Files stay open on their server for as long as the server would need them again soon, following VS Code, where didOpen follows the text model rather than the visible editor:
+
+- A file in any tab of the layout stays open, up to the 20 most recent, so switching tabs sends no didClose/didOpen and its diagnostics and tree counts stay current. Closing the tab closes it.
+- Highlighting a Quick Open result, or resting the pointer on a file in the tree for 120 ms, loads the document and opens it on its server for 30 seconds, two files at a time. Opening Quick Open does the same for the last viewed file that has a server, which loads its project. A prefetched file adds no tree counts until an editor attaches to it.
+- Diagnostics are kept per file, so an editor mounting on a file the server already checked paints them in its first frame.
+
+The renderer keeps a workspace's coordinator, and therefore its sessions, for ten minutes after leaving the workspace, at most two idle workspaces at a time. Its own sessions go idle ten minutes after the last editor and tab file of that server close. Switching organization disposes the other organization's idle workspaces at once, and sign-out stops the host services and every server with them.
+
+The editor reserves the diagnostics gutter and the status bar from its first frame whenever the file is eligible for a server, and line numbers keep a three-digit minimum width, so neither the server becoming ready nor switching between files moves the text. Shutdown sends the protocol request and exit notification, then terminates the process tree if necessary. Initialization has a 120-second limit; interactive requests have a ten-second limit.
 
 ## Verification
 
