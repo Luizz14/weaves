@@ -15,6 +15,7 @@ import { resolveDevWorkspaceName } from "main/lib/dev-workspace-name";
 import { getIconPath } from "main/lib/dock-icon";
 import { localDb } from "main/lib/local-db";
 import { isExpectedRendererExit } from "main/lib/renderer-exit";
+import { resolveWindowBackground } from "main/lib/window-background";
 import { NOTIFICATION_EVENTS, PLATFORM } from "shared/constants";
 import { env } from "shared/env.shared";
 import type { AgentLifecycleEvent } from "shared/notification-types";
@@ -412,7 +413,10 @@ export async function createPlatformWindow({
 		minWidth: 400,
 		minHeight: 400,
 		show: false,
-		backgroundColor: nativeTheme.shouldUseDarkColors ? "#252525" : "#ffffff",
+		backgroundColor: resolveWindowBackground(
+			isAppStateInitialized() ? appState.data.themeState : null,
+			nativeTheme.shouldUseDarkColors,
+		),
 		center: initialBounds.center,
 		movable: true,
 		resizable: true,
@@ -453,6 +457,16 @@ export async function createPlatformWindow({
 		);
 		window.once("show", () => markStartup("window-show"));
 	}
+
+	const showWindow = () => {
+		if (window.isVisible()) return;
+		if (initialBounds.isMaximized) window.maximize();
+		window.show();
+	};
+	// Shown before the renderer loads, on the theme's background, so the window
+	// is up while the bundle parses. A persisted zoom only applies once loaded,
+	// so those windows still wait rather than flash the unzoomed layout.
+	if (!persistedZoomLevel) showWindow();
 
 	registerWindow({ window, orgId, key: key ?? randomUUID() });
 	window.on("focus", () => markFocused(window.id));
@@ -563,13 +577,7 @@ export async function createPlatformWindow({
 		}
 
 		if (!hasCompletedFirstLoad) {
-			if (initialBounds.isMaximized) {
-				window.maximize();
-			}
-			window.show();
-			if (startupDiagnosticsEnabled && window.isVisible()) {
-				markStartup("window-show");
-			}
+			showWindow();
 			initialized = true;
 			hasCompletedFirstLoad = true;
 		}
